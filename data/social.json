@@ -1,0 +1,29 @@
+{
+  "links": [
+    {
+      "name": "twitter",
+      "url": "https://twitter.com/koobai",
+      "image": "images/social/twitter.svg"
+    },
+    {
+      "name": "telegram",
+      "url": "https://t.me/delixiaohuangren",
+      "image": "images/social/telegram.svg"
+    },
+    {
+      "name": "weibo",
+      "url": "https://weibo.com/koobai",
+      "image": "images/social/weibo.svg"
+    },
+    {
+      "name": "github",
+      "url": "https://github.com/koobai",
+      "image": "images/social/github.svg"
+    },
+    {
+      "name": "instagram",
+      "url": "https://www.instagram.com/ikoobai/",
+      "image": "images/social/instagram.svg"
+    }
+  ]
+}
