@@ -1,0 +1,25 @@
+{{ define "body_classes" }}page-home{{ end }}
+
+{{ define "main" }}
+
+  {{ if .Site.Params.showAuthorOnHomepage }}
+    {{ partial "author-large.html" . }}
+  {{ end }}
+
+  <div class="intro">
+    <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+    <div class="intro-content">{{ .Content }}</div>
+  </div>
+
+  {{ if .Site.Params.showPostsOnHomepage }}
+  {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
+    {{ range $paginator.Pages }}
+      {{ .Render "summary" }}
+    {{ end }}
+    {{ partial "paginator" . }}
+  {{ end }}
+
+{{ end }}
+
+{{ define "footer_js" }}
+{{ end }}

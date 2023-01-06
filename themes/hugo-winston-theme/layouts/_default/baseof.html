@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{{ block "title" . }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{{ .Site.BaseURL }}favicon.png">
+  <link rel="canonical" href="{{ .Permalink }}" />
+
+  {{ if .Site.IsServer }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" true) }}
+  <link rel="stylesheet" href="{{ ($style).RelPermalink }}">
+  {{ else }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" false) }}
+  <link rel="stylesheet" href="{{ ($style | minify | fingerprint).RelPermalink }}">
+  {{ end }}
+
+  {{ block "meta_tags" . }}
+    {{ if .Params.description }}<meta name="description" content="{{ .Params.description }}"/>{{ end }}
+    <meta property="og:title" content="{{ .Title }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ .Permalink }}"/>
+    {{ if .Params.image }}<meta property="og:image" content="{{ .Params.image | absURL }}"/>{{ end }}
+    {{ if .Params.description }}<meta property="og:description" content="{{ .Params.description }}"/>{{ end }}
+    <meta name="twitter:card" content="summary"/>
+    {{ if .Site.Params.twitter_handle }}<meta name="twitter:site" content="{{ .Site.Params.twitter_handle }}"/>{{ end }}
+    {{ if .Site.Params.twitter_handle }}<meta name="twitter:creator" content="{{ .Site.Params.twitter_handle }}"/>{{ end }}
+  {{ end }}
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"> 
+</head>
+
+{{ $themeStyle := slice "" }}
+{{ if eq .Site.Params.addFrame true }}{{ $themeStyle = $themeStyle | append "frame" }}{{ end }}
+
+<body class='page{{ delimit $themeStyle " " }} {{ block "body_classes" . }}{{ end }}'>
+  {{ partial "menu-main-mobile.html" . }}
+  <div id="wrapper" class="wrapper">
+    {{ partial "header.html" . }}
+    {{ block "main" . }}
+    {{ end }}
+    {{ partial "footer.html" . }}
+  </div>
+
+  {{ $scripts := resources.Get "js/scripts.js" }}
+
+  {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
+
+  {{ if .Site.IsServer }}
+  <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+  {{ else }}
+  <script type="text/javascript" src="{{ ($js | minify | fingerprint).RelPermalink }}"></script>
+  {{ end }}
+
+  {{ block "footer_js" . }}
+  {{ end }}
+
+  {{ partial "google-analytics.html" . }}
+  {{ partial "plausible-analytics.html" . }}
+
+</body>
+</html>

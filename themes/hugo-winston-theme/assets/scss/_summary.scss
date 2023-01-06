@@ -1,0 +1,29 @@
+.summary {
+  margin-bottom: 50px;
+  font-size: 18px;
+  line-height: 24px;
+  @include breakpoint('small') {
+    margin-bottom: 80px;
+    font-size: 18px;
+    line-height: 26px;
+  }
+  .summary-date {
+    font-weight: bold;
+    color: var(--heading-color);
+  }
+  .summary-title {
+    margin: 16px 0 16px 0;
+    width: 60%;
+    font-size: 34px;
+    line-height: 38px;
+    @include breakpoint('small') {
+      width: 60%;
+      font-size: 52px;
+      line-height: 58px;
+    }
+  }
+  .summary-description {
+    width: 100%;
+    line-height: 1.8;
+  }
+}
