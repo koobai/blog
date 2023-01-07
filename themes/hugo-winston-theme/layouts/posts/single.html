@@ -14,7 +14,17 @@
     <div class="content">
       {{ .Content }}
     </div>
- <div style="font-size: 22px;font-weight:bold;margin-top:50px;color:#000000;">已经看到这里了，不留下点什么？</div>
+ <div style="color:#999999;margin-top:30px;">{{ .Date.Format "2006-01-02" }}</div>
+ <div style="font-size:18px;margin-top:30px;padding-top:10px;border-top:solid #BB2649 1px;">
+        {{ if .PrevInSection }}
+            <a href="{{ .PrevInSection.Permalink }}">上一篇: {{ .PrevInSection.Title }}</a>
+        {{ end }}
+
+        {{ if .NextInSection }}
+       <a href="{{ .NextInSection.Permalink }}" style="float:right;">下一篇: {{ .NextInSection.Title }}</a>
+       {{ end }}
+  </div>
+ <div style="font-size: 20px;font-weight:bold;margin-top:50px;color:#000000;">已经浏览到这里了，不留下点什么？</div>
    <div id="cusdis_thread"
   data-host="https://cusdis.com"
   data-app-id="f1ce9b07-ca96-42a5-a576-4022cf49b6c3"
