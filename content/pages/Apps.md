@@ -6,8 +6,8 @@ menu:
     name: "Apps"
     weight: 4
 ---
-适合的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。<br />
-以下为日常工作生活中所使用的记录：(2023-01-08 更新)<br />
+<div style="font-size: 18px;line-height: 1.6;">适合的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。<br />
+以下为日常工作生活中所使用的记录：(2023-01-08 更新)</div>
 
 <div class="quanju">
 <div class="img"><img src=/images/app/sketch.png> </div>
@@ -239,9 +239,9 @@ menu:
 </div>
 
 <style>
-.quanju{display: flex;align-items: center;margin-top: -40px}
-.img{width:100px;margin-right:20px;}
-.wenben{float:right;width:90%;}
+.quanju{display: flex;align-items: center;}
+.img{width:100px;height: 140px;margin-right:20px;}
+.wenben{width:90%;margin-top:30px;}
 .title{color:#bb2649;font-size:20px;font-weight:bold;margin-bottom: 8px;}
 .note{font-size: 14px;margin-bottom: 8px;line-height: 1.6;}
 .macos{background-color:#FFCF47;padding: 6px 10px;text-align: center;font-size: 12px;border-radius:20px;}
