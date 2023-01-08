@@ -7,7 +7,7 @@ menu:
     weight: 4
 ---
 <div style="font-size: 18px;line-height: 1.6;">适合的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。<br />
-以下为日常工作生活中所使用的记录：(2023-01-08 更新)</div>
+以下为日常工作生活中所常用：(2023-01-08 更新)</div>
 
 <div class="quanju">
 <div class="img"><img src=/images/app/sketch.png> </div>
@@ -238,9 +238,66 @@ menu:
 </div>
 </div>
 
+<div class="quanju">
+<div class="img"><img src=/images/app/tinycal.png> </div>
+<div class="wenben">
+<div class="title">小历</div>
+<div class="note">一款日历的组件，使用了很多年，主要用来查看农历跟日常的节假日。</div>
+<span class="macos">macOS</span>
+<span class="ios">iOS</span>
+</div>
+</div>
+
+<div class="quanju">
+<div class="img"><img src=/images/app/telegram.png> </div>
+<div class="wenben">
+<div class="title">Telegram</div>
+<div class="note">关注你想关注的，你能想到的资源都有。</div>
+<span class="macos">macOS</span>
+<span class="ios">iOS</span>
+</div>
+</div>
+
+<div class="quanju">
+<div class="img"><img src=/images/app/tianqi.png> </div>
+<div class="wenben">
+<div class="title">彩云天气</div>
+<div class="note">一段时间内，特别喜欢收集天气类app，只要看着好看就下载，最终留下了这款，可能因为它数据相对准确，组件也做得不错。</div>
+<span class="ios">iOS</span>
+</div>
+</div>
+
+<div class="quanju">
+<div class="img"><img src=/images/app/sms.png> </div>
+<div class="wenben">
+<div class="title">熊猫短信</div>
+<div class="note">过滤垃圾信息必备，iOS相关的过滤真是太垃圾了，羡慕隔壁的Android。</div>
+<span class="ios">iOS</span>
+</div>
+</div>
+
+<div class="quanju">
+<div class="img"><img src=/images/app/vvebo.png> </div>
+<div class="wenben">
+<div class="title" style="text-decoration:line-through">VVebo</div>
+<div class="note">第三方微博工具，同类型的还有以前的墨客。不可抗力的原因，目前都已下架。但用了很多年，比官方的好用不少，可惜了～～</div>
+<span class="ios">iOS</span>
+</div>
+</div>
+
+<div class="quanju">
+<div class="img"><img src=/images/app/more.png> </div>
+<div class="wenben">
+<div class="title">更多。。</div>
+<div class="note">更多日常常用的，如微信、支付宝、高德地图、豆瓣、各类购物相关、各类政务办事相关等等，就不在这里分享。。。</div>
+<span class="macos">macOS</span>
+<span class="ios">iOS</span>
+</div>
+</div>
+
 <style>
 .quanju{display: flex;align-items: center;}
-.img{width:100px;height: 140px;margin-right:20px;}
+.img{width:100px;height: 140px;margin-right:25px;}
 .wenben{width:90%;margin-top:30px;}
 .title{color:#bb2649;font-size:20px;font-weight:bold;margin-bottom: 8px;}
 .note{font-size: 14px;margin-bottom: 8px;line-height: 1.6;}
