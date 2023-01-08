@@ -1,9 +1,9 @@
 ---
-title: 'Tools'
-url: "tools"
+title: 'Apps'
+url: "apps"
 menu:
   main:
-    name: "Tools"
+    name: "Apps"
     weight: 4
 ---
 适合的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。<br />
