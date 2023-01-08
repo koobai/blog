@@ -190,7 +190,6 @@ menu:
 <div class="wenben">
 <div class="title">Youtube</div>
 <div class="note">没什么说的，关注你喜欢的视频频道。</div>
-<span class="macos">macOS</span>
 <span class="ios">iOS</span>
 <span class="tvos">tvOS</span>
 <span class="web">Web</span>
@@ -205,7 +204,6 @@ menu:
 <span class="macos">macOS</span>
 <span class="ios">iOS</span>
 <span class="tvos">tvOS</span>
-<span class="web">Web</span>
 </div>
 </div>
 
@@ -214,7 +212,6 @@ menu:
 <div class="wenben">
 <div class="title">Netflix</div>
 <div class="note">流媒体视频软件，缺点就是每个月的订阅费确实蛮贵。独自订阅几个月后，在合租平台租了个合租号。</div>
-<span class="macos">macOS</span>
 <span class="ios">iOS</span>
 <span class="tvos">tvOS</span>
 <span class="web">Web</span>
