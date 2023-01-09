@@ -6,8 +6,7 @@ menu:
     name: "Apps"
     weight: 4
 ---
-<div style="font-size: 18px;line-height: 1.6;">适合的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。<br />
-以下为日常工作生活中所常用：(2023-01-08 更新)</div>
+<div style="font-size: 18px;line-height: 1.6;">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：(2023-01-08 更新)</div>
 
 <div class="quanju">
 <div class="img"><img src=/images/app/sketch.png> </div>
@@ -22,7 +21,7 @@ menu:
 <div class="img"><img src=/images/app/pixelmator.png> </div>
 <div class="wenben">
 <div class="title">Pixelmator Pro</div>
-<div class="note">处理图片的时候，一直使用PHOTOSHOP，在想有没有平替，毕竟也不用那么专业处理。于是发现了这款轻量级软件，使用下来日常图片处理已解决。</div>
+<div class="note">处理图片的时候，一直使用Photoshop，在想有没有平替，毕竟也不用那么专业处理。于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，具体功能还在摸索中～～</div>
 <span class="macos">macOS</span>
 </div>
 </div>
@@ -87,7 +86,7 @@ menu:
 <div class="img"><img src=/images/app/bob.png> </div>
 <div class="wenben">
 <div class="title">Bob</div>
-<div class="note">翻译必备软件，支持各个翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。</div>
+<div class="note">翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。</div>
 <span class="macos">macOS</span>
 </div>
 </div>
@@ -270,7 +269,7 @@ menu:
 <div class="quanju">
 <div class="img"><img src=/images/app/sms.png> </div>
 <div class="wenben">
-<div class="title">熊猫短信</div>
+<div class="title">熊猫吃短信</div>
 <div class="note">过滤垃圾信息必备，iOS相关的过滤真是太垃圾了，羡慕隔壁的Android。</div>
 <span class="ios">iOS</span>
 </div>
