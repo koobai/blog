@@ -1,4 +1,4 @@
-baseURL = "https://blog.koobai.com/"
+baseURL = "https://koobai.com/"
 languageCode = "en-us"
 theme = "hugo-winston-theme"
 themesDir = "themes"
@@ -14,7 +14,7 @@ pygmentsUseClasses = true
     min = "0.55.0"
 
 [params]
-  google_analytics_id = "G-4RY85HYY7R"
+  google_analytics_id = ""
   twitter_handle = "@koobai"
   showAuthorOnHomepage = true
   showAuthorOnPosts = false
