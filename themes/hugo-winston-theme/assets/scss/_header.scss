@@ -3,14 +3,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 18px;
   @include breakpoint('small') {
     padding-bottom: 5px;
     margin-bottom: 40px;
   }
   a.header-logo {
-    font-weight: bold;
-    text-transform: uppercase;
+    font-family: 'SmileySans';
     margin-right: 30px;
   }
 }

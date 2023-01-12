@@ -29,14 +29,13 @@ h1, h2, h3 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  font-size: 16px; }
+  font-size: 18px; }
   @media (min-width: 767px) {
     .header {
       padding-bottom: 5px;
       margin-bottom: 40px; } }
   .header a.header-logo {
-    font-weight: bold;
-    text-transform: uppercase;
+    font-family: 'SmileySans';
     margin-right: 30px; }
 
 .hamburger-trigger {
@@ -315,6 +314,7 @@ ul {
   .author .author-name {
     display: inline-block;
     vertical-align: middle;
+    font-family: 'SmileySans';
     font-weight: bold;
     margin-left: 5px; }
   .author .author-date {
@@ -389,6 +389,7 @@ ul.pagination {
       display: block; } }
   .menu-main > ul {
     display: flex;
+    font-family: 'SmileySans';
     align-items: center;
     justify-content: flex-start; }
     .menu-main > ul > li {
