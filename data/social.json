@@ -21,9 +21,9 @@
       "image": "images/social/github.svg"
     },
     {
-      "name": "instagram",
-      "url": "https://www.instagram.com/ikoobai/",
-      "image": "images/social/instagram.svg"
+      "name": "email",
+      "url": "mailto:mekoobai@gmail.com",
+      "image": "images/social/email.svg"
     }
   ]
 }
