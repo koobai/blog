@@ -271,7 +271,8 @@ ul {
         font-size: 18px;
         line-height: 32px; } }
   .intro img {
-    max-width: 100%; }
+    max-width: 100%;
+    border-radius: 16px; }
 
 .summary {
   margin-bottom: 50px;
