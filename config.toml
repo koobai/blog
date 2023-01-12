@@ -1,5 +1,5 @@
 baseURL = "https://blog.koobai.com/"
-languageCode = "en-us"
+languageCode = "zh-CN"
 theme = "hugo-winston-theme"
 themesDir = "themes"
 title = "记录生活"
@@ -20,7 +20,7 @@ pygmentsUseClasses = true
   showAuthorOnPosts = false
   showPostsOnHomepage = true
   addDot = true
-  addFrame = true
+  addFrame = false
   highlightColor = '#BB2649'
   baseColor = "#FAF4ED"
   baseOffsetColor = "#eaeaea"
