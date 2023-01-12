@@ -1,5 +1,5 @@
 :root {
-  --font-family-heading: 'Poppins', sans-serif;
+  --font-family-heading: SmileySans,'Poppins', sans-serif; 
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
   --base-color: {{ .Site.Params.baseColor | default "#ffffff" }};
@@ -28,6 +28,12 @@ $breakpoints: (
 @import 'main-menu';
 @import 'main-menu-mobile';
 @import 'pygments/github';
+
+@font-face {
+  font-family: 'SmileySans';
+  src: url('../fonts/SmileySans-Oblique.ttf.woff2') format('woff2');
+}
+
 
 html, body {
   box-sizing: border-box;
