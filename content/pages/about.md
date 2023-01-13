@@ -1,6 +1,6 @@
 ---
 title: 'About'
-image: article/writer.jpg
+image: images/article/writer.jpg
 url: "about"
 menu:
   main:
