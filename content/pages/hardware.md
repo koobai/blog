@@ -11,21 +11,21 @@ menu:
 <div class="quanju">
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/appletv.png> </div>
+<div class="img"><img src=/images/hardware/appletv.png> </div>
 <div class="title">Apple TV 4K (第 2 代)</div>
 <div class="jiage">当时购入价格：RMB 1,488</div>
 <div class="note">之前使用的是Google TV，体验下来不管是流畅度、美观度都不是一个量级的。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/synology.png> </div>
+<div class="img"><img src=/images/hardware/synology.png> </div>
 <div class="title">群晖 DS920+</div>
 <div class="jiage">当时购入价格：RMB 3,900</div>
 <div class="note">配置过程相对麻烦，但调教好之后，它就是安全、娱乐之利器。就是硬盘太贵了。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/macbook.png> </div>
+<div class="img"><img src=/images/hardware/macbook.png> </div>
 <div class="title">MacBook Pro 16 2019</div>
 <div class="jiage">当时购入价格：RMB 22,199</div>
 <div class="note">上一台还是2014年买的港版15寸，没什么说的，纯生产力工具。
@@ -37,21 +37,21 @@ menu:
 <div class="quanju">
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/ergotron.png> </div>
+<div class="img"><img src=/images/hardware/ergotron.png> </div>
 <div class="title">爱格升 MXV</div>
 <div class="jiage">当时购入价格：RMB 949</div>
 <div class="note">显示器支架，买它一是因为让桌面更简洁，二是为了能升降。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/benq.png> </div>
+<div class="img"><img src=/images/hardware/benq.png> </div>
 <div class="title">明基 ScreenBar Plus</div>
 <div class="jiage">当时购入价格：RMB 894</div>
 <div class="note">显示器挂灯，除了控制器是有线外，其他都很好，既不占桌面，也不反光。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/master.png> </div>
+<div class="img"><img src=/images/hardware/master.png> </div>
 <div class="title">罗技 MX Master 3</div>
 <div class="jiage">当时购入价格：RMB 649</div>
 <div class="note">用了很多年了，除了表面脱皮及起泡外，确实很顺手。</div>
@@ -62,21 +62,21 @@ menu:
 <div class="quanju">
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/zoom.png> </div>
+<div class="img"><img src=/images/hardware/zoom.png> </div>
 <div class="title">ZOOM 65</div>
 <div class="jiage">当时购入价格：RMB 1,199</div>
 <div class="note">第一把真正意义上的客制化键盘，就是贵了点 (以上价格为套件价)，其他没毛病。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/sound.png> </div>
+<div class="img"><img src=/images/hardware/sound.png> </div>
 <div class="title">小米 Sound</div>
 <div class="jiage">当时购入价格：RMB 499</div>
 <div class="note">晚上工作时，听杭州的“钱塘夜色”广播，工作起来很带感～</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/philips.png> </div>
+<div class="img"><img src=/images/hardware/philips.png> </div>
 <div class="title">飞利浦 279C9 4K27寸</div>
 <div class="jiage">当时购入价格：RMB 2,999</div>
 <div class="note">主要外接MacBook使用，自带反向充电，屏占比也很高，推荐。</div>
@@ -87,21 +87,21 @@ menu:
 <div class="quanju">
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/dayinji.png> </div>
+<div class="img"><img src=/images/hardware/dayinji.png> </div>
 <div class="title">小米激光打印一体机</div>
 <div class="jiage">当时购入价格：RMB 1,399</div>
 <div class="note">主要职责是打印娃的作业，无线非常方便，性价比不错。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/iphone.png> </div>
+<div class="img"><img src=/images/hardware/iphone.png> </div>
 <div class="title">iPhone 11 Pro Max</div>
 <div class="jiage">当时购入价格：RMB 9,599</div>
 <div class="note">使用最久的一款手机，目前依然很流畅。近几年的新款，手感太差，可能因为穷。</div>
 </div>
 
 <div class="bankuai">
-<div class="img"><img src=/hardware/sony.png> </div>
+<div class="img"><img src=/images/hardware/sony.png> </div>
 <div class="title">索尼HT-Z9F</div>
 <div class="jiage">当时购入价格：RMB 7,285</div>
 <div class="note">电视Soundbar，用了很多年，看影视之利器，仿佛置身于其中~~</div>
