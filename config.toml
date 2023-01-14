@@ -1,4 +1,4 @@
-baseURL = "https://blog.koobai.com/"
+baseURL = "https://koobai.com/"
 languageCode = "zh-CN"
 theme = "hugo-winston-theme"
 themesDir = "themes"
