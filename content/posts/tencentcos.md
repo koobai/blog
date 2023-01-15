@@ -16,15 +16,19 @@ image: images/article/cdn.svg
 
 **部署:**
 
-1.在Github仓库根目录，新建".github/workflows"文件夹，并新建xxx.yml文件，复制以下代码到文件里。
+1.在Github仓库根目录，新建".github/workflows"文件夹，并新建xxx.yml文件，复制以下代码到文件里。作用：借助Github Action实现自动部署。
 
 ```
 name: Build and deploy
+
+# 自动触发构建
 
 on:
   push:
     branches:
       - main
+
+# 构建hugo及生产静态页面
 
 jobs:
   deploy:
@@ -43,6 +47,8 @@ jobs:
 
       - name: Build
         run: hugo --minify
+
+# 上传到腾讯COS存储桶
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -63,6 +69,8 @@ jobs:
       - name: Upload to COS
         run: coscmd upload -rfs --delete public/ /
 
+# 刷新腾讯CDN缓存目录
+
       - name: Flush CDN
         env:
           SECRET_ID: ${{ secrets.SecretId }}
@@ -70,11 +78,11 @@ jobs:
         run: |
           pip install --upgrade tencentcloud-sdk-python
           python flush-dns.py -i $SECRET_ID -k $SECRET_KEY
+
 ```
 
 
-
-2.在Github仓库根目录，新建flush-dns.py文件，复制以下代码到文件里，并将里面的"https://koobai.com/"域名修改成自己的CDN加速域名。
+2.在Github仓库根目录，新建flush-dns.py文件，复制以下代码到文件里，并将里面的"koobai.com"域名修改成自己的CDN加速域名。作用：通过Python脚本实现刷新CDN缓存，详细参数可参考<a href="https://console.cloud.tencent.com/api/explorer?Product=cdn&Version=2018-06-06&Action=PurgePathCache" target="_blank">腾讯的调用aip文档</a>。
 
 ```
 import json
@@ -103,7 +111,7 @@ try:
     client = cdn_client.CdnClient(cred, "", clientProfile)
 
     req = models.PurgePathCacheRequest()
-    params = {"Paths": ["https://koobai.com/"], "FlushType": "flush"}
+    params = {"Paths": ["https://koobai.com/", "https://www.koobai.com/"], "FlushType": "flush"}
     req.from_json_string(json.dumps(params))
 
     resp = client.PurgePathCache(req)
