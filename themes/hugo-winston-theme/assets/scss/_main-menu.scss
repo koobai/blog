@@ -6,7 +6,7 @@
   }
   > ul {
     display: flex;
-    font-family: 'SmileySans';
+    font-family: var(--font-family-teshu);
     letter-spacing:0.5px;
     align-items: center;
     justify-content: flex-start;

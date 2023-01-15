@@ -1,7 +1,8 @@
 :root {
-  --font-family-heading: SmileySans, sans-serif;
+  --font-family-heading: SmileySans, Helvetica,sans-serif;
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
+  --font-family-teshu: SmileySans, Helvetica,sans-serif;
   --base-color: #FAF4ED;
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
@@ -35,7 +36,7 @@ h1, h2, h3 {
       padding-bottom: 5px;
       margin-bottom: 40px; } }
   .header a.header-logo {
-    font-family: 'SmileySans';
+    font-family: var(--font-family-teshu);
     margin-right: 30px; }
 
 .hamburger-trigger {
@@ -251,7 +252,7 @@ ul {
     font-size: 22px;
     font-weight: bold;
     margin: 0 10px 6px 10px;
-    font-family: SmileySans;
+    font-family: var(--font-family-teshu);
     letter-spacing: 0.5px; }
   .jiage {
     color: #999;
@@ -280,7 +281,7 @@ ul {
     font-size: 20px;
     font-weight: bold;
     margin: 0 0 6px 0;
-    font-family: SmileySans;
+    font-family: var(--font-family-teshu);
     letter-spacing: 0.5px; }
   .jiage {
     color: #999;
@@ -307,7 +308,7 @@ ul {
   color: #bb2649;
   font-size: 20px;
   margin-bottom: 8px;
-  font-family: SmileySans;
+  font-family: var(--font-family-teshu);
   letter-spacing: 0.5px; }
 
 .appnote {
@@ -394,8 +395,7 @@ ul {
       font-size: 18px;
       line-height: 26px; } }
   .summary .summary-date {
-    font-weight: bold;
-    font-family: 'SmileySans';
+    font-family: var(--font-family-teshu);
     color: var(--heading-color); }
   .summary .summary-title {
     margin: 16px 0 16px 0;
@@ -425,8 +425,7 @@ ul {
   .author .author-name {
     display: inline-block;
     vertical-align: middle;
-    font-family: 'SmileySans';
-    font-weight: bold;
+    font-family: var(--font-family-teshu);
     margin-left: 5px; }
   .author .author-date {
     display: inline-block;
@@ -500,7 +499,7 @@ ul.pagination {
       display: block; } }
   .menu-main > ul {
     display: flex;
-    font-family: 'SmileySans';
+    font-family: var(--font-family-teshu);
     letter-spacing: 0.5px;
     align-items: center;
     justify-content: flex-start; }

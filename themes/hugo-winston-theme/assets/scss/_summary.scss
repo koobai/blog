@@ -8,8 +8,7 @@
     line-height: 26px;
   }
   .summary-date {
-    font-weight: bold;
-    font-family: 'SmileySans';
+    font-family: var(--font-family-teshu);
     color: var(--heading-color);
   }
   .summary-title {
