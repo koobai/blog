@@ -16,11 +16,11 @@
     margin: 16px 0 16px 0;
     width: 60%;
     font-size: 34px;
-    line-height: 38px;
+    line-height: 42px;
     @include breakpoint('small') {
       width: 60%;
       font-size: 52px;
-      line-height: 58px;
+      line-height: 64px;
     }
   }
   .summary-description {
