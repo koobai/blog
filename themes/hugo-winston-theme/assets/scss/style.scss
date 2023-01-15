@@ -1,7 +1,8 @@
 :root {
-  --font-family-heading: SmileySans, sans-serif; 
+  --font-family-heading: SmileySans, Helvetica,sans-serif; 
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
+  --font-family-teshu: SmileySans, Helvetica,sans-serif;
   --base-color: {{ .Site.Params.baseColor | default "#ffffff" }};
   --base-offset-color: {{ .Site.Params.baseOffsetColor | default "#eaeaea" }};
   --highlight-color: {{ .Site.Params.highlightColor | default "#7b16ff" }};

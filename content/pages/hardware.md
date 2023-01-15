@@ -108,7 +108,3 @@ menu:
 </div>
 
 </div>
-
-<style>
-
-</style>
