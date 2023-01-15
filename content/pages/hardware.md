@@ -110,22 +110,5 @@ menu:
 </div>
 
 <style>
-@media (max-width:900px){
-.bankuai{background-color:#FFE7DE;width: 96%;border-radius:4px;padding:0 2%  5% 2%;margin-bottom: 15px}
-.img{width:80%; margin:0 auto;}
-.title{color:#bb2649;font-size:16px;font-weight:bold;margin: 0 10px 6px 10px;}
-.jiage{color:#999;font-size:14px;margin: 0 10px 6px 10px;}
-.note{font-size: 14px;line-height: 1.6;margin: 0 10px 0 10px;}
-.content img {margin: 0;}
-}
 
-@media (min-width:900px){
-.quanju{display: flex;}
-.bankuai{background-color:#FFE7DE;width:30%;border-radius:4px;margin-right:10px;margin-bottom: 10px;padding:1% 3%  3% 3%;}
-.img{width:90%; margin:0 auto;}
-.title{color:#bb2649;font-size:16px;font-weight:bold;margin: 0 0 6px 0;}
-.jiage{color:#999;font-size:14px;margin: 0 0 6px 0;}
-.note{font-size: 14px;line-height: 1.6;}
-.content img {margin: 0;}       
-}
 </style>

@@ -1,5 +1,5 @@
 :root {
-  --font-family-heading: SmileySans,'Poppins', sans-serif; 
+  --font-family-heading: SmileySans, sans-serif; 
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
   --base-color: {{ .Site.Params.baseColor | default "#ffffff" }};
@@ -36,7 +36,7 @@ $breakpoints: (
 
 @font-face {
   font-family: JetBrainsMono;
-  src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  src: url('../fonts/JetBrainsMono-Italic.woff2') format('woff2');
 }
 
 

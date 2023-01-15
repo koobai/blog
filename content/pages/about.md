@@ -28,4 +28,4 @@ menu:
 2010年12月04日，博客地址启用为blog.koobai.com  <br />
 2012年10月03日，博客与简素整合，以展示个人窗口为主，域名启用为koobai.com
 
-十年过去了，2023年01月06日，通过hugo & GitHub & Cloudflare重新搭建博客。。。
+十年过去了，2023年01月06日，通过hugo & GitHub ~~& Cloudflare~~重新搭建博客。。。

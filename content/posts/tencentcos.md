@@ -8,13 +8,13 @@ image: images/article/cdn.svg
 
 在了解部署过程中发现Cyrus's Blog写的"<a href="https://blog.xm.mk/posts/fc83" target="_blank">自动构建Hugo博客部署至腾讯云对象存储COS并刷新CDN</a>"教程，一番折腾，完美。感谢作者。<br />备份记录下过程: (详细的注释可查看Cyrus's Blog)
 
-**准备工作：**
+### 准备工作：
 
 1.到腾讯云访问管理——访问密钥——API密钥管理中，新建一个账户：访问方式改为"编程访问"，用户权限添加"QcloudCOSDataFullControl、 QcloudCDNFullAccess"。完成之后将生成的SecretId、SecretKey复制保存。<br />
 2.到Github新建一个仓库(私有公共都行)，把自己hugo生成的站点源文件(不是public下文件)同步过去。<br />
 3.在刚创建的仓库——Settings——Secrets and variables——Actions，新建SecretId、SecretKey、Bucket、 Region四个密钥。其中SecretId、SecretKey为上面复制保存的，Bucket(存储桶名称)、 Region(所属地域 )在COS中存储桶列表中获取。
 
-**部署:**
+### 部署:
 
 1.在Github仓库根目录，新建".github/workflows"文件夹，并新建xxx.yml文件，复制以下代码到文件里。作用：借助Github Action实现自动部署。
 
@@ -123,17 +123,17 @@ except TencentCloudSDKException as err:
 
 自此部署完毕，当有新文件上传到 main 分支，就会自动触发（hugo生成静态文件——上传到COS——刷新CDN缓存）。
 
-**查看是否部署成功：**
+### 查看是否部署成功：
 
 1.Github仓库Actions下，查看构建记录<br />
 2.COS存储桶下的文件变动<br />
 3.CDN刷新预热下，操作记录——目录刷新
 
-**费用：**
+### 费用：
 
 COS、CDN费用(包含存储+CDN回源流量+CDN流量+HTTPS请求等)，个人站没什么流量，应该很低，跑一段时间看看。另外腾讯云也提供了六个月一部分免费试用~~
 
-**扩展：**
+### 扩展：
 
 因为博客源文件在Github里，可以利用vercel平台读取仓库也自动构建一个。如果使用的是阿里云域名DNS服务器，可以在解析请求来源选择"境外"，"记录值"填写vercel平台绑定域名时所提供的。
 
