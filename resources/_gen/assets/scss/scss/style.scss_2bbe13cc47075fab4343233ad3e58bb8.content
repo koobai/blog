@@ -216,14 +216,16 @@ ul {
         margin: 0; }
   .content code,
   .content pre {
-    font-family: var(--font-family-monospace); }
+    font-family: JetBrainsMono; }
   .content .highlight pre {
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 18px;
     padding: 30px;
     overflow: auto;
-    font-family: var(--font-family-monospace); }
+    font-family: var(--font-family-monospace);
+    background: #FFE7DE;
+    color: #666; }
 
 .dot {
   color: var(--dot-color); }
@@ -234,7 +236,7 @@ ul {
     list-style: decimal; }
 
 .intro {
-  margin-bottom: 60px; }
+  margin-bottom: 4%; }
   .intro h1 {
     font-size: 48px;
     line-height: 56px;
@@ -244,7 +246,7 @@ ul {
       .intro h1 {
         width: 60%;
         font-size: 88px;
-        line-height: 94px;
+        line-height: 100px;
         margin-bottom: 50px; } }
     .intro h1 strong {
       color: var(--highlight-color); }
@@ -291,12 +293,12 @@ ul {
     margin: 16px 0 16px 0;
     width: 60%;
     font-size: 34px;
-    line-height: 38px; }
+    line-height: 42px; }
     @media (min-width: 767px) {
       .summary .summary-title {
         width: 60%;
         font-size: 52px;
-        line-height: 58px; } }
+        line-height: 64px; } }
   .summary .summary-description {
     width: 100%;
     line-height: 1.8; }
@@ -786,8 +788,12 @@ ul.pagination {
 
 /* Literal.Number.Integer.Long */
 @font-face {
-  font-family: 'SmileySans';
+  font-family: SmileySans;
   src: url("../fonts/SmileySans-Oblique.ttf.woff2") format("woff2"); }
+
+@font-face {
+  font-family: JetBrainsMono;
+  src: url("../fonts/JetBrainsMono-Regular.woff2") format("woff2"); }
 
 html, body {
   box-sizing: border-box; }

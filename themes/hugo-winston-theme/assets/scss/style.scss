@@ -30,8 +30,13 @@ $breakpoints: (
 @import 'pygments/github';
 
 @font-face {
-  font-family: 'SmileySans';
+  font-family: SmileySans;
   src: url('../fonts/SmileySans-Oblique.ttf.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: JetBrainsMono;
+  src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff2');
 }
 
 

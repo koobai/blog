@@ -140,16 +140,18 @@ ul {
   }
   code,
   pre {
-    font-family: var(--font-family-monospace);
+      font-family: JetBrainsMono;
   }
   .highlight {
     pre {
       border-radius: 3px;
-      font-size: 14px;
+      font-size: 16px;
       line-height: 18px;
       padding: 30px;
       overflow: auto;
       font-family: var(--font-family-monospace);
+      background: #FFE7DE;
+      color:#666
     }
   }
 }
