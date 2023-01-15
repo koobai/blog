@@ -6,7 +6,7 @@ image: images/article/cdn.svg
 ---
 博客逐步搭建完善，更新了日常使用的[App](https://koobai.com/apps/)、[硬件](https://koobai.com/hardware/)页面。博客样式标题采用了"<a href="https://github.com/atelier-anchor/smiley-sans" target="_blank">得意黑</a>"开源字体。把二级域名改成一级，过程中发现Cloudflare Pages如果要绑定一级，须把域名的DNS服务器解析过去。解析之后，自己的nas访问变得不稳定，时不时的打不开，来来回回折腾了好几次，无解，只好改回去。 vercel可以绑定一级，尝试之后，访问速度太慢，放弃。开始了解国内的云服务，学习到了对象储存、CDN，经过一番对比尝试，最终选择腾讯云的COS对象存储配合内容分发网络CDN搭建(主要它的cosbrowser界面是经过设计的ᵔ◡ᵔ；客服也很负责，咨询问题会电话打过来详细教你如何操作)。
 
-了解部署过程中发现Cyrus's Blog写的"<a href="https://blog.xm.mk/posts/fc83" target="_blank">自动构建Hugo博客部署至腾讯云对象存储COS并刷新CDN</a>"教程，一番折腾，完美。感谢作者。<br />备份记录下过程: (详细的注释查看Cyrus's Blog)
+在了解部署过程中发现Cyrus's Blog写的"<a href="https://blog.xm.mk/posts/fc83" target="_blank">自动构建Hugo博客部署至腾讯云对象存储COS并刷新CDN</a>"教程，一番折腾，完美。感谢作者。<br />备份记录下过程: (详细的注释可查看Cyrus's Blog)
 
 **准备工作：**
 
@@ -124,3 +124,9 @@ except TencentCloudSDKException as err:
 **费用：**
 
 COS、CDN费用(包含存储+CDN回源流量+CDN流量+HTTPS请求等)，个人站没什么流量，应该很低，跑一段时间看看。另外腾讯云也提供了六个月一部分免费试用~~
+
+**扩展：**
+
+因为博客源文件在Github里，可以利用vercel平台读取仓库也自动构建一个。如果使用的是阿里云域名DNS服务器，可以在解析请求来源选择"境外"，"记录值"填写vercel平台绑定域名时所提供的。
+
+这样国内网络访问的时候走腾讯CDN，国外访问的时候走vercel平台所提供的节点。
