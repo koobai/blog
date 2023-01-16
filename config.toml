@@ -14,7 +14,6 @@ pygmentsUseClasses = true
     min = "0.55.0"
 
 [params]
-  google_analytics_id = ""
   twitter_handle = "@koobai"
   showAuthorOnHomepage = true
   showAuthorOnPosts = false
@@ -22,7 +21,7 @@ pygmentsUseClasses = true
   addDot = true
   addFrame = false
   highlightColor = '#BB2649'
-  baseColor = "#FAF4ED"
+  baseColor = "#FFF3E6"
   baseOffsetColor = "#eaeaea"
   headingColor = "#1c1b1d"
   textColor = "#4e5157"

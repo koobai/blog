@@ -28,7 +28,6 @@
     {{ if .Site.Params.twitter_handle }}<meta name="twitter:site" content="{{ .Site.Params.twitter_handle }}"/>{{ end }}
     {{ if .Site.Params.twitter_handle }}<meta name="twitter:creator" content="{{ .Site.Params.twitter_handle }}"/>{{ end }}
   {{ end }}
-
 </head>
 
 {{ $themeStyle := slice "" }}
@@ -54,10 +53,6 @@
   {{ end }}
 
   {{ block "footer_js" . }}
-  {{ end }}
-
-  {{ partial "google-analytics.html" . }}
-  {{ partial "plausible-analytics.html" . }}
-
+  {{ end }} 
 </body>
 </html>
