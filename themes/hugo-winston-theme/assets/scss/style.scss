@@ -46,6 +46,17 @@ html, body {
 }
 
 body {
+
+    /* 在模式切换过程中给color和background-color属性添加过渡效果 
+
+  --duration: 0.5s;
+  --timing: ease;
+
+  transition: background-color var(--duration) var(--timing), color var(
+        --duration
+      ) var(--timing); */
+
+
   background: var(--base-color);
   font-family: var(--font-family-paragraph);
   color: var(--text-color);
@@ -65,3 +76,50 @@ body {
   max-width: 1000px;
   margin: 0 auto;
 }
+
+// 夜间模式_按钮切换样式
+
+.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
+.js-toggle-track-check {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .js-toggle--checked .js-toggle-track-check {
+    opacity: 1;
+  } 
+  .js-toggle-track-x {
+    position: absolute;
+    opacity: 1;
+  } 
+  .js-toggle--checked .js-toggle-track-x {
+    opacity: 0;
+  }
+
+// 夜间模式页面样式
+
+body.dark-mode, 
+body.dark-mode main * {
+    background: #120006;
+    color: #555;
+}
+.dark-mode p {
+  color: #555;
+}
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3 {
+  color: #666;
+}
+.dark-mode .summary-date {color: #555;}
+.dark-mode .author{color: #555;}
+.dark-mode .bankuai{background: linear-gradient(to bottom right, #160D0F, #110720);}
+.dark-mode .highlight {
+    pre {background-color: #181313;}
+}
+.dark-mode .highlight{background-color: #120006;}
+.dark-mode .macos{background:#9A7C27;color: #111111}
+.dark-mode .ios{background:#3C6A98;color: #111111}
+.dark-mode .tvos{background:#9B656E;color: #111111}
+.dark-mode .web{background:#685FA0;color: #111111}
+.dark-mode img {filter: brightness(0.7) contrast(1.2); }
