@@ -79,7 +79,7 @@ body {
 
 // 夜间模式_按钮切换样式
 
-.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
+/*.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
 .js-toggle-track-check {
     position: absolute;
     opacity: 0;
@@ -94,10 +94,10 @@ body {
   } 
   .js-toggle--checked .js-toggle-track-x {
     opacity: 0;
-  }
+  }*/
 
 // 夜间模式页面样式
-
+@media (prefers-color-scheme: dark) {
 body.dark-mode, 
 body.dark-mode main * {
     background: #120006;
@@ -123,3 +123,6 @@ body.dark-mode main * {
 .dark-mode .tvos{background:#9B656E;color: #111111}
 .dark-mode .web{background:#685FA0;color: #111111}
 .dark-mode img {filter: brightness(0.7) contrast(1.2); }
+
+
+}
