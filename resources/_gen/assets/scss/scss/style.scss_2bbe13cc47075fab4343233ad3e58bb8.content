@@ -950,39 +950,38 @@ body {
     opacity: 0;
   }*/
 @media (prefers-color-scheme: dark) {
-  body.dark-mode,
-  body.dark-mode main * {
+  body {
     background: #120006;
     color: #555; }
-  .dark-mode p {
+  p {
     color: #555; }
-  .dark-mode h1,
-  .dark-mode h2,
-  .dark-mode h3 {
+  h1,
+  h2,
+  h3 {
     color: #666; }
-  .dark-mode .summary-date {
+  .summary-date {
     color: #555; }
-  .dark-mode .author {
+  .author {
     color: #555; }
-  .dark-mode .bankuai {
+  .bankuai {
     background: linear-gradient(to bottom right, #160D0F, #110720); }
-  .dark-mode .highlight pre {
+  .highlight pre {
     background-color: #181313; }
-  .dark-mode .highlight {
+  .highlight {
     background-color: #120006; }
-  .dark-mode .macos {
+  .macos {
     background: #9A7C27;
     color: #111111; }
-  .dark-mode .ios {
+  .ios {
     background: #3C6A98;
     color: #111111; }
-  .dark-mode .tvos {
+  .tvos {
     background: #9B656E;
     color: #111111; }
-  .dark-mode .web {
+  .web {
     background: #685FA0;
     color: #111111; }
-  .dark-mode img {
+  img {
     filter: brightness(0.7) contrast(1.2); } }
 
 /*# sourceMappingURL=style.css.map */
