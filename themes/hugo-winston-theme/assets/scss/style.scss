@@ -77,6 +77,37 @@ body {
   margin: 0 auto;
 }
 
+//日间模式新增属性
+
+.highlight {
+pre {background: #FFE7DE;}
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+body {
+    background: #120006;
+    color: #555;
+}
+p {
+  color: #555;
+}
+h1,
+h2,
+h3 {color: #666;}
+.summary-date ,.author{color: #555;}
+.bankuai{background: linear-gradient(to bottom right, #160D0F, #110720);}
+.highlight {
+pre {background: linear-gradient(to bottom right, #160D0F, #110720);}
+}
+.highlight{background-color: #120006;}
+.macos{background:#9A7C27;color: #111111}
+.ios{background:#3C6A98;color: #111111}
+.tvos{background:#9B656E;color: #111111}
+.web{background:#685FA0;color: #111111}
+img {filter: brightness(0.7) contrast(1.2); }
+}
+
 // 夜间模式_按钮切换样式
 
 /*.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
@@ -95,31 +126,3 @@ body {
   .js-toggle--checked .js-toggle-track-x {
     opacity: 0;
   }*/
-
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-body {
-    background: #120006;
-    color: #555;
-}
-p {
-  color: #555;
-}
-h1,
-h2,
-h3 {
-  color: #666;
-}
-.summary-date {color: #555;}
-.author{color: #555;}
-.bankuai{background: linear-gradient(to bottom right, #160D0F, #110720);}
-.highlight {
-pre {background-color: #181313;}
-}
-.highlight{background-color: #120006;}
-.macos{background:#9A7C27;color: #111111}
-.ios{background:#3C6A98;color: #111111}
-.tvos{background:#9B656E;color: #111111}
-.web{background:#685FA0;color: #111111}
-img {filter: brightness(0.7) contrast(1.2); }
-}
