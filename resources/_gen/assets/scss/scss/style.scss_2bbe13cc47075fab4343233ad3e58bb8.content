@@ -937,15 +937,17 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background: #120006;
-    color: #555; }
+    color: #777; }
   p {
-    color: #555; }
+    color: #777; }
   h1,
   h2,
   h3 {
-    color: #666; }
-  .summary-date, .author {
-    color: #555; }
+    color: #999; }
+  .author {
+    color: #777; }
+  .summary-date {
+    color: #444; }
   .bankuai {
     background: linear-gradient(to bottom right, #160D0F, #110720); }
   .highlight pre {
