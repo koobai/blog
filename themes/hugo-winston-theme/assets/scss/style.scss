@@ -80,8 +80,9 @@ body {
 //日间模式新增属性
 
 .highlight {
-pre {background: #FFE7DE;}
+pre {background: #FFECE6;}
 }
+.highlight{background-color: #FFF9F2;}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -106,7 +107,7 @@ pre {background: linear-gradient(to bottom right, #332E2F, #110720);color: #BBBB
 .ios{background:#3C6A98;color: #111111}
 .tvos{background:#9B656E;color: #111111}
 .web{background:#685FA0;color: #111111}
-img {filter: brightness(0.7) contrast(1.2); }
+img {filter: brightness(0.8) contrast(1.2); }
 }
 
 // 夜间模式_按钮切换样式

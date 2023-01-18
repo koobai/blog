@@ -4,7 +4,7 @@
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
   --font-family-teshu: SmileySans, Helvetica,sans-serif;
-  --base-color: #FFF3E6;
+  --base-color: #FFF9F2;
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
   --heading-color: #1c1b1d;
@@ -238,7 +238,7 @@ ul {
 
 @media (max-width: 900px) {
   .bankuai {
-    background-color: #FFE7DE;
+    background-color: #FFECE6;
     width: 96%;
     border-radius: 4px;
     padding: 0 2%  5% 2%;
@@ -266,7 +266,7 @@ ul {
   .quanju {
     display: flex; }
   .bankuai {
-    background-color: #FFE7DE;
+    background-color: #FFECE6;
     width: 30%;
     border-radius: 4px;
     margin-right: 10px;
@@ -931,7 +931,10 @@ body {
   margin: 0 auto; }
 
 .highlight pre {
-  background: #FFE7DE; }
+  background: #FFECE6; }
+
+.highlight {
+  background-color: #FFF9F2; }
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -967,7 +970,7 @@ body {
     background: #685FA0;
     color: #111111; }
   img {
-    filter: brightness(0.7) contrast(1.2); } }
+    filter: brightness(0.8) contrast(1.2); } }
 
 /*.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
 .js-toggle-track-check {
