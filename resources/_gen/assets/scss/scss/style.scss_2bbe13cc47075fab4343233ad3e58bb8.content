@@ -8,7 +8,7 @@
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
   --heading-color: #1c1b1d;
-  --text-color: #4e5157;
+  --text-color: #444444;
   --dot-color: #BB2649; }
 
 body, html {
@@ -226,7 +226,6 @@ ul {
     padding: 30px;
     overflow: auto;
     font-family: var(--font-family-monospace);
-    color: #666;
     border-radius: 16px; }
 
 .dot {
@@ -936,24 +935,25 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: #120006;
-    color: #777; }
+    background: #1A1718;
+    color: #BBBBBB; }
   p {
-    color: #777; }
+    color: #BBBBBB; }
   h1,
   h2,
   h3 {
-    color: #999; }
+    color: #CCCCCC; }
   .author {
-    color: #777; }
+    color: #CCCCCC; }
   .summary-date {
-    color: #444; }
+    color: #AAAAAA; }
   .bankuai {
-    background: linear-gradient(to bottom right, #160D0F, #110720); }
+    background: linear-gradient(to bottom right, #332E2F, #110720); }
   .highlight pre {
-    background: linear-gradient(to bottom right, #160D0F, #110720); }
+    background: linear-gradient(to bottom right, #332E2F, #110720);
+    color: #BBBBBB; }
   .highlight {
-    background-color: #120006; }
+    background-color: #1A1718; }
   .macos {
     background: #9A7C27;
     color: #111111; }
