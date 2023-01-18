@@ -86,22 +86,22 @@ pre {background: #FFE7DE;}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 body {
-    background: #120006;
-    color: #777;
+    background: #1A1718;
+    color: #BBBBBB;
 }
 p {
-  color: #777;
+  color: #BBBBBB;
 }
 h1,
 h2,
-h3 {color: #999;}
-.author{color: #777;}
-.summary-date{color: #444;}
-.bankuai{background: linear-gradient(to bottom right, #160D0F, #110720);}
+h3 {color: #CCCCCC;}
+.author{color: #CCCCCC;}
+.summary-date{color: #AAAAAA;}
+.bankuai{background: linear-gradient(to bottom right, #332E2F, #110720);}
 .highlight {
-pre {background: linear-gradient(to bottom right, #160D0F, #110720);}
+pre {background: linear-gradient(to bottom right, #332E2F, #110720);color: #BBBBBB;}
 }
-.highlight{background-color: #120006;}
+.highlight{background-color: #1A1718;}
 .macos{background:#9A7C27;color: #111111}
 .ios{background:#3C6A98;color: #111111}
 .tvos{background:#9B656E;color: #111111}

@@ -24,7 +24,7 @@ pygmentsUseClasses = true
   baseColor = "#FFF3E6"
   baseOffsetColor = "#eaeaea"
   headingColor = "#1c1b1d"
-  textColor = "#4e5157"
+  textColor = "#444444"
   dotColor = "#BB2649"
 
 # markdown config settings https://gohugo.io/getting-started/configuration-markup/#goldmark
