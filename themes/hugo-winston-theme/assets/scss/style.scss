@@ -9,15 +9,6 @@
   --heading-color: {{ .Site.Params.headingColor | default "#1c1b1d" }};
   --text-color: {{ .Site.Params.textColor | default "#4e5157" }};
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
-
-  /*评论样式*/
-  --waline-bgcolor: #FFF9F2 !important;
-  --waline-theme-color: #BB2649 !important;
-  --waline-active-color:#E62F5A !important;
-  --waline-bgcolor-light: #FFF9F2 !important;
-  --waline-info-bgcolor:#f0f0f0 !important;
-  --waline-badge-color:#BB2649 !important;
-  --waline-code-bgcolor:#FFECE6 !important;
 }
 $breakpoints: (
   'small': 767px,
@@ -37,6 +28,7 @@ $breakpoints: (
 @import 'main-menu';
 @import 'main-menu-mobile';
 @import 'pygments/github';
+@import 'comment';
 
 @font-face {
   font-family: SmileySans;
@@ -81,23 +73,12 @@ pre {background: #FFECE6;}
 }
 .highlight{background-color: #FFF9F2;}
 
-/*评论样式*/
-.wl-header input, .wl-header label,.wl-editor{font-size:1em !important;}
-.wl-header{border-bottom: 1px dashed var(--waline-border-color) !important;}
-.wl-content pre code{color:#444 !important;font-size: 14px;}
-.pinglun{font-size: 20px;font-family: 'SmileySans';margin-top:50px;color:#000000;margin-bottom: 20px;}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 body {
     background: #1A1718;
     color: #BBBBBB;
-
-/*评论样式*/
-  --waline-bgcolor: #1A1718 !important;
-  --waline-bgcolor-light: #1A1718 !important;
-  --waline-code-bgcolor:linear-gradient(to bottom right, #332E2F, #110720) !important;
-  --waline-border: 1px solid var(--waline-border-color) !important;
 }
 p {
   color: #BBBBBB;
@@ -117,28 +98,4 @@ pre {background: linear-gradient(to bottom right, #332E2F, #110720);color: #BBBB
 .tvos{background:#9B656E;color: #111111}
 .web{background:#685FA0;color: #111111}
 img {filter: brightness(0.8) contrast(1.2); }
-.pinglun{color:#BBBBBB}
-
-/*评论样式*/
-.wl-content pre code{color:#888 !important;}
-
 }
-
-// 夜间模式_按钮切换样式
-
-/*.js-toggle {  cursor: pointer;margin-top: -22px;margin-left: 30px;}
-.js-toggle-track-check {
-    position: absolute;
-    opacity: 0;
-  }
-  
-  .js-toggle--checked .js-toggle-track-check {
-    opacity: 1;
-  } 
-  .js-toggle-track-x {
-    position: absolute;
-    opacity: 1;
-  } 
-  .js-toggle--checked .js-toggle-track-x {
-    opacity: 0;
-  }*/

@@ -1,0 +1,28 @@
+:root {
+  /*评论样式*/
+  --waline-bgcolor: #FFF9F2 !important;
+  --waline-theme-color: #BB2649 !important;
+  --waline-active-color:#E62F5A !important;
+  --waline-bgcolor-light: #FFF9F2 !important;
+  --waline-info-bgcolor:#f0f0f0 !important;
+  --waline-badge-color:#BB2649 !important;
+  --waline-code-bgcolor:#FFECE6 !important;
+}
+
+.wl-header input, .wl-header label,.wl-editor{font-size:1em !important;}
+.wl-header{border-bottom: 1px dashed var(--waline-border-color) !important;}
+.wl-content pre code{color:#444 !important;font-size: 14px;}
+.pinglun{font-size: 20px;font-family: 'SmileySans';margin-top:50px;color:#000000;margin-bottom: 20px;}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+body {
+/*评论样式*/
+  --waline-bgcolor: #1A1718 !important;
+  --waline-bgcolor-light: #1A1718 !important;
+  --waline-code-bgcolor:linear-gradient(to bottom right, #332E2F, #110720) !important;
+  --waline-border: 1px solid var(--waline-border-color) !important;
+}
+.pinglun{color:#BBBBBB}
+.wl-content pre code{color:#888 !important;}
+}
