@@ -5,7 +5,7 @@ url: "about"
 menu:
   main:
     name: "About"
-    weight: 5
+    weight: 6
 ---
 ### 关于我
 

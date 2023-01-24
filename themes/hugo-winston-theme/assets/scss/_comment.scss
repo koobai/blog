@@ -9,10 +9,23 @@
   --waline-code-bgcolor:#FFECE6 !important;
 }
 
-.wl-header input, .wl-header label,.wl-editor{font-size:1em !important;}
-.wl-header{border-bottom: 1px dashed var(--waline-border-color) !important;}
-.wl-content pre code{color:#444 !important;font-size: 14px;}
-.pinglun{font-size: 20px;font-family: 'SmileySans';margin-top:50px;color:#000000;margin-bottom: 20px;}
+.wl-header input, .wl-header label,.wl-editor{
+  font-size:1em !important;
+}
+.wl-header{
+  border-bottom: 1px dashed var(--waline-border-color) !important;
+}
+.wl-content pre code{
+  color:#444 !important;
+  font-size: 14px;
+}
+.pinglun{
+  font-size: 20px;
+  font-family: 'SmileySans';
+  margin-top:50px;
+  color:#000000;
+  margin-bottom: 20px;
+}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -23,6 +36,10 @@ body {
   --waline-code-bgcolor:linear-gradient(to bottom right, #332E2F, #110720) !important;
   --waline-border: 1px solid var(--waline-border-color) !important;
 }
-.pinglun{color:#BBBBBB}
-.wl-content pre code{color:#888 !important;}
+.pinglun{
+  color:#BBBBBB
+}
+.wl-content pre code{
+  color:#888 !important;
+}
 }
