@@ -236,113 +236,6 @@ ul {
   .footnotes ol li {
     list-style: decimal; }
 
-@media (max-width: 900px) {
-  .bankuai {
-    background-color: #FFECE6;
-    width: 96%;
-    border-radius: 4px;
-    padding: 0 2%  5% 2%;
-    margin-bottom: 15px; }
-  .img {
-    width: 80%;
-    margin: 0 auto; }
-  .title {
-    color: #bb2649;
-    font-size: 22px;
-    font-weight: bold;
-    margin: 0 10px 6px 10px;
-    font-family: var(--font-family-teshu);
-    letter-spacing: 0.5px; }
-  .jiage {
-    color: #999;
-    font-size: 14px;
-    margin: 0 10px 6px 10px; }
-  .note {
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0 10px 0 10px; } }
-
-@media (min-width: 900px) {
-  .quanju {
-    display: flex; }
-  .bankuai {
-    background-color: #FFECE6;
-    width: 30%;
-    border-radius: 4px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 1% 3%  3% 3%; }
-  .img {
-    width: 90%;
-    margin: 0 auto; }
-  .title {
-    color: #bb2649;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0 0 6px 0;
-    font-family: var(--font-family-teshu);
-    letter-spacing: 0.5px; }
-  .jiage {
-    color: #999;
-    font-size: 14px;
-    margin: 0 0 6px 0; }
-  .note {
-    font-size: 14px;
-    line-height: 1.6; } }
-
-.appquanju {
-  display: flex;
-  align-items: center; }
-
-.appimg {
-  width: 100px;
-  height: 140px;
-  margin-right: 25px; }
-
-.appwenben {
-  width: 90%;
-  margin-top: 30px; }
-
-.apptitle {
-  color: #bb2649;
-  font-size: 20px;
-  margin-bottom: 8px;
-  font-family: var(--font-family-teshu);
-  letter-spacing: 0.5px; }
-
-.appnote {
-  font-size: 14px;
-  margin-bottom: 8px;
-  line-height: 1.6; }
-
-.macos {
-  background-color: #FFCF47;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius: 20px; }
-
-.ios {
-  background-color: #A6D2FF;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius: 20px; }
-
-.tvos {
-  background-color: #FFB6C2;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius: 20px; }
-
-.web {
-  background-color: #CEC6FF;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius: 20px; }
-
 .intro {
   margin-bottom: 4%; }
   .intro h1 {
@@ -931,6 +824,194 @@ ul.pagination {
     color: #BBBBBB; }
   .wl-content pre code {
     color: #888 !important; } }
+
+.moviebankuai {
+  background-color: #FFECE6;
+  border-radius: 15px;
+  margin: 0 10px 10px 0; }
+
+.moviebankuai img {
+  border-radius: 15px 15px 0 0;
+  margin-top: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 2px rgba(0, 0, 0, 0.25); }
+
+.movietitle {
+  color: #bb2649;
+  font-size: 20px;
+  margin: -25px 15px 6px 15px;
+  font-family: var(--font-family-teshu);
+  letter-spacing: 0.5px;
+  line-height: 1.4; }
+
+.movietag {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 15px 15px 15px; }
+
+.movienote {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 15px 15px 15px; }
+
+.rating10, .rating9, .rating8, .rating7, .rating6, .rating5, .rating4, .rating3, .rating2, .rating1, .rating0 {
+  width: 113px;
+  height: 16px;
+  background-image: url(/images/movie/rating.svg);
+  margin: 0 15px 6px 15px;
+  position: relative; }
+
+.rating10 {
+  background-position: 0px 0px; }
+
+.rating9 {
+  background-position: 0px -16px; }
+
+.rating8 {
+  background-position: 0px -32px; }
+
+.rating7 {
+  background-position: 0px -48px; }
+
+.rating6 {
+  background-position: 0px -64px; }
+
+.rating5 {
+  background-position: 0px -80px; }
+
+.rating4 {
+  background-position: 0px -96px; }
+
+.rating3 {
+  background-position: 0px -112px; }
+
+.rating2 {
+  background-position: 0px -128px; }
+
+.rating1 {
+  background-position: 0px -144px; }
+
+.rating0 {
+  background-position: 0px -160px; }
+
+@media (max-width: 700px) {
+  .movienote {
+    padding-bottom: 15px; } }
+
+@media (min-width: 700px) {
+  .moviequanju {
+    display: flex; }
+  .moviebankuai {
+    width: 324px; } }
+
+@media (prefers-color-scheme: dark) {
+  .moviebankuai {
+    background: linear-gradient(to bottom right, #332E2F, #110720); } }
+
+.appquanju {
+  display: flex;
+  align-items: center; }
+
+.appimg {
+  width: 100px;
+  height: 140px;
+  margin-right: 25px; }
+
+.appwenben {
+  width: 90%;
+  margin-top: 30px; }
+
+.apptitle {
+  color: #bb2649;
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-family: var(--font-family-teshu);
+  letter-spacing: 0.5px; }
+
+.appnote {
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.6; }
+
+.macos {
+  background-color: #FFCF47;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 20px; }
+
+.ios {
+  background-color: #A6D2FF;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 20px; }
+
+.tvos {
+  background-color: #FFB6C2;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 20px; }
+
+.web {
+  background-color: #CEC6FF;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 20px; }
+
+.note {
+  font-size: 14px;
+  line-height: 1.6; }
+
+@media (max-width: 900px) {
+  .bankuai {
+    background-color: #FFECE6;
+    width: 96%;
+    border-radius: 4px;
+    padding: 0 2%  5% 2%;
+    margin-bottom: 15px; }
+  .img {
+    width: 80%;
+    margin: 0 auto; }
+  .title {
+    color: #bb2649;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 10px 6px 10px;
+    font-family: var(--font-family-teshu);
+    letter-spacing: 0.5px; }
+  .jiage {
+    color: #999;
+    font-size: 14px;
+    margin: 0 10px 6px 10px; }
+  .note {
+    margin: 0 10px 0 10px; } }
+
+@media (min-width: 900px) {
+  .quanju {
+    display: flex; }
+  .bankuai {
+    background-color: #FFECE6;
+    width: 30%;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 1% 3%  3% 3%; }
+  .img {
+    width: 90%;
+    margin: 0 auto; }
+  .title {
+    color: #bb2649;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 6px 0;
+    font-family: var(--font-family-teshu);
+    letter-spacing: 0.5px; }
+  .jiage {
+    color: #999;
+    font-size: 14px;
+    margin: 0 0 6px 0; } }
 
 @font-face {
   font-family: SmileySans;
