@@ -52,3 +52,14 @@
   font-size: 12px;
   border-radius:20px;
 }
+
+
+// 页面宽度小于700样式
+
+@media (max-width:700px){
+
+.appnote{
+  font-size: 16px;
+}
+
+}

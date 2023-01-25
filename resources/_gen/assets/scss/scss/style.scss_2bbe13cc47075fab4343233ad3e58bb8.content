@@ -895,7 +895,11 @@ ul.pagination {
 
 @media (max-width: 700px) {
   .movienote {
-    padding-bottom: 15px; } }
+    padding-bottom: 15px; }
+  .movietitle {
+    font-size: 24px; }
+  .movienote {
+    font-size: 16px; } }
 
 @media (min-width: 700px) {
   .moviequanju {
@@ -960,9 +964,9 @@ ul.pagination {
   font-size: 12px;
   border-radius: 20px; }
 
-.note {
-  font-size: 14px;
-  line-height: 1.6; }
+@media (max-width: 700px) {
+  .appnote {
+    font-size: 16px; } }
 
 @media (max-width: 900px) {
   .bankuai {
@@ -986,7 +990,8 @@ ul.pagination {
     font-size: 14px;
     margin: 0 10px 6px 10px; }
   .note {
-    margin: 0 10px 0 10px; } }
+    margin: 0 10px 0 10px;
+    font-size: 16px; } }
 
 @media (min-width: 900px) {
   .quanju {
@@ -1011,7 +1016,10 @@ ul.pagination {
   .jiage {
     color: #999;
     font-size: 14px;
-    margin: 0 0 6px 0; } }
+    margin: 0 0 6px 0; }
+  .note {
+    font-size: 14px;
+    line-height: 1.6; } }
 
 @font-face {
   font-family: SmileySans;
