@@ -854,7 +854,7 @@ ul.pagination {
   margin: 0 15px 15px 15px; }
 
 .rating10, .rating9, .rating8, .rating7, .rating6, .rating5, .rating4, .rating3, .rating2, .rating1, .rating0 {
-  width: 113px;
+  width: 110px;
   height: 16px;
   background-image: url(/images/movie/rating.svg);
   margin: 0 15px 6px 15px;
