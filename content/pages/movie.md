@@ -7,7 +7,16 @@ menu:
     weight: 5
 ---
 
+
 <div class="moviequanju">
+
+<div class="moviebankuai">
+<img src=/images/movie/earth.jpg> 
+<div class="movietitle"><a href="https://movie.douban.com/subject/35267208" target="_blank">流浪地球2</a></div>
+<div class="rating9"></div>
+<div class="movietag">科幻 / 冒险 / 灾难 / 中国 / 观看 2023-01-25</div>
+<div class="movienote">第二部的故事更完整，自己有两个泪点：图恒宇跟女儿的对手戏；50岁以上的军人出列。刘培强面试的时候，对着房间另外一头的人说，明知道原因为什么还问，非常现实的写照，很多时候就是迫不得已。</div>
+</div>
 
 <div class="moviebankuai">
 <img src=/images/movie/folktales.jpg> 
@@ -24,6 +33,12 @@ menu:
 <div class="movietag">动作 / 科幻 / 冒险 / 美国 / 观看 2022-12-16</div>
 <div class="movienote">票太贵了，一个人100多块钱。画面观感不错，但不喜欢队长复活这个设定。</div>
 </div>
+
+</div>
+
+
+
+<div class="moviequanju">
 
 <div class="moviebankuai">
 <img src=/images/movie/glory.jpg> 
