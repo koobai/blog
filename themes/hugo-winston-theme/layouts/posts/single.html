@@ -14,7 +14,18 @@
     <div class="content">
       {{ .Content }}
     </div>
- <div style="color:#999999;margin-top:30px;">{{ .Date.Format "2006-01-02" }}</div>
+ <div class="page-time">{{ .Date.Format "2006-01-02" }}</div>
+     {{ with .GetTerms "tags" }}
+     <ul id="tags">
+    <div class="page-tag">
+          {{ range . }}
+     <div class="tag">
+     <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+             </div>
+          {{ end }}
+          </div>    
+        </ul>
+      {{ end }}
  <div style="font-size:18px;margin-top:30px;padding-top:10px;border-top:solid #BB2649 1px;">
         {{ if .PrevInSection }}
             <a href="{{ .PrevInSection.Permalink }}">上一篇: {{ .PrevInSection.Title }}</a>
@@ -24,6 +35,7 @@
        <a href="{{ .NextInSection.Permalink }}" style="float:right;margin-bottom: 30px;">下一篇: {{ .NextInSection.Title }}</a>
        {{ end }}
   </div>
+
 <div class="pinglun">已经浏览到这里了，不留下点什么？</div>
  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
   <div id="waline"></div>

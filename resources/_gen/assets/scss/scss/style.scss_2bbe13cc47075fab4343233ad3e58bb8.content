@@ -236,6 +236,35 @@ ul {
   .footnotes ol li {
     list-style: decimal; }
 
+.page-tag {
+  display: flex; }
+
+.tag, .page-time {
+  font-size: 14px;
+  margin: 0 10px 0 0;
+  border-radius: 4px;
+  background: #FFECE6;
+  color: #444; }
+
+.tag {
+  display: flex;
+  padding: 10px;
+  font-weight: bold; }
+
+.tag a {
+  color: #444; }
+
+.page-time {
+  padding: 12.5px;
+  float: left; }
+
+@media (prefers-color-scheme: dark) {
+  .tag, .page-time {
+    background: #332E2F !important;
+    color: #BBBBBB !important; }
+  .tag a {
+    color: #BBBBBB !important; } }
+
 .intro {
   margin-bottom: 4%; }
   .intro h1 {

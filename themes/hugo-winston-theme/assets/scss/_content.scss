@@ -167,3 +167,41 @@ ul {
     }
   }
 }
+
+.page-tag {
+    display: flex;
+  }
+
+.tag, .page-time{
+    font-size: 14px; 
+    margin: 0 10px 0 0; 
+    border-radius:4px;
+    background: #FFECE6;
+    color:#444;
+}
+
+.tag {
+    display: flex;
+    padding: 10px;
+    font-weight:bold; 
+  }
+
+.tag a{
+  color: #444
+}
+
+.page-time{  
+    padding: 12.5px;
+    float: left;
+  }
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.tag,.page-time{
+    background: #332E2F !important;
+    color:#BBBBBB !important;  
+  }
+.tag a{
+  color: #BBBBBB !important;
+}
+}
