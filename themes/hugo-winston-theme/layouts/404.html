@@ -1,6 +1,6 @@
 {{- define "main" }}
       <div style="text-align: center;">
        来错地方了，此页面页无内容
-       <h1><a href="{{ "/" | relURL }}">点我，去到首页</a></h1>
+       <h1><a href="{{ .Sites.First.Home.RelPermalink }}">点我，去到首页</a></h1>
       </div>
 {{- end }}{{/* end main */ -}}

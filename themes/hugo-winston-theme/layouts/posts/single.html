@@ -26,16 +26,14 @@
           </div>    
         </ul>
       {{ end }}
- <div style="font-size:18px;margin-top:30px;padding-top:10px;border-top:solid #BB2649 1px;">
-        {{ if .PrevInSection }}
-            <a href="{{ .PrevInSection.Permalink }}">上一篇: {{ .PrevInSection.Title }}</a>
+      <div class="previousnext">
+        {{ with .PrevInSection }}
+          <a class="previous" href="{{.Permalink}}">上一篇: {{.Title}}</a>
         {{ end }}
-
-        {{ if .NextInSection }}
-       <a href="{{ .NextInSection.Permalink }}" style="float:right;margin-bottom: 30px;">下一篇: {{ .NextInSection.Title }}</a>
-       {{ end }}
-  </div>
-
+        {{ with .NextInSection }}
+          <a class="next" href="{{.Permalink}}">下一篇: {{.Title}}</a>
+        {{ end }}
+    </div>
 <div class="pinglun">已经浏览到这里了，不留下点什么？</div>
  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
   <div id="waline"></div>
