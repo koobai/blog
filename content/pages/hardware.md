@@ -1,5 +1,5 @@
 ---
-title: 'Hardware'
+title: '好物'
 url: "hardware"
 menu:
   main:

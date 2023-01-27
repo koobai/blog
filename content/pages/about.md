@@ -1,5 +1,5 @@
 ---
-title: 'About'
+title: '简介'
 image: images/article/writer.jpg
 url: "about"
 menu:
