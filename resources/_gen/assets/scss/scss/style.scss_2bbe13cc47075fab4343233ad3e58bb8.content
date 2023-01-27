@@ -255,8 +255,18 @@ ul {
   color: #444; }
 
 .page-time {
-  padding: 12.5px;
+  padding: 12px;
   float: left; }
+
+.previousnext {
+  font-size: 18px;
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: solid #BB2649 1px; }
+
+.next {
+  float: right;
+  margin-bottom: 30px; }
 
 @media (prefers-color-scheme: dark) {
   .tag, .page-time {
