@@ -10,11 +10,12 @@
   border-radius:15px 15px 0 0;
   margin-top: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25), 0 0 2px rgba(0, 0, 0, .25);
+  width: 100%;
 }
 .movietitle{
   color:#bb2649;
   font-size:20px;
-  margin: -25px 15px 6px 15px;
+  margin: 15px 15px 6px 15px;
   font-family: var(--font-family-teshu);
   letter-spacing:0.5px;
   line-height: 1.4;
@@ -100,14 +101,29 @@
 
 }
 
-// 页面宽度大于700样式
+@media screen and (min-width:700px) and (max-width:900px){
 
-@media (min-width:700px){
 .moviequanju{
-  display: flex;
+  display: flow-root; 
 }
 .moviebankuai{
-  width:324px;
+  width:48%;
+  float: left;
+  height: 760px;
+}
+
+}
+
+// 页面宽度大于700样式
+
+@media (min-width:900px){
+.moviequanju{
+  display: flow-root; 
+}
+.moviebankuai{
+  width:32%;
+  float: left;
+  height: 690px;
 
 }
 

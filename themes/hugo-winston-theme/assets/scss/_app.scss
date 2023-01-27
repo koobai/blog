@@ -3,15 +3,14 @@
 .appquanju{
   display: flex;
   align-items: center;
+  margin-top: 30px;
 }
-.appimg{
+.appimg img{
   width:100px;
-  height: 140px;
   margin-right:25px;
 }
 .appwenben{
   width:90%;
-  margin-top:30px;
 }
 .apptitle{
   color:#bb2649;
@@ -62,4 +61,22 @@
   font-size: 16px;
 }
 
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.macos,.ios,.tvos,.web{
+  color: #111111
+}  
+.macos{
+  background:#9A7C27;
+}
+.ios{
+  background:#3C6A98;
+}
+.tvos{
+  background:#9B656E;
+}
+.web{background:#685FA0;
+}
 }
