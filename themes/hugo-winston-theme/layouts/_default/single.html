@@ -11,22 +11,4 @@
 <div class="content">
   {{ .Content }}
 </div>
-
-<div class="pinglun">已经浏览到这里了，不留下点什么？</div>
- <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
-  <div id="waline"></div>
-  <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
-    init({
-      el: '#waline',
-      serverURL: 'https://w.koobai.com',
-      dark:'auto',
-      login:'disable',
-      imageUploader:false,
-      search:false,
-      reaction:false,
-      copyright:false,
-      lang:'zh-CN',
-    });
-  </script>
 {{ end }}

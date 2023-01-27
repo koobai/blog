@@ -852,12 +852,13 @@ ul.pagination {
 .moviebankuai img {
   border-radius: 15px 15px 0 0;
   margin-top: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 2px rgba(0, 0, 0, 0.25); }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 2px rgba(0, 0, 0, 0.25);
+  width: 100%; }
 
 .movietitle {
   color: #bb2649;
   font-size: 20px;
-  margin: -25px 15px 6px 15px;
+  margin: 15px 15px 6px 15px;
   font-family: var(--font-family-teshu);
   letter-spacing: 0.5px;
   line-height: 1.4; }
@@ -920,11 +921,21 @@ ul.pagination {
   .movienote {
     font-size: 16px; } }
 
-@media (min-width: 700px) {
+@media screen and (min-width: 700px) and (max-width: 900px) {
   .moviequanju {
-    display: flex; }
+    display: flow-root; }
   .moviebankuai {
-    width: 324px; } }
+    width: 48%;
+    float: left;
+    height: 760px; } }
+
+@media (min-width: 900px) {
+  .moviequanju {
+    display: flow-root; }
+  .moviebankuai {
+    width: 32%;
+    float: left;
+    height: 690px; } }
 
 @media (prefers-color-scheme: dark) {
   .moviebankuai {
@@ -932,16 +943,15 @@ ul.pagination {
 
 .appquanju {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  margin-top: 30px; }
 
-.appimg {
+.appimg img {
   width: 100px;
-  height: 140px;
   margin-right: 25px; }
 
 .appwenben {
-  width: 90%;
-  margin-top: 30px; }
+  width: 90%; }
 
 .apptitle {
   color: #bb2649;
@@ -987,21 +997,33 @@ ul.pagination {
   .appnote {
     font-size: 16px; } }
 
-@media (max-width: 900px) {
+@media (prefers-color-scheme: dark) {
+  .macos, .ios, .tvos, .web {
+    color: #111111; }
+  .macos {
+    background: #9A7C27; }
+  .ios {
+    background: #3C6A98; }
+  .tvos {
+    background: #9B656E; }
+  .web {
+    background: #685FA0; } }
+
+@media (max-width: 700px) {
   .bankuai {
     background-color: #FFECE6;
     width: 96%;
     border-radius: 4px;
     padding: 0 2%  5% 2%;
     margin-bottom: 15px; }
-  .img {
+  .himg {
     width: 80%;
-    margin: 0 auto; }
+    margin: auto;
+    display: block; }
   .title {
     color: #bb2649;
     font-size: 22px;
-    font-weight: bold;
-    margin: 0 10px 6px 10px;
+    margin: 30px 10px 6px 10px;
     font-family: var(--font-family-teshu);
     letter-spacing: 0.5px; }
   .jiage {
@@ -1012,24 +1034,57 @@ ul.pagination {
     margin: 0 10px 0 10px;
     font-size: 16px; } }
 
-@media (min-width: 900px) {
+@media screen and (min-width: 700px) and (max-width: 900px) {
   .quanju {
-    display: flex; }
+    display: flow-root;
+    width: 106%; }
   .bankuai {
+    float: left;
     background-color: #FFECE6;
-    width: 30%;
+    width: 40%;
     border-radius: 4px;
     margin-right: 10px;
     margin-bottom: 10px;
-    padding: 1% 3%  3% 3%; }
-  .img {
-    width: 90%;
-    margin: 0 auto; }
+    padding: 3%;
+    height: 400px; }
+  .himg {
+    width: 80%;
+    margin: auto;
+    display: block; }
   .title {
     color: #bb2649;
     font-size: 20px;
-    font-weight: bold;
-    margin: 0 0 6px 0;
+    margin: 30px 0 6px 0;
+    font-family: var(--font-family-teshu);
+    letter-spacing: 0.5px; }
+  .jiage {
+    color: #999;
+    font-size: 14px;
+    margin: 0 0 6px 0; }
+  .note {
+    font-size: 14px;
+    line-height: 1.6; } }
+
+@media (min-width: 900px) {
+  .quanju {
+    display: flow-root; }
+  .bankuai {
+    float: left;
+    background-color: #FFECE6;
+    width: 26%;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 3%;
+    height: 380px; }
+  .himg {
+    width: 100%;
+    margin: auto;
+    display: block; }
+  .title {
+    color: #bb2649;
+    font-size: 20px;
+    margin: 30px 0 6px 0;
     font-family: var(--font-family-teshu);
     letter-spacing: 0.5px; }
   .jiage {
@@ -1133,18 +1188,6 @@ body {
     color: #BBBBBB; }
   .highlight {
     background-color: #1A1718; }
-  .macos {
-    background: #9A7C27;
-    color: #111111; }
-  .ios {
-    background: #3C6A98;
-    color: #111111; }
-  .tvos {
-    background: #9B656E;
-    color: #111111; }
-  .web {
-    background: #685FA0;
-    color: #111111; }
   img {
     filter: brightness(0.8) contrast(1.2); } }
 
