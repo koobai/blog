@@ -1,5 +1,5 @@
 ---
-title: 'Movie'
+title: '影视'
 url: "movie"
 menu:
   main:
@@ -9,6 +9,14 @@ menu:
 
 
 <div class="moviequanju">
+
+<div class="moviebankuai">
+<img src=/images/movie/punch.jpg> 
+<div class="movietitle"><a href="https://movie.douban.com/subject/35465232" target="_blank">狂飙</a></div>
+<div class="rating8"></div>
+<div class="movietag">剧情 / 犯罪 / 中国 / 观看 2023-01-26</div>
+<div class="movienote">目前看了十几集，豆瓣有个短评写得很好：“张颂文把一个受欺负的小老百姓一步一步被逼成黑社会老大的过程完美演绎出来了，太带劲了”。</div>
+</div>
 
 <div class="moviebankuai">
 <img src=/images/movie/earth.jpg> 
@@ -26,6 +34,10 @@ menu:
 <div class="movienote">目前只看了前三集，第一集打破了以师徒四人为主角，从妖的视角切入，这只猪妖，就是现实职场的写照。推荐～</div>
 </div>
 
+</div>
+
+<div class="moviequanju">
+
 <div class="moviebankuai">
 <img src=/images/movie/avatar.jpg> 
 <div class="movietitle"><a href="https://movie.douban.com/subject/4811774" target="_blank">阿凡达：水之道</a></div>
@@ -33,12 +45,6 @@ menu:
 <div class="movietag">动作 / 科幻 / 冒险 / 美国 / 观看 2022-12-16</div>
 <div class="movienote">票太贵了，一个人100多块钱。画面观感不错，但不喜欢队长复活这个设定。</div>
 </div>
-
-</div>
-
-
-
-<div class="moviequanju">
 
 <div class="moviebankuai">
 <img src=/images/movie/glory.jpg> 

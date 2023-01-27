@@ -56,3 +56,18 @@
   //   }
   // }
 }
+
+.archive-time{
+  margin-right: 20px;
+  padding-top: 5px;
+  margin-bottom: -10px;
+} 
+
+// 页面宽度大于700样式
+
+@media (min-width:700px){
+.archive-time{
+  float:left;
+}
+
+}

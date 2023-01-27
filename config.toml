@@ -1,5 +1,5 @@
-baseURL = "https://koobai.com/"
-languageCode = "zh-CN"
+baseURL = "https://koobai.com"
+languageCode = "zh-cn"
 theme = "hugo-winston-theme"
 themesDir = "themes"
 title = "记录生活"
@@ -7,6 +7,7 @@ paginate = 5
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
+enableRobotsTXT = true
 
 [module]
   [module.hugoVersion]
@@ -26,7 +27,7 @@ pygmentsUseClasses = true
   headingColor = "#1c1b1d"
   textColor = "#444444"
   dotColor = "#BB2649"
-  description = "koobai的个人博客，主要为工作生活的记录，同时分享下日常使用的软件、平常观看的影视、喜欢折腾的物品等。"
+  description = "koobai的个人博客, hugo, 日常生活的记录, 同时分享下日常使用的软件, 平常观看的影视, 喜欢折腾的物品等。"
 
 # markdown config settings https://gohugo.io/getting-started/configuration-markup/#goldmark
 [markup]
