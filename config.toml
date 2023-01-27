@@ -26,6 +26,7 @@ pygmentsUseClasses = true
   headingColor = "#1c1b1d"
   textColor = "#444444"
   dotColor = "#BB2649"
+  description = "koobai的个人博客，主要为工作生活的记录，同时分享下日常使用的软件、平常观看的影视、喜欢折腾的物品等。"
 
 # markdown config settings https://gohugo.io/getting-started/configuration-markup/#goldmark
 [markup]
