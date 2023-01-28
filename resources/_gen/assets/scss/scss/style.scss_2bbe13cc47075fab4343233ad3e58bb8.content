@@ -112,7 +112,8 @@ h3 {
   margin-top: 20px;
   margin-bottom: 20px;
   color: var(--heading-color);
-  font-family: var(--font-family-heading); }
+  font-family: var(--font-family-heading);
+  font-weight: normal; }
 
 p {
   color: var(--text-color);
@@ -353,7 +354,6 @@ ul {
   .author-large .author-name {
     display: inline-block;
     vertical-align: middle;
-    font-weight: bold;
     margin-left: 5px; }
   .author-large .author-title {
     display: inline-block;
