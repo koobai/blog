@@ -140,7 +140,7 @@ ul {
   .content h1 {
     font-size: 40px;
     line-height: 1.6;
-    font-weight: bold;
+    font-weight: normal;
     margin-top: 30px;
     margin-bottom: 20px; }
     .content h1:first-of-type {
@@ -148,7 +148,7 @@ ul {
   .content h2 {
     font-size: 28px;
     line-height: 1.4;
-    font-weight: bold;
+    font-weight: normal;
     margin-top: 30px;
     margin-bottom: 20px; }
     .content h2:first-of-type {
@@ -160,7 +160,7 @@ ul {
   .content h3 {
     font-size: 22px;
     line-height: 1.4;
-    font-weight: bold;
+    font-weight: normal;
     margin-top: 30px;
     margin-bottom: 20px; }
   .content ul {
@@ -252,13 +252,15 @@ ul {
     font-size: 48px;
     line-height: 56px;
     margin-top: 0;
-    margin-bottom: 30px; }
+    margin-bottom: 30px;
+    font-weight: normal; }
     @media (min-width: 767px) {
       .intro h1 {
         width: 60%;
         font-size: 88px;
         line-height: 100px;
-        margin-bottom: 50px; } }
+        margin-bottom: 50px;
+        font-weight: normal; } }
     .intro h1 strong {
       color: var(--highlight-color); }
   .intro h2 {
@@ -311,12 +313,14 @@ ul {
     margin: 16px 0 16px 0;
     width: 60%;
     font-size: 34px;
-    line-height: 42px; }
+    line-height: 42px;
+    font-weight: normal; }
     @media (min-width: 767px) {
       .summary .summary-title {
         width: 60%;
         font-size: 52px;
-        line-height: 64px; } }
+        line-height: 64px;
+        font-weight: normal; } }
   .summary .summary-description {
     width: 100%;
     line-height: 1.8; }

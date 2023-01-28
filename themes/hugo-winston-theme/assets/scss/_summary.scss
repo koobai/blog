@@ -15,10 +15,12 @@
     width: 60%;
     font-size: 34px;
     line-height: 42px;
+    font-weight:normal;
     @include breakpoint('small') {
       width: 60%;
       font-size: 52px;
       line-height: 64px;
+      font-weight:normal;
     }
   }
   .summary-description {
