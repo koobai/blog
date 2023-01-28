@@ -1096,11 +1096,19 @@ ul.pagination {
     line-height: 1.6; } }
 
 /*标签云*/
-.terms-tags {
-  text-align: center; }
+@media (min-width: 700px) {
+  .terms-tags {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .terms-tags li {
+    margin: 20px; } }
 
-.terms-tags li {
-  margin: 10px; }
+@media (max-width: 700px) {
+  .terms-tags {
+    text-align: center; }
+  .terms-tags li {
+    margin: 20px; } }
 
 /*文章页标签*/
 .page-tag {

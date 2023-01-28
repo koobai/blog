@@ -1,38 +1,24 @@
-{{- define "main" }}
 
-<div class="intro">
+{{- define "main" }}
+  <div class="intro">
   <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
 </div>
-
-{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-
-{{- range $pages.GroupByPublishDate "2006" }}
-{{- if ne .Key "0001" }}
-<div class="archive-year">
-  <h2 class="archive-year-header">
-    {{- replace .Key "0001" "" }}年<sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
+  {{ range (.Site.RegularPages.GroupByDate "2006") }}
+  <h2>
+    {{ .Key }}年<sup>&nbsp;&nbsp;{{ len .Pages }}</sup>
   </h2>
+
   {{- range .Pages.GroupByDate "1" }}
-  <div class="archive-month">
-    <h3 class="archive-month-header">
+    <h3>
      {{- .Key }}月
-      <sup class="archive-count">&nbsp;{{ len .Pages }}
-      </sup>
+      <sup>&nbsp;{{ len .Pages }}</sup>
     </h3>
-    <div class="archive-posts">
       {{- range .Pages }}
       {{- if eq .Kind "page" }}
-       <div class="archive-time"> {{ .Date.Format "2006-01-02" }}</div>
-        <h3 class="archive-entry-title">
-        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}">{{- .Title | markdownify }}</a>
-        </h3>
+       <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       {{- end }}
-      {{- end }}
-    </div>
-  </div>
-  {{- end }}
-</div>
-{{- end }}
-{{- end }}
-
+      {{- end }} 
+  {{- end }} 
+  {{ end }}
 {{- end }}{{/* end main */}}
