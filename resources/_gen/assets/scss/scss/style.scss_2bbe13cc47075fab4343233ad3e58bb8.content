@@ -289,7 +289,7 @@ ul {
 
 .archive-time {
   margin-right: 20px;
-  padding-top: 5px;
+  padding-top: 1px;
   margin-bottom: -10px; }
 
 @media (min-width: 700px) {

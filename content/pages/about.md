@@ -2,6 +2,7 @@
 title: '简介'
 image: images/article/writer.jpg
 url: "about"
+date: 2023-01-06
 menu:
   main:
     name: "About"
