@@ -4,12 +4,14 @@
   --font-family-paragraph: Helvetica, sans-serif;
   --font-family-monospace: monospace;
   --font-family-teshu: SmileySans, Helvetica,sans-serif;
-  --base-color: #FFF9F2;
+  --base-color: var(--background-color);
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
   --heading-color: #1c1b1d;
   --text-color: #444444;
-  --dot-color: #BB2649; }
+  --dot-color: #BB2649;
+  --bankuai-color: #FFF;
+  --background-color: #F4F4F4; }
 
 body, html {
   margin: 0;
@@ -811,10 +813,10 @@ ul.pagination {
 /* Literal.Number.Integer.Long */
 :root {
   /*评论样式*/
-  --waline-bgcolor: #FFF9F2 !important;
+  --waline-bgcolor: #F4F4F4 !important;
   --waline-theme-color: #BB2649 !important;
   --waline-active-color:#E62F5A !important;
-  --waline-bgcolor-light: #FFF9F2 !important;
+  --waline-bgcolor-light: #F4F4F4 !important;
   --waline-info-bgcolor:#f0f0f0 !important;
   --waline-badge-color:#BB2649 !important;
   --waline-code-bgcolor:#FFECE6 !important; }
@@ -849,7 +851,7 @@ ul.pagination {
     color: #888 !important; } }
 
 .moviebankuai {
-  background-color: #FFECE6;
+  background-color: var(--bankuai-color);
   border-radius: 15px;
   margin: 0 10px 10px 0; }
 
@@ -1015,7 +1017,7 @@ ul.pagination {
 
 @media (max-width: 700px) {
   .bankuai {
-    background-color: #FFECE6;
+    background-color: var(--bankuai-color);
     width: 96%;
     border-radius: 4px;
     padding: 0 2%  5% 2%;
@@ -1044,7 +1046,7 @@ ul.pagination {
     width: 106%; }
   .bankuai {
     float: left;
-    background-color: #FFECE6;
+    background-color: var(--bankuai-color);
     width: 40%;
     border-radius: 4px;
     margin-right: 10px;
@@ -1074,7 +1076,7 @@ ul.pagination {
     display: flow-root; }
   .bankuai {
     float: left;
-    background-color: #FFECE6;
+    background-color: var(--bankuai-color);
     width: 26%;
     border-radius: 4px;
     margin-right: 10px;
@@ -1122,7 +1124,7 @@ ul.pagination {
   font-size: 14px;
   margin: 0 10px 0 0;
   border-radius: 4px;
-  background: #FFECE6;
+  background: var(--bankuai-color);
   color: #444; }
 
 .tag {
@@ -1174,10 +1176,10 @@ body {
   margin: 0 auto; }
 
 .highlight pre {
-  background: #FFECE6; }
+  background: var(--bankuai-color); }
 
 .highlight {
-  background-color: #FFF9F2; }
+  background-color: var(--background-color); }
 
 @media (prefers-color-scheme: dark) {
   body {
