@@ -5,7 +5,7 @@
 @media (max-width:700px){
 
 .bankuai{
-	background-color:#FFECE6;
+	background-color:var(--bankuai-color);
 	width: 96%;
 	border-radius:4px;
 	padding:0 2%  5% 2%;
@@ -45,7 +45,7 @@
 }
 .bankuai{
 	float: left;
-	background-color:#FFECE6;
+	background-color:var(--bankuai-color);
 	width:40%;
 	border-radius:4px;
 	margin-right:10px;
@@ -86,7 +86,7 @@
 }
 .bankuai{
 	float: left;
-	background-color:#FFECE6;
+	background-color:var(--bankuai-color);
 	width:26%;
 	border-radius:4px;
 	margin-right:10px;
