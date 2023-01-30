@@ -1,5 +1,5 @@
 
-.gFnzgG,.gFnzgG *{box-sizing:border-box}
+
 .fIuTG{
   display:flex;
   flex-wrap:wrap;
@@ -7,9 +7,8 @@
   line-height:100%;
 }
 .dfdORB{
-  margin:0 4px 10px;
+  margin:0 4px 4px 0;
   padding:0;
-  font-size:15px;
 }
 .dfdORB a{text-decoration:none}
 .kMthTr{
@@ -22,11 +21,11 @@
   font-family: var(--font-family-teshu);
   letter-spacing:0.5px;
 }
-.eysHZq{
+/*.eysHZq{
   display:flex;
   justify-content: center; 
   align-items: center;
-}
+}*/
 .HPRth{
   position:relative;
   min-height:87px;
@@ -36,13 +35,8 @@
 
 .HPRth:hover{
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25), 0 0 2px rgba(0, 0, 0, .25);
+  filter: brightness(0.7);
 }
-
-.jcTaHb{display:flex;-webkit-box-align:center;align-items:center}
-.lhtmRw{margin-right:2px;width:16px;height:16px;color:#FF9A00;}
-.gaztka{margin-right:2px;width:16px;height:16px;color:#BFBFBF;}
-.iibjPt{margin-left:5px;color:#555;font-size:14px}
-.jvCTkj{margin-bottom:10px}
 
 .kEoOHR{
   display:inline-block;
@@ -92,39 +86,44 @@ color: #BB2649;
 // 页面宽度小于700样式
 
 @media (max-width:700px){
-
 .dfdORB{
-  width:48%;
+  width:100%;
 }
-
 }
 
 // 页面宽度大于700小于900样式
 
 @media screen and (min-width:700px) and (max-width:900px){
-
 .dfdORB{
-  width:32%;
+  width:32.5%;
+}
 }
 
-}
+// 页面宽度大于900小于1300样式
 
-// 页面宽度大于900样式
-
-@media (min-width:900px){
+@media screen and (min-width:900px) and (max-width:1300px){
 .dfdORB{
-  width:24%;
+  width:24.5%;
+}
 }
 
+// 页面宽度大于1300样式
+
+@media (min-width:1300px){
+.fIuTG{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+.dfdORB{
+  width:10.8%;
+}
 }
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-
 .dvtjjf,.sort-by-item{
   color:#BBB !important;
 }
-
 .sc-hint{
   color: #555;
 }
@@ -132,11 +131,14 @@ color: #BB2649;
 .dvtjjf.active, .sort-by-item.active{
   color: #BB2649 !important;
 }
-
 }
 
-
-/*.sc-intro{
+/*.jcTaHb{display:flex;-webkit-box-align:center;align-items:center}
+.lhtmRw{margin-right:2px;width:16px;height:16px;color:#FF9A00;}
+.gaztka{margin-right:2px;width:16px;height:16px;color:#BFBFBF;}
+.iibjPt{margin-left:5px;color:#555;font-size:14px}
+.jvCTkj{margin-bottom:10px}
+.sc-intro{
   line-height: 1.4em;
   text-align: center;
   font-size: 14px;
