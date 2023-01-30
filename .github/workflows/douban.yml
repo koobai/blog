@@ -20,7 +20,7 @@ jobs:
       with:
         id: jnnsu
         type: movie
-        format: json
+        format: csv
         dir: ./data/douban
   
     - name: Commit
