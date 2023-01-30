@@ -21,7 +21,7 @@ jobs:
         id: jnnsu
         type: movie
         format: csv
-        dir: ./data/douban
+        dir: ./_data/douban
   
     - name: Commit
       uses: EndBug/add-and-commit@v9
