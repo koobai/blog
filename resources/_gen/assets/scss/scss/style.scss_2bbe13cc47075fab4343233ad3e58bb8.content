@@ -1128,7 +1128,7 @@ ul.pagination {
 
 @media (max-width: 700px) {
   .dfdORB {
-    width: 100%; } }
+    width: 32%; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .dfdORB {
