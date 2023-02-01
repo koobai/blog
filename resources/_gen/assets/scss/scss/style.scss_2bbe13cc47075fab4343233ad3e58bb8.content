@@ -1061,7 +1061,7 @@ ul.pagination {
   line-height: 100%; }
 
 .dfdORB {
-  margin: 0 4px 4px 0;
+  margin: 0 2px 2px 0;
   padding: 0; }
 
 .dfdORB a {
@@ -1147,7 +1147,7 @@ ul.pagination {
     width: 100vw;
     margin-left: calc(50% - 50vw); }
   .dfdORB {
-    width: 10.8%; } }
+    width: 10.9%; } }
 
 @media (prefers-color-scheme: dark) {
   .dvtjjf, .sort-by-item {
