@@ -256,17 +256,17 @@ ul {
 .intro {
   margin-bottom: 4%; }
   .intro h1 {
-    font-size: 48px;
-    line-height: 56px;
+    font-size: 40px;
+    line-height: 50px;
     margin-top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-weight: normal; }
     @media (min-width: 767px) {
       .intro h1 {
-        width: 60%;
-        font-size: 88px;
-        line-height: 100px;
-        margin-bottom: 50px;
+        width: 80%;
+        font-size: 75px;
+        line-height: 90px;
+        margin-bottom: 30px;
         font-weight: normal; } }
     .intro h1 strong {
       color: var(--highlight-color); }
@@ -306,27 +306,25 @@ ul {
     float: left; } }
 
 .summary {
-  margin-bottom: 50px;
-  font-size: 18px;
-  line-height: 24px; }
+  margin-bottom: 40px;
+  font-size: 18px; }
   @media (min-width: 767px) {
     .summary {
-      margin-bottom: 80px;
-      font-size: 18px;
-      line-height: 26px; } }
+      margin-bottom: 60px;
+      font-size: 18px; } }
   .summary .summary-date {
     font-family: var(--font-family-teshu); }
   .summary .summary-title {
     margin: 16px 0 16px 0;
-    width: 60%;
+    width: 80%;
     font-size: 34px;
     line-height: 42px;
     font-weight: normal; }
     @media (min-width: 767px) {
       .summary .summary-title {
         width: 60%;
-        font-size: 52px;
-        line-height: 64px;
+        font-size: 50px;
+        line-height: 60px;
         font-weight: normal; } }
   .summary .summary-description {
     width: 100%;
@@ -821,7 +819,7 @@ ul.pagination {
   --waline-theme-color: #BB2649 !important;
   --waline-active-color:#E62F5A !important;
   --waline-bgcolor-light: #F4F4F4 !important;
-  --waline-info-bgcolor:#f0f0f0 !important;
+  --waline-info-bgcolor:#E6E6E6 !important;
   --waline-badge-color:#BB2649 !important;
   --waline-code-bgcolor:#FFECE6 !important; }
 
@@ -844,6 +842,10 @@ ul.pagination {
 
 .wl-reaction-votes {
   padding: 3px !important; }
+
+.verified-icon {
+  color: #fff !important;
+  background: #fff !important; }
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -1198,7 +1200,7 @@ body {
     border: 18px solid var(--highlight-color); }
 
 .wrapper {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto; }
 
 .highlight pre {
