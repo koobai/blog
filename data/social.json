@@ -16,14 +16,14 @@
       "image": "images/social/weibo.svg"
     },
     {
-      "name": "github",
-      "url": "https://github.com/koobai",
-      "image": "images/social/github.svg"
-    },
-    {
       "name": "email",
       "url": "mailto:mekoobai@gmail.com",
       "image": "images/social/email.svg"
+    },
+    {
+      "name": "RSS",
+      "url": "/index.xml",
+      "image": "images/social/rss.svg"
     }
   ]
 }
