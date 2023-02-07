@@ -842,6 +842,9 @@ ul.pagination {
   color: #000000;
   margin-bottom: 20px; }
 
+.wl-reaction-votes {
+  padding: 3px !important; }
+
 @media (prefers-color-scheme: dark) {
   body {
     /*评论样式*/
