@@ -4,7 +4,7 @@
   --waline-theme-color: #BB2649 !important;
   --waline-active-color:#E62F5A !important;
   --waline-bgcolor-light: #F4F4F4 !important;
-  --waline-info-bgcolor:#f0f0f0 !important;
+  --waline-info-bgcolor:#E6E6E6 !important;
   --waline-badge-color:#BB2649 !important;
   --waline-code-bgcolor:#FFECE6 !important;
 }
@@ -29,6 +29,10 @@
 
 .wl-reaction-votes{
   padding: 3px !important;
+}
+.verified-icon{
+  color: #fff !important;
+  background: #fff !important;
 }
 
 // 夜间模式页面样式

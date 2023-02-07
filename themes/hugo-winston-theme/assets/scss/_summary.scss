@@ -1,25 +1,23 @@
 .summary {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   font-size: 18px;
-  line-height: 24px;
   @include breakpoint('small') {
-    margin-bottom: 80px;
+    margin-bottom: 60px;
     font-size: 18px;
-    line-height: 26px;
   }
   .summary-date {
     font-family: var(--font-family-teshu);
   }
   .summary-title {
     margin: 16px 0 16px 0;
-    width: 60%;
+    width: 80%;
     font-size: 34px;
     line-height: 42px;
     font-weight:normal;
     @include breakpoint('small') {
       width: 60%;
-      font-size: 52px;
-      line-height: 64px;
+      font-size: 50px;
+      line-height: 60px;
       font-weight:normal;
     }
   }
