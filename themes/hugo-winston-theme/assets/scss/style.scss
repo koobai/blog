@@ -98,9 +98,11 @@ h3 {
   color: #CCCCCC;
 }
 .summary-date{color: #AAAAAA;}
-.bankuai{background: linear-gradient(to bottom right, #332E2F, #110720);}
+.bankuai{background: #242021;}
 .highlight {
-pre {background: linear-gradient(to bottom right, #332E2F, #110720);color: #BBBBBB;}
+pre {
+  background: #242021;
+  color: #BBBBBB;}
 }
 .highlight{background-color: #1A1718;}
 img {filter: brightness(0.8) contrast(1.2); }
