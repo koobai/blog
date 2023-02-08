@@ -3,6 +3,7 @@ title: '简介'
 image: images/article/writer.jpg
 url: "about"
 date: 2023-01-06
+description: '出生成长在江西婺源，大学主修服装设计专业。毕业之后跟Eileen到了浙江杭州。为了孩子上学，2019年成为新杭州人，定居杭州~~'
 menu:
   main:
     name: "About"

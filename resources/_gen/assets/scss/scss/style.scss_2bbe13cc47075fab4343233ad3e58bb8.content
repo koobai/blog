@@ -88,10 +88,10 @@ h1, h2, h3 {
       transform: translate(-50%, -50%) rotate(-45deg); }
 
 .footer {
-  margin-top: 30px; }
+  margin-top: 10px; }
   @media (min-width: 767px) {
     .footer {
-      padding-top: 40px; } }
+      padding-top: 10px; } }
 .social-icon {
   margin-right: 16px;
   font-size: 12px; }
@@ -104,7 +104,7 @@ h1, h2, h3 {
 
 .footer-info {
   font-size: 12px;
-  margin-top: 15px; }
+  margin-top: 10px; }
 
 a {
   color: var(--highlight-color);
@@ -263,7 +263,7 @@ ul {
     font-weight: normal; }
     @media (min-width: 767px) {
       .intro h1 {
-        width: 80%;
+        width: 100%;
         font-size: 60px;
         line-height: 70px;
         margin-bottom: 20px;
