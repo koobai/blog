@@ -254,19 +254,19 @@ ul {
   margin-bottom: 30px; }
 
 .intro {
-  margin-bottom: 4%; }
+  margin-bottom: 2%; }
   .intro h1 {
     font-size: 40px;
     line-height: 50px;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     font-weight: normal; }
     @media (min-width: 767px) {
       .intro h1 {
         width: 80%;
-        font-size: 75px;
-        line-height: 90px;
-        margin-bottom: 30px;
+        font-size: 60px;
+        line-height: 70px;
+        margin-bottom: 20px;
         font-weight: normal; } }
     .intro h1 strong {
       color: var(--highlight-color); }
@@ -305,27 +305,35 @@ ul {
   .archive-time {
     float: left; } }
 
+.welcome {
+  font-weight: bold !important; }
+  @media (min-width: 767px) {
+    .welcome {
+      font-size: 78px !important;
+      line-height: 90px !important;
+      margin-bottom: 4% !important; } }
 .summary {
   margin-bottom: 40px;
   font-size: 18px; }
   @media (min-width: 767px) {
     .summary {
-      margin-bottom: 60px;
+      margin-bottom: 50px;
       font-size: 18px; } }
   .summary .summary-date {
     font-family: var(--font-family-teshu); }
   .summary .summary-title {
-    margin: 16px 0 16px 0;
+    margin: 10px 0 -10px 0;
     width: 80%;
-    font-size: 34px;
-    line-height: 42px;
+    font-size: 28px;
+    line-height: 36px;
     font-weight: normal; }
     @media (min-width: 767px) {
       .summary .summary-title {
         width: 60%;
-        font-size: 50px;
-        line-height: 60px;
-        font-weight: normal; } }
+        font-size: 34px;
+        line-height: 42px;
+        font-weight: normal;
+        margin: 10px 0 -5px 0; } }
   .summary .summary-description {
     width: 100%;
     line-height: 1.8; }
@@ -838,7 +846,7 @@ ul.pagination {
   font-family: 'SmileySans';
   margin-top: 50px;
   color: #000000;
-  margin-bottom: 20px; }
+  margin-bottom: 10px; }
 
 .wl-reaction-votes {
   padding: 3px !important; }
@@ -858,6 +866,10 @@ ul.pagination {
     color: #BBBBBB; }
   .wl-content pre code {
     color: #888 !important; } }
+
+.wl-reaction-title {
+  visibility: hidden !important;
+  margin-bottom: -30px !important; }
 
 .appquanju {
   display: flex;

@@ -24,7 +24,7 @@
   font-family: 'SmileySans';
   margin-top:50px;
   color:#000000;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .wl-reaction-votes{
@@ -50,4 +50,9 @@ body {
 .wl-content pre code{
   color:#888 !important;
 }
+}
+
+.wl-reaction-title{
+  visibility:hidden !important;
+  margin-bottom: -30px!important;
 }
