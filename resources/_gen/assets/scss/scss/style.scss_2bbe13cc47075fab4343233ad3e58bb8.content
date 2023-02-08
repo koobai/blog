@@ -1066,7 +1066,7 @@ ul.pagination {
 
 @media (prefers-color-scheme: dark) {
   .tag, .page-time {
-    background: #332E2F !important;
+    background: #242021 !important;
     color: #BBBBBB !important; }
   .tag a {
     color: #BBBBBB !important; } }
@@ -1236,9 +1236,9 @@ body {
   .summary-date {
     color: #AAAAAA; }
   .bankuai {
-    background: linear-gradient(to bottom right, #332E2F, #110720); }
+    background: #242021; }
   .highlight pre {
-    background: linear-gradient(to bottom right, #332E2F, #110720);
+    background: #242021;
     color: #BBBBBB; }
   .highlight {
     background-color: #1A1718; }
