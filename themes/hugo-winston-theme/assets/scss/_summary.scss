@@ -2,23 +2,24 @@
   margin-bottom: 40px;
   font-size: 18px;
   @include breakpoint('small') {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     font-size: 18px;
   }
   .summary-date {
     font-family: var(--font-family-teshu);
   }
   .summary-title {
-    margin: 16px 0 16px 0;
+    margin: 10px 0 -10px 0;
     width: 80%;
-    font-size: 34px;
-    line-height: 42px;
+    font-size: 28px;
+    line-height: 36px;
     font-weight:normal;
     @include breakpoint('small') {
       width: 60%;
-      font-size: 50px;
-      line-height: 60px;
+      font-size: 34px;
+      line-height: 42px;
       font-weight:normal;
+      margin: 10px 0 -5px 0;
     }
   }
   .summary-description {
