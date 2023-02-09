@@ -19,7 +19,7 @@ image: images/article/cdn.svg
 
 1.在Github仓库根目录，新建".github/workflows"文件夹，并新建xxx.yml文件，复制以下代码到文件里。作用：借助Github Action实现自动部署。
 
-```
+```yml
 name: Build and deploy
 
 # 自动触发构建
@@ -85,7 +85,7 @@ jobs:
 
 2.在Github仓库根目录，新建flush-dns.py文件，复制以下代码到文件里，并将里面的"koobai.com"域名修改成自己的CDN加速域名。作用：通过Python脚本实现刷新CDN缓存，详细参数可参考<a href="https://console.cloud.tencent.com/api/explorer?Product=cdn&Version=2018-06-06&Action=PurgePathCache" target="_blank">腾讯的调用aip文档</a>。
 
-```
+```py
 import json
 import argparse
 from tencentcloud.common import credential

@@ -140,10 +140,10 @@ ul {
   font-size: 18px; }
   .content p {
     font-size: 18px;
-    line-height: 2.0;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
-    margin-bottom: 20px; }
+    margin-bottom: 15px; }
   .content h1 {
     font-size: 40px;
     line-height: 1.6;
@@ -156,8 +156,8 @@ ul {
     font-size: 28px;
     line-height: 1.4;
     font-weight: normal;
-    margin-top: 30px;
-    margin-bottom: 20px; }
+    margin-top: 20px;
+    margin-bottom: 10px; }
     .content h2:first-of-type {
       margin-top: 0; }
     @media (min-width: 767px) {
@@ -168,8 +168,8 @@ ul {
     font-size: 22px;
     line-height: 1.4;
     font-weight: normal;
-    margin-top: 30px;
-    margin-bottom: 20px; }
+    margin-top: 20px;
+    margin-bottom: 10px; }
   .content ul {
     list-style: disc; }
     .content ul li {
@@ -208,9 +208,10 @@ ul {
     display: inline;
     color: var(--color-base-text); }
   .content img {
-    margin: 40px 0 40px 0;
+    margin: 10px 0 10px 0;
     max-width: 100%;
-    height: auto; }
+    height: auto;
+    border-radius: 16px; }
   .content figure {
     margin: 2.6rem 0 1.18rem; }
     .content figure img {
@@ -643,7 +644,7 @@ ul.pagination {
 
 /* Generic.Traceback */
 .highlight .kc {
-  color: #000000;
+  color: #999999;
   font-weight: bold; }
 
 /* Keyword.Constant */
@@ -653,7 +654,7 @@ ul.pagination {
 
 /* Keyword.Declaration */
 .highlight .kn {
-  color: #000000;
+  color: #999999;
   font-weight: bold; }
 
 /* Keyword.Namespace */
