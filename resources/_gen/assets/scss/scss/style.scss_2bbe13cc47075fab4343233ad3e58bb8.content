@@ -306,7 +306,8 @@ ul {
     float: left; } }
 
 .welcome {
-  font-weight: bold !important; }
+  font-weight: bold !important;
+  margin-bottom: 30px !important; }
   @media (min-width: 767px) {
     .welcome {
       font-size: 78px !important;
