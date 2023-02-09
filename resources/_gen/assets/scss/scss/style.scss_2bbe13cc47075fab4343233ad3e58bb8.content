@@ -893,7 +893,7 @@ ul.pagination {
   letter-spacing: 0.5px; }
 
 .appnote {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 8px;
   line-height: 1.6; }
 
@@ -925,10 +925,6 @@ ul.pagination {
   font-size: 12px;
   border-radius: 20px; }
 
-@media (max-width: 700px) {
-  .appnote {
-    font-size: 16px; } }
-
 @media (prefers-color-scheme: dark) {
   .macos, .ios, .tvos, .web {
     color: #111111; }
@@ -941,30 +937,50 @@ ul.pagination {
   .web {
     background: #685FA0; } }
 
+.bankuai {
+  background-color: var(--bankuai-color);
+  border-radius: 15px;
+  margin-bottom: 15px;
+  padding: 3%;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+
+.bankuai:hover {
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale3d(1.01, 1.01, 1.01); }
+
+.himg {
+  margin: auto;
+  display: block;
+  width: 80%; }
+
+.title {
+  color: #bb2649;
+  font-family: var(--font-family-teshu);
+  letter-spacing: 0.5px;
+  font-size: 20px;
+  margin: 30px 0 6px 0; }
+
+.jiage {
+  color: #999;
+  font-size: 14px;
+  margin: 0 0 6px 0; }
+
+.note {
+  font-size: 16px;
+  line-height: 1.5; }
+
 @media (max-width: 700px) {
   .bankuai {
-    background-color: var(--bankuai-color);
-    width: 96%;
-    border-radius: 4px;
-    padding: 0 2%  5% 2%;
-    margin-bottom: 15px; }
-  .himg {
-    width: 80%;
-    margin: auto;
-    display: block; }
+    width: 95.5%;
+    padding: 0 2%  5% 2%; }
   .title {
-    color: #bb2649;
     font-size: 22px;
-    margin: 30px 10px 6px 10px;
-    font-family: var(--font-family-teshu);
-    letter-spacing: 0.5px; }
+    margin: 30px 10px 6px 10px; }
   .jiage {
-    color: #999;
-    font-size: 14px;
     margin: 0 10px 6px 10px; }
   .note {
-    margin: 0 10px 0 10px;
-    font-size: 16px; } }
+    margin: 0 10px 0 10px; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .quanju {
@@ -972,60 +988,28 @@ ul.pagination {
     width: 106%; }
   .bankuai {
     float: left;
-    background-color: var(--bankuai-color);
     width: 40%;
-    border-radius: 4px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 3%;
-    height: 400px; }
-  .himg {
-    width: 80%;
-    margin: auto;
-    display: block; }
-  .title {
-    color: #bb2649;
-    font-size: 20px;
-    margin: 30px 0 6px 0;
-    font-family: var(--font-family-teshu);
-    letter-spacing: 0.5px; }
-  .jiage {
-    color: #999;
-    font-size: 14px;
-    margin: 0 0 6px 0; }
-  .note {
-    font-size: 14px;
-    line-height: 1.6; } }
+    margin-right: 15px;
+    height: 400px; } }
 
 @media (min-width: 900px) {
   .quanju {
-    display: flow-root; }
+    display: flow-root;
+    width: 106%; }
   .bankuai {
     float: left;
-    background-color: var(--bankuai-color);
-    width: 26%;
-    border-radius: 4px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 3%;
-    height: 380px; }
+    width: 24.3%;
+    margin-right: 15px;
+    height: 390px; }
   .himg {
-    width: 100%;
-    margin: auto;
-    display: block; }
-  .title {
-    color: #bb2649;
-    font-size: 20px;
-    margin: 30px 0 6px 0;
-    font-family: var(--font-family-teshu);
-    letter-spacing: 0.5px; }
-  .jiage {
-    color: #999;
-    font-size: 14px;
-    margin: 0 0 6px 0; }
-  .note {
-    font-size: 14px;
-    line-height: 1.6; } }
+    width: 100%; } }
+
+@media (prefers-color-scheme: dark) {
+  .bankuai {
+    background: #242021;
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2); }
+  .bankuai:hover {
+    box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.4); } }
 
 /*标签云*/
 @media (min-width: 700px) {
@@ -1104,11 +1088,14 @@ ul.pagination {
   position: relative;
   min-height: 87px;
   overflow: hidden;
-  color: transparent; }
+  color: transparent;
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
 
 .HPRth:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 2px rgba(0, 0, 0, 0.25);
-  filter: brightness(0.7); }
+  filter: brightness(0.7);
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale3d(1.01, 1.01, 1.01); }
 
 .kEoOHR {
   display: inline-block;
@@ -1236,8 +1223,6 @@ body {
     color: #CCCCCC; }
   .summary-date {
     color: #AAAAAA; }
-  .bankuai {
-    background: #242021; }
   .highlight pre {
     background: #242021;
     color: #BBBBBB; }
