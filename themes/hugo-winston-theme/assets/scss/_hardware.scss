@@ -1,36 +1,61 @@
 // hardware硬件页样式
 
+.bankuai{
+	background-color:var(--bankuai-color);
+	border-radius:15px;
+	margin-bottom: 15px;
+	padding:3%;
+	box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+	transition: all .3s cubic-bezier(0,0,.5,1);
+}
+
+.bankuai:hover{
+	box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+	transform: scale3d(1.01,1.01,1.01);
+}
+
+.himg{
+	margin: auto;
+  display: block;
+	width:80%;
+}
+
+.title{
+	color:#bb2649;
+	font-family: var(--font-family-teshu);
+	letter-spacing:0.5px;
+	font-size:20px;
+	margin: 30px 0 6px 0;
+}
+
+.jiage{
+	color:#999;
+	font-size:14px;
+	margin: 0 0 6px 0;
+}
+
+.note{
+	font-size: 16px;
+	line-height: 1.5;
+} 
+
 // 页面宽度小于700样式
 
 @media (max-width:700px){
 
 .bankuai{
-	background-color:var(--bankuai-color);
-	width: 96%;
-	border-radius:4px;
+	width: 95.5%;
 	padding:0 2%  5% 2%;
-	margin-bottom: 15px
-}
-.himg{
-	width:80%;
-	margin: auto;
-    display: block;
 }
 .title{
-	color:#bb2649;
 	font-size:22px;
 	margin: 30px 10px 6px 10px;
-	font-family: var(--font-family-teshu);
-	letter-spacing:0.5px;
 }
 .jiage{
-	color:#999;
-	font-size:14px;
 	margin: 0 10px 6px 10px;
 }
 .note{
 	margin: 0 10px 0 10px;
-    font-size: 16px;
 }
 
 }
@@ -45,76 +70,38 @@
 }
 .bankuai{
 	float: left;
-	background-color:var(--bankuai-color);
 	width:40%;
-	border-radius:4px;
-	margin-right:10px;
-	margin-bottom: 10px;
-	padding:3%;
+	margin-right:15px;
 	height: 400px;
 }
-.himg{
-	width:80%; 
-	margin: auto;
-    display: block;
-	
-}
-.title{
-	color:#bb2649;
-	font-size:20px;
-	margin: 30px 0 6px 0;
-	font-family: var(--font-family-teshu);
-	letter-spacing:0.5px;
-}
-.jiage{
-	color:#999;
-	font-size:14px;
-	margin: 0 0 6px 0;
-}
-.note{
-	font-size: 14px;
-	line-height: 1.6;
-} 
-
 }
 // 页面宽度大于900样式
 
 @media (min-width:900px){
 
 .quanju{
-	display: flow-root;	
+	display: flow-root;
+		width: 106%;
 }
 .bankuai{
 	float: left;
-	background-color:var(--bankuai-color);
-	width:26%;
-	border-radius:4px;
-	margin-right:10px;
-	margin-bottom: 10px;
-	padding:3%;
-	height: 380px;
+	width:24.3%;
+	margin-right:15px;
+	height: 390px;
 }
-.himg{
-	width:100%; 
-	margin: auto;
-    display: block;
-	
-}
-.title{
-	color:#bb2649;
-	font-size:20px;
-	margin: 30px 0 6px 0;
-	font-family: var(--font-family-teshu);
-	letter-spacing:0.5px;
-}
-.jiage{
-	color:#999;
-	font-size:14px;
-	margin: 0 0 6px 0;
-}
-.note{
-	font-size: 14px;
-	line-height: 1.6;
-} 
 
+.himg{
+	width:100%; 	
+}
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.bankuai{
+  background: #242021;
+  box-shadow: 2px 4px 12px rgba(0,0,0,.2);
+}
+.bankuai:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.4);
+}
 }
