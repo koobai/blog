@@ -20,7 +20,7 @@ image: images/article/synology.jpg
 
 准备就绪，经过一年多的折腾及稳定运行使用，满足了自己需求：**数据备份、影视存储**。目前主要使用的套件：
 
-![infuse影视墙](/images/article/synologyphoto.jpg)
+![Synology Photos](/images/article/synologyphoto.jpg)
 
 ### 1. 存储管理器
 
@@ -30,7 +30,7 @@ image: images/article/synology.jpg
 
 ### 2. Synology Drive
 
-群晖的核心套件。电脑中日常工作存储文件夹通过Synology Drive连接，保存修改的同时自动同步备份到群晖。目前使用的笔记类应用也是选择直接存储本地的，这样就能实时备份到群晖，如：Typora、妙言。再通过webdav方式连接访问，以供其他终端设备显示。
+群晖的核心套件。电脑中日常工作存储文件夹通过Synology Drive连接，保存修改的同时自动同步备份到群晖。目前使用的笔记类应用也是选择直接存储本地的，这样就能实时备份到群晖，如：Typora、妙言。再通过WebDAV方式连接访问，以供其他终端设备显示。
 
 ### 3. Synology Photos
 
@@ -50,7 +50,7 @@ image: images/article/synology.jpg
 ![infuse影视墙](/images/article/infuse.jpg)
 
 ### 1. Alist
-官方介绍：一个支持多种存储的文件列表程序。自己使用主要的作用是影视中转站：先把资源存储到阿里云盘 > Alist连接阿里云盘 > Infuse通过webdav方式连接Alist，之后就愉快的观影。
+官方介绍：一个支持多种存储的文件列表程序。自己使用主要的作用是影视中转站：先把资源存储到阿里云盘 > Alist连接阿里云盘 > Infuse通过WebDAV方式连接Alist，之后就愉快的观影。
 
 ### 2. Ddns-go
 由于运营商的公网IP会实时变化，通过它可自动获取自己的公网IP，并解析到对应的域名上。外网访问NAS必备。
