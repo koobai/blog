@@ -2,8 +2,11 @@ ul.pagination {
   display: flex;
   justify-content: center;
   list-style: none;
-  margin: 20px 0 20px 0;
+  margin: 20px 0 40px 0;
   padding: 0;
+  @include breakpoint('small') {
+      margin: 20px 0 20px 0;
+  }
   li {
     list-style: none;
     text-decoration: none;
