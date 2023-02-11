@@ -30,9 +30,11 @@
         {{ with .PrevInSection }}
           <a class="previous" href="{{.Permalink}}">上一篇: {{.Title}}</a>
         {{ end }}
+        <div>
         {{ with .NextInSection }}
           <a class="next" href="{{.Permalink}}">下一篇: {{.Title}}</a>
         {{ end }}
+      </div>
     </div>
 <div class="pinglun">已经浏览到这里了，不留下点什么？</div>
  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
