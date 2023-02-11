@@ -29,6 +29,9 @@
 
 .wl-reaction-votes{
   padding: 3px !important;
+  font-size: 11px !important;
+  top: -6px !important;
+  inset-inline-end: -3px !important;
 }
 .verified-icon{
   color: #fff !important;
@@ -98,4 +101,23 @@ body {
 }
 .wl-editor {
   min-height: 4em !important;
+}
+@media (max-width: 580px){
+.wl-header-item:not(:last-child) {
+  border-bottom: 1px dashed var(--waline-border-color) !important;
+}
+.wl-reaction-votes{
+  inset-inline-end: -7px !important;
+  padding: 2px !important;
+  top: -4px !important;
+}
+}
+
+.wl-reaction img{
+  width: 60% !important;
+  height: 60% !important;
+}
+
+.wl-reaction {
+  margin-bottom: 0em !important;
 }
