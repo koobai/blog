@@ -47,12 +47,55 @@ body {
 .pinglun{
   color:#BBBBBB
 }
-.wl-content pre code{
+.wl-content pre code {
   color:#888 !important;
 }
+.wl-content p a {
+  color: #666  !important;
+}
+.wl-content p a:hover {
+  color: #999 !important;
+}
+
 }
 
 .wl-reaction-title{
   visibility:hidden !important;
   margin-bottom: -30px!important;
+}
+
+.verified-icon, .wl-empty {
+  visibility:hidden !important;
+}
+
+.wl-card .wl-badge {
+  display: none !important;
+}
+
+.wl-content p {
+  font-size: 16px;
+}
+.wl-content p a {
+  color: #999;
+}
+.wl-content p a:hover {
+  color: #666;
+}
+
+.wl-like, .wl-meta-head {
+  display: none !important;
+}
+
+.wl-quote {
+  border-inline-start: none !important;
+}
+
+.wl-panel{
+  margin:0 !important;
+}
+.wl-card-item {
+  padding:10px 0 0 0 !important;
+}
+.wl-editor {
+  min-height: 4em !important;
 }
