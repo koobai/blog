@@ -1,0 +1,129 @@
+.bb-timeline pre{
+  color:#aaa;
+}
+.bb-timeline ul{
+  margin:0;
+  padding:0;
+}
+.bb-timeline ul li{
+  list-style-type:none;
+  margin-bottom:20px;
+}
+.bb-timeline ul li .bb-div{
+  background: #FFFFFF !important;
+  /* border: 1px solid #eaeaea; */
+  padding: 20px; 
+  border-radius:10px;
+  box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+  transition: all .3s cubic-bezier(0,0,.5,1);
+}
+.bb-timeline ul li .bb-div:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+  transform: scale3d(1.01,1.01,1.01);
+}
+
+.bb-load button{
+  background:#FFFFFF;
+  width:100%;
+  letter-spacing:1rem;
+  padding: 15px;
+  cursor:pointer;
+  border: none;
+  display:grid;
+  margin: auto;
+  border-radius:10px;
+  color: #BB2649;
+  margin-bottom: 60px;
+  font-size: 18px;
+  font-family: var(--font-family-teshu);
+}
+.bb-timeline ul li .datatime{
+  font-size:14px;
+  color: #999;
+  margin-bottom: 6px;
+}
+.bb-timeline ul li .datacont{}
+.bb-timeline ul li .datacont img[src*='emotion']{display:inline-block;width:auto;}
+.bb-timeline ul li .datafrom{color:#aaa;font-size:0.75em !important;font-style:italic;}
+.bb-timeline ul li p{
+  margin:0;
+  font-size:18px;
+  line-height:30px;
+
+  margin:0;
+  font-family: "LXGW WenKai Screen", sans-serif;
+}
+.bb-timeline pre p{display:inline-block;}
+.bb-timeline pre p:empty{display:none;}
+.dark-theme .bb-timeline ul li .datatime{border-color:#666;}
+.dark-theme .bb-timeline ul li .bb-div p,.dark-theme .bb-timeline .bb-load button{color:#fafafa;}
+.dark-theme .bb-timeline ul li .bb-div p svg{fill:#fafafa;}
+.dark-theme .bb-timeline ul li .datafrom{color:#aaa;}
+.datacont p{min-height:24px;}.datacont blockquote{font-family: KaiTi,STKaiti,STFangsong;margin:0 0 0 1rem;padding:.25rem 2rem;position: relative;border-left:0 none;}
+.datacont blockquote::before{line-height: 2rem;content: '“';font-family: Georgia, serif;font-size: 28px;font-weight: bold;position: absolute;left: 10px;top:5px;}
+.datacont .tag-span{
+  color:#BB2649;
+  background: #F4F4F4;
+  padding: 7px;
+  font-size: 14px;
+  border-radius:4px;
+}
+.datasource a{color:#fafafa;background:#3b3d42;padding:2px 8px;margin:0 6px 0 0;border-radius:5px;font-size:.9rem;font-weight:400;}
+.datacont .img{cursor:pointer;border-radius:4px;}
+.datacont .img.square{height:180px;width:180px;object-fit:cover;}
+.resimg.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:4px;width:calc(100%* 2 / 3);box-sizing:border-box;margin:4px 0 0;}
+.resimg.grid-2{grid-template-columns:repeat(2,1fr);width:80%;}
+.resimg.grid-4{grid-template-columns:repeat(2,1fr);width:calc(80% * 2 / 3);}
+.resimg.grid figure.gallery-thumbnail{
+  position:relative;
+  width:100%;
+  height:0;
+  padding-top:100%;
+  cursor:zoom-in;
+}
+.resimg figure{text-align:left;max-height:50%;margin:0 !important;}
+.resimg.grid figure,figcaption{margin:0 !important;}
+.resimg.grid figure.gallery-thumbnail > img.thumbnail-image{
+  position:absolute;
+  left:0;top:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 50%;
+}
+.bb-timeline ul li::before{content:none;}
+
+
+
+// 页面宽度小于700样式
+
+@media (max-width:900px){
+
+#bber{width:100%; margin: 0 auto;}
+.resimg figure img{max-height:50vh;max-width:50vw;}
+
+}
+
+// 页面宽度大于700样式
+
+@media (min-width:900px){
+#bber{width:100%; margin: 0 auto;}
+.resimg figure img{max-height:30vh;max-width:30vw;}
+}
+
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.bb-timeline ul li .bb-div{background: #242021 !important;}
+.datacont .tag-span{
+  color:#BB2649;
+  background: #332E2F;
+}
+.bb-load button{
+  background:#242021;
+}
+.bb-timeline ul li .datatime{
+  color: #666;
+}
+}
