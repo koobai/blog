@@ -30,4 +30,5 @@ jobs:
           SOURCE: 'public/'
           REMOTE_HOST: ${{ env.SERVER_HOST }}
           REMOTE_USER: ${{ env.USER_NAME }}
+          port: ${{ env.PORT }} 
           TARGET: /www/wwwroot/blog # 服务器目标路径
