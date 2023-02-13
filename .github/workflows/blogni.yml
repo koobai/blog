@@ -23,12 +23,11 @@ jobs:
 
             # 上传打包资源
       - name: Deploy
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-          ARGS: '-avz --delete'
-          SOURCE: 'public/'
-          REMOTE_HOST: ${{ env.SERVER_HOST }}
-          REMOTE_USER: ${{ env.USER_NAME }}
-          port: ${{ env.PORT }} 
-          TARGET: /www/wwwroot/blog # 服务器目标路径
+        uses: appleboy/ssh-action@master # 使用ssh链接服务器
+        with:
+          host: ${{ secrets.HOST }} #配置的服务器地址
+          username: ${{ secrets.USERNAME }} #配置的服务器用户名
+          password: ${{ secrets.PASSWORD }} #配置的密码
+          port: ${{ secrets.PORT }} #配置的端口
+          script: | # 执行命令（运行到服务器）cd：要确保服务器有这个目录； wget：下载上一步的release到服务器； tar：解压； 安装依赖；启动服务
+            cd /www/wwwroot/blog
