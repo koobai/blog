@@ -1,0 +1,33 @@
+name: ces
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+            # 上传打包资源
+            - name: Deploy
+              uses: easingthemes/ssh-deploy@main
+              env:
+                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+                  ARGS: '-avz --delete'
+                  SOURCE: 'public/'
+                  REMOTE_HOST: ${{ env.SERVER_HOST }}
+                  REMOTE_USER: ${{ env.USER_NAME }}
+                  TARGET: /www/wwwroot/blog # 服务器目标路径
