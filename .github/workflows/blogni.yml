@@ -22,12 +22,13 @@ jobs:
         run: hugo --minify
 
             # 上传打包资源
-      - name: Deploy
-        uses: appleboy/ssh-action@master # 使用ssh链接服务器
-        with:
-          host: ${{ secrets.HOST }} #配置的服务器地址
-          username: ${{ secrets.USERNAME }} #配置的服务器用户名
-          password: ${{ secrets.PASSWORD }} #配置的密码
-          port: ${{ secrets.PORT }} #配置的端口
-          script: | # 执行命令（运行到服务器）cd：要确保服务器有这个目录； wget：下载上一步的release到服务器； tar：解压； 安装依赖；启动服务
-            cd /www/wwwroot/blog
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.0.8
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
+          ARGS: "-avz --delete"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          REMOTE_PORT: ${{ secrets.PORT }}
+          SOURCE: "public/"
+          TARGET: "/www/wwwroot/blog"
