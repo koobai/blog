@@ -1,4 +1,4 @@
-name: ces
+name: blogni
 
 on:
   workflow_dispatch:
