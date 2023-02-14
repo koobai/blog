@@ -6,6 +6,6 @@ description: '一件称心的产品，从收到包裹那一刻就开始心潮澎
 layout: hardware
 menu:
   main:
-    name: "Hardware"
+    name: "好物"
     weight: 4
 ---

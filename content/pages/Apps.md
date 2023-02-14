@@ -6,6 +6,6 @@ description: '一款合适的软件，在工作中能成为很好的生产力工
 layout: apps
 menu:
   main:
-    name: "Apps"
+    name: "软件"
     weight: 3
 ---

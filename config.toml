@@ -39,6 +39,6 @@ enableRobotsTXT = true
 [menu]
   [[menu.main]]
     identifier = 'home'
-    name = 'Home'
+    name = '首页'
     url = '/'
     weight = 1

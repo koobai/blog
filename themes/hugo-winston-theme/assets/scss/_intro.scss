@@ -76,10 +76,10 @@
 
 .welcome{
   font-weight:bold !important;
-  margin-bottom: 30px !important;
+  margin-bottom: 20px !important;
   @include breakpoint('small') {
   font-size: 78px !important;
   line-height: 90px !important;
-  margin-bottom: 4% !important;
+  margin-bottom: 2.7% !important;
 }
 }

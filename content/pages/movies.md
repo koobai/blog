@@ -6,6 +6,6 @@ description: '自己很喜欢观影，在能力范围内会把显示、音响、
 layout: movies
 menu:
   main:
-    name: "Movie"
+    name: "观影"
     weight: 5
 ---
