@@ -37,7 +37,7 @@ if(imgUrl){var resImgGrid=""
 if(resImgLength!==1){var resImgGrid="grid grid-"+resImgLength}
 bbContREG+='<div class="resimg '+resImgGrid+'">'+imgUrl+'</div></div>'}
 if(resUrl){bbContREG+='<p class="datasource">'+resUrl+'</p>'}}
-result+="<li class='bb-list-li'><div class='bb-div'><span class='datatime'>"+new Date(data[i].createdTs*1000).toLocaleString()+" @koobai</span><div class='datacont'>"+bbContREG+"</div></div></li>"}
+result+="<li class='bb-list-li'><div class='bb-div'><span class='datatime'>"+new Date(data[i].createdTs*1000).toLocaleString()+"</span><span class='datakoobai'>@koobai</span><div class='datacont'>"+bbContREG+"</div></div></li>"}
 var bbBefore="<section class='bb-timeline'><ul class='bb-list-ul'>"
 var bbAfter="</ul></section>"
 resultAll=bbBefore+result+bbAfter

@@ -892,7 +892,7 @@ ul.pagination {
   border-color: #CACBCC !important; }
 
 .tk-comments-title {
-  font-size: 1.25rem;
+  font-size: 18px !important;
   font-weight: normal !important;
   font-family: "SmileySans" !important; }
 
@@ -1381,10 +1381,13 @@ ul.pagination {
   font-size: 16px;
   margin-top: 7px; }
 
-.bb-timeline ul li .datatime, .item {
+.bb-timeline ul li .datatime, .item, .datakoobai {
   font-size: 14px;
   color: #999;
   font-family: JetBrainsMono; }
+
+.datakoobai {
+  margin-left: 5px; }
 
 .bb-timeline ul li .datacont {
   margin-top: 5px; }
