@@ -111,7 +111,7 @@ h1, h2, h3 {
   vertical-align: middle;
   width: 16px;
   height: 16px;
-  margin-top: -1px; }
+  margin-top: -2px; }
 
 a {
   color: var(--highlight-color);
@@ -848,7 +848,7 @@ ul.pagination {
 
 .tk-content {
   max-height: 100px !important;
-  border-bottom: 1px dashed #D9D9D9 !important;
+  border-bottom: 1px dashed #E2E2E2 !important;
   padding-bottom: 5px !important;
   margin: 0 0 10px 0 !important; }
 
@@ -878,11 +878,8 @@ ul.pagination {
   margin-right: 0.8rem !important;
   border-radius: 20px !important; }
 
-.tk-comments-no, .tk-footer, .tk-tag-green, .OwO .OwO-body .OwO-bar .OwO-packages {
+.tk-tag-green, .OwO .OwO-body .OwO-bar .OwO-packages {
   display: none !important; }
-
-.tk-comments-container {
-  min-height: 1rem !important; }
 
 .el-button:not(.el-button--primary):not(.el-button--text):hover {
   color: var(--highlight-color) !important;
@@ -940,17 +937,102 @@ ul.pagination {
   height: 2rem !important;
   width: 2rem !important; }
 
+.tk-submit {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px !important;
+  margin-bottom: 30px;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+
+.tk-submit:hover {
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale3d(1.01, 1.01, 1.01); }
+
+.tk-row.actions {
+  margin-bottom: 0 !important;
+  margin-left: 10px !important; }
+
+.tk-col {
+  margin-left: -42px; }
+
+.el-textarea__inner {
+  border: 0 !important;
+  padding: 0 !important; }
+
+.tk-avatar .tk-avatar-img svg {
+  display: none !important; }
+
+.tk-row .tk-avatar.tk-has-avatar {
+  visibility: hidden !important; }
+
+.tk-meta-input {
+  background: no-repeat !important; }
+
+.el-input__inner {
+  border: 0 !important;
+  padding: 0 10px !important; }
+
+.twikoo .el-input-group__prepend {
+  border: 0 !important;
+  padding: 0 !important;
+  color: #999 !important;
+  background: no-repeat !important; }
+
+.twikoo .OwO-item img {
+  width: 24px !important; }
+
+.OwO .OwO-body .OwO-items-image .OwO-item {
+  width: auto !important; }
+
+.OwO .OwO-body .OwO-items-show {
+  height: 150px !important; }
+
+.tk-owo-emotion {
+  width: 18px !important;
+  margin-top: -2px;
+  margin-left: 1px;
+  margin-right: 1px; }
+
+.tk-comments-no, .tk-footer, .tk-footer a, .el-input__count {
+  color: #999 !important; }
+
+.tk-preview-container {
+  margin: 15px 0 15px 0 !important;
+  border: 0 !important;
+  background: #F2F2F2; }
+
+.tk-preview-container p {
+  font-size: 16px; }
+
+.twikoo .el-button:not(.el-button--primary):not(.el-button--text):active, .twikoo .el-button:not(.el-button--primary):not(.el-button--text):focus, .twikoo .el-button:not(.el-button--primary):not(.el-button--text):hover {
+  color: var(--highlight-color) !important;
+  background-color: no-repeat !important;
+  border-color: var(--highlight-color) !important; }
+
+.OwO .OwO-body .OwO-items .OwO-item:hover {
+  background-color: #FEF2E5 !important;
+  box-shadow: none !important;
+  border-radius: 20px !important;
+  height: 34px; }
+
 @media (prefers-color-scheme: dark) {
+  .tk-submit {
+    background: #242021 !important; }
   .tk-content {
     border-bottom: 1px dashed #332D2F !important; }
-  .tk-action-icon, .tk-icon.__comments, .tk-time, .tk-content span, .tk-content span a, .tk-avatar .tk-avatar-img {
+  .tk-action-icon, .tk-icon.__comments, .tk-time, .tk-content span, .tk-content span a, .tk-avatar .tk-avatar-img, .tk-comments-no, .tk-footer, .tk-footer a {
     color: #666 !important; }
   .pinglun {
     color: #BBB; }
   .tk-tag-red, .tk-expand, .OwO .OwO-body {
     background-color: #242021 !important; }
   .el-textarea__inner:hover, .twikoo .el-input__inner:focus, .twikoo .el-textarea__inner:focus {
-    border-color: #4B4A4D !important; } }
+    border-color: #4B4A4D !important; }
+  .tk-preview-container {
+    background: #332D2F; }
+  .OwO .OwO-body .OwO-items .OwO-item:hover {
+    background-color: #4D4346 !important; } }
 
 .appquanju {
   display: flex;
