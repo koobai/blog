@@ -43,10 +43,13 @@
   font-size: 16px;
   margin-top: 7px;
 }
-.bb-timeline ul li .datatime, .item{
+.bb-timeline ul li .datatime, .item,.datakoobai{
   font-size:14px;
   color: #999;
   font-family: JetBrainsMono;
+}
+.datakoobai{
+  margin-left: 5px;
 }
 .bb-timeline ul li .datacont{margin-top: 5px;}
 .bb-timeline ul li .datacont img[src*='emotion']{display:inline-block;width:auto;}
@@ -131,7 +134,7 @@
 .bb-load button{
   background:#242021;
 }
-.bb-timeline ul li .datatime, .item{
+.bb-timeline ul li .datatime, .item,.datakoobai{
   color: #666;
 }
 }
