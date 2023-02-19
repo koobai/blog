@@ -1,0 +1,16 @@
+<link href="https://npm.elemecdn.com/artalk@2.4.4/dist/ArtalkLite.css" rel="stylesheet">
+<script src="https://npm.elemecdn.com/artalk@2.4.4/dist/ArtalkLite.js"></script>
+
+<!-- Artalk -->
+<div id="Comments"></div>
+
+<script>
+  new Artalk({
+    el:        '#Comments',
+    pageKey:   '{{ .Permalink }}',
+    pageTitle: '{{ .Title }}',
+    server:    '{{ $.Site.Params.artalk.server }}',
+    site:      '{{ $.Site.Params.artalk.site }}',
+    // ...你的其他配置
+  })
+</script>
