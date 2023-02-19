@@ -28,6 +28,10 @@ enableRobotsTXT = true
   textColor = "#444444"
   dotColor = "#BB2649"
 
+[params.artalk]
+    server="https://c.koobai.com"
+    site="Koobai 空白生活"
+
 # markdown config settings https://gohugo.io/getting-started/configuration-markup/#goldmark
 [markup]
   [markup.goldmark]

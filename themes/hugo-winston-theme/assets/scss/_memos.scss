@@ -58,7 +58,6 @@
   margin:0;
   font-size:18px;
   line-height:30px;
-
   margin:0;
   font-family: "LXGW WenKai Screen", sans-serif;
 }
@@ -103,7 +102,9 @@
 }
 .bb-timeline ul li::before{content:none;}
 
-
+.bb-timeline ul li p img {
+  width: 100%;
+}
 
 // 页面宽度小于700样式
 
