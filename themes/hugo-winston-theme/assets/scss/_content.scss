@@ -41,6 +41,9 @@ ul {
     padding: 0;
     margin-bottom: 15px;
   }
+  strong {
+    color:  var(--highlight-color);
+  }
   h1 {
     font-size: 40px;
     line-height: 1.6;
