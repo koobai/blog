@@ -2,6 +2,7 @@
 :root {
   --font-family-heading: SmileySans, Helvetica,sans-serif;
   --font-family-paragraph: Helvetica, sans-serif;
+  --font-family-code: JetBrainsMono, Helvetica, sans-serif;
   --font-family-monospace: monospace;
   --font-family-teshu: SmileySans, Helvetica,sans-serif;
   --base-color: var(--background-color);
@@ -246,7 +247,7 @@ ul {
         margin: 0; }
   .content code,
   .content pre {
-    font-family: JetBrainsMono; }
+    font-family: var(--font-family-code); }
   .content .highlight pre {
     border-radius: 3px;
     font-size: 16px;
@@ -1332,7 +1333,7 @@ img[atk-emoticon] {
 .bb-timeline ul li .datatime, .item, .datakoobai {
   font-size: 14px;
   color: #999;
-  font-family: JetBrainsMono; }
+  font-family: var(--font-family-code); }
 
 .datakoobai {
   margin-left: 5px; }
