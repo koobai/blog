@@ -24,14 +24,6 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-
-      - name: Setup coscmd and sdk
-        run: sudo pip install coscmd
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
