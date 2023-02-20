@@ -161,6 +161,8 @@ ul {
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
+  .content strong {
+    color: var(--highlight-color); }
   .content h1 {
     font-size: 40px;
     line-height: 1.6;
