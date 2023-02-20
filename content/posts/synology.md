@@ -3,7 +3,7 @@ title: "Synology 群晖 DS920+ 使用之旅"
 date: 2023-02-09
 tags: ['群晖','折腾','硬件']
 description: '记不清是从什么时候开始了解NAS的，21年尝试过DS220+、极空间Z4，最终回归到DS920+。经过一年多的使用，机器很满意，满足了自己需求：数据备份、影视存储。但市场上NAS品牌越来越多，如华为、绿联等，以群晖的高售价低配置，曾经“买系统送机器”的流传打趣，性价比越来越低，升级款923，还是万年不变的千兆网口。'
-image: images/article/synology.jpg
+image: https://img.koobai.com/article/synology.jpg
 ---
 
 ## 购买过程
@@ -20,7 +20,7 @@ image: images/article/synology.jpg
 
 准备就绪，经过一年多的折腾及稳定运行使用，满足了自己需求：**数据备份、影视存储**。目前主要使用的套件：
 
-![Synology Photos](/images/article/synologyphoto.jpg)
+![Synology Photos](https://img.koobai.com/article/synologyphoto.jpg)
 
 ### 1. 存储管理器
 
@@ -47,7 +47,7 @@ image: images/article/synology.jpg
 
 使用NAS前不知道什么是Docker，使用之后，只能说没了它，乐趣要少一大半～～目前使用的应用为 **4** 个：
 
-![infuse影视墙](/images/article/infuse.jpg)
+![infuse影视墙](https://img.koobai.com/article/infuse.jpg)
 
 ### 1. Alist
 官方介绍：一个支持多种存储的文件列表程序。自己使用主要的作用是影视中转站：先把资源存储到阿里云盘 > Alist连接阿里云盘 > Infuse通过WebDAV方式连接Alist，之后就愉快的观影。
