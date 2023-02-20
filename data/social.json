@@ -3,27 +3,27 @@
     {
       "name": "twitter",
       "url": "https://twitter.com/koobai",
-      "image": "images/social/twitter.svg"
+      "image": "https://img.koobai.com/social/twitter.svg"
     },
     {
       "name": "telegram",
       "url": "https://t.me/delixiaohuangren",
-      "image": "images/social/telegram.svg"
+      "image": "https://img.koobai.com/social/telegram.svg"
     },
     {
       "name": "weibo",
       "url": "https://weibo.com/koobai",
-      "image": "images/social/weibo.svg"
+      "image": "https://img.koobai.com/social/weibo.svg"
     },
     {
       "name": "email",
       "url": "mailto:mekoobai@gmail.com",
-      "image": "images/social/email.svg"
+      "image": "https://img.koobai.com/social/email.svg"
     },
     {
       "name": "RSS",
       "url": "/index.xml",
-      "image": "images/social/rss.svg"
+      "image": "https://img.koobai.com/social/rss.svg"
     }
   ]
 }
