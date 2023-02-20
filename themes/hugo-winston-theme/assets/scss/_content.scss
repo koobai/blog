@@ -146,7 +146,7 @@ ul {
   }
   code,
   pre {
-      font-family: JetBrainsMono;
+      font-family: var(--font-family-code);
   }
   .highlight {
     pre {
