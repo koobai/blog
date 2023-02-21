@@ -1208,12 +1208,10 @@ img[atk-emoticon] {
   min-height: 87px;
   overflow: hidden;
   color: transparent;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
 
 .HPRth:hover {
   filter: brightness(0.7);
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale3d(1.01, 1.01, 1.01); }
 
 .kEoOHR {
