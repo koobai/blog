@@ -65,48 +65,58 @@ cat ~/.ssh/id_rsa.pub
 **4.** 打开宝塔面板商店，安装WebHook插件--添加执行脚本 (复制以下代码)。其中"gitHttp为需同步的github仓库地址"，"gh-pages"为仓库分支名称。
 
 ```yml
-#!/bin/bash
-echo ""
-#输出当前时间
-date --date='0 days ago' "+%Y-%m-%d %H:%M:%S"
-echo "Start"
-#判断宝塔WebHook参数是否存在
-if [ ! -n "$1" ];
-then 
-          echo "param参数错误"
-          echo "End"
-          exit
-fi
-#git项目路径（$1是param后面的参数，指向你的服务器的目录）
-gitPath="/www/wwwroot/$1"
-#git 网址 (替换成你的git地址，ssh方式)
-gitHttp="git@github.com:koobai/koobai.github.io.git"
- 
-echo "Web站点路径：$gitPath"
- 
-#判断项目路径是否存在
-if [ -d "$gitPath" ]; then
-        cd $gitPath
-        #判断是否存在git目录
-        if [ ! -d ".git" ]; then
-                echo "在该目录下克隆 git"
-                git clone $gitHttp gittemp
-                mv gittemp/.git .
-                rm -rf gittemp
-        fi
-        #拉取最新的项目文件（此处为git拉取命令可根据需求自定义）
-        #git reset --hard origin/gh-pages
-        #git pull origin gh-pages
-        git fetch --all && git reset --hard origin/gh-pages && git pull
-        #设置目录权限
-        chown -R www:www $gitPath
-        echo "End"
-        exit
-else
-        echo "该项目路径不存在"
-        echo "End"
-        exit
-fi
+    #!/bin/bash
+    echo ""
+    #输出当前时间
+    date --date='0 days ago' "+%Y-%m-%d %H:%M:%S"
+    echo "Start"
+    #git分支名称
+    branch="gh-pages"
+    #git项目路径
+    gitPath="/www/wwwroot/$1"
+    #git 仓库地址
+    gitHttp="git@github.com:koobai/koobai.github.io.git"
+    echo "Web站点路径：$gitPath"
+    #判断项目路径是否存在
+    if [ -d "$gitPath" ]; then
+            cd $gitPath
+            #判断是否存在git目录
+            if [ ! -d ".git" ]; then
+                    echo "在该目录下克隆 git"
+                    sudo git clone $gitHttp gittemp 
+                    sudo mv gittemp/.git .
+                    sudo rm -rf gittemp
+            fi
+            echo "拉取最新的项目文件"
+            #sudo git reset --hard origin/$branch
+            git remote add origin $gitHttp
+            git branch --set-upstream-to=origin/$branch $branch
+            sudo git reset --hard origin/$branch
+            sudo git pull $gitHttp  2>&1  
+            echo "设置目录权限"
+            sudo chown -R www:www $gitPath
+            echo "End"
+            exit
+    else
+            echo "该项目路径不存在"
+                    echo "新建项目目录"
+            mkdir $gitPath
+            cd $gitPath
+            #判断是否存在git目录
+            if [ ! -d ".git" ]; then
+                    echo "在该目录下克隆 git"
+                    sudo git clone $gitHttp gittemp
+                    sudo mv gittemp/.git .
+                    sudo rm -rf gittemp
+            fi
+            echo "拉取最新的项目文件"
+            #sudo git reset --hard origin/$branch
+            sudo git pull gitHttp 2>&1
+            echo "设置目录权限"
+            sudo chown -R www:www $gitPath
+            echo "End"
+            exit
+    fi
 ```
 **5.** 查看WebHook插件密钥，复制密钥地址。添加到Github需同步的仓库--Settings--Webhooks--Add webhook。其中Content type选择application/json。
 
