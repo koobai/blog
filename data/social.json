@@ -1,19 +1,9 @@
 {
   "links": [
     {
-      "name": "twitter",
-      "url": "https://twitter.com/koobai",
-      "image": "https://img.koobai.com/social/twitter.svg"
-    },
-    {
       "name": "telegram",
       "url": "https://t.me/delixiaohuangren",
       "image": "https://img.koobai.com/social/telegram.svg"
-    },
-    {
-      "name": "weibo",
-      "url": "https://weibo.com/koobai",
-      "image": "https://img.koobai.com/social/weibo.svg"
     },
     {
       "name": "email",
