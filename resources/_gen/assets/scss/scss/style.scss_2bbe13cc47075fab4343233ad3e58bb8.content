@@ -588,7 +588,7 @@ ul.pagination {
   background-color: #ffffcc; }
 
 .highlight .c {
-  color: #999988;
+  color: #999999;
   font-style: italic; }
 
 /* Comment */
@@ -619,7 +619,7 @@ ul.pagination {
 
 /* Comment.Preproc */
 .highlight .c1 {
-  color: #999988;
+  color: #999999;
   font-style: italic; }
 
 /* Comment.Single */
@@ -756,7 +756,7 @@ ul.pagination {
 
 /* Name.Namespace */
 .highlight .nt {
-  color: #666666; }
+  color: #444444; }
 
 /* Name.Tag */
 .highlight .nv {
@@ -801,7 +801,7 @@ ul.pagination {
 
 /* Literal.String.Doc */
 .highlight .s2 {
-  color: #d01040; }
+  color: #72B38A; }
 
 /* Literal.String.Double */
 .highlight .se {
@@ -852,6 +852,14 @@ ul.pagination {
   color: #009999; }
 
 /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark) {
+  .highlight .c1 {
+    color: #666666; }
+  .highlight .c {
+    color: #666666; }
+  .highlight .nt {
+    color: #BBBBBB; } }
+
 .pinglun {
   font-size: 20px;
   font-family: 'SmileySans';

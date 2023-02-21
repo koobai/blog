@@ -64,59 +64,59 @@ cat ~/.ssh/id_rsa.pub
 
 **4.** 打开宝塔面板商店，安装WebHook插件--添加执行脚本 (复制以下代码)。其中"gitHttp为需同步的github仓库地址"，"gh-pages"为仓库分支名称。
 
-```yml
-    #!/bin/bash
-    echo ""
-    #输出当前时间
-    date --date='0 days ago' "+%Y-%m-%d %H:%M:%S"
-    echo "Start"
-    #git分支名称
-    branch="gh-pages"
-    #git项目路径
-    gitPath="/www/wwwroot/$1"
-    #git 仓库地址
-    gitHttp="git@github.com:koobai/koobai.github.io.git"
-    echo "Web站点路径：$gitPath"
-    #判断项目路径是否存在
-    if [ -d "$gitPath" ]; then
-            cd $gitPath
-            #判断是否存在git目录
-            if [ ! -d ".git" ]; then
-                    echo "在该目录下克隆 git"
-                    sudo git clone $gitHttp gittemp 
-                    sudo mv gittemp/.git .
-                    sudo rm -rf gittemp
-            fi
-            echo "拉取最新的项目文件"
-            #sudo git reset --hard origin/$branch
-            git remote add origin $gitHttp
-            git branch --set-upstream-to=origin/$branch $branch
-            sudo git reset --hard origin/$branch
-            sudo git pull $gitHttp  2>&1  
-            echo "设置目录权限"
-            sudo chown -R www:www $gitPath
-            echo "End"
-            exit
-    else
-            echo "该项目路径不存在"
-                    echo "新建项目目录"
-            mkdir $gitPath
-            cd $gitPath
-            #判断是否存在git目录
-            if [ ! -d ".git" ]; then
-                    echo "在该目录下克隆 git"
-                    sudo git clone $gitHttp gittemp
-                    sudo mv gittemp/.git .
-                    sudo rm -rf gittemp
-            fi
-            echo "拉取最新的项目文件"
-            #sudo git reset --hard origin/$branch
-            sudo git pull gitHttp 2>&1
-            echo "设置目录权限"
-            sudo chown -R www:www $gitPath
-            echo "End"
-            exit
-    fi
+```script
+#!/bin/bash
+echo ""
+#输出当前时间
+date --date='0 days ago' "+%Y-%m-%d %H:%M:%S"
+echo "Start"
+#git分支名称
+branch="gh-pages"
+#git项目路径
+gitPath="/www/wwwroot/$1"
+#git 仓库地址
+gitHttp="git@github.com:koobai/koobai.github.io.git"
+echo "Web站点路径：$gitPath"
+#判断项目路径是否存在
+if [ -d "$gitPath" ]; then
+        cd $gitPath
+        #判断是否存在git目录
+        if [ ! -d ".git" ]; then
+                echo "在该目录下克隆 git"
+                sudo git clone $gitHttp gittemp 
+                sudo mv gittemp/.git .
+                sudo rm -rf gittemp
+        fi
+        echo "拉取最新的项目文件"
+        #sudo git reset --hard origin/$branch
+        git remote add origin $gitHttp
+        git branch --set-upstream-to=origin/$branch $branch
+        sudo git reset --hard origin/$branch
+        sudo git pull $gitHttp  2>&1  
+        echo "设置目录权限"
+        sudo chown -R www:www $gitPath
+        echo "End"
+        exit
+else
+        echo "该项目路径不存在"
+                echo "新建项目目录"
+        mkdir $gitPath
+        cd $gitPath
+        #判断是否存在git目录
+        if [ ! -d ".git" ]; then
+                echo "在该目录下克隆 git"
+                sudo git clone $gitHttp gittemp
+                sudo mv gittemp/.git .
+                sudo rm -rf gittemp
+        fi
+        echo "拉取最新的项目文件"
+        #sudo git reset --hard origin/$branch
+        sudo git pull gitHttp 2>&1
+        echo "设置目录权限"
+        sudo chown -R www:www $gitPath
+        echo "End"
+        exit
+fi
 ```
 **5.** 查看WebHook插件密钥，复制密钥地址。添加到Github需同步的仓库--Settings--Webhooks--Add webhook。其中Content type选择application/json。
 
@@ -141,6 +141,8 @@ git pull origin gh-pages
 
 至此，步骤全部完成。当本地提交新文件到Github hugo源码 main 分支，就会自动触发（hugo生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是vercel或cloudflare服务，当hugo源码更新的时候也会自动触发构建更新。
 
-详细步骤参考资料：<a href="https://juejin.cn/post/6974203582602018829" target="_blank">GitHub+webHook实现项目代码自动更新 </a>
+详细步骤参考资料：<br />
+<a href="https://juejin.cn/post/6974203582602018829" target="_blank">GitHub+webHook实现项目代码自动更新 </a><br />
+<a href="https://cloud.tencent.com/developer/article/2207775?areaSource=&traceId=" target="_blank">宝塔利用 Git + WebHook 实现与码云同步 </a>
 
 **题外**: 由于使用了轻量服务器，原先备案过的域名也需要重新接入备案。整个流程下来发现，现在备案审核速度是相当的快，必须点个赞。周一提交服务商，周二服务商提交管理局，周三审核通过。周三上午提交公安网安，下午审核通过。
