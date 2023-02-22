@@ -1051,6 +1051,11 @@ img[atk-emoticon] {
   font-size: 12px;
   border-radius: 20px; }
 
+.pagetitle {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 10px; }
+
 @media (prefers-color-scheme: dark) {
   .appquanju {
     background-color: #242021; }
@@ -1088,7 +1093,7 @@ img[atk-emoticon] {
 .bankuai {
   background-color: var(--bankuai-color);
   border-radius: 15px;
-  margin-bottom: 15px;
+  margin-top: 15px;
   padding: 3%;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
@@ -1132,20 +1137,22 @@ img[atk-emoticon] {
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .quanju {
-    display: flow-root;
+    font-size: 0;
     width: 106%; }
   .bankuai {
-    float: left;
+    display: inline-block;
+    vertical-align: top;
     width: 40%;
     margin-right: 15px;
     height: 400px; } }
 
 @media (min-width: 900px) {
   .quanju {
-    display: flow-root;
+    font-size: 0;
     width: 106%; }
   .bankuai {
-    float: left;
+    display: inline-block;
+    vertical-align: top;
     width: 24.3%;
     margin-right: 15px;
     height: 390px; }
