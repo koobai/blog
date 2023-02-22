@@ -992,17 +992,21 @@ img[atk-emoticon] {
     color: #999 !important; } }
 
 .appquanju {
-  display: flex;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
+  border-radius: 15px;
   align-items: center;
-  margin-top: 30px; }
+  background-color: #FFF;
+  padding: 20px;
+  margin-top: 15px; }
+
+.appquanju:hover {
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale3d(1.01, 1.01, 1.01); }
 
 .appimg img {
   width: 100px;
-  margin-right: 25px;
-  margin-top: 10px; }
-
-.appwenben {
-  width: 90%; }
+  margin-right: 15px; }
 
 .apptitle {
   color: #bb2649;
@@ -1021,21 +1025,24 @@ img[atk-emoticon] {
   padding: 6px 10px;
   text-align: center;
   font-size: 12px;
-  border-radius: 20px; }
+  border-radius: 20px;
+  margin-right: 4px; }
 
 .ios {
   background-color: #A6D2FF;
   padding: 6px 10px;
   text-align: center;
   font-size: 12px;
-  border-radius: 20px; }
+  border-radius: 20px;
+  margin-right: 4px; }
 
 .tvos {
   background-color: #FFB6C2;
   padding: 6px 10px;
   text-align: center;
   font-size: 12px;
-  border-radius: 20px; }
+  border-radius: 20px;
+  margin-right: 4px; }
 
 .web {
   background-color: #CEC6FF;
@@ -1045,6 +1052,8 @@ img[atk-emoticon] {
   border-radius: 20px; }
 
 @media (prefers-color-scheme: dark) {
+  .appquanju {
+    background-color: #242021; }
   .macos, .ios, .tvos, .web {
     color: #111111; }
   .macos {
@@ -1055,6 +1064,26 @@ img[atk-emoticon] {
     background: #9B656E; }
   .web {
     background: #685FA0; } }
+
+@media (max-width: 900px) {
+  .appquanju {
+    display: flex; } }
+
+@media (min-width: 900px) {
+  .appdquanjudiv {
+    width: 104%;
+    font-size: 0; }
+  .appquanju {
+    display: inline-block;
+    vertical-align: top;
+    width: 43%;
+    margin-right: 15px;
+    height: 140px; }
+  .appimg img {
+    float: left; }
+  .appwenben {
+    overflow: hidden;
+    padding-bottom: 8px; } }
 
 .bankuai {
   background-color: var(--bankuai-color);
