@@ -31,7 +31,7 @@ ul.pagination {
       }
     }
     a {
-      padding: 9px 13px;
+      padding: 6px 13px;
       display: block;
       color: var(--highlight-color);
       text-decoration: none;
@@ -58,4 +58,9 @@ ul.pagination {
       vertical-align: middle;
     }
   }
+}
+
+.pagination-link{
+    font-family: var(--font-family-code);
+    font-size: 14px;
 }
