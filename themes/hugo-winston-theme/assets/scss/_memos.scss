@@ -7,7 +7,7 @@
 }
 .bb-timeline ul li, .diaoyong{
   list-style-type:none;
-  margin-bottom:20px;
+  margin-top: 20px;
 }
 .bb-timeline ul li .bb-div, .diaoyong{
   background: #FFFFFF !important;
@@ -33,9 +33,9 @@
   border: none;
   display:grid;
   margin: auto;
+  margin-top: 20px;
   border-radius:10px;
   color: #BB2649;
-  margin-bottom: 60px;
   font-size: 18px;
   font-family: var(--font-family-teshu);
 }
