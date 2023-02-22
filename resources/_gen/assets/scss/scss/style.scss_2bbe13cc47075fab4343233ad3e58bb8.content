@@ -1046,7 +1046,8 @@ img[atk-emoticon] {
 
 @media (max-width: 900px) {
   .appquanju {
-    display: flex; } }
+    display: flex;
+    padding-bottom: 28px; } }
 
 @media (min-width: 900px) {
   .appdquanjudiv {
