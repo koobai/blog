@@ -10,10 +10,18 @@
   }
   a.header-logo {
     font-family: var(--font-family-teshu);
-    margin-right: 30px;
+    padding-top: 4px;
   }
 }
-
+.header-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid #1A1718;
+  vertical-align: middle;
+  margin-right: 6px;
+  margin-top: -4px;
+}
 
 .hamburger-trigger {
   height: 30px;
