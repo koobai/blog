@@ -25,39 +25,17 @@
 }
 .appnote{
   font-size: 16px;
-  margin-bottom: 8px;
-  line-height: 1.6;
+  margin-bottom: 10px;
+  line-height: 1.5;
 }
 .macos{
-  background-color:#FFCF47;
+  background-color:#F2F2F2;
   padding: 6px 10px;
   text-align: center;
   font-size: 12px;
   border-radius:20px;
   margin-right: 4px;
-}
-.ios{
-  background-color:#A6D2FF;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius:20px;
-  margin-right: 4px;
-}
-.tvos{
-  background-color:#FFB6C2;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius:20px;
-  margin-right: 4px;
-}
-.web{
-  background-color:#CEC6FF;
-  padding: 6px 10px;
-  text-align: center;
-  font-size: 12px;
-  border-radius:20px;
+  color: #999;
 }
 
 .pagetitle{
@@ -71,19 +49,9 @@
 .appquanju{
   background-color: #242021;
 }
-.macos,.ios,.tvos,.web{
-  color: #111111
-}  
 .macos{
-  background:#9A7C27;
-}
-.ios{
-  background:#3C6A98;
-}
-.tvos{
-  background:#9B656E;
-}
-.web{background:#685FA0;
+  background-color:#332D2F;
+  color: #666;
 }
 }
 
@@ -108,7 +76,7 @@
   vertical-align: top;
   width: 43%;
   margin-right: 15px;
-  height: 140px;
+  height: 135px;
 
 }
 .appimg img{
