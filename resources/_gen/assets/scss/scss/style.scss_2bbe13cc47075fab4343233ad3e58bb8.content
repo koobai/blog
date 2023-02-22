@@ -89,10 +89,8 @@ h1, h2, h3 {
       transform: translate(-50%, -50%) rotate(-45deg); }
 
 .footer {
-  margin-top: 10px; }
-  @media (min-width: 767px) {
-    .footer {
-      padding-top: 10px; } }
+  margin-top: 40px; }
+
 .social-icon {
   margin-right: 16px;
   font-size: 12px; }
@@ -427,7 +425,7 @@ ul.pagination {
       ul.pagination li.pagination-item-current a {
         color: white; }
     ul.pagination li a {
-      padding: 9px 13px;
+      padding: 6px 13px;
       display: block;
       color: var(--highlight-color);
       text-decoration: none; }
@@ -447,6 +445,10 @@ ul.pagination {
       line-height: 10px;
       margin-bottom: 2px;
       vertical-align: middle; }
+
+.pagination-link {
+  font-family: var(--font-family-code);
+  font-size: 14px; }
 
 .menu-main {
   display: none; }
@@ -1174,8 +1176,9 @@ img[atk-emoticon] {
   color: #444; }
 
 .page-time {
-  padding: 12px;
-  float: left; }
+  padding: 11px;
+  float: left;
+  font-family: var(--font-family-code); }
 
 @media (prefers-color-scheme: dark) {
   .tag, .page-time {

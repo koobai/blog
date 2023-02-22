@@ -1,8 +1,5 @@
 .footer {
-    margin-top: 10px;
-    @include breakpoint('small') {
-      padding-top: 10px;
-    }
+    margin-top: 40px;
   }
   
   .social-icon {
