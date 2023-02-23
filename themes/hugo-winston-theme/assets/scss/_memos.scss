@@ -5,17 +5,24 @@
   margin:0;
   padding:0;
 }
-.bb-timeline ul li, .diaoyong{
+.bb-timeline ul li {
   list-style-type:none;
   margin-top: 20px;
 }
+
 .bb-timeline ul li .bb-div, .diaoyong{
   background: #FFFFFF !important;
   /* border: 1px solid #eaeaea; */
   padding: 20px; 
-  border-radius:15px;
   box-shadow: 2px 4px 12px rgba(0,0,0,.08);
   transition: all .3s cubic-bezier(0,0,.5,1);
+}
+.bb-timeline ul li .bb-div{
+  border-radius:15px;
+}
+.diaoyong{
+  border-radius:5px;
+  margin-top: -5px;
 }
 .bb-timeline ul li .bb-div:hover, .diaoyong:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.16);
