@@ -1694,7 +1694,7 @@ figcaption p {
 .esc_window {
   float: left;
   height: 44px;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 44px;
   color: #fff;
   opacity: .75;
