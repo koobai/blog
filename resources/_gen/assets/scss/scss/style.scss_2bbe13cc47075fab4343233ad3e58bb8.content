@@ -1320,7 +1320,7 @@ img[atk-emoticon] {
   margin: 0;
   padding: 0; }
 
-.bb-timeline ul li, .diaoyong {
+.bb-timeline ul li {
   list-style-type: none;
   margin-top: 20px; }
 
@@ -1328,9 +1328,15 @@ img[atk-emoticon] {
   background: #FFFFFF !important;
   /* border: 1px solid #eaeaea; */
   padding: 20px;
-  border-radius: 15px;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+
+.bb-timeline ul li .bb-div {
+  border-radius: 15px; }
+
+.diaoyong {
+  border-radius: 5px;
+  margin-top: -5px; }
 
 .bb-timeline ul li .bb-div:hover, .diaoyong:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
@@ -1524,6 +1530,205 @@ img[atk-emoticon] {
     background: #242021; }
   .bb-timeline ul li .datatime, .item, .datakoobai {
     color: #666; } }
+
+/*
+Put this file in /static/css/hugo-easy-gallery.css
+安装教程
+Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
+*/
+/*
+Grid Layout Styles
+*/
+.gallery {
+  overflow: hidden;
+  margin: 0 auto !important;
+  max-width: 900px; }
+
+.gallery .box {
+  float: left;
+  position: relative;
+  margin-top: -46px;
+  /* Default: 1 tile wide */ }
+
+@media (max-width: 700px) {
+  /* Tablet view: 2 tiles */
+  .gallery .box {
+    width: 50%;
+    padding-bottom: 50%; } }
+
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  /* Small desktop / ipad view: 3 tiles */
+  .gallery .box {
+    width: 25%;
+    padding-bottom: 30%; } }
+
+@media (min-width: 900px) {
+  /* Medium desktop: 4 tiles */
+  .gallery .box {
+    width: 25%;
+    padding-bottom: 30%; } }
+
+/*
+Transition styles
+*/
+.gallery.hover-transition figure,
+.gallery.hover-effect-zoom .img,
+.gallery:not(.caption-effect-appear) figcaption,
+.fancy-figure:not(.caption-effect-appear) figcaption {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; }
+
+/*
+figure styles
+*/
+figure {
+  position: relative;
+  /* purely to allow absolution positioning of figcaption */
+  overflow: hidden; }
+
+.gallery figure {
+  position: absolute;
+  left: 0;
+  right: 0px;
+  top: 0;
+  bottom: 0; }
+
+.content figure {
+  margin: 2.1rem 0.2rem 1rem 0 !important; }
+
+.gallery.hover-effect-grow figure:hover {
+  transform: scale(1.05); }
+
+.gallery.hover-effect-shrink figure:hover {
+  transform: scale(0.95); }
+
+.gallery.hover-effect-slidedown figure:hover {
+  transform: translateY(5px); }
+
+.gallery.hover-effect-slideup figure:hover {
+  transform: translateY(-5px); }
+
+/*
+img / a styles
+*/
+.gallery .img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat; }
+
+.gallery.hover-effect-zoom figure:hover .img {
+  transform: scale(1.05); }
+
+.gallery img {
+  display: none;
+  /* only show the img if not inside a gallery */ }
+
+figure a {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; }
+
+/*
+figcaption styles
+*/
+.gallery figcaption,
+.fancy-figure figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  color: #FFF;
+  text-align: center;
+  font-size: 75%;
+  /* change this if you want bigger text */
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  cursor: pointer; }
+
+.gallery.caption-position-none figcaption,
+.fancy-figure.caption-position-none figcaption {
+  display: none; }
+
+.gallery.caption-position-center figcaption,
+.fancy-figure.caption-position-center figcaption {
+  top: 0;
+  padding: 40% 5px; }
+
+.gallery.caption-position-bottom figcaption,
+.fancy-figure.caption-position-bottom figcaption {
+  padding: 2px; }
+
+.gallery.caption-effect-fade figure:not(:hover) figcaption,
+.gallery.caption-effect-appear figure:not(:hover) figcaption,
+.fancy-figure.caption-effect-fade figure:not(:hover) figcaption,
+.fancy-figure.caption-effect-appear figure:not(:hover) figcaption {
+  background: rgba(0, 0, 0, 0);
+  opacity: 0; }
+
+.gallery.caption-effect-slide.caption-position-bottom figure:not(:hover) figcaption,
+.fancy-figure.caption-effect-slide.caption-position-bottom figure:not(:hover) figcaption {
+  margin-bottom: -100%; }
+
+.gallery.caption-effect-slide.caption-position-center figure:not(:hover) figcaption,
+.fancy-figure.caption-effect-slide.caption-position-center figure:not(:hover) figcaption {
+  top: 100%; }
+
+figcaption p {
+  margin: auto;
+  /* override style in theme */
+  color: #FFF;
+  font-size: 14px !important; }
+
+.esc_window {
+  float: left;
+  height: 44px;
+  font-size: 13px;
+  line-height: 44px;
+  color: #fff;
+  opacity: .75;
+  padding: 0 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+.pswp__item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #000000 !important; }
+
+.pswp img {
+  max-width: none;
+  margin: 0px;
+  border-radius: 10px;
+  /* max-height: 85vh; */ }
+
+.pswp__caption__center {
+  text-align: center !important;
+  max-width: 790px !important;
+  margin: 0 auto !important;
+  font-size: 16px !important;
+  padding: 10px;
+  line-height: 25px !important;
+  color: #CCC; }
+
+@media (prefers-color-scheme: dark) {
+  .gallery .img {
+    filter: brightness(0.8) contrast(1.2); } }
 
 @font-face {
   font-family: SmileySans;
