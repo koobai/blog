@@ -196,7 +196,6 @@ figcaption p {
     /* max-height: 85vh; */
 }
 
-
 .pswp__caption__center {
     text-align:center !important;
     max-width: 790px !important;
@@ -211,8 +210,4 @@ figcaption p {
 .gallery .img {
     filter: brightness(0.8) contrast(1.2); 
 }
-
 }
-
-
-
