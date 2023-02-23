@@ -4,10 +4,10 @@ function loadCssCode(code){var style=document.createElement('style');style.type=
 var allCSS=""
 loadCssCode(allCSS);var limit=bbMemo.limit
 var memos=bbMemo.memos
-var page=1,offset=0,nextLength=0,nextDom='';var bbDom=document.querySelector(bbMemo.domId);var load='<div class="bb-load"><button class="load-btn button-load">加载中</button></div>'
+var page=1,offset=0,nextLength=0,nextDom='';var bbDom=document.querySelector(bbMemo.domId);var load='<div class="bb-load"><button class="load-btn button-load">努力加载中...，如遇等待时间过长请刷新页面</button></div>'
 if(bbDom){getFirstList()
 meNums()
-var btn=document.querySelector("button.button-load");btn.addEventListener("click",function(){btn.textContent='加载中';updateHTMl(nextDom)
+var btn=document.querySelector("button.button-load");btn.addEventListener("click",function(){btn.textContent='努力加载中...，如遇等待时间过长请刷新页面';updateHTMl(nextDom)
 if(nextLength<limit){document.querySelector("button.button-load").remove()
 return}
 getNextList()});}
@@ -42,7 +42,7 @@ var bbBefore="<section class='bb-timeline'><ul class='bb-list-ul'>"
 var bbAfter="</ul></section>"
 resultAll=bbBefore+result+bbAfter
 bbDom.insertAdjacentHTML('beforeend',resultAll);fetchDB()
-document.querySelector('button.button-load').textContent='加载更多';window.ViewImage&&ViewImage.init('.datacont img')
+document.querySelector('button.button-load').textContent='加载更多唠叨';window.ViewImage&&ViewImage.init('.datacont img')
 window.Lately&&Lately.init({target:'.datatime'});}
 function fetchDB(){var dbAPI="https://douban.edui.fun/";var dbA=document.querySelectorAll(".bb-timeline a[href*='douban.com/subject/']:not([rel='noreferrer'])")||'';if(dbA){for(var i=0;i<dbA.length;i++){_this=dbA[i]
 var dbHref=_this.href

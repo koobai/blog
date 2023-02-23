@@ -1349,18 +1349,17 @@ img[atk-emoticon] {
 
 .bb-load button {
   background: #FFFFFF;
-  width: 200px;
-  letter-spacing: 1rem;
-  padding: 15px;
+  padding: 10px 30px 10px 30px;
   cursor: pointer;
   border: none;
   display: grid;
-  margin: auto;
   margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #BB2649;
-  font-size: 18px;
-  font-family: var(--font-family-teshu); }
+  font-size: 16px; }
+
+.bb-load button:hover {
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
 
 .diaoyongnr {
   font-size: 16px;
