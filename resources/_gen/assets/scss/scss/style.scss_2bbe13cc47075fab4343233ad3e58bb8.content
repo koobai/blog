@@ -1154,19 +1154,14 @@ img[atk-emoticon] {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.4); } }
 
 /*标签云*/
-@media (min-width: 700px) {
-  .terms-tags {
-    display: flex;
-    justify-content: center;
-    align-items: center; }
-  .terms-tags li {
-    margin: 20px; } }
-
-@media (max-width: 700px) {
-  .terms-tags {
-    text-align: center; }
-  .terms-tags li {
-    margin: 20px; } }
+.terms-tags li {
+  margin: 6px;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 8px;
+  align-items: center;
+  padding: 10px;
+  background-color: #FFF; }
 
 /*文章页标签*/
 .page-tag {
@@ -1197,7 +1192,9 @@ img[atk-emoticon] {
     background: #242021 !important;
     color: #BBBBBB !important; }
   .tag a {
-    color: #BBBBBB !important; } }
+    color: #BBBBBB !important; }
+  .terms-tags li {
+    background-color: #242021; } }
 
 .fIuTG {
   display: flex;
