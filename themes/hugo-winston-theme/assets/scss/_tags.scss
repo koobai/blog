@@ -1,34 +1,13 @@
 /*标签云*/
-
-// 页面宽度大于900样式
-
-@media (min-width:700px){
-.terms-tags {
-    display: flex;
-    justify-content: center; 
+.terms-tags li {
+    margin: 6px;
+    display: inline-block;
+    vertical-align: top;
+    border-radius:8px;
     align-items: center;
-
+    padding: 10px;
+    background-color: #FFF;
 }
-
-.terms-tags li {
-    margin: 20px;
-}
-}
-
-// 页面宽度小于900样式
-
-@media (max-width:700px){
-
-.terms-tags {
-text-align: center;
-}
-
-.terms-tags li {
-    margin: 20px;
-}
-
-}
-
 
 /*文章页标签*/
 .page-tag {
@@ -67,5 +46,8 @@ text-align: center;
   }
 .tag a{
   color: #BBBBBB !important;
+}
+.terms-tags li {
+  background-color: #242021;
 }
 }
