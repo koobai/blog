@@ -23,14 +23,14 @@ Grid Layout Styles
     /* Tablet view: 2 tiles */
     .gallery .box {
       width: 33.3%;
-      padding-bottom: 42%;
+      padding-bottom: 45%;
     }
 }
 @media screen and (min-width:700px) and (max-width:900px){
     /* Small desktop / ipad view: 3 tiles */
     .gallery .box {
       width: 33.3%;
-      padding-bottom: 38%;
+      padding-bottom: 30%;
     }
 }
 @media (min-width:900px){
@@ -39,9 +39,6 @@ Grid Layout Styles
       width: 16.6%;
       padding-bottom: 23%;
    }
-.gallery {
-    width: 100.5%;
-}
 }
 
 /*
