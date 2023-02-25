@@ -11,7 +11,7 @@ Grid Layout Styles
 .gallery {
     overflow: hidden;
     margin: 0 auto !important;
-    max-width: 900px;
+    width: 100.5%;
 }
 .gallery .box {
     float: left;
@@ -22,23 +22,26 @@ Grid Layout Styles
 @media (max-width:700px){
     /* Tablet view: 2 tiles */
     .gallery .box {
-        width: 50%;
-        padding-bottom: 50%;
+      width: 33.3%;
+      padding-bottom: 42%;
     }
 }
 @media screen and (min-width:700px) and (max-width:900px){
     /* Small desktop / ipad view: 3 tiles */
     .gallery .box {
-      width: 25%;
-      padding-bottom: 30%;
+      width: 33.3%;
+      padding-bottom: 38%;
     }
 }
 @media (min-width:900px){
    /* Medium desktop: 4 tiles */
    .gallery .box {
-      width: 25%;
-      padding-bottom: 30%;
+      width: 16.6%;
+      padding-bottom: 23%;
    }
+.gallery {
+    width: 100.5%;
+}
 }
 
 /*
@@ -68,7 +71,7 @@ figure {
     bottom: 0;
 }
 .content figure {
-  margin: 2.1rem 0.2rem 1rem 0 !important;
+  margin: 2rem 0.15rem 1rem 0 !important;
 }
 
 .gallery.hover-effect-grow figure:hover {
