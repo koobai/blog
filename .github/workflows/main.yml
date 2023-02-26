@@ -39,11 +39,3 @@ jobs:
 
       - name: Upload to COS
         run: coscmd upload -rfs --delete public/ /
-
-      - name: Flush CDN
-        env:
-          SECRET_ID: ${{ secrets.SecretId }}
-          SECRET_KEY: ${{ secrets.SecretKey }}
-        run: |
-          pip install --upgrade tencentcloud-sdk-python
-          python flush-dns.py -i $SECRET_ID -k $SECRET_KEY
