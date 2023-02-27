@@ -1,10 +1,11 @@
 ---
 title: "Github Action 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"
 date: 2023-02-20
+slug: hugo_action_webhooks
 tags: ['博客','折腾','Hugo']
 description: '折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。'
-image: https://img.koobai.com/article/webhooks.svg
 ---
+![webhooks](https://img.koobai.com/article/webhooks.svg)
 
 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。
 
@@ -60,9 +61,10 @@ ssh-keygen -t rsa -C "你的@email.com"
 # 查看git公钥
 cat ~/.ssh/id_rsa.pub
 ```
-**3.** 添加公钥到到Github：头像--Settings--SSH and GPG keys--New SSH key
 
-**4.** 打开宝塔面板商店，安装WebHook插件--添加执行脚本 (复制以下代码)。其中"gitHttp为需同步的github仓库地址"，"gh-pages"为仓库分支名称。
+**3.** 添加公钥到到 Github：头像--Settings--SSH and GPG keys--New SSH key
+
+**4.** 打开宝塔面板商店，安装 WebHook 插件--添加执行脚本 (复制以下代码)。其中"gitHttp 为需同步的 github 仓库地址"，"gh-pages"为仓库分支名称。
 
 ```script
 #!/bin/bash
@@ -83,7 +85,7 @@ if [ -d "$gitPath" ]; then
         #判断是否存在git目录
         if [ ! -d ".git" ]; then
                 echo "在该目录下克隆 git"
-                sudo git clone $gitHttp gittemp 
+                sudo git clone $gitHttp gittemp
                 sudo mv gittemp/.git .
                 sudo rm -rf gittemp
         fi
@@ -92,7 +94,7 @@ if [ -d "$gitPath" ]; then
         git remote add origin $gitHttp
         git branch --set-upstream-to=origin/$branch $branch
         sudo git reset --hard origin/$branch
-        sudo git pull $gitHttp  2>&1  
+        sudo git pull $gitHttp  2>&1
         echo "设置目录权限"
         sudo chown -R www:www $gitPath
         echo "End"
@@ -118,12 +120,15 @@ else
         exit
 fi
 ```
-**5.** 查看WebHook插件密钥，复制密钥地址。添加到Github需同步的仓库--Settings--Webhooks--Add webhook。其中Content type选择application/json。
+
+**5.** 查看 WebHook 插件密钥，复制密钥地址。添加到 Github 需同步的仓库--Settings--Webhooks--Add webhook。其中 Content type 选择 application/json。
 
 ```
 格式如：https://面板地址:面板端口/hook?access_key=密钥&param=需同步到的目录名称
 ```
+
 **6.** 初始化宝塔网站目录
+
 ```sh
 cd 网站目录
 
@@ -139,10 +144,10 @@ git pull origin gh-pages
 # 等待完成
 ```
 
-至此，步骤全部完成。当本地提交新文件到Github hugo源码 main 分支，就会自动触发（hugo生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是vercel或cloudflare服务，当hugo源码更新的时候也会自动触发构建更新。
+至此，步骤全部完成。当本地提交新文件到 Github hugo 源码 main 分支，就会自动触发（hugo 生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是 vercel 或 cloudflare 服务，当 hugo 源码更新的时候也会自动触发构建更新。
 
 详细步骤参考资料：<br />
-<a href="https://juejin.cn/post/6974203582602018829" target="_blank">GitHub+webHook实现项目代码自动更新 </a><br />
+<a href="https://juejin.cn/post/6974203582602018829" target="_blank">GitHub+webHook 实现项目代码自动更新 </a><br />
 <a href="https://cloud.tencent.com/developer/article/2207775?areaSource=&traceId=" target="_blank">宝塔利用 Git + WebHook 实现与码云同步 </a>
 
 **题外**: 由于使用了轻量服务器，原先备案过的域名也需要重新接入备案。整个流程下来发现，现在备案审核速度是相当的快，必须点个赞。周一提交服务商，周二服务商提交管理局，周三审核通过。周三上午提交公安网安，下午审核通过。
