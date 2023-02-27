@@ -28,8 +28,6 @@ enableRobotsTXT = true
   textColor = "#444444"
   dotColor = "#BB2649"
 
-
-
 [permalinks]
   posts = '/:slug/'
 
