@@ -28,6 +28,11 @@ enableRobotsTXT = true
   textColor = "#444444"
   dotColor = "#BB2649"
 
+
+
+[permalinks]
+  posts = '/:slug/'
+
 [params.artalk]
     server="https://c.koobai.com"
     site="Koobai 空白生活"
