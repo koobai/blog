@@ -94,11 +94,11 @@ ul {
     margin-bottom: 20px;
     li {
       font-size: 18px;
-      line-height: 20px;
+      line-height: 1.6;
       margin-bottom: 10px;
-      margin-left: 0;
+      margin-left: 20px;
       @include breakpoint('small') {
-        margin-left: 20px;
+        margin-left: 0;
       }
     }
     @include breakpoint('small') {

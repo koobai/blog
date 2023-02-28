@@ -12,11 +12,13 @@ description: '博客逐步搭建完善，更新了日常使用的App、硬件页
 
 ### 准备工作：
 
-1.到腾讯云访问管理——访问密钥——API 密钥管理中，新建一个账户：访问方式改为"编程访问"，用户权限添加"QcloudCOSDataFullControl、 QcloudCDNFullAccess"。完成之后将生成的 SecretId、SecretKey 复制保存。<br /> 2.到 Github 新建一个仓库(私有公共都行)，把自己 hugo 生成的站点源文件(不是 public 下文件)同步过去。<br /> 3.在刚创建的仓库——Settings——Secrets and variables——Actions，新建 SecretId、SecretKey、Bucket、 Region 四个密钥。其中 SecretId、SecretKey 为上面复制保存的，Bucket(存储桶名称)、 Region(所属地域 )在 COS 中存储桶列表中获取。
+1. 到腾讯云访问管理——访问密钥——API 密钥管理中，新建一个账户：访问方式改为"编程访问"，用户权限添加"QcloudCOSDataFullControl、 QcloudCDNFullAccess"。完成之后将生成的 SecretId、SecretKey 复制保存。
+2. 到 Github 新建一个仓库(私有公共都行)，把自己 hugo 生成的站点源文件(不是 public 下文件)同步过去。
+3. 在刚创建的仓库——Settings——Secrets and variables——Actions，新建 SecretId、SecretKey、Bucket、 Region 四个密钥。其中 SecretId、SecretKey 为上面复制保存的，Bucket(存储桶名称)、 Region(所属地域 )在 COS 中存储桶列表中获取。
 
 ### 部署:
 
-1.在 Github 仓库根目录，新建".github/workflows"文件夹，并新建 xxx.yml 文件，复制以下代码到文件里。作用：借助 Github Action 实现自动部署。
+1. 在 Github 仓库根目录，新建".github/workflows"文件夹，并新建 xxx.yml 文件，复制以下代码到文件里。作用：借助 Github Action 实现自动部署。
 
 ```yml
 name: Build and deploy
@@ -81,7 +83,7 @@ jobs:
 
 ```
 
-2.在 Github 仓库根目录，新建 flush-dns.py 文件，复制以下代码到文件里，并将里面的"koobai.com"域名修改成自己的 CDN 加速域名。作用：通过 Python 脚本实现刷新 CDN 缓存，详细参数可参考<a href="https://console.cloud.tencent.com/api/explorer?Product=cdn&Version=2018-06-06&Action=PurgePathCache" target="_blank">腾讯的调用 aip 文档</a>。
+2. 在 Github 仓库根目录，新建 flush-dns.py 文件，复制以下代码到文件里，并将里面的"koobai.com"域名修改成自己的 CDN 加速域名。作用：通过 Python 脚本实现刷新 CDN 缓存，详细参数可参考<a href="https://console.cloud.tencent.com/api/explorer?Product=cdn&Version=2018-06-06&Action=PurgePathCache" target="_blank">腾讯的调用 aip 文档</a>。
 
 ```py
 import json
@@ -124,9 +126,9 @@ except TencentCloudSDKException as err:
 
 ### 查看是否部署成功：
 
-1.Github 仓库 Actions 下，查看构建记录<br />
-2.COS 存储桶下的文件变动<br />
-3.CDN 刷新预热下，操作记录——目录刷新
+1. Github 仓库 Actions 下，查看构建记录
+2. COS 存储桶下的文件变动
+3. CDN 刷新预热下，操作记录——目录刷新
 
 ### 费用：
 
