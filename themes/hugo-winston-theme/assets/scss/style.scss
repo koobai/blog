@@ -1,9 +1,9 @@
 :root {
-  --font-family-heading: SmileySans, Helvetica,sans-serif; 
-  --font-family-paragraph: Helvetica, sans-serif;
-  --font-family-code: JetBrainsMono, Helvetica, sans-serif;
-  --font-family-monospace: monospace;
-  --font-family-teshu: SmileySans, Helvetica,sans-serif;
+  --font-family-heading: 'SmileySans','HarmonyOS_Regular',Helvetica,sans-serif; 
+  --font-family-paragraph: 'HarmonyOS_Regular', Helvetica, sans-serif;
+  --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
+  --font-family-monospace: 'HarmonyOS_Regular',monospace;
+  --font-family-teshu: 'SmileySans','HarmonyOS_Regular', Helvetica,sans-serif;
   --base-color: {{ .Site.Params.baseColor | default "#ffffff" }};
   --base-offset-color: {{ .Site.Params.baseOffsetColor | default "#eaeaea" }};
   --highlight-color: {{ .Site.Params.highlightColor | default "#7b16ff" }};
@@ -38,17 +38,19 @@ $breakpoints: (
 @import 'movies';
 @import 'memos';
 @import 'gallery';
+@import url('//s1.hdslb.com/bfs/static/jinkela/long/font/regular.css');
 
 @font-face {
   font-family: SmileySans;
+  font-display: swap;
   src: url('https://img.koobai.com/fonts/SmileySans-Oblique.ttf.woff2') format('woff2');
 }
 
 @font-face {
   font-family: JetBrainsMono;
+  font-display: swap;
   src: url('https://img.koobai.com/fonts/JetBrainsMono-Italic.woff2') format('woff2');
 }
-
 
 html, body {
   box-sizing: border-box;
