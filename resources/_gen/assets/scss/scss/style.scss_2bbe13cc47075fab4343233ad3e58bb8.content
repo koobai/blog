@@ -214,13 +214,13 @@ ul {
     .content ul li,
     .content ol li {
       font-size: 18px;
-      line-height: 20px;
+      line-height: 1.6;
       margin-bottom: 10px;
-      margin-left: 0; }
+      margin-left: 20px; }
       @media (min-width: 767px) {
         .content ul li,
         .content ol li {
-          margin-left: 20px; } }
+          margin-left: 0; } }
     @media (min-width: 767px) {
       .content ul,
       .content ol {
