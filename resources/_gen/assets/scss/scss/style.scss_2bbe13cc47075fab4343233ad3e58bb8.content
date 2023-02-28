@@ -140,8 +140,6 @@ a {
 h1,
 h2,
 h3 {
-  margin-top: 20px;
-  margin-bottom: 20px;
   color: var(--heading-color);
   font-family: var(--font-family-heading);
   font-weight: normal;
@@ -196,7 +194,7 @@ ul {
     font-size: 22px;
     line-height: 1.4;
     font-weight: normal;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
     letter-spacing: 0.5px; }
   .content ul {
@@ -295,14 +293,14 @@ ul {
     font-size: 40px;
     line-height: 50px;
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     font-weight: normal; }
     @media (min-width: 767px) {
       .intro h1 {
         width: 100%;
         font-size: 60px;
         line-height: 70px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         font-weight: normal; } }
     .intro h1 strong {
       color: var(--highlight-color); }
