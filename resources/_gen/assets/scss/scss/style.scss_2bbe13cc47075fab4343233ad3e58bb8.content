@@ -1,11 +1,11 @@
 @charset "UTF-8";
 @import url("//s1.hdslb.com/bfs/static/jinkela/long/font/regular.css");
 :root {
-  --font-family-heading: 'SmileySans','HarmonyOS_Regular',Helvetica,sans-serif;
+  --font-family-heading: 'SmileySans',Helvetica,sans-serif;
   --font-family-paragraph: 'HarmonyOS_Regular', Helvetica, sans-serif;
   --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
   --font-family-monospace: 'HarmonyOS_Regular',monospace;
-  --font-family-teshu: 'SmileySans','HarmonyOS_Regular', Helvetica,sans-serif;
+  --font-family-teshu: 'SmileySans',Helvetica,sans-serif;
   --base-color: var(--background-color);
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
@@ -165,7 +165,7 @@ ul {
   font-size: 18px; }
   .content p {
     font-size: 18px;
-    line-height: 1.8;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
@@ -372,7 +372,7 @@ ul {
         margin: 10px 0 -5px 0; } }
   .summary .summary-description {
     width: 100%;
-    line-height: 1.8; }
+    line-height: 1.6; }
 
 .author {
   margin-top: 30px;
@@ -887,6 +887,9 @@ ul.pagination {
   font-size: 16px !important;
   color: #444 !important; }
 
+.atk-content {
+  line-height: 1.5 !important; }
+
 .atk-avatar img {
   border-radius: 40px !important; }
 
@@ -1360,7 +1363,8 @@ img[atk-emoticon] {
 
 .diaoyongnr {
   font-size: 16px;
-  margin-top: 7px; }
+  margin-top: 7px;
+  line-height: 1.6; }
 
 .bb-timeline ul li .datatime, .item, .datakoobai {
   font-size: 14px;
@@ -1385,7 +1389,7 @@ img[atk-emoticon] {
 .bb-timeline ul li p {
   margin: 0;
   font-size: 18px;
-  line-height: 30px;
+  line-height: 1.6;
   margin: 0; }
 
 .bb-timeline pre p {
