@@ -9,8 +9,6 @@ a {
 h1,
 h2,
 h3 {
-  margin-top: 20px;
-  margin-bottom: 20px;
   color: var(--heading-color);
   font-family: var(--font-family-heading);
   font-weight:normal; 
@@ -73,7 +71,7 @@ ul {
     font-size: 22px;
     line-height: 1.4;
     font-weight:normal;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
     letter-spacing: 0.5px
   }
