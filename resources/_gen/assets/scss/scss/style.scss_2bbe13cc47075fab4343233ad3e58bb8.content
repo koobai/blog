@@ -1186,7 +1186,7 @@ img[atk-emoticon] {
   color: #444; }
 
 .page-time {
-  padding: 11px;
+  padding: 9px;
   float: left;
   font-family: var(--font-family-code); }
 
