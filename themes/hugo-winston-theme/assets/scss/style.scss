@@ -12,6 +12,8 @@
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
   --bankuai-color: #FFF;
   --background-color: #F4F4F4;
+  --text-content-color:#444;
+  --text-content-dark-color:#BBB;
 }
 $breakpoints: (
   'small': 767px,
@@ -91,10 +93,10 @@ pre {background: var(--bankuai-color);}
 @media (prefers-color-scheme: dark) {
 body {
     background: #1A1718;
-    color: #BBBBBB;
+    color: var(--text-content-dark-color);
 }
 p {
-  color: #BBBBBB;
+  color: var(--text-content-dark-color);
 }
 h1,
 h2,
@@ -108,7 +110,7 @@ h3 {
 .highlight {
 pre {
   background: #242021;
-  color: #BBBBBB;}
+  color: var(--text-content-dark-color);}
 }
 .highlight{background-color: #1A1718;}
 img {filter: brightness(0.8) contrast(1.2); }

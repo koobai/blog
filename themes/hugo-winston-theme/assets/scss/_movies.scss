@@ -46,13 +46,9 @@
   color:#BB2649;
 }
 
-.sc-bdnxRM{
-  
-}
-
 .dvtjjf,.sort-by-item{
   display:inline-block;
-  color:#444;
+  color:var(--text-content-color);
   text-decoration:none;
   padding: 0 20px 10px 0;
 }
@@ -78,7 +74,6 @@ color: #BB2649;
 .sc-hKFxyN img{
   width:100%!important;
   height:auto!important;
-  display:block!important;
   vertical-align:middle!important;
   border-radius:4px;
 }
@@ -123,7 +118,7 @@ color: #BB2649;
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .dvtjjf,.sort-by-item{
-  color:#BBB !important;
+  color:var(--text-content-dark-color) !important;
 }
 .sc-hint{
   color: #555;

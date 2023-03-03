@@ -28,13 +28,13 @@
   }
 }
 .read-more{
-  color: #444;
+  color: var(--text-content-color);
   font-family: var(--font-family-heading);
 }
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .read-more{
-    color: #BBB;
+    color: var(--text-content-dark-color);
   } 
 }
