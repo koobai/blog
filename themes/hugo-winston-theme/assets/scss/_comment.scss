@@ -12,7 +12,7 @@
 
 .atk-content p {
   font-size: 16px !important;
-  color: #444 !important;
+  color: var(--text-content-color) !important;
 }
 .atk-content{
   line-height: 1.5 !important;
@@ -21,7 +21,7 @@
   border-radius: 40px!important;
 }
 .atk-item.atk-nick{
-  color: #444 !important;
+  color: var(--text-content-color) !important;
   font-weight: bold;
 }
 .atk-item.atk-nick a{
@@ -107,19 +107,19 @@ img[atk-emoticon] {
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .pinglun{
-  color:#BBB;
+  color:var(--text-content-dark-color);
 }
 .atk-main-editor {
   background: #242021 !important;
   border: 1px solid var(--at-color-border)!important;
 }
 .atk-textarea {
-  color: #BBB!important;
+  color: var(--text-content-dark-color)!important;
   font-size: 15px;
   background: #242021 !important;
 }
 .atk-content, .atk-header {
-  color: #BBB !important;
+  color: var(--text-content-dark-color) !important;
 }
 .atk-ua {
   color: #666 !important;
@@ -138,7 +138,7 @@ img[atk-emoticon] {
   color: #666!important;
 }
 .atk-item.atk-nick{
-  color: #BBB!important;
+  color: var(--text-content-dark-color)!important;
 }
 .atk-send-btn {
   color: var(--highlight-color)!important;
@@ -146,7 +146,7 @@ img[atk-emoticon] {
   font-weight: bold;
 }
 .atk-pinned-badge {
-  color: #bbb!important;
+  color: var(--text-content-dark-color)!important;
   background: #666 !important;
 }
 .atk-reply-to {

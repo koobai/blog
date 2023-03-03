@@ -9,11 +9,13 @@
   --base-color: var(--background-color);
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
-  --heading-color: #1c1b1d;
-  --text-color: #444444;
+  --heading-color: #000;
+  --text-color: var(--text-content-color);
   --dot-color: #BB2649;
   --bankuai-color: #FFF;
-  --background-color: #F4F4F4; }
+  --background-color: #F4F4F4;
+  --text-content-color:#444;
+  --text-content-dark-color:#BBB; }
 
 body, html {
   margin: 0;
@@ -375,12 +377,12 @@ ul {
     line-height: 1.6; }
 
 .read-more {
-  color: #444;
+  color: var(--text-content-color);
   font-family: var(--font-family-heading); }
 
 @media (prefers-color-scheme: dark) {
   .read-more {
-    color: #BBB; } }
+    color: var(--text-content-dark-color); } }
 
 .author {
   margin-top: 30px;
@@ -893,7 +895,7 @@ ul.pagination {
 
 .atk-content p {
   font-size: 16px !important;
-  color: #444 !important; }
+  color: var(--text-content-color) !important; }
 
 .atk-content {
   line-height: 1.5 !important; }
@@ -902,7 +904,7 @@ ul.pagination {
   border-radius: 40px !important; }
 
 .atk-item.atk-nick {
-  color: #444 !important;
+  color: var(--text-content-color) !important;
   font-weight: bold; }
 
 .atk-item.atk-nick a {
@@ -978,16 +980,16 @@ img[atk-emoticon] {
 
 @media (prefers-color-scheme: dark) {
   .pinglun {
-    color: #BBB; }
+    color: var(--text-content-dark-color); }
   .atk-main-editor {
     background: #242021 !important;
     border: 1px solid var(--at-color-border) !important; }
   .atk-textarea {
-    color: #BBB !important;
+    color: var(--text-content-dark-color) !important;
     font-size: 15px;
     background: #242021 !important; }
   .atk-content, .atk-header {
-    color: #BBB !important; }
+    color: var(--text-content-dark-color) !important; }
   .atk-ua {
     color: #666 !important;
     background: #242021 !important; }
@@ -1002,13 +1004,13 @@ img[atk-emoticon] {
   .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
     color: #666 !important; }
   .atk-item.atk-nick {
-    color: #BBB !important; }
+    color: var(--text-content-dark-color) !important; }
   .atk-send-btn {
     color: var(--highlight-color) !important;
     background: #1A1718 !important;
     font-weight: bold; }
   .atk-pinned-badge {
-    color: #bbb !important;
+    color: var(--text-content-dark-color) !important;
     background: #666 !important; }
   .atk-reply-to {
     border-left: 3px solid #242021 !important; }
@@ -1183,7 +1185,7 @@ img[atk-emoticon] {
   margin: 0 10px 0 0;
   border-radius: 4px;
   background: var(--bankuai-color);
-  color: #444; }
+  color: var(--text-content-color); }
 
 .tag {
   display: flex;
@@ -1191,7 +1193,7 @@ img[atk-emoticon] {
   font-weight: bold; }
 
 .tag a {
-  color: #444; }
+  color: var(--text-content-color); }
 
 .page-time {
   padding: 9px;
@@ -1201,9 +1203,9 @@ img[atk-emoticon] {
 @media (prefers-color-scheme: dark) {
   .tag, .page-time {
     background: #242021 !important;
-    color: #BBBBBB !important; }
+    color: var(--text-content-dark-color) !important; }
   .tag a {
-    color: #BBBBBB !important; }
+    color: var(--text-content-dark-color) !important; }
   .terms-tags li {
     background-color: #242021; } }
 
@@ -1254,7 +1256,7 @@ img[atk-emoticon] {
 
 .dvtjjf, .sort-by-item {
   display: inline-block;
-  color: #444;
+  color: var(--text-content-color);
   text-decoration: none;
   padding: 0 20px 10px 0; }
 
@@ -1280,7 +1282,6 @@ img[atk-emoticon] {
 .sc-hKFxyN img {
   width: 100% !important;
   height: auto !important;
-  display: block !important;
   vertical-align: middle !important;
   border-radius: 4px; }
 
@@ -1305,7 +1306,7 @@ img[atk-emoticon] {
 
 @media (prefers-color-scheme: dark) {
   .dvtjjf, .sort-by-item {
-    color: #BBB !important; }
+    color: var(--text-content-dark-color) !important; }
   .sc-hint {
     color: #555; }
   .dvtjjf.active, .sort-by-item.active {
@@ -1784,9 +1785,9 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background: #1A1718;
-    color: #BBBBBB; }
+    color: var(--text-content-dark-color); }
   p {
-    color: #BBBBBB; }
+    color: var(--text-content-dark-color); }
   h1,
   h2,
   h3 {
@@ -1797,7 +1798,7 @@ body {
     color: #AAAAAA; }
   .highlight pre {
     background: #242021;
-    color: #BBBBBB; }
+    color: var(--text-content-dark-color); }
   .highlight {
     background-color: #1A1718; }
   img {
