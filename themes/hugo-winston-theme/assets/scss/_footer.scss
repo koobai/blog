@@ -16,10 +16,10 @@
     }
   }
 .footer-info{
-  font-size: 12px;
+  font-size: 11px;
   margin-top: 8px;
   line-height: 1.8em;
-  color: #999;
+  color: #666;
   }
 
 .footer-info img{
@@ -29,15 +29,15 @@
   margin-top: -2px;
 }
 .footer-info a{
-  color: #444;
+  color: #666;
 }
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info a{
-  color: #BBB;
+  color: #999;
 }
 .footer-info{
-  color: #777;
+  color: #999;
   }
 }
