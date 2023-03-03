@@ -10,7 +10,6 @@
   --base-offset-color: #eaeaea;
   --highlight-color: #BB2649;
   --heading-color: #000;
-  --text-color: var(--text-content-color);
   --dot-color: #BB2649;
   --bankuai-color: #FFF;
   --background-color: #F4F4F4;
@@ -149,7 +148,7 @@ h3 {
   font-display: swap; }
 
 p {
-  color: var(--text-color);
+  color: var(--text-content-color);
   font-family: var(--font-family-paragraph);
   font-size: 18px;
   line-height: 24px; }
@@ -1761,7 +1760,7 @@ html, body {
 body {
   background: var(--base-color);
   font-family: var(--font-family-paragraph);
-  color: var(--text-color);
+  color: var(--text-content-color);
   margin: 0;
   padding: 20px;
   overflow-x: hidden; }

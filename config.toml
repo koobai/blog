@@ -25,7 +25,6 @@ enableRobotsTXT = true
   baseColor = "var(--background-color)"
   baseOffsetColor = "#eaeaea"
   headingColor = "#000"
-  textColor = "var(--text-content-color)"
   dotColor = "#BB2649"
 
 [permalinks]
