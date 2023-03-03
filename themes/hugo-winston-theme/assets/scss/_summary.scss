@@ -27,3 +27,14 @@
     line-height: 1.6;
   }
 }
+.read-more{
+  color: #444;
+  font-family: var(--font-family-heading);
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .read-more{
+    color: #BBB;
+  } 
+}
