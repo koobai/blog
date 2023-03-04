@@ -16,8 +16,6 @@ enableRobotsTXT = true
 
 [params]
   twitter_handle = "@koobai"
-  showAuthorOnHomepage = true
-  showAuthorOnPosts = false
   showPostsOnHomepage = true
   addDot = true
   addFrame = false
