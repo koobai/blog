@@ -383,39 +383,6 @@ ul {
   .read-more {
     color: var(--text-content-dark-color); } }
 
-.author {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  color: var(--heading-color); }
-  .author img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: inline-block;
-    vertical-align: middle;
-    border: 2px solid var(--heading-color); }
-  .author .author-name {
-    display: inline-block;
-    vertical-align: middle;
-    font-family: var(--font-family-teshu);
-    margin-left: 5px; }
-  .author .author-date {
-    display: inline-block;
-    vertical-align: middle; }
-
-.author-large {
-  font-size: 20px; }
-  .author-large img {
-    width: 50px;
-    height: 50px; }
-  .author-large .author-name {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 5px; }
-  .author-large .author-title {
-    display: inline-block;
-    vertical-align: middle; }
-
 ul.pagination {
   display: flex;
   justify-content: center;
