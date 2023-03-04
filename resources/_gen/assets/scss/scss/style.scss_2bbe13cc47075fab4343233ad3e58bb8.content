@@ -1348,9 +1348,16 @@ img[atk-emoticon] {
   border-radius: 5px;
   margin-top: -5px; }
 
-.bb-timeline ul li .bb-div:hover, .diaoyong:hover {
+.bb-timeline ul li .bb-div:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale3d(1.01, 1.01, 1.01); }
+
+.triangle {
+  float: left;
+  border-width: 0 0 18px 18px;
+  border-style: solid;
+  border-color: transparent transparent transparent #BB2649;
+  position: relative; }
 
 .momos-sswrap {
   margin-bottom: 35px; }
@@ -1369,7 +1376,7 @@ img[atk-emoticon] {
 .bb-load button:hover {
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
 
-.diaoyongnr {
+.diaoyong_info {
   font-size: 16px;
   margin-top: 7px;
   line-height: 1.6; }
