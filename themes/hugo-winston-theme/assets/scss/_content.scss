@@ -1,5 +1,5 @@
 a {
-  color: var(--highlight-color);
+  color: #666;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
@@ -41,7 +41,7 @@ ul {
     margin-bottom: 15px;
   }
   strong {
-    color:  var(--highlight-color);
+    color:  var(--text-highlight-color);
   }
   h1 {
     font-size: 40px;
@@ -109,9 +109,14 @@ ul {
     text-decoration: underline;
     word-wrap:break-word;
     word-break: break-all;
+    text-decoration: none;
+    color: var(--text-highlight-color);
+    &:hover{
+      text-decoration: underline;
+    }
   }
   blockquote {
-    border-left: 5px solid var(--highlight-color);
+    border-left: 5px solid #666;
     margin: 30px 0;
     padding: 20px;
   }
@@ -177,18 +182,39 @@ ul {
   font-size:18px;
   margin-top:30px;
   padding-top:10px;
-  border-top:solid #BB2649 1px;
+  border-top:solid #d2d2d2 1px;
   display: flow-root; 
   line-height: 1.7em;
 }
-
+.previousnext a {
+  color: var(--text-highlight-color);
+}
 // 页面宽度大于900样式
-
 @media (min-width:900px){
+.previousnext{
+  font-size:18px;
+  margin-top:30px;
+  padding-top:10px;
+  border-top:solid #d2d2d2 1px;
+  display: flow-root; 
+  line-height: 1.7em;
+}
+  .previous,.next{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 45%;
+}
 .previous{
-  float: left;
+  float: left; 
 }
 .next{
-  float:right;  
+  float:right; 
 }
 }
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .previousnext{
+    border-top:solid #3d3d3d 1px;
+  }
+  }

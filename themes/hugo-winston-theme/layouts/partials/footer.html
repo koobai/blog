@@ -1,15 +1,4 @@
 <div class="footer">
-  {{ if .Site.Data.social.links }}
-  <div class="footer-social">
-    {{ range .Site.Data.social.links }}
-      <span class="social-icon social-icon-{{ .name | urlize }}">
-        <a href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener">
-          <img src="{{ .image | relURL }}" width="24" height="24" alt="{{ .name }}"/>
-        </a>
-      </span>
-    {{ end }}
-  </div>
-  {{ end }}
         <div class="footer-info">&copy; {{ now.Year }} <a href="{{ .Sites.First.Home.RelPermalink }}">空白生活</a>. 
         Powered by
         <a href="https://gohugo.io/" target="_blank">Hugo</a>, 
@@ -21,6 +10,20 @@
         <img src="https://img.koobai.com/beian.png" alt="备案号" /> <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343">浙公网安备 33011302000343 号</a>
       </div>
     </div>
+
+    {{ if .Site.Data.social.links }}
+    <div class="footer-social">
+      {{ range .Site.Data.social.links }}
+        <span class="social-icon social-icon-{{ .name | urlize }}">
+          <a href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener">
+            <img src="{{ .image | relURL }}" width="24" height="24" alt="{{ .name }}"/>
+          </a>
+        </span>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    
 {{ if ($.Scratch.Get "photoswipeloaded") }}
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.slim.min.js"></script>
 <script src="/js/load-photoswipe.js"></script>

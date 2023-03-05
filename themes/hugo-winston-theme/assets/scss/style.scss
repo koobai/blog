@@ -6,17 +6,17 @@
   --font-family-teshu: 'SmileySans',Helvetica,sans-serif;
   --base-color: {{ .Site.Params.baseColor | default "#ffffff" }};
   --base-offset-color: {{ .Site.Params.baseOffsetColor | default "#eaeaea" }};
-  --highlight-color: {{ .Site.Params.highlightColor | default "#7b16ff" }};
   --heading-color: {{ .Site.Params.headingColor | default "#1c1b1d" }};
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
   --bankuai-color: #FFF;
   --background-color: #F4F4F4;
-  --text-content-color:#444;
+  --text-content-color:#333;
   --text-content-dark-color:#BBB;
+  --text-highlight-color:#BB2649;
 }
 $breakpoints: (
-  'small': 767px,
-  'medium': 992px,
+  'small': 700px,
+  'medium': 900px,
   'large': 1200px,
 );
 
@@ -69,8 +69,7 @@ body {
     padding: 50px;
   }
   &.frame {
-    min-height: 100vh;
-    border: 18px solid var(--highlight-color);
+    border-top: 2px solid #666;
   }
 }
 
@@ -112,5 +111,4 @@ pre {
 }
 .highlight{background-color: #1A1718;}
 img {filter: brightness(0.8) contrast(1.2); }
-
 }

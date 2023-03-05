@@ -16,23 +16,17 @@
 {{ if gt $paginator.TotalPages 1 }}
 
 <ul class="pagination">
-
   <!-- First page. -->
   {{ if ne $paginator.PageNumber 1 }}
-  <li class="pagination-item pagination-item-first">
     <a class="pagination-link pagination-link-first" href="{{ $paginator.First.URL }}">
-      ««
+      <<
     </a>
-  </li>
   {{ end }}
-
   <!-- Previous page. -->
   {{ if $paginator.HasPrev }}
-  <li class="pagination-item pagination-item-previous">
     <a href="{{ $paginator.Prev.URL }}" class="pagination-link pagination-link-previous">
-      «
+      <
     </a>
-  </li>
   {{ end }}
 
   <!-- Page numbers. -->
@@ -63,18 +57,12 @@
   {{ if gt .PageNumber (sub $paginator.TotalPages $max_links) }}
   {{ $.Scratch.Set "page_number_flag" true }}
   {{ end }}
-
-
   <!-- Middle pages. -->
   {{ else }}
-
   {{ if and ( ge .PageNumber (sub $paginator.PageNumber $adjacent_links) ) ( le .PageNumber (add $paginator.PageNumber $adjacent_links) ) }}
   {{ $.Scratch.Set "page_number_flag" true }}
   {{ end }}
-
   {{ end }}
-
-
   <!-- Simple page numbers. -->
   {{ else }}
 
@@ -84,32 +72,24 @@
 
   <!-- Output page numbers. -->
   {{ if eq ($.Scratch.Get "page_number_flag") true }}
-  <li class="pagination-item{{ if eq . $paginator }} pagination-item-current{{ end }}">
     <a href="{{ .URL }}" class="pagination-link">
+    <li class="pagination-item{{ if eq . $paginator }} pagination-item-current{{ end }}">
       {{ .PageNumber }}
+    </li>
     </a>
-  </li>
   {{ end }}
-
   {{ end }}
-
   <!-- Next page. -->
   {{ if $paginator.HasNext }}
-  <li class="pagination-item pagination-item-next">
     <a href="{{ $paginator.Next.URL }}" class="pagination-link pagination-link-next">
-      »
+      >
     </a>
-  </li>
   {{ end }}
-
   <!-- Last page. -->
   {{ if ne $paginator.PageNumber $paginator.TotalPages }}
-  <li class="pagination-item pagination-item-last">
     <a class="pagination-link pagination-link-last" href="{{ $paginator.Last.URL }}">
-      »»
+      >>
     </a>
-  </li>
   {{ end }}
-
 </ul><!-- .pagination -->
 {{ end }}

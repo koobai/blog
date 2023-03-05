@@ -19,7 +19,6 @@ enableRobotsTXT = true
   showPostsOnHomepage = true
   addDot = true
   addFrame = false
-  highlightColor = '#BB2649'
   baseColor = "var(--background-color)"
   baseOffsetColor = "#eaeaea"
   headingColor = "#000"

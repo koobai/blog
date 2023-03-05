@@ -13,9 +13,6 @@
       margin-bottom: 10px;
       font-weight:normal;
     }
-    strong {
-      color: var(--highlight-color);
-    }
   }
   h2 {
     font-size: 50px;
@@ -32,6 +29,22 @@
       font-size: 18px;
       line-height: 32px;
     }
+  }
+  .article_title {
+    font-size: 30px;
+    line-height: 35px;
+    margin-bottom: -3px;
+    font-weight:normal;
+    @include breakpoint('small') {
+      width: 100%;
+      font-size: 40px;
+      line-height: 45px;
+      margin-bottom: -15px;
+    }
+  }
+  .article_dot {
+    color: var(--dot-color);
+    font-size: 50px;
   }
   .read-more {
     font-size: 18px;
@@ -71,9 +84,7 @@
 .archive-time{
   float:left;
 }
-
 }
-
 .welcome{
   font-weight:bold !important;
   margin-bottom: 20px !important;
