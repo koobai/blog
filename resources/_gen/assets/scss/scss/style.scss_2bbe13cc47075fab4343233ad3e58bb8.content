@@ -68,13 +68,14 @@ h1, h2, h3 {
 
 .social-icon {
   margin-right: 8px;
-  font-size: 12px; }
+  font-size: 12px;
+  opacity: 0.6; }
   .social-icon a {
     text-decoration: none; }
     .social-icon a:hover {
       text-decoration: none; }
       .social-icon a:hover img {
-        opacity: 0.7; }
+        opacity: 0.8; }
 
 .footer-info {
   font-size: 12px;
@@ -97,10 +98,12 @@ h1, h2, h3 {
   .footer-info {
     color: #999; }
   .footer {
-    border-top: solid #3d3d3d 1px; } }
+    border-top: solid #3d3d3d 1px; }
+  .social-icon {
+    opacity: 1; } }
 
 a {
-  color: #666;
+  color: var(--text-content-color);
   text-decoration: none; }
   a:hover {
     text-decoration: underline; }
@@ -1483,7 +1486,7 @@ img[atk-emoticon] {
     width: 50%; } }
 
 @media (prefers-color-scheme: dark) {
-  .bb-timeline ul li .bb-div, .diaoyong {
+  .bb-timeline ul li .bb-div {
     background: #242021 !important; }
   .datacont .tag-span {
     color: #BB2649;
@@ -1491,7 +1494,11 @@ img[atk-emoticon] {
   .bb-load button {
     background: #242021; }
   .bb-timeline ul li .datatime, .item, .datakoobai {
-    color: #666; } }
+    color: #666; }
+  .diaoyong {
+    background: #423f3f !important; }
+  .item {
+    color: #888; } }
 
 /*
 Put this file in /static/css/hugo-easy-gallery.css
@@ -1740,6 +1747,8 @@ body {
   h2,
   h3 {
     color: #CCCCCC; }
+  a {
+    color: var(--text-content-dark-color); }
   .author {
     color: #CCCCCC; }
   .summary-date {
