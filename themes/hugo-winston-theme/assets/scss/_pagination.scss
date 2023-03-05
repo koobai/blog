@@ -1,66 +1,31 @@
-ul.pagination {
+.pagination {
   display: flex;
-  justify-content: center;
-  list-style: none;
-  margin: 20px 0 40px 0;
-  padding: 0;
-  @include breakpoint('small') {
-      margin: 20px 0 20px 0;
-  }
-  li {
-    list-style: none;
-    text-decoration: none;
-    border: 2px solid var(--highlight-color);
-    border-right: none;
-    text-align: center;
-    vertical-align: middle;
-    &:hover {
-      border-color: var(--highlight-color);
-      background-color: var(--highlight-color);
-      color: white;
-      a {
-        color: white;
-      }
-    }
-    &.pagination-item-current {
-      border-color: var(--highlight-color);
-      background-color: var(--highlight-color);
-      color: white;
-      a {
-        color: white;
-      }
-    }
-    a {
-      padding: 6px 13px;
-      display: block;
-      color: var(--highlight-color);
-      text-decoration: none;
-    }
-    &:last-of-type {
-      border-right: 2px solid var(--highlight-color);
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-      &:hover {
-        border-color: var(--highlight-color);
-      }
-      &.active {
-        border-color: var(--highlight-color);
-      }
-    }
-    &:first-of-type {
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-    svg {
-      width: 8px;
-      line-height: 10px;
-      margin-bottom: 2px;
-      vertical-align: middle;
-    }
-  }
+  font-size: 15px;
+  margin: 20px 0 20px 0;
+  font-family: var(--font-family-heading);
 }
-
-.pagination-link{
-    font-family: var(--font-family-code);
-    font-size: 14px;
+.pagination a{
+  background-color: #999;
+  margin-right: 8px;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  line-height: 2.2;
+  color: #fff;
+}
+.pagination a:hover,.pagination li:hover{
+    background-color: var(--text-highlight-color);
+    color: white;
+    text-decoration:none;
+}
+.pagination li {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  &.pagination-item-current {
+    background-color: var(--text-highlight-color);
+    margin-right: 8px;
+    color: white;
+  }
 }

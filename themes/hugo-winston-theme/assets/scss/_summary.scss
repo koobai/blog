@@ -15,17 +15,20 @@
     line-height: 36px;
     font-weight:normal;
     @include breakpoint('small') {
-      width: 60%;
-      font-size: 34px;
-      line-height: 42px;
+      width: 62%;
+      font-size: 30px;
+      line-height: 40px;
       font-weight:normal;
-      margin: 10px 0 -5px 0;
+      margin: 10px 0 -12px 0;
     }
   }
   .summary-description {
     width: 100%;
     line-height: 1.6;
   }
+}
+.summary-title a {
+  color: var(--text-highlight-color);
 }
 .read-more{
   color: var(--text-content-color);

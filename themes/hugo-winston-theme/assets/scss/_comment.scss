@@ -3,7 +3,7 @@
   font-family: var(--font-family-heading);
   margin-top:40px;
   color:var(--heading-color);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .artalk{
@@ -25,7 +25,7 @@
   font-weight: bold;
 }
 .atk-item.atk-nick a{
-  color: var(--highlight-color)!important;
+  color: var(--text-highlight-color)!important;
 }
 .atk-ua {
   color: #999 !important;
@@ -45,7 +45,7 @@
   color: #999!important;
 }
 .atk-send-btn {
-  background: var(--highlight-color)!important;
+  background: var(--text-highlight-color)!important;
   padding: 0 20px!important;
 }
 .atk-send-btn:hover {
@@ -53,12 +53,12 @@
 }
 
 .atk-list-header .atk-dropdown-wrap .atk-dropdown-item.active span, .atk-list-header .atk-dropdown-wrap .atk-dropdown-item span:hover {
-  color: var(--highlight-color)!important;
+  color: var(--text-highlight-color)!important;
 }
 .artalk {
   --at-color-main:#666!important;
-  --at-color-pink:var(--highlight-color)!important;
-  --at-color-light:var(--highlight-color)!important;
+  --at-color-pink:var(--text-highlight-color)!important;
+  --at-color-light:var(--text-highlight-color)!important;
   --at-color-meta:#999!important;
   --at-color-border: #DDD !important;
 }
@@ -141,7 +141,7 @@ img[atk-emoticon] {
   color: var(--text-content-dark-color)!important;
 }
 .atk-send-btn {
-  color: var(--highlight-color)!important;
+  color: var(--text-highlight-color)!important;
   background: #1A1718!important;
   font-weight: bold;
 }

@@ -13,6 +13,9 @@
     padding-top: 4px;
   }
 }
+.header a {
+  color: #000;
+}
 .header-logo img {
   width: 40px;
   height: 40px;
@@ -22,58 +25,9 @@
   margin-right: 6px;
   margin-top: -4px;
 }
-
-.hamburger-trigger {
-  height: 30px;
-  display: flex;
-  align-items: center;
-  @include breakpoint('medium') {
-    display: none;
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .header a {
+    color: var(--text-content-dark-color);
   }
-}
-
-.hamburger {
-  border: none;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-  display: block;
-  width: 30px;
-  height: 20px;
-  background: transparent;
-  border-top: 2px solid;
-  border-bottom: 2px solid;
-  font-size: 0;
-  transition: all 0.25s ease-in-out;
-  color: var(--highlight-color);
-  &:before,
-  &:after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 2px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: currentColor;
-    transform: translate(-50%, -50%);
-    transition: transform 0.25s ease-in-out;
   }
-  &:hover {
-    opacity: 0.7;
-  }
-  &.is-active {
-    border-color: transparent;
-    z-index: 100;
-    color: var(--base-color);
-    &:hover {
-      opacity: 1;
-    }
-    &:before {
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-    &:after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-  }
-}
