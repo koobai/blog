@@ -289,8 +289,8 @@ ul {
     @media (min-width: 700px) {
       .intro h1 {
         width: 100%;
-        font-size: 60px;
-        line-height: 70px;
+        font-size: 50px;
+        line-height: 50px;
         margin-bottom: 10px;
         font-weight: normal; } }
   .intro h2 {
@@ -1301,13 +1301,6 @@ img[atk-emoticon] {
 .bb-timeline ul li .bb-div:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale3d(1.01, 1.01, 1.01); }
-
-.triangle {
-  float: left;
-  border-width: 0 0 18px 18px;
-  border-style: solid;
-  border-color: transparent transparent transparent #BB2649;
-  position: relative; }
 
 .momos-sswrap {
   margin-bottom: 35px; }
