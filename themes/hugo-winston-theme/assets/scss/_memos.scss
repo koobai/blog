@@ -135,7 +135,7 @@
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.bb-timeline ul li .bb-div, .diaoyong{background: #242021 !important;}
+.bb-timeline ul li .bb-div{background: #242021 !important;}
 .datacont .tag-span{
   color:#BB2649;
   background: #332E2F;
@@ -145,5 +145,11 @@
 }
 .bb-timeline ul li .datatime, .item,.datakoobai{
   color: #666;
+}
+.diaoyong{
+  background: #423f3f !important;
+}
+.item{
+  color: #888;
 }
 }
