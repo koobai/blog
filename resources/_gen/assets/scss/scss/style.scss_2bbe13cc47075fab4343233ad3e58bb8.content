@@ -212,7 +212,7 @@ ul {
     display: inline;
     color: var(--color-base-text); }
   .content img {
-    margin: 10px 0 8px 0;
+    margin: 10px 0 10px 0;
     max-width: 100%;
     height: auto;
     border-radius: 15px; }
@@ -320,7 +320,7 @@ ul {
         width: 100%;
         font-size: 40px;
         line-height: 45px;
-        margin-bottom: -15px; } }
+        margin-bottom: -10px; } }
   .intro .article_dot {
     color: var(--dot-color);
     font-size: 50px; }
