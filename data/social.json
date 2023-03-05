@@ -1,12 +1,12 @@
 {
   "links": [
     {
-      "name": "telegram",
+      "name": "Telegram",
       "url": "https://t.me/delixiaohuangren",
       "image": "https://img.koobai.com/social/telegram.svg"
     },
     {
-      "name": "email",
+      "name": "E-mail",
       "url": "mailto:mekoobai@gmail.com",
       "image": "https://img.koobai.com/social/email.svg"
     },
