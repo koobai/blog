@@ -212,10 +212,10 @@ ul {
     display: inline;
     color: var(--color-base-text); }
   .content img {
-    margin: 10px 0 10px 0;
+    margin: 10px 0 8px 0;
     max-width: 100%;
     height: auto;
-    border-radius: 16px; }
+    border-radius: 15px; }
   .content figure {
     margin: 2.6rem 0 1.18rem; }
     .content figure img {
