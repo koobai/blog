@@ -1459,6 +1459,9 @@ img[atk-emoticon] {
 .resimg figure img {
   width: 200px; }
 
+.item a {
+  color: #999; }
+
 @media (max-width: 900px) {
   #bber {
     width: 100%;
@@ -1497,7 +1500,7 @@ img[atk-emoticon] {
     color: #666; }
   .diaoyong {
     background: #383535 !important; }
-  .item {
+  .item, .item a {
     color: #888; } }
 
 /*
