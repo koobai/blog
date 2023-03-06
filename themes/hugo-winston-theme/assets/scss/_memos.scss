@@ -110,7 +110,9 @@
   width: 200px;
 }
 .resimg figure img{width:200px;}
-
+.item a{
+  color: #999;
+}
 // 页面宽度小于900样式
 
 @media (max-width:900px){
@@ -149,7 +151,7 @@
 .diaoyong{
   background: #383535 !important;
 }
-.item{
+.item,.item a{
   color: #888;
 }
 }
