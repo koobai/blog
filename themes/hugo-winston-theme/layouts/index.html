@@ -1,6 +1,7 @@
 {{ define "body_classes" }}page-home{{ end }}
 
 {{ define "main" }}
+  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
   <div class="intro">
    <!-- <h1 class="welcome">{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>-->
     <div class="intro-content">{{ .Content }}</div>
