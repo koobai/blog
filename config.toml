@@ -1,6 +1,6 @@
 baseURL = "https://koobai.com"
 languageCode = "zh-cn"
-theme = "hugo-winston-theme"
+theme = "jingzhe"
 themesDir = "themes"
 title = "空白生活"
 paginate = 6
@@ -15,7 +15,6 @@ enableRobotsTXT = true
     min = "0.55.0"
 
 [params]
-  twitter_handle = "@koobai"
   showPostsOnHomepage = true
   addDot = true
   addFrame = false
