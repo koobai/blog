@@ -4,8 +4,8 @@ date: 2023-01-15
 slug: hugo_action_tencentcos
 tags: ['博客','折腾','Hugo']
 description: '博客逐步搭建完善，更新了日常使用的App、硬件页面。博客样式标题采用了"得意黑"开源字体。把二级域名改成一级，过程中发现Cloudflare Pages如果要绑定一级，须把域名的DNS服务器解析过去。解析之后，自己的nas访问变得不稳定，时不时的打不开，来来回回折腾了好几次，无解，只好改回去。 vercel可以绑定一级，尝试之后，访问速度太慢，放弃。开始了解国内的云服务，学习到了对象储存、CDN，经过一番对比尝试，最终选择腾讯云的COS对象存储配合内容分发网络CDN搭建。 '
+image: https://img.koobai.com/article/cdn.svg
 ---
-![Tencentcos](https://img.koobai.com/article/cdn.svg)
 博客逐步搭建完善，更新了日常使用的[App](https://koobai.com/apps/)、[硬件](https://koobai.com/hardware/)页面。博客样式标题采用了"<a href="https://github.com/atelier-anchor/smiley-sans" target="_blank">得意黑</a>"开源字体。把二级域名改成一级，过程中发现 Cloudflare Pages 如果要绑定一级，须把域名的 DNS 服务器解析过去。解析之后，自己的 nas 访问变得不稳定，时不时的打不开，来来回回折腾了好几次，无解，只好改回去。 vercel 可以绑定一级，尝试之后，访问速度太慢，放弃。开始了解国内的云服务，学习到了对象储存、CDN，经过一番对比尝试，最终选择腾讯云的 COS 对象存储配合内容分发网络 CDN 搭建(主要它的 cosbrowser 界面是经过设计的 ᵔ◡ᵔ；客服也很负责，咨询问题会电话打过来详细教你如何操作)。
 
 在了解部署过程中发现 Cyrus's Blog 写的"<a href="https://blog.xm.mk/posts/fc83" target="_blank">自动构建 Hugo 博客部署至腾讯云对象存储 COS 并刷新 CDN</a>"教程，一番折腾，完美。感谢作者。<br />备份记录下过程: (详细的注释可查看 Cyrus's Blog)

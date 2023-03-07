@@ -33,13 +33,13 @@
   .article_title {
     font-size: 30px;
     line-height: 35px;
-    margin-bottom: -3px;
+    margin-bottom: 5px;
     font-weight:normal;
     @include breakpoint('small') {
       width: 100%;
       font-size: 40px;
       line-height: 45px;
-      margin-bottom: -10px;
+      margin-bottom: 18px;
     }
   }
   .article_dot {
