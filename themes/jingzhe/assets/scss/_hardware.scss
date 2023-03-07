@@ -104,7 +104,7 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .bankuai{
-  background: #242021;
+  background:  var(--background-dark-color);
   box-shadow: 2px 4px 12px rgba(0,0,0,.2);
 }
 .bankuai:hover{

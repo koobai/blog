@@ -18,7 +18,7 @@
     font-size: 14px; 
     margin: 0 10px 0 0; 
     border-radius:4px;
-    background: var(--bankuai-color);
+    background: var(--background-color);
     color:var(--text-content-color);
 }
 
@@ -41,13 +41,13 @@
 // 夜间模式文章页标签
 @media (prefers-color-scheme: dark) {
 .tag,.page-time{
-    background: #4f4f4f !important;
+    background: #41393b !important;
     color:var(--text-content-dark-color) !important;  
   }
 .tag a{
   color: var(--text-content-dark-color) !important;
 }
 .terms-tags li {
-  background-color: #242021;
+  background-color:  var(--background-dark-color);
 }
 }
