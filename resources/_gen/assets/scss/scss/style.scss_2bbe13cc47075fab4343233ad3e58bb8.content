@@ -1139,7 +1139,7 @@ img[atk-emoticon] {
 /*文章页标签*/
 .tag, .page-time {
   font-size: 14px;
-  margin-right: 6px;
+  margin-right: 8px;
   margin-bottom: 10px;
   border-radius: 4px;
   background: var(--background-color);
