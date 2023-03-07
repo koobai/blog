@@ -261,10 +261,12 @@ ul {
   margin-top: 20px;
   border-radius: 10px;
   background-color: var(--bankuai-color);
-  padding: 15px 25px 15px 25px;
+  padding: 15px 20px 15px 20px;
   display: flow-root;
   line-height: 1.6em; }
-
+  @media (min-width: 700px) {
+    .previousnext {
+      padding: 15px 25px 15px 25px; } }
 .previousnext a {
   color: var(--text-highlight-color); }
 
@@ -399,11 +401,11 @@ ul {
 .pagination {
   display: flex;
   font-size: 15px;
-  margin: 40px 0 20px 20px;
+  margin: 30px 0 20px 20px;
   font-family: var(--font-family-heading); }
   @media (min-width: 700px) {
     .pagination {
-      margin: 40px 0 20px 25px; } }
+      margin: 30px 0 20px 25px; } }
 .pagination a {
   background-color: #999;
   margin-right: 8px;
@@ -1306,17 +1308,18 @@ img[atk-emoticon] {
   border-radius: 15px; }
 
 .diaoyong {
-  border-radius: 5px;
-  margin-top: -5px;
+  border-radius: 4px;
   background: #FFFFFF !important;
-  padding: 20px 25px 20px 25px; }
-
+  padding: 16px 20px 16px 20px; }
+  @media (min-width: 700px) {
+    .diaoyong {
+      padding: 16px 25px 16px 25px; } }
 .bb-timeline ul li .bb-div:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale3d(1.01, 1.01, 1.01); }
 
 .momos-sswrap {
-  margin-bottom: 45px; }
+  margin-bottom: 10px; }
 
 .bb-load button {
   background: #FFFFFF;
@@ -1476,8 +1479,6 @@ img[atk-emoticon] {
   #bber {
     width: 100%;
     margin: 0 auto; }
-  .momos-sswrap {
-    margin-bottom: 40px; }
   .resimg.grid-4 {
     grid-template-columns: repeat(2, 1fr);
     width: calc(130% * 2 / 3); }
@@ -1523,7 +1524,7 @@ Grid Layout Styles
 */
 .gallery {
   overflow: hidden;
-  margin: 0 auto !important;
+  margin: 0 !important;
   width: 100.5%; }
 
 .gallery .box {

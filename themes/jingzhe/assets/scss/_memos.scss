@@ -21,17 +21,19 @@
   border-radius:15px;
 }
 .diaoyong{
-  border-radius:5px;
-  margin-top: -5px;
+  border-radius:4px;
   background: #FFFFFF !important;
-  padding: 20px 25px 20px 25px; 
+  padding: 16px 20px 16px 20px; 
+  @include breakpoint('small') {
+    padding: 16px 25px 16px 25px; 
+  }
 }
 .bb-timeline ul li .bb-div:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.16);
   transform: scale3d(1.01,1.01,1.01);
 }
 .momos-sswrap {
-  margin-bottom: 45px;
+  margin-bottom: 10px;
 }
 .bb-load button{
   background:#FFFFFF;
@@ -120,9 +122,6 @@
 @media (max-width:900px){
 
 #bber{width:100%; margin: 0 auto;}
-.momos-sswrap {
-  margin-bottom: 40px;
-}
 .resimg.grid-4{grid-template-columns:repeat(2,1fr);width:calc(130% * 2 / 3);}
 .resimg.grid-2{grid-template-columns:repeat(2,1fr);width:100%;}
 .resimg.grid{width:calc(130%* 2 / 3);}

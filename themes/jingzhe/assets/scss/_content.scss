@@ -190,9 +190,12 @@ ul {
   margin-top:20px;
   border-radius:10px;
   background-color: var(--bankuai-color);
-  padding: 15px 25px 15px 25px;
+  padding: 15px 20px 15px 20px;
   display: flow-root; 
   line-height: 1.6em;
+  @include breakpoint('small') {
+    padding: 15px 25px 15px 25px;
+  }
 }
 
 .previousnext a {
