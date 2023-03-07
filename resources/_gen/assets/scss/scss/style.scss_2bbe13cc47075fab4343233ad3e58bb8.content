@@ -313,7 +313,7 @@ ul {
   .intro .article_title {
     font-size: 30px;
     line-height: 35px;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
     font-weight: normal; }
     @media (min-width: 700px) {
       .intro .article_title {

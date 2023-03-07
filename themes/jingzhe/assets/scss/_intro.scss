@@ -33,7 +33,7 @@
   .article_title {
     font-size: 30px;
     line-height: 35px;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
     font-weight:normal;
     @include breakpoint('small') {
       width: 100%;
