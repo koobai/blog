@@ -1,8 +1,11 @@
 .pagination {
   display: flex;
   font-size: 15px;
-  margin: 40px 0 20px 25px;
+  margin: 40px 0 20px 20px;
   font-family: var(--font-family-heading);
+  @include breakpoint('small') {
+    margin: 40px 0 20px 25px;
+  }
 }
 .pagination a{
   background-color: #999;
