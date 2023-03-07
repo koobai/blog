@@ -1155,7 +1155,7 @@ img[atk-emoticon] {
   color: var(--text-content-color); }
 
 .page-time {
-  padding: 9px;
+  padding: 8.5px;
   display: inline-block;
   vertical-align: top;
   font-family: var(--font-family-code); }
