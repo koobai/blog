@@ -10,6 +10,7 @@
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
   --bankuai-color: #FFF;
   --background-color: #F4F4F4;
+  --background-dark-color: #242021;
   --text-content-color:#333;
   --text-content-dark-color:#BBB;
   --text-highlight-color:#BB2649;
@@ -59,7 +60,7 @@ html, body {
 }
 
 body {
-  background: var(--base-color);
+  background: var(--background-color);
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
@@ -81,9 +82,9 @@ body {
 //日间模式新增属性
 
 .highlight {
-pre {background: var(--bankuai-color);}
+pre {background: var(--background-color);}
 }
-.highlight{background-color: var(--background-color);}
+.highlight{background-color: var(--bankuai-color);}
 
 
 // 夜间模式页面样式
@@ -109,9 +110,9 @@ a {
 .summary-date{color: #AAAAAA;}
 .highlight {
 pre {
-  background: #242021;
+  background: #2c2829;
   color: var(--text-content-dark-color);}
 }
-.highlight{background-color: #1A1718;}
+.highlight{background-color: var(--background-dark-color);}
 img {filter: brightness(0.8) contrast(1.2); }
 }

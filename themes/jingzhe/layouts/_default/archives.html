@@ -16,7 +16,7 @@
       {{- range .Pages }}
       {{- if eq .Kind "page" }}
        <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
-        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
       {{- end }}
       {{- end }} 
   {{- end }} 

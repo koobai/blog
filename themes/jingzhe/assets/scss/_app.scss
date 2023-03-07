@@ -48,7 +48,7 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .appquanju{
-  background-color: #242021;
+  background-color:  var(--background-dark-color);
 }
 .macos{
   background-color:#2E282A;

@@ -2,12 +2,14 @@
 
 {{ define "main" }}
   <div class="blog">
+    
     <div class="intro">
       <h1 class="article_title">{{ .Title }}{{ if .Site.Params.addDot }}<span class="article_dot">.</span>{{ end }}</h1>
       {{ if .Params.image }}
       <img src="{{ .Params.image | relURL }}" />
       {{ end }}
     </div>
+    <div class="content_zhengwen">
     <div class="content">
       {{ .Content }}
     </div>
@@ -23,6 +25,7 @@
           </div>    
         </ul>
       {{ end }}
+    </div>
       <div class="previousnext">
         {{ with .PrevInSection }}
           <a class="previous" href="{{.Permalink}}">上一篇: {{.Title}}</a>

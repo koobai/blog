@@ -110,20 +110,20 @@ img[atk-emoticon] {
   color:var(--text-content-dark-color);
 }
 .atk-main-editor {
-  background: #242021 !important;
+  background:  var(--background-dark-color) !important;
   border: 1px solid var(--at-color-border)!important;
 }
 .atk-textarea {
   color: var(--text-content-dark-color)!important;
   font-size: 15px;
-  background: #242021 !important;
+  background:  var(--background-dark-color) !important;
 }
 .atk-content, .atk-header {
   color: var(--text-content-dark-color) !important;
 }
 .atk-ua {
   color: #666 !important;
-  background: #242021!important;
+  background:  var(--background-dark-color)!important;
 }
 .artalk {
 --at-color-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0), #242021)!important;
@@ -131,7 +131,7 @@ img[atk-emoticon] {
 --at-color-border: #332D2F !important;
 --at-color-meta:#666 !important;
 --at-color-font:#BBB !important;
---at-color-bg-grey:#242021 !important;
+--at-color-bg-grey: var(--background-dark-color) !important;
 --at-color-bg-grey:#332D2E!important;
 }
 .atk-text, .atk-list-no-comment,.atk-copyright,.atk-copyright a{
