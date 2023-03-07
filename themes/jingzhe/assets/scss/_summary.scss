@@ -5,7 +5,10 @@
   transition: all .3s cubic-bezier(0,0,.5,1);
   border-radius:15px;
   background-color: var(--bankuai-color);
-  padding: 25px;
+  padding: 20px;
+  @include breakpoint('small') {
+    padding: 25px;
+  }
   .summary-date {
     font-family: var(--font-family-teshu);
   }

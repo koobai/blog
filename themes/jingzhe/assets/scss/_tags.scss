@@ -8,33 +8,28 @@
     padding: 10px;
     background-color: #FFF;
 }
-
 /*文章页标签*/
-.page-tag {
-    display: flex;
-  }
-
 .tag, .page-time{
     font-size: 14px; 
-    margin: 0 10px 0 0; 
+    margin-right: 6px;
+    margin-bottom: 10px;
     border-radius:4px;
     background: var(--background-color);
     color:var(--text-content-color);
 }
-
 .tag {
-    display: flex;
     padding: 10px;
     font-weight:bold; 
+    display: inline-block;
+    vertical-align: top;
   }
-
 .tag a{
   color: var(--text-content-color);
 }
-
 .page-time{  
     padding: 9px;
-    float: left;
+    display: inline-block;
+    vertical-align: top;
     font-family: var(--font-family-code);
   }
 

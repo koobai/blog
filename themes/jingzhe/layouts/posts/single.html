@@ -15,15 +15,10 @@
     </div>
  <div class="page-time">{{ .Date.Format "2006-01-02" }}</div>
      {{ with .GetTerms "tags" }}
-     <ul id="tags">
-    <div class="page-tag">
           {{ range . }}
-     <div class="tag">
-     <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-             </div>
+     <div class="tag"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
           {{ end }}
-          </div>    
-        </ul>
+   
       {{ end }}
     </div>
       <div class="previousnext">
