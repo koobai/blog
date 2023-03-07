@@ -313,14 +313,14 @@ ul {
   .intro .article_title {
     font-size: 30px;
     line-height: 35px;
-    margin-bottom: -3px;
+    margin-bottom: 5px;
     font-weight: normal; }
     @media (min-width: 700px) {
       .intro .article_title {
         width: 100%;
         font-size: 40px;
         line-height: 45px;
-        margin-bottom: -10px; } }
+        margin-bottom: 18px; } }
   .intro .article_dot {
     color: var(--dot-color);
     font-size: 50px; }

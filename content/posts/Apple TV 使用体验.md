@@ -4,8 +4,8 @@ date: 2023-02-10
 slug: apple_tv
 tags: ['Apple','折腾','硬件']
 description: '自己喜欢观影，为了方便直接使用奈飞 (Netflix)及串流本地、网盘视频，2022年1月3号购置。目前也使用了一年多时间，整体感受就是一分钱一分货，比之前的 Google TV 不管是流畅度、系统美观度，完全都不是一个量级。特别喜欢铝制一体成型的遥控器，非常有质感，就是冬天使用冰手。'
+image: https://img.koobai.com/article/appletv.webp
 ---
-![Apple Tv](https://img.koobai.com/article/appletv.webp)
 自己喜欢观影，为了方便直接使用奈飞 (Netflix)，在 2020 年时购入了 Google TV，一直使用得不错。直到买了群晖，在折腾影视串流的过程中，发现大家都推荐 Infuse 这款软件。一番了解，确实很不错，支持市面上所有的视频、音频格式，年订阅 9.9 美元，最主要的是串流的海报墙太美了～～。唯一的缺陷就是只支持 Apple 生态，其他都好说，本身电脑手机 Pad 都是 Apple，但最主要的电视观影工具 Google TV 使不上呀。纠结很久，实在受不了 Infuse 的诱惑，于是淘宝了一台 Apple TV 4k (第 2 代)。
 
 ### 连接方式
