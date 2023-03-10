@@ -143,7 +143,7 @@ ul {
   font-size: 18px; }
   .content p {
     font-size: 18px;
-    line-height: 1.8;
+    line-height: 2;
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
@@ -379,7 +379,7 @@ ul {
         width: 60%; } }
   .summary .summary-description {
     width: 100%;
-    line-height: 1.6; }
+    line-height: 1.8; }
 
 .summary-title a {
   color: var(--text-highlight-color); }
