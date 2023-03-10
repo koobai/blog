@@ -246,7 +246,7 @@ ul {
     padding: 30px;
     overflow: auto;
     font-family: var(--font-family-monospace);
-    border-radius: 16px; }
+    border-radius: 12px; }
 
 .dot {
   color: var(--dot-color); }
@@ -338,7 +338,7 @@ ul {
         line-height: 32px; } }
   .intro img {
     max-width: 100%;
-    border-radius: 16px; }
+    border-radius: 12px; }
 
 .archive-time {
   margin-right: 20px;
