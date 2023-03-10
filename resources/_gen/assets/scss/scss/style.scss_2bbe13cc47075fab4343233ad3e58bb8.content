@@ -220,7 +220,7 @@ ul {
     display: inline;
     color: var(--color-base-text); }
   .content img {
-    margin: 10px 0 10px 0;
+    margin: 10px 0 0 0;
     max-width: 100%;
     height: auto;
     border-radius: 15px; }
@@ -1137,8 +1137,7 @@ img[atk-emoticon] {
 /*文章页标签*/
 .tag, .page-time {
   font-size: 14px;
-  margin-right: 8px;
-  margin-bottom: 10px;
+  margin: 0 8px 10px 0;
   border-radius: 4px;
   background: var(--background-color);
   color: var(--text-content-color); }
