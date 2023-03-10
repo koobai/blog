@@ -42,10 +42,13 @@ ul {
   font-size: 18px;
   p {
     font-size: 18px;
-    line-height: 2;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
     margin-bottom: 15px;
+    @include breakpoint('small') {
+      line-height: 2;
+    }
   }
   strong {
     color:  var(--text-highlight-color);

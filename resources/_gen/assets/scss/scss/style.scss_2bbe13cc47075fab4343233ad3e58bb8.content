@@ -143,10 +143,13 @@ ul {
   font-size: 18px; }
   .content p {
     font-size: 18px;
-    line-height: 2;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
+    @media (min-width: 700px) {
+      .content p {
+        line-height: 2; } }
   .content strong {
     color: var(--text-highlight-color); }
   .content h1 {
