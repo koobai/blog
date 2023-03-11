@@ -1305,12 +1305,12 @@ img[atk-emoticon] {
 .bb-timeline ul li .bb-div {
   border-radius: 15px; }
 
-.diaoyong {
+.memos_diaoyong {
   border-radius: 4px;
   background: #FFFFFF !important;
   padding: 16px 20px 16px 20px; }
   @media (min-width: 700px) {
-    .diaoyong {
+    .memos_diaoyong {
       padding: 16px 25px 16px 25px; } }
 .bb-timeline ul li .bb-div:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
@@ -1333,12 +1333,13 @@ img[atk-emoticon] {
 .bb-load button:hover {
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
 
-.diaoyong_info {
+.memos_diaoyong_info {
   font-size: 16px;
-  margin-top: 7px;
-  line-height: 1.6; }
+  margin-top: 5px;
+  line-height: 1.6;
+  color: var(--text-content-color); }
 
-.bb-timeline ul li .datatime, .item, .datakoobai {
+.bb-timeline ul li .datatime, .datakoobai {
   font-size: 14px;
   color: #999;
   font-family: var(--font-family-code); }
@@ -1470,8 +1471,12 @@ img[atk-emoticon] {
 .resimg figure img {
   width: 200px; }
 
-.item a {
-  color: #999; }
+.memos_diaoyong_from, .memos_diaoyong_from a, .memos_diaoyong_time {
+  color: #999;
+  font-size: 14px; }
+
+.memos_diaoyong_from {
+  margin-left: 10px; }
 
 @media (max-width: 900px) {
   #bber {
@@ -1505,12 +1510,14 @@ img[atk-emoticon] {
     background: #332E2F; }
   .bb-load button {
     background: var(--background-dark-color); }
-  .bb-timeline ul li .datatime, .item, .datakoobai {
+  .bb-timeline ul li .datatime, .datakoobai {
     color: #666; }
-  .diaoyong {
+  .memos_diaoyong {
     background: #393234 !important; }
-  .item, .item a {
-    color: #888; } }
+  .memos_diaoyong_from, .memos_diaoyong_from a, .memos_diaoyong_time {
+    color: #888; }
+  .memos_diaoyong_info {
+    color: var(--text-content-dark-color); } }
 
 /*
 Put this file in /static/css/hugo-easy-gallery.css
