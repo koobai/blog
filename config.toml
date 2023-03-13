@@ -30,7 +30,6 @@ enableRobotsTXT = true
     server="https://c.koobai.com"
     site="Koobai 空白生活"
 
-# markdown config settings https://gohugo.io/getting-started/configuration-markup/#goldmark
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
