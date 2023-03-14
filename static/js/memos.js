@@ -147,7 +147,7 @@ function updateHTMl(data){
           bbContREG += '<p class="datasource">'+resUrl+'</p>'
         }
       }
-      result += "<li class='bb-list-li'><div class='bb-div'><span class='datatime'>"+new Date(data[i].createdTs * 1000).toLocaleString()+"</span><span class='datakoobai'>@koobai</span></div><div class='datacont'>"+bbContREG+"</div></li>"
+      result += "<li class='bb-list-li'><span class='datatime'>"+new Date(data[i].createdTs * 1000).toLocaleString()+"</span><span class='datakoobai'>@koobai</span><div class='datacont'>"+bbContREG+"</div></li>"
   }// end for
   var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>"
   var bbAfter = "</ul></section>"
