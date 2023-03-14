@@ -1293,17 +1293,16 @@ img[atk-emoticon] {
 
 .bb-timeline ul li {
   list-style-type: none;
-  margin-top: 20px; }
-
-.bb-timeline ul li .bb-div {
+  margin-top: 15px;
   background: #FFFFFF !important;
-  /* border: 1px solid #eaeaea; */
   padding: 20px;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
+  border-radius: 12px; }
 
-.bb-timeline ul li .bb-div {
-  border-radius: 15px; }
+.bb-timeline ul li:hover {
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale3d(1.01, 1.01, 1.01); }
 
 .memos_diaoyong {
   border-radius: 4px;
@@ -1312,10 +1311,6 @@ img[atk-emoticon] {
   @media (min-width: 700px) {
     .memos_diaoyong {
       padding: 16px 25px 16px 25px; } }
-.bb-timeline ul li .bb-div:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
-  transform: scale3d(1.01, 1.01, 1.01); }
-
 .momos-sswrap {
   margin-bottom: 10px; }
 
@@ -1374,11 +1369,8 @@ img[atk-emoticon] {
 .dark-theme .bb-timeline ul li .datatime {
   border-color: #666; }
 
-.dark-theme .bb-timeline ul li .bb-div p, .dark-theme .bb-timeline .bb-load button {
+.dark-theme .bb-timeline .bb-load button {
   color: #fafafa; }
-
-.dark-theme .bb-timeline ul li .bb-div p svg {
-  fill: #fafafa; }
 
 .dark-theme .bb-timeline ul li .datafrom {
   color: #aaa; }
@@ -1503,7 +1495,7 @@ img[atk-emoticon] {
     width: 50%; } }
 
 @media (prefers-color-scheme: dark) {
-  .bb-timeline ul li .bb-div {
+  .bb-timeline ul li {
     background: var(--background-dark-color) !important; }
   .datacont .tag-span {
     color: #BB2649;

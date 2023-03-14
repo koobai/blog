@@ -7,18 +7,16 @@
 }
 .bb-timeline ul li {
   list-style-type:none;
-  margin-top: 20px;
-}
-
-.bb-timeline ul li .bb-div{
+  margin-top: 15px;
   background: #FFFFFF !important;
-  /* border: 1px solid #eaeaea; */
   padding: 20px; 
   box-shadow: 2px 4px 12px rgba(0,0,0,.08);
   transition: all .3s cubic-bezier(0,0,.5,1);
+  border-radius:12px;
 }
-.bb-timeline ul li .bb-div{
-  border-radius:15px;
+.bb-timeline ul li:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+  transform: scale3d(1.01,1.01,1.01);
 }
 .memos_diaoyong{
   border-radius:4px;
@@ -28,10 +26,7 @@
     padding: 16px 25px 16px 25px; 
   }
 }
-.bb-timeline ul li .bb-div:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.16);
-  transform: scale3d(1.01,1.01,1.01);
-}
+
 .momos-sswrap {
   margin-bottom: 10px;
 }
@@ -75,8 +70,7 @@
 .bb-timeline pre p{display:inline-block;}
 .bb-timeline pre p:empty{display:none;}
 .dark-theme .bb-timeline ul li .datatime{border-color:#666;}
-.dark-theme .bb-timeline ul li .bb-div p,.dark-theme .bb-timeline .bb-load button{color:#fafafa;}
-.dark-theme .bb-timeline ul li .bb-div p svg{fill:#fafafa;}
+.dark-theme .bb-timeline .bb-load button{color:#fafafa;}
 .dark-theme .bb-timeline ul li .datafrom{color:#aaa;}
 .datacont p{min-height:24px;}.datacont blockquote{font-family: KaiTi,STKaiti,STFangsong;margin:0 0 0 1rem;padding:.25rem 2rem;position: relative;border-left:0 none;}
 .datacont blockquote::before{line-height: 2rem;content: '“';font-family: Georgia, serif;font-size: 28px;font-weight: bold;position: absolute;left: 10px;top:5px;}
@@ -143,7 +137,7 @@
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.bb-timeline ul li .bb-div{background: var(--background-dark-color) !important;}
+.bb-timeline ul li {background: var(--background-dark-color) !important;}
 .datacont .tag-span{
   color:#BB2649;
   background: #332E2F;
