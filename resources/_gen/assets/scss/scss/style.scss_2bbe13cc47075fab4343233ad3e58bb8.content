@@ -343,29 +343,15 @@ ul {
     max-width: 100%;
     border-radius: 12px; }
 
-.archive-time {
-  margin-right: 20px;
-  padding-top: 3px;
-  font-size: 14px;
-  margin-bottom: 5px; }
-
-.archive-title {
-  margin-bottom: 16px;
-  font-size: 18px;
-  line-height: 1.4; }
-
-@media (min-width: 700px) {
-  .archive-time {
-    float: left; } }
-
 .summary {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 18px;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   border-radius: 15px;
   background-color: var(--bankuai-color);
-  padding: 20px; }
+  padding: 20px;
+  position: relative; }
   @media (min-width: 700px) {
     .summary {
       padding: 25px; } }
@@ -391,11 +377,37 @@ ul {
   color: var(--text-content-color);
   font-family: var(--font-family-heading); }
 
+.intro_image img {
+  max-width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-top: -20px;
+  border-radius: 15px 15px 0 0;
+  margin-bottom: 20px; }
+  @media (min-width: 700px) {
+    .intro_image img {
+      max-width: calc(100% + 50px);
+      margin-left: -25px;
+      margin-top: -25px; } }
+.summary-time {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  padding: 6px 15px 6px 15px;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  font-size: 14px;
+  color: #999;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
+  @media (min-width: 700px) {
+    .summary-time {
+      left: 25px; } }
 @media (prefers-color-scheme: dark) {
   .read-more {
     color: var(--text-content-dark-color); }
   .summary {
-    background-color: var(--background-dark-color); } }
+    background-color: var(--background-dark-color); }
+  .summary-time {
+    background: #393234; } }
 
 .pagination {
   display: flex;
@@ -1127,15 +1139,23 @@ img[atk-emoticon] {
   .bankuai:hover {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.4); } }
 
-/*标签云*/
-.terms-tags li {
-  margin: 6px;
+/*归档页标签*/
+.archives_tags {
+  margin-bottom: 15px; }
+
+.archives_tags a {
   display: inline-block;
   vertical-align: top;
   border-radius: 8px;
   align-items: center;
   padding: 10px;
-  background-color: #FFF; }
+  background-color: #FFF;
+  margin-right: 10px;
+  margin-bottom: 10px; }
+
+.archives_tags_f {
+  color: #999;
+  font-size: 14px; }
 
 /*文章页标签*/
 .tag, .page-time {
@@ -1166,8 +1186,10 @@ img[atk-emoticon] {
     color: var(--text-content-dark-color) !important; }
   .tag a {
     color: var(--text-content-dark-color) !important; }
-  .terms-tags li {
-    background-color: var(--background-dark-color); } }
+  .archives_tags a {
+    background-color: var(--background-dark-color); }
+  .archives_tags_f {
+    color: #666; } }
 
 .fIuTG {
   display: flex;
@@ -1307,12 +1329,14 @@ img[atk-emoticon] {
 .memos_diaoyong {
   border-radius: 4px;
   background: #FFFFFF !important;
-  padding: 16px 20px 16px 20px; }
+  padding: 16px 20px 16px 20px;
+  margin-bottom: 10px; }
   @media (min-width: 700px) {
     .memos_diaoyong {
       padding: 16px 25px 16px 25px; } }
 .momos-sswrap {
-  margin-bottom: 10px; }
+  margin-bottom: 25px;
+  margin-top: -5px; }
 
 .bb-load button {
   background: #FFFFFF;
@@ -1709,6 +1733,37 @@ figcaption p {
 @media (prefers-color-scheme: dark) {
   .gallery .img {
     filter: brightness(0.8) contrast(1.2); } }
+
+.archive-time {
+  margin-right: 20px;
+  padding-top: 5px;
+  font-size: 14px;
+  float: left;
+  color: #999; }
+
+.archive-title {
+  font-size: 18px;
+  line-height: 1.6;
+  overflow: hidden; }
+
+.archives_nrong {
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
+  border-radius: 15px;
+  background-color: var(--bankuai-color);
+  padding: 10px 20px 10px 20px;
+  margin-bottom: 20px; }
+  @media (min-width: 700px) {
+    .archives_nrong {
+      padding: 10px 25px 10px 25px; } }
+.archives_one {
+  margin: 15px 0 15px 0; }
+
+@media (prefers-color-scheme: dark) {
+  .archives_nrong {
+    background-color: var(--background-dark-color); }
+  .archive-time {
+    color: #666; } }
 
 @font-face {
   font-family: SmileySans;

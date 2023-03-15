@@ -1,0 +1,36 @@
+.archive-time{
+    margin-right: 20px;
+    padding-top: 5px;
+    font-size: 14px;
+    float:left;
+    color: #999;
+  }
+  .archive-title{
+    font-size: 18px;
+    line-height: 1.6;
+    overflow: hidden;
+  }
+  .archives_nrong{
+    box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+    transition: all .3s cubic-bezier(0,0,.5,1);
+    border-radius:15px;
+    background-color: var(--bankuai-color);
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 20px;
+    @include breakpoint('small') {
+        padding: 10px 25px 10px 25px;
+      }
+  }
+  .archives_one{
+    margin: 15px 0 15px 0;
+  }
+
+  // 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+    .archives_nrong{
+        background-color: var(--background-dark-color);
+      }
+      .archive-time{
+        color: #666;
+      }
+  }

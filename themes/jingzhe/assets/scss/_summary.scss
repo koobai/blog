@@ -1,11 +1,12 @@
 .summary {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 18px;
   box-shadow: 2px 4px 12px rgba(0,0,0,.08);
   transition: all .3s cubic-bezier(0,0,.5,1);
   border-radius:15px;
   background-color: var(--bankuai-color);
   padding: 20px;
+  position:relative;
   @include breakpoint('small') {
     padding: 25px;
   }
@@ -34,6 +35,32 @@
   color: var(--text-content-color);
   font-family: var(--font-family-heading);
 }
+.intro_image img{
+  max-width:calc(100% + 40px);
+  margin-left: -20px;
+  margin-top: -20px;
+  border-radius: 15px 15px 0 0;
+  margin-bottom: 20px;
+  @include breakpoint('small') {
+    max-width:calc(100% + 50px);
+    margin-left: -25px;
+    margin-top: -25px;
+  }
+}
+.summary-time{
+  position: absolute; 
+  top: 0; 
+  left: 20px;
+  padding: 6px 15px 6px 15px;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  font-size: 14px;
+  color: #999;
+  box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+  @include breakpoint('small') {
+  left: 25px; 
+  } 
+}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -42,5 +69,8 @@
   }
   .summary {
     background-color: var(--background-dark-color);
+  }
+  .summary-time{
+    background: #393234;
   }
 }

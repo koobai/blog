@@ -2,7 +2,6 @@
 title: Hello World, Hello 2023
 description: 日常记录、博客折腾, 同时分享下日常使用的软件, 平常观看的影视, 喜欢折腾的物品等~~
 ---
-{{<memos>}}
 <div class="content">
 {{<gallery caption-position="bottom" caption-effect="fade">}}
 {{<figure src="https://img.koobai.com/photo/taohua-small.webp" link="https://img.koobai.com/photo/taohua.webp" caption="春暖花开" alt="趁着周一放学早，感受了下春暖花开">}}
@@ -14,3 +13,4 @@ description: 日常记录、博客折腾, 同时分享下日常使用的软件, 
 {{</gallery >}}  
 </div>
 {{<load-photoswipe>}}
+{{<memos>}}

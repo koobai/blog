@@ -1,13 +1,22 @@
-/*标签云*/
-.terms-tags li {
-    margin: 6px;
-    display: inline-block;
-    vertical-align: top;
-    border-radius:8px;
-    align-items: center;
-    padding: 10px;
-    background-color: #FFF;
+/*归档页标签*/
+.archives_tags {
+  margin-bottom: 15px;
+  }
+.archives_tags a {
+  display: inline-block;
+  vertical-align: top;
+  border-radius:8px;
+  align-items: center;
+  padding: 10px;
+  background-color: #FFF;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
+.archives_tags_f{
+  color: #999;
+  font-size: 14px;
+}
+
 /*文章页标签*/
 .tag, .page-time{
     font-size: 14px; 
@@ -41,7 +50,10 @@
 .tag a{
   color: var(--text-content-dark-color) !important;
 }
-.terms-tags li {
+.archives_tags a{
   background-color:  var(--background-dark-color);
+}
+.archives_tags_f{
+  color: #666;
 }
 }
