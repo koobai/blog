@@ -43,7 +43,7 @@
   display:inline-block;
   margin-right:10px;
   text-decoration:none;
-  color:#BB2649;
+  color:var(--text-highlight-color);
 }
 
 .dvtjjf,.sort-by-item{
@@ -53,7 +53,7 @@
   padding: 0 20px 10px 0;
 }
 .dvtjjf.active{
-  color: #BB2649;
+  color: var(--text-highlight-color);
 
 }
 
@@ -67,7 +67,7 @@
   margin-bottom:10px;
 }
 .sort-by-item.active{
-color: #BB2649;
+color: var(--text-highlight-color);
 }
 
 .sort-by-item svg{margin-right:5px}
@@ -125,7 +125,7 @@ color: #BB2649;
 }
 
 .dvtjjf.active, .sort-by-item.active{
-  color: #BB2649 !important;
+  color: var(--text-highlight-color) !important;
 }
 }
 
