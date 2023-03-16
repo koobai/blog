@@ -412,11 +412,11 @@ ul {
 .pagination {
   display: flex;
   font-size: 15px;
-  margin: 30px 0 20px 20px;
+  margin: 30px 0 -10px 20px;
   font-family: var(--font-family-heading); }
   @media (min-width: 700px) {
     .pagination {
-      margin: 30px 0 20px 25px; } }
+      margin: 30px 0 -10px 25px; } }
 .pagination a {
   background-color: #999;
   margin-right: 8px;
