@@ -21,7 +21,7 @@ enableRobotsTXT = true
   baseColor = "var(--background-color)"
   baseOffsetColor = "#eaeaea"
   headingColor = "#000"
-  dotColor = "#BB2649"
+  dotColor = "var(--text-highlight-color)"
 
 [permalinks]
   posts = '/:slug/'

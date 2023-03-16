@@ -3,9 +3,9 @@ Last Modified time : 20230224 13:00 by https://immmmm.com
 最新js https://immmmm.com/bb-lmm-mk.js
 */
 var bbMemo = {
-    memos: 'https://demo.usememos.com/',
+    memos: 'https://memos.koobai.com/',
     limit: '10',
-    creatorId: '101',
+    creatorId: '1',
     domId: '#bber',
 }
 if(typeof(bbMemos) !=="undefined"){
