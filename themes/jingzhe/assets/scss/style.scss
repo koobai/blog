@@ -68,7 +68,7 @@ body {
   padding: 20px;
   overflow-x: hidden;
   @include breakpoint('small') {
-    padding: 50px;
+    padding: 30px;
   }
   &.frame {
     border-top: 2px solid #666;

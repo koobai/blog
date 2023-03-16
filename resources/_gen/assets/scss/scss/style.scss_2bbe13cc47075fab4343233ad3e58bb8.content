@@ -1789,7 +1789,7 @@ body {
   overflow-x: hidden; }
   @media (min-width: 700px) {
     body {
-      padding: 50px; } }
+      padding: 30px; } }
   body.frame {
     border-top: 2px solid #666; }
 
