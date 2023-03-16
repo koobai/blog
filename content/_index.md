@@ -1,6 +1,6 @@
 ---
 title: Hello World, Hello 2023
-description: 日常记录、博客折腾, 同时分享下日常使用的软件, 平常观看的影视, 喜欢折腾的物品等~~
+description: 工作生活记录、博客折腾, 同时分享下平常使用的软件、 观看的影视、喜欢折腾的物品等~~
 ---
 <div class="content">
 {{<gallery caption-position="bottom" caption-effect="fade">}}
