@@ -8,17 +8,6 @@
         <a target="_blank" href="/index.xml">RSS 订阅</a>
       </div>
     </div>
-<!--    {{ if .Site.Data.social.links }}
-    <div class="footer-social">
-      {{ range .Site.Data.social.links }}
-        <span class="social-icon social-icon-{{ .name | urlize }}">
-          <a href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener">
-            <img src="{{ .image | relURL }}" width="24" height="24" alt="{{ .name }}"/>
-          </a>
-        </span>
-      {{ end }}
-    </div>
-    {{ end }}  -->
 {{ if ($.Scratch.Get "photoswipeloaded") }}
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.slim.min.js"></script>
 <script src="/js/load-photoswipe.js"></script>

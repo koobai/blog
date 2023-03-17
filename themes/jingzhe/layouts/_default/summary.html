@@ -9,7 +9,7 @@
   <h2 class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
   <p class="summary-description">{{ .Params.description }}</p>
   {{ if not .Params.hideReadMore }}
-  <div><a class="read-more" href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "浏览全文..." }}</a></div>
+  <div><a class="read-more" href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "浏览全文 ..." }}</a></div>
   {{ end }}
 </div>
 <script>
