@@ -33,7 +33,6 @@
 .footer-info a{
   color: #666;
 }
-
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -56,7 +55,6 @@
 .gotop:hover {
 	text-decoration: underline;
 }
-
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info a{
@@ -68,11 +66,14 @@
 .footer {
   border-top:solid #3d3d3d 0.5px;
   }
-.social-icon {
-    opacity: 1;
-  }
   .gotop {
     background: #000;
     color: #BBB;
   }
 }
+// 页面宽度小于900样式
+@media (max-width:1050px){
+  .gotop_hide{
+    display:none; 
+  }
+  }

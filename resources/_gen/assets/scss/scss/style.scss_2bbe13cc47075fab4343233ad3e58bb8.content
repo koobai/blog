@@ -132,11 +132,13 @@ h1, h2, h3 {
     color: #999; }
   .footer {
     border-top: solid #3d3d3d 0.5px; }
-  .social-icon {
-    opacity: 1; }
   .gotop {
     background: #000;
     color: #BBB; } }
+
+@media (max-width: 1050px) {
+  .gotop_hide {
+    display: none; } }
 
 a {
   color: var(--text-content-color);
