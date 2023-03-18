@@ -1,10 +1,10 @@
 <div class="summary">
   <div class="intro_image">
-    {{ if .Params.image }}
-    <img src="{{ .Params.image | relURL }}" />
-    {{ end }}
-    <div class="summary-time">{{ .Date.Format "2006-01-02" }}</div>
-  </div>
+  {{ if .Params.image }}
+  <img src="{{ .Params.image | relURL }}" />
+  {{ end }}
+</div>
+<div class="summary-nrong">
 <!-- <div class="summary-date">{{ .Date.Format "2006-01-02" }}</div>-->
   <h2 class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
   <p class="summary-description">{{ .Params.description }}</p>
@@ -12,6 +12,4 @@
   <div><a class="read-more" href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "浏览全文 ..." }}</a></div>
   {{ end }}
 </div>
-<script>
-  window.Lately && Lately.init({ target: 'time, .summary-time' });
-</script>
+</div>

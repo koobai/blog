@@ -350,8 +350,7 @@ ul {
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   border-radius: 15px;
   background-color: var(--bankuai-color);
-  padding: 20px;
-  position: relative; }
+  padding: 20px; }
   @media (min-width: 700px) {
     .summary {
       padding: 25px; } }
@@ -359,13 +358,9 @@ ul {
     font-family: var(--font-family-teshu); }
   .summary .summary-title {
     margin: 0 0 -10px 0;
-    width: 90%;
     font-size: 24px;
     line-height: 34px;
     font-weight: normal; }
-    @media (min-width: 700px) {
-      .summary .summary-title {
-        width: 60%; } }
   .summary .summary-description {
     width: 100%;
     line-height: 1.8; }
@@ -377,37 +372,41 @@ ul {
   color: var(--text-content-color);
   font-family: var(--font-family-heading); }
 
-.intro_image img {
-  max-width: calc(100% + 40px);
-  margin-left: -20px;
-  margin-top: -20px;
-  border-radius: 15px 15px 0 0;
-  margin-bottom: 20px; }
-  @media (min-width: 700px) {
-    .intro_image img {
-      max-width: calc(100% + 50px);
-      margin-left: -25px;
-      margin-top: -25px; } }
-.summary-time {
-  position: absolute;
-  top: 0;
-  left: 20px;
-  padding: 6px 15px 6px 15px;
-  background: #fff;
-  border-radius: 0 0 4px 4px;
-  font-size: 14px;
-  color: #999;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.08); }
-  @media (min-width: 700px) {
-    .summary-time {
-      left: 25px; } }
 @media (prefers-color-scheme: dark) {
   .read-more {
     color: var(--text-content-dark-color); }
   .summary {
     background-color: var(--background-dark-color); }
   .summary-time {
-    background: #393234; } }
+    background: #393234; }
+  .intro_image img {
+    border-left: 0 solid var(--background-dark-color) !important;
+    opacity: 0.8; } }
+
+@media (max-width: 900px) {
+  .intro_image img {
+    max-width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-top: -20px;
+    border-radius: 15px 15px 0 0;
+    margin-bottom: 20px; } }
+  @media (max-width: 900px) and (min-width: 700px) {
+    .intro_image img {
+      max-width: calc(100% + 50px);
+      margin-left: -25px;
+      margin-top: -25px; } }
+@media (min-width: 900px) {
+  .summary {
+    flex-direction: row-reverse;
+    align-items: center;
+    display: flex; }
+  .intro_image img {
+    max-width: 300px;
+    height: 330px;
+    object-fit: cover;
+    border-radius: 0 15px 15px 0;
+    border-left: 0.5px solid #c9c9c9;
+    margin: -25px -25px -29.5px 20px; } }
 
 .pagination {
   display: flex;
