@@ -34,6 +34,29 @@
   color: #666;
 }
 
+#gotop {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 40px; /* Place the button at the bottom of the page */
+  right: 20px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 0.3em; /* Rounded corners */
+  font-size: 12px; /* Increase font size */
+}
+.gotop {
+	color: #fff;
+	white-space: pre-line;
+	background: #999;
+  
+}
+.gotop:hover {
+	background: var(--text-highlight-color);
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info a{
@@ -47,5 +70,8 @@
   }
 .social-icon {
     opacity: 1;
+  }
+  .gotop {
+    background: #000; 
   }
 }
