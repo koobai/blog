@@ -1,5 +1,5 @@
 ---
-title: "Github Action 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"
+title: "Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"
 date: 2023-02-20
 slug: hugo_action_webhooks
 tags: ['博客','折腾','Hugo']
