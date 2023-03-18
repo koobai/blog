@@ -54,7 +54,7 @@
   
 }
 .gotop:hover {
-	background: var(--text-highlight-color);
+	text-decoration: underline;
 }
 
 // 夜间模式页面样式
@@ -72,6 +72,7 @@
     opacity: 1;
   }
   .gotop {
-    background: #000; 
+    background: #000;
+    color: #BBB;
   }
 }
