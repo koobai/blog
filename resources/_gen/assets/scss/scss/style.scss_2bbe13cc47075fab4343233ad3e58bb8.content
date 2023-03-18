@@ -363,7 +363,8 @@ ul {
     font-weight: normal; }
   .summary .summary-description {
     width: 100%;
-    line-height: 1.8; }
+    line-height: 1.8;
+    text-align: justify; }
 
 .summary-title a {
   color: var(--text-highlight-color); }
@@ -406,7 +407,7 @@ ul {
     object-fit: cover;
     border-radius: 0 15px 15px 0;
     border-left: 0.5px solid #c9c9c9;
-    margin: -25px -25px -29.5px 20px; } }
+    margin: -25px -25px -29.5px 25px; } }
 
 .pagination {
   display: flex;
