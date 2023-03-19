@@ -155,10 +155,6 @@ function updateHTMl(data){
   bbDom.insertAdjacentHTML('beforeend', resultAll);
   fetchDB()
   document.querySelector('button.button-load').textContent= '浏览更多';
-  //图片灯箱
-  window.ViewImage && ViewImage.init('.datacont img')
-  //相对时间
-  window.Lately && Lately.init({ target: '.datatime' });
 }
 
 //文章内显示豆瓣条目 https://immmmm.com/post-show-douban-item/
