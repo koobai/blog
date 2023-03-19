@@ -1387,11 +1387,13 @@ img[atk-emoticon] {
 .bb-load button:hover {
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08); }
 
+.memos_diaoyong_info a {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: var(--text-content-color) !important; }
+
 .memos_diaoyong_info {
-  font-size: 16px;
-  margin-top: 5px;
-  line-height: 1.6;
-  color: var(--text-content-color); }
+  margin-top: 5px; }
 
 .bb-timeline ul li .datatime, .datakoobai {
   font-size: 14px;
@@ -1567,8 +1569,8 @@ img[atk-emoticon] {
     background: #393234 !important; }
   .memos_diaoyong_from, .memos_diaoyong_from a, .memos_diaoyong_time {
     color: #888; }
-  .memos_diaoyong_info {
-    color: var(--text-content-dark-color); } }
+  .memos_diaoyong_info a {
+    color: var(--text-content-dark-color) !important; } }
 
 /*
 Put this file in /static/css/hugo-easy-gallery.css
