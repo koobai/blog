@@ -46,9 +46,11 @@
       border-left: 0 solid  var(--background-dark-color) !important;
       opacity: 0.8;
     }
+  .summary {
   .summary-description {
       color: var(--text-content-dark-color) !important;
     }
+  }
 }
 
 
@@ -66,8 +68,11 @@
       margin-top: -25px;
     }
   }
+  .summary {
   .summary-description {
-    font-size: 18px !important;
+    font-size: 18px;
+    color: var(--text-content-color);
+  }
   }
   }
   // 页面宽度大于900样式
