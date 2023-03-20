@@ -16,21 +16,16 @@
     border-radius:2px;
 }
 .photo-home-top img:hover{
-    filter: brightness(0.7);
+    filter: brightness(0.9);
   }
 .photo-home-title{
     background: rgba(0, 0, 0, 0.4);
-    width: 100%;
     font-size:14px;
     color: #FFF;
-    display:none;
     position:absolute;
     bottom: 0;
     padding: 8px 0 8px 0;
     text-align: center;
-}
-.photo-home-top:hover span.photo-home-title {
-    display:block;
 }
   
 // 页面宽度小于700样式
@@ -41,6 +36,12 @@
     .photo-home-top img {
         height: 120px;
     } 
+    .photo-home-title{
+        display:block;
+        padding: 5px 0 5px 0;
+        font-size:12px;
+        width: 100%;
+    }
     }
  // 页面宽度大于700小于900样式
 @media screen and (min-width:700px) and (max-width:900px){
@@ -50,13 +51,34 @@
     .photo-home-top img {
             height: 180px;
         }
+    .photo-home-title{
+            display:block;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            padding: 6px;
+            border-radius:2px;
+            font-size: 12px;  
+        }
     }
 // 页面宽度大于900样式   
  @media (min-width:900px){
     .photo-home-top{
-            width: 16%;
+            width: 16.04%;
         }
     .photo-home-top img {
             height: 150px;
         }
+    .photo-home-title{
+            display:none;
+            width: 100%;
+        }
+    .photo-home-top:hover span.photo-home-title {
+            display:block;
+        }
+    }
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+    .photo-home-top img:hover{
+        filter: brightness(0.7);
+      }
     }

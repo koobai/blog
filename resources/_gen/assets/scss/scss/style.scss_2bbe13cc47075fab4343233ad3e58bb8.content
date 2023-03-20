@@ -1591,39 +1591,55 @@ img[atk-emoticon] {
   border-radius: 2px; }
 
 .photo-home-top img:hover {
-  filter: brightness(0.7); }
+  filter: brightness(0.9); }
 
 .photo-home-title {
   background: rgba(0, 0, 0, 0.4);
-  width: 100%;
   font-size: 14px;
   color: #FFF;
-  display: none;
   position: absolute;
   bottom: 0;
   padding: 8px 0 8px 0;
   text-align: center; }
 
-.photo-home-top:hover span.photo-home-title {
-  display: block; }
-
 @media (max-width: 700px) {
   .photo-home-top {
     width: 32.2%; }
   .photo-home-top img {
-    height: 120px; } }
+    height: 120px; }
+  .photo-home-title {
+    display: block;
+    padding: 5px 0 5px 0;
+    font-size: 12px;
+    width: 100%; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .photo-home-top {
     width: 32.2%; }
   .photo-home-top img {
-    height: 180px; } }
+    height: 180px; }
+  .photo-home-title {
+    display: block;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    padding: 6px;
+    border-radius: 2px;
+    font-size: 12px; } }
 
 @media (min-width: 900px) {
   .photo-home-top {
-    width: 16%; }
+    width: 16.04%; }
   .photo-home-top img {
-    height: 150px; } }
+    height: 150px; }
+  .photo-home-title {
+    display: none;
+    width: 100%; }
+  .photo-home-top:hover span.photo-home-title {
+    display: block; } }
+
+@media (prefers-color-scheme: dark) {
+  .photo-home-top img:hover {
+    filter: brightness(0.7); } }
 
 .archive-time {
   margin-right: 20px;
