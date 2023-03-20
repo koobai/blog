@@ -71,6 +71,9 @@
   line-height:1.6;
   margin:0;
 }
+.bb-timeline ul li p a {
+  color: var(--text-highlight-color);
+}
 .bb-timeline pre p{display:inline-block;}
 .bb-timeline pre p:empty{display:none;}
 .dark-theme .bb-timeline ul li .datatime{border-color:#666;}
