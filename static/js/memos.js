@@ -154,7 +154,7 @@ function updateHTMl(data){
   resultAll = bbBefore + result + bbAfter
   bbDom.insertAdjacentHTML('beforeend', resultAll);
   fetchDB()
-  document.querySelector('button.button-load').textContent= '浏览更多';
+  document.querySelector('button.button-load').textContent= '看更多 ...';
 }
 
 //文章内显示豆瓣条目 https://immmmm.com/post-show-douban-item/
