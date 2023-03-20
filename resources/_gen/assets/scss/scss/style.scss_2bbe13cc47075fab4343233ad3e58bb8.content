@@ -1611,7 +1611,8 @@ img[atk-emoticon] {
     display: block;
     padding: 5px 0 5px 0;
     font-size: 12px;
-    width: 100%; } }
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2); } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .photo-home-top {
