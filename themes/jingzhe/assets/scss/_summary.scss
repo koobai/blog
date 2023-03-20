@@ -62,7 +62,7 @@
     margin-top: -20px;
     border-radius: 15px 15px 0 0;
     margin-bottom: 20px;
-    @include breakpoint('small') {
+  @include breakpoint('small') {
       max-width:calc(100% + 50px);
       margin-left: -25px;
       margin-top: -25px;
@@ -83,7 +83,7 @@
       display: flex;
     }
     .intro_image img{
-      max-width:300px;
+      width:300px;
       height: 272px;
       object-fit:cover;
       border-radius:0 15px 15px 0;
