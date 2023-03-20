@@ -58,14 +58,35 @@
 
 // 页面宽度小于900样式
 
-@media (max-width:900px){
+@media (max-width:700px){
 .appquanju{
   display: flex;
   padding-bottom: 28px;
 }
 
 }
-
+ // 页面宽度大于700小于900样式
+ @media screen and (min-width:700px) and (max-width:900px){
+  .appdquanjudiv{
+    width: 105%;
+    font-size:0;
+  }
+  .appquanju{
+    display: inline-block;
+    vertical-align: top;
+    width: 41%;
+    margin-right: 15px;
+    height: 170px;
+  
+  }
+  .appimg img{
+    float: left;  
+  }
+  .appwenben{
+    overflow: hidden;
+    padding-bottom: 8px;
+  }
+  }
 // 页面宽度大于900样式
 
 @media (min-width:900px){
