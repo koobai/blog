@@ -22,13 +22,15 @@
     width: 100%;
     line-height: 1.8;
     text-align: justify;
+    font-size: 16px;
+    color: #666;
   }
 }
 .summary-title a {
   color: var(--text-highlight-color);
 }
 .read-more{
-  color: var(--text-content-color);
+  color: #555;
   font-family: var(--font-family-heading);
 }
 
@@ -44,7 +46,9 @@
       border-left: 0 solid  var(--background-dark-color) !important;
       opacity: 0.8;
     }
-
+  .summary-description {
+      color: var(--text-content-dark-color) !important;
+    }
 }
 
 
@@ -62,6 +66,9 @@
       margin-top: -25px;
     }
   }
+  .summary-description {
+    font-size: 18px !important;
+  }
   }
   // 页面宽度大于900样式
   @media (min-width:900px){
@@ -72,7 +79,7 @@
     }
     .intro_image img{
       max-width:300px;
-      height: 295px;
+      height: 272px;
       object-fit:cover;
       border-radius:0 15px 15px 0;
       border-left: 0.5px solid #c9c9c9;
