@@ -38,6 +38,9 @@ ul {
     padding: 25px;
   }
 }
+.content_zhengwen img,.top-img {
+  cursor: pointer;
+}
 .content {
   font-size: 18px;
   p {
@@ -140,7 +143,6 @@ ul {
     max-width: 100%;
     height: auto;
     border-radius: 15px;
-    cursor: pointer;
   }
   figure {
     margin: 2.6rem 0 1.18rem;

@@ -1,0 +1,13 @@
+{{- if .IsNamedParams -}}
+<div class="appquanju">
+<div class="appimg"><img src={{ .Get "img" }}> </div>
+<div class="appwenben">
+<div class="apptitle">{{ .Get "title" }}</div>
+<div class="appnote">{{ .Get "info" }}</div>
+<span class="macos">{{ .Get "macos" }}</span>
+<span class="macos">{{ .Get "ios" }}</span>
+<span class="macos">{{ .Get "tvos" }}</span>
+<span class="macos">{{ .Get "web" }}</span>
+</div>
+</div>
+{{- end }}

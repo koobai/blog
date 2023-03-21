@@ -176,6 +176,9 @@ ul {
   @media (min-width: 700px) {
     .content_zhengwen {
       padding: 25px; } }
+.content_zhengwen img, .top-img {
+  cursor: pointer; }
+
 .content {
   font-size: 18px; }
   .content p {
@@ -263,8 +266,7 @@ ul {
     margin: 10px 0 0 0;
     max-width: 100%;
     height: auto;
-    border-radius: 15px;
-    cursor: pointer; }
+    border-radius: 15px; }
   .content figure {
     margin: 2.6rem 0 1.18rem; }
     .content figure img {
@@ -1047,7 +1049,12 @@ img[atk-emoticon] {
 
 .appimg img {
   width: 100px;
-  margin-right: 15px; }
+  margin-right: 15px;
+  float: left; }
+
+.appwenben {
+  overflow: hidden;
+  padding-bottom: 8px; }
 
 .apptitle {
   color: var(--text-highlight-color);
@@ -1062,14 +1069,17 @@ img[atk-emoticon] {
   line-height: 1.5; }
 
 .macos {
-  background-color: #F2F2F2;
   padding: 6px 10px;
   text-align: center;
   font-size: 12px;
   border-radius: 20px;
   margin-right: 4px;
   color: #999;
-  font-family: var(--font-family-code); }
+  font-family: var(--font-family-code);
+  background-color: #F2F2F2; }
+
+.macos:empty {
+  display: none; }
 
 .pagetitle {
   font-size: 18px;
@@ -1080,13 +1090,8 @@ img[atk-emoticon] {
   .appquanju {
     background-color: var(--background-dark-color); }
   .macos {
-    background-color: #2E282A;
-    color: #666; } }
-
-@media (max-width: 700px) {
-  .appquanju {
-    display: flex;
-    padding-bottom: 28px; } }
+    color: #666;
+    background-color: #2E282A; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .appdquanjudiv {
@@ -1097,12 +1102,7 @@ img[atk-emoticon] {
     vertical-align: top;
     width: 41%;
     margin-right: 15px;
-    height: 170px; }
-  .appimg img {
-    float: left; }
-  .appwenben {
-    overflow: hidden;
-    padding-bottom: 8px; } }
+    height: 170px; } }
 
 @media (min-width: 900px) {
   .appdquanjudiv {
@@ -1113,12 +1113,7 @@ img[atk-emoticon] {
     vertical-align: top;
     width: 43%;
     margin-right: 15px;
-    height: 135px; }
-  .appimg img {
-    float: left; }
-  .appwenben {
-    overflow: hidden;
-    padding-bottom: 8px; } }
+    height: 135px; } }
 
 .bankuai {
   background-color: var(--bankuai-color);
@@ -1132,9 +1127,12 @@ img[atk-emoticon] {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale3d(1.01, 1.01, 1.01); }
 
-.himg {
-  margin: auto;
-  display: block;
+.duiqi {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.duiqi img {
   width: 80%; }
 
 .title {
@@ -1178,7 +1176,7 @@ img[atk-emoticon] {
     vertical-align: top;
     width: 40%;
     margin-right: 15px;
-    height: 400px; } }
+    height: 420px; } }
 
 @media (min-width: 900px) {
   .quanju {
@@ -1190,7 +1188,7 @@ img[atk-emoticon] {
     width: 24.3%;
     margin-right: 15px;
     height: 390px; }
-  .himg {
+  .duiqi img {
     width: 100%; } }
 
 @media (prefers-color-scheme: dark) {
