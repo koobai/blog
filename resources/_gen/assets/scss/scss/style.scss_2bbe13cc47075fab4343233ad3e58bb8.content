@@ -449,6 +449,9 @@ ul {
     flex-direction: row-reverse;
     align-items: center;
     display: flex; }
+  .summary:hover {
+    box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
+    transform: scale3d(1.01, 1.01, 1.01); }
   .intro_image img {
     width: 300px;
     height: 272px;
