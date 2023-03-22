@@ -1,7 +1,7 @@
 <div class="summary">
   <div class="intro_image">
   {{ if .Params.image }}
-  <img src="{{ .Params.image | relURL }}" />
+  <img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" />
   {{ end }}
 </div>
 <div class="summary-nrong">
