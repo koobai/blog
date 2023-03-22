@@ -131,7 +131,7 @@ function updateHTMl(data){
             resLink = memos+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename
           }
           if(restype == 'image'){
-            imgUrl += '<figure class="gallery-thumbnail"><img class="img thumbnail-image" src="'+resLink+'"/></figure>'
+            imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" src="'+resLink+'"/></figure>'
             resImgLength = resImgLength + 1 
           }
           if(restype !== 'image'){
