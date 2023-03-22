@@ -1050,7 +1050,7 @@ img[atk-emoticon] {
 
 .appimg img {
   width: 100px;
-  margin-right: 15px;
+  margin: 0 15px 0 0;
   float: left; }
 
 .appwenben {
@@ -1134,7 +1134,8 @@ img[atk-emoticon] {
   align-items: center; }
 
 .duiqi img {
-  width: 80%; }
+  width: 80%;
+  margin: 0; }
 
 .title {
   color: var(--text-highlight-color);
