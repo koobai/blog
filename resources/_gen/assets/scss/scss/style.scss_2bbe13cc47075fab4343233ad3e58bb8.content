@@ -73,7 +73,8 @@ h1, h2, h3 {
 .header-rss {
   margin-left: 20px;
   width: 24px;
-  height: 24px; }
+  height: 24px;
+  vertical-align: middle; }
 
 @media (prefers-color-scheme: dark) {
   .header a {
