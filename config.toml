@@ -17,7 +17,6 @@ enableRobotsTXT = true
 [params]
   showPostsOnHomepage = true
   addDot = true
-  addFrame = false
   baseColor = "var(--background-color)"
   baseOffsetColor = "#eaeaea"
   headingColor = "#000"

@@ -113,7 +113,7 @@
   &.is-active {
     border-color: transparent;
     z-index: 100;
-    color: var(--base-color);
+    color: var(--text-highlight-color);
     &:hover {
       opacity: 1;
     }
