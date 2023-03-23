@@ -70,6 +70,11 @@ h1, h2, h3 {
   margin-right: 6px;
   margin-top: -4px; }
 
+.header-rss {
+  margin-left: 20px;
+  width: 24px;
+  height: 24px; }
+
 @media (prefers-color-scheme: dark) {
   .header a {
     color: var(--text-content-dark-color); }

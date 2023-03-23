@@ -37,6 +37,11 @@
   margin-right: 6px;
   margin-top: -4px;
 }
+.header-rss {
+  margin-left: 20px;
+  width: 24px;
+  height: 24px;
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .header a {
