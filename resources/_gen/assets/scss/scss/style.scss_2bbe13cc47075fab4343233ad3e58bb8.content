@@ -32,16 +32,28 @@ h1, h2, h3 {
   margin-top: 20px;
   margin-bottom: 20px; }
 
+.header-background {
+  position: sticky;
+  top: 0px;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin-left: calc(50% - 50vw);
+  width: 100vw;
+  z-index: 1000;
+  border-bottom: solid #dadada 0.5px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); }
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  font-size: 18px; }
+  font-size: 18px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px 20px 20px 20px; }
   @media (min-width: 700px) {
     .header {
-      padding-bottom: 5px;
-      margin-bottom: 40px; } }
+      padding: 20px 30px 20px 30px; } }
   .header a.header-logo {
     font-family: var(--font-family-teshu);
     padding-top: 4px; }
@@ -50,8 +62,8 @@ h1, h2, h3 {
   color: #000; }
 
 .header-logo img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1.5px solid #1A1718;
   vertical-align: middle;
@@ -60,7 +72,10 @@ h1, h2, h3 {
 
 @media (prefers-color-scheme: dark) {
   .header a {
-    color: var(--text-content-dark-color); } }
+    color: var(--text-content-dark-color); }
+  .header-background {
+    background-color: rgba(40, 35, 36, 0.9);
+    border-bottom: solid #3d3d3d 0.5px; } }
 
 .footer {
   margin-top: 50px;
@@ -330,7 +345,8 @@ ul {
     background-color: var(--background-dark-color); } }
 
 .intro {
-  margin-bottom: 2%; }
+  margin-bottom: 15px;
+  margin-top: 30px; }
   .intro h1 {
     font-size: 40px;
     line-height: 50px;
@@ -608,7 +624,7 @@ ul {
   .hamburger.is-active {
     border-color: transparent;
     z-index: 100;
-    color: var(--base-color); }
+    color: var(--text-highlight-color); }
     .hamburger.is-active:hover {
       opacity: 1; }
     .hamburger.is-active:before {
@@ -1723,14 +1739,11 @@ body {
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   overflow-x: hidden; }
   @media (min-width: 700px) {
     body {
-      padding: 30px; } }
-  body.frame {
-    border-top: 2px solid #666; }
-
+      padding: 0 30px 30px 30px; } }
 .wrapper {
   max-width: 900px;
   margin: 0 auto; }
