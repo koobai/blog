@@ -115,22 +115,27 @@ pre {
 img {filter: brightness(0.8) contrast(1.2); }
 }
 // 板块上滑效果动画
-[data-module~=fade-in-up]{
+[data-module~=fade-in-up], .fade-in-up {
   animation-name: fade-in-up;
   animation-duration: 0.8s;
   animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   animation-fill-mode: forwards;
-  opacity: 0;
-  transform: translate3d(0, 10%, 0);
+  visibility: hidden;
+  transform: translate3d(0, 10%, 0) scale(0.99);
 }
 
 @keyframes fade-in-up {
   0% {
-    opacity: 0;
-    transform: translate3d(0, 10%, 0);
+    visibility: hidden;
+    transform: translate3d(0, 10%, 0) scale(0.99);
   }
   100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+    visibility: visible;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 } 
+
+
+ .img-hide {
+    visibility: hidden;
+  }
