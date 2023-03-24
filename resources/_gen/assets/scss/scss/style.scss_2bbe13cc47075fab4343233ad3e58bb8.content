@@ -88,25 +88,6 @@ h1, h2, h3 {
     background-color: rgba(40, 35, 36, 0.9);
     border-bottom: solid #3d3d3d 0.5px; } }
 
-[data-module~=fade-in-up], .fade-in-up {
-  animation-name: fade-in-up;
-  animation-duration: 0.8s;
-  animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  animation-fill-mode: forwards;
-  visibility: hidden;
-  transform: translate3d(0, 10%, 0) scale(1); }
-
-@keyframes fade-in-up {
-  0% {
-    visibility: hidden;
-    transform: translate3d(0, 10%, 0) scale(1); }
-  100% {
-    visibility: visible;
-    transform: translate3d(0, 0, 0) scale(1); } }
-
-.img-hide {
-  visibility: hidden; }
-
 .footer {
   margin-top: 50px;
   padding-top: 16px;
@@ -1807,5 +1788,24 @@ body {
     background-color: var(--background-dark-color); }
   img {
     filter: brightness(0.8) contrast(1.2); } }
+
+[data-module~=fade-in-up], .fade-in-up {
+  animation-name: fade-in-up;
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation-fill-mode: forwards;
+  visibility: hidden;
+  transform: translate3d(0, 10%, 0) scale(0.96); }
+
+@keyframes fade-in-up {
+  0% {
+    visibility: hidden;
+    transform: translate3d(0, 10%, 0) scale(0.96); }
+  100% {
+    visibility: visible;
+    transform: translate3d(0, 0, 0) scale(1); } }
+
+.img-hide {
+  visibility: hidden; }
 
 /*# sourceMappingURL=style.css.map */
