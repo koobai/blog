@@ -15,7 +15,7 @@
     {{ .Key }}年<sup>&nbsp;&nbsp;{{ len .Pages }}</sup>
   </h2>-->
   {{- range .Pages.GroupByDate "1" }}
-  <div class="archives_nrong">
+  <div class="archives_nrong" data-module="fade-in-up">
     <!--<div class="archive-month">
      {{- .Key }} 月
       <sup>{{ len .Pages }}</sup>

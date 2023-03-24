@@ -26,7 +26,7 @@ function loadCssCode(code){
   var head = document.getElementsByTagName('head')[0];
   head.appendChild(style);
 }
-var allCSS = ""
+var allCSS ='';
 loadCssCode(allCSS);
 
 var limit = bbMemo.limit
@@ -147,7 +147,7 @@ function updateHTMl(data){
           bbContREG += '<p class="datasource">'+resUrl+'</p>'
         }
       }
-      result += "<li class='bb-list-li'><span class='datatime'>"+ moment(data[i].createdTs * 1000).twitterLong() +"</span><span class='datakoobai'>@koobai</span><div class='datacont'>"+bbContREG+"</div></li>"
+      result += "<li class='bb-list-li' data-module='fade-in-up'><span class='datatime'>"+ moment(data[i].createdTs * 1000).twitterLong() +"</span><span class='datakoobai'>@koobai</span><div class='datacont'>"+bbContREG+"</div></li>"
   }// end for
   var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>"
   var bbAfter = "</ul></section>"
