@@ -115,6 +115,7 @@ pre {
 img {filter: brightness(0.8) contrast(1.2); }
 }
 
+@media (min-width:900px){
 // 板块上滑效果动画
 [data-module~=fade-in-up], .fade-in-up {
   animation-name: fade-in-up;
@@ -138,3 +139,4 @@ img {filter: brightness(0.8) contrast(1.2); }
  .img-hide {
     visibility: hidden;
   }
+}
