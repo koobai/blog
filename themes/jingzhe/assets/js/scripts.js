@@ -35,3 +35,29 @@ function smoothScrollTop(){
 }
 // 灯箱调用(首页顶部/Memos页面)
 window.ViewImage && ViewImage.init('.photo-home a, .datacont img, .content_zhengwen img, .top-img');
+
+const nav = document.querySelector('.header-background');
+let lastScrollTop = 0;
+let initialScrollTop = window.scrollY;
+let scrollUpDistance = 0;
+const SCROLL_DISTANCE_DOWN = 200; // 向下滑动距离
+const SCROLL_DISTANCE_UP = 100; // 向上滑动距离
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+
+  if (scrollTop > lastScrollTop && scrollTop > SCROLL_DISTANCE_DOWN) {
+    nav.classList.add('hidden');
+  } else if (scrollTop < lastScrollTop) {
+    scrollUpDistance += lastScrollTop - scrollTop;
+    if (scrollUpDistance > SCROLL_DISTANCE_UP) {
+      nav.classList.remove('hidden');
+      scrollUpDistance = 0;
+    }
+  } else {
+    scrollUpDistance = 0;
+    nav.classList.remove('hidden');
+  }
+
+  lastScrollTop = scrollTop;
+});
