@@ -115,7 +115,7 @@ pre {
 img {filter: brightness(0.8) contrast(1.2); }
 }
 // 板块上滑效果动画
-[data-module~=fade-in-up] {
+[data-module~=fade-in-up], .fade-in-up {
   animation-name: fade-in-up;
   animation-duration: 0.8s;
   animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -134,3 +134,6 @@ img {filter: brightness(0.8) contrast(1.2); }
     transform: translate3d(0, 0, 0);
   }
 } 
+ .img-hide {
+    opacity: 0;
+  }
