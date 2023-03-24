@@ -126,30 +126,34 @@ h1, h2, h3 {
   /* Fixed/sticky position */
   bottom: 40px;
   /* Place the button at the bottom of the page */
-  right: 20px;
+  right: 40px;
   /* Place the button 30px from the right */
   z-index: 99;
   /* Make sure it does not overlap */
-  border: none;
-  /* Remove borders */
-  outline: none;
-  /* Remove outline */
   cursor: pointer;
-  /* Add a mouse pointer on hover */
-  padding: 10px;
-  /* Some padding */
-  border-radius: 0.3em;
-  /* Rounded corners */
-  font-size: 12px;
-  /* Increase font size */ }
+  /* Add a mouse pointer on hover */ }
 
 .gotop {
-  color: #fff;
-  white-space: pre-line;
-  background: #999; }
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  position: relative;
+  /* 设置相对定位 */ }
 
 .gotop:hover {
-  text-decoration: underline; }
+  background: #ededed; }
+
+.gotop img {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  /* 设置绝对定位 */
+  top: 50%;
+  /* 将图片的顶部对齐容器的中间位置 */
+  left: 50%;
+  /* 将图片的左侧对齐容器的中间位置 */
+  transform: translate(-50%, -50%); }
 
 @media (prefers-color-scheme: dark) {
   .footer-info a {
@@ -159,10 +163,9 @@ h1, h2, h3 {
   .footer {
     border-top: solid #3d3d3d 0.5px; }
   .gotop {
-    background: #000;
-    color: #BBB; } }
+    background: #999; } }
 
-@media (max-width: 1050px) {
+@media (max-width: 1100px) {
   .gotop_hide {
     display: none; } }
 
