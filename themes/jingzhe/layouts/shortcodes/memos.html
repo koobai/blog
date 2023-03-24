@@ -9,7 +9,7 @@
               var bbTime = new Date(data[i].createdTs * 1000).toLocaleString()
               var bbCont = data[i].content
               var newbbCont = bbCont.replace(/!\[.*?\]\((.*?)\)/g,' <a href="$1" target="_blank">🌅</a> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')
-              result += `<div class="memos_diaoyong"><span class="memos_diaoyong_time">${bbTime}</span><span class='memos_diaoyong_from'>来自 <a href="/memos">@koobai 唠叨</a></sapn><div class="memos_diaoyong_info"><a href="/memos">${newbbCont}</a></div></div>`;
+              result += `<div class="memos_diaoyong" data-module="fade-in-up"><span class="memos_diaoyong_time">${bbTime}</span><span class='memos_diaoyong_from'>来自 <a href="/memos">@koobai 唠叨</a></sapn><div class="memos_diaoyong_info"><a href="/memos">${newbbCont}</a></div></div>`;
           }
           var bbDom = document.querySelector('#momos-ss');
           var bbBefore = `<div class="momos-sswrap"><ul class="momos-sslist">`

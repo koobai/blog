@@ -1069,8 +1069,7 @@ img[atk-emoticon] {
   margin-top: 15px; }
 
 .appquanju:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
-  transform: scale3d(1.01, 1.01, 1.01); }
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16); }
 
 .appimg img {
   width: 100px;
@@ -1149,8 +1148,7 @@ img[atk-emoticon] {
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
 
 .bankuai:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
-  transform: scale3d(1.01, 1.01, 1.01); }
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16); }
 
 .duiqi {
   display: flex;
@@ -1408,8 +1406,7 @@ img[atk-emoticon] {
   border-radius: 12px; }
 
 .bb-timeline ul li:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16);
-  transform: scale3d(1.01, 1.01, 1.01); }
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.16); }
 
 .memos_diaoyong {
   border-radius: 4px;
@@ -1783,5 +1780,21 @@ body {
     background-color: var(--background-dark-color); }
   img {
     filter: brightness(0.8) contrast(1.2); } }
+
+[data-module~=fade-in-up] {
+  animation-name: fade-in-up;
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation-fill-mode: forwards;
+  opacity: 0;
+  transform: translate3d(0, 10%, 0); }
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10%, 0); }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0); } }
 
 /*# sourceMappingURL=style.css.map */
