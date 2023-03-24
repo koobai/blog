@@ -1791,20 +1791,18 @@ body {
 
 @media (min-width: 900px) {
   [data-module~=fade-in-up], .fade-in-up {
-    animation-name: fade-in-up;
-    animation-duration: 0.8s;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-    animation-fill-mode: forwards;
-    visibility: hidden;
-    transform: translate3d(0, 10%, 0) scale(0.96); }
+    animation: fade-in-up 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    opacity: 0;
+    transform: translate3d(0, 10%, 0) scale(0.98);
+    will-change: opacity, transform; }
   @keyframes fade-in-up {
     0% {
-      visibility: hidden;
-      transform: translate3d(0, 10%, 0) scale(0.96); }
+      opacity: 0;
+      transform: translate3d(0, 10%, 0) scale(0.98); }
     100% {
-      visibility: visible;
+      opacity: 1;
       transform: translate3d(0, 0, 0) scale(1); } }
   .img-hide {
-    visibility: hidden; } }
+    opacity: 0; } }
 
 /*# sourceMappingURL=style.css.map */

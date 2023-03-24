@@ -28,7 +28,7 @@ function animateSummaries() {
   }
 
   const options = {
-    rootMargin: '0px 0px -50px 0px', // 元素进入视窗 100px 时触发回调
+    rootMargin: '0px 0px -80px 0px', // 元素进入视窗 100px 时触发回调
   };
 
   const observer = new IntersectionObserver((entries) => {
