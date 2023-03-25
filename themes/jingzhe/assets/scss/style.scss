@@ -75,7 +75,10 @@ body {
 .wrapper {
   max-width: 900px;
   margin: 0 auto;
-  min-height: calc(100vh - 104px);
+  min-height: calc(100vh - 130px);
+  @include breakpoint('small') {
+    min-height: calc(100vh - 104px);
+    }
 }
 
 //日间模式新增属性
