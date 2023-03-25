@@ -93,6 +93,7 @@ h1, h2, h3 {
   margin-left: calc(50% - 50vw);
   width: 100vw;
   margin-top: 40px;
+  height: 64px;
   /* 先隐藏元素 */
   visibility: hidden;
   opacity: 0;
@@ -105,10 +106,10 @@ h1, h2, h3 {
 .footer {
   margin: 0 auto;
   max-width: 900px;
-  padding: 20px; }
+  padding: 12px 30px 0 30px; }
   @media (min-width: 700px) {
     .footer {
-      padding: 20px 30px 20px 30px; } }
+      padding: 20px 30px 0 30px; } }
 .footer-info, .footer-info a {
   font-size: 12px;
   line-height: 1.8em;
@@ -1755,7 +1756,8 @@ body {
       padding: 0 30px 0 30px; } }
 .wrapper {
   max-width: 900px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  min-height: calc(100vh - 104px); }
 
 .highlight pre {
   background: var(--background-color); }
