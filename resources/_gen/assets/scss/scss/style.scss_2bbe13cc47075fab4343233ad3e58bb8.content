@@ -93,12 +93,14 @@ h1, h2, h3 {
   margin-left: calc(50% - 50vw);
   width: 100vw;
   margin-top: 40px;
-  height: 64px;
+  height: 90px;
   /* 先隐藏元素 */
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s ease-in-out; }
-
+  @media (min-width: 700px) {
+    .footer-background {
+      height: 64px; } }
 .loaded .footer-background {
   visibility: visible;
   opacity: 1; }
@@ -1757,8 +1759,10 @@ body {
 .wrapper {
   max-width: 900px;
   margin: 0 auto;
-  min-height: calc(100vh - 104px); }
-
+  min-height: calc(100vh - 130px); }
+  @media (min-width: 700px) {
+    .wrapper {
+      min-height: calc(100vh - 104px); } }
 .highlight pre {
   background: var(--background-color); }
 
