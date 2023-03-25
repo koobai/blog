@@ -35,9 +35,8 @@
     {{ partial "header.html" . }}
     {{ block "main" . }}
     {{ end }}
-    {{ partial "footer.html" . }}
   </div>
-
+  {{ partial "footer.html" . }}
   {{ $scripts := resources.Get "js/scripts.js" }}
 
   {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
