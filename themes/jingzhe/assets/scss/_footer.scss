@@ -1,27 +1,30 @@
+.footer-background{
+  background: #000;
+  margin-left: calc(50% - 50vw);
+  width: 100vw;
+  margin-top: 40px;
+  /* 先隐藏元素 */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  }
+.loaded .footer-background {
+  visibility: visible;
+  opacity: 1;
+  }
 .footer {
-    margin-top: 50px;
-    padding-top:16px;
-    border-top:solid #d2d2d2 0.5px;
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 20px;
+    @include breakpoint('small') {
+      padding: 20px 30px 20px 30px;
+      }
   }
   
-  .social-icon {
-    margin-right: 8px;
-    opacity: 0.3;
-    a {
-      text-decoration: none;
-      &:hover {
-      text-decoration: none;
-      }
-    }
-  }
-.social-icon:hover {
-    opacity: 0.7;
-}
-.footer-info{
+.footer-info, .footer-info a{
   font-size: 12px;
-  margin-bottom: 8px;
   line-height: 1.8em;
-  color: #666;
+  color: #dbdbdb;
   }
 
 .footer-info img{
@@ -29,9 +32,6 @@
   width: 16px;
   height: 16px;
   margin-top: -2px;
-}
-.footer-info a{
-  color: #666;
 }
 #gotop {
   display: none; /* Hidden by default */
@@ -61,16 +61,10 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.footer-info a{
+.footer-info, .footer-info a{
   color: #999;
 }
-.footer-info{
-  color: #999;
-  }
-.footer {
-  border-top:solid #3d3d3d 0.5px;
-  }
-  .gotop {
+.gotop {
     background: #999;
   }
 }
