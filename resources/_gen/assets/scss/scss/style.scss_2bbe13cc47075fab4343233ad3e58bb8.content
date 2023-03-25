@@ -88,36 +88,37 @@ h1, h2, h3 {
     background-color: rgba(40, 35, 36, 0.9);
     border-bottom: solid #3d3d3d 0.5px; } }
 
+.footer-background {
+  background: #000;
+  margin-left: calc(50% - 50vw);
+  width: 100vw;
+  margin-top: 40px;
+  /* 先隐藏元素 */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; }
+
+.loaded .footer-background {
+  visibility: visible;
+  opacity: 1; }
+
 .footer {
-  margin-top: 50px;
-  padding-top: 16px;
-  border-top: solid #d2d2d2 0.5px; }
-
-.social-icon {
-  margin-right: 8px;
-  opacity: 0.3; }
-  .social-icon a {
-    text-decoration: none; }
-    .social-icon a:hover {
-      text-decoration: none; }
-
-.social-icon:hover {
-  opacity: 0.7; }
-
-.footer-info {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 20px; }
+  @media (min-width: 700px) {
+    .footer {
+      padding: 20px 30px 20px 30px; } }
+.footer-info, .footer-info a {
   font-size: 12px;
-  margin-bottom: 8px;
   line-height: 1.8em;
-  color: #666; }
+  color: #dbdbdb; }
 
 .footer-info img {
   vertical-align: middle;
   width: 16px;
   height: 16px;
   margin-top: -2px; }
-
-.footer-info a {
-  color: #666; }
 
 #gotop {
   display: none;
@@ -156,12 +157,8 @@ h1, h2, h3 {
   transform: translate(-50%, -50%); }
 
 @media (prefers-color-scheme: dark) {
-  .footer-info a {
+  .footer-info, .footer-info a {
     color: #999; }
-  .footer-info {
-    color: #999; }
-  .footer {
-    border-top: solid #3d3d3d 0.5px; }
   .gotop {
     background: #999; } }
 
@@ -1232,7 +1229,8 @@ img[atk-emoticon] {
 
 /*归档页标签*/
 .archives_tags {
-  margin-bottom: 15px; }
+  margin-bottom: 15px;
+  margin-top: 30px; }
 
 .archives_tags a {
   display: inline-block;
@@ -1750,11 +1748,11 @@ body {
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 0 20px;
   overflow-x: hidden; }
   @media (min-width: 700px) {
     body {
-      padding: 0 30px 30px 30px; } }
+      padding: 0 30px 0 30px; } }
 .wrapper {
   max-width: 900px;
   margin: 0 auto; }

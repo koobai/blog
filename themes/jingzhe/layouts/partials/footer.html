@@ -1,3 +1,4 @@
+<div class="footer-background">
 <div class="footer">
         <div class="footer-info">&copy; {{ now.Year }} <a href="{{ .Sites.First.Home.RelPermalink }}">空白生活</a>. 
         由 
@@ -9,6 +10,13 @@
     </div>
 <script async defer data-website-id="acbfa520-5ade-4e88-983b-80a52a106a5b" src="https://u.koobai.com/LEI458DUYU.js"></script>
 </div>
+</div>
 <div class="gotop_hide">
   <div class="gotop" onclick="smoothScrollTop()" id="gotop"><img src="https://img.koobai.com/up.svg" alt="回到顶部" /></div>
 </div>
+<!--解决打开memos页面先显示页尾闪烁问题-->
+<script>
+  window.addEventListener('load', function() {
+  document.body.classList.add('loaded');
+});
+  </script>
