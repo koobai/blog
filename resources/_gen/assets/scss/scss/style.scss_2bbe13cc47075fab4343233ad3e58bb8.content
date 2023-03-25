@@ -166,7 +166,8 @@ h1, h2, h3 {
     background: #999; }
   .footer-background {
     background: #1A1718;
-    border-top: solid #3d3d3d 0.5px; } }
+    border-top: solid #3d3d3d 0.5px;
+    box-sizing: border-box; } }
 
 @media (max-width: 1100px) {
   .gotop_hide {
