@@ -538,7 +538,7 @@ ul {
     font-weight: normal;
     justify-content: flex-start; }
     .menu-main > ul > li {
-      margin-right: 20px; }
+      margin-right: 25px; }
       .menu-main > ul > li > a {
         display: inline-block;
         text-decoration: none; }
