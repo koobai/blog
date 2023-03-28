@@ -3,7 +3,7 @@ const imageList = [
   {img: 'https://img.koobai.com/photo/dazi.webp', imgSmall: 'https://img.koobai.com/photo/dazi-small.webp', title: '学起来'},
   {img: 'https://img.koobai.com/photo/gz.webp', imgSmall: 'https://img.koobai.com/photo/gz-small.webp', title: '广州塔'},
   {img: 'https://img.koobai.com/photo/kouan.webp', imgSmall: 'https://img.koobai.com/photo/kouan-small.webp', title: '对面就是澳门了'},
-  {img: 'https://img.koobai.com/photo/q1.webp', imgSmall: 'https://img.koobai.com/photo/q1-small.webp', title: '第一把客制化'},
+  {img: 'https://img.koobai.com/photo/keychronq1.webp', imgSmall: 'https://img.koobai.com/photo/keychronq1-small.webp', title: '第一把客制化'},
   {img: 'https://img.koobai.com/photo/xueche.webp', imgSmall: 'https://img.koobai.com/photo/xueche-small.webp', title: '学会了就不骑'},
   {img: 'https://img.koobai.com/photo/zhuhai.webp', imgSmall: 'https://img.koobai.com/photo/zhuhai-small.webp', title: '珠海灯塔'},
   {img: 'https://img.koobai.com/photo/xihu.webp', imgSmall: 'https://img.koobai.com/photo/xihu-small.webp', title: '周末的西湖'},
