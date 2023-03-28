@@ -31,7 +31,7 @@ const insertRandomImages = images => {
     const photoHtml = `
       <div class="photo-home-top">
         <a href="${img}">
-          <img loading="lazy" decoding="async" src="${imgSmall}" alt="${title}" class="photo">
+          <img loading="lazy" decoding="async" src="${imgSmall}" alt="${title}">
         </a>
         <span class="photo-home-title">${title}</span>
       </div>
