@@ -8,7 +8,7 @@ menu:
     name: "软件"
     weight: 3
 ---
-<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：(2023-03-02 更新)</div>
+<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-03-02 更新 )</div>
 
 <div class="appdquanjudiv">
 {{<app img="https://img.koobai.com/app/vscode.webp" title="Visual Studio Code" info="代码编辑软件，只能说牛逼，再也不用切来切去了，只恨相见太晚。" macos="macOS">}}
