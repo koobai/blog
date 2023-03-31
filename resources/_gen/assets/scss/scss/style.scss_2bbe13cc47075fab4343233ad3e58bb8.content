@@ -1453,7 +1453,9 @@ img[atk-emoticon] {
   color: var(--text-content-color) !important; }
 
 .memos_diaoyong_info {
-  margin-top: 5px; }
+  margin-top: 5px;
+  font-size: 16px;
+  color: var(--text-content-color); }
 
 .bb-timeline ul li .datatime, .datakoobai {
   font-size: 14px;
@@ -1632,7 +1634,7 @@ img[atk-emoticon] {
     background: #393234 !important; }
   .memos_diaoyong_from, .memos_diaoyong_from a, .memos_diaoyong_time {
     color: #888; }
-  .memos_diaoyong_info a {
+  .memos_diaoyong_info, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; } }
 
 .photo-home {
