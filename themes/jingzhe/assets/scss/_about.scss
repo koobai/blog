@@ -31,3 +31,14 @@
 .about-text a{
   color: var(--text-highlight-color);
 }
+.about-img-intro{
+  padding: 8px;
+  border-radius:2px;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  position:absolute;
+  color: #FFF;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 4px;
+}
