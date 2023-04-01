@@ -1762,7 +1762,7 @@ img[atk-emoticon] {
       font-size: 70px; } }
 .about-text {
   margin: 20px 0 20px 0;
-  line-height: 30px;
+  line-height: 2;
   font-size: 18px;
   text-align: justify; }
 
