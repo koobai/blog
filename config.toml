@@ -42,3 +42,9 @@ enableRobotsTXT = true
     name = '首页'
     url = '/'
     weight = 1
+
+  [[menu.main]]
+    identifier = 'running'
+    name = '跑步'
+    url = 'https://koobai.github.io/running'
+    weight = 2
