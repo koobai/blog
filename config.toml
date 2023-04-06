@@ -45,6 +45,6 @@ enableRobotsTXT = true
 
   [[menu.main]]
     identifier = 'running'
-    name = '跑步'
-    url = 'https://koobai.github.io/running'
+    name = '锻炼'
+    url = 'https://koobai.github.io/workouts'
     weight = 2
