@@ -1522,7 +1522,7 @@ img[atk-emoticon] {
   top: 5px; }
 
 .datacont .tag-span {
-  color: #BB2649;
+  color: #999;
   background: #F4F4F4;
   padding: 7px;
   font-size: 14px;
@@ -1624,7 +1624,6 @@ img[atk-emoticon] {
   .bb-timeline ul li {
     background: var(--background-dark-color) !important; }
   .datacont .tag-span {
-    color: #BB2649;
     background: #332E2F; }
   .bb-load button {
     background: var(--background-dark-color); }
@@ -1783,13 +1782,13 @@ img[atk-emoticon] {
 @font-face {
   font-family: SmileySans;
   font-display: swap;
-  src: url("https://img.koobai.com/fonts/SmileySans-Oblique.ttf.woff2") format("woff2");
+  src: url("/fonts/SmileySans-Oblique.woff2") format("woff2");
   unicode-range: U+4E00-9FA5,U+0025-00F0; }
 
 @font-face {
   font-family: JetBrainsMono;
   font-display: swap;
-  src: url("https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
   unicode-range: U+61-7a,U+41-5a,U+30-39; }
 
 html, body {
