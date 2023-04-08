@@ -83,7 +83,7 @@
 .datacont p{min-height:24px;}.datacont blockquote{font-family: KaiTi,STKaiti,STFangsong;margin:0 0 0 1rem;padding:.25rem 2rem;position: relative;border-left:0 none;}
 .datacont blockquote::before{line-height: 2rem;content: '“';font-family: Georgia, serif;font-size: 28px;font-weight: bold;position: absolute;left: 10px;top:5px;}
 .datacont .tag-span{
-  color:#BB2649;
+  color: #999;
   background: #F4F4F4;
   padding: 7px;
   font-size: 14px;
@@ -147,7 +147,6 @@
 @media (prefers-color-scheme: dark) {
 .bb-timeline ul li {background: var(--background-dark-color) !important;}
 .datacont .tag-span{
-  color:#BB2649;
   background: #332E2F;
 }
 .bb-load button{
