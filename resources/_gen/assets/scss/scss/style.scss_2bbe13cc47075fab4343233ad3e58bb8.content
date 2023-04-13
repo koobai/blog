@@ -1782,13 +1782,13 @@ img[atk-emoticon] {
 @font-face {
   font-family: SmileySans;
   font-display: swap;
-  src: url("/fonts/SmileySans-Oblique.woff2") format("woff2");
+  src: url("https://img.koobai.com/fonts/SmileySans-Oblique.ttf.woff2") format("woff2");
   unicode-range: U+4E00-9FA5,U+0025-00F0; }
 
 @font-face {
   font-family: JetBrainsMono;
   font-display: swap;
-  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2") format("woff2");
   unicode-range: U+61-7a,U+41-5a,U+30-39; }
 
 html, body {
