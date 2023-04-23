@@ -1,7 +1,7 @@
 <div class="summary img-hide">
   <div class="intro_image">
   {{ if .Params.image }}
-  <img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
+  <a href="{{.RelPermalink}}"><img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>
   {{ end }}
 </div>
 <div class="summary-nrong">
