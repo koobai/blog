@@ -246,11 +246,11 @@ ul {
         font-size: 30px;
         line-height: 1.4; } }
   .content h3 {
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.4;
     font-weight: normal;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 6px;
     letter-spacing: 0.5px; }
   .content ul {
     list-style: disc; }
@@ -1824,9 +1824,10 @@ body {
   p {
     color: var(--text-content-dark-color); }
   h1,
-  h2,
-  h3 {
+  h2 {
     color: #CCCCCC; }
+  h3 {
+    color: #FFF; }
   a {
     color: var(--text-content-dark-color); }
   .author {
