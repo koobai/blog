@@ -1,5 +1,5 @@
 ---
-title: '旧 Macbook 装双系统 windows 11'
+title: '旧 Macbook 装双系统 Windows 11'
 date: 2023-04-27 22:21:25 +0800
 slug: windows11
 tags: ['折腾','系统']
