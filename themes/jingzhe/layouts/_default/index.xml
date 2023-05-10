@@ -61,6 +61,7 @@
         <entry>
             {{ printf `<title type="html"><![CDATA[%s]]></title>` .Title | safeHTML }}
             <link href="{{ .Permalink }}" rel="alternate" type="text/html" />
+            <img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
             {{- range .Translations }}
                 {{- $link := printf "%s" .Permalink | safeHTML }}
                 {{- printf `<link href=%q rel="alternate" type="text/html" hreflang=%q />` $link .Lang | safeHTML }}
