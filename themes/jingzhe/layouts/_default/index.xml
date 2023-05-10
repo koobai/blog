@@ -11,6 +11,7 @@
     {{ with (or (.Param "subtitle") (.Param "tagline")) }}
         {{ printf `<subtitle type="html"><![CDATA[%s]]></subtitle>` . | safeHTML }}
     {{ end }}
+    <description>{{ .Params.description }}</description>
     {{ $output_formats := .OutputFormats }}
     {{ range $output_formats -}}
         {{- $rel := (or (and (eq "atom" (.Name | lower)) "self") "alternate") -}}
