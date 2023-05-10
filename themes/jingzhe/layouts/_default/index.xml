@@ -79,10 +79,8 @@
             {{- end }}
             <published>{{ .Date.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</published>
             <updated>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</updated>
-            {{ $description1 := .Description | default "" }}
-            {{ $description := (cond (eq "" $description1) "" (printf "<blockquote>%s</blockquote>" ($description1 | markdownify))) }}
-            <img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
-            {{ printf `<content type="html"><![CDATA[%s%s]]></content>` $description .Content | safeHTML }}
+            {{ $image := printf `<img loading="lazy" decoding="async" src="%s" alt="%s" />` (.Params.image | relURL) .Title }}
+            {{ printf `<content type="html"><![CDATA[%s%s]]></content>` $image .Content | safeHTML }}
             {{ with site.Taxonomies }}
                 {{ range $taxo,$_ := . }} <!-- Defaults taxos: "tags", "categories" -->
                     {{ with $page.Param $taxo }}
