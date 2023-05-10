@@ -39,8 +39,8 @@
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{ with site.Author.email }}<author>{{.}}{{ with site.Author.name }} ({{.}}){{end}}</author>{{end}}
       <guid>{{ .Permalink }}</guid>
-    {{ $image := printf `<img loading="lazy" decoding="async" src="%s" alt="%s" />` (.Params.image | relURL) .Title }}
-    {{ printf `<content type="html"><![CDATA[%s%s]]></content>` $image .Content | safeHTML }}
+      {{ $image := printf `<img loading="lazy" decoding="async" src="%s" alt="%s" />` (.Params.image | relURL) .Title }}
+     <content:encoded>{{ (printf "<![CDATA[%s%s]]>" $image .Content)  | safeHTML }}</content:encoded>
     </item>
     {{- end }}
     {{ end }}
