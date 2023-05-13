@@ -13,11 +13,15 @@ menu:
 <div class="appdquanjudiv">
 {{<app img="https://img.koobai.com/app/reeder.webp" title="Reeder 5" info="RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。" macos="macOS" ios="iOS">}}
 
+{{<app img="https://img.koobai.com/app/macgpt.webp" title="MacGPT" info="嵌入了 Web ChatGTP，这样就不用打开官网了，直接状态栏对话沟通。如果有 API，它还支持绑定。" macos="macOS">}}
+
+{{<app img="https://img.koobai.com/app/chrome.webp" title="Google Chrome" info="有些站点对 Chrome 的支持更完善，所以现在与 Firefox 交替使用。" macos="macOS" ios="iOS">}}
+
 {{<app img="https://img.koobai.com/app/vscode.webp" title="Visual Studio Code" info="代码编辑软件，只能说牛逼，再也不用切来切去了，只恨相见太晚。" macos="macOS">}}
 
 {{<app img="https://img.koobai.com/app/keka.webp" title="Keka" info="压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。" macos="macOS" ios="iOS">}}
 
-{{<app img="https://img.koobai.com/app/obsidian.webp" title="Obsidian" info="知识管理笔记类软件，插件丰富，配合WebDav各端同步。自己当日常记录、博客日志使用。" macos="macOS" ios="iOS">}}
+{{<app img="https://img.koobai.com/app/obsidian.webp" title="Obsidian" info="知识管理笔记类软件，插件丰富，配合WebDav各端同步。自己当日常记录、写博客日志使用。" macos="macOS" ios="iOS">}}
 
 {{<app img="https://img.koobai.com/app/transmit.webp" title="Transmit" info="FTP上传软件，最近买了轻量服务器，尝试了下。使用主要原因就是界面跟图标很漂亮。" macos="macOS">}}
 
@@ -49,7 +53,7 @@ menu:
 
 {{<app img="https://img.koobai.com/app/appcleaner.webp" title="AppCleaner" info="卸载app工具，使用了多年，能把软件相关文件都能查找出来，比直接删除干净很多。免费开源。" macos="macOS">}} 
 
-{{<app img="https://img.koobai.com/app/firefox.webp" title="Firefox" info="Chrome，最近用了下Firefox，发现打开网站速度似乎比chrome快，那就再继续尝试下～～" macos="macOS" ios="iOS">}} 
+{{<app img="https://img.koobai.com/app/firefox.webp" title="Firefox" info="最近用了下 Firefox，发现打开网站速度似乎比 Chrome 快，那就再继续尝试下～～" macos="macOS" ios="iOS">}} 
 
 {{<app img="https://img.koobai.com/app/iina.webp" title="IINA" info="视频播放软件，并且支持IPTV播放。免费开源。" macos="macOS">}} 
 
@@ -59,7 +63,7 @@ menu:
 
 {{<app img="https://img.koobai.com/app/netflix.webp" title="Netflix" info="流媒体视频软件，缺点就是每个月的订阅费确实蛮贵。独自订阅几个月后，在合租平台租了个合租号。" ios="iOS" tvos="tvOS" web="Web">}} 
 
-{{<app img="https://img.koobai.com/app/xiaoyuz.webp" title="小宇宙" info="播客应用，其实很少听博客，但在开车的时候，放着声音很不错。" ios="iOS" web="Web">}}   
+{{<app img="https://img.koobai.com/app/xiaoyuz.webp" title="小宇宙" info="播客应用，其实很少听播客，但在开车的时候，放着声音很不错。" ios="iOS" web="Web">}}   
 
 {{<app img="https://img.koobai.com/app/home.webp" title="家庭" info="家里接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过Home assistant接入HomeKit。" macos="macOS" ios="iOS">}} 
 
