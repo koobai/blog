@@ -8,16 +8,18 @@ menu:
     name: "软件"
     weight: 4
 ---
-<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-03-02 更新 )</div>
+<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-05-13 更新 )</div>
 
 <div class="appdquanjudiv">
+{{<app img="https://img.koobai.com/app/reeder.webp" title="Reeder 5" info="RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。" macos="macOS" ios="iOS">}}
+
 {{<app img="https://img.koobai.com/app/vscode.webp" title="Visual Studio Code" info="代码编辑软件，只能说牛逼，再也不用切来切去了，只恨相见太晚。" macos="macOS">}}
 
 {{<app img="https://img.koobai.com/app/keka.webp" title="Keka" info="压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。" macos="macOS" ios="iOS">}}
 
 {{<app img="https://img.koobai.com/app/obsidian.webp" title="Obsidian" info="知识管理笔记类软件，插件丰富，配合WebDav各端同步。自己当日常记录、博客日志使用。" macos="macOS" ios="iOS">}}
 
-{{<app img="https://img.koobai.com/app/transmit.webp" title="Transmit" info="FTP上传软件，最近买了轻量服务器，尝试了下了。使用主要原因就是界面跟图标很漂亮。" macos="macOS">}}
+{{<app img="https://img.koobai.com/app/transmit.webp" title="Transmit" info="FTP上传软件，最近买了轻量服务器，尝试了下。使用主要原因就是界面跟图标很漂亮。" macos="macOS">}}
 
 {{<app img="https://img.koobai.com/app/sketch.webp" title="Sketch" info="2022年做项目才开始学会使用，画稿利器。虽然现在大家都用Figma，但还是得看环境使用，适合自己才是最好的。" macos="macOS">}}
 
