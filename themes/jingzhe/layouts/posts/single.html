@@ -23,12 +23,25 @@
     </div>
       <div class="previousnext">
         {{ with .PrevInSection }}
-          <a class="previous" href="{{.Permalink}}">上一篇: {{.Title}}</a>
+        <div class="previousnext-intro">
+         <a class="previous-title" href="{{.Permalink}}">上一篇：{{.Title}}</a>
+         <div class="previous-intro"> {{ .Params.description }}</div>
+         <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
+        </div>
+        <a href="{{.RelPermalink}}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="previousnext-img" /></a>
+        {{ end }}
+        
+        {{ with .NextInSection }}
+        <div class="previousnext-interval">
+        <div class="previousnext-intro">
+         <a class="previous-title" href="{{.Permalink}}">下一篇：{{.Title}}</a>
+         <div class="previous-intro"> {{ .Params.description }}</div>
+         <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
+        </div>
+        <a href="{{.RelPermalink}}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="previousnext-img" /></a>
+        </div>
         {{ end }}
         <div>
-        {{ with .NextInSection }}
-          <a class="next" href="{{.Permalink}}">下一篇: {{.Title}}</a>
-        {{ end }}
       </div>
     </div>
 <div class="pinglun">已经看到这里了，不留下点什么？</div>
