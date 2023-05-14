@@ -334,33 +334,79 @@ ul {
     list-style: decimal; }
 
 .previousnext {
-  font-size: 18px;
   margin-top: 20px;
   border-radius: 10px;
   background-color: var(--bankuai-color);
-  padding: 15px 20px 15px 20px;
-  display: flow-root;
-  line-height: 1.6em; }
+  padding: 20px; }
   @media (min-width: 700px) {
     .previousnext {
-      padding: 15px 25px 15px 25px; } }
-.previousnext a {
+      padding: 25px; } }
+.previousnext-intro {
+  float: left; }
+
+.previous-title {
+  font-family: var(--font-family-heading);
+  font-size: 20px;
   color: var(--text-highlight-color); }
 
-@media (min-width: 900px) {
-  .previous, .next {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 45%; }
-  .previous {
-    float: left; }
-  .next {
-    float: right; } }
+.previous-intro {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #666;
+  line-height: 25px;
+  text-align: justify;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; }
+
+.previous-time, .previous-time a {
+  font-size: 14px;
+  margin-top: 10px;
+  color: var(--text-content-color);
+  font-family: var(--font-family-heading); }
+
+.previousnext-img {
+  width: 180px;
+  height: 110px;
+  object-fit: cover;
+  margin-left: auto;
+  display: block;
+  border-radius: 8px; }
+
+.previousnext-interval {
+  margin-top: 18px;
+  border-top: 0.5px solid #e5e5e5;
+  padding-top: 18px; }
 
 @media (prefers-color-scheme: dark) {
   .previousnext, .content_zhengwen {
-    background-color: var(--background-dark-color); } }
+    background-color: var(--background-dark-color); }
+  .previous-intro {
+    color: var(--text-content-dark-color); }
+  .previous-time a {
+    color: var(--text-content-dark-color); }
+  .previousnext-interval {
+    border-top: 0.5px solid #332D2F; } }
+
+@media (max-width: 700px) {
+  .previousnext-img, .previous-intro, .previous-time {
+    display: none; }
+  .previousnext-intro {
+    float: none; }
+  .previous-title {
+    font-size: 18px; } }
+
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  .previous-intro {
+    max-width: 400px; }
+  .previous-title {
+    font-size: 18px; } }
+
+@media (min-width: 900px) {
+  .previous-intro {
+    max-width: 550px; } }
 
 .intro {
   margin-bottom: 15px;
