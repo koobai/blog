@@ -9,15 +9,17 @@
     margin-right: 2px;
     position: relative;
     margin-bottom: 2px;
+    overflow: hidden;
 }
 .photo-home-top img {
     width: 100%;
     object-fit: cover;
-    border-radius:2px;
+    border-radius: 2px;
+    transition: transform 0.3s ease;
 }
-.photo-home-top img:hover{
-    filter: brightness(0.9);
-  }
+.photo-home-top img:hover {
+    transform: scale(1.1);
+}
 .photo-home-title{
     background: rgba(0, 0, 0, 0.4);
     font-size:14px;
