@@ -1341,7 +1341,8 @@ img[atk-emoticon] {
 
 .dfdORB {
   margin: 0 2px 2px 0;
-  padding: 0; }
+  padding: 0;
+  overflow: hidden; }
 
 .dfdORB a {
   text-decoration: none; }
@@ -1366,11 +1367,10 @@ img[atk-emoticon] {
   min-height: 87px;
   overflow: hidden;
   color: transparent;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+  transition: transform 0.3s ease; }
 
 .HPRth:hover {
-  filter: brightness(0.7);
-  transform: scale3d(1.01, 1.01, 1.01); }
+  transform: scale(1.1); }
 
 .kEoOHR {
   display: inline-block;
@@ -1692,15 +1692,17 @@ img[atk-emoticon] {
   vertical-align: top;
   margin-right: 2px;
   position: relative;
-  margin-bottom: 2px; }
+  margin-bottom: 2px;
+  overflow: hidden; }
 
 .photo-home-top img {
   width: 100%;
   object-fit: cover;
-  border-radius: 2px; }
+  border-radius: 2px;
+  transition: transform 0.3s ease; }
 
 .photo-home-top img:hover {
-  filter: brightness(0.9); }
+  transform: scale(1.1); }
 
 .photo-home-title {
   background: rgba(0, 0, 0, 0.4);
