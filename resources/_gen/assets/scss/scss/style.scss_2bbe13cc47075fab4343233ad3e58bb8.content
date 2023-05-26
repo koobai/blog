@@ -11,7 +11,7 @@
   --heading-color: #000;
   --dot-color: var(--text-highlight-color);
   --bankuai-color: #FFF;
-  --background-color: #F4F4F4;
+  --background-color: #FAFAFA;
   --background-dark-color: #242021;
   --text-content-color:#333;
   --text-content-dark-color:#BBB;
@@ -1469,7 +1469,7 @@ img[atk-emoticon] {
 
 .memos_diaoyong {
   border-radius: 4px;
-  background: #FFFFFF !important;
+  background: var(--bankuai-color) !important;
   padding: 16px 20px 16px 20px;
   margin-bottom: 10px; }
   @media (min-width: 700px) {

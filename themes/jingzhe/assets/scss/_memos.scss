@@ -19,7 +19,7 @@
 }
 .memos_diaoyong{
   border-radius:4px;
-  background: #FFFFFF !important;
+  background: var(--bankuai-color) !important;
   padding: 16px 20px 16px 20px; 
   margin-bottom: 10px;
   @include breakpoint('small') {
