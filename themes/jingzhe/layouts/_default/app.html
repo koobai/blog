@@ -1,0 +1,26 @@
+{{ define "main" }}
+{{ $goods := getJSON "data/app.json" }}
+<div class="intro">
+  <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+</div>
+<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-05-13 更新 )</div>
+<div class="appdquanjudiv">
+  {{ range $goods.good}}
+<div class="appquanju img-hide">
+<div class="appimg"><img loading="lazy" decoding="async" src={{ .image }}> </div>
+<div class="appwenben">
+<div class="apptitle">{{ .title }}</div>
+<div class="appnote">{{ .info }}</div>
+<span class="macos">{{ .macos }}</span>
+<span class="macos">{{ .ios }}</span>
+<span class="macos">{{ .tvos }}</span>
+<span class="macos">{{ .web }}</span>
+</div>
+</div>
+  {{ end }}
+</div>
+  <div class="pinglun">已经看到这里了，不留下点什么？</div>
+  <div class="article-comments">
+    {{- partial "artalk" . -}}
+  </div>
+{{ end }}
