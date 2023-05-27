@@ -1,8 +1,0 @@
-{{- if .IsNamedParams -}}
-<div class="bankuai img-hide">
-    <div class="duiqi"><img loading="lazy" decoding="async" src={{ .Get "img" }}></div>
-    <div class="title"><a href="{{ .Get "url" }}">{{ .Get "title" }}</a></div>
-    <div class="jiage">购入价格: RMB {{ .Get "jiage" }}</div>
-    <div class="note">{{ .Get "info" }}</div>
-    </div>
-{{- end }}

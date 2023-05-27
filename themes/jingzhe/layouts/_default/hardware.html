@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ $goods := getJSON "data/hardware.json" }}
+<div class="intro">
+  <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+</div>
+<div class="pagetitle">一件称心的产品，从收到包裹那一刻就开始心潮澎湃，到日积月累逐步成为靠谱的伙伴，时刻让你的工作生活充满期待。以下为正在使用中的产品：( 2023-05-06 更新 )</div>
+<div class="quanju">
+  {{ range $goods.good}}
+  <div class="bankuai img-hide">
+    <div class="duiqi"><img loading="lazy" decoding="async" src="{{ .image }}"></div>
+    <div class="title"><a href="{{ .link }}">{{ .title }}</a></div>
+    <div class="jiage">购入价格: RMB {{ .jiage }}</div>
+    <div class="note">{{ .note }}</div>
+    </div>
+  {{ end }}
+  </div>
+  <div class="pinglun">已经看到这里了，不留下点什么？</div>
+  <div class="article-comments">
+    {{- partial "artalk" . -}}
+  </div>
+{{ end }}
