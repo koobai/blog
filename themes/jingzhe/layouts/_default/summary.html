@@ -1,15 +1,24 @@
-<div class="summary img-hide">
-  <div class="intro_image">
-  {{ if .Params.image }}
-  <a href="{{.RelPermalink}}"><img loading='lazy' decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>
+
+
+<div class="summary-nrong img-hide">
+  
+  <div class="summary-1">
+    <div class="summary-tag">
+  {{ with .GetTerms "tags" }}
+  {{ range . }}
+  <a class="summary-tag-left" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
   {{ end }}
+{{ end }}
 </div>
-<div class="summary-nrong">
-<!-- <div class="summary-date">{{ .Date.Format "2006-01-02" }}</div>-->
-  <h2 class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-  <p class="summary-description">{{ .Params.description }}</p>
+<div class="summary-tag-right">
+  <a href="{{.RelPermalink}}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg></a>
+  </div>
+  </div>
+<div class="summary-date">{{ .Date.Format "2006-01-02" }}</div>
+  <div class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+  <div class="summary-description">{{ .Params.description }}</div>
   {{ if not .Params.hideReadMore }}
-  <div><a class="read-more" href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
+  <div class="read-more"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
   {{ end }}
-</div>
+
 </div>

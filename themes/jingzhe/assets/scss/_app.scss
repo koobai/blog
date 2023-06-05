@@ -1,16 +1,14 @@
 // apps页样式
 .appquanju{
-  box-shadow: 2px 4px 12px rgba(0,0,0,.08);
-  transition: all .3s cubic-bezier(0,0,.5,1);
-  border-radius:15px;
+  border-radius:4px;
   align-items: center;
-  background-color: #FFF;
+  background-color:var(--bankuai-color);
   padding: 20px;
-  margin-top: 15px;
+  margin-top: 10px;
+  transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .appquanju:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.16);
-// transform: scale3d(1.01,1.01,1.01);
+  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .appimg img{
   width:100px;
@@ -22,16 +20,15 @@
   padding-bottom: 8px;
 }
 .apptitle{
-  color:var(--text-highlight-color);
-  font-size:20px;
+  font-size:18px;
   margin-bottom: 8px;
-  font-family: var(--font-family-teshu);
-  letter-spacing:0.5px;
+  font-family: var(--font-family-title);
 }
 .appnote{
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 10px;
   line-height: 1.5;
+  color: #666;
 }
 .macos{
   padding: 6px 10px;
@@ -61,6 +58,9 @@
   color: #666;
   background-color: #2E282A;
 }
+.appnote{
+  color: #999;
+}
 }
  // 页面宽度大于700小于900样式
  @media screen and (min-width:700px) and (max-width:900px){
@@ -71,9 +71,9 @@
   .appquanju{
     display: inline-block;
     vertical-align: top;
-    width: 41%;
-    margin-right: 15px;
-    height: 170px;
+    width: 41.4%;
+    margin-right: 10px;
+    height: 145px;
   
   }
   }
@@ -86,8 +86,8 @@
 .appquanju{
   display: inline-block;
   vertical-align: top;
-  width: 43%;
-  margin-right: 15px;
-  height: 135px;
+  width: 43.2%;
+  margin-right: 10px;
+  height: 125px;
 }
 }

@@ -8,14 +8,14 @@
 .bb-timeline ul li {
   list-style-type:none;
   margin-top: 15px;
-  background: #FFFFFF !important;
+  background: var(--bankuai-color) !important;
   padding: 20px; 
-  box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+  box-shadow: 2px 4px 12px rgba(0,0,0,.04);
   transition: all .3s cubic-bezier(0,0,.5,1);
-  border-radius:12px;
+  border-radius:4px;
 }
 .bb-timeline ul li:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+  box-shadow: 2px 4px 16px rgba(0,0,0,.1);
 }
 .memos_diaoyong{
   border-radius:4px;
@@ -156,7 +156,7 @@
   color: #666;
 }
 .memos_diaoyong{
-  background: #393234 !important;
+  background: var(--background-dark-color) !important;
 }
 .memos_diaoyong_from,.memos_diaoyong_from a, .memos_diaoyong_time{
   color: #888;
