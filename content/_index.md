@@ -6,3 +6,4 @@ description: 工作生活记录、博客折腾, 同时分享下平常使用的�
 <script src="/js/photo.js"></script>
 </div>
 {{<memos>}}
+{{< movies 4>}}

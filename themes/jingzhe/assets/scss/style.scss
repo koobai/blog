@@ -1,6 +1,7 @@
 :root {
   --font-family-heading: 'SmileySans',Helvetica,sans-serif; 
   --font-family-paragraph: 'HarmonyOS_Regular', Helvetica, sans-serif;
+  --font-family-title: 'HarmonyOS_Medium', Helvetica, sans-serif;
   --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
   --font-family-monospace: 'HarmonyOS_Regular',monospace;
   --font-family-teshu: 'SmileySans',Helvetica,sans-serif;
@@ -10,7 +11,7 @@
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
   --bankuai-color: #FFF;
   --background-color: #FAFAFA;
-  --background-dark-color: #242021;
+  --background-dark-color: #201d1e;
   --text-content-color:#333;
   --text-content-dark-color:#BBB;
   --text-highlight-color:#BB2649;
@@ -42,6 +43,10 @@ $breakpoints: (
 @import 'archive';
 @import 'about';
 @import url('//s1.hdslb.com/bfs/static/jinkela/long/font/regular.css');
+@import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css');
+
+
+
 
 @font-face {
   font-family: SmileySans;

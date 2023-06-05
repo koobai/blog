@@ -31,8 +31,8 @@ ul {
   }
 }
 .content_zhengwen {
-  border-radius:12px;
-  background-color: #FFF;
+  border-radius:8px;
+  background-color: var(--bankuai-color);
   padding: 20px;
   @include breakpoint('small') {
     padding: 25px;
@@ -142,7 +142,7 @@ ul {
     margin: 10px 0 0 0;
     max-width: 100%;
     height: auto;
-    border-radius: 15px;
+    border-radius: 8px;
   }
   figure {
     margin: 2.6rem 0 1.18rem;
@@ -194,7 +194,7 @@ ul {
 
 .previousnext{
   margin-top:20px;
-  border-radius:10px;
+  border-radius:8px;
   background-color: var(--bankuai-color);
   padding: 20px;
   @include breakpoint('small') {
@@ -233,7 +233,7 @@ ul {
   object-fit:cover;
   margin-left: auto;
   display: block;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 .previousnext-interval{
   margin-top: 18px;

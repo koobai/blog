@@ -1,0 +1,34 @@
+{{$items := getCSV "," "_data/douban/movie.csv" }}
+{{$numb := 5}}
+{{ if .Get 0 }}
+    {{$numb = add (.Get 0) 1 }}
+{{end}}
+<meta name="referrer" content="no-referrer">
+    <div class="movie-quanju img-hide">
+        {{range $idx,$item := first $numb $items}}
+        {{if ne $idx 0}}
+            {{ $rating := float (index $item 6)}}
+            <div class="movie-index">
+
+                <div class="type-index">
+                    <div class="type-index-left">{{ index $item 7 }}</div>
+                    <div class="type-index-right">
+                    <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" ><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg></a>
+                    </div>
+                    </div>
+
+              <div class="movie-content" >
+                <div class="movie-content-left">
+                <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ index $item 3 }}" referrer-policy="no-referrer" loading="lazy" alt="{{ index $item 9 }}"  title="{{ index $item 1 }} / {{ index $item 4 }}"></a>        
+                </div>   
+                <div class="movie-content-right">
+                    <div class="movie-content-right-1">主观评分 (五为满分)：{{ index $item 8 }}</div>
+                    <div class="movie-content-right-2"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>         
+                <div class="movie-content-right-3">看完主观感受：{{ index $item 9 }}</div>
+                </div>
+                </div>
+            </div>
+        {{end}}
+        {{end}}
+    </div>

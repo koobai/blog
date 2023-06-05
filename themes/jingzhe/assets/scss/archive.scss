@@ -11,12 +11,11 @@
     overflow: hidden;
   }
   .archives_nrong{
-    box-shadow: 2px 4px 12px rgba(0,0,0,.08);
-    transition: all .3s cubic-bezier(0,0,.5,1);
-    border-radius:15px;
+    box-shadow: 2px 4px 12px rgba(0,0,0,.04);
+    border-radius:4px;
     background-color: var(--bankuai-color);
     padding: 10px 20px 10px 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     @include breakpoint('small') {
         padding: 10px 25px 10px 25px;
       }

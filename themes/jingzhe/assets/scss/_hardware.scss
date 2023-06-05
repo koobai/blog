@@ -2,15 +2,13 @@
 
 .bankuai{
 	background-color:var(--bankuai-color);
-	border-radius:15px;
-	margin-top: 15px;
+	border-radius:4px;
+	margin-top: 10px;
 	padding:3%;
-	box-shadow: 2px 4px 12px rgba(0,0,0,.08);
 	transition: all .3s cubic-bezier(0,0,.5,1);
 }
-
 .bankuai:hover{
-	box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+	box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .duiqi{
   display: flex;
@@ -22,14 +20,10 @@
 	margin: 0;
 }
 .title{
-	color:var(--text-highlight-color);
-	font-family: var(--font-family-teshu);
+	font-family: var(--font-family-title);
 	letter-spacing:0.5px;
-	font-size:20px;
+	font-size:18px;
 	margin: 30px 0 6px 0;
-}
-.title a {
-	color: var(--text-highlight-color);
 }
 
 .jiage{
@@ -40,8 +34,9 @@
 }
 
 .note{
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 1.5;
+	color: #666;
 } 
 
 // 页面宽度小于700样式
@@ -76,9 +71,9 @@
 .bankuai{
     display: inline-block;
     vertical-align: top;
-	width:40%;
-	margin-right:15px;
-	height: 420px;
+	width:40.3%;
+	margin-right:10px;
+	height: 390px;
 }
 }
 // 页面宽度大于900样式
@@ -92,12 +87,12 @@
 .bankuai{
     display: inline-block;
     vertical-align: top;
-	width:24.3%;
-	margin-right:15px;
-	height: 390px;
+	width:24.7%;
+	margin-right:10px;
+	height: 360px;
 }
 .duiqi img{
-	width:100%; 	
+	width:90%; 	
 }
 }
 
@@ -105,9 +100,8 @@
 @media (prefers-color-scheme: dark) {
 .bankuai{
   background:  var(--background-dark-color);
-  box-shadow: 2px 4px 12px rgba(0,0,0,.2);
 }
-.bankuai:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.4);
-}
+.note{
+	color: #999;
+} 
 }
