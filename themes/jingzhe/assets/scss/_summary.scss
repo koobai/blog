@@ -25,7 +25,7 @@
 .summary-tag-right a{
   color: #c0c0c0;
 }
-.summary-tag-right a:hover{
+.summary-nrong:hover .summary-tag-right a{
   color: #666;
 }
 .summary-tag a{
@@ -113,7 +113,7 @@
   .summary-tag-right a,.summary-tag a{
     color: #666;
   }
-  .summary-tag-right a:hover{
+  .summary-nrong:hover .summary-tag-right a{
     color: #c0c0c0;
   }
   .summary-description{
