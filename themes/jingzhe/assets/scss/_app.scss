@@ -10,10 +10,14 @@
 .appquanju:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
+.appquanju:hover .appimg img{
+  transform: scale(1.04);
+}
 .appimg img{
   width:100px;
   margin: 0 15px 0 0;
-  float: left; 
+  float: left;
+  transition: transform 0.3s ease;
 }
 .appwenben{
   overflow: hidden;
