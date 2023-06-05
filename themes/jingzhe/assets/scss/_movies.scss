@@ -35,7 +35,7 @@
 .type-index-right a {
   color: #c0c0c0;
 }
-.type-index-right a:hover {
+.movie-index:hover .type-index-right a {
   color: #666;
 }
 
@@ -242,7 +242,7 @@ color: var(--text-highlight-color);
 .type-index-left,.type-index-right a{
   color: #666;
 }
-.type-index-right a:hover {
+.movie-index:hover .type-index-right a {
   color: #c0c0c0;
 }
 
