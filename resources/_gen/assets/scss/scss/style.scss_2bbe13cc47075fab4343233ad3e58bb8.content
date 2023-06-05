@@ -1260,12 +1260,12 @@ img[atk-emoticon] {
   font-family: var(--font-family-title);
   letter-spacing: 0.5px;
   font-size: 18px;
-  margin: 30px 0 6px 0; }
+  margin: 10px 0 10px 0; }
 
 .jiage {
   color: #999;
   font-size: 14px;
-  margin: 0 0 6px 0;
+  margin-top: 10px;
   font-family: var(--font-family-code); }
 
 .note {
@@ -1278,10 +1278,10 @@ img[atk-emoticon] {
     width: 95.5%;
     padding: 0 2%  5% 2%; }
   .title {
-    font-size: 22px;
-    margin: 30px 10px 6px 10px; }
+    font-size: 20px;
+    margin: 10px; }
   .jiage {
-    margin: 0 10px 6px 10px; }
+    margin: 0 10px 0 10px; }
   .note {
     margin: 0 10px 0 10px; } }
 
@@ -1305,7 +1305,7 @@ img[atk-emoticon] {
     vertical-align: top;
     width: 24.7%;
     margin-right: 10px;
-    height: 360px; }
+    height: 350px; }
   .duiqi img {
     width: 90%; } }
 
