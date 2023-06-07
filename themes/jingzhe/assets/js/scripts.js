@@ -61,7 +61,7 @@ var totalHeight = appList.children.length * listItemHeight;
 
 // 设置容器的高度和滚动速度
 indexContainer.style.height = listItemHeight + 'px';
-appList.style.animationDuration = (totalHeight / 30) + 's';
+appList.style.animationDuration = (totalHeight / 25) + 's';
 
 
 function getRandomData() {

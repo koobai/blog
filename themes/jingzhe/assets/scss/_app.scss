@@ -5,6 +5,9 @@
   background-color:var(--bankuai-color);
   padding: 20px;
   transition: all .3s cubic-bezier(0,0,.5,1);
+  display: grid;
+  grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
+  grid-gap: 15px; /* 可选项，设置列之间的间隔 */
 }
 .appquanju:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
@@ -14,8 +17,6 @@
 }
 .appimg img{
   width:100px;
-  margin: 0 15px 0 0;
-  float: left;
   transition: transform 0.3s ease;
 }
 .appwenben{
@@ -27,9 +28,8 @@
   margin-bottom: 8px;
   font-family: var(--font-family-title);
 }
-.appnote{
+.appnote,.appnote-index{
   font-size: 14px;
-  margin-bottom: 10px;
   line-height: 1.5;
   color: #666;
   text-align: justify;
@@ -38,6 +38,9 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+.appnote{
+  margin-bottom: 10px;
 }
 .macos{
   padding: 6px 10px;
@@ -91,9 +94,6 @@
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
 	grid-gap: 10px; /* 中间空10px间距 */
   }
-  .appquanju{
-    height: 145px;
-  }
   .app-gundong {
     height: 350px !important;  /* 设置容器的高度 */
   }
@@ -105,9 +105,6 @@
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
 	grid-gap: 10px; /* 中间空10px间距 */
 }
-.appquanju{
-  height: 125px;
-}
 .app-gundong {
   height: 420px !important;  /* 设置容器的高度 */
 }
@@ -117,12 +114,10 @@
 // 首页app调用
 .app-index{
   margin-bottom: 10px;
-  height: 90px;
+  height: 85px;
 }
 .app-img img{
   width:75px;
-  margin: 0 10px 0 0;
-  float: left;
   transition: transform 0.3s ease;
 }
 .app-gundong {
