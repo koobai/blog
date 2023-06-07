@@ -63,6 +63,7 @@ var totalHeight = appList.children.length * listItemHeight;
 indexContainer.style.height = listItemHeight + 'px';
 appList.style.animationDuration = (totalHeight / 30) + 's';
 
+
 function getRandomData() {
   fetch("js/hardware.json")
     .then(response => response.json())
@@ -70,22 +71,10 @@ function getRandomData() {
       var goods = data.good;
       var randomIndex = Math.floor(Math.random() * goods.length);
       var randomGood = goods[randomIndex];
-
-      var hardwareImg = document.getElementById("hardware-img");
-      var hardwareJiage = document.getElementById("hardware-jiage");
-      var hardwareTitle = document.getElementById("hardware-title");
-      var hardwareNote = document.getElementById("hardware-note");
-
-      var img = new Image();
-      img.src = randomGood.image;
-      img.onload = function() {
-        hardwareImg.innerHTML = '';
-        hardwareImg.appendChild(img);
-      };
-
-      hardwareJiage.textContent = `购入价格: RMB ${randomGood.jiage}`;
-      hardwareTitle.innerHTML = `<a href="/hardware">${randomGood.title}</a>`;
-      hardwareNote.textContent = randomGood.note;
+      document.getElementById("hardware-img").innerHTML = `<img loading="lazy" decoding="async" src="${randomGood.image}">`;
+      document.getElementById("hardware-jiage").textContent = `购入价格: RMB ${randomGood.jiage}`;
+      document.getElementById("hardware-title").innerHTML = `<a href="/hardware">${randomGood.title}</a>`;
+      document.getElementById("hardware-note").textContent = randomGood.note;
     });
 }
 
