@@ -22,13 +22,10 @@
   background: var(--bankuai-color) !important;
   padding: 16px 20px 16px 20px; 
   margin-bottom: 10px;
-  @include breakpoint('small') {
-    padding: 16px 25px 16px 25px; 
-  }
 }
 
 .momos-sswrap {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   margin-top: -5px;
 }
 .bb-load button{

@@ -1,17 +1,8 @@
 // 首页调用
-
-.movie-quanju{
-  display:flex;
-  width: 102%;
-  flex-wrap:wrap;
-}
 .movie-index{
-  width: 44%;
   background: var(--bankuai-color);
   padding: 20px;
   border-radius: 4px;
-  margin-right: 10px;
-  margin-bottom: 10px;
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .movie-index:hover{
@@ -186,7 +177,7 @@ color: var(--text-highlight-color);
   height: 180px;
 }
 .movie-index{
-  width: 100%;
+  margin-bottom: 10px;
 }
 }
 
@@ -196,15 +187,15 @@ color: var(--text-highlight-color);
 .dfdORB{
   width:33%;
 }
-.movie-quanju{
-  width: 110%;
-}
+
 .movie-content-left img{
   width: 120px;
   height: 180px;
 }
-.movie-index{
-  width: 40%;
+.movie-quanju{
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
 }
 }
 
@@ -213,6 +204,11 @@ color: var(--text-highlight-color);
 @media screen and (min-width:900px) and (max-width:1300px){
 .dfdORB{
   width:24.7%;
+}
+.movie-quanju{
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
 }
 }
 
@@ -226,8 +222,12 @@ color: var(--text-highlight-color);
 .dfdORB{
   width:10.9%;
 }
+.movie-quanju{
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
 }
-
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .dvtjjf,.sort-by-item{

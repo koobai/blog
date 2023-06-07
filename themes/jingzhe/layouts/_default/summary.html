@@ -1,7 +1,4 @@
-
-
 <div class="summary-nrong img-hide">
-  
   <div class="summary-1">
     <div class="summary-tag">
   {{ with .GetTerms "tags" }}
@@ -20,5 +17,4 @@
   {{ if not .Params.hideReadMore }}
   <div class="read-more"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
   {{ end }}
-
 </div>
