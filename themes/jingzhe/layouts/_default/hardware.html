@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ $goods := getJSON $.Site.BaseURL "/suju/hardware.json" }}
+{{ $goods := getJSON "data/hardware.json" }}
 <div class="intro">
   <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
 </div>
