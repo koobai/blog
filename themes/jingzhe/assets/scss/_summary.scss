@@ -1,9 +1,11 @@
+.content-index{
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
 .summary-nrong{
-  width: 90.5%;
   background: var(--bankuai-color);
   padding: 20px;
   border-radius: 4px;
-  margin-bottom: 3px;
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .summary-nrong:hover{
@@ -60,27 +62,6 @@
   font-size: 14px;
   color: var(--text-content-color);
 }
-
-.index-all{
-  background: var(--bankuai-color);
-  padding: 15px;
-  margin-top: 10px;
-  text-align: center;
-  border-radius: 4px;
-  transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.index-all svg {
-  width: 24px;
-  height: 24px;
-  fill:var( --text-highlight-color)
-}
-.index-all svg:hover {
-  fill:#000
-}
-.index-all:hover {
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
-}
-
 // 页面宽度小于700样式
 @media (max-width:700px){
  .summary-nrong{
@@ -93,7 +74,7 @@
     .summary{
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-gap: 15px;
+      grid-gap: 10px;
     }
   }
   // 页面宽度大于900样式   
@@ -101,7 +82,7 @@
   .summary{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 7px;
+    grid-gap: 10px;
   }
   }
 
@@ -124,8 +105,5 @@
   }
   .summary-date{
     color: #666 !important;
-  }
-  .index-all{
-    background: var(--background-dark-color);
   }
   }

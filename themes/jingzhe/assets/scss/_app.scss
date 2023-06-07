@@ -1,10 +1,9 @@
 // apps页样式
-.appquanju{
+.appquanju,.app-index{
   border-radius:4px;
   align-items: center;
   background-color:var(--bankuai-color);
   padding: 20px;
-  margin-top: 10px;
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .appquanju:hover{
@@ -24,7 +23,7 @@
   padding-bottom: 8px;
 }
 .apptitle{
-  font-size:18px;
+  font-size:16px;
   margin-bottom: 8px;
   font-family: var(--font-family-title);
 }
@@ -33,6 +32,12 @@
   margin-bottom: 10px;
   line-height: 1.5;
   color: #666;
+  text-align: justify;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .macos{
   padding: 6px 10px;
@@ -65,33 +70,74 @@
 .appnote{
   color: #999;
 }
+.app-index{
+  background-color: #2f2b2c ; 
 }
+}
+// 页面宽度小于700样式
+
+@media (max-width:700px){
+  .appquanju{
+    margin-bottom: 10px;
+  }
+  .app-gundong {
+    height: 420px !important;  /* 设置容器的高度 */
+  }
+  }
  // 页面宽度大于700小于900样式
  @media screen and (min-width:700px) and (max-width:900px){
-  .appdquanjudiv{
-    width: 105%;
-    font-size:0;
+ .appdquanjudiv{
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
   }
   .appquanju{
-    display: inline-block;
-    vertical-align: top;
-    width: 41.4%;
-    margin-right: 10px;
     height: 145px;
-  
+  }
+  .app-gundong {
+    height: 350px !important;  /* 设置容器的高度 */
   }
   }
 // 页面宽度大于900样式
 @media (min-width:900px){
 .appdquanjudiv{
-  width: 104%;
-  font-size:0;
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
 }
 .appquanju{
-  display: inline-block;
-  vertical-align: top;
-  width: 43.2%;
-  margin-right: 10px;
   height: 125px;
 }
+.app-gundong {
+  height: 420px !important;  /* 设置容器的高度 */
+}
+}
+
+
+// 首页app调用
+.app-index{
+  margin-bottom: 10px;
+  height: 90px;
+}
+.app-img img{
+  width:75px;
+  margin: 0 10px 0 0;
+  float: left;
+  transition: transform 0.3s ease;
+}
+.app-gundong {
+  overflow: hidden; /* 隐藏超出容器高度的内容 */
+  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
+}
+.app-list {
+  animation: scroll 10s linear infinite; /* 定义滚动动画 */
+}
+@keyframes scroll {
+  0% {
+    transform: translateY(0); /* 初始位置 */
+  }
+  100% {
+    transform: translateY(-100%); /* 滚动到顶部 */
+  }
 }
