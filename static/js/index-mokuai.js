@@ -18,7 +18,7 @@ appList.style.animationDuration = (totalHeight / 25) + 's';
 
 // 首页好物随机调用显示
 function getRandomData() {
-  fetch("/hardware.json")
+  fetch("hardware.json")
     .then(response => response.json())
     .then(data => {
       var goods = data.good;
