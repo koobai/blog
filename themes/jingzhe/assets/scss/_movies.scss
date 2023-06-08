@@ -91,6 +91,16 @@
   margin-left: calc(50% - 50vw);
   display: grid;
   grid-gap: 2px; /* 中间空10px间距 */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.dfdORB{
+  overflow: hidden;
+}
+.sc-hKFxyN img{
+   width:100%;
+   border-radius:4px;
+   height: 370px;
+   object-fit: cover;
 }
 .dfdORB a{text-decoration:none}
 .kMthTr{
@@ -104,10 +114,6 @@
   letter-spacing:0.5px;
 }
 .HPRth{
-  position:relative;
-  min-height:87px;
-  overflow:hidden;
-  color:transparent;
   transition: transform 0.3s ease;
 }
 
@@ -120,13 +126,6 @@
   margin-right:10px;
   text-decoration:none;
   color:var(--text-highlight-color);
-}
-.dfdORB{
-  overflow: hidden;
-}
-.sc-hKFxyN img{
-   width:100%;
-   border-radius:4px;
 }
 .dvtjjf,.sort-by-item{
   display:inline-block;
@@ -154,9 +153,12 @@ color: var(--text-highlight-color);
 // 页面宽度小于700样式
 @media (max-width:700px){
 .fIuTG{
-  grid-template-columns: repeat(3, 1fr); /* 九列等宽 */
   width: 100%;
   margin-left:0;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.sc-hKFxyN img{
+   height: 180px;
 }
 .movie-content-left img{
   width: 120px;
@@ -172,25 +174,14 @@ color: var(--text-highlight-color);
 // 页面宽度大于700小于900样式
 @media screen and (min-width:700px) and (max-width:900px){
 .fIuTG{
-  width: 100%;
-  margin-left:0;
-  grid-template-columns: repeat(5, 1fr); /* 九列等宽 */
-}
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .sc-hKFxyN img{
+     height: 200px;
+  }
 .movie-content-left img{
   width: 120px;
   height: 180px;
-}
-}
-// 页面宽度大于900小于1500样式
-@media screen and (min-width:900px) and (max-width:1500px){
-.fIuTG{
-    grid-template-columns: repeat(6, 1fr); /* 九列等宽 */
-  }
-}
-// 页面宽度大于1500样式
-@media (min-width:1500px){
-.fIuTG{
-  grid-template-columns: repeat(11, 1fr); /* 九列等宽 */
 }
 }
 // 夜间模式页面样式
