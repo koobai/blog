@@ -1138,6 +1138,12 @@ img[atk-emoticon] {
   .atk-comment .atk-main .atk-footer .atk-actions span:hover {
     color: #999 !important; } }
 
+.appdquanjudiv {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-gap: 10px;
+  /* 中间空10px间距 */ }
+
 .appquanju, .app-index {
   border-radius: 4px;
   align-items: center;
@@ -1213,30 +1219,16 @@ img[atk-emoticon] {
     background-color: #2f2b2c; } }
 
 @media (max-width: 700px) {
-  .appquanju {
-    margin-bottom: 10px; }
   .app-gundong {
     height: 420px !important;
     /* 设置容器的高度 */ } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
-  .appdquanjudiv {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* 两列等宽 */
-    grid-gap: 10px;
-    /* 中间空10px间距 */ }
   .app-gundong {
     height: 350px !important;
     /* 设置容器的高度 */ } }
 
 @media (min-width: 900px) {
-  .appdquanjudiv {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* 两列等宽 */
-    grid-gap: 10px;
-    /* 中间空10px间距 */ }
   .app-gundong {
     height: 420px !important;
     /* 设置容器的高度 */ } }
@@ -1266,6 +1258,12 @@ img[atk-emoticon] {
   100% {
     transform: translateY(-100%);
     /* 滚动到顶部 */ } }
+
+.quanju {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-gap: 10px;
+  /* 中间空10px间距 */ }
 
 .bankuai {
   background-color: var(--bankuai-color);
@@ -1307,8 +1305,6 @@ img[atk-emoticon] {
   color: #666; }
 
 @media (max-width: 700px) {
-  .bankuai {
-    margin-bottom: 10px; }
   .hardware-index-nrong {
     height: 345px !important; }
   .hardware-img img {
@@ -1316,14 +1312,6 @@ img[atk-emoticon] {
     padding: 0 !important; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
-  .quanju {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* 两列等宽 */
-    grid-gap: 10px;
-    /* 中间空10px间距 */ }
-  .bankuai {
-    height: 390px; }
   .tuij-index {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1336,14 +1324,6 @@ img[atk-emoticon] {
     padding: 0 !important; } }
 
 @media (min-width: 900px) {
-  .quanju {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    /* 三列等宽 */
-    grid-gap: 10px;
-    /* 中间空10px间距 */ }
-  .bankuai {
-    height: 350px; }
   .duiqi img {
     width: 85%; }
   .tuij-index {
@@ -1615,7 +1595,17 @@ img[atk-emoticon] {
   margin-left: calc(50% - 50vw);
   display: grid;
   grid-gap: 2px;
-  /* 中间空10px间距 */ }
+  /* 中间空10px间距 */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+.dfdORB {
+  overflow: hidden; }
+
+.sc-hKFxyN img {
+  width: 100%;
+  border-radius: 4px;
+  height: 370px;
+  object-fit: cover; }
 
 .dfdORB a {
   text-decoration: none; }
@@ -1631,10 +1621,6 @@ img[atk-emoticon] {
   letter-spacing: 0.5px; }
 
 .HPRth {
-  position: relative;
-  min-height: 87px;
-  overflow: hidden;
-  color: transparent;
   transition: transform 0.3s ease; }
 
 .HPRth:hover {
@@ -1645,13 +1631,6 @@ img[atk-emoticon] {
   margin-right: 10px;
   text-decoration: none;
   color: var(--text-highlight-color); }
-
-.dfdORB {
-  overflow: hidden; }
-
-.sc-hKFxyN img {
-  width: 100%;
-  border-radius: 4px; }
 
 .dvtjjf, .sort-by-item {
   display: inline-block;
@@ -1680,10 +1659,11 @@ img[atk-emoticon] {
 
 @media (max-width: 700px) {
   .fIuTG {
-    grid-template-columns: repeat(3, 1fr);
-    /* 九列等宽 */
     width: 100%;
-    margin-left: 0; }
+    margin-left: 0;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .sc-hKFxyN img {
+    height: 180px; }
   .movie-content-left img {
     width: 120px;
     height: 180px; }
@@ -1694,23 +1674,12 @@ img[atk-emoticon] {
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .fIuTG {
-    width: 100%;
-    margin-left: 0;
-    grid-template-columns: repeat(5, 1fr);
-    /* 九列等宽 */ }
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .sc-hKFxyN img {
+    height: 200px; }
   .movie-content-left img {
     width: 120px;
     height: 180px; } }
-
-@media screen and (min-width: 900px) and (max-width: 1500px) {
-  .fIuTG {
-    grid-template-columns: repeat(6, 1fr);
-    /* 九列等宽 */ } }
-
-@media (min-width: 1500px) {
-  .fIuTG {
-    grid-template-columns: repeat(11, 1fr);
-    /* 九列等宽 */ } }
 
 @media (prefers-color-scheme: dark) {
   .dvtjjf, .sort-by-item {

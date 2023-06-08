@@ -1,4 +1,9 @@
 // apps页样式
+.appdquanjudiv{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	grid-gap: 10px; /* 中间空10px间距 */
+}
 .appquanju,.app-index{
   border-radius:4px;
   align-items: center;
@@ -80,31 +85,18 @@
 // 页面宽度小于700样式
 
 @media (max-width:700px){
-  .appquanju{
-    margin-bottom: 10px;
-  }
   .app-gundong {
     height: 420px !important;  /* 设置容器的高度 */
   }
   }
  // 页面宽度大于700小于900样式
  @media screen and (min-width:700px) and (max-width:900px){
- .appdquanjudiv{
-  display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
-  }
   .app-gundong {
     height: 350px !important;  /* 设置容器的高度 */
   }
   }
 // 页面宽度大于900样式
 @media (min-width:900px){
-.appdquanjudiv{
-  display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
-}
 .app-gundong {
   height: 420px !important;  /* 设置容器的高度 */
 }
