@@ -170,6 +170,9 @@ color: var(--text-highlight-color);
 .movie-quanju{
   display: block; 
 }
+.movies-nrong{
+  display: none;
+}
 }
 // 页面宽度大于700小于900样式
 @media screen and (min-width:700px) and (max-width:900px){
@@ -183,7 +186,51 @@ color: var(--text-highlight-color);
   width: 120px;
   height: 180px;
 }
+.movies-nrong{
+  display: none;
 }
+}
+// 页面宽度大于900样式   
+@media (min-width:900px){
+  .movies-nrong{
+    background: rgba(0, 0, 0, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 60px 30px 20px 30px;
+    color: #fff;
+    font-size: 13px;
+    display:none;
+    position:absolute;
+  } 
+  .HPRth:hover .movies-nrong{
+    display:block;
+  }
+  .movie-time{
+   color: #666;
+  }
+  .movie-title{
+    font-family:var(--font-family-title);
+    font-size: 16px;
+    margin: 6px 0 6px 0;
+  }
+  .movie-pfeng{
+    margin-bottom: 10px;
+    color: #BBB;
+  }
+  .movie-pfeng-shuzi{
+    font-family:var(--font-family-title);
+    font-size: 15px;
+    color: #FFF;
+  }
+  .movie-info{
+    line-height:1.6;
+    color: #BBB;
+    text-align: justify;
+  }
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .dvtjjf,.sort-by-item{

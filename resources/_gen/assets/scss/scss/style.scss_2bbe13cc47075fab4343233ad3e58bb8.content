@@ -1670,7 +1670,9 @@ img[atk-emoticon] {
   .movie-index {
     margin-bottom: 10px; }
   .movie-quanju {
-    display: block; } }
+    display: block; }
+  .movies-nrong {
+    display: none; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .fIuTG {
@@ -1679,7 +1681,41 @@ img[atk-emoticon] {
     height: 200px; }
   .movie-content-left img {
     width: 120px;
-    height: 180px; } }
+    height: 180px; }
+  .movies-nrong {
+    display: none; } }
+
+@media (min-width: 900px) {
+  .movies-nrong {
+    background: rgba(0, 0, 0, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 60px 30px 20px 30px;
+    color: #fff;
+    font-size: 13px;
+    display: none;
+    position: absolute; }
+  .HPRth:hover .movies-nrong {
+    display: block; }
+  .movie-time {
+    color: #666; }
+  .movie-title {
+    font-family: var(--font-family-title);
+    font-size: 16px;
+    margin: 6px 0 6px 0; }
+  .movie-pfeng {
+    margin-bottom: 10px;
+    color: #BBB; }
+  .movie-pfeng-shuzi {
+    font-family: var(--font-family-title);
+    font-size: 15px;
+    color: #FFF; }
+  .movie-info {
+    line-height: 1.6;
+    color: #BBB;
+    text-align: justify; } }
 
 @media (prefers-color-scheme: dark) {
   .dvtjjf, .sort-by-item {
