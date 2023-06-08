@@ -1,6 +1,27 @@
 {
     "good": [
         {
+            "image": "https://img.koobai.com/hardware/fengshan.webp",
+            "title": "米家智能直流变频循环扇",
+            "jiage": "399",
+            "link": " ",
+            "note": "好用，想怎么转都行，比近3000块钱的戴森强非常多。"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/misuo.webp",
+            "title": "小米全自动智能门锁",
+            "jiage": "1699",
+            "link": " ",
+            "note": "很方便，唯一问题开门不自动执行场景设置，时有时无，没搞明白什么原因。"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/shitou.webp",
+            "title": "石头扫地机器人G10",
+            "jiage": "3949",
+            "link": " ",
+            "note": "家庭必备，特别是有女生在家的。之前用S55型号，21年换了这个，换水频率大大降低。"
+        },
+        {
             "image": "https://img.koobai.com/hardware/r2s.webp",
             "title": "友善 R2s",
             "jiage": "259",
