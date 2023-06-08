@@ -1604,15 +1604,11 @@ img[atk-emoticon] {
   -webkit-box-orient: vertical; }
 
 .fIuTG {
-  display: flex;
-  flex-wrap: wrap;
-  background: 0 0;
-  line-height: 100%; }
-
-.dfdORB {
-  margin: 0 2px 2px 0;
-  padding: 0;
-  overflow: hidden; }
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  display: grid;
+  grid-gap: 2px;
+  /* 中间空10px间距 */ }
 
 .dfdORB a {
   text-decoration: none; }
@@ -1627,11 +1623,6 @@ img[atk-emoticon] {
   font-family: var(--font-family-teshu);
   letter-spacing: 0.5px; }
 
-/*.eysHZq{
-  display:flex;
-  justify-content: center; 
-  align-items: center;
-}*/
 .HPRth {
   position: relative;
   min-height: 87px;
@@ -1647,6 +1638,13 @@ img[atk-emoticon] {
   margin-right: 10px;
   text-decoration: none;
   color: var(--text-highlight-color); }
+
+.dfdORB {
+  overflow: hidden; }
+
+.sc-hKFxyN img {
+  width: 100%;
+  border-radius: 4px; }
 
 .dvtjjf, .sort-by-item {
   display: inline-block;
@@ -1673,15 +1671,12 @@ img[atk-emoticon] {
 .sort-by-item svg {
   margin-right: 5px; }
 
-.sc-hKFxyN img {
-  width: 100% !important;
-  height: auto !important;
-  vertical-align: middle !important;
-  border-radius: 4px; }
-
 @media (max-width: 700px) {
-  .dfdORB {
-    width: 32.5%; }
+  .fIuTG {
+    grid-template-columns: repeat(3, 1fr);
+    /* 九列等宽 */
+    width: 100%;
+    margin-left: 0; }
   .movie-content-left img {
     width: 120px;
     height: 180px; }
@@ -1689,8 +1684,11 @@ img[atk-emoticon] {
     margin-bottom: 10px; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
-  .dfdORB {
-    width: 33%; }
+  .fIuTG {
+    width: 100%;
+    margin-left: 0;
+    grid-template-columns: repeat(5, 1fr);
+    /* 九列等宽 */ }
   .movie-content-left img {
     width: 120px;
     height: 180px; }
@@ -1702,8 +1700,9 @@ img[atk-emoticon] {
     /* 中间空10px间距 */ } }
 
 @media screen and (min-width: 900px) and (max-width: 1300px) {
-  .dfdORB {
-    width: 24.7%; }
+  .fIuTG {
+    grid-template-columns: repeat(6, 1fr);
+    /* 九列等宽 */ }
   .movie-quanju {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1713,10 +1712,8 @@ img[atk-emoticon] {
 
 @media (min-width: 1300px) {
   .fIuTG {
-    width: 100vw;
-    margin-left: calc(50% - 50vw); }
-  .dfdORB {
-    width: 10.9%; }
+    grid-template-columns: repeat(11, 1fr);
+    /* 九列等宽 */ }
   .movie-quanju {
     display: grid;
     grid-template-columns: 1fr 1fr;
