@@ -1,4 +1,9 @@
 // 首页调用
+.movie-quanju{
+  display: grid;
+	grid-template-columns: 1fr 1fr; /* 两列等宽 */
+	grid-gap: 10px; /* 中间空10px间距 */
+}
 .movie-index{
   background: var(--bankuai-color);
   padding: 20px;
@@ -160,6 +165,9 @@ color: var(--text-highlight-color);
 .movie-index{
   margin-bottom: 10px;
 }
+.movie-quanju{
+  display: block; 
+}
 }
 // 页面宽度大于700小于900样式
 @media screen and (min-width:700px) and (max-width:900px){
@@ -172,32 +180,17 @@ color: var(--text-highlight-color);
   width: 120px;
   height: 180px;
 }
-.movie-quanju{
-  display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
 }
-}
-// 页面宽度大于900小于1300样式
-@media screen and (min-width:900px) and (max-width:1300px){
+// 页面宽度大于900小于1500样式
+@media screen and (min-width:900px) and (max-width:1500px){
 .fIuTG{
     grid-template-columns: repeat(6, 1fr); /* 九列等宽 */
   }
-.movie-quanju{
-  display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
 }
-}
-// 页面宽度大于1300样式
-@media (min-width:1300px){
+// 页面宽度大于1500样式
+@media (min-width:1500px){
 .fIuTG{
   grid-template-columns: repeat(11, 1fr); /* 九列等宽 */
-}
-.movie-quanju{
-  display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
 }
 }
 // 夜间模式页面样式
