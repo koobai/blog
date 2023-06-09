@@ -1361,9 +1361,7 @@ img[atk-emoticon] {
   .hardware-index-nrong {
     background-color: #2f2b2c !important; }
   .hardware-note {
-    color: #999 !important; }
-  .hardware-title a {
-    color: #BBB !important; } }
+    color: #999 !important; } }
 
 .hardware-index {
   background: radial-gradient(101.976% 84% at 50.7% 100%, #e2e2e2 0%, white 100%);
@@ -1452,9 +1450,6 @@ img[atk-emoticon] {
   font-family: var(--font-family-title);
   margin-top: 8px;
   margin-bottom: 8px; }
-
-.hardware-title a {
-  color: #333; }
 
 .hardware-jiage {
   font-size: 16px;

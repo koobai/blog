@@ -26,7 +26,7 @@ function getRandomData() {
       var randomGood = goods[randomIndex];
       document.getElementById("hardware-img").innerHTML = `<img src="${randomGood.image}">`;
       document.getElementById("hardware-jiage").textContent = `购入价格: RMB ${randomGood.jiage}`;
-      document.getElementById("hardware-title").innerHTML = `<a href="/hardware">${randomGood.title}</a>`;
+      document.getElementById("hardware-title").innerHTML = `${randomGood.title}`;
       document.getElementById("hardware-note").textContent = randomGood.note;
     });
 }
