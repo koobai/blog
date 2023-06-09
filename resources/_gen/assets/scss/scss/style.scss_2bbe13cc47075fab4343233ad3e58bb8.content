@@ -1175,7 +1175,7 @@ img[atk-emoticon] {
   margin-bottom: 8px;
   font-family: var(--font-family-title); }
 
-.appnote, .appnote-index {
+.appnote {
   font-size: 16px;
   line-height: 1.6;
   color: #666;
@@ -1213,7 +1213,7 @@ img[atk-emoticon] {
   .macos {
     color: #666;
     background-color: #2E282A; }
-  .appnote, .appnote-index {
+  .appnote {
     color: #999; }
   .app-index {
     background-color: #2f2b2c; } }
