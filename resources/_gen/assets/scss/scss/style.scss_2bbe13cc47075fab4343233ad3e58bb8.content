@@ -352,7 +352,7 @@ ul {
   color: var(--text-highlight-color); }
 
 .previous-intro {
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 8px;
   color: #666;
   line-height: 25px;
@@ -364,7 +364,7 @@ ul {
   -webkit-box-orient: vertical; }
 
 .previous-time, .previous-time a {
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 10px;
   color: var(--text-content-color);
   font-family: var(--font-family-heading); }
@@ -499,11 +499,11 @@ ul {
   color: #666; }
 
 .summary-tag a {
-  font-size: 14px;
+  font-size: 16px;
   color: #999; }
 
 .summary-date {
-  font-size: 14px;
+  font-size: 16px;
   color: #999; }
 
 .summary-title {
@@ -512,7 +512,7 @@ ul {
   margin-top: 10px; }
 
 .summary-description {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   color: #666;
   margin-top: 10px;
@@ -527,7 +527,7 @@ ul {
   margin-top: 20px; }
 
 .read-more a {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-content-color); }
 
 @media (max-width: 700px) {
@@ -1148,7 +1148,7 @@ img[atk-emoticon] {
   border-radius: 4px;
   align-items: center;
   background-color: var(--bankuai-color);
-  padding: 20px;
+  padding: 20px 20px 20px 12px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1171,13 +1171,13 @@ img[atk-emoticon] {
   padding-bottom: 8px; }
 
 .apptitle {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 8px;
   font-family: var(--font-family-title); }
 
 .appnote, .appnote-index {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   color: #666;
   text-align: justify;
   overflow: hidden;
@@ -1192,7 +1192,7 @@ img[atk-emoticon] {
 .macos {
   padding: 6px 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 20px;
   margin-right: 4px;
   color: #999;
@@ -1213,7 +1213,7 @@ img[atk-emoticon] {
   .macos {
     color: #666;
     background-color: #2E282A; }
-  .appnote {
+  .appnote, .appnote-index {
     color: #999; }
   .app-index {
     background-color: #2f2b2c; } }
@@ -1289,19 +1289,18 @@ img[atk-emoticon] {
 
 .title {
   font-family: var(--font-family-title);
-  letter-spacing: 0.5px;
-  font-size: 16px;
+  font-size: 18px;
   margin: 8px 0 8px 0; }
 
 .jiage {
   color: #999;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 10px;
   font-family: var(--font-family-code); }
 
 .note {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   color: #666; }
 
 @media (max-width: 700px) {
@@ -1377,7 +1376,7 @@ img[atk-emoticon] {
   margin-bottom: 20px;
   border-radius: 20px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   color: #666; }
 
 .hardware-index-button svg {
@@ -1389,7 +1388,7 @@ img[atk-emoticon] {
 .hardware-info {
   width: 87%;
   margin: auto;
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
   line-height: 1.6; }
 
@@ -1434,12 +1433,12 @@ img[atk-emoticon] {
   text-align: center; }
 
 .hardware-note {
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
   line-height: 1.6; }
 
 .hardware-title {
-  font-size: 16px;
+  font-size: 18px;
   font-family: var(--font-family-title);
   margin-top: 8px;
   margin-bottom: 8px; }
@@ -1448,7 +1447,7 @@ img[atk-emoticon] {
   color: #333; }
 
 .hardware-jiage {
-  font-size: 14px;
+  font-size: 16px;
   color: #999; }
 
 /*归档页标签*/
@@ -1525,7 +1524,7 @@ img[atk-emoticon] {
   justify-content: space-between; }
 
 .type-index-left {
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
   margin-bottom: 30px;
   flex-grow: 1; }
@@ -1567,13 +1566,13 @@ img[atk-emoticon] {
   grid-column: 2; }
 
 .movie-content-right-1 {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 10px;
   color: #999; }
 
 .rating {
   font-family: var(--font-family-title);
-  font-size: 15px; }
+  font-size: 17px; }
 
 .movie-content-right-2 {
   font-family: var(--font-family-title);
@@ -1581,7 +1580,7 @@ img[atk-emoticon] {
 
 .movie-content-right-3 {
   line-height: 1.6;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 10px;
   color: #666;
   overflow: hidden;
@@ -1786,7 +1785,8 @@ img[atk-emoticon] {
 .memos_diaoyong_info {
   margin-top: 5px;
   font-size: 16px;
-  color: var(--text-content-color); }
+  color: var(--text-content-color);
+  line-height: 1.6; }
 
 .bb-timeline ul li .datatime, .datakoobai {
   font-size: 14px;

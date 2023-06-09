@@ -28,21 +28,20 @@
 }
 .title{
 	font-family: var(--font-family-title);
-	letter-spacing:0.5px;
-	font-size:16px;
+	font-size:18px;
 	margin: 8px 0 8px 0;
 }
 
 .jiage{
 	color:#999;
-	font-size:14px;
+	font-size:16px;
 	margin-top: 10px;
 	font-family: var(--font-family-code);
 }
 
 .note{
-	font-size: 14px;
-	line-height: 1.5;
+	font-size: 16px;
+	line-height: 1.6;
 	color: #666;
 } 
 
@@ -140,7 +139,7 @@
 	margin-bottom: 20px;
 	border-radius:20px;
 	text-align: center;
-	font-size: 12px;
+	font-size: 14px;
 	color: #666;
   }
   .hardware-index-button svg{
@@ -152,7 +151,7 @@
   .hardware-info{
 	width: 87%;
 	margin: auto;
-	font-size: 14px;
+	font-size: 16px;
 	color: #999;
 	line-height: 1.6;
   }
@@ -197,12 +196,12 @@
 	text-align: center;
   }
   .hardware-note{
-	font-size: 14px;
+	font-size: 16px;
 	color: #666;
 	line-height: 1.6;
   }
   .hardware-title{
-	font-size: 16px;
+	font-size: 18px;
 	font-family: var(--font-family-title);
 	margin-top: 8px;
 	margin-bottom: 8px;
@@ -211,6 +210,6 @@
 	color: #333;
   }
   .hardware-jiage{
-	font-size: 14px;
+	font-size: 16px;
 	color: #999;
   }

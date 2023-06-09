@@ -8,7 +8,7 @@
   border-radius:4px;
   align-items: center;
   background-color:var(--bankuai-color);
-  padding: 20px;
+  padding: 20px 20px 20px 12px;
   transition: all .3s cubic-bezier(0,0,.5,1);
   display: grid;
   grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
@@ -29,13 +29,13 @@
   padding-bottom: 8px;
 }
 .apptitle{
-  font-size:16px;
+  font-size:18px;
   margin-bottom: 8px;
   font-family: var(--font-family-title);
 }
 .appnote,.appnote-index{
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   color: #666;
   text-align: justify;
   overflow : hidden;
@@ -50,7 +50,7 @@
 .macos{
   padding: 6px 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   border-radius:20px;
   margin-right: 4px;
   color: #999;
@@ -75,7 +75,7 @@
   color: #666;
   background-color: #2E282A;
 }
-.appnote{
+.appnote,.appnote-index{
   color: #999;
 }
 .app-index{
