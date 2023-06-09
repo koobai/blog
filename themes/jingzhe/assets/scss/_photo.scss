@@ -1,14 +1,11 @@
 .photo-home{
-    font-size:0;
-    width: 102.8%;
-    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 2px;
+    margin-bottom: 8px;
 }
 .photo-home-top{
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 2px;
     position: relative;
-    margin-bottom: 2px;
     overflow: hidden;
 }
 .photo-home-top img {
@@ -21,7 +18,7 @@
     transform: scale(1.1);
 }
 .photo-home-title{
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     font-size:14px;
     color: #FFF;
     position:absolute;
@@ -32,42 +29,32 @@
   
 // 页面宽度小于700样式
 @media (max-width:700px){
-    .photo-home-top{
-        width: 32.2%;
-    }
     .photo-home-top img {
         height: 120px;
-    } 
+    }
     .photo-home-title{
-        display:block;
-        padding: 5px 0 5px 0;
-        font-size:12px;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.2);
+        display:none;
     }
     }
  // 页面宽度大于700小于900样式
 @media screen and (min-width:700px) and (max-width:900px){
-    .photo-home-top{
-            width: 32.2%;
-        }
     .photo-home-top img {
-            height: 180px;
-        }
+         height: 180px;
+    }
     .photo-home-title{
-            display:block;
-            margin-left: 5px;
-            margin-bottom: 5px;
-            padding: 6px;
-            border-radius:2px;
-            font-size: 12px;
+         display:block;
+         margin-left: 5px;
+         margin-bottom: 10px;
+         padding: 6px;
+         border-radius:2px;
+         font-size: 14px;
         }
     }
 // 页面宽度大于900样式   
  @media (min-width:900px){
-    .photo-home-top{
-            width: 16.04%;
-        }
+    .photo-home{
+        grid-template-columns: repeat(6, 1fr); 
+    }
     .photo-home-top img {
             height: 150px;
         }
