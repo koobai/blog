@@ -347,9 +347,8 @@ ul {
   float: left; }
 
 .previous-title {
-  font-family: var(--font-family-heading);
-  font-size: 20px;
-  color: var(--text-highlight-color); }
+  font-family: var(--font-family-title);
+  font-size: 18px; }
 
 .previous-intro {
   font-size: 16px;
