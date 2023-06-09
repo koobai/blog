@@ -3,7 +3,7 @@
 {{ define "main" }}
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
   <div class="content-index">{{ .Content }}</div>
-  <div class="summary-index">
+  <div class="summary-index img-hide">
   <div class="summary img-hide">
   {{ if .Site.Params.showPostsOnHomepage }}
   {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
