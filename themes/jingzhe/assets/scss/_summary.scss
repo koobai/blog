@@ -14,7 +14,7 @@
 .summary-1{
   display: flex;
   justify-content: space-between;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 }
 .summary-tag-left{
   margin-right: 10px;
@@ -83,12 +83,20 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
+    margin: 0 auto;
+    max-width: 900px;
+  }
+  .summary-index{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: #FFF;
+    padding: 30px 0 30px 0;
   }
   }
 
   // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .summary-nrong{
+  .summary-nrong,.summary-index{
     background: var(--background-dark-color);
   }
   .summary-tag-right a,.summary-tag a{

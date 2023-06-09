@@ -3,12 +3,14 @@
 {{ define "main" }}
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
   <div class="content-index">{{ .Content }}</div>
+  <div class="summary-index">
   <div class="summary">
   {{ if .Site.Params.showPostsOnHomepage }}
   {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
     {{ range $paginator.Pages }}
       {{ .Render "summary" }}
     {{ end }}
+  </div>
   </div>
     <!--{{ partial "paginator" . }}-->
   {{ end }}
@@ -44,7 +46,7 @@
                 <div class="app-img"><img loading="lazy" decoding="async" src={{ .image }}> </div>
                 <div class="appwenben">
                 <div class="apptitle">{{ .title }}</div>
-                <div class="appnote">{{ .info }}</div>
+                <div class="appnote-index">{{ .info }}</div>
                 </div>
                 </div>
               {{ end }}
