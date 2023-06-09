@@ -1355,9 +1355,9 @@ img[atk-emoticon] {
   .hardware-info {
     color: #666 !important; }
   .hardware-1 {
-    background-color: #2f2b2c !important; }
+    background-color: #3c3739 !important; }
   .hardware-2 {
-    background-color: #544d4e !important; }
+    background-color: #5f595b !important; }
   .hardware-index-nrong {
     background-color: #2f2b2c !important; }
   .hardware-note {
@@ -1366,7 +1366,7 @@ img[atk-emoticon] {
     color: #BBB !important; } }
 
 .hardware-index {
-  background: radial-gradient(101.976% 84% at 50.7% 100%, #FFE2E9 0%, white 100%);
+  background: radial-gradient(101.976% 84% at 50.7% 100%, #e2e2e2 0%, white 100%);
   padding: 30px 20px 0 20px;
   margin-top: 20px;
   border-radius: 4px; }
@@ -1390,7 +1390,7 @@ img[atk-emoticon] {
   color: #666; }
 
 .hardware-index-button svg {
-  fill: #BB2649;
+  fill: #666;
   width: 16px;
   vertical-align: middle;
   margin-top: -3px; }
@@ -1408,13 +1408,13 @@ img[atk-emoticon] {
   opacity: 1; }
 
 .hardware-1 {
-  background-color: #FDC6D3;
+  background-color: #dadada;
   height: 15px;
   width: 82%;
   margin: 0 auto; }
 
 .hardware-2 {
-  background-color: #FFE5EB;
+  background-color: #ededed;
   height: 15px;
   width: 92%;
   margin: 0 auto; }
