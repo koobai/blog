@@ -15,7 +15,7 @@
   --bankuai-color: #FFF;
   --background-color: #FAFAFA;
   --background-dark-color: #201d1e;
-  --text-content-color:#333;
+  --text-content-color:#222;
   --text-content-dark-color:#BBB;
   --text-highlight-color:#BB2649; }
 
@@ -482,7 +482,7 @@ ul {
 .summary-1 {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 70px; }
+  margin-bottom: 50px; }
 
 .summary-tag-left {
   margin-right: 10px; }
@@ -544,10 +544,17 @@ ul {
   .summary {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 10px; } }
+    grid-gap: 10px;
+    margin: 0 auto;
+    max-width: 900px; }
+  .summary-index {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: #FFF;
+    padding: 30px 0 30px 0; } }
 
 @media (prefers-color-scheme: dark) {
-  .summary-nrong {
+  .summary-nrong, .summary-index {
     background: var(--background-dark-color); }
   .summary-tag-right a, .summary-tag a {
     color: #666; }
@@ -1175,7 +1182,7 @@ img[atk-emoticon] {
   margin-bottom: 8px;
   font-family: var(--font-family-title); }
 
-.appnote {
+.appnote, .appnote-index {
   font-size: 16px;
   line-height: 1.6;
   color: #666;
@@ -1183,11 +1190,15 @@ img[atk-emoticon] {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
 
 .appnote {
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  -webkit-line-clamp: 3; }
+
+.appnote-index {
+  margin-bottom: 0;
+  -webkit-line-clamp: 2; }
 
 .macos {
   padding: 6px 10px;
@@ -1213,7 +1224,7 @@ img[atk-emoticon] {
   .macos {
     color: #666;
     background-color: #2E282A; }
-  .appnote {
+  .appnote, .appnote-index {
     color: #999; }
   .app-index {
     background-color: #2f2b2c; } }
