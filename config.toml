@@ -9,6 +9,13 @@ pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
 enableRobotsTXT = true
 
+[build.bundle]
+  [build.bundle.scss]
+    enable = true
+    include = ["assets/scss/*.scss"]
+    outputStyle = "compressed"
+    sourceMap = false
+    
 [module]
   [module.hugoVersion]
     extended = true
