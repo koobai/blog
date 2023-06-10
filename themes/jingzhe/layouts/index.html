@@ -39,7 +39,7 @@
     </div>
     <div class="app-gundong">
     <div class="app-list">
-      {{ $goods := getJSON "data/app.json" }}
+      {{ $goods := getJSON "static/suju/app.json" }}
           {{ range $index, $good := $goods.good }}
               {{ if lt $index 10 }}
               <div class="app-index">
