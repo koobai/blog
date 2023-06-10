@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ $goods := getJSON "data/app.json" }}
+{{ $goods := getJSON "static/suju/app.json" }}
 <div class="intro">
   <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
 </div>
