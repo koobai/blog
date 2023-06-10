@@ -2,11 +2,15 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
     grid-gap: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 .photo-home-top{
     position: relative;
     overflow: hidden;
+}
+.photo-home-top a{
+    display: block;
+    margin-bottom: -4px;
 }
 .photo-home-top img {
     width: 100%;
