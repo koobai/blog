@@ -1258,16 +1258,15 @@ img[atk-emoticon] {
   mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, black 10%, black 90%, rgba(0, 0, 0, 0) 100%); }
 
 .app-list {
-  animation: scroll 10s linear infinite;
-  /* 定义滚动动画 */ }
+  animation: scroll-shangxia 10s linear infinite; }
 
-@keyframes scroll {
+@keyframes scroll-shangxia {
   0% {
-    transform: translateY(0);
-    /* 初始位置 */ }
+    transform: translateY(0%); }
+  80% {
+    transform: translateY(-55%); }
   100% {
-    transform: translateY(-100%);
-    /* 滚动到顶部 */ } }
+    transform: translateY(0%); } }
 
 .quanju {
   display: grid;
