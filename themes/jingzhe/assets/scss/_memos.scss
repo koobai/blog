@@ -1,3 +1,57 @@
+//首页调用
+.momos-sswrap {
+  margin-bottom: 20px;
+}
+.memos_diaoyong{
+  border-radius:4px;
+  background: var(--bankuai-color) !important;
+  padding:20px; 
+  transition: all .3s cubic-bezier(0,0,.5,1);
+}
+.memos_diaoyong:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+}
+.momos-sslist{
+  display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-gap: 10px; /* 中间空10px间距 */
+}
+.memos-zuoz{
+  display: flex;
+  margin-bottom: 20px;
+}
+.memos_diaoyong_from{
+  margin-bottom: 2px;
+}
+.memos_diaoyong_from a{
+  color: #666;
+  font-family: var(--font-family-code);
+}
+.memos-logo {
+ padding-top: 6px;
+ margin-right: 4px; 
+}
+.memos-logo img{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 0.5px solid #000;
+  margin-right: 6px;
+}
+.memos-tubiao{
+  margin-left: auto;
+  padding-top: 10px;
+}
+.memos-tubiao svg {
+  width: 16px;
+  fill: #c0c0c0;
+}
+.memos_diaoyong:hover .memos-tubiao svg {
+  fill: #666;
+}
+
+
+//唠叨页
 .bb-timeline pre{
   color:#aaa;
 }
@@ -16,15 +70,6 @@
 }
 .bb-timeline ul li:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.1);
-}
-.memos_diaoyong{
-  border-radius:4px;
-  background: var(--bankuai-color) !important;
-  padding: 16px 20px 16px 20px; 
-  margin-bottom: 10px;
-}
-.momos-sswrap {
-  margin-bottom: 20px;
 }
 .bb-load button{
   background:#FFFFFF;
@@ -113,13 +158,11 @@
   width: 200px;
 }
 .resimg figure img{width:200px;}
-.memos_diaoyong_from,.memos_diaoyong_from a, .memos_diaoyong_time{
+.memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz a{
   color: #999;
   font-size: 14px;
 }
-.memos_diaoyong_from{
-  margin-left: 10px;
-}
+
 // 页面宽度小于900样式
 
 @media (max-width:900px){
@@ -154,10 +197,19 @@
 .memos_diaoyong{
   background: var(--background-dark-color) !important;
 }
-.memos_diaoyong_from,.memos_diaoyong_from a, .memos_diaoyong_time{
-  color: #888;
+.memos_diaoyong_from a{
+  color: #999;
+}
+.memos_diaoyong_time, .memos_diaoyong_laiz a{
+  color: #666;
 }
 .memos_diaoyong_info, .memos_diaoyong_info a {
   color: var(--text-content-dark-color) !important;
+}
+.memos-tubiao svg {
+  fill: #666;
+}
+.memos_diaoyong:hover .memos-tubiao svg {
+  fill: #c0c0c0;
 }
 }
