@@ -9,7 +9,24 @@
               var bbTime = new Date(data[i].createdTs * 1000).toLocaleString()
               var bbCont = data[i].content
               var newbbCont = bbCont.replace(/!\[.*?\]\((.*?)\)/g,' <a href="$1" target="_blank">🌅</a> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')
-              result += `<div class="memos_diaoyong" data-module="fade-in-up"><span class="memos_diaoyong_time">${bbTime}</span><span class='memos_diaoyong_from'>来自 <a href="/memos">@koobai 唠叨</a></sapn><div class="memos_diaoyong_info"><a href="/memos">${newbbCont}</a></div></div>`;
+              result += `
+              <div class="memos_diaoyong" data-module="fade-in-up">
+                <div class="memos-zuoz">
+                    <div class="memos-logo"><a href="/memos"><img src="https://img.koobai.com/koobai.svg" alt="koobai" /></a></div>
+                        <div>
+                            <div class='memos_diaoyong_from'><a href="/memos">koobai</a></div>
+                            <span class="memos_diaoyong_time">${bbTime}</span><span class="memos_diaoyong_laiz"> <a href="/memos">来自唠叨</a></span>
+                        </div>
+                        <div class="memos-tubiao"><a href="/memos">
+                        <a href="/memos"><svg viewBox="0 0 32 26" xmlns="http://www.w3.org/2000/svg">
+        <g fill-rule="evenodd">
+        <path d="M32,3.07526882 C30.8,3.59447005 29.56,3.95391705 28.24,4.11367127 C29.6,3.31490015 30.64,2.03686636 31.12,0.479262673 C29.84,1.23809524 28.44,1.75729647 26.96,2.07680492 C25.76,0.798771121 24.04,0 22.16,0 C18.52,0 15.6,2.95545315 15.6,6.5499232 C15.6,7.06912442 15.64,7.5483871 15.76,8.02764977 C10.32,7.78801843 5.52,5.15207373 2.28,1.19815668 C-0.04,5.35176651 2.56,8.78648233 4.28,9.94470046 C3.24,9.94470046 2.2,9.62519201 1.32,9.14592934 C1.32,12.3809524 3.6,15.0568356 6.56,15.655914 C5.92,15.8556068 4.48,15.9754224 3.6,15.7757296 C4.44,18.3717358 6.88,20.2887865 9.72,20.328725 C7.48,22.0860215 4.2,23.483871 0,23.0445469 C2.92,24.921659 6.36,26 10.08,26 C22.16,26 28.72,16.015361 28.72,7.38863287 C28.72,7.10906298 28.72,6.82949309 28.68,6.5499232 C30.04,5.55145929 31.16,4.39324117 32,3.07526882 L32,3.07526882 Z" fill-rule="nonzero"></path>
+        </g>
+        </svg></a>
+                    </div>
+                </div>
+                    <div class="memos_diaoyong_info">${newbbCont}</div>
+              </div>`;
           }
           var bbDom = document.querySelector('#momos-ss');
           var bbBefore = `<div class="momos-sswrap"><ul class="momos-sslist">`
