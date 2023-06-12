@@ -1154,13 +1154,15 @@ img[atk-emoticon] {
   border-radius: 4px;
   align-items: center;
   background-color: var(--bankuai-color);
-  padding: 20px 20px 20px 12px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   display: grid;
   grid-template-columns: auto 1fr;
   /* 第一列宽度自动，第二列平分剩余空间 */
   grid-gap: 15px;
   /* 可选项，设置列之间的间隔 */ }
+
+.appquanju {
+  padding: 20px 20px 20px 12px; }
 
 .appquanju:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
@@ -1245,7 +1247,7 @@ img[atk-emoticon] {
 
 .app-index {
   margin-bottom: 10px;
-  height: 85px; }
+  padding: 15px 20px 15px 12px; }
 
 .app-img img {
   width: 100px;
