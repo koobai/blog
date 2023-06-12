@@ -1,10 +1,10 @@
 
 {{- define "main" }}
-  <div class="intro">
+ <!-- <div class="intro">
   <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
-</div>
+</div>-->
 
-<div class="archives_tags">
+<div class="archives_tags img-hide">
   {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
   <a href="/tags/{{ $name | urlize }}"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a>
   {{- end -}}
@@ -14,22 +14,27 @@
   <!--<h2>
     {{ .Key }}年<sup>&nbsp;&nbsp;{{ len .Pages }}</sup>
   </h2>-->
-  {{- range .Pages.GroupByDate "1" }}
-  <div class="archives_nrong" data-module="fade-in-up">
+
+  <div class="archives_nrong" >
     <!--<div class="archive-month">
      {{- .Key }} 月
       <sup>{{ len .Pages }}</sup>
     </div>-->  
       {{- range .Pages }}
       {{- if eq .Kind "page" }}
-      <div class="archives_one">
-       <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+      <div class="archives_one img-hide">
+        <div>
         <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+        <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+        </div>
+        <div class="archive-img">
+        {{ if .Params.image }}
+        <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
+        {{ end }}
+        </div>
       </div>
       {{- end }}
       {{- end }} 
     </div>
-  {{- end }} 
-
   {{ end }}
-{{- end }}{{/* end main */}}
+{{- end }}

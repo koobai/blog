@@ -1,16 +1,49 @@
 {{ define "body_classes" }}page-blog-list{{ end }}
-
 {{ define "main" }}
-  <div class="intro">
-    <!--<h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>-->
-    {{ if .Params.description }}<p>{{ .Params.description }}</p>{{ end }}
+<div class="archives_tags img-hide">
+  {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
+  <a href="/tags/{{ $name | urlize }}"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a>
+  {{- end -}}
+</div>
+{{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
+{{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
+{{ $PageContext := . }}
+{{ if .IsHome }}
+  {{ $PageContext = .Site }}
+{{ end }}
+{{ $pages := (where $PageContext.RegularPages "Type" $contentTypeName) }}
+
+{{ range first 1 $pages }}
+<div class="posts-background img-hide">
+  <div class="page-left">
+    <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
+      <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+    
+    <div class="posts-description">{{ .Params.description }}</div>
+    <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
   </div>
-  <div class="summary">
-  {{ .Content }}
-  {{ $paginator := .Paginate (where .Pages "Type" "posts") }}
-  {{ range $paginator.Pages }}
-    {{ .Render "summary" }}
-  {{ end }}
+    <div class="posts-img">
+      {{ if .Params.image }}
+      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
+      {{ end }} 
   </div>
-  {{ partial "paginator" . }}
+{{ end }}
+</div>
+
+<div class="archives_nrong" >
+{{ range after 1 $pages }}
+  <div class="archives_one img-hide">
+    <div>
+      <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+      <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+      </div>
+      <div class="archive-img">
+      {{ if .Params.image }}
+      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
+      {{ end }}
+      </div>
+  </div>
+{{ end }}
+</div>
+
 {{ end }}
