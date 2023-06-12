@@ -79,7 +79,7 @@ body {
 }
 
 .wrapper {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   min-height: calc(100vh - 130px);
   @include breakpoint('small') {
