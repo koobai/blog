@@ -2,18 +2,18 @@
 .momos-sswrap {
   margin-bottom: 20px;
 }
-.memos_diaoyong{
+.memos_diaoyong,.bb-list-li{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:20px; 
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
-.memos_diaoyong:hover{
+.memos_diaoyong:hover,.bb-list-li:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
-.momos-sslist{
+.momos-sslist,.bb-list-ul{
   display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	grid-gap: 10px; /* 中间空10px间距 */
 }
 .memos-zuoz{
@@ -46,7 +46,7 @@
   width: 16px;
   fill: #c0c0c0;
 }
-.memos_diaoyong:hover .memos-tubiao svg {
+.memos_diaoyong:hover .memos-tubiao svg ,.bb-list-li:hover .memos-tubiao svg{
   fill: #666;
 }
 
@@ -56,21 +56,10 @@
   color:#aaa;
 }
 .bb-timeline ul{
-  margin:0;
+  margin-top: 10px;
   padding:0;
 }
-.bb-timeline ul li {
-  list-style-type:none;
-  margin-top: 15px;
-  background: var(--bankuai-color) !important;
-  padding: 20px; 
-  box-shadow: 2px 4px 12px rgba(0,0,0,.04);
-  transition: all .3s cubic-bezier(0,0,.5,1);
-  border-radius:4px;
-}
-.bb-timeline ul li:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.1);
-}
+
 .bb-load button{
   background:#FFFFFF;
   padding: 10px 30px 10px 30px;
@@ -91,38 +80,24 @@
   color: var(--text-content-color) !important;
 }
 .memos_diaoyong_info{
-  margin-top: 5px;
   font-size: 16px;
   color: var(--text-content-color);
   line-height:1.6;
 }
-.bb-timeline ul li .datatime,.datakoobai{
-  font-size:14px;
-  color: #999;
-  font-family: var(--font-family-code);
-}
-.datakoobai{
-  margin-left: 5px;
-}
-.bb-timeline ul li .datacont{margin-top: 5px;}
 .bb-timeline ul li .datacont img[src*='emotion']{display:inline-block;width:auto;}
 .bb-timeline ul li .datafrom{color:#aaa;font-size:0.75em !important;font-style:italic;}
-.bb-timeline ul li p{
+.datacont p{
   margin:0;
   font-size:18px;
-  line-height:1.6;
-  margin:0;
+  line-height:1.8;
 }
 .bb-timeline ul li p a {
   color: var(--text-highlight-color);
 }
 .bb-timeline pre p{display:inline-block;}
 .bb-timeline pre p:empty{display:none;}
-.dark-theme .bb-timeline ul li .datatime{border-color:#666;}
 .dark-theme .bb-timeline .bb-load button{color:#fafafa;}
 .dark-theme .bb-timeline ul li .datafrom{color:#aaa;}
-.datacont p{min-height:24px;}.datacont blockquote{font-family: KaiTi,STKaiti,STFangsong;margin:0 0 0 1rem;padding:.25rem 2rem;position: relative;border-left:0 none;}
-.datacont blockquote::before{line-height: 2rem;content: '“';font-family: Georgia, serif;font-size: 28px;font-weight: bold;position: absolute;left: 10px;top:5px;}
 .datacont .tag-span{
   color: #999;
   background: #F4F4F4;
@@ -133,7 +108,7 @@
 .datasource a{color:#fafafa;background:#3b3d42;padding:2px 8px;margin:0 6px 0 0;border-radius:5px;font-size:.9rem;font-weight:400;}
 .datacont .img{cursor:pointer;border-radius:4px;}
 .datacont .img.square{height:180px;width:180px;object-fit:cover;}
-.resimg.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:4px;width:calc(80%* 2 / 3);box-sizing:border-box;margin:4px 0 0;}
+.resimg.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:4px;width:calc(100%* 2 / 3);box-sizing:border-box;margin:4px 0 0;}
 .resimg.grid figure.gallery-thumbnail{
   position:relative;
   width:100%;
@@ -177,8 +152,8 @@
 
 @media (min-width:900px){
 #bber{width:100%; margin: 0 auto;}
-.resimg.grid-4{grid-template-columns:repeat(2,1fr);width:calc(50% * 2 / 3);}
-.resimg.grid-2{grid-template-columns:repeat(2,1fr);width:50%;}
+.resimg.grid-4{grid-template-columns:repeat(2,1fr);width:calc(80% * 2 / 3);}
+.resimg.grid-2{grid-template-columns:repeat(2,1fr);width:60%;}
 }
 
 
@@ -191,10 +166,7 @@
 .bb-load button{
   background:var(--background-dark-color);
 }
-.bb-timeline ul li .datatime,.datakoobai{
-  color: #666;
-}
-.memos_diaoyong{
+.memos_diaoyong,.bb-list-li{
   background: var(--background-dark-color) !important;
 }
 .memos_diaoyong_from a{
@@ -209,7 +181,7 @@
 .memos-tubiao svg {
   fill: #666;
 }
-.memos_diaoyong:hover .memos-tubiao svg {
+.memos_diaoyong:hover .memos-tubiao svg,.bb-list-li:hover .memos-tubiao svg{
   fill: #c0c0c0;
 }
 }
