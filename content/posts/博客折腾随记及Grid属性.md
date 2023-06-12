@@ -25,5 +25,5 @@ grid-template-columns: repeat(4, 1fr); /* 多列等宽，4为平均分为四列 
 
 有时候在想，这样折腾博客的意义是什么，日志没写多少，每天净搞些有的没的，内容才是重要的才对，再说折腾来折腾去，也没几个人看，图啥？嗯。。。。，开心最重要。意义就在于不停的折腾，就跟开头说的一样：一旦停下来，瞬间心里觉得空落落的。
 
-感谢折腾过程中， <a href="https://immmmm.com/" target="_blank">林木木</a> 、 <a href="https://www.thyuu.com/word/tips/75680" target="_blank">风记星辰</a> 老师帮忙。同时折腾过程中，又认识了一些新朋友 <a href="https://dongjunke.cn/" target="_blank">东评西就</a>、<a href="https://linlinxing.com/" target="_blank">linlinxing</a>、<a href="https://www.saphead.cn/" target="_blank">小熊</a>、<a href="https://wananaiko.com/" target="_blank">wananaiko
+感谢折腾过程中， <a href="https://immmmm.com/" target="_blank">林木木</a> 、 <a href="https://www.thyuu.com/word/tips/75680" target="_blank">风记星辰</a> 老师帮忙。同时折腾过程中，又认识了一些新朋友 <a href="https://dongjunke.cn/" target="_blank">小饿</a>、<a href="https://linlinxing.com/" target="_blank">linlinxing</a>、<a href="https://www.saphead.cn/" target="_blank">小熊</a>、<a href="https://wananaiko.com/" target="_blank">wananaiko
 </a>、<a href="https://laomai.org/" target="_blank">老麦</a>、<a href="https://eallion.com/" target="_blank">大大的小蜗牛</a>、<a href="https://zhou.ge/" target="_blank">忆往事</a>、<a href="https://nuoea.com/" target="_blank">归臧</a>、<a href="https://yzrss.com/" target="_blank">叶子笔记</a>、<a href="https://www.shaodaishan.com/" target="_blank">少岱山</a> 等等，博客真好。
