@@ -1458,7 +1458,6 @@ img[atk-emoticon] {
 
 /*归档页标签*/
 .archives_tags {
-  margin-bottom: 15px;
   margin-top: 30px; }
 
 .archives_tags a {
@@ -2079,6 +2078,7 @@ img[atk-emoticon] {
   background-color: var(--bankuai-color);
   border-radius: 4px;
   margin-bottom: 20px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
@@ -2118,7 +2118,9 @@ img[atk-emoticon] {
     display: none; }
   .archive-img img {
     width: 100px;
-    height: 80px; } }
+    height: 80px; }
+  .posts-background {
+    margin-top: 30px; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .posts-img img {

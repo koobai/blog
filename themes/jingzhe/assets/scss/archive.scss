@@ -44,6 +44,7 @@
   background-color: var(--bankuai-color);
   border-radius:4px;
   margin-bottom: 20px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   transition: all .3s cubic-bezier(0,0,.5,1);
@@ -87,6 +88,9 @@ box-shadow: 2px 4px 16px rgba(0,0,0,.05);
   .archive-img img{
     width: 100px;
     height: 80px;
+  }
+  .posts-background {
+    margin-top: 30px;
   }
    } 
 // 页面宽度大于700小于900样式
