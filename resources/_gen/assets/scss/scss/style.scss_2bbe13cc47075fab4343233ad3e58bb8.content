@@ -482,7 +482,7 @@ ul {
 .summary-1 {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px; }
+  margin-bottom: 40px; }
 
 .summary-tag-left {
   margin-right: 10px; }
@@ -528,7 +528,8 @@ ul {
 
 .read-more a {
   font-size: 16px;
-  color: var(--text-content-color); }
+  color: var(--text-content-color);
+  font-family: var(--font-family-heading); }
 
 @media (max-width: 700px) {
   .summary-nrong {
