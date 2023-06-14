@@ -22,9 +22,6 @@
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px 20px 20px 20px;
-  @include breakpoint('small') {
-  padding: 20px 30px 20px 30px;
-  }
   a.header-logo {
     font-family: var(--font-family-teshu);
     padding-top: 4px;
