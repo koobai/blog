@@ -31,12 +31,14 @@
  padding-top: 6px;
  margin-right: 4px; 
 }
-.memos-logo img{
+.memos-logo img,.memos-logo2 img{
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 0.5px solid #000;
   margin-right: 6px;
+}
+.memos-logo2 img{
+  border: 0.5px solid #000;
 }
 .memos-tubiao{
   margin-left: auto;
@@ -140,7 +142,7 @@
 // 页面宽度小于900样式
 
 @media (max-width:900px){
-  .memos-logo img{
+  .memos-logo2 img{
     display: none;
   }
   .memos-zuoz{
