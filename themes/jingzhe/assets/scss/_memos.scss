@@ -140,6 +140,12 @@
 // 页面宽度小于900样式
 
 @media (max-width:900px){
+  .memos-logo img{
+    display: none;
+  }
+  .memos-zuoz{
+    margin-bottom: 10px;
+  }
 
 #bber{width:100%; margin: 0 auto;}
 .resimg.grid-4{grid-template-columns:repeat(2,1fr);width:calc(130% * 2 / 3);}
