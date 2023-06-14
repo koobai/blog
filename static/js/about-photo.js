@@ -10,7 +10,7 @@ const getRandomImages = (arr, num) => {
 };
 
 const insertRandomImages = images => {
-  const photoHome = document.querySelector('.photo-home');
+  const photoHome = document.querySelector('.photo-about');
   images.forEach(({ img, imgSmall, title }) => {
     const photoHtml = `
       <div class="photo-home-top">

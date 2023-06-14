@@ -58,9 +58,6 @@ h1, h2, h3 {
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px 20px 20px 20px; }
-  @media (min-width: 700px) {
-    .header {
-      padding: 20px 30px 20px 30px; } }
   .header a.header-logo {
     font-family: var(--font-family-teshu);
     padding-top: 4px; }
@@ -552,7 +549,7 @@ ul {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     background: #FFF;
-    padding: 30px 0 30px 0; } }
+    padding: 40px 0 40px 0; } }
 
 @media (prefers-color-scheme: dark) {
   .summary-nrong, .summary-index {
@@ -1561,7 +1558,7 @@ img[atk-emoticon] {
 .movie-content-left img {
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   object-fit: cover;
   width: 150px;
   height: 220px; }
@@ -1974,28 +1971,41 @@ img[atk-emoticon] {
 
 .photo-home {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 2px;
-  margin-bottom: 10px; }
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 4px;
+  margin-top: 25px !important;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 1000px; }
 
-.photo-home-top {
+.photo-home-top-1 img, .photo-home-top img {
+  display: block; }
+
+.photo-home-top-2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 4px; }
+
+.photo-home-top, .photo-home-top-1 {
   position: relative;
   overflow: hidden; }
 
-.photo-home-top a {
-  display: block;
-  margin-bottom: -4px; }
-
-.photo-home-top img {
+.photo-home-top-1 img, .photo-home-top img {
   width: 100%;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 6px;
   transition: transform 0.3s ease; }
 
-.photo-home-top img:hover {
+.photo-home-top img {
+  height: 160px; }
+
+.photo-home-top-1 img {
+  height: 324px; }
+
+.photo-home-top img:hover, .photo-home-top-1 img:hover {
   transform: scale(1.1); }
 
-.photo-home-title {
+.photo-home-title, .photo-home-title-1 {
   background: rgba(0, 0, 0, 0.6);
   font-size: 14px;
   color: #FFF;
@@ -2004,32 +2014,47 @@ img[atk-emoticon] {
   padding: 8px 0 8px 0;
   text-align: center; }
 
+.photo-home-title-1 {
+  margin-left: 5px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  padding: 10px; }
+
+.photo-home-title {
+  padding: 8px 0 8px 0;
+  display: none;
+  width: 100%; }
+
+.photo-about {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 4px; }
+
 @media (max-width: 700px) {
   .photo-home-top img {
     height: 120px; }
-  .photo-home-title {
-    display: none; } }
+  .photo-home-title, .photo-home-top-1 {
+    display: none; }
+  .photo-home {
+    display: block;
+    margin-top: 20px !important; }
+  .photo-about {
+    grid-template-columns: repeat(3, 1fr); } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
-  .photo-home-top img {
-    height: 180px; }
   .photo-home-title {
-    display: block;
-    margin-left: 5px;
-    margin-bottom: 10px;
-    padding: 6px;
-    border-radius: 2px;
-    font-size: 14px; } }
+    display: none; }
+  .photo-home-top img {
+    height: 125px; }
+  .photo-home-top-1 img {
+    height: 254px; }
+  .photo-home {
+    margin-top: 20px !important; }
+  .photo-about {
+    grid-template-columns: repeat(4, 1fr); } }
 
 @media (min-width: 900px) {
-  .photo-home {
-    grid-template-columns: repeat(6, 1fr); }
-  .photo-home-top img {
-    height: 165px; }
-  .photo-home-title {
-    display: none;
-    width: 100%; }
-  .photo-home-top:hover span.photo-home-title {
+  .photo-home-top:hover span.photo-home-title, .photo-home-top-1:hover span.photo-home-title {
     display: block; } }
 
 @media (prefers-color-scheme: dark) {
@@ -2061,7 +2086,8 @@ img[atk-emoticon] {
 
 .archive-time {
   font-size: 14px;
-  color: #999; }
+  color: #999;
+  margin-top: 4px; }
 
 .archive-img {
   margin-left: auto; }
@@ -2070,7 +2096,7 @@ img[atk-emoticon] {
   width: 140px;
   height: 90px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: transform 0.3s ease; }
 
 .archives_one:hover .archive-img img {
@@ -2103,7 +2129,7 @@ img[atk-emoticon] {
 .posts-img img {
   width: 400px;
   height: 280px;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: transform 0.3s ease; }
 
 .posts-background:hover .posts-img img {

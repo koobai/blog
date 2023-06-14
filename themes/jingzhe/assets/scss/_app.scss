@@ -118,7 +118,7 @@
   width:100px;
   transition: transform 0.3s ease;
 }
-.app-gundong {
+.app-gundong{
   overflow: hidden; /* 隐藏超出容器高度的内容 */
   -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
   mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);

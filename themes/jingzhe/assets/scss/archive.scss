@@ -23,6 +23,7 @@
 .archive-time{
     font-size: 14px;
     color: #999;
+    margin-top: 4px;
   }
 .archive-img {
     margin-left: auto;
@@ -31,7 +32,7 @@
     width: 140px;
     height: 90px;
     object-fit: cover;
-    border-radius:4px;
+    border-radius:6px;
     transition: transform 0.3s ease; 
   }
 .archives_one:hover .archive-img img{
@@ -67,7 +68,7 @@
 .posts-img img{
   width: 400px;
   height: 280px;
-  border-radius:4px;
+  border-radius:6px;
   transition: transform 0.3s ease;
 }
 .posts-background:hover .posts-img img{
