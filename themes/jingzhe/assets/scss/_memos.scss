@@ -142,7 +142,7 @@
 // 页面宽度小于900样式
 
 @media (max-width:900px){
-  .memos-logo2 img{
+  .memos-logo img,.memos-logo2 img{
     display: none;
   }
   .memos-zuoz{
