@@ -1,5 +1,5 @@
 ---
-title: 'Apps'
+title: '软件'
 url: "apps"
 date: 2023-01-08
 layout: app

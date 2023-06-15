@@ -15,7 +15,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-code);
   font-size: 40px;
   letter-spacing: 5px;
   @include breakpoint('small') {
