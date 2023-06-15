@@ -10,7 +10,7 @@ h1,
 h2,
 h3 {
   color: var(--heading-color);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-title);
   font-weight:normal; 
   font-display: swap; 
 }
@@ -34,9 +34,7 @@ ul {
   border-radius:8px;
   background-color: var(--bankuai-color);
   padding: 20px;
-  @include breakpoint('small') {
-    padding: 25px;
-  }
+  margin: 20px 0 20px 0;
 }
 .content_zhengwen img,.top-img {
   cursor: pointer;
@@ -178,11 +176,9 @@ ul {
     }
   }
 }
-
 .dot {
   color: var(--dot-color);
 }
-
 .footnotes {
   ol {
     list-style: decimal;
@@ -191,97 +187,9 @@ ul {
     }
   }
 }
-
-.previousnext{
-  margin-top:20px;
-  border-radius:8px;
-  background-color: var(--bankuai-color);
-  padding: 20px;
-  @include breakpoint('small') {
-    padding: 25px;
-  }
-}
-.previousnext-intro{
-  float: left;
-}
-.previous-title{
-  font-family: var(--font-family-title);
-  font-size:18px;
-  
-}
-.previous-intro{
-  font-size: 16px;
-  margin-top: 8px;
-  color: #666;
-  line-height: 25px;
-  text-align: justify;
-  overflow : hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.previous-time,.previous-time a{
-  font-size: 16px;
-  margin-top: 10px;
-  color: var(--text-content-color);
-  font-family: var(--font-family-heading);
-}
-.previousnext-img {
-  width: 180px;
-  height: 115px;
-  object-fit:cover;
-  margin-left: auto;
-  display: block;
-  border-radius: 4px;
-}
-.previousnext-interval{
-  margin-top: 18px;
-  border-top: 0.5px solid #e5e5e5;
-  padding-top: 18px;
-}
-
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .previousnext,.content_zhengwen{
+  .content_zhengwen{
     background-color: var(--background-dark-color);
-  }
-  .previous-intro{
-    color: var(--text-content-dark-color);
-  }
-  .previous-time a{
-    color: var(--text-content-dark-color);
-  }
-  .previousnext-interval{
-    border-top: 0.5px solid #332D2F;
-  }
-  }
-
-// 页面宽度小于900样式
-@media (max-width:700px){
-  .previousnext-img,.previous-intro,.previous-time{
-    display:none;
-  }
-  .previousnext-intro{
-    float: none;
-  }
-  .previous-title{
-    font-size:18px;
-  }
-  }
-
-// 页面宽度大于700小于900样式
-@media screen and (min-width:700px) and (max-width:900px){
-  .previous-intro{
-    max-width: 400px;
-  }
-  .previous-title{
-    font-size:18px;
-  }
-  }
-// 页面宽度大于900样式
-@media (min-width:900px){
-  .previous-intro{
-    max-width: 550px;
   }
   }

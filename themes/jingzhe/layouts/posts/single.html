@@ -21,30 +21,30 @@
    
       {{ end }}
     </div>
-      <div class="previousnext">
-        {{ with .PrevInSection }}
-        <div class="previousnext-intro">
-         <a class="previous-title" href="{{.Permalink}}">上一篇：{{.Title}}</a>
-         <div class="previous-intro"> {{ .Params.description }}</div>
-         <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
+    <div class="archives_nrong" >
+      {{ with .PrevInSection }}
+        <div class="archives_one img-hide">
+          <div>
+            <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+            <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+            </div>
+            <div class="archive-img img-hide">
+            <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+            </div>
         </div>
-        <a href="{{.RelPermalink}}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="previousnext-img" /></a>
-        {{ end }}
-        
-        {{ with .NextInSection }}
-        <div class="previousnext-interval">
-        <div class="previousnext-intro">
-         <a class="previous-title" href="{{.Permalink}}">下一篇：{{.Title}}</a>
-         <div class="previous-intro"> {{ .Params.description }}</div>
-         <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
-        </div>
-        <a href="{{.RelPermalink}}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="previousnext-img" /></a>
-        </div>
-        {{ end }}
+      {{ end }}
+      {{ with .NextInSection }}
+      <div class="archives_one img-hide">
         <div>
+          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+          <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+          </div>
+          <div class="archive-img img-hide">
+          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+          </div>
       </div>
-    </div>
-<div class="pinglun">已经看到这里了，不留下点什么？</div>
+    {{ end }}
+      </div>
 <div class="article-comments">
   {{- partial "artalk" . -}}
 </div>

@@ -1,19 +1,8 @@
 .intro {
-  margin-bottom: 15px;
   margin-top: 30px;
   h1 {
     font-size: 40px;
-    line-height: 50px;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-weight:normal;
-    @include breakpoint('small') {
-      width: 100%;
-      font-size: 50px;
-      line-height: 50px;
-      margin-bottom: 10px;
-      font-weight:normal;
-    }
+    margin-bottom: 10px;
   }
   h2 {
     font-size: 50px;
@@ -36,12 +25,6 @@
     line-height: 35px;
     margin-bottom: 12px;
     font-weight:normal;
-    @include breakpoint('small') {
-      width: 100%;
-      font-size: 40px;
-      line-height: 45px;
-      margin-bottom: 18px;
-    }
   }
   .article_dot {
     color: var(--dot-color);

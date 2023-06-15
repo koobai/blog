@@ -1,22 +1,18 @@
 <div class="header-background">
 <div class='header'>
-  <a class="header-logo" href="{{ .Site.Home.RelPermalink }}"><img src="https://img.koobai.com/koobai.svg" alt="koobai" /> {{ .Site.Title }}</a>
-  <div class="menu-main">
-    <ul>
-      {{ $currentPage := . }}
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
-      {{ $active = or $active (eq (.URL | relLangURL) ($currentPage.RelPermalink | relLangURL)) }}
-      <li class="menu-item-{{ .Name | lower }} {{ if $active }}active{{ end }}">
-        <a href="{{.URL}}">
-          {{ .Pre }}
-          <span>{{ .Name }}</span>
-        </a>
-      </li>
-      {{end}}
-      <a href="/index.xml" target="_blank"><img class="header-rss" src="https://img.koobai.com/rss.svg" alt="RSS" /></a><a href="mailto:mekoobai@gmail.com"><img class="header-rss" src="https://img.koobai.com/email.svg" alt="E-mail" /></a>
-    </ul>
-  </div>
+  <a href="{{ .Site.Home.RelPermalink }}" class="header-logo"><img src="https://img.koobai.com/koobai.svg" alt="koobai" /></a>
+  <a href="{{ .Site.Home.RelPermalink }}" class="header-title">{{ .Site.Title }}</a>
+  <div class="menu-main"> 
+    {{ $currentPage := . }}
+    {{ range .Site.Menus.main }}
+    {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
+    {{ $active = or $active (eq (.URL | relLangURL) ($currentPage.RelPermalink | relLangURL)) }}
+    <div class="header-menu">
+      <a href="{{.URL}}">{{ .Name }}</a>
+    </div>
+    {{end}}
+    <a href="/index.xml" target="_blank"><img class="header-rss" src="https://img.koobai.com/rss.svg" alt="RSS" /></a><a href="mailto:mekoobai@gmail.com"><img class="header-rss" src="https://img.koobai.com/email.svg" alt="E-mail" /></a>
+</div>
   <div id="toggle-menu-main-mobile" class="hamburger-trigger">
     <button class="hamburger">Menu</button>
   </div>
