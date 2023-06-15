@@ -2,7 +2,7 @@
 
 {{ define "main" }}
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-  <div class="content-index">{{ .Content }}</div>
+  <div class="content-index">{{ .Content }}<script src="/js/memos_avatar.js"></script></div>
   <div class="summary-index">
   <div class="summary">
   {{ if .Site.Params.showPostsOnHomepage }}
