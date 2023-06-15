@@ -27,15 +27,14 @@
   color: #666;
   font-family: var(--font-family-code);
 }
-.memos-logo {
- padding-top: 6px;
- margin-right: 4px; 
+.memos-logo,.memos-logo2{
+ padding-top: 7px;
 }
 .memos-logo img,.memos-logo2 img{
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  margin-right: 6px;
+  margin-right: 8px;
 }
 .memos-logo2 img{
   border: 0.5px solid #000;
