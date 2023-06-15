@@ -1928,7 +1928,7 @@ img[atk-emoticon] {
   font-size: 14px; }
 
 @media (max-width: 900px) {
-  .memos-logo2 img {
+  .memos-logo img, .memos-logo2 img {
     display: none; }
   .memos-zuoz {
     margin-bottom: 10px; }
