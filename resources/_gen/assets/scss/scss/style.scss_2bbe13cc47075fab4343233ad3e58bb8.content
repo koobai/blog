@@ -1613,7 +1613,8 @@ img[atk-emoticon] {
 
 @media (min-width: 900px) {
   .movies-nrong {
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
     top: 0;
     left: 0;
     right: 0;
@@ -1626,21 +1627,21 @@ img[atk-emoticon] {
   .HPRth:hover .movies-nrong {
     display: block; }
   .movie-time {
-    color: #666; }
+    color: #c7c7c7; }
   .movie-title {
     font-family: var(--font-family-title);
     font-size: 16px;
     margin: 6px 0 6px 0; }
   .movie-pfeng {
     margin-bottom: 10px;
-    color: #BBB; }
+    color: #c7c7c7; }
   .movie-pfeng-shuzi {
     font-family: var(--font-family-title);
     font-size: 15px;
     color: #FFF; }
   .movie-info {
     line-height: 1.6;
-    color: #BBB;
+    color: #FFF;
     text-align: justify; } }
 
 @media (prefers-color-scheme: dark) {
