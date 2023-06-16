@@ -1,6 +1,12 @@
 {
     "good": [
         {
+            "image": "https://img.koobai.com/app/chatgptios.webp",
+            "title": "ChatGPT",
+            "info": "官方客户端，方便订阅 Plus 会员。历史记录同步 PC 端，整体体验不错。",
+            "ios": "iOS"
+        },
+        {
             "image": "https://img.koobai.com/app/reeder.webp",
             "title": "Reeder 5",
             "info": "RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。",
