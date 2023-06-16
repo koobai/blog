@@ -18,7 +18,7 @@
 .atk-avatar img {
   border-radius: 50% !important;
 }
-.atk-comment img {
+.atk-comment>.atk-avatar img{
   width: 32px !important;
   height: 32px !important;
   margin-top: 6px;
@@ -83,6 +83,10 @@
   vertical-align: middle;
   margin-left: 2px;
   margin-right: 2px;
+  margin-top: -4px !important;
+}
+.atk-comment .atk-height-limit:after{
+  margin-bottom: 20px;
 }
 .atk-editor-plug-emoticons > .atk-grp-wrap > .atk-grp[data-type="image"] > .atk-item {
   height: 34px!important;
