@@ -14,7 +14,7 @@
   grid-gap: 15px; /* 可选项，设置列之间的间隔 */
 }
 .appquanju{
-  padding: 20px 20px 20px 12px;
+  padding: 20px;
 }
 .appquanju:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
@@ -23,7 +23,7 @@
   transform: scale(1.04);
 }
 .appimg img{
-  width:100px;
+  width:90px;
   transition: transform 0.3s ease;
 }
 .appwenben{
@@ -115,7 +115,7 @@
   padding: 15px 20px 15px 12px;
 }
 .app-img img{
-  width:100px;
+  width:90px;
   transition: transform 0.3s ease;
 }
 .app-gundong{

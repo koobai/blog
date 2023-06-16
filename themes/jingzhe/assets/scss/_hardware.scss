@@ -72,9 +72,6 @@
 }
 // 页面宽度大于900样式
 @media (min-width:900px){
-.duiqi img{
-	width:85%; 	
-}
 .tuij-index{
 	display: grid;
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */

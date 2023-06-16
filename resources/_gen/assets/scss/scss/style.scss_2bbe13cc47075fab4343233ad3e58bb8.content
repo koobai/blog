@@ -1081,7 +1081,7 @@ img[atk-emoticon] {
   /* 可选项，设置列之间的间隔 */ }
 
 .appquanju {
-  padding: 20px 20px 20px 12px; }
+  padding: 20px; }
 
 .appquanju:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
@@ -1090,7 +1090,7 @@ img[atk-emoticon] {
   transform: scale(1.04); }
 
 .appimg img {
-  width: 100px;
+  width: 90px;
   transition: transform 0.3s ease; }
 
 .appwenben {
@@ -1169,7 +1169,7 @@ img[atk-emoticon] {
   padding: 15px 20px 15px 12px; }
 
 .app-img img {
-  width: 100px;
+  width: 90px;
   transition: transform 0.3s ease; }
 
 .app-gundong {
@@ -1253,8 +1253,6 @@ img[atk-emoticon] {
     padding: 0 !important; } }
 
 @media (min-width: 900px) {
-  .duiqi img {
-    width: 85%; }
   .tuij-index {
     display: grid;
     grid-template-columns: 1fr 1fr;
