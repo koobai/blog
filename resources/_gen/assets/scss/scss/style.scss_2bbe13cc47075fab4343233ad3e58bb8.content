@@ -910,6 +910,12 @@ ul {
   margin-bottom: 40px;
   margin-top: 20px; }
 
+.atk-comment {
+  padding: 20px !important;
+  background: var(--bankuai-color);
+  margin-bottom: 10px;
+  border-radius: 4px; }
+
 .atk-content p {
   font-size: 16px !important;
   color: var(--text-content-color) !important; }
@@ -918,7 +924,24 @@ ul {
   line-height: 1.5 !important; }
 
 .atk-avatar img {
-  border-radius: 40px !important; }
+  border-radius: 50% !important; }
+
+.atk-comment img {
+  width: 32px !important;
+  height: 32px !important;
+  margin-top: 6px; }
+
+.atk-main {
+  margin-left: 45px !important; }
+
+.atk-comment-children > .atk-comment-wrap > .atk-comment {
+  padding: 2px !important; }
+
+.atk-comment > .atk-main > .atk-header {
+  margin-bottom: 0px !important; }
+
+.artalk > .atk-list > .atk-list-footer {
+  bottom: auto !important; }
 
 .atk-item.atk-nick {
   color: var(--text-content-color) !important;
@@ -998,6 +1021,8 @@ img[atk-emoticon] {
 @media (prefers-color-scheme: dark) {
   .pinglun {
     color: var(--text-content-dark-color); }
+  .atk-comment {
+    background: var(--background-dark-color); }
   .atk-main-editor {
     background: var(--background-dark-color) !important;
     border: 1px solid var(--at-color-border) !important; }
