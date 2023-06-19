@@ -1663,7 +1663,8 @@ img[atk-emoticon] {
     color: #999; } }
 
 .momos-sswrap {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-top: 20px; }
 
 .memos_diaoyong, .bb-list-li {
   border-radius: 4px;
@@ -1896,19 +1897,15 @@ img[atk-emoticon] {
 
 .photo-home {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 4px;
-  margin-top: 25px !important;
-  overflow: hidden;
-  margin: 0 auto;
-  max-width: 1000px; }
+  grid-template-columns: 1fr 2.5fr;
+  grid-gap: 4px; }
 
 .photo-home-top-1 img, .photo-home-top img {
   display: block; }
 
 .photo-home-top-2 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 4px; }
 
 .photo-home-top, .photo-home-top-1 {
@@ -1922,10 +1919,10 @@ img[atk-emoticon] {
   transition: transform 0.3s ease; }
 
 .photo-home-top img {
-  height: 160px; }
+  height: 200px; }
 
 .photo-home-top-1 img {
-  height: 324px; }
+  height: 200px; }
 
 .photo-home-top img:hover, .photo-home-top-1 img:hover {
   transform: scale(1.1); }
@@ -1970,9 +1967,9 @@ img[atk-emoticon] {
   .photo-home-title {
     display: none; }
   .photo-home-top img {
-    height: 125px; }
+    height: 150px; }
   .photo-home-top-1 img {
-    height: 254px; }
+    height: 150px; }
   .photo-home {
     margin-top: 20px !important; }
   .photo-about {

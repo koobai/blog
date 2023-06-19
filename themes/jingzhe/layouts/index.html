@@ -2,7 +2,7 @@
 
 {{ define "main" }}
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-  <div class="content-index">{{ .Content }}<script src="/js/memos_avatar.js"></script></div>
+  <div class="content-index">{{ .Content }}</div>
   <div class="summary-index">
   <div class="summary">
   {{ if .Site.Params.showPostsOnHomepage }}
@@ -11,9 +11,6 @@
       {{ .Render "summary" }}
     {{ end }}
   </div>
-  <div class="photo-home img-hide" view-image>
-    <script src="/js/photo.js"></script>
-    </div>
   </div>
     <!--{{ partial "paginator" . }}-->
   {{ end }}
