@@ -1898,7 +1898,7 @@ img[atk-emoticon] {
 .photo-home {
   display: grid;
   grid-template-columns: 1fr 2.5fr;
-  grid-gap: 4px; }
+  grid-gap: 6px; }
 
 .photo-home-top-1 img, .photo-home-top img {
   display: block; }
@@ -1906,7 +1906,7 @@ img[atk-emoticon] {
 .photo-home-top-2 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 4px; }
+  grid-gap: 6px; }
 
 .photo-home-top, .photo-home-top-1 {
   position: relative;
@@ -1950,7 +1950,7 @@ img[atk-emoticon] {
 .photo-about {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-gap: 4px; }
+  grid-gap: 6px; }
 
 @media (max-width: 700px) {
   .photo-home-top img {

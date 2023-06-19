@@ -1,7 +1,7 @@
 .photo-home{
     display: grid;
     grid-template-columns: 1fr 2.5fr;
-    grid-gap: 4px;
+    grid-gap: 6px;
 }
 .photo-home-top-1 img ,.photo-home-top img{
     display: block;   
@@ -9,7 +9,7 @@
 .photo-home-top-2 {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
-    grid-gap: 4px;  
+    grid-gap: 6px;  
 }
 .photo-home-top,.photo-home-top-1{
     position: relative;
@@ -55,7 +55,7 @@
 .photo-about{
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-gap: 4px; 
+    grid-gap: 6px; 
 }
   
 // 页面宽度小于700样式
