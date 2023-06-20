@@ -1895,10 +1895,33 @@ img[atk-emoticon] {
   .memos_diaoyong:hover .memos-tubiao svg, .bb-list-li:hover .memos-tubiao svg {
     fill: #c0c0c0; } }
 
-.photo-home {
+.index-about {
   display: grid;
-  grid-template-columns: 1fr 2.5fr;
-  grid-gap: 6px; }
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px; }
+
+.index-about-background {
+  padding: 20px; }
+
+.index-welcome img {
+  width: 32px;
+  vertical-align: middle; }
+
+.index-about-info {
+  margin-top: 25px;
+  line-height: 1.8;
+  color: #999;
+  font-size: 16px; }
+
+.index-about-info img {
+  width: 24px;
+  vertical-align: middle;
+  margin: -4px 6px 0 6px; }
+
+.index-about-bold {
+  font-size: 18px;
+  font-family: var(--font-family-title);
+  color: var(--text-content-color); }
 
 .photo-home-top-1 img, .photo-home-top img {
   display: block; }
@@ -1912,6 +1935,9 @@ img[atk-emoticon] {
   position: relative;
   overflow: hidden; }
 
+.photo-home-top-1 {
+  margin-bottom: 6px; }
+
 .photo-home-top-1 img, .photo-home-top img {
   width: 100%;
   object-fit: cover;
@@ -1919,16 +1945,16 @@ img[atk-emoticon] {
   transition: transform 0.3s ease; }
 
 .photo-home-top img {
-  height: 200px; }
+  height: 120px; }
 
 .photo-home-top-1 img {
-  height: 200px; }
+  height: 240px; }
 
 .photo-home-top img:hover, .photo-home-top-1 img:hover {
   transform: scale(1.1); }
 
 .photo-home-title, .photo-home-title-1 {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   font-size: 14px;
   color: #FFF;
   position: absolute;
@@ -1955,11 +1981,10 @@ img[atk-emoticon] {
 @media (max-width: 700px) {
   .photo-home-top img {
     height: 120px; }
-  .photo-home-title, .photo-home-top-1 {
+  .photo-home-title, .photo-home-top-1, .index-about-background {
     display: none; }
-  .photo-home {
-    display: block;
-    margin-top: 20px !important; }
+  .index-about {
+    display: block; }
   .photo-about {
     grid-template-columns: repeat(3, 1fr); } }
 
@@ -1967,13 +1992,11 @@ img[atk-emoticon] {
   .photo-home-title {
     display: none; }
   .photo-home-top img {
-    height: 150px; }
-  .photo-home-top-1 img {
-    height: 150px; }
-  .photo-home {
-    margin-top: 20px !important; }
-  .photo-about {
-    grid-template-columns: repeat(4, 1fr); } }
+    height: 140px; }
+  .photo-home-title, .photo-home-top-1, .index-about-background {
+    display: none; }
+  .index-about {
+    display: block; } }
 
 @media (min-width: 900px) {
   .photo-home-top:hover span.photo-home-title, .photo-home-top-1:hover span.photo-home-title {
@@ -1981,7 +2004,11 @@ img[atk-emoticon] {
 
 @media (prefers-color-scheme: dark) {
   .photo-home-top img:hover {
-    filter: brightness(0.7); } }
+    filter: brightness(0.7); }
+  .index-about-info {
+    color: #666; }
+  .index-about-bold {
+    color: var(--text-content-dark-color); } }
 
 .archives_nrong {
   display: grid;
