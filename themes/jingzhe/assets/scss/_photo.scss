@@ -1,8 +1,35 @@
-.photo-home{
+//首页 about 模块
+.index-about{
     display: grid;
-    grid-template-columns: 1fr 2.5fr;
-    grid-gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
 }
+
+.index-about-background{
+    padding: 20px;
+}
+.index-welcome img{
+    width: 32px;
+    vertical-align: middle;
+}
+.index-about-info{
+    margin-top: 25px;
+    line-height: 1.8;
+    color: #999;
+    font-size: 16px;
+}
+.index-about-info img {
+    width: 24px;
+    vertical-align: middle;
+    margin: -4px 6px 0 6px;
+}
+.index-about-bold{
+    font-size: 18px;
+    font-family: var(--font-family-title);
+    color: var(--text-content-color);
+}
+
+//首页相册
 .photo-home-top-1 img ,.photo-home-top img{
     display: block;   
 }
@@ -15,6 +42,9 @@
     position: relative;
     overflow: hidden;
 }
+.photo-home-top-1{
+    margin-bottom: 6px;
+}
 .photo-home-top-1 img,.photo-home-top img {
     width: 100%;
     object-fit: cover;
@@ -22,16 +52,17 @@
     transition: transform 0.3s ease;
 }
 .photo-home-top img {
-    height: 200px; 
+    height: 120px; 
 }
 .photo-home-top-1 img{
-    height: 200px;
+    height: 240px;
+    
 }
 .photo-home-top img:hover ,.photo-home-top-1 img:hover{
     transform: scale(1.1);
 }
 .photo-home-title,.photo-home-title-1{
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.4);
     font-size:14px;
     color: #FFF;
     position:absolute;
@@ -63,12 +94,11 @@
     .photo-home-top img {
         height: 120px;
     }
-    .photo-home-title,.photo-home-top-1{
+    .photo-home-title,.photo-home-top-1,.index-about-background{
         display:none;
     }
-    .photo-home{
-        display: block;
-        margin-top: 20px !important; 
+    .index-about{
+        display: block;     
     }
     .photo-about{
         grid-template-columns: repeat(3, 1fr);
@@ -81,16 +111,13 @@
         display:none;
     }
     .photo-home-top img {
-        height: 150px; 
+        height: 140px; 
     }
-    .photo-home-top-1 img{
-        height: 150px;
+    .photo-home-title,.photo-home-top-1,.index-about-background{
+        display:none;
     }
-    .photo-home{
-        margin-top: 20px !important; 
-    }
-    .photo-about{
-        grid-template-columns: repeat(4, 1fr);
+    .index-about{
+        display: block;     
     }
     }
 // 页面宽度大于900样式   
@@ -104,4 +131,10 @@
     .photo-home-top img:hover{
         filter: brightness(0.7);
       }
+    .index-about-info{
+        color: #666;
+    }
+    .index-about-bold{
+        color: var(--text-content-dark-color);
+    }
     }
