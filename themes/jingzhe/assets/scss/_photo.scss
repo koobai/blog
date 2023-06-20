@@ -13,7 +13,7 @@
     vertical-align: middle;
 }
 .index-about-info{
-    margin-top: 25px;
+    margin-top: 20px;
     line-height: 1.8;
     color: #999;
     font-size: 16px;
@@ -33,18 +33,20 @@
 .photo-home-top-1 img ,.photo-home-top img{
     display: block;   
 }
+.photo-home {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    grid-gap: 6px;  
+}
 .photo-home-top-2 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
     grid-gap: 6px;  
 }
 .photo-home-top,.photo-home-top-1{
     position: relative;
     overflow: hidden;
 }
-.photo-home-top-1{
-    margin-bottom: 6px;
-}
+
 .photo-home-top-1 img,.photo-home-top img {
     width: 100%;
     object-fit: cover;
@@ -52,11 +54,10 @@
     transition: transform 0.3s ease;
 }
 .photo-home-top img {
-    height: 120px; 
+    height: 110px; 
 }
 .photo-home-top-1 img{
-    height: 240px;
-    
+    height: 342px;  
 }
 .photo-home-top img:hover ,.photo-home-top-1 img:hover{
     transform: scale(1.1);
@@ -97,16 +98,16 @@
     .photo-home-title,.photo-home-top-1,.index-about-background{
         display:none;
     }
-    .index-about{
+    .index-about,.photo-home{
         display: block;     
     }
-    .photo-about{
+    .photo-about,.photo-home-top-2 {
         grid-template-columns: repeat(3, 1fr);
     }
     }
     
  // 页面宽度大于700小于900样式
-@media screen and (min-width:700px) and (max-width:900px){
+@media screen and (min-width:700px) and (max-width:950px){
     .photo-home-title{
         display:none;
     }
@@ -116,12 +117,18 @@
     .photo-home-title,.photo-home-top-1,.index-about-background{
         display:none;
     }
-    .index-about{
+    .index-about,.photo-home{
         display: block;     
     }
+    .photo-home-top-2 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+
+
     }
 // 页面宽度大于900样式   
- @media (min-width:900px){
+ @media (min-width:950px){
     .photo-home-top:hover span.photo-home-title,.photo-home-top-1:hover span.photo-home-title{
         display:block;
     }
