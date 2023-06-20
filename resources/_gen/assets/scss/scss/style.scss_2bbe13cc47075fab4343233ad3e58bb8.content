@@ -2015,9 +2015,9 @@ img[atk-emoticon] {
   .photo-home-top img:hover {
     filter: brightness(0.7); }
   .index-about-info {
-    color: #666; }
+    color: #888; }
   .index-about-bold {
-    color: var(--text-content-dark-color); } }
+    color: #ddd; } }
 
 .archives_nrong {
   display: grid;
