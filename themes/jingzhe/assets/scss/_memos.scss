@@ -12,7 +12,7 @@
 .memos_diaoyong:hover,.bb-list-li:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
-.momos-sslist,.bb-list-ul{
+.momos-sslist{
   display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	grid-gap: 10px; /* 中间空10px间距 */
@@ -57,10 +57,14 @@
   color:#aaa;
 }
 .bb-timeline ul{
-  margin-top: 10px;
+  margin-top: 15px;
   padding:0;
 }
-
+.bb-list-ul{
+  display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	grid-gap: 15px; /* 中间空10px间距 */
+}
 .bb-load button{
   background:#FFFFFF;
   padding: 10px 30px 10px 30px;
