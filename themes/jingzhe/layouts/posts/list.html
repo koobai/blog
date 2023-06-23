@@ -20,7 +20,7 @@
       <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
     
     <div class="posts-description">{{ .Params.description }}</div>
-    <div class="previous-time"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
+    <div class="list-more"><a href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore | default "看全文 ..." }}</a></div>
   </div>
     <div class="posts-img img-hide">
       {{ if .Params.image }}
