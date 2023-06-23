@@ -1,135 +1,47 @@
-//首页 about 模块
-.index-about{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-}
-
-.index-about-background{
-    padding: 20px;
-}
-.index-welcome img{
-    width: 32px;
-    vertical-align: middle;
-}
-.index-about-info{
-    margin-top: 20px;
-    line-height: 1.8;
-    color: #999;
-    font-size: 16px;
-}
-.index-about-info img {
-    width: 24px;
-    vertical-align: middle;
-    margin: -4px 6px 0 6px;
-}
-.index-about-bold{
-    font-size: 18px;
-    font-family: var(--font-family-title);
-    color: var(--text-content-color);
-}
-
 //首页相册
-.photo-home-top-1 img ,.photo-home-top img{
-    display: block;   
-}
-.photo-home {
+.photo-about,.photo-home{
     display: grid;
-    grid-template-columns: 2.5fr 1fr;
-    grid-gap: 6px;  
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 6px; 
 }
-.photo-home-top-2 {
-    display: grid;
-    grid-gap: 6px;  
-}
-.photo-home-top,.photo-home-top-1{
+.photo-home-top{
     position: relative;
     overflow: hidden;
 }
-
-.photo-home-top-1 img,.photo-home-top img {
+.photo-home-top img {
     width: 100%;
     object-fit: cover;
     border-radius: 6px;
     transition: transform 0.3s ease;
+    height: 140px; 
+    display: block; 
 }
-.photo-home-top img {
-    height: 110px; 
-}
-.photo-home-top-1 img{
-    height: 342px;  
-}
-.photo-home-top img:hover ,.photo-home-top-1 img:hover{
+.photo-home-top img:hover{
     transform: scale(1.1);
 }
-.photo-home-title,.photo-home-title-1{
-    background: rgba(0, 0, 0, 0.4);
+.photo-home-title{
+    background: rgba(0, 0, 0, 0.6);
     font-size:14px;
     color: #FFF;
     position:absolute;
     bottom: 0;
     padding: 8px 0 8px 0;
     text-align: center;
-}
-.photo-home-title-1{
-    margin-left: 5px;
-    margin-bottom: 10px;
-    border-radius:6px;
-    padding: 10px;
-   }
-.photo-home-title{
-    padding: 8px 0 8px 0;
     display:none;
     width: 100%;
-}
-
-// about页面
-.photo-about{
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 6px; 
-}
-  
+} 
 // 页面宽度小于700样式
 @media (max-width:700px){
     .photo-home-top img {
         height: 120px;
     }
-    .photo-home-title,.photo-home-top-1,.index-about-background{
-        display:none;
-    }
-    .index-about,.photo-home{
-        display: block;     
-    }
-    .photo-about,.photo-home-top-2 {
+    .photo-about,.photo-home{
         grid-template-columns: repeat(3, 1fr);
     }
-    }
-    
- // 页面宽度大于700小于900样式
-@media screen and (min-width:700px) and (max-width:950px){
-    .photo-home-title{
-        display:none;
-    }
-    .photo-home-top img {
-        height: 140px; 
-    }
-    .photo-home-title,.photo-home-top-1,.index-about-background{
-        display:none;
-    }
-    .index-about,.photo-home{
-        display: block;     
-    }
-    .photo-home-top-2 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-
-
     }
 // 页面宽度大于900样式   
  @media (min-width:950px){
-    .photo-home-top:hover span.photo-home-title,.photo-home-top-1:hover span.photo-home-title{
+    .photo-home-top:hover span.photo-home-title{
         display:block;
     }
     }
@@ -138,10 +50,4 @@
     .photo-home-top img:hover{
         filter: brightness(0.7);
       }
-    .index-about-info{
-        color: #888;
-    }
-    .index-about-bold{
-        color: #ddd;
-    }
     }

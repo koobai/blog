@@ -58,7 +58,10 @@
 .read-more{
   margin-top: 20px;
 }
-.read-more a{
+.list-more{
+  margin-top: 12px;
+}
+.read-more a,.list-more a{
   font-size: 16px;
   color: #666;
   font-family: var(--font-family-paragraph);
@@ -109,7 +112,7 @@
   .summary-description{
     color: #999;
   }
-  .read-more a{
+  .read-more a,.list-more a{
     color: var(--text-content-dark-color);
   }
   .summary-date{
