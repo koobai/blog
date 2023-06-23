@@ -22,6 +22,29 @@
             "note": "家庭必备，特别是有女生在家的。之前用S55型号，21年换了这个，换水频率大大降低。"
         },
         {
+            "image": "https://img.koobai.com/hardware/appletv4.webp",
+            "title": "Apple TV 4K (第 2 代)",
+            "jiage": "1,488",
+            "link": "/apple_tv",
+            "tiyi": "使用体验",
+            "note": "之前使用的是Google TV，体验下来不管是流畅度、美观度都不是一个量级的。"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/s920.webp",
+            "title": "群晖 DS920+",
+            "jiage": "3,900",
+            "link": "/synology_ds920",
+            "tiyi": "使用体验",
+            "note": "配置过程相对麻烦，但调教好之后，它就是安全、娱乐之利器。就是硬盘太贵了。"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/macbook.webp",
+            "title": "MacBook Pro 16 2019",
+            "jiage": "22,199",
+            "link": "/workbench",
+            "note": "上一台还是2014年买的港版15寸，没什么说的，纯生产力工具。"
+        },
+        {
             "image": "https://img.koobai.com/hardware/r2s.webp",
             "title": "友善 R2s",
             "jiage": "259",
@@ -43,27 +66,6 @@
             "note": "长时间佩戴感觉手不舒服，现在主要就是运动时佩戴当作数据记录，日常很少佩戴了。"
         },
         {
-            "image": "https://img.koobai.com/hardware/appletv4.webp",
-            "title": "Apple TV 4K (第 2 代)",
-            "jiage": "1,488",
-            "link": "/apple_tv",
-            "note": "之前使用的是Google TV，体验下来不管是流畅度、美观度都不是一个量级的。"
-        },
-        {
-            "image": "https://img.koobai.com/hardware/s920.webp",
-            "title": "群晖 DS920+",
-            "jiage": "3,900",
-            "link": "/synology_ds920",
-            "note": "配置过程相对麻烦，但调教好之后，它就是安全、娱乐之利器。就是硬盘太贵了。"
-        },
-        {
-            "image": "https://img.koobai.com/hardware/macbook.webp",
-            "title": "MacBook Pro 16 2019",
-            "jiage": "22,199",
-            "link": "/workbench",
-            "note": "上一台还是2014年买的港版15寸，没什么说的，纯生产力工具。"
-        },
-        {
             "image": "https://img.koobai.com/hardware/ergotron.webp",
             "title": "爱格升 MXV",
             "jiage": "949",
@@ -75,6 +77,7 @@
             "title": "明基 ScreenBar Plus",
             "jiage": "894",
             "link": "/workbench",
+            "tiyi": "桌面搭配",
             "note": "显示器挂灯，除了控制器是有线外，其他都很好，既不占桌面，也不反光。"
         },
         {
@@ -89,6 +92,7 @@
             "title": "ZOOM 65",
             "jiage": "1,199",
             "link": "/workbench",
+            "tiyi": "桌面搭配",
             "note": "第一把真正意义上的客制化键盘，就是贵了点。"
         },
         {

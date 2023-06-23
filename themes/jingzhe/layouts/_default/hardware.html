@@ -9,8 +9,9 @@
   <div class="bankuai img-hide">
     <div class="duiqi img-hide"><img loading="lazy" decoding="async" src="{{ .image }}"></div>
     <div class="jiage">购入价格: RMB {{ .jiage }}</div>
-    <div class="title"><a href="{{ .link }}">{{ .title }}</a></div>
+    <div class="title">{{ .title }}</div>
     <div class="note">{{ .note }}</div>
+    <a href="{{ .link }}"><div class="tiyi">{{ .tiyi }}</div></a>
     </div>
   {{ end }}
   </div>

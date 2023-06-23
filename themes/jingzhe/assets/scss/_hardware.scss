@@ -44,6 +44,22 @@
 	line-height: 1.6;
 	color: #666;
 } 
+.tiyi{
+	margin-top: 10px;
+	padding: 8px;
+	background-color: var(--text-highlight-color);
+	text-align: center;
+	width: 30%;
+	font-size: 16px;
+	border-radius:6px;
+	color: #fff;
+}
+.bankuai a:hover{
+	text-decoration: none;
+}
+.tiyi:empty {
+	display:none;
+  }
 
 // 页面宽度小于700样式
 @media (max-width:700px){
