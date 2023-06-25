@@ -466,15 +466,10 @@ ul {
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     margin: 0 auto;
-    max-width: 1000px; }
-  .summary-index {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    background: #FFF;
-    padding: 40px 0 40px 0; } }
+    max-width: 1000px; } }
 
 @media (prefers-color-scheme: dark) {
-  .summary-nrong, .summary-index {
+  .summary-nrong {
     background: var(--background-dark-color); }
   .summary-tag-right a, .summary-tag a {
     color: #666; }
