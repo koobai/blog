@@ -79,12 +79,15 @@
   --at-color-meta:#999!important;
   --at-color-border: #DDD !important;
 }
-.atk-content img {
+.atk-content img{
   max-height: 18px!important;
   vertical-align: middle;
   margin-left: 2px;
   margin-right: 2px;
   margin-top: -4px !important;
+}
+.atk-comment > .atk-main > .atk-body > .atk-content img{
+  width:  18px!important;
 }
 .atk-comment .atk-height-limit:after{
   margin-bottom: 20px;

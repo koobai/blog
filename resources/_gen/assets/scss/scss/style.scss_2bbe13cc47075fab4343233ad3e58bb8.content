@@ -987,6 +987,9 @@ ul {
   margin-right: 2px;
   margin-top: -4px !important; }
 
+.atk-comment > .atk-main > .atk-body > .atk-content img {
+  width: 18px !important; }
+
 .atk-comment .atk-height-limit:after {
   margin-bottom: 20px; }
 
