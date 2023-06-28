@@ -121,6 +121,9 @@ img[atk-emoticon] {
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
+  .atk-content p {
+    color: var(--text-content-dark-color) !important;
+  }
 .pinglun{
   color:var(--text-content-dark-color);
 }

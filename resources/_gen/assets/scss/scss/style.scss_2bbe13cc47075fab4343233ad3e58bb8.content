@@ -1020,6 +1020,8 @@ img[atk-emoticon] {
   border: 1px solid #EEE !important; }
 
 @media (prefers-color-scheme: dark) {
+  .atk-content p {
+    color: var(--text-content-dark-color) !important; }
   .pinglun {
     color: var(--text-content-dark-color); }
   .atk-comment {
@@ -1721,15 +1723,15 @@ img[atk-emoticon] {
 .memos-logo2 img {
   border: 0.5px solid #000; }
 
-.memos-tubiao {
+.talks_comments {
   margin-left: auto;
   padding-top: 10px; }
 
-.memos-tubiao svg {
+.talks_comments svg {
   width: 16px;
   fill: #c0c0c0; }
 
-.memos_diaoyong:hover .memos-tubiao svg, .bb-list-li:hover .memos-tubiao svg {
+.memos_diaoyong:hover .talks_comments svg, .bb-list-li:hover .talks_comments svg {
   fill: #666; }
 
 .bb-timeline pre {
@@ -1741,7 +1743,6 @@ img[atk-emoticon] {
 
 .bb-list-ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   grid-gap: 15px;
   /* 中间空10px间距 */ }
 
@@ -1913,9 +1914,9 @@ img[atk-emoticon] {
     color: #666; }
   .memos_diaoyong_info, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
-  .memos-tubiao svg {
+  .talks_comments svg {
     fill: #666; }
-  .memos_diaoyong:hover .memos-tubiao svg, .bb-list-li:hover .memos-tubiao svg {
+  .memos_diaoyong:hover .talks_comments svg, .bb-list-li:hover .talks_comments svg {
     fill: #c0c0c0; } }
 
 .photo-about, .photo-home {
