@@ -174,3 +174,9 @@ img[atk-emoticon] {
   color: #999 !important;
 }
 }
+//memos首页评论
+.artalk.hidden {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
