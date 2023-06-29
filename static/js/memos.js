@@ -4,7 +4,7 @@ Last Modified time : 20230326 13:00 by https://immmmm.
 */
 var bbMemo = {
   memos: 'https://demo.usememos.com/',
-  limit: '10',
+  limit: '15',
   creatorId: '101',
   domId: '#bber',
 };
@@ -190,7 +190,21 @@ function loadArtalk(memo_id) {
 
     commentDiv.classList.remove('hidden');
     commentBtn.innerHTML = '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M256,0 C397.167,0 512,114.853 512,256 C512,397.147 397.167,512 256,512 C114.833,512 0,397.167 0,256 C0,114.833 114.833,0 256,0 Z M256,39.659 C136.725,39.659 39.659,136.705 39.659,256 C39.659,375.295 136.725,472.341 256,472.341 C375.275,472.341 472.341,375.295 472.341,256 C472.341,136.705 375.295,39.659 256,39.659 Z M242.119,184.217 C249.853,176.523 262.345,176.523 270.079,184.217 L369.227,283.365 C376.921,291.098 376.921,303.591 369.227,311.325 C361.493,319.019 349.001,319.019 341.267,311.325 L256,226.256 L170.931,311.324 C162.622,318.443 150.09,317.472 142.971,309.163 C136.606,301.747 136.606,290.781 142.971,283.365 Z" fill-rule="nonzero"></path></g></svg>';
-
+    //增加评论平滑定位
+    const commentLi = document.getElementById(memo_id);
+    const commentLiPosition = commentLi.getBoundingClientRect().top + window.pageYOffset;
+    const offset = commentLiPosition - 3.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    if ('scrollBehavior' in document.documentElement.style) {
+      // 支持平滑滚动的情况下，使用 window.scrollTo
+      window.scrollTo({
+        top: offset,
+        behavior: 'smooth'
+      });
+    } else {
+      // 不支持平滑滚动的情况下，使用滚动容器的平滑滚动方法（如需要滚动到具体的容器内）
+      // 例如：document.documentElement.scrollTop = offset;
+      // 或者使用第三方的平滑滚动库
+    }
     const artalk = new Artalk({
       el: '#memo_' + memo_id,
       pageKey: '/m/' + memo_id,
