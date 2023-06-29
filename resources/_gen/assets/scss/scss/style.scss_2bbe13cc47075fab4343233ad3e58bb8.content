@@ -937,6 +937,9 @@ ul {
 .atk-comment > .atk-main > .atk-header {
   margin-bottom: 0px !important; }
 
+.atk-textarea {
+  min-height: 80px !important; }
+
 .artalk > .atk-list > .atk-list-footer {
   bottom: auto !important; }
 
