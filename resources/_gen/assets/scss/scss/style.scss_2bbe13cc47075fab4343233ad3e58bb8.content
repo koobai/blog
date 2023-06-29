@@ -1737,6 +1737,10 @@ img[atk-emoticon] {
 .memos_diaoyong:hover .talks_comments svg, .bb-list-li:hover .talks_comments svg {
   fill: #666; }
 
+#bber, .memos-header, .bb-load {
+  max-width: 800px;
+  margin: auto; }
+
 .bb-timeline pre {
   color: #aaa; }
 
