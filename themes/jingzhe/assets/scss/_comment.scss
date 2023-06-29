@@ -185,7 +185,5 @@ img[atk-emoticon] {
 }
 //memos首页评论
 .artalk.hidden {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden;
+  display: none;
 }
