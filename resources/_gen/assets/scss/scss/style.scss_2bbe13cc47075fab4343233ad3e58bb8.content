@@ -1069,9 +1069,7 @@ img[atk-emoticon] {
     color: #999 !important; } }
 
 .artalk.hidden {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden; }
+  display: none; }
 
 .appdquanjudiv {
   display: grid;
@@ -1743,6 +1741,9 @@ img[atk-emoticon] {
 #bber, .memos-header, .bb-load {
   max-width: 800px;
   margin: auto; }
+
+.talks_comments a {
+  cursor: pointer; }
 
 .bb-timeline pre {
   color: #aaa; }
