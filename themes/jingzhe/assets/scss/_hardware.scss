@@ -64,11 +64,13 @@
 // 页面宽度小于700样式
 @media (max-width:700px){
 .hardware-index-nrong{
-	height: 345px !important;
+	height: 400px !important;
+  }
+  .hardware-img{
+	padding-top: 20px !important;
   }
 .hardware-img img{
 	width:200px !important;
-	padding: 0 !important;
   }
 }
 
@@ -79,12 +81,6 @@
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
 	grid-gap: 10px; /* 中间空10px间距 */
 }
-.hardware-index-nrong{
-	height: 320px !important;
-  }
-  .hardware-img img{
-	padding: 0 !important;
-  }
 }
 // 页面宽度大于900样式
 @media (min-width:900px){
@@ -185,7 +181,7 @@
   }
   .hardware-index-nrong{
 	background-color: #fff; 
-	height: 400px;
+	height: 515px;
 	margin: 0 auto;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 32px 0px;
 	padding: 0 20px 0 20px;
@@ -195,6 +191,7 @@
   }
   .hardware-img{
 	margin: 0 auto;
+	padding-top: 40px;
   }
   .hardware-img img{
 	width:60%;

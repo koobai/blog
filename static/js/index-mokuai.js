@@ -1,21 +1,3 @@
-// 首页app模块自动上下滚动
-
-// 获取容器和内容列表
-var indexContainer = document.querySelector('.app-gundong');
-var appList = document.querySelector('.app-list');
-
-// 复制内容列表，使其重复滚动
-appList.innerHTML += appList.innerHTML;
-
-// 动态计算滚动的高度
-var listItemHeight = appList.children[0].offsetHeight;
-var totalHeight = appList.children.length * listItemHeight;
-
-// 设置容器的高度和滚动速度
-indexContainer.style.height = listItemHeight + 'px';
-appList.style.animationDuration = (totalHeight / 25) + 's';
-
-
 // 首页好物随机调用显示
 function getRandomData() {
   fetch("/suju/hardware.json")
@@ -32,3 +14,35 @@ function getRandomData() {
 }
 
 getRandomData();
+
+// 首页APP随机调用显示
+fetch('/suju/app.json')
+  .then(response => response.json())
+  .then(data => {
+    // 随机选择指定数量的应用程序
+    const selectedApps = getRandomApps(data.good, 4);
+
+    // 构建应用程序信息的 HTML
+    const appHTML = selectedApps.map(app => `
+      <div class="app-index">
+        <div class="app-img">
+          <img loading="lazy" decoding="async" src="${app.image}">
+        </div>
+        <div class="appwenben">
+          <div class="apptitle">${app.title}</div>
+          <div class="appnote-index">${app.info}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // 将应用程序信息插入到容器中
+    document.getElementById('app-index').innerHTML = appHTML;
+  })
+  .catch(error => {
+    console.error('发生错误:', error);
+  });
+
+// 从数组中随机选择指定数量的元素
+function getRandomApps(array, count) {
+  return array.sort(() => 0.5 - Math.random()).slice(0, count);
+}
