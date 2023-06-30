@@ -1160,21 +1160,6 @@ img[atk-emoticon] {
   .app-index {
     background-color: #2f2b2c; } }
 
-@media (max-width: 700px) {
-  .app-gundong {
-    height: 420px !important;
-    /* 设置容器的高度 */ } }
-
-@media screen and (min-width: 700px) and (max-width: 900px) {
-  .app-gundong {
-    height: 350px !important;
-    /* 设置容器的高度 */ } }
-
-@media (min-width: 900px) {
-  .app-gundong {
-    height: 420px !important;
-    /* 设置容器的高度 */ } }
-
 .app-index {
   margin-bottom: 10px;
   padding: 15px 20px 15px 12px; }
@@ -1183,22 +1168,11 @@ img[atk-emoticon] {
   width: 90px;
   transition: transform 0.3s ease; }
 
-.app-gundong {
-  overflow: hidden;
-  /* 隐藏超出容器高度的内容 */
-  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, black 10%, black 90%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, black 10%, black 90%, rgba(0, 0, 0, 0) 100%); }
+.app-index:hover .app-img img {
+  transform: scale(1.04); }
 
-.app-list {
-  animation: scroll-shangxia 10s linear infinite; }
-
-@keyframes scroll-shangxia {
-  0% {
-    transform: translateY(0%); }
-  80% {
-    transform: translateY(-55%); }
-  100% {
-    transform: translateY(0%); } }
+.app-index:hover {
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
 .quanju {
   display: grid;
@@ -1262,10 +1236,11 @@ img[atk-emoticon] {
 
 @media (max-width: 700px) {
   .hardware-index-nrong {
-    height: 345px !important; }
+    height: 400px !important; }
+  .hardware-img {
+    padding-top: 20px !important; }
   .hardware-img img {
-    width: 200px !important;
-    padding: 0 !important; } }
+    width: 200px !important; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .tuij-index {
@@ -1273,11 +1248,7 @@ img[atk-emoticon] {
     grid-template-columns: 1fr 1fr;
     /* 两列等宽 */
     grid-gap: 10px;
-    /* 中间空10px间距 */ }
-  .hardware-index-nrong {
-    height: 320px !important; }
-  .hardware-img img {
-    padding: 0 !important; } }
+    /* 中间空10px间距 */ } }
 
 @media (min-width: 900px) {
   .tuij-index {
@@ -1365,7 +1336,7 @@ img[atk-emoticon] {
 
 .hardware-index-nrong {
   background-color: #fff;
-  height: 400px;
+  height: 515px;
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 32px 0px;
   padding: 0 20px 0 20px; }
@@ -1374,7 +1345,8 @@ img[atk-emoticon] {
   transform: scale(1.05); }
 
 .hardware-img {
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding-top: 40px; }
 
 .hardware-img img {
   width: 60%;

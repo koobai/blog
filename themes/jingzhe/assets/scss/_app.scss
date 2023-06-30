@@ -88,25 +88,6 @@
   background-color: #2f2b2c ; 
 }
 }
-// 页面宽度小于700样式
-
-@media (max-width:700px){
-  .app-gundong {
-    height: 420px !important;  /* 设置容器的高度 */
-  }
-  }
- // 页面宽度大于700小于900样式
- @media screen and (min-width:700px) and (max-width:900px){
-  .app-gundong {
-    height: 350px !important;  /* 设置容器的高度 */
-  }
-  }
-// 页面宽度大于900样式
-@media (min-width:900px){
-.app-gundong {
-  height: 420px !important;  /* 设置容器的高度 */
-}
-}
 
 
 // 首页app调用
@@ -118,22 +99,9 @@
   width:90px;
   transition: transform 0.3s ease;
 }
-.app-gundong{
-  overflow: hidden; /* 隐藏超出容器高度的内容 */
-  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
+.app-index:hover .app-img img{
+  transform: scale(1.04);
 }
-.app-list {
-  animation: scroll-shangxia 10s linear infinite;
-}
-@keyframes scroll-shangxia {
-  0% {
-    transform: translateY(0%);
-  }
-  80% {
-    transform: translateY(-55%);
-  }
-  100% {
-    transform: translateY(0%);
-  }
+.app-index:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
