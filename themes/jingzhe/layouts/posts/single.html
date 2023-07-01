@@ -6,7 +6,7 @@
     <div class="intro">
       <h1 class="article_title">{{ .Title }}{{ if .Site.Params.addDot }}<span class="article_dot">.</span>{{ end }}</h1>
       {{ if .Params.image }}
-      <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="top-img img-hide" />
+      <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" class="top-img" />
       {{ end }}
     </div>
     <div class="content_zhengwen">
@@ -23,23 +23,23 @@
     </div>
     <div class="archives_nrong" >
       {{ with .PrevInSection }}
-        <div class="archives_one img-hide">
+        <div class="archives_one">
           <div>
             <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
             <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
             </div>
-            <div class="archive-img img-hide">
+            <div class="archive-img">
             <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
             </div>
         </div>
       {{ end }}
       {{ with .NextInSection }}
-      <div class="archives_one img-hide">
+      <div class="archives_one">
         <div>
           <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
           <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
           </div>
-          <div class="archive-img img-hide">
+          <div class="archive-img">
           <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
           </div>
       </div>
