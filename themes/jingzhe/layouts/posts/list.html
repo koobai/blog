@@ -24,7 +24,7 @@
   </div>
     <div class="posts-img">
       {{ if .Params.image }}
-      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
+      <a href="{{ .RelPermalink }}"><img src="{{ .Params.image | relURL }}" /></a>
       {{ end }} 
   </div>
 {{ end }}

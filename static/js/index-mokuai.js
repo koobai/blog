@@ -6,7 +6,7 @@ function getRandomData() {
       var goods = data.good;
       var randomIndex = Math.floor(Math.random() * goods.length);
       var randomGood = goods[randomIndex];
-      document.getElementById("hardware-img").innerHTML = `<img src="${randomGood.image}">`;
+      document.getElementById("hardware-img").innerHTML = `<img loading="lazy" decoding="async" src="${randomGood.image}">`;
       document.getElementById("hardware-jiage").textContent = `购入价格: RMB ${randomGood.jiage}`;
       document.getElementById("hardware-title").innerHTML = `${randomGood.title}`;
       document.getElementById("hardware-note").textContent = randomGood.note;
