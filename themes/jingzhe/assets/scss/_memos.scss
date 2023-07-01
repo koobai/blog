@@ -2,6 +2,9 @@
 .momos-sswrap {
   margin-bottom: 20px;
   margin-top: 20px;
+  display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	grid-gap: 10px; /* 中间空10px间距 */
 }
 .memos_diaoyong,.bb-list-li{
   border-radius:4px;
@@ -11,11 +14,6 @@
 }
 .memos_diaoyong:hover,.bb-list-li:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
-}
-.momos-sslist{
-  display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-	grid-gap: 10px; /* 中间空10px间距 */
 }
 .memos-zuoz{
   display: flex;
