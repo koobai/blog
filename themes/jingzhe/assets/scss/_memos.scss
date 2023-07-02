@@ -197,23 +197,23 @@
   fill: #c0c0c0;
 }
 //memos页发布唠叨
-.load-memos-editor{
+.load-memos-editor,.memos-open-api-input{
   color: var(--text-content-dark-color) !important;
 }
 .memos-editor-body{
   background: var(--background-dark-color) !important;
 }
 .editor-selector select {
-  border: 0.5px solid #535353 !important;
+  border: 0.5px solid #454545 !important;
   color: #999 !important;
 }
 .memos-editor-content .memos-editor-inputer{
   color: var(--text-content-dark-color);
 }
-.memos-open-api-input{
-  border: solid #535353 0.5px !important;
+.submit-memos-btn{
+  border: solid #454545 0.5px !important;
 }
-.submit-memos-btn,.memos-open-api-submit{
+.memos-open-api-submit{
   background: #1A1718 !important;
   color: var(--text-highlight-color) !important;
 }
@@ -289,7 +289,7 @@
   appearance: none; /* 隐藏原生控件样式 */
   border: 0.5px solid #dadada;
   border-radius: 4px;
-  padding: 6px 20px 6px 6px;
+  padding: 8px 20px 8px 6px;
   background: transparent;
   color: #666;
   font-family: var(--font-family-paragraph);
@@ -308,11 +308,12 @@
   transform: translateY(-50%); /* 将箭头垂直居中对齐 */
 }
 .submit-memos-btn{
-  background: var(--text-highlight-color);
+  background: transparent;
+  border: 0.5px solid #dadada;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-highlight-color);
   border-radius:4px;
-  padding: 6px 30px 6px 30px;
+  padding: 6px 15px 6px 15px;
 }
 .submit-memos-btn:hover,.memos-open-api-submit:hover{
   opacity: 0.8;
@@ -331,13 +332,14 @@
   display: flex; 
 }
 .memos-open-api-input{
-  border: solid #dadada 0.5px;
-  border-radius:4px;
-  padding:10px;
+  border: transparent;
+  padding:6px 0 6px 0;
   width:100%;
   outline:0.5px solid transparent;
   margin-right: 10px;
   background: transparent;
+  font-size: 16px;
+  font-family: var(--font-family-code);
 }
 .memos-open-api-submit{
   background: var(--text-highlight-color);
