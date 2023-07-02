@@ -196,4 +196,158 @@
 .memos_diaoyong:hover .talks_comments svg,.bb-list-li:hover .talks_comments svg{
   fill: #c0c0c0;
 }
+//memos页发布唠叨
+.load-memos-editor{
+  color: var(--text-content-dark-color) !important;
+}
+.memos-editor-body{
+  background: var(--background-dark-color) !important;
+}
+.editor-selector select {
+  border: 0.5px solid #535353 !important;
+  color: #999 !important;
+}
+.memos-editor-content .memos-editor-inputer{
+  color: var(--text-content-dark-color);
+}
+.memos-open-api-input{
+  border: solid #535353 0.5px !important;
+}
+.submit-memos-btn,.memos-open-api-submit{
+  background: #1A1718 !important;
+  color: var(--text-highlight-color) !important;
+}
+}
+//memos页发布唠叨
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+.load-memos-editor{
+  color: var(--text-content-color);
+  cursor: pointer;
+  font-size: 40px;
+  font-family: var(--font-family-title);
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.d-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+.d-none {
+  display: none !important;
+}
+.memos-editor-body{
+  border-radius:4px;
+  background: var(--bankuai-color);
+  transition: all .3s cubic-bezier(0,0,.5,1);
+  padding: 20px;
+}
+.memos-editor-body:hover{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+}
+.memos-editor-content .memos-editor-inputer{
+  border: transparent;
+  border-radius:4px;
+  line-height:1.6;
+  min-height: 80px;
+  overflow-x:hidden;
+  overflow-y:clip;
+  width:100%;
+  outline:0.5px solid transparent;
+  resize:none;
+  background: transparent;
+  font-family: var(--font-family-paragraph);
+  font-size: 16px;
+}
+.memos-editor-tools{
+  margin-top:4px;
+  margin-bottom: 15px;
+}
+.memos-editor-tools .action-btn{
+  margin-right: 20px;
+  cursor: pointer;
+}
+.memos-editor-tools .memos-tag-list{
+  display:flex;
+  margin-top: 15px;
+
+}
+.memos-editor-tools .memos-tag{
+  cursor: pointer;
+  margin-right: 20px;
+}
+.memos-editor-tools .memos-tag a{
+  color: #999;
+}
+.editor-selector {
+  position: relative;
+  display: inline-block;
+}
+.editor-selector select {
+  appearance: none; /* 隐藏原生控件样式 */
+  border: 0.5px solid #dadada;
+  border-radius: 4px;
+  padding: 6px 20px 6px 6px;
+  background: transparent;
+  color: #666;
+  font-family: var(--font-family-paragraph);
+  font-size: 14px;
+  outline:0.5px solid transparent;
+}
+.editor-selector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 8px; /* 调整箭头的位置，这里示例将箭头靠右偏移8像素 */
+  width: 0;
+  border-style: solid;
+  border-width: 4px 4px 0 4px; /* 控制箭头的大小和形状 */
+  border-color: #999 transparent transparent transparent; /* 控制箭头的颜色 */
+  transform: translateY(-50%); /* 将箭头垂直居中对齐 */
+}
+.submit-memos-btn{
+  background: var(--text-highlight-color);
+  cursor: pointer;
+  color: #fff;
+  border-radius:4px;
+  padding: 6px 30px 6px 30px;
+}
+.submit-memos-btn:hover,.memos-open-api-submit:hover{
+  opacity: 0.8;
+  transition: opacity .3s ease-in-out;
+}
+.memos-editor-footer{
+  display:flex;
+  align-items:center;
+}
+.justify-content-end {
+  margin-left: auto;
+}
+.memos-editor-option{
+  display: flex; 
+}
+
+//填写api样式
+.memos-open-api-input{
+  border: solid #dadada 0.5px;
+  border-radius:4px;
+  padding:10px;
+  width:100%;
+  outline:0.5px solid transparent;
+  margin-right: 10px;
+  background: transparent;
+}
+.memos-open-api-submit{
+  background: var(--text-highlight-color);
+  cursor: pointer;
+  color: #fff;
+  border-radius:4px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

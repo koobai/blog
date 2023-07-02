@@ -3,7 +3,7 @@ Last Modified time : 20230326 13:00 by https://immmmm.
 最新js https://immmmm.com/bb-lmm-mk.js
 */
 var bbMemo = {
-  memos: 'https://demo.usememos.com/',
+  memos: 'https://memos.koobai.com/',
   limit: '15',
   creatorId: '101',
   domId: '#bber',
