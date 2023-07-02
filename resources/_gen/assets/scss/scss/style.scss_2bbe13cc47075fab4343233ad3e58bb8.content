@@ -331,9 +331,6 @@ ul {
     font-family: var(--font-family-monospace);
     border-radius: 12px; }
 
-.dot {
-  color: var(--dot-color); }
-
 .footnotes ol {
   list-style: decimal; }
   .footnotes ol li {
@@ -367,9 +364,6 @@ ul {
     line-height: 35px;
     margin-bottom: 12px;
     font-weight: normal; }
-  .intro .article_dot {
-    color: var(--dot-color);
-    font-size: 50px; }
   .intro .read-more {
     font-size: 18px;
     line-height: 26px;
