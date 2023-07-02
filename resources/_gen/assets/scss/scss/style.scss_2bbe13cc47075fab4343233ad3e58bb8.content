@@ -1932,9 +1932,7 @@ img[atk-emoticon] {
   border-radius: 4px;
   background: var(--bankuai-color);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
-  padding: 20px; }
-
-.memos-editor-body:hover {
+  padding: 20px;
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
 .memos-editor-content .memos-editor-inputer {
