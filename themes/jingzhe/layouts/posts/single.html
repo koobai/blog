@@ -4,7 +4,7 @@
   <div class="blog">
     
     <div class="intro">
-      <h1 class="article_title">{{ .Title }}{{ if .Site.Params.addDot }}<span class="article_dot">.</span>{{ end }}</h1>
+      <h1 class="article_title">{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</h1>
       {{ if .Params.image }}
       <img src="{{ .Params.image | relURL }}" class="top-img" />
       {{ end }}
