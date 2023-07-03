@@ -27,4 +27,4 @@ jobs:
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data'
-        add: './data/douban'
+        add: './_data/douban'
