@@ -11,18 +11,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      
-    - name: delete old file
-      run: |
-        rm -rf ./data
+
     - name: movie
       uses: lizheming/doumark-action@master
       with:
         id: jnnsu
         type: movie
         format: csv
-        dir: ./_data/douban
-  
+        dir: ./data/douban
+
     - name: Commit
       uses: EndBug/add-and-commit@v9
       with:
