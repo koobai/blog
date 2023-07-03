@@ -57,7 +57,7 @@
     });
   </script>
 <div class="lg:col-start-2 lg:col-span-6">
-  {{$movies := getCSV "," "_data/douban/movie.csv" }}
+  {{$movies := getCSV "," "data/douban/movie.csv" }}
   {{$scratch := newScratch}}
   {{$scratch.Add "genres" slice}}
   {{range $idx, $movie := $movies}}
