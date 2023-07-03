@@ -6,7 +6,7 @@
 	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	grid-gap: 10px; /* 中间空10px间距 */
 }
-.memos_diaoyong,.bb-list-li{
+.memos_diaoyong,.bb-list-li,.memos-random-background{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:20px; 
@@ -350,4 +350,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+//随机memos
+.memos-random-background{
+  margin-top: 15px;
 }
