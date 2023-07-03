@@ -1662,7 +1662,7 @@ img[atk-emoticon] {
   grid-gap: 10px;
   /* 中间空10px间距 */ }
 
-.memos_diaoyong, .bb-list-li {
+.memos_diaoyong, .bb-list-li, .memos-random-background {
   border-radius: 4px;
   background: var(--bankuai-color) !important;
   padding: 20px;
@@ -2040,6 +2040,9 @@ img[atk-emoticon] {
   display: flex;
   align-items: center;
   justify-content: center; }
+
+.memos-random-background {
+  margin-top: 15px; }
 
 .photo-about, .photo-home {
   display: grid;
