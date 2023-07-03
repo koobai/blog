@@ -3,6 +3,7 @@
   display: grid;
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
 	grid-gap: 10px; /* 中间空10px间距 */
+  margin-top: 20px;
 }
 .movie-index{
   background: var(--bankuai-color);

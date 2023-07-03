@@ -1423,7 +1423,8 @@ img[atk-emoticon] {
   grid-template-columns: 1fr 1fr;
   /* 两列等宽 */
   grid-gap: 10px;
-  /* 中间空10px间距 */ }
+  /* 中间空10px间距 */
+  margin-top: 20px; }
 
 .movie-index {
   background: var(--bankuai-color);
@@ -1655,7 +1656,6 @@ img[atk-emoticon] {
     color: #999; } }
 
 .momos-sswrap {
-  margin-bottom: 20px;
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
