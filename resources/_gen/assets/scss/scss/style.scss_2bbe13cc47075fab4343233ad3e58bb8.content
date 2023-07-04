@@ -1049,6 +1049,8 @@ img[atk-emoticon] {
     --at-color-font:#BBB !important;
     --at-color-bg-grey: var(--background-dark-color) !important;
     --at-color-bg-grey:#332D2E!important; }
+  .artalk.atk-dark-mode {
+    --at-color-grey:#747474 !important; }
   .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
     color: #666 !important; }
   .atk-item.atk-nick {
