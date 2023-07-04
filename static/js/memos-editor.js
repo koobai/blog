@@ -1,6 +1,6 @@
 var memosDom = document.querySelector(memosData.dom);
 var editIcon = "<div class='load-memos-editor'>唠叨</div>";
-var memosEditorCont = '<div class="memos-editor animate__animated animate__fadeIn d-none col-12"><div class="memos-editor-body mb-3 p-3"><div class="memos-editor-inner animate__animated animate__fadeIn"><div class="memos-editor-content"><textarea class="memos-editor-inputer text-sm" rows="1" placeholder="唠叨点什么..."></textarea></div><div class="memos-editor-tools pt-3"><div class="d-flex"><div class="button outline action-btn tag-btn mr-2"><img src="https://img.koobai.com/memos/memos_tag.svg"></div><div class="button outline action-btn todo-btn mr-2"><img src="https://img.koobai.com/memos/memos_list.svg"></div><div class="button outline action-btn code-btn mr-2"><img src="https://img.koobai.com/memos/memos_code.svg"></div><div class="button outline action-btn mr-2 link-btn"><img src="https://img.koobai.com/memos/memos_link.svg"></div><div class="button outline action-btn image-btn mr-2" onclick="this.lastElementChild.click()"><img src="https://img.koobai.com/memos/memos_img_up.svg"><input class="memos-upload-image-input d-none" type="file" accept="image/*"></div><div class="button outline action-btn random-btn"><img src="https://img.koobai.com/memos/memos_random_n.svg"></div></div><div class="d-flex flex-fill"><div class="memos-tag-list d-none mt-2 animate__animated animate__fadeIn"></div></div></div><div class="memos-editor-footer border-t pt-3 mt-3"><div class="editor-selector mr-2"><select class="select-memos-value outline px-2 py-1"><option value="PUBLIC">所有人可见</option><option value="PROTECTED">仅登录可见</option><option value="PRIVATE">仅自己可见</option></select></div><div class="editor-submit d-flex flex-fill justify-content-end"><div class="primary submit-memos-btn px-3 py-1">唠叨一下</div></div></div></div><div class="memos-editor-option animate__animated animate__fadeIn"><input name="memos-api-url" class="memos-open-api-input input-text flex-fill mr-3 px-2 py-1" type="text" value="" maxlength="120" placeholder="OpenAPI"><div class="memos-open-api-submit"><div class="primary submit-openapi-btn px-3 py-1">保存</div></div></div></div><div class="memos-random d-none"></div></div>';
+var memosEditorCont = '<div class="memos-editor animate__animated animate__fadeIn d-none col-12"><div class="memos-editor-body mb-3 p-3"><div class="memos-editor-inner animate__animated animate__fadeIn"><div class="memos-editor-content"><textarea class="memos-editor-inputer text-sm" rows="1" placeholder="唠叨点什么..."></textarea></div><div class="memos-editor-tools pt-3"><div class="d-flex"><div class="button outline action-btn tag-btn mr-2"><img src="https://img.koobai.com/memos/memos_tag.svg"></div><div class="button outline action-btn todo-btn mr-2"><img src="https://img.koobai.com/memos/memos_list.svg"></div><div class="button outline action-btn code-btn mr-2"><img src="https://img.koobai.com/memos/memos_code.svg"></div><div class="button outline action-btn mr-2 link-btn"><img src="https://img.koobai.com/memos/memos_link.svg"></div><div class="button outline action-btn image-btn mr-2" onclick="this.lastElementChild.click()"><img src="https://img.koobai.com/memos/memos_img_up.svg"><input class="memos-upload-image-input d-none" type="file" accept="image/*"></div><div class="button outline action-btn random-btn"><img src="https://img.koobai.com/memos/memos_random_n.svg"></div><div class="button outline action-btn p-2 switchUser-btn"><img src="https://img.koobai.com/memos/memos_user.svg"></div></div><div class="d-flex flex-fill"><div class="memos-tag-list d-none mt-2 animate__animated animate__fadeIn"></div></div></div><div class="memos-editor-footer border-t pt-3 mt-3"><div class="editor-selector mr-2"><select class="select-memos-value outline px-2 py-1"><option value="PUBLIC">所有人可见</option><option value="PROTECTED">仅登录可见</option><option value="PRIVATE">仅自己可见</option></select></div><div class="editor-submit d-flex flex-fill justify-content-end"><div class="primary submit-memos-btn px-3 py-1">唠叨一下</div></div></div></div><div class="memos-editor-option animate__animated animate__fadeIn"><input name="memos-api-url" class="memos-open-api-input input-text flex-fill mr-3 px-2 py-1" type="text" value="" maxlength="120" placeholder="OpenAPI"><div class="memos-open-api-submit"><div class="primary submit-openapi-btn px-3 py-1">保存</div></div></div></div><div class="memos-random d-none"></div></div>';
 
 const element = document.querySelector('.intro'); // 选择器是你想要操作的元素的选择器
 element.insertAdjacentHTML('afterend', editIcon);
@@ -17,13 +17,14 @@ var todoBtn = document.querySelector(".todo-btn");
 var codeBtn = document.querySelector(".code-btn");
 var linkBtn = document.querySelector(".link-btn");
 var randomBtn = document.querySelector(".random-btn");
+var switchUserBtn = document.querySelector(".switchUser-btn");
 var loadEditorBtn = document.querySelector(".load-memos-editor");
 var submitApiBtn = document.querySelector(".submit-openapi-btn");
 var submitMemoBtn = document.querySelector(".submit-memos-btn");
 var memosVisibilitySelect = document.querySelector(".select-memos-value");
-var memosTextarea = document.querySelector(".memos-editor-inputer");
 var openApiInput = document.querySelector(".memos-open-api-input");
 var uploadImageInput = document.querySelector(".memos-upload-image-input");
+var memosTextarea = document.querySelector(".memos-editor-inputer");
 
 document.addEventListener("DOMContentLoaded", () => {
   getEditIcon();
@@ -65,8 +66,9 @@ function getEditIcon() {
     memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
     if (memosPath && memosOpenId) {
-      let memoTodo = "- [ ] ";
-      memosTextarea.value += memoTodo
+      let memoTodo = '- [ ] \n';
+      memosTextarea.value += memoTodo;
+      memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
     }
   });
 
@@ -74,10 +76,10 @@ function getEditIcon() {
     memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
     if (memosPath && memosOpenId) {
-      let memoCode = "```\n\n```";
+      let memoCode = '```\n\n```';
       let textareaH = memosTextarea.clientHeight;
       memosTextarea.value += memoCode;
-      memosTextarea.style.height = textareaH * 3 + 'px';
+      memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
     }
   });
 
@@ -85,7 +87,7 @@ function getEditIcon() {
     memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
     if (memosPath && memosOpenId) {
-      let memoLink = "[]()";
+      let memoLink = '[]()';
     memosTextarea.value += memoLink;
     }
   });
@@ -119,7 +121,7 @@ function getEditIcon() {
         uploadImage(filesData);
       }
     }
-  })
+  });
 
   async function uploadImage(data) {
     const imageData = new FormData();
@@ -139,10 +141,25 @@ function getEditIcon() {
         })
       }
     })
-  }
+  };
+
+  switchUserBtn.addEventListener("click", function () {
+    memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
+    memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+    if (memosPath && memosOpenId) {
+      memosEditorOption.classList.remove("d-none");
+      memosEditorInner.classList.add("d-none");
+      memosRadomCont.innerHTML = '';
+      openApiInput.value = '';
+    }
+  });
 
   submitApiBtn.addEventListener("click", function () {
-    getMemosData(openApiInput.value)
+    if(openApiInput.value == null || openApiInput.value == ''){
+      cocoMessage.info('内容不能为空');
+    }else{
+      getMemosData(openApiInput.value);
+    }
   });
 
   submitMemoBtn.addEventListener("click", function () {
@@ -188,7 +205,7 @@ function getEditIcon() {
       cocoMessage.info('请设置 Memos Open API');
     }else{
       memosEditorOption.classList.add("d-none"); 
-     // cocoMessage.success('准备就绪');
+      // cocoMessage.success('准备就绪');
       let tagUrl = memosPath+"/api/tag?openId="+memosOpenId;
       let response = fetch(tagUrl).then(response => response.json()).then(resdata => {
         return resdata.data
@@ -197,7 +214,7 @@ function getEditIcon() {
         response.map((t)=>{
           taglist += '<div class="memos-tag d-flex text-xs mt-2 mr-2"><a class="d-flex px-2 justify-content-center" onclick="setMemoTag(this)">#'+t+'</a></div>'
         })
-        document.querySelector(".memos-tag-list").insertAdjacentHTML('beforeend', taglist);
+        document.querySelector(".memos-tag-list").innerHTML = taglist;
         memosRadomCont.classList.remove("d-none");
       }).catch(err => cocoMessage.error('Memos Open API 有误，请重新输入!'));
     }
@@ -217,25 +234,26 @@ function getEditIcon() {
         cocoMessage.error('出错了，再检查一下吧!')
       }
     }).then(resdata => {
-      let apiRes = e.match(apiReg),urlRes = e.match(urlReg)[1];
-      memosOpenId = apiRes[1];
-      memosPath = urlRes;
-      memosCount = resdata.data.length;
-      window.localStorage && window.localStorage.setItem("memos-access-path", urlRes);
-      window.localStorage && window.localStorage.setItem("memos-access-token", memosOpenId);
-      window.localStorage && window.localStorage.setItem("memos-response-count", memosCount);
-      cocoMessage.success(
-      '保存成功',
-      ()=>{
-        memosEditorOption.classList.add("d-none");
-        memosEditorInner.classList.remove("d-none"); 
-        memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
-        memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
-        hasMemosOpenId();
-      })
+      if(typeof(resdata) !== "undefined"){
+        let apiRes = e.match(apiReg),urlRes = e.match(urlReg)[1];
+        memosOpenId = apiRes[1];
+        memosPath = urlRes;
+        memosCount = resdata.data.length;
+        window.localStorage && window.localStorage.setItem("memos-access-path", urlRes);
+        window.localStorage && window.localStorage.setItem("memos-access-token", memosOpenId);
+        window.localStorage && window.localStorage.setItem("memos-response-count", memosCount);
+        cocoMessage.success(
+        '保存成功',
+        ()=>{
+          memosEditorOption.classList.add("d-none");
+          memosEditorInner.classList.remove("d-none"); 
+          memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
+          memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+          hasMemosOpenId();
+        })
+      }
     })
-    .catch(err => {cocoMessage.error('网络错误')});
-  }
+  };
 
   function updateAvatarUrl(e) {
     let avatarUrl = memosPath+"/api/user/me?openId="+memosOpenId;
