@@ -965,7 +965,8 @@ ul {
 
 .atk-send-btn {
   background: var(--text-highlight-color) !important;
-  padding: 0 20px !important; }
+  padding: 0 20px !important;
+  width: auto !important; }
 
 .atk-send-btn:hover {
   opacity: 0.8; }
