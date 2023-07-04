@@ -13,7 +13,7 @@
     <div class="content">
       {{ .Content }}
     </div>
- <div class="page-time">{{ .Date.Format "2006-01-02" }}</div>
+ <div class="page-time" data-timestamp="{{ .Date.Unix }}"></div>
      {{ with .GetTerms "tags" }}
           {{ range . }}
      <div class="tag"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
@@ -26,7 +26,7 @@
         <div class="archives_one">
           <div>
             <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-            <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+            <div class="archive-time" data-timestamp="{{ .Date.Unix }}"></div>
             </div>
             <div class="archive-img">
             <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
@@ -37,7 +37,7 @@
       <div class="archives_one">
         <div>
           <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-          <div class="archive-time">{{ .Date.Format "2006-01-02" }}</div>
+          <div class="archive-time" data-timestamp="{{ .Date.Unix }}"></div>
           </div>
           <div class="archive-img">
           <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          

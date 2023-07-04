@@ -18,3 +18,19 @@ window.ViewImage && ViewImage.init('.photo-home a, .datacont img, .content_zheng
 
 // 导航自动隐藏及显示
 const e=document.querySelector(".header-background"),t=window.scrollY,a=200,n=100;let o=0,r=t;window.addEventListener("scroll",()=>{const t=window.scrollY;t>r&&t>a?e.classList.add("hidden"):t<r&&(o+=r-t,o>n&&(e.classList.remove("hidden"),o=0)),r=t})
+
+
+//相对时间
+document.addEventListener("DOMContentLoaded", function() {
+  var classesToDisplayRelativeTime = ['.archive-time', '.summary-date', '.page-time']; // 添加其他需要显示相对时间的 class
+
+  classesToDisplayRelativeTime.forEach(function(className) {
+    var elements = document.querySelectorAll(className + '[data-timestamp]');
+
+    elements.forEach(function(element) {
+      var timestamp = element.getAttribute('data-timestamp');
+      var momentTime = moment(parseInt(timestamp) * 1000).twitterLong();
+      element.textContent = momentTime;
+    });
+  });
+});
