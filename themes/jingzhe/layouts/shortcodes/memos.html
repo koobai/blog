@@ -58,7 +58,7 @@
                 <div class="memos-logo"><a href="/memos"><img src='https://img.koobai.com/koobai.svg' alt='koobai' /></a></div>
                 <div>
                   <div class='memos_diaoyong_from'><a href="/memos">koobai</a></div>
-                  <span class="memos_diaoyong_time">${bbTime}</span>
+                  <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
                   <span class="memos_diaoyong_laiz"> <a href="/memos">来自唠叨</a></span>
                 </div>
                 <div class='talks_comments'><a onclick="loadArtalk('${memo_id}')"><span id='btn_memo_${memo_id}'><svg viewBox="0 0 426.666667 384" xmlns="http://www.w3.org/2000/svg">
@@ -74,15 +74,9 @@
         var bbAfter = `</div>`;
         resultAll = bbBefore + result + bbAfter;
         bbDom.innerHTML = resultAll;
-
-        // 相对时间
-        window.Lately && Lately.init({ target: '.memos_diaoyong_time' });
       });
   });
 </script>
-
-<!-- 相对时间加载-->
-<script type="text/javascript" src="/js/lately.min.js"></script>
 
 <!-- artalk评论加载-->
 <link href="https://npm.elemecdn.com/artalk@2.5.5/dist/ArtalkLite.css" rel="stylesheet">
