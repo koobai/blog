@@ -414,7 +414,8 @@ ul {
 
 .summary-date {
   font-size: 14px;
-  color: #999; }
+  color: #999;
+  font-family: var(--font-family-code); }
 
 .summary-title {
   font-family: var(--font-family-title);
@@ -1847,7 +1848,8 @@ img[atk-emoticon] {
 
 .memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz a {
   color: #999;
-  font-size: 14px; }
+  font-size: 14px;
+  font-family: var(--font-family-code); }
 
 @media (max-width: 900px) {
   .memos-logo img, .memos-logo2 img {
@@ -2118,7 +2120,8 @@ img[atk-emoticon] {
 .archive-time {
   font-size: 14px;
   color: #999;
-  margin-top: 4px; }
+  margin-top: 4px;
+  font-family: var(--font-family-code); }
 
 .archive-img {
   margin-left: auto; }
