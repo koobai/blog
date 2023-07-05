@@ -13,11 +13,15 @@
     <div class="content">
       {{ .Content }}
     </div>
+    <div class="single-biaoq">
  <div class="page-time" data-timestamp="{{ .Date.Unix }}"></div>
+ <div class="single-tag">
      {{ with .GetTerms "tags" }}
           {{ range . }}
-     <div class="tag"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+     <div class="single-tag-c"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
           {{ end }}
+ </div>
+    </div>
    
       {{ end }}
     </div>
