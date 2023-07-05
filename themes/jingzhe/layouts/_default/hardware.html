@@ -8,10 +8,14 @@
   {{ range $goods.good}}
   <div class="bankuai img-hide">
     <div class="duiqi img-hide"><img loading="lazy" decoding="async" src="{{ .image }}"></div>
-    <div class="jiage">购入价格: RMB {{ .jiage }}</div>
+    <div class="hardware_link">
+      <a href="{{ .link }}" target="_blank"><div class="details">{{ .details }}</div></a>
+      <div class="jiage">{{ .jiage }}</div>
+      <div class="liing_2_right"><a href="{{ .link_2 }}"><div class="tiyi">{{ .tiyi }}</div></a></div>
+      </div>
     <div class="title">{{ .title }}</div>
     <div class="note">{{ .note }}</div>
-    <a href="{{ .link }}"><div class="tiyi">{{ .tiyi }}</div></a>
+
     </div>
   {{ end }}
   </div>
