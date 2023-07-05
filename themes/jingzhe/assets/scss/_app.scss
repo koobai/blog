@@ -52,6 +52,7 @@
 .appzhuangtai{
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;//宽度显示不下自动换行
 }
 .appnote-index{
   margin-bottom: 0;
