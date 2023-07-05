@@ -53,19 +53,43 @@
   margin-bottom: 0;
   -webkit-line-clamp: 2;
 }
-.macos{
+.macos,.kaiyuan,.shoufei,.free{
   padding: 6px 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   border-radius:20px;
   margin-right: 4px;
-  color: #999;
   font-family: var(--font-family-code);
+}
+.macos{
+  color: #999;
   background-color: #F2F2F2;
 }
-.macos:empty {
+.macos:empty,.kaiyuan:empty,.shoufei:empty,.free:empty {
   display:none;
 }
+.kaiyuan{
+  color: #e59c13;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 0.5px #e59c13;
+}
+.shoufei{
+  color: #0774e0;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 0.5px #0774e0;
+}
+.free{
+  color: #11a173;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 0.5px #11a173;
+}
+.appdquanjudiv a:hover{
+	text-decoration: none;
+}
+.apptitle a:hover{
+	text-decoration: underline;
+}
+
 .pagetitle{
   font-size: 18px;
   line-height: 1.6;

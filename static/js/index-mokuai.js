@@ -29,7 +29,7 @@ fetch('/suju/app.json')
           <img loading="lazy" decoding="async" src="${app.image}">
         </div>
         <div class="appwenben">
-          <div class="apptitle">${app.title}</div>
+        <div class="apptitle"><a href="${app.link}" target="_blank">${app.title}</a></div>
           <div class="appnote-index">${app.info}</div>
         </div>
       </div>
