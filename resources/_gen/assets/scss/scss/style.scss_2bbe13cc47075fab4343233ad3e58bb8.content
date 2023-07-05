@@ -1444,34 +1444,27 @@ img[atk-emoticon] {
   font-size: 14px; }
 
 /*文章页标签*/
-.tag, .page-time {
-  font-size: 14px;
-  margin: 0 8px 10px 0;
+.single-biaoq, .single-tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; }
+
+.page-time, .single-tag-c {
+  font-size: 16px;
   border-radius: 4px;
-  background: var(--background-color);
+  background: #F2F2F2;
+  color: var(--text-content-color);
+  padding: 10px; }
+
+.single-tag-c a {
   color: var(--text-content-color); }
-
-.tag {
-  padding: 10px;
-  font-weight: bold;
-  display: inline-block;
-  vertical-align: top; }
-
-.tag a {
-  color: var(--text-content-color); }
-
-.page-time {
-  padding: 8.5px;
-  display: inline-block;
-  vertical-align: top;
-  font-family: var(--font-family-code); }
 
 @media (prefers-color-scheme: dark) {
-  .tag, .page-time {
-    background: #41393b !important;
-    color: var(--text-content-dark-color) !important; }
-  .tag a {
-    color: var(--text-content-dark-color) !important; }
+  .page-time, .single-tag-c {
+    background: #2f2b2c;
+    color: var(--text-content-dark-color); }
+  .single-tag-c a {
+    color: var(--text-content-dark-color); }
   .list-tags {
     background-color: var(--background-dark-color); }
   .archives_tags_f {

@@ -17,37 +17,31 @@
 }
 
 /*文章页标签*/
-.tag, .page-time{
-    font-size: 14px; 
-    margin: 0 8px 10px 0;
-    border-radius:4px;
-    background: var(--background-color);
-    color:var(--text-content-color);
+.single-biaoq,.single-tag{
+  display: flex;
+  flex-wrap: wrap;//宽度显示不下自动换行
+  gap: 10px;
 }
-.tag {
+.page-time,.single-tag-c{
+    font-size: 16px; 
+    border-radius:4px;
+    background: #F2F2F2;
+    color:var(--text-content-color);
     padding: 10px;
-    font-weight:bold; 
-    display: inline-block;
-    vertical-align: top;
-  }
-.tag a{
+}
+.single-tag-c a{
   color: var(--text-content-color);
 }
-.page-time{  
-    padding: 8.5px;
-    display: inline-block;
-    vertical-align: top;
-    font-family: var(--font-family-code);
-  }
 
 // 夜间模式文章页标签
 @media (prefers-color-scheme: dark) {
-.tag,.page-time{
-    background: #41393b !important;
-    color:var(--text-content-dark-color) !important;  
-  }
-.tag a{
-  color: var(--text-content-dark-color) !important;
+
+.page-time,.single-tag-c {
+  background: #2f2b2c;
+  color:var(--text-content-dark-color);
+}
+.single-tag-c a{
+  color:var(--text-content-dark-color);
 }
 .list-tags{
   background-color:  var(--background-dark-color);
