@@ -1127,7 +1127,8 @@ img[atk-emoticon] {
 
 .appzhuangtai {
   display: flex;
-  gap: 8px; }
+  gap: 8px;
+  flex-wrap: wrap; }
 
 .appnote-index {
   margin-bottom: 0;
@@ -1244,7 +1245,8 @@ img[atk-emoticon] {
   margin-bottom: 15px;
   margin-top: 10px;
   display: flex;
-  grid-gap: 10px; }
+  grid-gap: 10px;
+  flex-wrap: wrap; }
 
 .details, .tiyi, .jiage {
   padding: 0 10px;
@@ -1426,17 +1428,16 @@ img[atk-emoticon] {
 
 /*归档页标签*/
 .archives_tags {
-  margin-top: 30px; }
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 10px;
+  margin-bottom: 20px; }
 
-.archives_tags a {
-  display: inline-block;
-  vertical-align: top;
+.list-tags {
   border-radius: 4px;
-  align-items: center;
   padding: 10px;
-  background-color: #FFF;
-  margin-right: 10px;
-  margin-bottom: 10px; }
+  background-color: #FFF; }
 
 .archives_tags_f {
   color: #999;
@@ -1471,7 +1472,7 @@ img[atk-emoticon] {
     color: var(--text-content-dark-color) !important; }
   .tag a {
     color: var(--text-content-dark-color) !important; }
-  .archives_tags a {
+  .list-tags {
     background-color: var(--background-dark-color); }
   .archives_tags_f {
     color: #666; } }
@@ -2021,11 +2022,12 @@ img[atk-emoticon] {
 
 .memos-editor-tools .memos-tag-list {
   display: flex;
-  margin-top: 15px; }
+  flex-wrap: wrap;
+  margin-top: 15px;
+  grid-gap: 15px; }
 
 .memos-editor-tools .memos-tag {
-  cursor: pointer;
-  margin-right: 20px; }
+  cursor: pointer; }
 
 .memos-editor-tools .memos-tag a {
   color: #999; }

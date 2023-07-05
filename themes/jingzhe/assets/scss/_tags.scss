@@ -1,16 +1,15 @@
 /*归档页标签*/
 .archives_tags {
   margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;//宽度显示不下自动换行
+  grid-gap: 10px;
+  margin-bottom: 20px;
   }
-.archives_tags a {
-  display: inline-block;
-  vertical-align: top;
+.list-tags {
   border-radius:4px;
-  align-items: center;
   padding: 10px;
   background-color: #FFF;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
 .archives_tags_f{
   color: #999;
@@ -50,7 +49,7 @@
 .tag a{
   color: var(--text-content-dark-color) !important;
 }
-.archives_tags a{
+.list-tags{
   background-color:  var(--background-dark-color);
 }
 .archives_tags_f{

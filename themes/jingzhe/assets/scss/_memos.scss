@@ -274,12 +274,13 @@
 }
 .memos-editor-tools .memos-tag-list{
   display:flex;
+  flex-wrap: wrap;//宽度显示不下自动换行
   margin-top: 15px;
+  grid-gap: 15px;
 
 }
 .memos-editor-tools .memos-tag{
   cursor: pointer;
-  margin-right: 20px;
 }
 .memos-editor-tools .memos-tag a{
   color: #999;

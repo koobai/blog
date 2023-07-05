@@ -2,7 +2,7 @@
 {{ define "main" }}
 <div class="archives_tags">
   {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
-  <a href="/tags/{{ $name | urlize }}"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a>
+  <div class="list-tags img-hide"><a href="/tags/{{ $name | urlize }}"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a></div>
   {{- end -}}
 </div>
 {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
