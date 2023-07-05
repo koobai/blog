@@ -7,11 +7,20 @@ function getRandomData() {
       var randomIndex = Math.floor(Math.random() * goods.length);
       var randomGood = goods[randomIndex];
       document.getElementById("hardware-img").innerHTML = `<img loading="lazy" decoding="async" src="${randomGood.image}">`;
-      document.getElementById("hardware-jiage").textContent = `购入价格: RMB ${randomGood.jiage}`;
+      document.getElementById("hardware-jiage").textContent = `${randomGood.jiage}`;
       document.getElementById("hardware-title").innerHTML = `${randomGood.title}`;
       document.getElementById("hardware-note").textContent = randomGood.note;
+      document.getElementById("hardware-details").innerHTML = `<a href="${randomGood.link}" target="_blank">${randomGood.details}</a>`;
+
+      // 处理tiyi数据
+      if (randomGood.tiyi) {
+        document.getElementById("hardware-tiyi").innerHTML = `<a href="${randomGood.link_2}">${randomGood.tiyi}</a>`;
+      } else {
+        document.getElementById("hardware-tiyi").style.display = "none";
+      }
     });
 }
+
 
 getRandomData();
 
