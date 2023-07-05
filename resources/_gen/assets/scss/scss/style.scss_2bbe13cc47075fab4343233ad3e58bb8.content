@@ -1125,17 +1125,24 @@ img[atk-emoticon] {
   margin-bottom: 10px;
   -webkit-line-clamp: 3; }
 
+.appzhuangtai {
+  display: flex;
+  gap: 8px; }
+
 .appnote-index {
   margin-bottom: 0;
   -webkit-line-clamp: 2; }
 
 .macos, .kaiyuan, .shoufei, .free {
-  padding: 6px 10px;
+  padding: 0 10px;
   text-align: center;
   font-size: 12px;
   border-radius: 20px;
-  margin-right: 4px;
-  font-family: var(--font-family-code); }
+  font-family: var(--font-family-code);
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 .macos {
   color: #999;
