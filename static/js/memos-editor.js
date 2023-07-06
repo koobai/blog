@@ -285,15 +285,21 @@ function updateHTMl(data){
     mangle: false
   });
   for(var i=0;i < data.length;i++){
-      var bbContREG = data[i].content.replace(TAG_REG, "<span class='tag-span'>#$1</span> ").replace(IMG_REG, "")
-      bbContREG = marked.parse(bbContREG)
+    var bbContREG = data[i].content
+    .replace(TAG_REG, "<span class='tag-span'># $1</span> ")
+    .replace(IMG_REG, '')
+    bbContREG = marked.parse(bbContREG)
 
       //解析 content 内 md 格式图片
-      var imgArr = data[i].content.match(IMG_REG);
-      var imgStr = String(imgArr).replace(/[,]/g, '');
-      if (imgArr) {
-          var memosImg = imgStr.replace(IMG_REG, '<div class="memo-resource"><img class="lozad" src="$2" ></div>')
-          bbContREG += '<div class="images-wrapper">' + memosImg + '</div>'
+      var IMG_ARR = data[i].content.match(IMG_REG) || '',IMG_ARR_Grid='';
+      if(IMG_ARR){
+        var IMG_ARR_Length = IMG_ARR.length,IMG_ARR_Url = '';
+        if(IMG_ARR_Length !== 1){var IMG_ARR_Grid = " grid grid-"+IMG_ARR_Length}
+        IMG_ARR.forEach(item => {
+            let imgSrc = item.replace(/!\[.*?\]\((.*?)\)/g,'$1')
+            IMG_ARR_Url += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" loading="lazy" decoding="async" src="'+imgSrc+'"/></figure>'
+        });
+        bbContREG += '<div class="resimg'+IMG_ARR_Grid+'">'+IMG_ARR_Url+'</div>';
       }
       //解析内置资源文件
       if(data[i].resourceList && data[i].resourceList.length > 0){
