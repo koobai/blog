@@ -1785,39 +1785,45 @@ img[atk-emoticon] {
   color: var(--text-highlight-color); }
 
 .resimg figure {
-  margin: 0; }
-
-.resimg figure, .memo-resource {
+  margin: 0;
   margin-bottom: -4px; }
 
-.resimg, .images-wrapper {
+.resimg {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   width: 60%;
+  grid-template-columns: repeat(2, 1fr);
   margin-top: 10px; }
 
-.memo-resource img, .gallery-thumbnail img {
+.gallery-thumbnail img {
   width: 100%;
-  height: 150px;
+  height: 170px;
   object-fit: cover;
-  cursor: pointer;
   border-radius: 4px;
-  transition: transform 0.3s ease; }
+  transition: transform 0.3s ease;
+  cursor: zoom-in; }
 
-.memo-resource img:hover, .resimg img:hover {
+.resimg img:hover {
   transform: scale(1.05); }
 
-.grid-4 {
-  grid-template-columns: repeat(2, 1fr); }
+.grid-3, .grid-5, .grid-6, .grid-7, .grid-8, .grid-9 {
+  grid-template-columns: repeat(3, 1fr); }
 
-.tag-span {
+.grid-3 img, .grid-5 img, .grid-6 img, .grid-7 img, .grid-8 img, .grid-9 img {
+  height: 140px; }
+
+.tag-span, .memos-index-tag {
   color: #999;
   background: #F4F4F4;
-  padding: 8px;
   font-size: 14px;
   border-radius: 4px;
   vertical-align: middle; }
+
+.memos-index-tag {
+  padding: 6px; }
+
+.tag-span {
+  padding: 8px; }
 
 .bb-load button {
   border: none;
@@ -1975,15 +1981,17 @@ img[atk-emoticon] {
   margin-top: 15px; }
 
 @media (max-width: 700px) {
-  .resimg, .images-wrapper {
+  .resimg {
     width: 100%; }
-  .memo-resource img, .gallery-thumbnail img {
-    height: 110px; } }
+  .gallery-thumbnail img {
+    height: 140px; }
+  .grid-3 img, .grid-5 img, .grid-6 img, .grid-7 img, .grid-8 img, .grid-9 img {
+    height: 100px; } }
 
 @media (prefers-color-scheme: dark) {
   .bb-timeline ul li {
     background: var(--background-dark-color) !important; }
-  .tag-span {
+  .tag-span, .memos-index-tag {
     background: #332E2F; }
   .bb-load button {
     background: var(--background-dark-color); }
@@ -2029,7 +2037,8 @@ img[atk-emoticon] {
   border-radius: 6px;
   transition: transform 0.3s ease;
   height: 140px;
-  display: block; }
+  display: block;
+  cursor: zoom-in; }
 
 .photo-home-top img:hover {
   transform: scale(1.1); }
