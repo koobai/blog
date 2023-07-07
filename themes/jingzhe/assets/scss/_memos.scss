@@ -16,10 +16,7 @@
 }
 .memos-zuoz{
   display: flex;
-  margin-bottom: 15px;
-}
-.memos_diaoyong_from{
-  margin-bottom: 2px;
+  margin-bottom: 10px;
 }
 .memos_diaoyong_from a{
   color: #666;
@@ -36,7 +33,7 @@
 }
 .talks_comments{
   margin-left: auto;
-  padding-top: 10px;
+  padding-top: 7px;
 }
 .talks_comments svg {
   width: 16px;
@@ -48,10 +45,21 @@
 .memos_diaoyong:hover .talks_comments svg ,.bb-list-li:hover .talks_comments svg{
   fill: #666;
 }
+.memos_diaoyong_top{
+  margin-top: 10px;
+}
 .memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz a{
   color: #999;
   font-size: 14px;
   font-family: var(--font-family-code);
+  margin-right: 2px;
+}
+.memos_diaoyong {
+  display: flex;
+  flex-direction: column;
+}
+.memos_diaoyong_info{
+  flex: 1; /* 自动填充剩余空间 */
 }
 .memos_diaoyong_info{
   font-size: 16px;
@@ -87,6 +95,7 @@
   width: 60%;
   grid-template-columns: repeat(2, 1fr); 
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 .gallery-thumbnail img{
   width: 100%;
@@ -116,7 +125,13 @@
   padding: 6px;
 }
 .tag-span{
-  padding: 8px;
+  display: inline-block; /* 根据padding宽度自动调整 */
+  padding: 6px;
+  margin-right: 8px;
+}
+.memos-pl{
+  display: flex;
+  margin-bottom: 15px;
 }
 .bb-load button{
   border: none;
@@ -275,6 +290,9 @@
 .memos-random-background{
   margin-top: 15px;
 }
+.memos-random{
+  list-style-type: none;
+}
 
 
 // 页面宽度小于700样式
@@ -306,7 +324,7 @@
 .memos_diaoyong_from a{
   color: #999;
 }
-.memos_diaoyong_time, .memos_diaoyong_laiz a{
+.memos_diaoyong_time, .memos_diaoyong_laiz a,.memos_diaoyong_from{
   color: #666;
 }
 .memos_diaoyong_info, .memos_diaoyong_info a {

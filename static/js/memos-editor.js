@@ -276,7 +276,7 @@ function getEditIcon() {
 function updateHTMl(data){
   var result="",resultAll="";
   const TAG_REG = /#([^\s#]+?) /g
-  , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g
+  , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   marked.setOptions({
     breaks: false,
     smartypants: false,
@@ -285,10 +285,10 @@ function updateHTMl(data){
     mangle: false
   });
   for(var i=0;i < data.length;i++){
-    var bbContREG = data[i].content
-    .replace(TAG_REG, "<span class='tag-span'># $1</span> ")
-    .replace(IMG_REG, '')
-    bbContREG = marked.parse(bbContREG)
+      var bbContREG = data[i].content
+      .replace(TAG_REG, "")
+      .replace(IMG_REG, '')
+      bbContREG = marked.parse(bbContREG)
 
       //解析 content 内 md 格式图片
       var IMG_ARR = data[i].content.match(IMG_REG) || '',IMG_ARR_Grid='';
@@ -301,6 +301,21 @@ function updateHTMl(data){
         });
         bbContREG += '<div class="resimg'+IMG_ARR_Grid+'">'+IMG_ARR_Url+'</div>';
       }
+      //TAG 解析
+      var tagArr = data[i].content.match(TAG_REG);
+      var memosTag = '';
+      
+      if (tagArr) {
+        memosTag = tagArr.map(function(tag) {
+          var tagText = String(tag).replace(/[#]/g, '');
+          return '<div class="tag-span"># ' + tagText + '</div>';
+        }).join('');
+      } else {
+        memosTag = '<div class="tag-span"># 日常</div>';
+      }
+      
+      
+      
       //解析内置资源文件
       if(data[i].resourceList && data[i].resourceList.length > 0){
         var resourceList = data[i].resourceList;
@@ -333,21 +348,21 @@ function updateHTMl(data){
         }
       }
       result += `
-    <div class="memos-random-background">
-        <div class="memos-zuoz">
-            <div class="memos-logo2">
-                <img src="https://img.koobai.com/koobai.svg" alt="koobai" />
-            </div>
-            <div>
-                <div class="memos_diaoyong_from">
-                    <a href="/memos">koobai</a>
-                </div>
-                <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
-            </div>
-        </div>
-        <div class="datacont">${bbContREG}</div>
-    </div>`;
-    };
+      <li class="memos-random-background">
+      <div class="memos-pl">
+      ${memosTag}
+          </div>
+          <div class="datacont">${bbContREG}</div>
+          <div class="memos_diaoyong_top">
+          <span class="memos_diaoyong_from">
+            @ <a href="/memos">koobai</a>
+          </span>
+          <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
+      </div>
+      </li>`;
+  } // end for
+  var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>";
+  var bbAfter = "</ul></section>";
     memosRadomCont.innerHTML = result;
   }
 }
