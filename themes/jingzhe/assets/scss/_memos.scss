@@ -54,13 +54,6 @@
   font-family: var(--font-family-code);
   margin-right: 2px;
 }
-.memos_diaoyong {
-  display: flex;
-  flex-direction: column;
-}
-.memos_diaoyong_info{
-  flex: 1; /* 自动填充剩余空间 */
-}
 .memos_diaoyong_info{
   font-size: 16px;
   color: var(--text-content-color);

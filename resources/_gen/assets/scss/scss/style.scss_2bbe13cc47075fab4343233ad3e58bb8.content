@@ -130,6 +130,12 @@ h1, h2, h3 {
   height: 16px;
   margin-top: -2px; }
 
+.githuab svg {
+  width: 16px;
+  fill: #FFF;
+  vertical-align: middle;
+  margin: 0 2px 5px 4px; }
+
 #gotop {
   display: none;
   /* Hidden by default */
@@ -171,6 +177,8 @@ h1, h2, h3 {
     color: #999; }
   .gotop {
     background: #999; }
+  .githuab svg {
+    fill: #999; }
   .footer-background {
     background: #1A1718;
     border-top: solid #3d3d3d 0.5px;
@@ -1764,14 +1772,6 @@ img[atk-emoticon] {
   font-size: 14px;
   font-family: var(--font-family-code);
   margin-right: 2px; }
-
-.memos_diaoyong {
-  display: flex;
-  flex-direction: column; }
-
-.memos_diaoyong_info {
-  flex: 1;
-  /* 自动填充剩余空间 */ }
 
 .memos_diaoyong_info {
   font-size: 16px;
