@@ -38,6 +38,12 @@
   height: 16px;
   margin-top: -2px;
 }
+.githuab svg{
+  width: 16px;
+  fill: #FFF;
+  vertical-align: middle;
+  margin: 0 2px 5px 4px;
+}
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -72,6 +78,9 @@
 .gotop {
     background: #999;
   }
+.githuab svg{
+  fill: #999;
+}
 .footer-background{
   background: #1A1718;
   border-top:solid #3d3d3d 0.5px;
