@@ -2008,7 +2008,22 @@ img[atk-emoticon] {
   .gallery-thumbnail img {
     height: 140px; }
   .grid-3 img, .grid-5 img, .grid-6 img, .grid-7 img, .grid-8 img, .grid-9 img {
-    height: 100px; } }
+    height: 100px; }
+  .resimg figure {
+    margin-bottom: -8px; } }
+
+@media (min-width: 700px) {
+  .memos_diaoyong .resimg {
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr); }
+  .memos_diaoyong .gallery-thumbnail img {
+    height: 90px; }
+  .memos_diaoyong .grid-3, .memos_diaoyong .grid-5, .memos_diaoyong .grid-6, .memos_diaoyong .grid-7, .memos_diaoyong grid-8, .memos_diaoyong .grid-9 {
+    grid-template-columns: repeat(4, 1fr); }
+  .memos_diaoyong .grid-3 img, .memos_diaoyong .grid-5 img, .memos_diaoyong .grid-6 img, .memos_diaoyong .grid-7 img, .memos_diaoyong .grid-8 img, .memos_diaoyong .grid-9 img {
+    height: 80px; }
+  .memos_diaoyong .resimg figure {
+    margin-bottom: -8px; } }
 
 @media (prefers-color-scheme: dark) {
   .bb-timeline ul li {
