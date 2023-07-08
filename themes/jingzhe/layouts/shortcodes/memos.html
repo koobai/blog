@@ -47,13 +47,28 @@
       var resultAll = '';
       var data = resdata.data;
       const TAG_REG = /#([^\s#]+?) /g
+  , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
+  , LINK_REG = /\[(.*?)\]\((.*?)\)/g
 
-      for (var i = 0; i < data.length; i++) {
-        var bbTime = new Date(data[i].createdTs * 1000).toLocaleString();
-        var bbCont = data[i].content
-        .replace(TAG_REG, "");
-        var newbbCont = bbCont.replace(/!\[.*?\]\((.*?)\)/g, ' <a href="$1" target="_blank">🌅</a> ').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a> <img src="https://img.koobai.com/memos/memos_index_link.svg" /> ');
+  for(var i=0;i < data.length;i++){
+      var memo_id = data[i].id; //评论调用
+      var bbContREG = data[i].content
+      .replace(TAG_REG, "")
+      .replace(IMG_REG, '')
+      .replace(LINK_REG, '<a class="primary" href="$2" target="_blank">$1</a> <img src="https://img.koobai.com/memos/memos_index_link.svg" /> ')
+      bbContREG = bbContREG
 
+    //解析 content 内 md 格式图片
+    var IMG_ARR = data[i].content.match(IMG_REG) || '',IMG_ARR_Grid='';
+      if(IMG_ARR){
+        var IMG_ARR_Length = IMG_ARR.length,IMG_ARR_Url = '';
+        if(IMG_ARR_Length !== 1){var IMG_ARR_Grid = " grid grid-"+IMG_ARR_Length}
+        IMG_ARR.forEach(item => {
+            let imgSrc = item.replace(/!\[.*?\]\((.*?)\)/g,'$1')
+            IMG_ARR_Url += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" loading="lazy" decoding="async" src="'+imgSrc+'"/></figure>'
+        });
+        bbContREG += '<div class="resimg'+IMG_ARR_Grid+'">'+IMG_ARR_Url+'</div>';
+      }
       //TAG 解析
       var tagArr = data[i].content.match(TAG_REG);
       var memosTag = '';
@@ -66,10 +81,40 @@
       } else {
         memosTag = '<div class="tag-span"># 日常</div>';
       }
-
-        var memo_id = data[i].id;
+    
+      //解析内置资源文件
+      if(data[i].resourceList && data[i].resourceList.length > 0){
+        var resourceList = data[i].resourceList;
+        var imgUrl='',resUrl='',resImgLength = 0;
+        for(var j=0;j < resourceList.length;j++){
+          var restype = resourceList[j].type.slice(0,5)
+          var resexlink = resourceList[j].externalLink
+          var resLink = '',fileId=''
+          if(resexlink){
+            resLink = resexlink
+          }else{
+            fileId = resourceList[j].publicId || resourceList[j].filename
+            resLink = memos+'o/r/'+resourceList[j].id+'/'+fileId
+          }
+          if(restype == 'image'){
+            imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" src="'+resLink+'"/></figure>'
+            resImgLength = resImgLength + 1 
+          }
+          if(restype !== 'image'){
+            resUrl += '<a target="_blank" rel="noreferrer" href="'+resLink+'">'+resourceList[j].filename+'</a>'
+          }
+        }
+        if(imgUrl){
+          var resImgGrid = ""
+          if(resImgLength !== 1){var resImgGrid = "grid grid-"+resImgLength}
+          bbContREG += '<div class="resimg '+resImgGrid+'">'+imgUrl+'</div></div>'
+        }
+        if(resUrl){
+          bbContREG += '<p class="datasource">'+resUrl+'</p>'
+        }
+      }
         result += `
-  <div class="memos_diaoyong">
+  <li class="memos_diaoyong">
     <div class="memos-pl">
       ${memosTag}
       <div class="talks_comments">
@@ -79,7 +124,7 @@
               </a>
           </div>
           </div>
-      <div class="memos_diaoyong_info">${newbbCont}</div>
+      <div class="memos_diaoyong_info">${bbContREG}</div>
       <div class="memos_diaoyong_top">
               <span class="memos_diaoyong_from">
                 @ <a href="/memos">koobai</a>
@@ -90,12 +135,12 @@
               </span>
           </div>
       <div id="memo_${memo_id}" class="artalk hidden"></div>
-  </div>`;
+  </li>`;
         }
 
         var bbDom = document.querySelector('#momos-ss');
-        var bbBefore = `<div class="momos-sswrap">`;
-        var bbAfter = `</div>`;
+        var bbBefore = "<ul class='momos-sswrap'>";
+        var bbAfter = "</ul>"; 
         resultAll = bbBefore + result + bbAfter;
         bbDom.innerHTML = resultAll;
       });

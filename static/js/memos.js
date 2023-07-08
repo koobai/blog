@@ -94,6 +94,7 @@ function updateHTMl(data){
   var result="",resultAll="";
   const TAG_REG = /#([^\s#]+?) /g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
+  , LINK_REG = /\[(.*?)\]\((.*?)\)/g //链接新窗口打开
   marked.setOptions({
     breaks: false,
     smartypants: false,
@@ -106,6 +107,7 @@ function updateHTMl(data){
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
+      .replace(LINK_REG, '<a href="$2" target="_blank">$1</a>')
       bbContREG = marked.parse(bbContREG)
 
       //解析 content 内 md 格式图片
