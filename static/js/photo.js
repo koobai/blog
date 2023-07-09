@@ -13,9 +13,9 @@ const insertRandomImages = images => {
   const photoHome = document.querySelector('.photo-home');
   images.forEach(({ img, imgSmall, title }) => {
     const photoHtml = `
-      <div class="photo-home-top">
+      <div class="photo-home-top img-hide">
         <a href="${img}">
-          <img src="${imgSmall}" alt="${title}" class="img-hide">
+          <img src="${imgSmall}" alt="${title}">
         </a>
         <span class="photo-home-title">${title}</span>
       </div>
