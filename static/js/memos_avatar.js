@@ -1,4 +1,4 @@
-//首页memos随机头像
+//footer logo 随机表情
 function getRandomImage() {
   fetch('/suju/about.json')
     .then(response => response.json())
