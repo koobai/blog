@@ -46,6 +46,8 @@ fetch('/suju/app.json')
 
     // 将应用程序信息插入到容器中
     document.getElementById('app-index').innerHTML = appHTML;
+
+    animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
   })
   .catch(error => {
     console.error('发生错误:', error);
