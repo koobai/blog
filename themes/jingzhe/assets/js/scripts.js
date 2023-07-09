@@ -37,46 +37,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // 页面上滑加载动画
-function isSafari() {
-  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-}
+function animateSummaries() {
+  const articles = document.querySelectorAll('.img-hide');
+  const shuffledArticles = Array.from(articles).sort(() => Math.random() - 0.5);
 
-if (!isSafari()) {
-  function animateSummaries() {
-    const articles = document.querySelectorAll('.img-hide');
-
-    // 随机排序文章元素
-    const shuffledArticles = Array.from(articles).sort(() => Math.random() - 0.5);
-
-    function animate(article, delay) {
-      setTimeout(() => {
-        article.classList.add('slide-up');
-        article.style.opacity = 1; // 显示元素
-      }, delay);
-    }
-
-    const options = {
-      rootMargin: '0px 0px -80px 0px',
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          animate(entry.target, index * 15); // 添加延迟，实现错落效果
-        }
-      });
-    }, options);
-
-    shuffledArticles.forEach((article) => {
-      observer.observe(article);
-    });
+  function animate(article, delay) {
+    setTimeout(() => {
+      article.classList.add('visible');
+    }, delay);
   }
 
-  animateSummaries();
-} else {
-  // 在 Safari 浏览器中，直接显示内容
-  const articles = document.querySelectorAll('.img-hide');
-  articles.forEach((article) => {
-    article.style.opacity = 1; // 显示元素
+  const options = {
+    rootMargin: '0px 0px -80px 0px',
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        animate(entry.target, index * 15); // 添加延迟，实现错落效果
+        observer.unobserve(entry.target); // 动画触发后停止观察
+      }
+    });
+  }, options);
+
+  shuffledArticles.forEach((article) => {
+    observer.observe(article);
   });
 }
+
+animateSummaries();
