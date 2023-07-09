@@ -33,7 +33,7 @@ fetch('/suju/app.json')
 
     // 构建应用程序信息的 HTML
     const appHTML = selectedApps.map(app => `
-      <div class="app-index">
+      <div class="app-index img-hide">
         <div class="app-img">
           <img loading="lazy" decoding="async" src="${app.image}">
         </div>

@@ -15,12 +15,14 @@ const insertRandomImages = images => {
     const photoHtml = `
       <div class="photo-home-top">
         <a href="${img}">
-          <img loading="lazy" decoding="async" src="${imgSmall}" alt="${title}">
+          <img loading="lazy" decoding="async" src="${imgSmall}" alt="${title}" class="img-hide">
         </a>
         <span class="photo-home-title">${title}</span>
       </div>
     `;
     photoHome.insertAdjacentHTML('beforeend', photoHtml);
+    
+    animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
   });
 };
 
