@@ -154,18 +154,32 @@ function getEditIcon() {
     }
   });
   
-
   linkBtn.addEventListener("click", function() {
     const memosPath = window.localStorage?.getItem("memos-access-path");
     const memosOpenId = window.localStorage?.getItem("memos-access-token");
     if (memosPath && memosOpenId) {
       const memoLink = '[]()';
-      const caretPos = memosTextarea.selectionStart + memoLink.indexOf("()") + 1;
-      memosTextarea.value = memosTextarea.value.substring(0, memosTextarea.selectionStart) + memoLink + memosTextarea.value.substring(memosTextarea.selectionEnd);
+      const selectedText = memosTextarea.value.substring(memosTextarea.selectionStart, memosTextarea.selectionEnd);
+      let caretPos;
+  
+      if (selectedText) {
+        // 如果有选中的文本，则插入到 [] 中
+        const startText = memosTextarea.value.substring(0, memosTextarea.selectionStart);
+        const endText = memosTextarea.value.substring(memosTextarea.selectionEnd);
+        caretPos = startText.length + '['.length + selectedText.length + ']'.length + 1;
+        memosTextarea.value = startText + '[' + selectedText + ']' + memoLink.substring(2) + endText;
+      } else {
+        // 如果没有选中文本，则将光标定位在 ()
+        const startText = memosTextarea.value.substring(0, memosTextarea.selectionStart);
+        const endText = memosTextarea.value.substring(memosTextarea.selectionEnd);
+        caretPos = startText.length + memoLink.indexOf("()") + 1;
+        memosTextarea.value = startText + memoLink + endText;
+      }
+  
       memosTextarea.setSelectionRange(caretPos, caretPos);
       memosTextarea.focus();
     }
-  }); 
+  });
 
   linkimg.addEventListener("click", function() {
     const memosPath = window.localStorage?.getItem("memos-access-path");
