@@ -168,7 +168,7 @@ function updateHTMl(data){
         }
       }
       result += `
-      <li class="bb-list-li" id="${memo_id}">
+      <li class="bb-list-li img-hide" id="${memo_id}">
       <div class="memos-pl">
       ${memosTag}
       <div class="talks_comments">
@@ -193,6 +193,8 @@ function updateHTMl(data){
   var bbAfter = "</ul></section>";
   resultAll = bbBefore + result + bbAfter;
   bbDom.insertAdjacentHTML('beforeend', resultAll);
+
+  animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
 
   document.querySelector('button.button-load').textContent = '看更多 ...';
 }

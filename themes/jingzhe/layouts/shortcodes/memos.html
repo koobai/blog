@@ -1,4 +1,4 @@
-<div id="momos-ss" class="img-hide"></div>
+<div id="momos-ss"></div>
 
 <script>
   function loadArtalk(memo_id) {
@@ -114,7 +114,7 @@
         }
       }
         result += `
-  <li class="memos_diaoyong">
+  <li class="memos_diaoyong img-hide">
     <div class="memos-pl">
       ${memosTag}
       <div class="talks_comments">
@@ -143,6 +143,8 @@
         var bbAfter = "</ul>"; 
         resultAll = bbBefore + result + bbAfter;
         bbDom.innerHTML = resultAll;
+
+        animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
       });
   });
 </script>
