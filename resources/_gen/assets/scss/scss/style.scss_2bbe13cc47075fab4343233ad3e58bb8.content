@@ -2316,10 +2316,10 @@ body {
 @media (min-width: 900px) {
   .img-hide {
     opacity: 0;
-    transform: translateY(10%);
-    transition: opacity 0.8s ease, transform 0.8s ease; }
+    transform: translateX(6%);
+    transition: opacity 0.4s ease, transform 0.8s ease; }
   .img-hide.visible {
     opacity: 1;
-    transform: translateY(0); } }
+    transform: translateX(0); } }
 
 /*# sourceMappingURL=style.css.map */
