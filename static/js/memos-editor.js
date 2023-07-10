@@ -472,24 +472,3 @@ function setMemoTag(e){
   let memoTag = e.textContent + " ";
   memosTextarea.value += memoTag;
 }
-
-
-function insertMarkdownSyntax() {
-  var input = document.getElementById("markdownInput");
-  var currentValue = input.value;
-  var cursorPosition = input.selectionStart;
-
-  // 在当前光标位置插入Markdown语法
-  var markdownSyntax = "![]()";
-  var newValue =
-    currentValue.substring(0, cursorPosition) +
-    markdownSyntax +
-    currentValue.substring(cursorPosition);
-
-  // 更新输入框的值
-  input.value = newValue;
-
-  // 将光标定位到()中
-  var newPosition = cursorPosition + 4; // 将光标移动到()中间
-  input.setSelectionRange(newPosition, newPosition);
-}
