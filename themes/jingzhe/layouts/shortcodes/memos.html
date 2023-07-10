@@ -94,7 +94,7 @@
             resLink = resexlink
           }else{
             fileId = resourceList[j].publicId || resourceList[j].filename
-            resLink = memos+'o/r/'+resourceList[j].id+'/'+fileId
+            resLink = 'https://memos.koobai.com' + '/o/r/' + resourceList[j].id + '/' + fileId; //解析本地上传图片
           }
           if(restype == 'image'){
             imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" src="'+resLink+'"/></figure>'
