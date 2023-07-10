@@ -54,7 +54,7 @@ function animateSummaries() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
-        animate(entry.target, index * 15); // 添加延迟，实现错落效果
+        animate(entry.target, index * 8); // 添加延迟，实现错落效果
         observer.unobserve(entry.target); // 动画触发后停止观察
       }
     });
