@@ -178,7 +178,7 @@ function updateHTMl(data){
               </a>
           </div>
           </div>
-          <div class="datacont">${bbContREG}</div>
+          <div class="datacont" view-image>${bbContREG}</div>
           <div class="memos_diaoyong_top">
           <span class="memos_diaoyong_from">
             @ <a href="/memos">koobai</a>
