@@ -13,7 +13,7 @@ const insertRandomImages = images => {
   const photoHome = document.querySelector('.photo-home');
   images.forEach(({ img, imgSmall, title }) => {
     const photoHtml = `
-      <div class="photo-home-top img-hide">
+      <div class="photo-home-top">
         <a href="${img}">
           <img src="${imgSmall}" alt="${title}">
         </a>
@@ -22,7 +22,6 @@ const insertRandomImages = images => {
     `;
     photoHome.insertAdjacentHTML('beforeend', photoHtml);
 
-    animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
   });
 };
 
