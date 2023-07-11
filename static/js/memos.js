@@ -181,7 +181,7 @@ function updateHTMl(data){
           <div class="datacont" view-image>${bbContREG}</div>
           <div class="memos_diaoyong_top">
           <span class="memos_diaoyong_from">
-            @ <a href="/memos">koobai</a>
+            @ <a href="${memos}m/${memo_id}" target="_blank">koobai</a>
           </span>
           <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
       </div>
