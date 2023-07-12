@@ -24,4 +24,14 @@
 <!--评论加载-->
 <link href="https://npm.elemecdn.com/artalk@2.5.5/dist/ArtalkLite.css" rel="stylesheet">
 <script src="https://npm.elemecdn.com/artalk@2.5.5/dist/ArtalkLite.js"></script>
+<script>
+  window.onload = function() {
+      Artalk.loadCountWidget({
+          server: 'https://c.koobai.com/',
+          site: '空白唠叨',
+          pvEl: '#ArtalkPV',
+          countEl: '#ArtalkCount',
+      });
+  }
+</script>
 {{- end }}
