@@ -1754,8 +1754,11 @@ img[atk-emoticon] {
 
 .talks_comments {
   margin-left: auto;
-  padding-top: 7px;
-  display: flex; }
+  padding-top: 7px; }
+
+.talks_comments a {
+  display: flex;
+  text-decoration: none; }
 
 .comment-s {
   margin-left: 4px;
