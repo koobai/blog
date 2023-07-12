@@ -37,4 +37,4 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: 'chore: update images data'
-          add: '.static/images/douban'
+          add: './static/images/douban'
