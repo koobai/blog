@@ -1,6 +1,5 @@
-# .github/workflows/douban.yml
-name: Sync NeoDB Data
-on: 
+name: movies
+on:
   workflow_dispatch:
 #  watch:
 #    types: [started]
