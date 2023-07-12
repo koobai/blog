@@ -1,7 +1,5 @@
 name: Sync NeoDB Data
 on:
-  schedule:
-  - cron: "0 17 * * *"
 #  watch:
 #    types: [started]
 
