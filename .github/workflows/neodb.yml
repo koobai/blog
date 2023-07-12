@@ -1,11 +1,8 @@
-# .github/workflows/douban.yml
 name: Sync NeoDB Data
 on:
   workflow_dispatch:
-  schedule:
-  - cron: "0 17 * * *"
-#  watch:
-#    types: [started]
+  watch:
+    types: [started]
 
   workflow_dispatch:
 
