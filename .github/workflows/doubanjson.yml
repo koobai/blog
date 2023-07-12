@@ -1,0 +1,31 @@
+name: Douban Get Json
+on:
+  workflow_dispatch:
+    inputs:
+      unconditional-invoking:
+        description: '获取豆瓣Json数据'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  douban:
+    name: Douban mark data sync
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: movie
+      uses: lizheming/doumark-action@master
+      with:
+        id: jnnsu
+        type: movie
+        format: json
+        dir: ./data/douban
+  
+    - name: Commit
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'chore: update douban data'
+        add: './data/douban'
