@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       unconditional-invoking:
-        description: '获取豆瓣数据'
+        description: '获取豆瓣Json数据'
         type: boolean
         required: true
         default: true
@@ -15,13 +15,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    
+    - name: delete old file
+      run: |
+        rm -rf ./data
 
     - name: movie
       uses: lizheming/doumark-action@master
       with:
         id: jnnsu
         type: movie
-        format: csv
+        format: json
         dir: ./data/douban
   
     - name: Commit
