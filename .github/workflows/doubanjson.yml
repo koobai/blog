@@ -22,10 +22,10 @@ jobs:
         id: jnnsu
         type: movie
         format: json
-        dir: ./data/douban
+        dir: ./static
   
     - name: Commit
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data'
-        add: './data/douban'
+        add: './static'
