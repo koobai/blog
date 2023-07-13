@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       unconditional-invoking:
-        description: '获取豆瓣Json数据'
+        description: '获取豆瓣数据'
         type: boolean
         required: true
         default: true
@@ -21,11 +21,11 @@ jobs:
       with:
         id: jnnsu
         type: movie
-        format: json
-        dir: ./static
+        format: csv
+        dir: ./data/douban
   
     - name: Commit
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data'
-        add: './static'
+        add: './data/douban'
