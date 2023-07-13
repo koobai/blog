@@ -90,7 +90,10 @@
     <div class="sc-dIsUp fIuTG">
       {{range $idx, $movie := $movies}}
       {{if ne $idx 0 }}
+      <!--封面地址替换 -->
       {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $movie 3)) }}
+      <!--个人评分改成星星 -->
+      {{ $rating := index $movie 8 }}
       <div 
         class="sc-gKAaRy dfdORB img-hide" 
         data-year="{{index $movie 11}}" 
@@ -106,7 +109,15 @@
             <div class="movies-nrong">
             <div class="movie-time">{{index $movie 4}}</div>
             <div class="movie-title">{{index $movie 1}}</div>
-            <div class="movie-pfeng">评分 : <span class="movie-pfeng-shuzi">{{index $movie 8}}</span> 星</div>
+            <div class="movie-pfeng">
+              {{ $starImage := "https://img.koobai.com/star.svg" }}
+              {{ with $rating }}
+                {{ $ratingCount := . }}
+                {{ range $i := seq $ratingCount }}
+                  <img src="{{ $starImage }}" />
+                {{ end }}
+              {{ end }}
+            </div>
             <div class="movie-info">{{index $movie 9}}</div>
           </div></a>
           </div>

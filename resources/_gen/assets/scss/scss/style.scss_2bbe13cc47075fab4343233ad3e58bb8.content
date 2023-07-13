@@ -1546,13 +1546,11 @@ img[atk-emoticon] {
   grid-column: 2; }
 
 .movie-content-right-1 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #999; }
+  margin-bottom: 10px; }
 
-.rating {
-  font-family: var(--font-family-title);
-  font-size: 17px; }
+.movie-content-right-1 img {
+  width: 12px;
+  height: 12px; }
 
 .movie-content-right-2 {
   font-family: var(--font-family-title);
@@ -1690,12 +1688,11 @@ img[atk-emoticon] {
     font-size: 16px;
     margin: 6px 0 6px 0; }
   .movie-pfeng {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     color: #c7c7c7; }
-  .movie-pfeng-shuzi {
-    font-family: var(--font-family-title);
-    font-size: 15px;
-    color: #FFF; }
+  .movie-pfeng img {
+    width: 12px;
+    height: 12px; }
   .movie-info {
     line-height: 1.6;
     color: #FFF;
@@ -1714,8 +1711,6 @@ img[atk-emoticon] {
     color: #666; }
   .movie-index:hover .type-index-right a {
     color: #c0c0c0; }
-  .movie-content-right-1 {
-    color: #666; }
   .movie-content-right-3 {
     color: #999; } }
 
