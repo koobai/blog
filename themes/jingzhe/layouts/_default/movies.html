@@ -90,7 +90,7 @@
     <div class="sc-dIsUp fIuTG">
       {{range $idx, $movie := $movies}}
       {{if ne $idx 0 }}
-      {{ $yingshiimg := printf "/images/douban/%s" (path.Base (index $movie 3)) }}
+      {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $movie 3)) }}
       <div 
         class="sc-gKAaRy dfdORB img-hide" 
         data-year="{{index $movie 11}}" 
