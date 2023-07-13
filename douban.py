@@ -8,12 +8,12 @@ save_folder = './static/images/douban/'
 # 只能二选一，不用的那个留空，否则会报错
 
 # 如果是 Json 文件使用下面这一行
-json_file_path = ''
+json_file_path = './data/douban/movie.json'
 # json_file_path = ''
 
 # 如果是 CSV 文件使用下面这一行
 # csv_file_path = './data/douban/movie.csv'
-csv_file_path = './data/douban/movie.csv'
+csv_file_path = ''
 
 def dowoloadFile(image_url):
   # 确保文件夹路径存在
