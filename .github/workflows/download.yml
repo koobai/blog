@@ -1,7 +1,7 @@
 name: Download and Save File
 on:
   workflow_run:
-    workflows: ["Douban Get Json"]
+    workflows: ["douban"]
     types:
       - completed
   workflow_dispatch:
