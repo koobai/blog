@@ -1,143 +1,113 @@
 {{ define "main" }}
-<meta name="referrer" content="no-referrer">
- <div class="intro">
+<div class="intro">
   <h1>{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</h1>
 </div>
 <div style="font-size: 18px;line-height: 1.6;margin-bottom: 20px">自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中 ( 数据来源豆瓣 )～～</div>
-  <script type="text/javascript">
-    function search(e) {
-      document.querySelectorAll('.dfdORB').forEach(item => item.classList.add('hide'));
-      document.querySelector(`.dvtjjf.active[data-search="${e.target.dataset.search}"]`)?.classList.remove('active');
-      if(e.target.dataset.value) {
-        e.target.classList.add('active');
-      }
-      const searchItems = document.querySelectorAll('.dvtjjf.active');
-      const attributes = Array.from(searchItems, searchItem => {
-        const property = `data-${searchItem.dataset.search}`;
-        const logic = searchItem.dataset.method === 'contain' ? '*' : '^';
-        const value = searchItem.dataset.method === 'contain' ? `${searchItem.dataset.value}` : searchItem.dataset.value;
-        return `[${property}${logic}='${value}']`;
-      });
-      const selector = `.dfdORB${attributes.join('')}`;
-      document.querySelectorAll(selector).forEach(item => item.classList.remove('hide'));
-    }
-    window.addEventListener('click', function(e) {
-      if(e.target.classList.contains('sc-gtsrHT')) {
-        e.preventDefault();
-        search(e);
-      }
-    });
-    function sort(e) {
-      const sortBy = e.target.dataset.order;
-      const style = document.createElement('style');
-      style.classList.add('sort-order-style');
-      document.querySelector('style.sort-order-style')?.remove();
-      document.querySelector('.sort-by-item.active')?.classList.remove('active');
-      e.target.classList.add('active');
-      if(sortBy === 'rating') {
-        const movies = Array.from(document.querySelectorAll('.dfdORB'));
-        movies.sort((movieA, movieB) => {
-          const ratingA = parseFloat(movieA.dataset.rating) || 0;
-          const ratingB = parseFloat(movieB.dataset.rating) || 0;
-          if(ratingA === ratingB) {
-            return 0;
+<div class="content" id="content"></div>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+  var jsonFile = '/movie.json';
+  getData(jsonFile);
+  // 使用$.ajax()方法获取本地JSON文件
+  function getData(file) {
+    $.ajax({
+      url: file,
+      dataType: 'json',
+      success: function(data) {
+        var filteredData;
+        // 用于存放筛选条件的字典
+        var conditions = {};
+        // 抓取存放电影内容的元素
+        var content = $('#content');
+        // 判断是否有筛选条件
+        if ($('.search.active').length != 0) {
+          for (let i = 0; i < $('.search.active').length; i++) {
+            var active_type = $('.search.active')[i].dataset['search'];
+            var active_value = $('.search.active')[i].dataset['value'];
+            conditions[active_type] = active_value;
           }
-          return ratingA > ratingB ? -1 : 1;
-        });
-        const stylesheet = movies.map((movie, idx) => `.dfdORB[data-rating="${movie.dataset.rating}"] { order: ${idx}; }`).join('\r\n');
-        style.innerHTML = stylesheet;
-        document.body.appendChild(style);
-      }
-    }
-    window.addEventListener('click', function(e) {
-      if(e.target.classList.contains('sort-by-item')) {
-        e.preventDefault();
-        sort(e);
+          // 判断筛选条件是否选择
+          const year = conditions['year'];
+          const star = conditions['star'];
+          const genres = conditions['genres'];
+
+          filteredData = data.filter(
+            item =>
+              (typeof(year) === 'undefined' || item.subject.year == year) &&
+              (typeof(star) === 'undefined' || Math.round(item.subject.rating.star_count) == star) &&
+              (typeof(genres) === 'undefined' || item.subject.genres.indexOf(genres) > -1)
+          );
+        } else {
+          filteredData = $.parseJSON(JSON.stringify(data));
+        }
+        content.html('');
+        updatePage(content, filteredData);
+      },
+      error: function(xhr, status, error) {
+        // 处理错误情况
+        console.log('获取JSON数据失败：' + error);
       }
     });
-  </script>
-<div class="lg:col-start-2 lg:col-span-6">
-  {{$movies := getCSV "," "data/douban/movie.csv" }}
-  {{$scratch := newScratch}}
-  {{$scratch.Add "genres" slice}}
-  {{range $idx, $movie := $movies}}
-    {{if ne $idx 0}}
-      {{$scratch.Set "genres" (union ($scratch.Get "genres") (split (index $movie 7) ","))}}
-    {{end}}
-  {{end}}
-  <div class="sc-ksluID gFnzgG">
-    <div class="sc-bdnxRM">
-      <span class="sc-hint">类型:</span>
-      <a href="javascript:void 0;" class="sc-gtsrHT kEoOHR" data-search="genres" data-method="contain" data-value="">全部</a>
-      {{range $genre := $scratch.Get "genres"}}
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="genres" data-method="contain" data-value="{{$genre}}">{{$genre}}</a>
-      {{end}}
-    </div>
-    <!--<div class="sc-bdnxRM">
-      <span class="sc-hint">观看:</span>
-      <a href="javascript:void 0;" class="sc-gtsrHT kEoOHR" data-search="year" data-method="equal" data-value="">全部</a>
-      {{range $year := (seq now.Year -1 2012)}}
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="year" data-method="equal" data-value="{{$year}}">{{$year}}</a>
-      {{end}}
-    </div>-->
-    <div class="sc-bdnxRM">
-      <span class="sc-hint">评分:</span>
-      <a href="javascript:void 0;" class="sc-gtsrHT kEoOHR" data-search="star" data-method="equal" data-value="">全部</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="5">五星</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="4">四星</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="3">三星</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="2">二星</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="1">一星</a>
-      <a href="javascript:void 0;" class="sc-gtsrHT dvtjjf" data-search="star" data-method="equal" data-value="0">无</a>
-    </div>
-    <div class="jvCTkj sort-by">
-      <span class="sc-hint">排序:</span>
-      <a href="javascript:void 0;" class="sort-by-item active" data-order="time">观看时间</a>
-      <a href="javascript:void 0;" class="sort-by-item" data-order="rating">豆瓣评分</a>
-    </div>
-    <div class="sc-dIsUp fIuTG">
-      {{range $idx, $movie := $movies}}
-      {{if ne $idx 0 }}
-      <div 
-        class="sc-gKAaRy dfdORB" 
-        data-year="{{index $movie 11}}" 
-        data-star="{{index $movie 8}}"
-        data-rating="{{index $movie 6}}"
-        data-genres="{{index $movie 7}}"  
-      >
-      <div class="sc-hKFxyN HPRth">
-          <a rel="link" href="{{index $movie 5}}" target="_blank" > <div class="lazyload-wrapper ">
-              <img class="avatar img-hide" decoding="async" src="{{index $movie 3}}" referrer-policy="no-referrer" loading="lazy" alt="{{index $movie 1}}">
-            </div></a>
-            <a rel="link" href="{{index $movie 5}}" target="_blank" >
-            <div class="movies-nrong">
-            <div class="movie-time">{{index $movie 4}}</div>
-            <div class="movie-title">{{index $movie 1}}</div>
-            <div class="movie-pfeng">评分 : <span class="movie-pfeng-shuzi">{{index $movie 8}}</span> 星</div>
-            <div class="movie-info">{{index $movie 9}}</div>
-          </div></a>
+  }
+
+  /**
+   * 填充页面数据
+   * @param content 页面顶部div
+   * @param Data 数据
+   *
+   */
+  function updatePage(content, Data) {
+    var html = '';
+    for (var i = 0; i < Data.length; i++) {
+      var subject = Data[i]['subject'];
+      var rating = Data[i]['rating'];
+      var comment = Data[i]['comment'];
+      var genres = subject['genres'].join(' / ');
+
+      var title = subject['title'];
+      var cover_url = subject['cover_url'];
+      cover_url = '/images/douban/' + cover_url.substring(cover_url.lastIndexOf('/') + 1);
+      var ratings = subject['rating'];
+      var color_scheme = subject['color_scheme'];
+      var url = subject['url'];
+      var ratings_value = ratings['value'];
+      var primary_color_dark;
+      var secondary_color;
+      if (color_scheme === null) {
+        primary_color_dark = '85d824';
+        secondary_color = 'eef7e4';
+      } else {
+        primary_color_dark = color_scheme['primary_color_dark'];
+        secondary_color = color_scheme['secondary_color'];
+      }
+      var ratings_star_count = ratings['star_count'];
+
+      html += `
+      <div class="dfdORB img-hide">
+        <div class="sc-hKFxyN HPRth">
+            <img src="${cover_url}" alt="${title}" onclick="window.open('${url}', '_blank');"/>
+          <a href="${url}" target="_blank" alt="${title}">
+          <div class="movies-nrong">
+          <div class="movie-time">${genres}</div>
+          <div class="movie-title">${title}</div>
+          <div class="movie-pfeng">评分：${rating ? '<img src="/star.svg" alt="star" /> '.repeat(rating['star_count']) : '未评分'}</div>
+          <div class="movie-info">观感 : ${comment}</div>      
           </div>
-         <!--  <div class="sc-iCoGMd kMthTr">
-            <a rel="link" href="{{index $movie 5}}" target="_blank" title="{{index $movie 9}}">{{index $movie 1}}</a>
-          </div>
-          <div class="sc-fujyAs eysHZq">
-            <span class="sc-jSFjdj jcTaHb">
-              {{range $star := (seq 0 2 8)}}
-              <svg viewBox="0 0 24 24" width="24" height="24" class="sc-dlnjwi {{if gt (index $movie 6) $star}}lhtmRw{{else}}gaztka{{end}}">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path fill="currentColor" d="M12 18.26l-7.053 3.948 1.575-7.928L.587 8.792l8.027-.952L12 .5l3.386 7.34 8.027.952-5.935 5.488 1.575 7.928z"></path>
-              </svg>
-              {{end}}
-            </span>
-            <span class="sc-pNWdM iibjPt">{{index $movie 6}}</span>
-          </div>
-          <div class="sc-intro">{{index $movie 4}} / {{index $movie 7}}</div> -->        
-      </div>
-      {{end}}
-      {{end}}
-    </div>  
-  </div>
-</div>
+          </a>
+        </div>
+        </div>
+      `;
+    }
+
+     // 添加父容器 div
+  html = `<div class="fIuTG">${html}</div>`;
+
+    content.html(html);
+    
+    animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
+  }
+</script>
 
 <div class="article-comments">
   {{- partial "artalk" . -}}
