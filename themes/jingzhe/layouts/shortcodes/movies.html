@@ -1,34 +1,120 @@
-{{$items := getCSV "," "data/douban/movie.csv" }}
-{{$numb := 5}}
-{{ if .Get 0 }}
-    {{$numb = add (.Get 0) 1 }}
-{{end}}
-<meta name="referrer" content="no-referrer">
-    <div class="movie-quanju">
-        {{range $idx,$item := first $numb $items}}
-        {{if ne $idx 0}}
-            {{ $rating := float (index $item 6)}}
-            <div class="movie-index img-hide">
+<div class="content" id="content"></div>
 
-                <div class="type-index">
-                    <div class="type-index-left">{{ index $item 7 }}</div>
-                    <div class="type-index-right">
-                    <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" ><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg></a>
-                    </div>
-                    </div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+  var jsonFile = '/movie.json';
+  getData(jsonFile);
+  // 使用$.ajax()方法获取本地JSON文件
+  function getData(file) {
+    $.ajax({
+      url: file,
+      dataType: 'json',
+      success: function(data) {
+        var filteredData;
+        // 用于存放筛选条件的字典
+        var conditions = {};
+        // 抓取存放电影内容的元素
+        var content = $('#content');
+        // 判断是否有筛选条件
+        if ($('.search.active').length != 0) {
+          for (let i = 0; i < $('.search.active').length; i++) {
+            var active_type = $('.search.active')[i].dataset['search'];
+            var active_value = $('.search.active')[i].dataset['value'];
+            conditions[active_type] = active_value;
+          }
+          // 判断筛选条件是否选择
+          const year = conditions['year'];
+          const star = conditions['star'];
+          const genres = conditions['genres'];
 
-              <div class="movie-content">
-                <div class="movie-content-left img-hide">
-                <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ index $item 3 }}" referrer-policy="no-referrer" alt="{{ index $item 1 }}"  title="{{ index $item 1 }} / {{ index $item 4 }}"></a>        
-                </div>   
-                <div class="movie-content-right">
-                    <div class="movie-content-right-1">评分 : <span class="rating">{{ index $item 8 }}</span> 星</div>
-                    <div class="movie-content-right-2"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>         
-                <div class="movie-content-right-3">观感 : {{ index $item 9 }}</div>
-                </div>
-                </div>
-            </div>
-        {{end}}
-        {{end}}
+          filteredData = data.filter(
+            item =>
+              (typeof(year) === 'undefined' || item.subject.year == year) &&
+              (typeof(star) === 'undefined' || Math.round(item.subject.rating.star_count) == star) &&
+              (typeof(genres) === 'undefined' || item.subject.genres.indexOf(genres) > -1)
+          );
+        } else {
+          filteredData = $.parseJSON(JSON.stringify(data));
+        }
+        // 限制调用数据的数量
+        var numb = 4; // 设置要显示的数据条目数量
+        filteredData = filteredData.slice(0, numb);
+        content.html('');
+    
+        updatePage(content, filteredData);
+      },
+      error: function(xhr, status, error) {
+        // 处理错误情况
+        console.log('获取JSON数据失败：' + error);
+      }
+    });
+  }
+
+  /**
+   * 填充页面数据
+   * @param content 页面顶部div
+   * @param Data 数据
+   *
+   */
+  function updatePage(content, Data) {
+    var html = '';
+    for (var i = 0; i < Data.length; i++) {
+      var subject = Data[i]['subject'];
+      var rating = Data[i]['rating'];
+      var comment = Data[i]['comment'];
+      var genres = subject['genres'].join(' / ');
+
+      var title = subject['title'];
+      var cover_url = subject['cover_url'];
+      cover_url = '/images/douban/' + cover_url.substring(cover_url.lastIndexOf('/') + 1);
+      var ratings = subject['rating'];
+      var color_scheme = subject['color_scheme'];
+      var url = subject['url'];
+      var ratings_value = ratings['value'];
+      var primary_color_dark;
+      var secondary_color;
+      if (color_scheme === null) {
+        primary_color_dark = '85d824';
+        secondary_color = 'eef7e4';
+      } else {
+        primary_color_dark = color_scheme['primary_color_dark'];
+        secondary_color = color_scheme['secondary_color'];
+      }
+      var ratings_star_count = ratings['star_count'];
+
+      html += `
+  <div class="movie-index img-hide">
+    <div class="type-index">
+      <div class="type-index-left">${genres}</div>
+      <div class="type-index-right">
+        <a href="${url}" target="_blank" alt="${title}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path>
+          </svg>
+        </a>
+      </div>
     </div>
+    <div class="movie-content">
+      <div class="movie-content-left img-hide">
+        <img src="${cover_url}" alt="${title}" onclick="window.open('${url}', '_blank');"/>
+      </div>
+      <div class="movie-content-right">
+        <div class="movie-content-right-1">${rating ? `<img src="/star.svg" alt="star" /> `.repeat(rating['star_count']) : '未评分'}</div>
+        <div class="movie-content-right-2">
+          <a href="${url}" target="_blank" alt="${title}">${title}</a>
+        </div>
+        <div class="movie-content-right-3">观感 : ${comment}</div>
+      </div>
+    </div>
+  </div>
+`;
+    }
+
+     // 添加父容器 div
+  html = `<div class="movie-quanju">${html}</div>`;
+
+    content.html(html);
+    
+    animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
+  }
+</script>
