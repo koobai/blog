@@ -6,12 +6,13 @@
     <div class="movie-quanju">
         {{range $idx,$item := first $numb $items}}
         {{if ne $idx 0}}
-        {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $item 3)) }}
-            {{ $rating := float (index $item 6)}}
+        {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $item 3)) }} <!--封面地址替换 -->
+        {{ $rating := index $item 8 }}  <!--个人评分改成星星 -->
+        {{ $movietype := replace (index $item 7) "," " / " }} <!--影视类型 , 改成 / -->
             <div class="movie-index img-hide">
 
                 <div class="type-index">
-                    <div class="type-index-left">{{ index $item 7 }}</div>
+                    <div class="type-index-left">{{ $movietype }}</div>
                     <div class="type-index-right">
                     <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" ><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg></a>
@@ -23,7 +24,15 @@
                 <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ $yingshiimg }}" referrer-policy="no-referrer" alt="{{ index $item 1 }}"  title="{{ index $item 4 }}"></a>        
                 </div>   
                 <div class="movie-content-right">
-                    <div class="movie-content-right-1">评分 : <span class="rating">{{ index $item 8 }}</span> 星</div>
+                    <div class="movie-content-right-1">
+                        {{ $starImage := "https://img.koobai.com/star.svg" }}
+                        {{ with $rating }}
+                          {{ $ratingCount := . }}
+                          {{ range $i := seq $ratingCount }}
+                            <img src="{{ $starImage }}" />
+                          {{ end }}
+                        {{ end }}
+                    </div>
                     <div class="movie-content-right-2"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>         
                 <div class="movie-content-right-3">观感 : {{ index $item 9 }}</div>
                 </div>
