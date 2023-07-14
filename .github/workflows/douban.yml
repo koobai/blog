@@ -25,3 +25,10 @@ jobs:
       with:
         message: 'chore: update douban data'
         add: './data/douban'
+        
+  # 调用另外的 GitHub Actions 构建 Hugo
+    - name: Build Hugo and Deploy
+      if: ${{ env.REMOTE_COUNT != env.CURRENT_COUNT }}
+      uses: peter-evans/repository-dispatch@v2
+      with:
+          event-type: "Githubblog"
