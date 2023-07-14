@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-   workflow_run:
+  workflow_run:
     workflows: ["douban"]
 
 jobs:
