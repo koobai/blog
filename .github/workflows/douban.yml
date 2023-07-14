@@ -27,9 +27,13 @@ jobs:
         add: './data/douban'
         
   # 调用另外的 GitHub Actions 构建 Hugo
-    - name: Trigger Githubblog workflow
-      uses: peter-evans/trigger-workflow@v2
-      with:
-        workflow: "githubblog.yml"
-        event-type: douban
-          
+  Trigger:
+  
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Trigger deploy workflow
+        uses: actions/workflow-dispatch@v2  
+        with:
+          workflow: githubblog.yml
