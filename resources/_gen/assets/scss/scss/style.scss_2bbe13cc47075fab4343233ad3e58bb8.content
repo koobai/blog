@@ -1694,7 +1694,7 @@ img[atk-emoticon] {
     display: block; }
   .movie-time {
     color: #c7c7c7;
-    margin-top: 8px; }
+    margin-top: 7px; }
   .movie-title {
     font-family: var(--font-family-title);
     font-size: 16px;
