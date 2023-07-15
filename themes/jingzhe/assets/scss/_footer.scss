@@ -70,6 +70,11 @@
   left: 50%; /* 将图片的左侧对齐容器的中间位置 */
   transform: translate(-50%, -50%); 
 }
+.youpaiyun img{
+  height: 14px;
+  width: 45px;
+  margin: -3px 3px 0 4px;
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a{
@@ -93,9 +98,3 @@
     display:none; 
   }
   }
-
-.youpaiyun img{
-  height: 14px;
-  width: 45px;
-  margin: -3px 3px 0 4px;
-}

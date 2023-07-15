@@ -81,8 +81,12 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
-
-
+.movie-content-right-4{
+  font-size: 14px;
+  margin-top: 8px;
+  color: #999;
+  font-family: var(--font-family-code);
+}
 
 // 影视页面
 .fIuTG{
@@ -212,6 +216,7 @@ color: var(--text-highlight-color);
   }
   .movie-time{
    color: #c7c7c7;
+   margin-top: 8px;
   }
   .movie-title{
     font-family:var(--font-family-title);
@@ -247,7 +252,7 @@ color: var(--text-highlight-color);
 .movie-index{
   background: var(--background-dark-color);
 }
-.type-index-left,.type-index-right a{
+.type-index-left,.type-index-right a,.movie-content-right-4{
   color: #666;
 }
 .movie-index:hover .type-index-right a {
