@@ -190,6 +190,12 @@ h1, h2, h3 {
   .gotop_hide {
     display: none; } }
 
+.youpaiyun img {
+  height: 14px;
+  width: 45px;
+  vertical-align: middle;
+  margin-top: -4px; }
+
 a {
   color: var(--text-content-color);
   text-decoration: none; }
