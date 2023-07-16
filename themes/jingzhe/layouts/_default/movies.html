@@ -119,7 +119,9 @@
               {{ end }}
             </div>
             <div class="movie-info">{{index $movie 9}}</div>
-            <div class="movie-time">@ {{ dateFormat "2006-01-02" (index $movie 11) }}</div>
+            <div class="movie-time">@ <script>
+              document.write(formatDate({{ index $movie 11 }})); 
+         </script></div>
           </div></a>
           </div>
       </div>
