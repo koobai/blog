@@ -18,3 +18,19 @@
   </div>
 </div>
 </div>
+<!--相对时间-->
+<script src="/js/moment.min.js?v=2.29.4"></script>
+<script src="/js/moment.twitter.min.js"></script>
+<script>
+  function formatDate(param) {
+  var timestamp;
+  if(typeof param === 'number') { 
+    timestamp = param * 1000;
+  } else if(typeof param === 'string') {
+    timestamp = new Date(param).getTime(); 
+  }
+  var format = moment(timestamp).twitterLong();
+  format = format.replace(/ \d{2}:\d{2}/, ''); //注释掉小时分钟
+  return format;
+  }
+</script>

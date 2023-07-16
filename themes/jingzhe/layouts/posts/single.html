@@ -14,7 +14,11 @@
       {{ .Content }}
     </div>
     <div class="single-biaoq">
- <div class="page-time" data-timestamp="{{ .Date.Unix }}"></div>
+ <div class="page-time">
+  <script>
+    document.write(formatDate({{ .Date.Unix }})); 
+  </script>
+ </div>
  <div class="single-tag">
      {{ with .GetTerms "tags" }}
           {{ range . }}
@@ -30,7 +34,11 @@
         <div class="archives_one">
           <div>
             <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-            <div class="archive-time" data-timestamp="{{ .Date.Unix }}"></div>
+            <div class="archive-time">
+              <script>
+                document.write(formatDate({{ .Date.Unix }})); 
+              </script>
+            </div>
             </div>
             <div class="archive-img">
             <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
@@ -41,7 +49,11 @@
       <div class="archives_one">
         <div>
           <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-          <div class="archive-time" data-timestamp="{{ .Date.Unix }}"></div>
+          <div class="archive-time">
+            <script>
+              document.write(formatDate({{ .Date.Unix }})); 
+            </script>
+          </div>
           </div>
           <div class="archive-img">
           <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          

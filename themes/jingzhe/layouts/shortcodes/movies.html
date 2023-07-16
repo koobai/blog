@@ -35,7 +35,11 @@
                     </div>
                     <div class="movie-content-right-2"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>  
                 <div class="movie-content-right-3">观感 : {{ index $item 9 }}</div>
-                <div class="movie-content-right-4">@ {{ dateFormat "2006-01-02" (index $item 11) }}</div>
+                <div class="movie-content-right-4">@ 
+                    <script>
+                         document.write(formatDate({{ index $item 11 }})); 
+                    </script>
+                  </div>
                 </div>
                 </div>
             </div>
