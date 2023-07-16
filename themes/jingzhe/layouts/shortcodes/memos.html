@@ -39,13 +39,13 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-  var bbUrl = "https://memos.koobai.com/api/memo?creatorId=1&rowStatus=NORMAL&limit=4";
+  var bbUrl = "https://memos.koobai.com/api/v1/memo?creatorId=1&rowStatus=NORMAL&limit=4";
   fetch(bbUrl)
     .then(res => res.json())
     .then(resdata => {
       var result = '';
       var resultAll = '';
-      var data = resdata.data;
+      var data = resdata;
       const TAG_REG = /#([^\s#]+?) /g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   , LINK_REG = /\[(.*?)\]\((.*?)\)/g

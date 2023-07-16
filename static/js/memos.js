@@ -49,10 +49,10 @@ btn.addEventListener("click", function () {
 }
 function getFirstList(){
 bbDom.insertAdjacentHTML('afterend', load);
-var bbUrl = memos+"api/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
+var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
 fetch(bbUrl).then(res => res.json()).then( resdata =>{
-  updateHTMl(resdata.data)
-  var nowLength = resdata.data.length
+  updateHTMl(resdata);
+  var nowLength = resdata.length;
   if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
     document.querySelector("button.button-load").remove()
     return
@@ -64,9 +64,9 @@ fetch(bbUrl).then(res => res.json()).then( resdata =>{
 }
 //预加载下一页数据
 function getNextList(){
-var bbUrl = memos+"api/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit+"&offset="+offset;
+var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit+"&offset="+offset;
 fetch(bbUrl).then(res => res.json()).then( resdata =>{
-  nextDom = resdata.data
+  nextDom = resdata;
   nextLength = nextDom.length
   mePage++
   offset = limit*(mePage-1)
@@ -86,10 +86,10 @@ fetch(bbUrl).then(res => res.json()).then( resdata =>{
 //加载总 Memos 数
 function meNums() {
   var bbLoad = document.querySelector('.bb-load');
-  var bbUrl = memos + "api/memo/stats?creatorId=" + bbMemo.creatorId;
+  var bbUrl = memos + "api/v1/memo/stats?creatorId=" + bbMemo.creatorId;
   fetch(bbUrl).then(res => res.json()).then(resdata => {
-    if (resdata.data) {
-      var allnums = ' ( 目前共唠叨了 ' + resdata.data.length + ' 条 )';
+    if (Array.isArray(resdata)) {
+      var allnums = ' ( 目前共唠叨了 ' + resdata.length + ' 条 )';
       bbLoad.insertAdjacentHTML('afterend', allnums);
     }
   });
