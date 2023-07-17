@@ -1,7 +1,5 @@
-/*
-Last Modified time : 20230608 13:00 by https://immmmm.com
-最新js https://immmmm.com/bb-lmm-mk.js
-*/
+var hasLogin = 0 //没登录隐藏编辑归档按钮
+
 var memosData = {
     dom:'#memos',
 	}
@@ -33,6 +31,11 @@ var memos = bbMemo.memos
 var mePage = 1,offset = 0,nextLength = 0,nextDom='';
 var bbDom = document.querySelector(bbMemo.domId);
 var load = '<div class="bb-load"><button class="load-btn button-load">加载中……</button></div>'
+// 增加memos编辑及归档
+var memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+var memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
+var getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
+
 if(bbDom){
 getFirstList() //首次加载数据
 meNums() //加载总数
@@ -98,6 +101,10 @@ function meNums() {
 // 插入 html 
 function updateHTMl(data){
   var result="",resultAll="";
+  //登录显示编辑归档按钮
+  if(memosOpenId && getEditor == "show"){ 
+    hasLogin = 1
+  } 
   const TAG_REG = /#([^\s#]+?) /g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   , LINK_REG = /\[(.*?)\]\((.*?)\)/g //链接新窗口打开
@@ -175,24 +182,31 @@ function updateHTMl(data){
       }
       result += `
       <li class="bb-list-li img-hide" id="${memo_id}">
-      <div class="memos-pl">
-      ${memosTag}
-      <div class="talks_comments">
-              <a onclick="loadArtalk('${memo_id}')">
-                  <span id="btn_memo_${memo_id}"><svg viewBox="0 0 426.666667 384" xmlns="http://www.w3.org/2000/svg">
-                <g fill-rule="evenodd"><path d="M234.666667,0 C340.706133,0 426.666667,85.9613867 426.666667,192 C426.666667,298.039467 340.706133,384 234.666667,384 L21.3333333,384 C9.55136,384 0,374.449067 0,362.666667 L0,192 C0,85.9613867 85.9613867,0 192,0 L234.666667,0 Z M234.666667,42.6666667 L192,42.6666667 C109.525547,42.6666667 42.6666667,109.525547 42.6666667,192 L42.6666667,341.333333 L234.666667,341.333333 C317.141333,341.333333 384,274.474667 384,192 C384,109.525547 317.141333,42.6666667 234.666667,42.6666667 Z M128,170.666667 C139.782187,170.666667 149.333333,180.2176 149.333333,192 C149.333333,203.7824 139.782187,213.333333 128,213.333333 C116.218027,213.333333 106.666667,203.7824 106.666667,192 C106.666667,180.2176 116.218027,170.666667 128,170.666667 Z M213.333333,170.666667 C225.115733,170.666667 234.666667,180.2176 234.666667,192 C234.666667,203.7824 225.115733,213.333333 213.333333,213.333333 C201.550933,213.333333 192,203.7824 192,192 C192,180.2176 201.550933,170.666667 213.333333,170.666667 Z M298.666667,170.666667 C310.449067,170.666667 320,180.2176 320,192 C320,203.7824 310.449067,213.333333 298.666667,213.333333 C286.884267,213.333333 277.333333,203.7824 277.333333,192 C277.333333,180.2176 286.884267,170.666667 298.666667,170.666667 Z" fill-rule="nonzero"></path></g></svg></span><span id="ArtalkCount" data-page-key="/m/${memo_id}" class="comment-s"></span>
-              </a>
+        <div class="memos-pl">
+          ${memosTag}
+          <div class="talks_comments">
+            <a onclick="loadArtalk('${memo_id}')">
+              <span id="btn_memo_${memo_id}"><svg viewBox="0 0 426.666667 384" xmlns="http://www.w3.org/2000/svg">
+              <g fill-rule="evenodd"><path d="M234.666667,0 C340.706133,0 426.666667,85.9613867 426.666667,192 C426.666667,298.039467 340.706133,384 234.666667,384 L21.3333333,384 C9.55136,384 0,374.449067 0,362.666667 L0,192 C0,85.9613867 85.9613867,0 192,0 L234.666667,0 Z M234.666667,42.6666667 L192,42.6666667 C109.525547,42.6666667 42.6666667,109.525547 42.6666667,192 L42.6666667,341.333333 L234.666667,341.333333 C317.141333,341.333333 384,274.474667 384,192 C384,109.525547 317.141333,42.6666667 234.666667,42.6666667 Z M128,170.666667 C139.782187,170.666667 149.333333,180.2176 149.333333,192 C149.333333,203.7824 139.782187,213.333333 128,213.333333 C116.218027,213.333333 106.666667,203.7824 106.666667,192 C106.666667,180.2176 116.218027,170.666667 128,170.666667 Z M213.333333,170.666667 C225.115733,170.666667 234.666667,180.2176 234.666667,192 C234.666667,203.7824 225.115733,213.333333 213.333333,213.333333 C201.550933,213.333333 192,203.7824 192,192 C192,180.2176 201.550933,170.666667 213.333333,170.666667 Z M298.666667,170.666667 C310.449067,170.666667 320,180.2176 320,192 C320,203.7824 310.449067,213.333333 298.666667,213.333333 C286.884267,213.333333 277.333333,203.7824 277.333333,192 C277.333333,180.2176 286.884267,170.666667 298.666667,170.666667 Z" fill-rule="nonzero"></path></g></svg></span>
+              <span id="ArtalkCount" data-page-key="/m/${memo_id}" class="comment-s"></span>
+            </a>
           </div>
-          </div>
-          <div class="datacont" view-image>${bbContREG}</div>
-          <div class="memos_diaoyong_top">
+        </div>
+        <div class="datacont" view-image>${bbContREG}</div>
+        <div class="memos_diaoyong_top">
           <span class="memos_diaoyong_from">
             @ <a href="${memos}m/${memo_id}" target="_blank">koobai</a>
           </span>
-          <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
-      </div>
-          <div id="memo_${memo_id}" class="artalk hidden"></div>
-      </li>`;
+          <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>      
+        ${hasLogin == 0 ? '' : `
+        <div class="memos-edit">
+          <span class="edit-btn" onclick='editMemo(${JSON.stringify(data[i])})'>编辑</span>
+          <span class="archive-btn" onclick="archiveMemo('${data[i].id}')">归档</span>
+          </div>
+        `}
+        </div>
+        <div id="memo_${memo_id}" class="artalk hidden"></div>
+      </li>`;    
   } // end for
 
   var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>";

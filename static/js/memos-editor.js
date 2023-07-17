@@ -48,6 +48,7 @@ var memosEditorCont = `
           </select>
         </div>
         <div class="editor-submit d-flex flex-fill justify-content-end">
+        <div class="primary edit-memos-btn px-3 py-2 d-none">修改好了</div>
           <div class="primary submit-memos-btn px-3 py-1">唠叨一下</div>
         </div>
       </div>
@@ -87,7 +88,8 @@ var submitMemoBtn = document.querySelector(".submit-memos-btn");
 var memosVisibilitySelect = document.querySelector(".select-memos-value");
 var openApiInput = document.querySelector(".memos-open-api-input");
 var uploadImageInput = document.querySelector(".memos-upload-image-input");
-var memosTextarea = document.querySelector(".memos-editor-inputer");
+var memosTextarea = document.querySelector(".memos-editor-inputer");  
+var editMemoBtn = document.querySelector(".edit-memos-btn");
 
 document.addEventListener("DOMContentLoaded", () => {
   getEditIcon();
@@ -471,4 +473,70 @@ function updateHTMl(data){
 function setMemoTag(e){
   let memoTag = e.textContent + " ";
   memosTextarea.value += memoTag;
+}
+
+//增加memos编辑功能
+function editMemo(e) {
+  var memoContent = e.content,memoId = e.id,memoRelationList = e.relationList,memoResourceList = e.resourceList,memoVisibility = e.visibility;
+  getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display"), //发布框状态
+  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"); //登录信息
+  if(memosOpenId && getEditor == "show"){ //判断是否登录
+    memosTextarea.value = memoContent;
+    memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
+    submitMemoBtn.classList.add("d-none"); //隐藏Memos发布按钮
+    editMemoBtn.classList.remove("d-none"); //显示Memos编辑按钮
+    document.body.scrollIntoView({behavior: 'smooth'}); //滚动条至顶部
+    editMemoBtn.addEventListener("click", function () { // 编辑保存按钮点击事件
+      memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"), //再次确认登录状态
+      memoContent = memosTextarea.value, 
+      memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) ? window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) : e.resourceList,
+      memoVisibility = memosVisibilitySelect.value;
+      let hasContent = memoContent.length !== 0;
+      if (hasContent) {
+        var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
+        var memoBody = {content:memoContent,id:memoId,relationList:memoRelationList,resourceList:memoResourceList,visibility:memoVisibility}
+        fetch(memoUrl, {
+          method: 'PATCH',
+          body: JSON.stringify(memoBody),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function(res) {
+          if (res.status == 200) {
+            cocoMessage.success(
+            '保存成功',
+            ()=>{
+              submitMemoBtn.classList.remove("d-none");
+              editMemoBtn.classList.add("d-none");
+              location.reload(); //页面刷新
+            })
+          }
+        })
+      }
+    })
+  }
+}
+
+//增加memos归档功能
+function archiveMemo(memoId) { //获取Memos的ID值
+  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"); //登录信息
+  if(memosOpenId && memoId){ //判断是否登录以及获取到Memos的ID值
+    var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
+    var memoBody = {id:memoId,rowStatus:"ARCHIVED"};
+    fetch(memoUrl, {
+      method: 'PATCH',
+      body: JSON.stringify(memoBody),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function(res) {
+      if (res.status == 200) {
+        cocoMessage.success(
+        '归档成功',
+        ()=>{
+          location.reload();
+        })
+      }
+    })
+  }
 }

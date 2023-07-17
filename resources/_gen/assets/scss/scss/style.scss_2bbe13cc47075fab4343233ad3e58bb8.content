@@ -1786,7 +1786,17 @@ img[atk-emoticon] {
   fill: #666; }
 
 .memos_diaoyong_top {
-  margin-top: 10px; }
+  margin-top: 10px;
+  display: flex; }
+
+.memos-edit {
+  margin-left: auto; }
+
+.edit-btn, .archive-btn {
+  cursor: pointer;
+  margin-left: 10px;
+  color: #999;
+  font-size: 14px; }
 
 .memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz a {
   color: #999;
@@ -1975,7 +1985,7 @@ img[atk-emoticon] {
   transform: translateY(-50%);
   /* 将箭头垂直居中对齐 */ }
 
-.submit-memos-btn {
+.submit-memos-btn, .edit-memos-btn {
   background: transparent;
   border: 0.5px solid #dadada;
   cursor: pointer;
@@ -1983,7 +1993,7 @@ img[atk-emoticon] {
   border-radius: 4px;
   padding: 6px 15px 6px 15px; }
 
-.submit-memos-btn:hover, .memos-open-api-submit:hover {
+.submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover {
   opacity: 0.8;
   transition: opacity .3s ease-in-out; }
 
@@ -2074,11 +2084,13 @@ img[atk-emoticon] {
     color: #999 !important; }
   .memos-editor-content .memos-editor-inputer {
     color: var(--text-content-dark-color); }
-  .submit-memos-btn {
+  .submit-memos-btn, .edit-memos-btn {
     border: solid #454545 0.5px !important; }
   .memos-open-api-submit {
     background: #1A1718 !important;
-    color: var(--text-highlight-color) !important; } }
+    color: var(--text-highlight-color) !important; }
+  .edit-btn, .archive-btn {
+    color: #666; } }
 
 .photo-about, .photo-home {
   display: grid;
