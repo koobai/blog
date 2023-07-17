@@ -200,7 +200,7 @@ function updateHTMl(data){
           <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>      
         ${hasLogin == 0 ? '' : `
         <div class="memos-edit">
-          <span class="edit-btn" onclick='editMemo(${JSON.stringify(data[i])})'>编辑</span>
+          <span class="edit-btn" onclick='editMemo(${JSON.stringify(data[i])})'>修改</span>
           <span class="archive-btn" onclick="archiveMemo('${data[i].id}')">归档</span>
           </div>
         `}
