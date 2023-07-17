@@ -25,15 +25,3 @@ jobs:
       with:
         message: 'chore: update douban data'
         add: './data/douban'
-        
-  # 调用另外的 GitHub Actions 构建 Hugo
-  Trigger:
-  
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Trigger deploy workflow
-        uses: actions/workflow-dispatch@v2  
-        with:
-          workflow: githubblog.yml
