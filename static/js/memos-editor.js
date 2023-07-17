@@ -48,7 +48,7 @@ var memosEditorCont = `
           </select>
         </div>
         <div class="editor-submit d-flex flex-fill justify-content-end">
-        <div class="primary edit-memos-btn px-3 py-2 d-none">修改好了</div>
+        <div class="primary edit-memos-btn px-3 py-2 d-none">修改完成</div>
           <div class="primary submit-memos-btn px-3 py-1">唠叨一下</div>
         </div>
       </div>
@@ -504,7 +504,7 @@ function editMemo(e) {
         }).then(function(res) {
           if (res.status == 200) {
             cocoMessage.success(
-            '保存成功',
+            '修改成功',
             ()=>{
               submitMemoBtn.classList.remove("d-none");
               editMemoBtn.classList.add("d-none");
