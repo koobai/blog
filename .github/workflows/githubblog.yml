@@ -2,11 +2,6 @@ name: Githubblog
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [douban]
-  push:
-    branches:
-      - main
 
 jobs:
   deploy:
