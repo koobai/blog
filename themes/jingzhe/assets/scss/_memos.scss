@@ -58,15 +58,6 @@
   margin-top: 10px;
   display: flex;
 }
-.memos-edit{
-  margin-left: auto;
-}
-.edit-btn,.archive-btn {
-  cursor: pointer;
-  margin-left: 10px;
-  color: #999;
-  font-size: 14px;
-}
 .memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz a{
   color: #999;
   font-size: 14px;
@@ -305,7 +296,40 @@
 .memos-random{
   list-style-type: none;
 }
-
+//唠叨编辑
+.memos-edit{
+  margin-left: auto;
+  position: relative;
+  display: inline-block;
+}
+.memos-menu{
+  margin-left: 50px;
+  color: #FFF;
+}
+.memos-menu-d {
+  width: 60px;
+  position: absolute;
+  top: -40px;
+  right: -10px;
+  background-color: #fff;
+  padding: 8px 0 8px 0;
+  box-shadow: 2px 4px 16px rgba(0,0,0,.15);
+  text-align: center;
+  border-radius:4px;
+  display: none;
+}
+.memos-edit:hover .memos-menu-d {
+  display: block; 
+}
+.edit-btn,.archive-btn {
+  cursor: pointer;
+  line-height: 1.8;
+  color: #999;
+  font-size: 14px;
+}
+.edit-btn:hover,.archive-btn:hover {
+  text-decoration: underline;
+}
 
 // 页面宽度小于700样式
 @media (max-width:700px){
@@ -394,5 +418,11 @@
 }
 .edit-btn,.archive-btn {
   color: #666;
+}
+.memos-menu{
+  color: #201d1e;
+}
+.memos-menu-d {
+  background-color: #282527;
 }
 }
