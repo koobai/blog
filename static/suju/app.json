@@ -1,6 +1,14 @@
 {
     "good": [
         {
+            "image": "https://img.koobai.com/app/picgo.webp",
+            "title": "PicGo",
+            "info": "快速上传图片资源到各大存储平台，如阿里云、腾讯云、又拍云等.",
+            "macos": "macOS",
+            "kaiyuan": "开源",
+            "link": "https://github.com/Molunerfinn/PicGo"
+        },
+        {
             "image": "https://img.koobai.com/app/chatgptios.webp",
             "title": "ChatGPT",
             "info": "官方客户端，方便订阅 Plus 会员。历史记录同步 PC 端，整体体验不错。",
@@ -16,14 +24,6 @@
             "ios": "iOS",
             "shoufei": "付费",
             "link": "https://reederapp.com/"
-        },
-        {
-            "image": "https://img.koobai.com/app/macgpt.webp",
-            "title": "MacGPT",
-            "info": "嵌入了 Web ChatGTP，这样就不用打开官网了，直接状态栏对话沟通。如果有 API，它还支持绑定。",
-            "macos": "macOS",
-            "free": "免费",
-            "link": "https://www.macgpt.com/"
         },
         {
             "image": "https://img.koobai.com/app/chrome.webp",
@@ -51,22 +51,14 @@
             "link": "https://www.keka.io/en/"
         },        
         {
-            "image": "https://img.koobai.com/app/obsidian.webp",
+            "image": "https://img.koobai.com/app/obsidiannew.webp",
             "title": "Obsidian",
             "info": "知识管理笔记类软件，插件丰富，配合WebDav各端同步。自己当日常记录、写博客日志使用。",
             "macos": "macOS",
             "ios": "iOS",
             "kaiyuan": "开源",
             "link": "https://obsidian.md/"
-        },        
-        {
-            "image": "https://img.koobai.com/app/transmit.webp",
-            "title": "Transmit",
-            "info": "FTP上传软件，最近买了轻量服务器，尝试了下。使用主要原因就是界面跟图标很漂亮。",
-            "macos": "macOS",
-            "shoufei": "付费",
-            "link": "https://panic.com/transmit/"
-        },        
+        },             
         {
             "image": "https://img.koobai.com/app/sketch.webp",
             "title": "Sketch",
