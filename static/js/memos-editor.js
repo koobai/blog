@@ -5,7 +5,7 @@ var memosEditorCont = `
   <div class="memos-editor-body mb-3 p-3">
     <div class="memos-editor-inner animate__animated animate__fadeIn">
       <div class="memos-editor-content">
-        <textarea class="memos-editor-inputer text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
       </div>
       <div class="memos-editor-tools pt-3">
         <div class="d-flex">
@@ -88,7 +88,7 @@ var submitMemoBtn = document.querySelector(".submit-memos-btn");
 var memosVisibilitySelect = document.querySelector(".select-memos-value");
 var openApiInput = document.querySelector(".memos-open-api-input");
 var uploadImageInput = document.querySelector(".memos-upload-image-input");
-var memosTextarea = document.querySelector(".memos-editor-inputer");  
+var memosTextarea = document.querySelector(".memos-editor-textarea"); 
 var editMemoBtn = document.querySelector(".edit-memos-btn");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -378,7 +378,7 @@ function getEditIcon() {
 // 插入 html 
 function updateHTMl(data){
   var result="",resultAll="";
-  const TAG_REG = /#([^\s#]+?) /g
+  const TAG_REG = /#((?!^\d+$)[^\s#,.!()/\d]+)/g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   marked.setOptions({
     breaks: false,

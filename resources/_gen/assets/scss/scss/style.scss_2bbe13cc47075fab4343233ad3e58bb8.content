@@ -1908,7 +1908,7 @@ img[atk-emoticon] {
   padding: 20px;
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
-.memos-editor-content .memos-editor-inputer {
+.memos-editor-content .memos-editor-textarea {
   border: transparent;
   border-radius: 4px;
   line-height: 1.6;
@@ -2106,7 +2106,7 @@ img[atk-emoticon] {
   .editor-selector select {
     border: 0.5px solid #454545 !important;
     color: #999 !important; }
-  .memos-editor-content .memos-editor-inputer {
+  .memos-editor-content .memos-editor-textarea {
     color: var(--text-content-dark-color); }
   .submit-memos-btn, .edit-memos-btn {
     border: solid #454545 0.5px !important; }
