@@ -42,9 +42,3 @@ enableRobotsTXT = true
     name = '首页'
     url = '/'
     weight = 1
-
-  [[menu.main]]
-    identifier = 'running'
-    name = '锻炼'
-    url = 'https://workouts.koobai.com'
-    weight = 2
