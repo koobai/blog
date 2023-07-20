@@ -105,7 +105,7 @@ function updateHTMl(data){
   if(memosOpenId && getEditor == "show"){ 
     hasLogin = 1
   } 
-  const TAG_REG = /#((?!^\d+$)[^\s#,.!()/\d]+)/g
+  const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   , LINK_REG = /\[(.*?)\]\((.*?)\)/g //链接新窗口打开
   marked.setOptions({

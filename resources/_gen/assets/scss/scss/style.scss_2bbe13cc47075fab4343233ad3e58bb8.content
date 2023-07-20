@@ -1793,9 +1793,9 @@ img[atk-emoticon] {
   color: #999;
   font-size: 14px;
   font-family: var(--font-family-code);
-  margin-right: 2px; }
+  margin-right: 6px; }
 
-.memos_diaoyong_info {
+.memos_diaoyong_info p {
   font-size: 16px;
   color: var(--text-content-color);
   line-height: 1.6; }
@@ -1880,6 +1880,34 @@ img[atk-emoticon] {
 .bb-load button:hover {
   opacity: 0.8;
   transition: opacity .3s ease-in-out; }
+
+pre {
+  border-radius: 4px;
+  line-height: 1.8;
+  background: var(--background-color);
+  padding: 20px;
+  white-space: pre-wrap; }
+
+pre code {
+  background: transparent;
+  font-size: 14px;
+  padding: 0;
+  color: #666;
+  border: none;
+  margin: 0; }
+
+code {
+  background: #ffe9ef;
+  border: 1px solid #ffd4de;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 2px 6px 2px 6px;
+  font-family: var(--font-family-code);
+  margin: 0 4px 0 4px; }
+
+.memos_diaoyong code {
+  font-size: 14px;
+  padding: 3px 6px 2px 6px; }
 
 *,
 *::before,
@@ -2121,12 +2149,20 @@ img[atk-emoticon] {
     color: #999; }
   .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_from {
     color: #666; }
-  .memos_diaoyong_info, .memos_diaoyong_info a {
+  .memos_diaoyong_info p, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
   .talks_comments svg {
     fill: #666; }
   .memos_diaoyong:hover .talks_comments svg, .bb-list-li:hover .talks_comments svg {
     fill: #c0c0c0; }
+  pre {
+    background: #2c2829; }
+  pre code {
+    color: #999; }
+  code {
+    background: #2c2829;
+    border: 1px solid #2c2829;
+    color: var(--text-highlight-color); }
   .load-memos-editor, .memos-open-api-input {
     color: var(--text-content-dark-color) !important; }
   .memos-editor-body {
