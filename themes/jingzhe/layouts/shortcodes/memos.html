@@ -46,9 +46,16 @@
       var result = '';
       var resultAll = '';
       var data = resdata;
-      const TAG_REG = /#((?!^\d+$)[^\s#,.!()/\d]+)/g
+      const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   , LINK_REG = /\[(.*?)\]\((.*?)\)/g
+    marked.setOptions({
+    breaks: false,
+    smartypants: false,
+    langPrefix: 'language-',
+    headerIds: false,
+    mangle: false
+  });
 
   for(var i=0;i < data.length;i++){
       var memo_id = data[i].id; //评论调用
@@ -56,7 +63,7 @@
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
       .replace(LINK_REG, '<a class="primary" href="$2" target="_blank">$1</a> <img src="https://img.koobai.com/memos/memos_index_link.svg" /> ')
-      bbContREG = bbContREG
+      bbContREG = marked.parse(bbContREG)
 
     //解析 content 内 md 格式图片
     var IMG_ARR = data[i].content.match(IMG_REG) || '',IMG_ARR_Grid='';
@@ -151,3 +158,5 @@
 <!-- artalk评论加载-->
 <link href="https://npm.elemecdn.com/artalk@2.5.5/dist/ArtalkLite.css" rel="stylesheet">
 <script src="https://npm.elemecdn.com/artalk@2.5.5/dist/ArtalkLite.js"></script>
+<!-- 加载 Markdown 语法-->
+<script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js"></script>

@@ -23,6 +23,9 @@ var memosEditorCont = `
           <div class="button outline action-btn code-btn mr-2">
             <img src="https://img.koobai.com/memos/memos_code.svg">
           </div>
+          <div class="button outline action-btn code-single mr-2">
+          <img src="https://img.koobai.com/memos/memos-code-s.svg">
+          </div>
           <div class="button outline action-btn mr-2 link-btn">
             <img src="https://img.koobai.com/memos/memos_link.svg">
           </div>
@@ -82,6 +85,7 @@ var taglistBtn = document.querySelector(".tag-btn");
 var todoBtn = document.querySelector(".todo-btn");
 var todoBtn = document.querySelector(".todo-btn");
 var codeBtn = document.querySelector(".code-btn");
+var codesingle = document.querySelector(".code-single");
 var linkBtn = document.querySelector(".link-btn");
 var linkimg = document.querySelector(".link-img");
 var randomBtn = document.querySelector(".random-btn");
@@ -160,6 +164,33 @@ function getEditIcon() {
       memosTextarea.value = textareaValue.substring(0, caretPos) + memoCode;
       memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
       memosTextarea.setSelectionRange(caretPos + 4, caretPos + 4); // 将光标定位到 ``` 中间
+      memosTextarea.focus();
+    }
+  });
+
+//代码单反引号
+  codesingle.addEventListener("click", function() {
+    const memosPath = window.localStorage?.getItem("memos-access-path");
+    const memosOpenId = window.localStorage?.getItem("memos-access-token");
+    if (memosPath && memosOpenId) {
+      const memoCode = '`'; // 行内代码的起始和结束标记为单个反引号
+      const textareaValue = memosTextarea.value;
+      const selectionStart = memosTextarea.selectionStart;
+      const selectionEnd = memosTextarea.selectionEnd;
+      const selectedText = textareaValue.substring(selectionStart, selectionEnd);
+      const insertCode = `${memoCode}${selectedText}${memoCode}`;
+      const caretPos = selectionStart !== selectionEnd ? selectionEnd + memoCode.length * 2 : selectionStart + memoCode.length;
+      
+      memosTextarea.setRangeText(
+        insertCode,
+        selectionStart,
+        selectionEnd,
+        "end"
+      ); 
+      // 根据是否有选中内容，决定光标位置
+      memosTextarea.setSelectionRange(caretPos, caretPos);
+  
+      memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
       memosTextarea.focus();
     }
   });
@@ -281,7 +312,7 @@ function getEditIcon() {
     memosVisibility = memosVisibilitySelect.value;
     memosResource = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list"));
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
-    let TAG_REG = /(?<=#)([^ ]*)(?= )/g;
+    let TAG_REG = /(?<=#)([^#\s!.,;:?"'()]+)(?= )/g;
     let memosTag = memosContent.match(TAG_REG);
     let  hasContent = memosContent.length !== 0;
     if (memosOpenId && hasContent) {
@@ -407,7 +438,7 @@ function getEditIcon() {
 // 插入 html 
 function updateHTMl(data){
   var result="",resultAll="";
-  const TAG_REG = /#((?!^\d+$)[^\s#,.!()/\d]+)/g
+  const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g
   , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
   marked.setOptions({
     breaks: false,
