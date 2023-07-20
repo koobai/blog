@@ -562,6 +562,8 @@ function editMemo(e) {
     memoContent = memosTextarea.value,
     memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) ? window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) : e.resourceList,
     memoVisibility = memosVisibilitySelect.value;
+    let TAG_REG = /(?<=#)([^#\s!.,;:?"'()]+)(?= )/g;
+    let memosTag = memoContent.match(TAG_REG);
     let hasContent = memoContent.length !== 0;
     if (hasContent) {
       var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
@@ -574,6 +576,22 @@ function editMemo(e) {
         }
       }).then(function(res) {
         if (res.status == 200) {
+          if (memosTag !== null) {
+            const memoTagUrl = memosPath + "/api/v1/tag?openId=" + memosOpenId;
+            (async () => {
+              for await (const i of memosTag) {
+                const response = await fetch(memoTagUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    name: i
+                  })
+                });
+              }
+            })();
+          }
           cocoMessage.success(
           '修改成功',
           ()=>{
