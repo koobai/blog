@@ -7,6 +7,7 @@ var memosEditorCont = `
       <div class="memos-editor-content">
         <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
       </div>
+      <div class="memos-image-list d-flex flex-fill line-xl"></div>
       <div class="memos-editor-tools pt-3">
         <div class="d-flex">
           <div class="button outline action-btn tag-btn mr-2">
@@ -48,7 +49,10 @@ var memosEditorCont = `
           </select>
         </div>
         <div class="editor-submit d-flex flex-fill justify-content-end">
-        <div class="primary edit-memos-btn px-3 py-2 d-none">修改完成</div>
+        <div class="edit-memos d-none">
+        <div class="primary cancel-edit-btn mr-2 px-3 py-2">取消</div>
+        <div class="primary edit-memos-btn px-3 py-2">修改完成</div>
+        </div>
           <div class="primary submit-memos-btn px-3 py-1">唠叨一下</div>
         </div>
       </div>
@@ -89,19 +93,23 @@ var memosVisibilitySelect = document.querySelector(".select-memos-value");
 var openApiInput = document.querySelector(".memos-open-api-input");
 var uploadImageInput = document.querySelector(".memos-upload-image-input");
 var memosTextarea = document.querySelector(".memos-editor-textarea"); 
+var editMemoDom = document.querySelector(".edit-memos");
 var editMemoBtn = document.querySelector(".edit-memos-btn");
+var cancelEditBtn = document.querySelector(".cancel-edit-btn");
 
 document.addEventListener("DOMContentLoaded", () => {
   getEditIcon();
 });
 
 function getEditIcon() {
-  var memosContent = '',memosVisibility = '',memosResource = [];
+  var memosContent = '',memosVisibility = '',memosResource = [],memosRelation=[];
   var memosCount = window.localStorage && window.localStorage.getItem("memos-response-count");
   var memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
   var memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
   var getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
   var isHide = getEditor === "hide";
+  window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
+  window.localStorage && window.localStorage.setItem("memos-relation-list",  JSON.stringify(memosRelation));
   memosTextarea.addEventListener('input', (e) => {
     memosTextarea.style.height = 'inherit';
     memosTextarea.style.height = e.target.scrollHeight + 'px';
@@ -235,11 +243,14 @@ function getEditIcon() {
       body: imageData
     })
     const res = await resp.json().then(res => {
-      if(res.data.id){
+      if(res.id){
+        let imageList = "";
+        imageList += '<div data-id="'+res.id+'" class="memos-img-edit d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex px-2 justify-content-center">'+res.filename+'</div></div>'
+        document.querySelector(".memos-image-list").insertAdjacentHTML('afterbegin', imageList);
         cocoMessage.success(
         '上传成功',
         ()=>{
-          memosResource.push(res.data.id);
+          memosResource.push(res.id);
           window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
         })
       }
@@ -265,30 +276,48 @@ function getEditIcon() {
     }
   });
 
-  submitMemoBtn.addEventListener("click", function () {
+   submitMemoBtn.addEventListener("click", function () {
     memosContent = memosTextarea.value;
     memosVisibility = memosVisibilitySelect.value;
     memosResource = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list"));
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+    let TAG_REG = /(?<=#)([^ ]*)(?= )/g;
+    let memosTag = memosContent.match(TAG_REG);
     let  hasContent = memosContent.length !== 0;
     if (memosOpenId && hasContent) {
       let memoUrl = memosPath+"/api/v1/memo?openId="+memosOpenId;
-      let memoBody = {content:memosContent,visibility:memosVisibility,resourceIdList:memosResource}
+      let memoBody = {content:memosContent,relationList:memosRelation,resourceIdList:memosResource,visibility:memosVisibility}
       fetch(memoUrl, {
-        method: 'post',
+        method: 'POST',
         body: JSON.stringify(memoBody),
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(function(res) {
+      }).then(function (res) {
         if (res.status == 200) {
+          if (memosTag !== null) {
+            const memoTagUrl = memosPath + "/api/v1/tag?openId=" + memosOpenId;
+            (async () => {
+              for await (const i of memosTag) {
+                const response = await fetch(memoTagUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    name: i
+                  })
+                });
+              }
+            })();
+          }
           cocoMessage.success(
-          '发送成功',
-          ()=>{
-            location.reload();
-          })
+            '发送成功',
+            () => {
+              location.reload();
+            })
         }
-      })
+      });
     }else if(!hasContent){
       cocoMessage.info('内容不能为空');
     }else{
@@ -311,7 +340,7 @@ function getEditIcon() {
       // cocoMessage.success('准备就绪');
       let tagUrl = memosPath+"/api/v1/tag?openId="+memosOpenId;
       let response = fetch(tagUrl).then(response => response.json()).then(resdata => {
-        return resdata;
+        return resdata
       }).then(response => {
         let taglist = "";
         response.map((t)=>{
@@ -475,47 +504,67 @@ function setMemoTag(e){
   memosTextarea.value += memoTag;
 }
 
+function deleteImage(e){
+  if(e){
+    let memoId = e.getAttribute("data-id")
+    let memosResource = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list"));
+    let memosResourceList = memosResource.filter(function(item){ return item != memoId});
+    window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResourceList));
+    e.remove()
+  } 
+}
+
 //增加memos编辑功能
 function editMemo(e) {
   var memoContent = e.content,memoId = e.id,memoRelationList = e.relationList,memoResourceList = e.resourceList,memoVisibility = e.visibility;
-  getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display"), //发布框状态
-  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"); //登录信息
-  if(memosOpenId && getEditor == "show"){ //判断是否登录
+  getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display"),
+  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+  if(memosOpenId && getEditor == "show"){
     memosTextarea.value = memoContent;
     memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
-    submitMemoBtn.classList.add("d-none"); //隐藏Memos发布按钮
-    editMemoBtn.classList.remove("d-none"); //显示Memos编辑按钮
-    document.body.scrollIntoView({behavior: 'smooth'}); //滚动条至顶部
-    editMemoBtn.addEventListener("click", function () { // 编辑保存按钮点击事件
-      memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"), //再次确认登录状态
-      memoContent = memosTextarea.value, 
-      memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) ? window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) : e.resourceList,
-      memoVisibility = memosVisibilitySelect.value;
-      let hasContent = memoContent.length !== 0;
-      if (hasContent) {
-        var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
-        var memoBody = {content:memoContent,id:memoId,relationList:memoRelationList,resourceList:memoResourceList,visibility:memoVisibility}
-        fetch(memoUrl, {
-          method: 'PATCH',
-          body: JSON.stringify(memoBody),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(function(res) {
-          if (res.status == 200) {
-            cocoMessage.success(
-            '修改成功',
-            ()=>{
-              submitMemoBtn.classList.remove("d-none");
-              editMemoBtn.classList.add("d-none");
-              location.reload(); //页面刷新
-            })
-          }
-        })
-      }
-    })
+    submitMemoBtn.classList.add("d-none");
+    editMemoDom.classList.remove("d-none");
+    document.body.scrollIntoView({behavior: 'smooth'});
   }
+  editMemoBtn.addEventListener("click", function () {
+    memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"),
+    memoContent = memosTextarea.value,
+    memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) ? window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) : e.resourceList,
+    memoVisibility = memosVisibilitySelect.value;
+    let hasContent = memoContent.length !== 0;
+    if (hasContent) {
+      var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
+      var memoBody = {content:memoContent,id:memoId,relationList:memoRelationList,resourceList:memoResourceList,visibility:memoVisibility}
+      fetch(memoUrl, {
+        method: 'PATCH',
+        body: JSON.stringify(memoBody),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function(res) {
+        if (res.status == 200) {
+          cocoMessage.success(
+          '修改成功',
+          ()=>{
+            submitMemoBtn.classList.remove("d-none");
+            editMemoDom.classList.add("d-none");
+            location.reload();
+          })
+        }
+      })
+    }
+  })
 }
+
+//增加memo编辑的时候取消功能
+cancelEditBtn.addEventListener("click", function () {
+  if (!editMemoDom.classList.contains("d-none")) {
+    memosTextarea.value = '';
+    memosTextarea.style.height = 'inherit';
+    editMemoDom.classList.add("d-none");
+    submitMemoBtn.classList.remove("d-none");
+  }
+})
 
 //增加memos归档功能
 function archiveMemo(memoId) { //获取Memos的ID值
@@ -537,6 +586,30 @@ function archiveMemo(memoId) { //获取Memos的ID值
           location.reload();
         })
       }
+    })
+  }
+}
+
+//增加memo删除功能
+function deleteMemo(memoId) {
+  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+  if(memosOpenId && memoId){
+    var memoUrl = memosPath+"/api/v1/memo/"+memoId+"?openId="+memosOpenId;
+    fetch(memoUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function(res) {
+      if (res.status == 200) {
+        cocoMessage.success(
+        '删除成功',
+        ()=>{
+          location.reload();
+        })
+      }
+    }).catch(err => {
+      cocoMessage.error('出错了，再检查一下吧')
     })
   }
 }

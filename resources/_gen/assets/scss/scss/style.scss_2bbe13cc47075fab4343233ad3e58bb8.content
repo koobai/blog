@@ -1984,7 +1984,14 @@ img[atk-emoticon] {
   border-radius: 4px;
   padding: 6px 15px 6px 15px; }
 
-.submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover {
+.cancel-edit-btn {
+  padding: 6px 15px 6px 15px;
+  cursor: pointer;
+  border: 0.5px solid #FFF;
+  margin-right: 8px;
+  color: #999; }
+
+.submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
   opacity: 0.8;
   transition: opacity .3s ease-in-out; }
 
@@ -1994,6 +2001,21 @@ img[atk-emoticon] {
 
 .justify-content-end {
   margin-left: auto; }
+
+.memos-image-list {
+  cursor: pointer;
+  gap: 15px;
+  color: #999;
+  margin-bottom: 15px;
+  font-size: 14px; }
+
+.memos-img-edit {
+  background: #f5f5f5;
+  padding: 6px;
+  border-radius: 4px; }
+
+.memos-img-edit:hover {
+  text-decoration: line-through; }
 
 .memos-editor-option {
   display: flex; }
@@ -2036,7 +2058,7 @@ img[atk-emoticon] {
 .memos-menu-d {
   width: 60px;
   position: absolute;
-  top: -40px;
+  top: -60px;
   right: -10px;
   background-color: #fff;
   padding: 8px 0 8px 0;
@@ -2048,14 +2070,20 @@ img[atk-emoticon] {
 .memos-edit:hover .memos-menu-d {
   display: block; }
 
-.edit-btn, .archive-btn {
+.edit-btn, .archive-btn, .delete-btn {
   cursor: pointer;
   line-height: 1.8;
   color: #999;
   font-size: 14px; }
 
-.edit-btn:hover, .archive-btn:hover {
+.edit-btn:hover, .archive-btn:hover, .delete-btn:hover {
   text-decoration: underline; }
+
+.delete-btn {
+  color: #c70000 !important; }
+
+.edit-memos {
+  display: flex; }
 
 @media (max-width: 700px) {
   .resimg {
@@ -2113,12 +2141,14 @@ img[atk-emoticon] {
   .memos-open-api-submit {
     background: #1A1718 !important;
     color: var(--text-highlight-color) !important; }
-  .edit-btn, .archive-btn {
+  .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .memos-image-list {
     color: #666; }
   .memos-menu {
     color: #201d1e; }
-  .memos-menu-d {
-    background-color: #282527; } }
+  .memos-menu-d, .memos-img-edit {
+    background-color: #282527; }
+  .cancel-edit-btn {
+    border: 0.5px solid #201d1e; } }
 
 .photo-about, .photo-home {
   display: grid;
