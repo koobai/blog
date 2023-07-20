@@ -204,7 +204,7 @@ function updateHTMl(data){
          <div class="memos-menu-d">
           <div class="delete-btn" onclick="deleteMemo('${data[i].id}')">删除</div>
           <div class="archive-btn" onclick="archiveMemo('${data[i].id}')">归档</div>
-          <div class="edit-btn" onclick="editMemo(${JSON.stringify(data[i]).replace(/"/g, '&quot;')})">修改</button>
+          <div class="edit-btn" onclick="editMemo(${JSON.stringify(data[i]).replace(/"/g, '&quot;')})">修改</div>
           </div>
           </div>
         `}
