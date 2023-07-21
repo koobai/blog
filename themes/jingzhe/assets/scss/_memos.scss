@@ -179,8 +179,18 @@ code{
   font-size: 14px;
   padding: 3px 6px 2px 6px;
 }
-//memos页发布唠叨
+blockquote p{
+  background: var(--background-color);
+  border-radius: 0 4px 4px 0;
+  padding: 10px;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  border-left: 4px solid #bfbfbf;
+  color: #666 !important;
+  margin: -10px -40px 0 -40px !important;
+}
 
+//memos页发布唠叨
 *,
 *::before,
 *::after {
@@ -450,7 +460,7 @@ code{
 .memos_diaoyong:hover .talks_comments svg,.bb-list-li:hover .talks_comments svg{
   fill: #c0c0c0;
 }
-pre{
+pre,blockquote p{
   background: #2c2829;
 }
 pre code{
@@ -460,6 +470,13 @@ code{
   background: #2c2829;
   border: 1px solid #2c2829;
   color: var(--text-highlight-color);
+}
+blockquote p{
+  border-left: 4px solid #5f5f5f;
+  color: #888 !important;
+}
+.memos_diaoyong_info blockquote p{
+  color: #888 !important;
 }
 //memos页发布唠叨
 .load-memos-editor,.memos-open-api-input{
