@@ -194,10 +194,10 @@ function updateHTMl(data){
         </div>
         <div class="datacont" view-image>${bbContREG}</div>
         <div class="memos_diaoyong_top">
-          <span class="memos_diaoyong_from">
+          <div class="memos_diaoyong_from">
             @ <a href="${memos}m/${memo_id}" target="_blank">koobai</a>
-          </span>
-          <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>      
+          </div>
+          <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>      
         ${hasLogin == 0 ? '' : `
         <div class="memos-edit">
          <div class="memos-menu">...</div>

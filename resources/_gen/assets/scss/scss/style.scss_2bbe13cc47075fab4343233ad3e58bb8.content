@@ -1787,7 +1787,8 @@ img[atk-emoticon] {
 
 .memos_diaoyong_top {
   margin-top: 10px;
-  display: flex; }
+  display: flex;
+  align-items: center; }
 
 .memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz a {
   color: #999;
