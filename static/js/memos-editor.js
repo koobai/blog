@@ -300,7 +300,7 @@ function getEditIcon() {
             })();
           }
           cocoMessage.success(
-            '发送成功',
+            '唠叨成功',
             () => {
               location.reload();
             })
