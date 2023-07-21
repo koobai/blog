@@ -133,13 +133,13 @@
           </div>
       <div class="memos_diaoyong_info" view-image>${bbContREG}</div>
       <div class="memos_diaoyong_top">
-              <span class="memos_diaoyong_from">
+              <div class="memos_diaoyong_from">
                 @ <a href="/memos">koobai</a>
-              </span>
-              <span class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</span>
-              <span class="memos_diaoyong_laiz">
+              </div>
+              <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>
+              <div class="memos_diaoyong_laiz">
                   <a href="/memos">来自唠叨</a>
-              </span>
+              </div>
           </div>
       <div id="memo_${memo_id}" class="artalk hidden"></div>
   </li>`;
