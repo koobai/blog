@@ -641,16 +641,22 @@ biaoqing.addEventListener("click", async function (event) {
     emojiSelector?.remove();
   }
 });
+//表情光标位置
 function insertEmoji(emojiText) {
   const inputBox = document.getElementById("input-box");
   const selectionStart = inputBox.selectionStart;
-  const selectionEnd = inputBox.selectionEnd;
 
-  inputBox.value =
-    inputBox.value.substring(0, selectionStart) +
-    `:[${emojiText}]` +
-    inputBox.value.substring(selectionEnd);
+  // 在当前光标位置插入表情符号
+  const newValue = `${inputBox.value.substring(0, selectionStart)}:[${emojiText}]${inputBox.value.substring(inputBox.selectionEnd)}`;
 
-  inputBox.selectionStart = selectionStart + emojiText.length + 3;
-  inputBox.selectionEnd = inputBox.selectionStart;
+  // 更新输入框的值并触发输入事件，以保持输入框的状态
+  inputBox.value = newValue;
+  inputBox.dispatchEvent(new Event('input'));
+
+  // 将光标设置为插入的表情符号文本的末尾
+  const newCursorPosition = selectionStart + emojiText.length + 3;
+  inputBox.setSelectionRange(newCursorPosition, newCursorPosition);
+
+  // 确保输入框在插入表情符号后保持焦点
+  inputBox.focus();
 }
