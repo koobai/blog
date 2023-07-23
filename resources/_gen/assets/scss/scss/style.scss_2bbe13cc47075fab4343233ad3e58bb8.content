@@ -1019,6 +1019,10 @@ ul {
   height: 32px !important;
   width: 32px !important; }
 
+.atk-editor-plug-emoticons > .atk-grp-wrap > .atk-grp > .atk-item {
+  font-size: 24px !important;
+  padding: 0 !important; }
+
 .atk-notify.atk-fade-in {
   background: #666 !important;
   margin-bottom: 6px; }
