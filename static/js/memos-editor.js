@@ -651,6 +651,6 @@ function insertEmoji(emojiText) {
     `:[${emojiText}]` +
     inputBox.value.substring(selectionEnd);
 
-  inputBox.selectionStart = selectionStart + emojiText.length + 2;
+  inputBox.selectionStart = selectionStart + emojiText.length + 3;
   inputBox.selectionEnd = inputBox.selectionStart;
 }
