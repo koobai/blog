@@ -514,45 +514,55 @@ function deleteMemo(memoId) {
   }
 }
 
-// 添加表情选择
+//Emoji表情选择
+
 let emojiSelectorVisible = false;
 let emojiSelector;
-const inputBox = document.getElementById("input-box");
-const memosEditorTools = document.querySelector(".memos-editor-tools");
+let emojis = []; // 缓存表情数据
 
-// 获取表情数据并创建表情选择器
-async function createEmojiSelector() {
-  try {
-    emojiSelector = document.createElement('div');
-    emojiSelector.classList.add('emoji-selector');
-
-    const response = await fetch('/suju/owo.json');
-    const emojis = await response.json();
-
-    emojis.forEach(emoji => {
-      const emojiItem = createEmojiItem(emoji);
-      emojiSelector.appendChild(emojiItem);
-    });
-
-    // 将表情下拉框插入到对应位置
-    if (memosEditorTools) {
-      memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
-    }
-  } catch (error) {
-    console.error('Failed to fetch emojis data:', error);
-  }
-}
-
-// 表情选择器是否可见的点击事件处理程序
-biaoqing.addEventListener("click", function (event) {
+biaoqing.addEventListener("click", async function (event) {
   event.stopPropagation();
   emojiSelectorVisible = !emojiSelectorVisible;
   const memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
   const memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
 
   if (emojiSelectorVisible && memosPath && memosOpenId) {
-    if (!emojiSelector) {
-      createEmojiSelector();
+    try {
+      if (!emojis.length) {
+        const response = await fetch('/suju/owo.json');
+        emojis = await response.json();
+      }
+
+      if (!emojiSelector) {
+        emojiSelector = document.createElement('div');
+        emojiSelector.classList.add('emoji-selector');
+
+        // 使用事件代理，将事件监听器添加到父元素上
+        emojiSelector.addEventListener('click', (event) => {
+          const target = event.target;
+          if (target.classList.contains('emoji-item')) {
+            insertEmoji(target.innerHTML); // 直接插入emoji图标
+          }
+        });
+      }
+
+      emojiSelector.innerHTML = ''; // 清空表情选择器内容
+
+      emojis.forEach(emoji => {
+        const emojiItem = document.createElement('div');
+        emojiItem.classList.add('emoji-item');
+        emojiItem.innerHTML = emoji.icon;
+        emojiItem.title = emoji.text;
+        emojiSelector.appendChild(emojiItem);
+      });
+
+      // 将表情下拉框插入到对应位置
+      const memosEditorTools = document.querySelector(".memos-editor-tools");
+      if (memosEditorTools) {
+        memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
+      }
+    } catch (error) {
+      console.error('Failed to fetch emojis data:', error);
     }
   } else {
     emojiSelector?.remove();
@@ -561,37 +571,12 @@ biaoqing.addEventListener("click", function (event) {
 
 // 表情光标位置
 function insertEmoji(emojiText) {
+  const inputBox = document.getElementById("input-box");
   const selectionStart = inputBox.selectionStart;
-
-  // 在当前光标位置插入表情符号
-  const newValue = inputBox.value.substring(0, selectionStart) + emojiText + inputBox.value.substring(inputBox.selectionEnd);
-
-  // 更新输入框的值并触发输入事件，以保持输入框的状态
+  const newValue = `${inputBox.value.substring(0, selectionStart)}${emojiText}${inputBox.value.substring(inputBox.selectionEnd)}`;
   inputBox.value = newValue;
   inputBox.dispatchEvent(new Event('input'));
-
-  // 将光标设置为插入的表情符号文本的末尾
   const newCursorPosition = selectionStart + emojiText.length;
   inputBox.setSelectionRange(newCursorPosition, newCursorPosition);
-
-  // 确保输入框在插入表情符号后保持焦点
   inputBox.focus();
-}
-
-// 创建表情项
-function createEmojiItem(emoji) {
-  const emojiItem = document.createElement('div');
-  emojiItem.classList.add('emoji-item');
-
-  // 直接插入emoji图标
-  emojiItem.innerHTML = emoji.icon;
-
-  // 添加title属性来显示提示文本
-  emojiItem.title = emoji.text;
-
-  emojiItem.addEventListener('click', () => {
-    insertEmoji(emoji.icon);
-  });
-
-  return emojiItem;
 }
