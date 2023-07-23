@@ -5,7 +5,7 @@ var memosEditorCont = `
   <div class="memos-editor-body mb-3 p-3">
     <div class="memos-editor-inner animate__animated animate__fadeIn">
       <div class="memos-editor-content">
-        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+        <textarea id="input-box" class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
       </div>
       <div class="memos-image-list d-flex flex-fill line-xl"></div>
       <div class="memos-editor-tools pt-3">
@@ -28,6 +28,9 @@ var memosEditorCont = `
           </div>
           <div class="button outline action-btn mr-2 link-img">
           <img src="https://img.koobai.com/memos/memos_img_quote.svg">
+        </div>
+        <div class="button outline action-btn biao-qing mr-2">
+        <img src="https://img.koobai.com/memos/memos-emoji.svg">
         </div>
           <div class="button outline action-btn p-2 switchUser-btn">
             <img src="https://img.koobai.com/memos/memos_user.svg">
@@ -91,6 +94,7 @@ var memosTextarea = document.querySelector(".memos-editor-textarea");
 var editMemoDom = document.querySelector(".edit-memos");
 var editMemoBtn = document.querySelector(".edit-memos-btn");
 var cancelEditBtn = document.querySelector(".cancel-edit-btn");
+var biaoqing = document.querySelector(".biao-qing");
 
 document.addEventListener("DOMContentLoaded", () => {
   getEditIcon();
@@ -266,6 +270,7 @@ function getEditIcon() {
 
    submitMemoBtn.addEventListener("click", function () {
     memosContent = memosTextarea.value;
+    memosContent = convertEmojiToImage(memosContent); //插入表情
     memosVisibility = memosVisibilitySelect.value;
     memosResource = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list"));
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
@@ -406,7 +411,8 @@ function editMemo(e) {
   }
   editMemoBtn.addEventListener("click", function () {
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"),
-    memoContent = memosTextarea.value,
+    memoContent = memosTextarea.value;
+    memoContent = convertEmojiToImage(memoContent); //插入表情
     memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) ? window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list")) : e.resourceList,
     memoVisibility = memosVisibilitySelect.value;
     let TAG_REG = /(?<=#)([^#\s!.,;:?"'()]+)(?= )/g;
@@ -508,4 +514,143 @@ function deleteMemo(memoId) {
       cocoMessage.error('出错了，再检查一下吧')
     })
   }
+}
+
+//增加表情
+// 表情从文字转换为图片
+function convertEmojiToImage(content) {
+  const emojiData = {
+    "爱你": "https://img.koobai.com/weibo/2018new_aini_org.png",
+    "拜拜": "https://img.koobai.com/weibo/2018new_baibai_org.png",
+    "抱抱": "https://img.koobai.com/weibo/2018new_baobao_org.png",
+    "悲伤": "https://img.koobai.com/weibo/2018new_beishang_org.png",
+    "并不简单": "https://img.koobai.com/weibo/2018new_bingbujiandan_org.png",
+    "鄙视": "https://img.koobai.com/weibo/2018new_bishi_org.png",
+    "闭嘴": "https://img.koobai.com/weibo/2018new_bizui_org.png",
+    "馋嘴": "https://img.koobai.com/weibo/2018new_chanzui_org.png",
+    "吃瓜": "https://img.koobai.com/weibo/2018new_chigua_org.png",
+    "吃惊": "https://img.koobai.com/weibo/2018new_chijing_org.png",
+    "打脸": "https://img.koobai.com/weibo/2018new_dalian_org.png",
+    "锤": "https://img.koobai.com/weibo/2018new_ding_org.png",
+    "二哈": "https://img.koobai.com/weibo/2018new_erha_org.png",
+    "doge": "https://img.koobai.com/weibo/2018new_doge_org.png",
+    "跪": "https://img.koobai.com/weibo/2018new_gui_org.png",
+    "鼓掌": "https://img.koobai.com/weibo/2018new_guzhang_org.png",
+    "哈哈": "https://img.koobai.com/weibo/2018new_haha_org.png",
+    "害羞": "https://img.koobai.com/weibo/2018new_haixiu_org.png",
+    "汗": "https://img.koobai.com/weibo/2018new_han_org.png",
+    "坏笑": "https://img.koobai.com/weibo/2018new_huaixiao_org.png",
+    "色": "https://img.koobai.com/weibo/2018new_huaxin_org.png",
+    "互粉": "https://img.koobai.com/weibo/2018new_hufen02_org.png",
+    "可怜": "https://img.koobai.com/weibo/2018new_kelian_org.png",
+    "酷": "https://img.koobai.com/weibo/2018new_ku_org.png",
+    "喵": "https://img.koobai.com/weibo/2018new_miaomiao_org.png",
+    "白眼": "https://img.koobai.com/weibo/2018new_baiyan_org.png",
+    "允悲": "https://img.koobai.com/weibo/2018new_kuxiao_org.png",
+    "困": "https://img.koobai.com/weibo/2018new_kun_org.png",
+    "疑问": "https://img.koobai.com/weibo/2018new_ningwen_org.png",
+    "怒": "https://img.koobai.com/weibo/2018new_nu_org.png",
+    "摊手": "https://img.koobai.com/weibo/2018new_tanshou_org.png",
+    "舔屏": "https://img.koobai.com/weibo/2018new_tianping_org.png",
+    "偷笑": "https://img.koobai.com/weibo/2018new_touxiao_org.png",
+    "吐": "https://img.koobai.com/weibo/2018new_tu_org.png",
+    "挖鼻": "https://img.koobai.com/weibo/2018new_wabi_thumb.png",
+    "委屈": "https://img.koobai.com/weibo/2018new_weiqu_org.png",
+    "微笑": "https://img.koobai.com/weibo/2018new_weixioa_org.png",
+    "污": "https://img.koobai.com/weibo/2018new_wu_org.png",
+    "哭笑不得": "https://img.koobai.com/weibo/2018new_xiaoku_thumb.png",
+    "爱心": "https://img.koobai.com/weibo/2018new_xin_org.png",
+    "嘻嘻": "https://img.koobai.com/weibo/2018new_xixi_org.png",
+    "嘘": "https://img.koobai.com/weibo/2018new_xu_org.png",
+    "右哼哼": "https://img.koobai.com/weibo/2018new_youhengheng_org.png",
+    "左哼哼": "https://img.koobai.com/weibo/2018new_zuohengheng_org.png",
+    "晕": "https://img.koobai.com/weibo/2018new_yun_org.png",
+    "中国赞": "https://img.koobai.com/weibo/2018new_zhongguozan_org.png",
+    "怒骂": "https://img.koobai.com/weibo/2018new_zhouma_org.png",
+    "抱一抱": "https://img.koobai.com/weibo/2020_hug_org.png",
+    "苦涩": "https://img.koobai.com/weibo/2021_bitter_org.png",
+    "666": "https://img.koobai.com/weibo/2022_666_org.png",
+    "送花花": "https://img.koobai.com/weibo/2022_Flowers_org.png",
+    "干饭人": "https://img.koobai.com/weibo/2022_Foodie_org.png",
+    "单身青蛙": "https://img.koobai.com/weibo/2022_SingleFrog_org.png",
+    "奋斗": "https://img.koobai.com/weibo/2022_Struggle_org.png",
+    "运动": "https://img.koobai.com/weibo/2022_Weightlifting_org.png",
+    "裂开": "https://img.koobai.com/weibo/202011_liekai_org.png",
+    "钱": "https://img.koobai.com/weibo/2018new_qian_org.png",
+    "亲亲": "https://img.koobai.com/weibo/2018new_qinqin_org.png",
+    "生病": "https://img.koobai.com/weibo/2018new_shengbing_org.png",
+    "摊手": "https://img.koobai.com/weibo/2018new_tanshou_org.png",
+    "衰": "https://img.koobai.com/weibo/2018new_shuai_org.png"
+  };
+
+  const emojiRegex = /:\[([^\]]+)\]/g;
+  const replacedContent = content.replace(emojiRegex, (_, emojiText) => {
+    const emojiImageUrl = emojiData[emojiText];
+    if (emojiImageUrl) {
+      const img = document.createElement('img');
+      img.src = emojiImageUrl;
+      img.alt = emojiText;
+      return img.outerHTML; // Return only the image element without the surrounding span
+    }
+    return `:[${emojiText}]`; // If the emoji text doesn't match any emojiData, preserve the original text
+  });
+
+  return replacedContent;
+}
+
+//表情实现
+let emojiSelectorVisible = false;
+let emojiSelector;
+
+biaoqing.addEventListener("click", async function (event) {
+  event.stopPropagation(); 
+  emojiSelectorVisible = !emojiSelectorVisible;
+  const memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
+  const memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+
+  if (emojiSelectorVisible && memosPath && memosOpenId) {
+    try {
+      emojiSelector = document.createElement('div');
+      emojiSelector.classList.add('emoji-selector');
+
+      const response = await fetch('/js/owo.json');
+      const data = await response.json();
+      const emojis = data.weibo.container;
+      const createEmojiItem = (emoji) => {
+        const emojiItem = document.createElement('div');
+        emojiItem.classList.add('emoji-item');
+
+        const icon = new DOMParser().parseFromString(emoji.icon, 'text/html').body.firstChild;
+        emojiItem.appendChild(icon);
+        emojiItem.addEventListener('click', insertEmoji.bind(null, emoji.text));
+        return emojiItem;
+      };
+      emojis.forEach(emoji => {
+        const emojiItem = createEmojiItem(emoji);
+        emojiSelector.appendChild(emojiItem);
+      });
+      // 将表情下拉框插入到对应位置
+      const memosEditorTools = document.querySelector(".memos-editor-tools");
+      if (memosEditorTools) {
+        memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
+      }
+    } catch (error) {
+      console.error('Failed to fetch emojis data:', error);
+    }
+  } else {
+    emojiSelector?.remove();
+  }
+});
+function insertEmoji(emojiText) {
+  const inputBox = document.getElementById("input-box");
+  const selectionStart = inputBox.selectionStart;
+  const selectionEnd = inputBox.selectionEnd;
+
+  inputBox.value =
+    inputBox.value.substring(0, selectionStart) +
+    `:[${emojiText}]` +
+    inputBox.value.substring(selectionEnd);
+
+  inputBox.selectionStart = selectionStart + emojiText.length + 2;
+  inputBox.selectionEnd = inputBox.selectionStart;
 }

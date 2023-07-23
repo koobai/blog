@@ -102,12 +102,13 @@
   margin-bottom: 10px;
 }
 .gallery-thumbnail img{
-  width: 100%;
-  height: 170px;
+  width: 100% !important;
+  height: 170px !important;
   object-fit: cover;
   border-radius:4px;
   transition: transform 0.3s ease;
   cursor: zoom-in;
+  margin: 0 !important;
 }
 .resimg img:hover{
   transform: scale(1.03);
@@ -116,7 +117,7 @@
   grid-template-columns: repeat(3, 1fr); 
 }
 .grid-3 img,.grid-5 img,.grid-6 img,.grid-7 img,.grid-8 img,.grid-9 img{
-  height: 140px;
+  height: 140px !important;
 }
 .tag-span,.memos-index-tag {
   color: #999;
@@ -400,13 +401,13 @@ blockquote p{
 // 页面宽度小于700样式
 @media (max-width:700px){
   .resimg{
-    width: 100%;
+    width: 100% !important;
   }
   .gallery-thumbnail img{
-    height: 140px;
+    height: 140px !important;
   }
   .grid-3 img,.grid-5 img,.grid-6 img,.grid-7 img,.grid-8 img,.grid-9 img{
-    height: 100px;
+    height: 100px !important;
   }
   .resimg figure{
     margin-bottom: -8px;
@@ -416,17 +417,17 @@ blockquote p{
 //首页图片样式
 @media (min-width:700px){
   .memos_diaoyong .resimg{
-    width: 100%;
+    width: 100% !important;
     grid-template-columns: repeat(4, 1fr); 
   }
   .memos_diaoyong .gallery-thumbnail img{
-    height: 90px;
+    height: 90px !important;
   }
   .memos_diaoyong .grid-3,.memos_diaoyong .grid-5,.memos_diaoyong .grid-6,.memos_diaoyong .grid-7,.memos_diaoyong grid-8,.memos_diaoyong .grid-9{
     grid-template-columns: repeat(4, 1fr); 
   }
   .memos_diaoyong .grid-3 img,.memos_diaoyong .grid-5 img,.memos_diaoyong .grid-6 img,.memos_diaoyong .grid-7 img,.memos_diaoyong .grid-8 img,.memos_diaoyong .grid-9 img{
-    height: 80px;
+    height: 80px !important;
   }
   .memos_diaoyong .resimg figure{
     margin-bottom: -8px;
@@ -512,4 +513,37 @@ blockquote p{
 .cancel-edit-btn{
   border: 0.5px solid #201d1e;
 }
+//表情
+.emoji-item:hover{
+  background: #3a3a3a !important;
+}
+}
+
+//表情
+.emoji-selector{
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.emoji-item {
+  padding: 4px;
+  border-radius:4px;
+}
+.emoji-item:hover{
+  background: #ebebeb;
+}
+.emoji-item img{
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+.emoji-item span{
+  display: none;
+}
+.datacont img,.memos_diaoyong_info img{
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  margin-left: 2px;
 }
