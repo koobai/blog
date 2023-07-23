@@ -613,7 +613,7 @@ biaoqing.addEventListener("click", async function (event) {
       emojiSelector = document.createElement('div');
       emojiSelector.classList.add('emoji-selector');
 
-      const response = await fetch('/js/owo.json');
+      const response = await fetch('/suju/owo.json');
       const data = await response.json();
       const emojis = data.weibo.container;
       const createEmojiItem = (emoji) => {
