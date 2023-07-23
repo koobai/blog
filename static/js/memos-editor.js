@@ -5,7 +5,7 @@ var memosEditorCont = `
   <div class="memos-editor-body mb-3 p-3">
     <div class="memos-editor-inner animate__animated animate__fadeIn">
       <div class="memos-editor-content">
-        <textarea id="input-box" class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
       </div>
       <div class="memos-image-list d-flex flex-fill line-xl"></div>
       <div class="memos-editor-tools pt-3">
@@ -584,12 +584,11 @@ async function getEmojisData() {
 
 // 表情光标位置
 function insertEmoji(emojiText) {
-  const inputBox = document.getElementById("input-box");
-  const selectionStart = inputBox.selectionStart;
-  const newValue = `${inputBox.value.substring(0, selectionStart)}${emojiText}${inputBox.value.substring(inputBox.selectionEnd)}`;
-  inputBox.value = newValue;
-  inputBox.dispatchEvent(new Event('input'));
+  const selectionStart = memosTextarea.selectionStart;
+  const newValue = `${memosTextarea.value.substring(0, selectionStart)}${emojiText}${memosTextarea.value.substring(memosTextarea.selectionEnd)}`;
+  memosTextarea.value = newValue;
+  memosTextarea.dispatchEvent(new Event('input'));
   const newCursorPosition = selectionStart + emojiText.length;
-  inputBox.setSelectionRange(newCursorPosition, newCursorPosition);
-  inputBox.focus();
+  memosTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
+  memosTextarea.focus();
 }
