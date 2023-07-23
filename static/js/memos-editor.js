@@ -514,60 +514,73 @@ function deleteMemo(memoId) {
   }
 }
 
-//Emoji表情选择
+// Emoji表情选择
 
 let emojiSelectorVisible = false;
 let emojiSelector;
 let emojis = []; // 缓存表情数据
 
-biaoqing.addEventListener("click", async function (event) {
+// 页面加载时获取表情数据
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    emojis = await getEmojisData(); // 获取表情数据
+  } catch (error) {
+    console.error('Failed to fetch emojis data:', error);
+  }
+});
+
+// 表情选择器点击事件处理
+biaoqing.addEventListener("click", function (event) {
   event.stopPropagation();
   emojiSelectorVisible = !emojiSelectorVisible;
   const memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
   const memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
 
   if (emojiSelectorVisible && memosPath && memosOpenId) {
-    try {
-      if (!emojis.length) {
-        const response = await fetch('/suju/owo.json');
-        emojis = await response.json();
-      }
-
-      if (!emojiSelector) {
-        emojiSelector = document.createElement('div');
-        emojiSelector.classList.add('emoji-selector');
-
-        // 使用事件代理，将事件监听器添加到父元素上
-        emojiSelector.addEventListener('click', (event) => {
-          const target = event.target;
-          if (target.classList.contains('emoji-item')) {
-            insertEmoji(target.innerHTML); // 直接插入emoji图标
-          }
-        });
-      }
-
-      emojiSelector.innerHTML = ''; // 清空表情选择器内容
-
-      emojis.forEach(emoji => {
-        const emojiItem = document.createElement('div');
-        emojiItem.classList.add('emoji-item');
-        emojiItem.innerHTML = emoji.icon;
-        emojiItem.title = emoji.text;
-        emojiSelector.appendChild(emojiItem);
-      });
-
-      // 将表情下拉框插入到对应位置
-      const memosEditorTools = document.querySelector(".memos-editor-tools");
-      if (memosEditorTools) {
-        memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
-      }
-    } catch (error) {
-      console.error('Failed to fetch emojis data:', error);
-    }
+    displayEmojiSelector();
   } else {
     emojiSelector?.remove();
   }
 });
+
+// 显示表情选择器
+function displayEmojiSelector() {
+  if (!emojiSelector) {
+    emojiSelector = document.createElement('div');
+    emojiSelector.classList.add('emoji-selector');
+
+    // 使用事件代理，将事件监听器添加到父元素上
+    emojiSelector.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.classList.contains('emoji-item')) {
+        insertEmoji(target.innerHTML); // 直接插入emoji图标
+      }
+    });
+  }
+
+  emojiSelector.innerHTML = ''; // 清空表情选择器内容
+
+  emojis.forEach(emoji => {
+    const emojiItem = document.createElement('div');
+    emojiItem.classList.add('emoji-item');
+    emojiItem.innerHTML = emoji.icon;
+    emojiItem.title = emoji.text;
+    emojiSelector.appendChild(emojiItem);
+  });
+
+  // 将表情下拉框插入到对应位置
+  const memosEditorTools = document.querySelector(".memos-editor-tools");
+  if (memosEditorTools) {
+    memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
+  }
+}
+
+// 获取json文件中的数据
+async function getEmojisData() {
+  const response = await fetch('/suju/owo.json');
+  const data = await response.json();
+  return data.Emoji.container;
+}
 
 // 表情光标位置
 function insertEmoji(emojiText) {
