@@ -87,6 +87,10 @@
   color: #999;
   font-family: var(--font-family-code);
 }
+.movie-laiz a{
+  color: #999;
+  margin-left: 6px;
+}
 
 // 影视页面
 .fIuTG{
@@ -252,7 +256,7 @@ color: var(--text-highlight-color);
 .movie-index{
   background: var(--background-dark-color);
 }
-.type-index-left,.type-index-right a,.movie-content-right-4{
+.type-index-left,.type-index-right a,.movie-content-right-4,.movie-laiz a {
   color: #666;
 }
 .movie-index:hover .type-index-right a {
