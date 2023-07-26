@@ -1807,7 +1807,8 @@ img[atk-emoticon] {
 .memos_diaoyong_info p {
   font-size: 16px;
   color: var(--text-content-color);
-  line-height: 1.6; }
+  line-height: 1.6;
+  margin: 0; }
 
 #bber, .memos-header, .bb-load {
   max-width: 800px;
@@ -1836,7 +1837,7 @@ img[atk-emoticon] {
   width: 60%;
   grid-template-columns: repeat(2, 1fr);
   margin-top: 10px;
-  margin-bottom: 10px; }
+  margin-bottom: 14px; }
 
 .gallery-thumbnail img {
   width: 100% !important;
