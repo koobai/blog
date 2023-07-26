@@ -1585,6 +1585,10 @@ img[atk-emoticon] {
   color: #999;
   font-family: var(--font-family-code); }
 
+.movie-laiz a {
+  color: #999;
+  margin-left: 6px; }
+
 .fIuTG {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -1726,7 +1730,7 @@ img[atk-emoticon] {
     color: var(--text-highlight-color) !important; }
   .movie-index {
     background: var(--background-dark-color); }
-  .type-index-left, .type-index-right a, .movie-content-right-4 {
+  .type-index-left, .type-index-right a, .movie-content-right-4, .movie-laiz a {
     color: #666; }
   .movie-index:hover .type-index-right a {
     color: #c0c0c0; }
