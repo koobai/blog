@@ -1,0 +1,29 @@
+# action.yml
+name: 'UpYun Deployer'
+author: 'her-cat'
+description: 'deploy your site to upyun'
+inputs:
+  bucket:
+    description: 'The service name you are using on upyun'
+    required: true
+  operator:
+    description: "Your operator's account on upyun"
+    required: true
+  password:
+    description: "Your operator's password on upyun"
+    required: true
+  dir:
+    description: 'The directory where the site is located'
+    required: false
+    default: '.'
+outputs:
+  output: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.bucket }}
+    - ${{ inputs.operator }}
+    - ${{ inputs.password }}
+    - ${{ inputs.dir }}
