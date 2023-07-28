@@ -1,12 +1,12 @@
 {
     "good": [
         {
-            "image": "https://img.koobai.com/app/picgo.webp",
-            "title": "PicGo",
+            "image": "https://img.koobai.com/app/upic.webp",
+            "title": "uPic",
             "info": "快速上传图片资源到各大存储平台，如阿里云、腾讯云、又拍云等.",
             "macos": "macOS",
-            "kaiyuan": "开源",
-            "link": "https://github.com/Molunerfinn/PicGo"
+            "shoufei": "付费",
+            "link": "https://github.com/gee1k/uPic"
         },
         {
             "image": "https://img.koobai.com/app/chatgptios.webp",
