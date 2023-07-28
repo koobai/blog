@@ -42,13 +42,14 @@
 .summary-title{
   font-family:var(--font-family-title);
   font-size: 20px;
-  margin-top: 10px;
+  margin-top: 6px;
+  line-height: 1.6;
 }
 .summary-description{
   font-size: 16px;
   line-height:1.6;
   color: #666;
-  margin-top: 10px;
+  margin-top: 6px;
   text-align: justify;
   overflow : hidden;
   text-overflow: ellipsis;
