@@ -419,14 +419,14 @@ ul {
 
 .summary-tag-right {
   flex-shrink: 0;
-  width: 16px;
   grid-column: 2; }
 
-.summary-tag-right a {
-  color: #c0c0c0; }
+.summary-tag-right svg {
+  fill: #c0c0c0;
+  width: 14px; }
 
-.summary-nrong:hover .summary-tag-right a {
-  color: #666; }
+.summary-nrong:hover .summary-tag-right svg {
+  fill: #666; }
 
 .summary-tag a {
   font-size: 16px;
@@ -487,10 +487,12 @@ ul {
 @media (prefers-color-scheme: dark) {
   .summary-nrong {
     background: var(--background-dark-color); }
-  .summary-tag-right a, .summary-tag a {
+  .summary-tag-right svg {
+    fill: #666; }
+  .summary-nrong:hover .summary-tag-right svg {
+    fill: #c0c0c0; }
+  .summary-tag a {
     color: #666; }
-  .summary-nrong:hover .summary-tag-right a {
-    color: #c0c0c0; }
   .summary-description {
     color: #999; }
   .read-more a, .list-more a {
