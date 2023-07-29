@@ -1,6 +1,14 @@
 {
     "good": [
         {
+            "image": "https://img.koobai.com/app/optimage.webp",
+            "title": "Optimage",
+            "info": "图片压缩软件，支持全格式，每天前 25 张免费。博客大部分图片都经过它的手，推荐。",
+            "macos": "macOS",
+            "shoufei": "付费",
+            "link": "https://optimage.app/"
+        },
+        {
             "image": "https://img.koobai.com/app/upic.webp",
             "title": "uPic",
             "info": "快速上传图片资源到各大存储平台，如阿里云、腾讯云、又拍云等.",
