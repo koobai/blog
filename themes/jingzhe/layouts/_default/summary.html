@@ -15,6 +15,9 @@
   <script>
     document.write(formatDate({{ .Date.Unix }})); 
   </script>
+  <span class="movie-laiz">
+    <a href="/posts">来自博文</a>
+</span>
 </div>
   <div class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
   <div class="summary-description">{{ .Params.description }}</div>
