@@ -11,7 +11,7 @@
         {
             "image": "https://img.koobai.com/app/upic.webp",
             "title": "uPic",
-            "info": "快速上传图片资源到各大存储平台，如阿里云、腾讯云、又拍云等.",
+            "info": "快速上传图片资源到各大存储平台，如腾讯云、又拍云、Github 等等。同类型开源的有 PicGO。",
             "macos": "macOS",
             "shoufei": "付费",
             "link": "https://github.com/gee1k/uPic"
