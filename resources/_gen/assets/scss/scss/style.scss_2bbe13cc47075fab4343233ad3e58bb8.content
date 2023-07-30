@@ -1840,7 +1840,7 @@ img[atk-emoticon] {
   width: 60%;
   grid-template-columns: repeat(2, 1fr);
   margin-top: 10px;
-  margin-bottom: 14px; }
+  margin-bottom: 16px; }
 
 .gallery-thumbnail img {
   width: 100% !important;
