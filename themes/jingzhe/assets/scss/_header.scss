@@ -18,12 +18,7 @@
   display: flex;
   margin: 0 auto;
   max-width: 1200px;
-  padding: 20px;
-  opacity: 0.5;
-  transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.header:hover{
-  opacity: 1;
+  padding: 25px 20px 25px 20px;
 }
 .header-logo img {
   width: 32px;
