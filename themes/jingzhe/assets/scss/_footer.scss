@@ -1,5 +1,5 @@
 .footer-background{
-  background: #000;
+  background: #FFF;
   margin-left: calc(50% - 50vw);
   width: 100vw;
   margin-top: 40px;
@@ -23,27 +23,22 @@
     display: flex;
   }
 .footer-info {
-  width: 80%;;
+  width: 80%;
 }
 .footer-info, .footer-info a{
   font-size: 12px;
   line-height: 1.8em;
-  color: #dbdbdb;
+  color: #a7a7a7;
   }
 
-.footer-info img{
-  vertical-align: middle;
-  width: 16px;
-  height: 16px;
-  margin-top: -2px;
-}
 .githuab {
   margin-left: auto;
 }
 .githuab svg{
   width: 16px;
-  fill: #dbdbdb;
+  fill: #a8a8a8;
   vertical-align: middle;
+  margin-top: -2px;
 }
 #gotop {
   display: none; /* Hidden by default */
@@ -71,21 +66,19 @@
   left: 50%; /* 将图片的左侧对齐容器的中间位置 */
   transform: translate(-50%, -50%); 
 }
-.youpaiyun img{
-  height: 14px;
-  width: 45px;
-  margin: -3px 3px 0 4px;
+.youpaiyun {
+  margin: 0 4px 0 4px;
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a{
-  color: #999;
+  color: #666;
 }
 .gotop {
     background: #999;
   }
 .githuab svg{
-  fill: #999;
+  fill: #666;
 }
 .footer-background{
   background: #1A1718;
@@ -93,8 +86,8 @@
   box-sizing: border-box;
   }
 }
-// 页面宽度小于1050px样式
-@media (max-width:1100px){
+// 页面宽度小于1200px样式
+@media (max-width:1200px){
   .gotop_hide{
     display:none; 
   }
