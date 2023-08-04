@@ -191,13 +191,14 @@ function updateHTMl(data){
               <span id="ArtalkCount" data-page-key="/m/${memo_id}" class="comment-s"></span>
             </a>
           </div>
+          <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;❤️,red-heart;"></emoji-reaction></div>
         </div>
         <div class="datacont" view-image>${bbContREG}</div>
         <div class="memos_diaoyong_top">
           <div class="memos_diaoyong_from">
             @ <a href="${memos}m/${memo_id}" target="_blank">koobai</a>
           </div>
-          <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>      
+          <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div> 
         ${hasLogin == 0 ? '' : `
         <div class="memos-edit">
          <div class="memos-menu">...</div>
