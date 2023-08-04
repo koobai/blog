@@ -51,9 +51,6 @@
 .talks_comments a{
   cursor:pointer;
 }
-.memos_diaoyong:hover .talks_comments svg ,.bb-list-li:hover .talks_comments svg{
-  fill: #666;
-}
 .memos_diaoyong_top{
   margin-top: 10px;
   display: flex;
@@ -365,8 +362,8 @@ blockquote p{
   display: inline-block;
 }
 .memos-menu{
-  margin-left: 50px;
-  color: #FFF;
+  margin-left: 40px;
+  color: #fff;
 }
 .memos-menu-d {
   width: 60px;
@@ -460,8 +457,8 @@ blockquote p{
 .talks_comments svg {
   fill: #666;
 }
-.memos_diaoyong:hover .talks_comments svg,.bb-list-li:hover .talks_comments svg{
-  fill: #c0c0c0;
+.reactions {
+  --start-smile-svg-fill-color: #666 !important;
 }
 pre,blockquote p{
   background: #2c2829;
@@ -536,4 +533,27 @@ blockquote p{
 .emoji-item:hover{
   background: #ebebeb;
   border-radius:4px;
+}
+
+// memoslike
+.memos-zan{
+  display: flex;
+  font-size: 14px;
+  color: #999;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-top: 1px;
+}
+.reactions {
+  --start-smile-border-color: transparent;
+  --start-smile-border-color-hover: transparent;
+  --start-smile-bg-color: transparent;
+  --start-smile-svg-fill-color: #c0c0c0;
+}
+.reaction-available-emoji {
+  font-size: 40px !important;
+}
+.reaction-available-popup{
+  font-size: 4rem !important;
 }
