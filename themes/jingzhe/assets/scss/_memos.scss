@@ -538,10 +538,7 @@ blockquote p{
 // memoslike
 .memos-zan{
   display: flex;
-  font-size: 14px;
-  color: #999;
   align-items: center;
-  justify-content: center;
   margin-left: 10px;
   margin-top: 1px;
 }
@@ -550,10 +547,4 @@ blockquote p{
   --start-smile-border-color-hover: transparent;
   --start-smile-bg-color: transparent;
   --start-smile-svg-fill-color: #c0c0c0;
-}
-.reaction-available-emoji {
-  font-size: 40px !important;
-}
-.reaction-available-popup{
-  font-size: 4rem !important;
 }
