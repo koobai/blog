@@ -34,6 +34,7 @@
 .talks_comments{
   margin-left: auto;
   padding-top: 7px;
+  margin-right: 10px;
 }
 .talks_comments a{
   display: flex;
@@ -135,6 +136,7 @@
 .memos-pl{
   display: flex;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 .bb-load button{
   border: none;
@@ -539,7 +541,6 @@ blockquote p{
 .memos-zan{
   display: flex;
   align-items: center;
-  margin-left: 10px;
   margin-top: 1px;
 }
 .reactions {
