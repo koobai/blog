@@ -75,10 +75,13 @@
   max-width: 800px;
   margin: auto;
 }
+.bb-list-li{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+}
 .bb-list-ul{
   display: grid;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 20px;
+  margin-top: 20px;
 }
 .datacont p{
   font-size:18px;
@@ -479,6 +482,9 @@ blockquote p{
 }
 .memos_diaoyong_info blockquote p{
   color: #888 !important;
+}
+.bb-list-li,.memos-editor-body{
+  box-shadow: 2px 4px 16px rgba(0,0,0,.3);
 }
 //memos页发布唠叨
 .load-memos-editor,.memos-open-api-input{
