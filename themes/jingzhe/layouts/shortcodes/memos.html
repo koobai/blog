@@ -2,7 +2,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-  var bbUrl = "https://memos.koobai.com/api/v1/memo?creatorId=1&rowStatus=NORMAL&limit=4";
+  var bbUrl = "https://memos.koobai.com/api/v1/memo?creatorId=1&rowStatus=NORMAL&limit=2";
   fetch(bbUrl)
     .then(res => res.json())
     .then(resdata => {
@@ -94,7 +94,6 @@
       <div class="memos_diaoyong_info" view-image>${bbContREG}</div>
       <div class="memos_diaoyong_top">
               <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
-            
           </div>
   </li>`;
         }
