@@ -1767,25 +1767,29 @@ img[atk-emoticon] {
   margin-right: 8px; }
 
 .talks_comments {
-  margin-left: auto;
-  padding-top: 7px;
-  margin-right: 10px; }
+  margin-left: auto; }
 
 .talks_comments a {
   display: flex;
-  text-decoration: none; }
+  font-size: 14px;
+  color: #999;
+  text-decoration: none;
+  cursor: pointer; }
+
+.talks_comments a:hover {
+  text-decoration: underline; }
 
 .comment-s {
-  margin-left: 4px;
+  margin-right: 4px;
   color: #999;
   font-size: 14px; }
 
 .talks_comments svg {
-  width: 16px;
-  fill: #c0c0c0; }
-
-.talks_comments a {
-  cursor: pointer; }
+  fill: #c0c0c0;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  margin-top: 1.5px; }
 
 .memos_diaoyong_top {
   margin-top: 10px;
@@ -1834,7 +1838,7 @@ img[atk-emoticon] {
   width: 60%;
   grid-template-columns: repeat(2, 1fr);
   margin-top: 10px;
-  margin-bottom: 16px; }
+  margin-bottom: 20px; }
 
 .gallery-thumbnail img {
   width: 100% !important;
@@ -1867,13 +1871,16 @@ img[atk-emoticon] {
 .tag-span {
   display: inline-block;
   /* 根据padding宽度自动调整 */
-  padding: 6px;
-  margin-right: 8px; }
+  padding: 4px 6px 4px 6px;
+  margin-left: 10px; }
+
+.memos_diaoyong_tag {
+  margin-left: auto; }
 
 .memos-pl {
   display: flex;
   margin-bottom: 15px;
-  flex-wrap: wrap; }
+  align-items: center; }
 
 .bb-load button {
   border: none;
@@ -2094,9 +2101,9 @@ blockquote p {
   list-style-type: none; }
 
 .memos-edit {
-  margin-left: auto;
   position: relative;
-  display: inline-block; }
+  display: inline-block;
+  margin-left: auto; }
 
 .memos-menu {
   margin-left: 40px;
@@ -2105,7 +2112,7 @@ blockquote p {
 .memos-menu-d {
   width: 60px;
   position: absolute;
-  top: -60px;
+  top: -10px;
   right: -10px;
   background-color: #fff;
   padding: 8px 0 8px 0;
@@ -2166,14 +2173,17 @@ blockquote p {
     background: var(--background-dark-color) !important; }
   .memos_diaoyong_from a {
     color: #999; }
-  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_from {
+  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_from, .talks_comments a, .comment-s {
     color: #666; }
   .memos_diaoyong_info p, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
   .talks_comments svg {
     fill: #666; }
   .reactions {
-    --start-smile-svg-fill-color: #666 !important; }
+    --start-smile-svg-fill-color: #666 !important;
+    --start-smile-border-color: #393939;
+    --start-smile-border-color-hover:#535353 !important;
+    --start-smile-bg-color:transparent; }
   pre, blockquote p {
     background: #2c2829; }
   pre code {
@@ -2230,16 +2240,9 @@ blockquote p {
   background: #ebebeb;
   border-radius: 4px; }
 
-.memos-zan {
-  display: flex;
-  align-items: center;
-  margin-top: 1px; }
-
 .reactions {
-  --start-smile-border-color: transparent;
-  --start-smile-border-color-hover: transparent;
-  --start-smile-bg-color: transparent;
-  --start-smile-svg-fill-color: #c0c0c0; }
+  --start-smile-svg-fill-color: #999;
+  --start-smile-border-color-hover:#afafaf; }
 
 .photo-about, .photo-home {
   display: grid;
