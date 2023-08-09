@@ -68,9 +68,11 @@
   color: #999!important;
 }
 .atk-send-btn {
-  background: var(--text-highlight-color)!important;
   padding: 0 20px!important;
   width: auto !important;
+  background: transparent !important;
+  border: 0.5px solid #dadada !important;
+  color: var(--text-highlight-color) !important;
 }
 .atk-send-btn:hover {
   opacity:0.8
@@ -179,9 +181,7 @@ img[atk-emoticon] {
   color: var(--text-content-dark-color)!important;
 }
 .atk-send-btn {
-  color: var(--text-highlight-color)!important;
-  background: #1A1718!important;
-  font-weight: bold;
+  border: solid #454545 0.5px !important;
 }
 .atk-pinned-badge {
   color: var(--text-content-dark-color)!important;
