@@ -1868,7 +1868,7 @@ img[atk-emoticon] {
   padding: 4px 6px 4px 6px;
   margin-right: 8px;
   color: #999;
-  background: #eeeeee;
+  background: #f2f2f2;
   font-size: 14px;
   border-radius: 4px;
   vertical-align: middle; }
