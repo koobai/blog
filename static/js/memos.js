@@ -141,10 +141,10 @@ function updateHTMl(data){
       if (tagArr) {
         memosTag = tagArr.map(function(tag) {
           var tagText = String(tag).replace(/[#]/g, '');
-          return '<div class="tag-span"># ' + tagText + '</div>';
+          return '<div class="memos-tag-dg"># ' + tagText + '</div>';
         }).join('');
       } else {
-        memosTag = '<div class="tag-span"># 日常</div>';
+        memosTag = '<div class="memos-tag-dg"># 日常</div>';
       }
       
       
@@ -184,7 +184,6 @@ function updateHTMl(data){
       <li class="bb-list-li img-hide" id="${memo_id}">
         <div class="memos-pl">
         <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>
-        <!--${memosTag}-->
         ${hasLogin == 0 ? '' : `
         <div class="memos-edit">
          <div class="memos-menu">...</div>
@@ -196,6 +195,7 @@ function updateHTMl(data){
           </div>
         `}
         </div>
+        <div class="memos-tag-wz">${memosTag}</div>
         <div class="datacont" view-image>${bbContREG}</div>
         <div class="memos_diaoyong_top">
         <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>

@@ -1858,24 +1858,20 @@ img[atk-emoticon] {
 .grid-3 img, .grid-5 img, .grid-6 img, .grid-7 img, .grid-8 img, .grid-9 img {
   height: 140px !important; }
 
-.tag-span, .memos-index-tag {
-  color: #999;
-  background: #F4F4F4;
-  font-size: 14px;
-  border-radius: 4px;
-  vertical-align: middle; }
+.memos-tag-wz {
+  float: left;
+  margin-top: 4px; }
 
-.memos-index-tag {
-  padding: 6px; }
-
-.tag-span {
+.memos-tag-dg {
   display: inline-block;
   /* 根据padding宽度自动调整 */
   padding: 4px 6px 4px 6px;
-  margin-left: 10px; }
-
-.memos_diaoyong_tag {
-  margin-left: auto; }
+  margin-right: 8px;
+  color: #999;
+  background: #eeeeee;
+  font-size: 14px;
+  border-radius: 4px;
+  vertical-align: middle; }
 
 .memos-pl {
   display: flex;
@@ -2165,7 +2161,7 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .bb-timeline ul li {
     background: var(--background-dark-color) !important; }
-  .tag-span, .memos-index-tag {
+  .memos-tag-dg {
     background: #332E2F; }
   .bb-load button {
     background: var(--background-dark-color); }
