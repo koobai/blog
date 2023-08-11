@@ -21,7 +21,7 @@
   });
 
   for(var i=0;i < data.length;i++){
-      var memo_id = data[i].id; //评论调用
+     
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
@@ -92,9 +92,7 @@
               </div>
           </div>
       <div class="memos_diaoyong_info" view-image>${bbContREG}</div>
-      <div class="memos_diaoyong_top">
-              <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
-          </div>
+   
   </li>`;
         }
 
