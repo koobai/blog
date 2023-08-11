@@ -21,7 +21,7 @@
   });
 
   for(var i=0;i < data.length;i++){
-     
+      var memo_id = data[i].id; //评论调用
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
@@ -92,7 +92,7 @@
               </div>
           </div>
       <div class="memos_diaoyong_info" view-image>${bbContREG}</div>
-   
+
   </li>`;
         }
 
