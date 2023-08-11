@@ -1893,7 +1893,8 @@ img[atk-emoticon] {
   margin-left: 10px;
   font-size: 16px !important;
   color: #666 !important;
-  background: #e5e5e5 !important; }
+  background: #e5e5e5 !important;
+  padding: 8px !important; }
 
 .memos-tag-sc svg {
   width: 16px;
