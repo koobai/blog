@@ -238,6 +238,13 @@ function getTagNow(e){
     document.querySelector(bbMemo.domId).innerHTML = ""
     if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove()
     updateHTMl(resdata)
+
+  //在未展开评论时，默认显示评论数
+  Artalk.loadCountWidget({
+    server: 'https://c.koobai.com/',
+    site: '空白唠叨', 
+    countEl: '#ArtalkCount'
+  });
   })
 }
 
