@@ -21,7 +21,7 @@
   });
 
   for(var i=0;i < data.length;i++){
-      let bbID = data[i].id
+      var memo_id = data[i].id; //评论调用
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
@@ -93,7 +93,7 @@
           </div>
       <div class="memos_diaoyong_info" view-image>${bbContREG}</div>
       <div class="memos_diaoyong_top">
-              <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${bbID}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
+              <div class="memos-zan"><emoji-reaction class="reactions" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
           </div>
   </li>`;
         }
@@ -102,7 +102,7 @@
         var bbBefore = "<ul class='momos-sswrap'>";
         var bbAfter = "</ul>"; 
         resultAll = bbBefore + result + bbAfter;
-        bbDom.insertAdjacentHTML('beforeend', resultAll);
+        bbDom.innerHTML = resultAll;
 
         animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
       });
