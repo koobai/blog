@@ -34,20 +34,10 @@ h1, h2, h3 {
   margin-bottom: 20px; }
 
 .header-background {
-  position: sticky;
-  top: 0px;
   background-color: rgba(255, 255, 255, 0.9);
   margin-left: calc(50% - 50vw);
   width: 100vw;
-  z-index: 400;
-  border-bottom: solid #dadada 0.5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.3s ease-in-out;
-  transform: translateY(0); }
-
-.header-background.hidden {
-  transform: translateY(-100%); }
+  border-bottom: solid #dadada 0.5px; }
 
 .header {
   display: flex;
@@ -1740,7 +1730,7 @@ img[atk-emoticon] {
   grid-gap: 10px;
   /* 中间空10px间距 */ }
 
-.memos_diaoyong, .bb-list-li, .memos-random-background {
+.memos_diaoyong, .bb-list-li, .memos-random-background, #tag-list-all {
   border-radius: 4px;
   background: var(--bankuai-color) !important;
   padding: 20px;
@@ -1812,7 +1802,7 @@ img[atk-emoticon] {
   max-width: 800px;
   margin: auto; }
 
-.bb-list-li {
+.bb-list-li, #tag-list-all {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
 .bb-list-ul {
@@ -1862,7 +1852,7 @@ img[atk-emoticon] {
   float: left;
   margin-top: 4px; }
 
-.memos-tag-dg {
+.memos-tag-dg, .memos-tag-sc {
   display: inline-block;
   /* 根据padding宽度自动调整 */
   padding: 4px 6px 4px 6px;
@@ -1871,7 +1861,51 @@ img[atk-emoticon] {
   background: #f2f2f2;
   font-size: 14px;
   border-radius: 4px;
-  vertical-align: middle; }
+  vertical-align: middle;
+  cursor: pointer; }
+
+#tag-list, #tag-list-all {
+  max-width: 800px;
+  margin: auto; }
+
+#tag-list-all {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap; }
+
+.memos-tag-all {
+  padding: 6px;
+  color: #999;
+  background: #f2f2f2;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer; }
+
+.memos-tag-sc-2 {
+  align-items: center;
+  display: flex;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #999; }
+
+.memos-tag-sc {
+  margin-left: 10px;
+  font-size: 16px !important;
+  color: #666 !important;
+  background: #e5e5e5 !important; }
+
+.memos-tag-sc svg {
+  width: 16px;
+  margin-left: 6px;
+  vertical-align: middle;
+  margin-top: -4px; }
+
+.memos-tag-sc:hover {
+  text-decoration: line-through; }
+
+.memos-tag-dg:hover, .memos-tag-all:hover {
+  text-decoration: underline; }
 
 .memos-pl {
   display: flex;
@@ -2161,11 +2195,16 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .bb-timeline ul li {
     background: var(--background-dark-color) !important; }
-  .memos-tag-dg {
+  .memos-tag-dg, .memos-tag-sc, .memos-tag-all {
     background: #332E2F; }
+  .memos-tag-sc-2 {
+    color: #666; }
+  .memos-tag-sc {
+    color: #999 !important;
+    background: #332E2F !important; }
   .bb-load button {
     background: var(--background-dark-color); }
-  .memos_diaoyong, .bb-list-li, .memos-random-background {
+  .memos_diaoyong, .bb-list-li, .memos-random-background, #tag-list-all {
     background: var(--background-dark-color) !important; }
   .memos_diaoyong_from a {
     color: #999; }
@@ -2193,7 +2232,7 @@ blockquote p {
     color: #888 !important; }
   .memos_diaoyong_info blockquote p {
     color: #888 !important; }
-  .bb-list-li, .memos-editor-body {
+  .bb-list-li, .memos-editor-body, #tag-list-all {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3); }
   .load-memos-editor, .memos-open-api-input {
     color: var(--text-content-dark-color) !important; }

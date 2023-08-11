@@ -52,6 +52,9 @@ btn.addEventListener("click", function () {
 }
 function getFirstList(){
 bbDom.insertAdjacentHTML('afterend', load);
+let tagHtml = `<div id="tag-list-all"></div><div id="tag-list"></div>` // TAG筛选
+bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
+showTaglist(); // 显示所有 TAG
 var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
 fetch(bbUrl).then(res => res.json()).then( resdata =>{
   updateHTMl(resdata);
@@ -141,13 +144,11 @@ function updateHTMl(data){
       if (tagArr) {
         memosTag = tagArr.map(function(tag) {
           var tagText = String(tag).replace(/[#]/g, '');
-          return '<div class="memos-tag-dg"># ' + tagText + '</div>';
+          return '<div class="memos-tag-dg" onclick="getTagNow(this)"># ' + tagText + '</div>';
         }).join('');
       } else {
         memosTag = '<div class="memos-tag-dg"># 日常</div>';
       }
-      
-      
       
       //解析内置资源文件
       if(data[i].resourceList && data[i].resourceList.length > 0){
@@ -218,7 +219,40 @@ function updateHTMl(data){
 
   animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
 
-  document.querySelector('button.button-load').textContent = '看更多 ...';
+  if(document.querySelector('button.button-load')) document.querySelector('button.button-load').textContent = '看更多 ...';
+}
+
+// TAG 筛选
+function getTagNow(e){
+  //console.log(e.innerHTML)
+  let tagName = e.innerHTML.replace('# ','')
+  let domClass = document.getElementById("bber")
+  window.scrollTo({
+    top: domClass.offsetTop - 30,
+    behavior: "smooth"
+  });
+  let tagHtmlNow = `<div class='memos-tag-sc-2' onclick='javascript:location.reload();'><div class='memos-tag-sc-1' >标签筛选:</div><div class='memos-tag-sc' >${e.innerHTML}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></div></div>`
+  document.querySelector('#tag-list').innerHTML = tagHtmlNow
+  let bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&tag="+tagName+"&limit=20";
+  fetch(bbUrl).then(res => res.json()).then( resdata =>{
+    document.querySelector(bbMemo.domId).innerHTML = ""
+    if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove()
+    updateHTMl(resdata)
+  })
+}
+
+// 显示所有 TAG
+function showTaglist(){
+  let bbUrl = 'https://memostag.yangle.vip/'
+  let tagListDom = ""
+  fetch(bbUrl).then(res => res.json()).then( resdata =>{
+    for(let i=0;i < resdata.length;i++){
+      tagListDom += `<div class="memos-tag-all img-hide" onclick='getTagNow(this)'># ${resdata[i]}</div>`
+    }
+    document.querySelector('#tag-list-all').innerHTML = tagListDom
+
+    animateSummaries(); // 加载完毕后执行滑动加载动画
+  })
 }
 
 //增加memos评论

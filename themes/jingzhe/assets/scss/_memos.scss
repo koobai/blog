@@ -5,7 +5,7 @@
 	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	grid-gap: 10px; /* 中间空10px间距 */
 }
-.memos_diaoyong,.bb-list-li,.memos-random-background{
+.memos_diaoyong,.bb-list-li,.memos-random-background,#tag-list-all{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:20px; 
@@ -79,7 +79,7 @@
   max-width: 800px;
   margin: auto;
 }
-.bb-list-li{
+.bb-list-li,#tag-list-all{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .bb-list-ul{
@@ -129,7 +129,7 @@
   float: left;
   margin-top: 4px;
 }
-.memos-tag-dg{
+.memos-tag-dg,.memos-tag-sc{
   display: inline-block; /* 根据padding宽度自动调整 */
   padding: 4px 6px 4px 6px;
   margin-right: 8px;
@@ -138,6 +138,50 @@
   font-size: 14px;
   border-radius:4px;
   vertical-align: middle;
+  cursor: pointer;
+}
+#tag-list,#tag-list-all {
+  max-width: 800px;
+  margin: auto;
+}
+#tag-list-all{
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.memos-tag-all{
+  padding: 6px;
+  color: #999;
+  background: #f2f2f2;
+  font-size: 16px;
+  border-radius:4px;
+  cursor: pointer;
+}
+.memos-tag-sc-2{
+  align-items: center;
+  display: flex;
+  margin-top: 20px; 
+  font-size: 14px;
+  color: #999;
+}
+.memos-tag-sc{
+  margin-left: 10px;
+  font-size: 16px !important;
+  color: #666 !important;
+  background: #e5e5e5 !important;
+}
+.memos-tag-sc svg{
+  width: 16px;
+  margin-left: 6px;
+  vertical-align: middle;
+  margin-top: -4px;
+}
+.memos-tag-sc:hover{
+  text-decoration: line-through;
+}
+.memos-tag-dg:hover,.memos-tag-all:hover{
+  text-decoration: underline;
 }
 .memos-pl{
   display: flex;
@@ -444,13 +488,20 @@ blockquote p{
 .bb-timeline ul li {
   background: var(--background-dark-color) !important;
 }
-.memos-tag-dg{
+.memos-tag-dg,.memos-tag-sc,.memos-tag-all{
   background: #332E2F;
+}
+.memos-tag-sc-2{
+  color: #666;
+}
+.memos-tag-sc{
+  color: #999 !important;
+  background: #332E2F !important;
 }
 .bb-load button{
   background:var(--background-dark-color);
 }
-.memos_diaoyong,.bb-list-li,.memos-random-background{
+.memos_diaoyong,.bb-list-li,.memos-random-background,#tag-list-all{
   background: var(--background-dark-color) !important;
 }
 .memos_diaoyong_from a{
@@ -489,7 +540,7 @@ blockquote p{
 .memos_diaoyong_info blockquote p{
   color: #888 !important;
 }
-.bb-list-li,.memos-editor-body{
+.bb-list-li,.memos-editor-body,#tag-list-all{
   box-shadow: 2px 4px 16px rgba(0,0,0,.3);
 }
 //memos页发布唠叨
@@ -554,4 +605,3 @@ blockquote p{
   --start-smile-svg-fill-color: #999;
   --start-smile-border-color-hover:#afafaf;
 }
-

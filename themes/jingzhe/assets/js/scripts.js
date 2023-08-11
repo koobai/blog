@@ -16,9 +16,6 @@ window.onscroll=function(){(document.body.scrollTop>500||document.documentElemen
 // 灯箱调用(首页顶部/Memos页面)
 window.ViewImage && ViewImage.init('.photo-home a, .content_zhengwen img, .top-img,.photo-about a,.gallery-thumbnail img');
 
-// 导航自动隐藏及显示
-const e=document.querySelector(".header-background"),t=window.scrollY,a=200,n=100;let o=0,r=t;window.addEventListener("scroll",()=>{const t=window.scrollY;t>r&&t>a?e.classList.add("hidden"):t<r&&(o+=r-t,o>n&&(e.classList.remove("hidden"),o=0)),r=t})
-
 // 页面上滑加载动画
 function animateSummaries() {
   const articles = document.querySelectorAll('.img-hide');
