@@ -1,18 +1,8 @@
 .header-background{
-  position: sticky;
-  top: 0px;
   background-color: rgba(255, 255, 255, 0.9);
   margin-left: calc(50% - 50vw);
   width: 100vw;
-  z-index: 400;
   border-bottom:solid #dadada 0.5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.3s ease-in-out;
-  transform: translateY(0); 
-  }
-.header-background.hidden {
-  transform: translateY(-100%); 
   }
 .header {
   display: flex;
