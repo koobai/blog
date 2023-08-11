@@ -102,7 +102,7 @@
         var bbBefore = "<ul class='momos-sswrap'>";
         var bbAfter = "</ul>"; 
         resultAll = bbBefore + result + bbAfter;
-        bbDom.innerHTML = resultAll;
+        bbDom.insertAdjacentHTML('beforeend', resultAll);
 
         animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
       });
