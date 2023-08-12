@@ -52,7 +52,14 @@ btn.addEventListener("click", function () {
 }
 function getFirstList(){
 bbDom.insertAdjacentHTML('afterend', load);
-let tagHtml = `<div id="tag-list-all"></div><div id="tag-list"></div>` // TAG筛选
+let tagHtml = `<div class="memos-search-all">
+<div class="memos-search">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto opacity-30 dark:text-gray-200"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<input type="text" id="memos-search-input" placeholder="搜索唠叨..." onkeydown="searchMemoevent(event)">
+</div>
+<div id="tag-list-all"></div>
+</div>
+<div id="tag-list"></div>` // TAG筛选 memos搜索
 bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
 showTaglist(); // 显示所有 TAG
 var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
@@ -260,6 +267,43 @@ function showTaglist(){
 
     animateSummaries(); // 加载完毕后执行滑动加载动画
   })
+}
+
+// 搜索 Memos
+function searchMemoevent(event) {
+  if (event.key === "Enter") {
+      searchMemo();
+  }
+}
+
+function searchMemo() {
+  let searchText = document.querySelector('#memos-search-input').value;
+  let tagHtmlNow = `<div class='memos-tag-sc-2' onclick='javascript:location.reload();'><div class='memos-tag-sc-1' >关键词搜索:</div><div class='memos-tag-sc' >${searchText}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></div></div>`
+  document.querySelector('#tag-list').innerHTML = tagHtmlNow;
+  let bbUrl = memos + "api/v1/memo?creatorId=" + bbMemo.creatorId + "&content=" + searchText + "&limit=20";
+  fetchMemoDOM(bbUrl);
+}
+
+function fetchMemoDOM(bbUrl) {
+  fetch(bbUrl)
+    .then(res => res.json())
+    .then(resdata => {
+      let arrData = resdata || '';
+      if (resdata.data) {
+        arrData = resdata.data;
+      }
+      if (arrData.length > 0) {
+        // 清空旧的搜索结果和加载按钮
+        document.querySelector(bbMemo.domId).innerHTML = "";
+        if (document.querySelector("button.button-load")) {
+          document.querySelector("button.button-load").remove();
+        }
+        updateHTMl(resdata);
+      } else {
+        alert("搜不到，尝试换一个关键词");
+        setTimeout(() => location.reload(), 1000);
+      }
+    });
 }
 
 //增加memos评论
