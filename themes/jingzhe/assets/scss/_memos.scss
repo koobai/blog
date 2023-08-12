@@ -5,7 +5,7 @@
 	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	grid-gap: 10px; /* 中间空10px间距 */
 }
-.memos_diaoyong,.bb-list-li,.memos-random-background,#tag-list-all{
+.memos_diaoyong,.bb-list-li,.memos-random-background,.memos-search-all{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:20px; 
@@ -79,7 +79,7 @@
   max-width: 800px;
   margin: auto;
 }
-.bb-list-li,#tag-list-all{
+.bb-list-li,.memos-search-all{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .bb-list-ul{
@@ -140,7 +140,7 @@
   vertical-align: middle;
   cursor: pointer;
 }
-#tag-list,#tag-list-all {
+#tag-list,.memos-search-all {
   max-width: 800px;
   margin: auto;
 }
@@ -162,7 +162,7 @@
   align-items: center;
   display: flex;
   margin-top: 20px; 
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
 }
 .memos-tag-sc{
@@ -502,7 +502,7 @@ blockquote p{
 .bb-load button{
   background:var(--background-dark-color);
 }
-.memos_diaoyong,.bb-list-li,.memos-random-background,#tag-list-all{
+.memos_diaoyong,.bb-list-li,.memos-random-background,.memos-search-all{
   background: var(--background-dark-color) !important;
 }
 .memos_diaoyong_from a{
@@ -581,6 +581,19 @@ blockquote p{
 .emoji-item:hover{
   background: #3a3a3a !important;
 }
+// 搜索
+.memos-search {
+  border-bottom: 0.5px solid #3d3d3d !important;
+}
+#memos-search-input{
+  color: var(--text-content-dark-color) !important;
+}
+.memos-search ::placeholder {
+  color: #666 !important;
+}
+.memos-search svg{
+  color: #666 !important;
+}
 }
 
 //表情
@@ -605,4 +618,33 @@ blockquote p{
 .reactions {
   --start-smile-svg-fill-color: #999;
   --start-smile-border-color-hover:#afafaf;
+}
+
+// memos搜索
+.memos-search-all{
+  margin-top: 20px;
+}
+.memos-search {
+  border-bottom: 0.5px solid #dadada;
+  padding-bottom: 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+#memos-search-input{
+  border: transparent;
+  background: transparent;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+  outline: 0.5px solid transparent;
+  color: var(--text-content-color);
+  width: 100%;
+}
+.memos-search ::placeholder {
+  color: #b8b8b8;
+}
+.memos-search svg{
+  width: 20px;
+  color: #b8b8b8;
 }
