@@ -2233,7 +2233,7 @@ blockquote p {
     color: #888 !important; }
   .memos_diaoyong_info blockquote p {
     color: #888 !important; }
-  .bb-list-li, .memos-editor-body, #tag-list-all {
+  .bb-list-li, .memos-editor-body, .memos-search-all {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3); }
   .load-memos-editor, .memos-open-api-input {
     color: var(--text-content-dark-color) !important; }
