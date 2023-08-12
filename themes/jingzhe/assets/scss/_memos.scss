@@ -145,7 +145,7 @@
   margin: auto;
 }
 #tag-list-all{
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -625,8 +625,6 @@ blockquote p{
   margin-top: 20px;
 }
 .memos-search {
-  border-bottom: 0.5px solid #dadada;
-  padding-bottom: 5px;
   width: 100%;
   display: flex;
   align-items: center;
