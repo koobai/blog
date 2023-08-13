@@ -61,11 +61,12 @@
   display: flex;
   align-items: center;
 }
-.memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz a{
+.memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz{
   color: #999;
   font-size: 14px;
-  font-family: var(--font-family-code);
-  margin-right: 6px;
+}
+.memos_diaoyong_laiz a{
+  color: #999;
 }
 .memos_diaoyong_info p{
   font-size: 16px;
@@ -188,6 +189,7 @@
   display: flex;
   margin-bottom: 15px;
   align-items: center;
+  gap: 6px;
 }
 .bb-load button{
   border: none;
