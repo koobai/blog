@@ -7,7 +7,7 @@
 <div class="quanju">
   {{ range $goods.good}}
   <div class="bankuai img-hide">
-    <emoji-reaction class="reactions" reacttargetid="goods-{{ .title }}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction>
+    <emoji-reaction class="reactions" reacttargetid="goods-{{ .title }}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;❤️,love;😎,cool;"></emoji-reaction>
     <div class="duiqi img-hide"><img loading="lazy" decoding="async" src="{{ .image }}"></div>
     <div class="hardware_link">
       <a href="{{ .link }}" target="_blank"><div class="details">{{ .details }}</div></a>
