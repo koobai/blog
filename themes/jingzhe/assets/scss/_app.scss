@@ -27,7 +27,6 @@
   transition: transform 0.3s ease;
 }
 .appwenben{
-  overflow: hidden;
   padding-bottom: 8px;
 }
 .apptitle{
@@ -53,6 +52,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;//宽度显示不下自动换行
+  margin-left: auto;
 }
 .appnote-index{
   margin-bottom: 0;
@@ -102,6 +102,11 @@
   font-size: 18px;
   line-height: 1.6;
   margin-bottom: 10px;
+}
+
+.applike{
+  display: flex;
+  align-items: center;
 }
 
 // 夜间模式页面样式
