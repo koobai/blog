@@ -14,8 +14,7 @@
 .memos_diaoyong:hover,.bb-list-li:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
-.memos-zuoz{
-  display: flex;
+.memos-diaoyong-tag{
   margin-bottom: 10px;
 }
 .memos_diaoyong_from a{
@@ -60,6 +59,7 @@
   margin-top: 10px;
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 .memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz{
   color: #999;
