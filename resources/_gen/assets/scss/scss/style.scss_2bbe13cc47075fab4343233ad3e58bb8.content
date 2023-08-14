@@ -1758,7 +1758,7 @@ img[atk-emoticon] {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
 .memos-diaoyong-tag {
-  margin-bottom: 10px; }
+  margin-bottom: 20px; }
 
 .memos-diaoyong-tag .memos-tag-dg {
   cursor: auto; }
