@@ -17,21 +17,30 @@
 }
 
 /*文章页标签*/
+.single-biaoq{
+  margin-top: 30px;
+}
 .single-biaoq,.single-tag{
   display: flex;
   flex-wrap: wrap;//宽度显示不下自动换行
   gap: 10px;
+  align-items: center;
 }
 .page-time,.single-tag-c{
-    font-size: 16px; 
-    border-radius:4px;
-    background: #F2F2F2;
-    color:var(--text-content-color);
-    padding: 10px;
+  font-size: 16px; 
+  border-radius:4px;
+  background: #F2F2F2;
+  color:var(--text-content-color);
+  padding: 10px;
+  display: inline-block;
 }
 .single-tag-c a{
   color: var(--text-content-color);
 }
+.single-like{
+  margin-left: auto;
+}
+
 
 // 夜间模式文章页标签
 @media (prefers-color-scheme: dark) {

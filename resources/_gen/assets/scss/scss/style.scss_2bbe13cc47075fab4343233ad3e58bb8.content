@@ -1454,20 +1454,28 @@ img[atk-emoticon] {
   font-size: 14px; }
 
 /*文章页标签*/
+.single-biaoq {
+  margin-top: 30px; }
+
 .single-biaoq, .single-tag {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; }
+  gap: 10px;
+  align-items: center; }
 
 .page-time, .single-tag-c {
   font-size: 16px;
   border-radius: 4px;
   background: #F2F2F2;
   color: var(--text-content-color);
-  padding: 10px; }
+  padding: 10px;
+  display: inline-block; }
 
 .single-tag-c a {
   color: var(--text-content-color); }
+
+.single-like {
+  margin-left: auto; }
 
 @media (prefers-color-scheme: dark) {
   .page-time, .single-tag-c {

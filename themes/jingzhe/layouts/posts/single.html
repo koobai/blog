@@ -24,11 +24,11 @@
           {{ range . }}
      <div class="single-tag-c"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
           {{ end }}
+          {{ end }}
  </div>
-    </div>
-   
-      {{ end }}
-    </div>
+ <div class="single-like"><emoji-reaction class="reactions" reacttargetid="{{ .Slug }}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
+  </div> 
+ </div>
     <div class="archives_nrong" >
       {{ with .PrevInSection }}
         <div class="archives_one">
