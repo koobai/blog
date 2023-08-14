@@ -9,23 +9,23 @@
 <div class="appquanju img-hide">
 <div class="appimg"><img loading="lazy" decoding="async" src={{ .image }}> </div>
 <div class="appwenben">
+<div class="app-title-all">
 <div class="apptitle"><a href="{{ .link }}" target="_blank">{{ .title }}</a></div>
+<div class="appzhuangtai-right">
+  <a href="{{ .link }}" target="_blank"><div class="kaiyuan">{{ .kaiyuan }}</div></a>
+  <a href="{{ .link }}" target="_blank"><div class="shoufei">{{ .shoufei }}</div></a>
+  <a href="{{ .link }}" target="_blank"><div class="free">{{ .free }}</div></a>
+  </div>
+</div>
 <div class="appnote">{{ .info }}</div>
-
-<div class="applike">
-<emoji-reaction class="reactions" reacttargetid="app-{{ .title }}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;❤️,love;😎,cool;"></emoji-reaction>
 <div class="appzhuangtai">
 <div class="macos">{{ .macos }}</div>
 <div class="macos">{{ .ios }}</div>
 <div class="macos">{{ .tvos }}</div>
 <div class="macos">{{ .web }}</div>
-<div class="appzhuangtai-right">
-<a href="{{ .link }}" target="_blank"><div class="kaiyuan">{{ .kaiyuan }}</div></a>
-<a href="{{ .link }}" target="_blank"><div class="shoufei">{{ .shoufei }}</div></a>
-<a href="{{ .link }}" target="_blank"><div class="free">{{ .free }}</div></a>
+<emoji-reaction class="reactions" reacttargetid="app-{{ .title }}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;❤️,love;😎,cool;"></emoji-reaction>
 </div>
-</div>
-</div>
+
 </div>
 </div>
   {{ end }}
