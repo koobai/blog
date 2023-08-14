@@ -1113,7 +1113,6 @@ img[atk-emoticon] {
   transition: transform 0.3s ease; }
 
 .appwenben {
-  overflow: hidden;
   padding-bottom: 8px; }
 
 .apptitle {
@@ -1138,7 +1137,8 @@ img[atk-emoticon] {
 .appzhuangtai {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  margin-left: auto; }
 
 .appnote-index {
   margin-bottom: 0;
@@ -1187,6 +1187,10 @@ img[atk-emoticon] {
   font-size: 18px;
   line-height: 1.6;
   margin-bottom: 10px; }
+
+.applike {
+  display: flex;
+  align-items: center; }
 
 @media (prefers-color-scheme: dark) {
   .appquanju {
