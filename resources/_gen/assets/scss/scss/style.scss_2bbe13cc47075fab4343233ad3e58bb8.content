@@ -1190,7 +1190,9 @@ img[atk-emoticon] {
 
 .applike {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px; }
 
 @media (prefers-color-scheme: dark) {
   .appquanju {
@@ -1216,6 +1218,10 @@ img[atk-emoticon] {
 
 .app-index:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
+
+@media (max-width: 800px) {
+  .appzhuangtai {
+    margin-left: 0; } }
 
 .quanju {
   display: grid;

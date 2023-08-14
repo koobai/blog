@@ -107,6 +107,8 @@
 .applike{
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 // 夜间模式页面样式
@@ -126,7 +128,6 @@
 }
 }
 
-
 // 首页app调用
 .app-index{
   margin-bottom: 10px;
@@ -142,3 +143,10 @@
 .app-index:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
+
+// 页面宽度小于800样式
+@media (max-width:800px){
+  .appzhuangtai{
+    margin-left:0;
+  }
+  }
