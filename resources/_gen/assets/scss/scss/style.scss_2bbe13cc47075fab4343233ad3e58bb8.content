@@ -1805,7 +1805,7 @@ img[atk-emoticon] {
   margin-top: 1.5px; }
 
 .memos_diaoyong_top {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
   align-items: center;
   gap: 6px; }
