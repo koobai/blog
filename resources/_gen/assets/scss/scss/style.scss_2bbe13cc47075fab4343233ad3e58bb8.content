@@ -1085,7 +1085,7 @@ img[atk-emoticon] {
 .appdquanjudiv {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 10px;
+  grid-gap: 15px;
   /* 中间空10px间距 */ }
 
 .appquanju, .app-index {
@@ -1112,12 +1112,8 @@ img[atk-emoticon] {
   width: 90px;
   transition: transform 0.3s ease; }
 
-.appwenben {
-  padding-bottom: 8px; }
-
 .apptitle {
   font-size: 18px;
-  margin-bottom: 8px;
   font-family: var(--font-family-title); }
 
 .appnote, .appnote-index {
@@ -1131,20 +1127,26 @@ img[atk-emoticon] {
   -webkit-box-orient: vertical; }
 
 .appnote {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   -webkit-line-clamp: 3; }
 
-.appzhuangtai {
+.app-title-all {
+  margin-bottom: 8px; }
+
+.appzhuangtai-right {
+  margin-left: auto; }
+
+.appzhuangtai, .app-title-all {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-left: auto; }
+  align-items: center; }
 
 .appnote-index {
   margin-bottom: 0;
   -webkit-line-clamp: 2; }
 
-.macos, .kaiyuan, .shoufei, .free {
+.macos {
   padding: 0 10px;
   text-align: center;
   font-size: 12px;
@@ -1161,6 +1163,11 @@ img[atk-emoticon] {
 
 .macos:empty, .kaiyuan:empty, .shoufei:empty, .free:empty {
   display: none; }
+
+.kaiyuan, .shoufei, .free {
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 20px; }
 
 .kaiyuan {
   color: #e59c13;
@@ -1188,12 +1195,6 @@ img[atk-emoticon] {
   line-height: 1.6;
   margin-bottom: 10px; }
 
-.applike {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px; }
-
 @media (prefers-color-scheme: dark) {
   .appquanju {
     background-color: var(--background-dark-color); }
@@ -1219,14 +1220,13 @@ img[atk-emoticon] {
 .app-index:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
-@media (max-width: 800px) {
-  .appzhuangtai {
-    margin-left: 0; } }
+.app-index .apptitle {
+  margin-bottom: 8px; }
 
 .quanju {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  grid-gap: 10px;
+  grid-gap: 15px;
   /* 中间空10px间距 */ }
 
 .bankuai {
