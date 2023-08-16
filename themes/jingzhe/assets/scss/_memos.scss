@@ -418,8 +418,6 @@ blockquote p{
 }
 //唠叨编辑
 .memos-edit{
-  position: relative;
-  display: inline-block;
   margin-left: auto;
 }
 .memos-menu{
@@ -429,8 +427,7 @@ blockquote p{
 .memos-menu-d {
   width: 60px;
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: 8px;
   background-color: #fff;
   padding: 8px 0 8px 0;
   box-shadow: 2px 4px 16px rgba(0,0,0,.15);
@@ -599,6 +596,17 @@ blockquote p{
 .memos-search svg{
   color: #666 !important;
 }
+
+// 标签自动补全
+#memos-tag-menu {
+  background-color: #282527 !important;
+  box-shadow: 2px 4px 16px rgba(0,0,0,.3) !important;
+  color: #888 !important;
+}
+.tag-option.selected {
+  background-color: #3e3e3e !important;
+  color: #bdbdbd !important;
+}
 }
 
 //表情
@@ -628,6 +636,8 @@ blockquote p{
 // memos搜索
 .memos-search-all{
   margin-top: 20px;
+  position: relative;
+  z-index: -1;
 }
 .memos-search {
   width: 100%;
@@ -650,4 +660,35 @@ blockquote p{
 .memos-search svg{
   width: 20px;
   color: #b8b8b8;
+}
+
+// 标签自动补全
+
+#memos-tag-menu {
+  position: absolute;
+  background-color: white;
+  z-index: 100;
+  padding: 5px;
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
+  color: #999;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: var(--font-family-code);
+  column-count: 3; /* 每列显示的数量 */
+  column-gap: 4; /* 列之间的间距 */
+}
+#memos-tag-menu:empty{
+  display: none;
+}
+.tag-option {
+  padding: 6px 10px 6px 10px;
+  cursor: pointer;
+}
+.tag-option:hover{
+  text-decoration: underline;
+}
+.tag-option.selected {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  color: #666;
 }
