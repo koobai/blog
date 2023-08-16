@@ -260,6 +260,10 @@ function showTaglist(){
   let bbUrl = 'https://memostag.yangle.vip/'
   let tagListDom = ""
   fetch(bbUrl).then(res => res.json()).then( resdata =>{
+
+    const dynamicTags = resdata.map(tag => `#${tag}`); // 输入#标签自动补全,数据调用
+    tags.splice(0, tags.length, ...dynamicTags); // 输入#标签自动补全,数据调用
+
     for(let i=0;i < resdata.length;i++){
       tagListDom += `<div class="memos-tag-all img-hide" onclick='getTagNow(this)'># ${resdata[i]}</div>`
     }

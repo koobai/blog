@@ -4,9 +4,10 @@ var memosEditorCont = `
 <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
   <div class="memos-editor-body mb-3 p-3">
     <div class="memos-editor-inner animate__animated animate__fadeIn">
-      <div class="memos-editor-content">
-        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
-      </div>
+    <div class="memos-editor-content">
+    <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+    </div>
+    <div id="memos-tag-menu"></div>
       <div class="memos-image-list d-flex flex-fill line-xl"></div>
       <div class="memos-editor-tools pt-3">
         <div class="d-flex">
@@ -592,3 +593,80 @@ function insertEmoji(emojiText) {
   memosTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
   memosTextarea.focus();
 }
+
+
+// 标签自动补全
+
+const tags = [];
+const tagMenu = document.getElementById('memos-tag-menu');
+let selectedTagIndex = -1;
+
+const getMatchingTags = (tagPrefix) => tags.filter(tag => tag.toLowerCase().includes(tagPrefix.toLowerCase()));
+const hideTagMenu = () => tagMenu.style.display = 'none';
+
+const showTagMenu = (matchingTags) => {
+  tagMenu.innerHTML = matchingTags.map(tag => `<div class="tag-option">${tag}</div>`).join('');
+  const { left, bottom } = memosTextarea.getBoundingClientRect();
+  tagMenu.style.cssText = `display: block;`;
+  selectedTagIndex = -1;
+};
+
+const insertSelectedTag = (tag) => {
+  const inputValue = memosTextarea.value;
+  const cursorPosition = memosTextarea.selectionStart;
+
+  const textBeforeCursor = inputValue.substring(0, cursorPosition);
+  const wordsBeforeCursor = textBeforeCursor.split(/\s+/);
+  wordsBeforeCursor.pop();
+  const newValue = `${wordsBeforeCursor.join(' ')} ${tag} ${inputValue.substring(cursorPosition)}`;
+
+  memosTextarea.value = newValue;
+
+  const newCursorPosition = newValue.lastIndexOf(tag) + tag.length + 1;
+
+  hideTagMenu();
+  selectedTagIndex = -1;
+
+  memosTextarea.focus();
+  memosTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
+};
+
+memosTextarea.addEventListener('input', () => {
+  const inputValue = memosTextarea.value;
+  const cursorPosition = memosTextarea.selectionStart;
+
+  const lastWord = inputValue.substring(0, cursorPosition).split(/\s+/).pop();
+
+  if (lastWord && lastWord.includes('#')) {
+    const matchingTags = getMatchingTags(lastWord);
+    matchingTags.length > 0 ? showTagMenu(matchingTags) : hideTagMenu();
+  } else {
+    hideTagMenu();
+  }
+});
+
+memosTextarea.addEventListener('keydown', event => {
+  const keyCode = event.keyCode;
+
+  if (tagMenu.style.display === 'block') {
+    const matchingTags = Array.from(tagMenu.querySelectorAll('.tag-option')).map(tag => tag.textContent);
+
+    if (keyCode === 38 || keyCode === 40 || keyCode === 37 || keyCode === 39) { // 添加左右方向键的处理
+      event.preventDefault();
+      if (keyCode === 37 || keyCode === 39) { // 处理左右方向键
+        const direction = keyCode === 37 ? -1 : 1;
+        selectedTagIndex = (selectedTagIndex + direction + matchingTags.length) % matchingTags.length;
+      } else { // 处理上下方向键
+        selectedTagIndex = (selectedTagIndex + (keyCode === 38 ? -1 : 1) + matchingTags.length) % matchingTags.length;
+      }
+      Array.from(tagMenu.querySelectorAll('.tag-option')).forEach((option, index) => option.classList.toggle('selected', index === selectedTagIndex));
+    } else if (keyCode === 13 && selectedTagIndex !== -1) {
+      event.preventDefault();
+      insertSelectedTag(matchingTags[selectedTagIndex]);
+    }
+  }
+});
+
+tagMenu.addEventListener('click', event => {
+  insertSelectedTag(event.target.textContent);
+});
