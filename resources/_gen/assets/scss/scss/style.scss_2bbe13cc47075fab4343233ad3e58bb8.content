@@ -2317,9 +2317,7 @@ blockquote p {
   --start-smile-border-color-hover:#afafaf; }
 
 .memos-search-all {
-  margin-top: 20px;
-  position: relative;
-  z-index: -1; }
+  margin-top: 20px; }
 
 .memos-search {
   width: 100%;
