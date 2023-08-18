@@ -11,9 +11,6 @@ var memosEditorCont = `
       <div class="memos-image-list d-flex flex-fill line-xl"></div>
       <div class="memos-editor-tools pt-3">
         <div class="d-flex">
-          <div class="button outline action-btn tag-btn mr-2">
-            <img src="https://img.koobai.com/memos/memos_tag.svg">
-          </div>
           <div class="button outline action-btn image-btn mr-2" onclick="this.lastElementChild.click()">
             <img src="https://img.koobai.com/memos/memos_img_up.svg">
             <input class="memos-upload-image-input d-none" type="file" accept="image/*">
@@ -127,13 +124,14 @@ function getEditIcon() {
     getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
   });
 
-  taglistBtn.addEventListener("click", function () {
+//标签数据
+  document.addEventListener("DOMContentLoaded", function () {
     memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
     memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
     if (memosPath && memosOpenId) {
-      document.querySelector(".memos-tag-list").classList.toggle("d-none"); 
+        document.querySelector(".memos-tag-list").classList.remove("d-none"); 
     }
-  });
+ });
 
   codeBtn.addEventListener("click", function() {
     const memosPath = window.localStorage?.getItem("memos-access-path");
@@ -597,11 +595,15 @@ function insertEmoji(emojiText) {
 
 // 标签自动补全
 
-const tags = [];
+const tagListElement = document.querySelector('.memos-tag-list');
 const tagMenu = document.getElementById('memos-tag-menu');
 let selectedTagIndex = -1;
 
-const getMatchingTags = (tagPrefix) => tags.filter(tag => tag.toLowerCase().includes(tagPrefix.toLowerCase()));
+const getMatchingTags = (tagPrefix) => {
+  const allTags = Array.from(tagListElement.querySelectorAll('.memos-tag a')).map(tagLink => tagLink.textContent);
+  return allTags.filter(tag => tag.toLowerCase().includes(tagPrefix.toLowerCase()));
+};
+
 const hideTagMenu = () => tagMenu.style.display = 'none';
 
 const showTagMenu = (matchingTags) => {
