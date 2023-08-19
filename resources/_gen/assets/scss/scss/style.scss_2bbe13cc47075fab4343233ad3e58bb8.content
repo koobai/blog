@@ -223,13 +223,10 @@ ul {
   font-size: 18px; }
   .content p {
     font-size: 18px;
-    line-height: 1.8;
+    line-height: 2;
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
-    @media (min-width: 700px) {
-      .content p {
-        line-height: 2; } }
   .content strong {
     color: var(--text-highlight-color); }
   .content h1 {
@@ -275,7 +272,7 @@ ul {
     .content ul li,
     .content ol li {
       font-size: 18px;
-      line-height: 1.8;
+      line-height: 2;
       margin-bottom: 10px;
       margin-left: 20px; }
       @media (min-width: 700px) {
@@ -428,10 +425,9 @@ ul {
 
 .summary-description {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.8;
   color: #666;
-  margin-top: 6px;
-  text-align: justify;
+  margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -1573,7 +1569,7 @@ img[atk-emoticon] {
   font-size: 18px; }
 
 .movie-content-right-3 {
-  line-height: 1.6;
+  line-height: 1.8;
   font-size: 16px;
   margin-top: 10px;
   color: #666;
