@@ -3,7 +3,7 @@
   margin-top: 20px;
   display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-	grid-gap: 10px; /* 中间空10px间距 */
+	grid-gap: 15px; /* 中间空10px间距 */
 }
 .memos_diaoyong,.bb-list-li,.memos-random-background,.memos-search-all{
   border-radius:4px;
