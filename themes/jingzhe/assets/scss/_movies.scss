@@ -2,8 +2,8 @@
 .movie-quanju{
   display: grid;
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
-  margin-top: 20px;
+	grid-gap: 15px; /* 中间空10px间距 */
+  margin-top: 30px;
 }
 .movie-index{
   background: var(--bankuai-color);
@@ -175,7 +175,7 @@ color: var(--text-highlight-color);
   height: 180px;
 }
 .movie-index{
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .movie-quanju{
   display: block; 

@@ -100,7 +100,7 @@
 .tuij-index{
 	display: grid;
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
+	grid-gap: 15px; /* 中间空10px间距 */
 }
 }
 // 夜间模式页面样式
@@ -147,7 +147,7 @@
 .hardware-index{
 	background: radial-gradient(101.976% 84% at 50.7% 100%, #e2e2e2 0%, rgb(255, 255, 255) 100%);
 	padding: 30px 20px 0 20px;
-	margin-top: 20px;
+	margin-top: 30px;
 	border-radius:4px;
   }
   .hardware-index-title{

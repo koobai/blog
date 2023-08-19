@@ -377,7 +377,7 @@ ul {
     cursor: zoom-in; }
 
 .content-index {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   margin-top: 30px; }
 
 .summary-nrong {
@@ -447,7 +447,7 @@ ul {
 
 @media (max-width: 700px) {
   .summary-nrong {
-    margin-bottom: 10px; } }
+    margin-bottom: 15px; } }
 
 @media screen and (min-width: 700px) and (max-width: 900px) {
   .summary {
@@ -459,7 +459,7 @@ ul {
   .summary {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 15px;
     margin: 0 auto;
     max-width: 1000px; } }
 
@@ -1315,7 +1315,7 @@ img[atk-emoticon] {
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* 两列等宽 */
-    grid-gap: 10px;
+    grid-gap: 15px;
     /* 中间空10px间距 */ } }
 
 @media (prefers-color-scheme: dark) {
@@ -1347,7 +1347,7 @@ img[atk-emoticon] {
 .hardware-index {
   background: radial-gradient(101.976% 84% at 50.7% 100%, #e2e2e2 0%, white 100%);
   padding: 30px 20px 0 20px;
-  margin-top: 20px;
+  margin-top: 30px;
   border-radius: 4px; }
 
 .hardware-index-title {
@@ -1448,7 +1448,7 @@ img[atk-emoticon] {
   display: flex;
   flex-wrap: wrap;
   grid-gap: 10px;
-  margin-bottom: 20px; }
+  margin-bottom: 15px; }
 
 .list-tags {
   border-radius: 4px;
@@ -1498,9 +1498,9 @@ img[atk-emoticon] {
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* 两列等宽 */
-  grid-gap: 10px;
+  grid-gap: 15px;
   /* 中间空10px间距 */
-  margin-top: 20px; }
+  margin-top: 30px; }
 
 .movie-index {
   background: var(--bankuai-color);
@@ -1671,7 +1671,7 @@ img[atk-emoticon] {
     width: 120px;
     height: 180px; }
   .movie-index {
-    margin-bottom: 10px; }
+    margin-bottom: 15px; }
   .movie-quanju {
     display: block; }
   .movies-nrong {
@@ -1741,7 +1741,7 @@ img[atk-emoticon] {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 10px;
+  grid-gap: 15px;
   /* 中间空10px间距 */ }
 
 .memos_diaoyong, .bb-list-li, .memos-random-background, .memos-search-all {
@@ -2415,7 +2415,7 @@ blockquote p {
 
 .archives_nrong {
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 15px;
   /* 中间空10px间距 */
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
 
@@ -2458,7 +2458,7 @@ blockquote p {
 .posts-background {
   background-color: var(--bankuai-color);
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   margin-top: 10px;
   display: flex;
   align-items: center;
