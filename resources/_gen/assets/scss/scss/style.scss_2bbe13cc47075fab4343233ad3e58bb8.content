@@ -1480,9 +1480,6 @@ img[atk-emoticon] {
 .single-tag-c a {
   color: var(--text-content-color); }
 
-.single-like {
-  margin-left: auto; }
-
 @media (prefers-color-scheme: dark) {
   .page-time, .single-tag-c {
     background: #2f2b2c;
