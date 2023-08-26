@@ -206,7 +206,7 @@ function updateHTMl(data){
         <div class="memos-tag-wz">${memosTag}</div>
         <div class="datacont" view-image>${bbContREG}</div>
         <div class="memos_diaoyong_top">
-        <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;😄,smile-face;😎,cool;"></emoji-reaction></div>
+        <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;🎉,party-popper;"></emoji-reaction></div>
         <div class="talks_comments">
             <a onclick="loadArtalk('${memo_id}')">
               <span id="ArtalkCount" data-page-key="/m/${memo_id}" class="comment-s"></span> 条评论  <span id="btn_memo_${memo_id}">
