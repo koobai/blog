@@ -2121,15 +2121,18 @@ blockquote p {
 .memos-editor-option {
   display: flex; }
 
-.memos-open-api-input {
+.memos-path-input, .memos-token-input {
   border: transparent;
   padding: 6px 0 6px 0;
-  width: 100%;
   outline: 0.5px solid transparent;
-  margin-right: 10px;
   background: transparent;
   font-size: 16px;
-  font-family: var(--font-family-code); }
+  font-family: var(--font-family-code);
+  width: 50%; }
+
+.memos-token-input {
+  margin-left: 40px;
+  margin-right: 10px; }
 
 .memos-open-api-submit {
   background: var(--text-highlight-color);
@@ -2248,7 +2251,7 @@ blockquote p {
     color: #888 !important; }
   .bb-list-li, .memos-editor-body, .memos-search-all {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3); }
-  .load-memos-editor, .memos-open-api-input {
+  .load-memos-editor, .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .memos-editor-body {
     background: var(--background-dark-color) !important; }
