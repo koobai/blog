@@ -1,6 +1,15 @@
 {
     "good": [
         {
+            "image": "https://img.koobai.com/app/jiany.webp",
+            "title": "剪映专业版",
+            "info": "自从开始剪视频之后，必备软件，适合我这种小白。喜欢里面各种预制的音乐/热梗/贴纸素材。",
+            "macos": "macOS",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://www.capcut.cn/"
+        },
+        {
             "image": "https://img.koobai.com/app/optimage.webp",
             "title": "Optimage",
             "info": "图片压缩软件，支持全格式，每天前 25 张免费。博客大部分图片都经过它的手，推荐。",
