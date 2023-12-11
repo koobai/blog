@@ -75,6 +75,9 @@ h1, h2, h3 {
 .header-rss {
   margin-top: 2px; }
 
+.menu-main svg {
+  fill: #444; }
+
 @media (max-width: 900px) {
   .menu-main {
     display: none; } }
@@ -84,7 +87,9 @@ h1, h2, h3 {
     color: var(--text-content-dark-color); }
   .header-background {
     background-color: rgba(40, 35, 36, 0.9);
-    border-bottom: solid #3d3d3d 0.5px; } }
+    border-bottom: solid #3d3d3d 0.5px; }
+  .menu-main svg {
+    fill: #BBB; } }
 
 .footer-background {
   background: #FFF;
