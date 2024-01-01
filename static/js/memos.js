@@ -344,7 +344,7 @@ function loadArtalk(memo_id) {
       // 例如：document.documentElement.scrollTop = offset;
       // 或者使用第三方的平滑滚动库
     }
-    const artalk = new Artalk({
+    const artalk = Artalk.init({
       el: '#memo_' + memo_id,
       pageKey: '/m/' + memo_id,
       pageTitle: '',
