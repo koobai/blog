@@ -108,6 +108,8 @@
   font-size: 18px;
   line-height: 1.8;
   margin-bottom: 20px;
+  padding:30px 80px 30px 80px; 
+  color: #666;
 }
 
 // 夜间模式页面样式
@@ -119,7 +121,7 @@
   color: #666;
   background-color: #2E282A;
 }
-.appnote,.appnote-index{
+.appnote,.appnote-index,.pagetitle{
   color: #999;
 }
 .app-index{
@@ -127,21 +129,9 @@
 }
 }
 
-// 首页app调用
-.app-index{
-  margin-bottom: 10px;
-  padding: 15px 20px 15px 12px;
-}
-.app-img img{
-  width:90px;
-  transition: transform 0.3s ease;
-}
-.app-index:hover .app-img img{
-  transform: scale(1.04);
-}
-.app-index:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
-}
-.app-index .apptitle{
-  margin-bottom: 8px;
+ // 页面宽度小于900样式
+ @media (max-width:700px){
+  .pagetitle{
+    padding: 20px;
+  }
 }

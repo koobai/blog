@@ -1,8 +1,5 @@
 {{ define "main" }}
 {{ $goods := getJSON "static/suju/hardware.json" }}
-<div class="intro">
-  <h1>{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</h1>
-</div>
 <div class="pagetitle">一件称心的产品，从收到包裹那一刻就开始心潮澎湃，到日积月累逐步成为靠谱的伙伴，时刻让你的工作生活充满期待。以下为正在使用中的产品：( 2023-11-12 更新 )</div>
 <div class="quanju">
   {{ range $goods.good}}

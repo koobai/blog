@@ -1,8 +1,8 @@
 //首页相册
 .photo-about,.photo-home{
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 6px; 
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px; 
 }
 .photo-home-top{
     position: relative;
@@ -11,9 +11,9 @@
 .photo-home-top img {
     width: 100%;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 2px;
     transition: transform 0.3s ease;
-    height: 140px; 
+    height: 190px; 
     display: block; 
     cursor: zoom-in;
 }
@@ -33,11 +33,8 @@
 } 
 // 页面宽度小于700样式
 @media (max-width:700px){
-    .photo-home-top img {
-        height: 120px;
-    }
     .photo-about,.photo-home{
-        grid-template-columns: repeat(3, 1fr);
+        display:none;
     }
     }
 // 页面宽度大于900样式   

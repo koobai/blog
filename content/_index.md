@@ -4,6 +4,5 @@ description: 工作生活记录、折腾备忘, 同时分享下日常使用的�
 ---
 <!--<div class="photo-home img-hide" view-image>
 <script src="/js/photo.js"></script>
-</div>-->
-{{<memos>}}
+</div>-->{{<memos>}}
 {{<movies 4>}}
