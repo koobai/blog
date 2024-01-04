@@ -1,13 +1,8 @@
 .about-img {
     position: relative;
-    width: 100vw;
-    height: 100%;
-    margin-left: calc(50% - 50vw);
 }
 .about-img img{
-  width: 100vw;
-  object-fit: cover;
-  max-height: 75vh;
+  width: 100%;
 }
 .about-img-text{
   position: absolute;
@@ -16,8 +11,7 @@
   transform: translate(-50%, -50%);
   color: #fff;
   font-family: var(--font-family-code);
-  font-size: 40px;
-  letter-spacing: 5px;
+  font-size: 30px;
   @include breakpoint('small') {
     font-size: 70px;
   }
