@@ -1871,11 +1871,7 @@ blockquote p {
 
 .load-memos-editor {
   cursor: pointer;
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  padding: 30px 80px 30px 80px;
-  color: #666; }
+  color: transparent; }
 
 .d-flex {
   display: -ms-flexbox !important;
@@ -2077,7 +2073,7 @@ blockquote p {
     height: 100px !important; }
   .resimg figure {
     margin-bottom: -8px; }
-  .memos_diaoyong, .load-memos-editor {
+  .memos_diaoyong {
     padding: 20px; } }
 
 @media (min-width: 700px) {
@@ -2135,7 +2131,7 @@ blockquote p {
     color: #888 !important; }
   .bb-list-li, .memos-editor-body, .memos-search-all {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3); }
-  .load-memos-editor, .memos-path-input, .memos-token-input {
+  .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .memos-editor-body {
     background: var(--background-dark-color) !important; }

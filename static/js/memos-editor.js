@@ -1,5 +1,5 @@
 var memosDom = document.querySelector(memosData.dom);
-var editIcon = "<div class='load-memos-editor'>Eillen 说，你老了之后绝对是一个唠叨的老头。平常自我感觉良好，除非是酒后...。不管怎么样，那就从现在开始，随手记录些有的没得～～</div>";
+var editIcon = "<div class='load-memos-editor'>唠叨</div>";
 var memosEditorCont = `
 <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
   <div class="memos-editor-body mb-3 p-3">
