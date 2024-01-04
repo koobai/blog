@@ -50,11 +50,14 @@ jobs:
 **2.** 打开宝塔面板，终端生成 git 公钥
 
 ```yml
+# 安装 Git
+yum -y install git
+
 # Git全局配置和单个仓库的用户名邮箱配置
 git config --global user.name  "username"
 git config --global user.email  "your@email.com"
 
-# 生成git公钥用于自动拉取
+# 生成git公钥用于自动拉取（一路回车）
 ssh-keygen -t rsa -C "你的@email.com"
 
 # 查看git公钥
