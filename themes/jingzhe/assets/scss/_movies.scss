@@ -14,26 +14,6 @@
 .movie-index:hover{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
-.type-index {
-  display: flex;
-  justify-content: space-between;
-}
-.type-index-left{
-  font-size: 16px;
-  color: #999;
-  margin-bottom: 30px;
-  flex-grow: 1;
-}
-.type-index-right {
-  flex-shrink:0;
-  width: 16px;
-}
-.type-index-right a {
-  color: #c0c0c0;
-}
-.movie-index:hover .type-index-right a {
-  color: #666;
-}
 
 .movie-content{
   display: grid;

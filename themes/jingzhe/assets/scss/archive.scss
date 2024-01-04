@@ -1,4 +1,4 @@
-.archives_nrong{
+.posts-background ,.archives_nrong{
   display: grid;
   grid-gap: 15px; /* 中间空10px间距 */
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -11,7 +11,7 @@
   transition: all .3s cubic-bezier(0,0,.5,1);
   align-items: center;
 }
-.archives_one:hover{
+.page-left:hover,.archives_one:hover{
 	box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .archive-title{
@@ -43,22 +43,20 @@
 
 //博客列表页
 .posts-background {
-  background-color: var(--bankuai-color);
-  border-radius:4px;
-  margin-bottom: 15px;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  transition: all .3s cubic-bezier(0,0,.5,1);
-  overflow: hidden;
-  padding: 20px;
+  margin-bottom: 20px; 
 }
-.posts-background:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+.archives_nrong{
+  margin-top: 20px;
+}
+.page-left{
+  transition: all .3s cubic-bezier(0,0,.5,1);
+  background: var(--bankuai-color);
+  padding: 20px;
+  border-radius: 4px;
 }
 .posts-title a{
   font-family: var(--font-family-title);
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.5;
 }
 .posts-img {
@@ -80,6 +78,14 @@
   line-height: 1.8;
   font-size: 16px;
   margin-top: 10px;
+  margin-bottom: 10px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
 }
 
 // 页面宽度小于700样式
@@ -112,10 +118,13 @@
 
   // 夜间模式页面样式
   @media (prefers-color-scheme: dark) {
-    .archives_one,.posts-background {
-          background-color: var(--background-dark-color) !important;
-        }
-        .archive-time{
-          color: #666;
-        }
+  .archives_one,.page-left {
+        background-color: var(--background-dark-color) !important;
+      }
+  .archive-time{
+        color: #666;
+      }
+  .posts-description{
+    color: #999;
+  }
     }
