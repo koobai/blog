@@ -2291,7 +2291,7 @@ blockquote p {
   display: flex;
   border-radius: 4px;
   background-color: var(--bankuai-color);
-  padding: 20px;
+  padding: 15px 20px 15px 20px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   align-items: center; }
 
