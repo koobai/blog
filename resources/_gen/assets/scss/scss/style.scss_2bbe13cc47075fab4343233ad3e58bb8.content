@@ -102,7 +102,7 @@ h1, h2, h3 {
   .menu-main svg {
     fill: #BBB; }
   .githuab svg, .heard-rss svg path {
-    fill: #999; } }
+    fill: #666; } }
 
 .footer-background {
   background: #FFF;
