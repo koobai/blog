@@ -1664,11 +1664,11 @@ img[atk-emoticon] {
   align-items: center;
   gap: 6px; }
 
-.memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz {
+.memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz, .memos_diaoyong_more {
   color: #999;
   font-size: 14px; }
 
-.memos_diaoyong_laiz a {
+.memos_diaoyong_laiz a, .memos_diaoyong_more a {
   color: #999; }
 
 .memos_diaoyong_info p {
@@ -1676,6 +1676,9 @@ img[atk-emoticon] {
   color: var(--text-content-color);
   line-height: 1.8;
   margin: 0; }
+
+.memos_diaoyong_more {
+  margin-left: auto; }
 
 #bber, .memos-header, .bb-load {
   max-width: 800px;
@@ -2085,7 +2088,7 @@ blockquote p {
     background: var(--background-dark-color) !important; }
   .memos_diaoyong_from a {
     color: #999; }
-  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_from, .talks_comments a, .comment-s {
+  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_more a, .memos_diaoyong_from, .talks_comments a, .comment-s {
     color: #666; }
   .memos_diaoyong_info p, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
