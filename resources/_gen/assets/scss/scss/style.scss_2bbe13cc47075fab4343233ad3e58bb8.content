@@ -1837,7 +1837,8 @@ code {
   font-size: 16px;
   padding: 2px 6px 2px 6px;
   font-family: var(--font-family-code);
-  margin: 0 4px 0 4px; }
+  margin: 0 4px 0 4px;
+  word-wrap: break-word; }
 
 .memos_diaoyong code {
   font-size: 14px;
