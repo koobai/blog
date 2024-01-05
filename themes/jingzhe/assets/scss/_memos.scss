@@ -1,7 +1,10 @@
 //首页调用
 .memos_diaoyong{
-  padding:20px 80px 30px 80px;  
+  max-width: 700px;
+  margin: auto;
+  padding-bottom: 20px;
 }
+.content-index p{}
 .bb-list-li,.memos-random-background,.memos-search-all{
   border-radius:4px;
   background: var(--bankuai-color) !important;
@@ -69,7 +72,7 @@
   color: #999;
 }
 .memos_diaoyong_info p{
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-content-color);
   line-height:1.8;
   margin: 0;
@@ -87,8 +90,9 @@
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .bb-list-ul{
-  display: grid;
-  gap: 20px;
+  margin-top: 20px;
+}
+.bb-timeline ul li{
   margin-top: 20px;
 }
 .datacont p{
