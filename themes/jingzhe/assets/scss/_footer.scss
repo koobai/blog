@@ -17,29 +17,16 @@
   opacity: 1;
   }
 .footer {
-    margin: 0 auto;
-    max-width: 1040px;
+    margin: auto;
     padding: 15px 20px 0 20px;
     display: flex;
+    justify-content: center;
   }
-.footer-info {
-  width: 80%;
-}
 .footer-info, .footer-info a{
   font-size: 12px;
   line-height: 1.8em;
   color: #a7a7a7;
   }
-
-.githuab {
-  margin-left: auto;
-}
-.githuab svg{
-  width: 16px;
-  fill: #a8a8a8;
-  vertical-align: middle;
-  margin-top: -2px;
-}
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -77,9 +64,6 @@
 .gotop {
     background: #999;
   }
-.githuab svg{
-  fill: #666;
-}
 .footer-background{
   background: #1A1718;
   border-top:solid #3d3d3d 0.5px;
