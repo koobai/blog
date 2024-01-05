@@ -105,10 +105,14 @@
 	text-decoration: underline;
 }
 .pagetitle{
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.8;
   margin-bottom: 20px;
-  padding:30px 80px 30px 80px; 
+  max-width: 700px;
+  margin: auto;
+  padding-bottom: 30px;
+  padding-top: 20px;
+  text-align: center;
   color: #666;
 }
 
@@ -127,11 +131,4 @@
 .app-index{
   background-color: #2f2b2c ; 
 }
-}
-
- // 页面宽度小于900样式
- @media (max-width:700px){
-  .pagetitle{
-    padding: 20px;
-  }
 }
