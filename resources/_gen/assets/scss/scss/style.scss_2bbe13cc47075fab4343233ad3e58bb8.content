@@ -2378,18 +2378,22 @@ blockquote p {
     width: 100px;
     height: 80px; }
   .posts-background {
-    margin-top: 30px; } }
+    margin-top: 30px; }
+  .index-archives_nrong {
+    grid-gap: 15px;
+    /* 中间空10px间距 */
+    display: grid; } }
 
-@media screen and (min-width: 700px) and (max-width: 900px) {
-  .posts-img img {
-    width: 240px;
-    height: 240px; }
-  .posts-description {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical; } }
+@media (min-width: 700px) {
+  .index-archives_nrong {
+    margin-top: 20px;
+    margin-left: calc(50% - 50vw);
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 15px;
+    /* 中间空10px间距 */
+    justify-content: center; } }
 
 @media (prefers-color-scheme: dark) {
   .archives_one, .page-left {
