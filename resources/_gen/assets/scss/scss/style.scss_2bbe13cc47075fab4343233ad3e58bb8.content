@@ -33,15 +33,11 @@ h1, h2, h3 {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-.header-background {
-  margin-left: calc(50% - 50vw);
-  width: 100vw; }
-
 .header {
   display: flex;
   margin: 0 auto;
   max-width: 1200px;
-  padding: 25px 20px 25px 20px; }
+  padding: 25px 0 25px 0; }
 
 .header-logo img {
   width: 32px;
@@ -393,7 +389,7 @@ ul {
     cursor: zoom-in; }
 
 .content-index {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
 
 .summary-nrong {
   background: var(--bankuai-color);
@@ -1621,7 +1617,7 @@ img[atk-emoticon] {
     color: #999; } }
 
 .memos_diaoyong {
-  padding: 40px 80px 40px 80px; }
+  padding: 20px 80px 30px 80px; }
 
 .bb-list-li, .memos-random-background, .memos-search-all {
   border-radius: 4px;
@@ -2305,13 +2301,11 @@ blockquote p {
 .archive-title {
   font-family: var(--font-family-title);
   font-size: 18px;
-  line-height: 1.6;
-  margin-right: 12px; }
+  line-height: 1.6; }
 
 .archive-time {
   font-size: 14px;
   color: #999;
-  margin-top: 4px;
   font-family: var(--font-family-code); }
 
 .archive-img {
