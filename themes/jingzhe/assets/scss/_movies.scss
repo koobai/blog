@@ -2,19 +2,14 @@
 .movie-quanju{
   display: grid;
 	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 15px; /* 中间空10px间距 */
+	grid-gap: 20px; /* 中间空10px间距 */
   margin-top: 30px;
+  padding: 20px;
+  background: var(--bankuai-color);
 }
 .movie-index{
-  background: var(--bankuai-color);
-  padding: 20px;
   border-radius: 4px;
-  transition: all .3s cubic-bezier(0,0,.5,1);
 }
-.movie-index:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
-}
-
 .movie-content{
   display: grid;
   grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
@@ -154,11 +149,8 @@ color: var(--text-highlight-color);
   width: 120px;
   height: 180px;
 }
-.movie-index{
-  margin-bottom: 15px;
-}
 .movie-quanju{
-  display: block; 
+  display: none;
 }
 .movies-nrong{
   display: none;
@@ -233,7 +225,7 @@ color: var(--text-highlight-color);
 .dvtjjf.active, .sort-by-item.active{
   color: var(--text-highlight-color) !important;
 }
-.movie-index{
+.movie-quanju{
   background: var(--background-dark-color);
 }
 .type-index-left,.type-index-right a,.movie-content-right-4,.movie-laiz a {

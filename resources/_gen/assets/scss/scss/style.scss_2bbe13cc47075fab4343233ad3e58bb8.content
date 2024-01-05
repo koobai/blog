@@ -1397,18 +1397,14 @@ img[atk-emoticon] {
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* 两列等宽 */
-  grid-gap: 15px;
+  grid-gap: 20px;
   /* 中间空10px间距 */
-  margin-top: 30px; }
+  margin-top: 30px;
+  padding: 20px;
+  background: var(--bankuai-color); }
 
 .movie-index {
-  background: var(--bankuai-color);
-  padding: 20px;
-  border-radius: 4px;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
-
-.movie-index:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
+  border-radius: 4px; }
 
 .movie-content {
   display: grid;
@@ -1549,10 +1545,8 @@ img[atk-emoticon] {
   .movie-content-left img {
     width: 120px;
     height: 180px; }
-  .movie-index {
-    margin-bottom: 15px; }
   .movie-quanju {
-    display: block; }
+    display: none; }
   .movies-nrong {
     display: none; } }
 
@@ -1607,7 +1601,7 @@ img[atk-emoticon] {
     color: #555; }
   .dvtjjf.active, .sort-by-item.active {
     color: var(--text-highlight-color) !important; }
-  .movie-index {
+  .movie-quanju {
     background: var(--background-dark-color); }
   .type-index-left, .type-index-right a, .movie-content-right-4, .movie-laiz a {
     color: #666; }
@@ -2070,7 +2064,7 @@ blockquote p {
   .resimg figure {
     margin-bottom: -8px; }
   .memos_diaoyong {
-    padding: 20px; } }
+    display: none; } }
 
 @media (min-width: 700px) {
   .memos_diaoyong .resimg {
