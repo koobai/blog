@@ -1688,9 +1688,6 @@ img[atk-emoticon] {
 .memos_diaoyong_more {
   margin-left: auto; }
 
-.bb-list-li, .memos-search-all {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
-
 .bb-list-ul {
   margin-top: 20px; }
 
@@ -2114,7 +2111,7 @@ blockquote p {
     color: #888 !important; }
   .memos_diaoyong_info blockquote p {
     color: #888 !important; }
-  .bb-list-li, .memos-editor-body, .memos-search-all {
+  .memos-editor-body {
     box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3); }
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
