@@ -38,11 +38,8 @@
   font-family: var(--font-family-title);
  }
 
-.heard-rss svg path{
+.heard-rss svg path,.menu-main svg{
   fill: #999;
-}
-.menu-main svg{
-  fill: #444;
 }
 .githuab svg{
   width: 20px;
@@ -63,10 +60,7 @@
     display: flex;
     grid-gap: 20px; /* 中间空10px间距 */
     align-items: center;
-
-    padding: 12px 0 12px 0;
-
-
+    padding: 10px 0 10px 0;
   }
   .header-logo,.header-title{
     display: none;
@@ -77,10 +71,7 @@
   .header-title,.header-menu a{
     color: var(--text-content-dark-color);
   }
-  .menu-main svg{
-    fill: #BBB;
-  }
-  .githuab svg,.heard-rss svg path{
+  .githuab svg,.heard-rss svg path,.menu-main svg{
     fill: #666;
   }
   .heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
