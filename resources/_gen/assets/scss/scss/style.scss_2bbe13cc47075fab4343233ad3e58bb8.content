@@ -51,7 +51,11 @@ h1, h2, h3 {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid #222; }
+  border: 1px solid #222;
+  transition: opacity .3s ease-in-out; }
+
+.about-logo img:hover {
+  opacity: 0.6; }
 
 .header-title {
   display: flex;
