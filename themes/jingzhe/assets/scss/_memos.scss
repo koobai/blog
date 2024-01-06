@@ -82,10 +82,7 @@
 }
 
 //唠叨页
-#bber,.memos-header,.bb-load{
-  max-width: 800px;
-  margin: auto;
-}
+
 .bb-list-li,.memos-search-all{
   box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
@@ -147,10 +144,6 @@
   border-radius:4px;
   vertical-align: middle;
   cursor: pointer;
-}
-#tag-list,.memos-search-all {
-  max-width: 800px;
-  margin: auto;
 }
 #tag-list-all{
   margin-top: 15px;
