@@ -10,6 +10,17 @@
   transition: all .3s cubic-bezier(0,0,.5,1);
   align-items: center;
 }
+.article_new{
+  float: left;
+  background: var(--text-highlight-color);
+  color: #fff;
+  padding: 2px 4px;
+  margin-right: 8px;
+  margin-top: 3px;
+  font-family: var(--font-family-code);
+  border-radius: 4px;
+  font-size: 14px;
+}
 .index_archives_one{
   padding: 10px;
 }
