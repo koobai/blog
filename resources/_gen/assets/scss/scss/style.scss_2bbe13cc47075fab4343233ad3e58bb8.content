@@ -2281,15 +2281,20 @@ blockquote p {
   /* 中间空10px间距 */
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
 
-.archives_one {
+.archives_one, .index_archives_one {
   display: flex;
   border-radius: 4px;
   background-color: var(--bankuai-color);
-  padding: 15px 20px 15px 20px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   align-items: center; }
 
-.page-left:hover, .archives_one:hover {
+.index_archives_one {
+  padding: 10px; }
+
+.archives_one {
+  padding: 15px 20px 15px 20px; }
+
+.page-left:hover, .archives_one:hover, .index_archives_one:hover {
   box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
 
 .archive-title {
@@ -2375,8 +2380,6 @@ blockquote p {
 @media (min-width: 700px) {
   .index-archives_nrong {
     margin-top: 20px;
-    margin-left: calc(50% - 50vw);
-    width: 100vw;
     display: flex;
     flex-wrap: wrap;
     grid-gap: 15px;
@@ -2384,7 +2387,7 @@ blockquote p {
     justify-content: center; } }
 
 @media (prefers-color-scheme: dark) {
-  .archives_one, .page-left {
+  .archives_one, .page-left, .index_archives_one {
     background-color: var(--background-dark-color) !important; }
   .archive-time {
     color: #666; }
