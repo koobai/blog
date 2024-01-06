@@ -12,6 +12,12 @@
   border-radius: 50%;
   border: 1.5px solid #222;
 }
+.about-logo img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #222;
+}
 .header-title {
   display: flex;
   align-items: center;
@@ -57,10 +63,10 @@
     display: flex;
     grid-gap: 20px; /* 中间空10px间距 */
     align-items: center;
-    background-color: #fff;
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+
+    padding: 12px 0 12px 0;
+
+
   }
   .header-logo,.header-title{
     display: none;
@@ -70,10 +76,6 @@
 @media (prefers-color-scheme: dark) {
   .header-title,.header-menu a{
     color: var(--text-content-dark-color);
-  }
-  .new-heard-menu{
-    background: #2d292a;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
   .menu-main svg{
     fill: #BBB;
