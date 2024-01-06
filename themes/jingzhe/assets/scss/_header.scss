@@ -42,6 +42,9 @@
   width: 20px;
   fill: #999;
 }
+.heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
+  fill: #666;
+}
 
  // 页面宽度小于900样式
 @media (max-width:900px){
@@ -77,5 +80,8 @@
   }
   .githuab svg,.heard-rss svg path{
     fill: #666;
+  }
+  .heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
+    fill: #999;
   }
 }

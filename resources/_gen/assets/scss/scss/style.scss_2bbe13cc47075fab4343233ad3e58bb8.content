@@ -76,6 +76,9 @@ h1, h2, h3 {
   width: 20px;
   fill: #999; }
 
+.heard-rss svg path:hover, .githuab svg:hover, .menu-main svg:hover {
+  fill: #666; }
+
 @media (max-width: 900px) {
   .menu-main, .new-heard-menu {
     display: none; } }
@@ -102,7 +105,9 @@ h1, h2, h3 {
   .menu-main svg {
     fill: #BBB; }
   .githuab svg, .heard-rss svg path {
-    fill: #666; } }
+    fill: #666; }
+  .heard-rss svg path:hover, .githuab svg:hover, .menu-main svg:hover {
+    fill: #999; } }
 
 .footer-background {
   background: #FFF;
@@ -562,7 +567,7 @@ ul {
       .menu-main-mobile ul li a {
         display: block;
         position: relative;
-        color: var(--base-color);
+        color: #FFF;
         text-decoration: none; }
         .menu-main-mobile ul li a:hover {
           opacity: 0.7; }
@@ -607,7 +612,7 @@ ul {
   .hamburger.is-active {
     border-color: transparent;
     z-index: 100;
-    color: var(--text-highlight-color); }
+    color: #fff; }
     .hamburger.is-active:hover {
       opacity: 1; }
     .hamburger.is-active:before {
