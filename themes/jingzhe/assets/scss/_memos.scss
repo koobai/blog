@@ -471,13 +471,13 @@ blockquote p{
     grid-template-columns: repeat(5, 1fr); 
   }
   .memos_diaoyong .gallery-thumbnail img{
-    height: 160px !important;
+    height: 130px !important;
   }
   .memos_diaoyong .grid-3,.memos_diaoyong .grid-5,.memos_diaoyong .grid-6,.memos_diaoyong .grid-7,.memos_diaoyong grid-8,.memos_diaoyong .grid-9{
     grid-template-columns: repeat(5, 1fr); 
   }
   .memos_diaoyong .grid-3 img,.memos_diaoyong .grid-5 img,.memos_diaoyong .grid-6 img,.memos_diaoyong .grid-7 img,.memos_diaoyong .grid-8 img,.memos_diaoyong .grid-9 img{
-    height: 160px !important;
+    height: 130px !important;
   }
   }
 // 夜间模式页面样式
@@ -626,7 +626,7 @@ blockquote p{
 
 // memos搜索
 .memos-search-all{
-  margin-top: 20px;
+  margin-top: 15px;
 }
 .memos-search {
   width: 100%;
