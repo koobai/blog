@@ -5,7 +5,7 @@
 	grid-gap: 20px; /* 中间空10px间距 */
   margin-top: 30px;
   padding: 20px;
-  background: var(--bankuai-color);
+  background: linear-gradient(to top, #FFF, rgba(255, 255, 255, 0));
 }
 .movie-index{
   border-radius: 4px;
@@ -226,7 +226,7 @@ color: var(--text-highlight-color);
   color: var(--text-highlight-color) !important;
 }
 .movie-quanju{
-  background: var(--background-dark-color);
+  background: linear-gradient(to top, var(--background-dark-color), rgba(255, 255, 255, 0));
 }
 .type-index-left,.type-index-right a,.movie-content-right-4,.movie-laiz a {
   color: #666;

@@ -207,6 +207,9 @@ p {
   font-size: 18px;
   line-height: 24px; }
 
+p:empty {
+  display: none; }
+
 ol,
 ul {
   margin: 0;
@@ -383,7 +386,8 @@ ul {
     cursor: zoom-in; }
 
 .content-index {
-  margin-bottom: 20px; }
+  margin-bottom: 15px;
+  margin-top: 15px; }
 
 .summary-nrong {
   background: var(--bankuai-color);
@@ -1398,7 +1402,7 @@ img[atk-emoticon] {
   /* 中间空10px间距 */
   margin-top: 30px;
   padding: 20px;
-  background: var(--bankuai-color); }
+  background: linear-gradient(to top, #FFF, rgba(255, 255, 255, 0)); }
 
 .movie-index {
   border-radius: 4px; }
@@ -1599,7 +1603,7 @@ img[atk-emoticon] {
   .dvtjjf.active, .sort-by-item.active {
     color: var(--text-highlight-color) !important; }
   .movie-quanju {
-    background: var(--background-dark-color); }
+    background: linear-gradient(to top, var(--background-dark-color), rgba(255, 255, 255, 0)); }
   .type-index-left, .type-index-right a, .movie-content-right-4, .movie-laiz a {
     color: #666; }
   .movie-index:hover .type-index-right a {
@@ -2064,11 +2068,11 @@ blockquote p {
     width: 100% !important;
     grid-template-columns: repeat(5, 1fr); }
   .memos_diaoyong .gallery-thumbnail img {
-    height: 160px !important; }
+    height: 130px !important; }
   .memos_diaoyong .grid-3, .memos_diaoyong .grid-5, .memos_diaoyong .grid-6, .memos_diaoyong .grid-7, .memos_diaoyong grid-8, .memos_diaoyong .grid-9 {
     grid-template-columns: repeat(5, 1fr); }
   .memos_diaoyong .grid-3 img, .memos_diaoyong .grid-5 img, .memos_diaoyong .grid-6 img, .memos_diaoyong .grid-7 img, .memos_diaoyong .grid-8 img, .memos_diaoyong .grid-9 img {
-    height: 160px !important; } }
+    height: 130px !important; } }
 
 @media (prefers-color-scheme: dark) {
   .bb-timeline ul li {
@@ -2171,7 +2175,7 @@ blockquote p {
   --start-smile-border-color-hover:#afafaf; }
 
 .memos-search-all {
-  margin-top: 20px; }
+  margin-top: 15px; }
 
 .memos-search {
   width: 100%;
@@ -2326,7 +2330,7 @@ blockquote p {
   transform: scale(1.05); }
 
 .posts-background {
-  margin-bottom: 20px; }
+  margin-bottom: 15px; }
 
 .archives_nrong {
   margin-top: 20px; }
@@ -2384,7 +2388,7 @@ blockquote p {
 
 @media (min-width: 700px) {
   .index-archives_nrong {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
     grid-gap: 15px;
