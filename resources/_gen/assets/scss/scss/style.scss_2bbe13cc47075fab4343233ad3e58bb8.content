@@ -16,7 +16,7 @@
   --background-dark-color: #201d1e;
   --text-content-color:#222;
   --text-content-dark-color:#BBB;
-  --text-highlight-color:#BB2649; }
+  --text-highlight-color:#FC9151; }
 
 body, html {
   margin: 0;
@@ -35,8 +35,6 @@ h1, h2, h3 {
 
 .header {
   display: flex;
-  margin: 0 auto;
-  max-width: 1200px;
   padding: 25px 0 25px 0; }
 
 .header-logo img {
@@ -955,7 +953,7 @@ ul {
   font-weight: bold; }
 
 .atk-item.atk-nick a {
-  color: var(--text-highlight-color) !important; }
+  color: #999 !important; }
 
 .atk-ua {
   color: #999 !important;
@@ -1080,7 +1078,9 @@ img[atk-emoticon] {
   .atk-reply-to {
     border-left: 3px solid #242021 !important; }
   .atk-comment .atk-main .atk-footer .atk-actions span:hover {
-    color: #999 !important; } }
+    color: #999 !important; }
+  .atk-item.atk-nick a {
+    color: #666 !important; } }
 
 .artalk.hidden {
   display: none; }
@@ -1824,8 +1824,8 @@ pre code {
   margin: 0; }
 
 code {
-  background: #ffe9ef;
-  border: 1px solid #ffd4de;
+  background: #ffe4d4;
+  border: 1px solid #FFBE98;
   border-radius: 4px;
   font-size: 16px;
   padding: 2px 6px 2px 6px;
@@ -2319,7 +2319,8 @@ blockquote p {
   height: 90px;
   object-fit: cover;
   border-radius: 6px;
-  transition: transform 0.3s ease; }
+  transition: transform 0.3s ease;
+  margin-left: 10px; }
 
 .archives_one:hover .archive-img img {
   transform: scale(1.05); }
