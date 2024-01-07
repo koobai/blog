@@ -1666,7 +1666,7 @@ img[atk-emoticon] {
   margin-top: 1.5px; }
 
 .memos_diaoyong_top {
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   gap: 6px; }
@@ -1789,7 +1789,7 @@ img[atk-emoticon] {
 
 .memos-pl {
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   align-items: center;
   gap: 6px; }
 
