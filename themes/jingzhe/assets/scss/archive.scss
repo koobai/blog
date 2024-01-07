@@ -49,6 +49,7 @@
     object-fit: cover;
     border-radius:6px;
     transition: transform 0.3s ease; 
+    margin-left: 10px;
   }
 .archives_one:hover .archive-img img{
 	  transform: scale(1.05);

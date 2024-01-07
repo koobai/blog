@@ -48,7 +48,7 @@
   font-weight: bold;
 }
 .atk-item.atk-nick a{
-  color: var(--text-highlight-color)!important;
+  color: #999 !important;
 }
 .atk-ua {
   color: #999 !important;
@@ -192,6 +192,9 @@ img[atk-emoticon] {
 }
 .atk-comment .atk-main .atk-footer .atk-actions span:hover {
   color: #999 !important;
+}
+.atk-item.atk-nick a{
+  color: #666 !important;
 }
 }
 //memos首页评论
