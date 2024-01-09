@@ -57,8 +57,8 @@ let tagHtml = `<!--<div class="memos-search-all img-hide">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto opacity-30 dark:text-gray-200"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
 <input type="text" id="memos-search-input" placeholder="输入关键词，搜索唠叨..." onkeydown="searchMemoevent(event)">
 </div>
-<div id="tag-list-all"></div>-->
-</div>
+<div id="tag-list-all"></div>
+</div>-->
 <div id="tag-list"></div>` // TAG筛选 memos搜索
 bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
 // showTaglist(); // 显示所有 TAG
