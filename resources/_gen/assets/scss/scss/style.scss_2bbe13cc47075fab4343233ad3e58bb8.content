@@ -127,6 +127,9 @@ h1, h2, h3 {
   line-height: 1.6em;
   color: #a7a7a7; }
 
+.footer-info {
+  padding: 0 20px; }
+
 #gotop {
   display: none;
   /* Hidden by default */
@@ -1659,11 +1662,6 @@ img[atk-emoticon] {
 .memos_diaoyong_more {
   margin-left: auto; }
 
-.bb-list-ul {
-  display: grid;
-  grid-gap: 50px;
-  /* 可选项，设置列之间的间隔 */ }
-
 .bb-timeline {
   margin-top: 40px; }
 
@@ -2027,7 +2025,16 @@ blockquote p {
   .resimg figure {
     margin-bottom: -8px; }
   .memos_diaoyong {
-    display: none; } }
+    display: none; }
+  .bb-load button {
+    margin-top: 10px; }
+  .bb-timeline {
+    margin-top: 15px; }
+  .bb-list-li {
+    background: #f6f6f6;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px; } }
 
 @media (min-width: 700px) {
   .memos_diaoyong .resimg {
@@ -2038,9 +2045,15 @@ blockquote p {
   .memos_diaoyong .grid-3, .memos_diaoyong .grid-5, .memos_diaoyong .grid-6, .memos_diaoyong .grid-7, .memos_diaoyong grid-8, .memos_diaoyong .grid-9 {
     grid-template-columns: repeat(5, 1fr); }
   .memos_diaoyong .grid-3 img, .memos_diaoyong .grid-5 img, .memos_diaoyong .grid-6 img, .memos_diaoyong .grid-7 img, .memos_diaoyong .grid-8 img, .memos_diaoyong .grid-9 img {
-    height: 130px !important; } }
+    height: 130px !important; }
+  .bb-list-ul {
+    display: grid;
+    grid-row-gap: 50px;
+    /* 可选项，设置列之间的间隔 */ } }
 
 @media (prefers-color-scheme: dark) {
+  .bb-list-li {
+    background: var(--background-dark-color); }
   .memos-tag-sc-2 {
     color: #666; }
   .memos-editor-body {
@@ -2413,11 +2426,17 @@ blockquote p {
     width: 100px;
     height: 80px; }
   .posts-background {
-    margin-top: 30px; }
+    margin-top: 10px;
+    gap: 10px; }
   .index-archives_nrong {
     grid-gap: 15px;
     /* 中间空10px间距 */
-    display: grid; } }
+    display: grid; }
+  .page-left {
+    background: #f6f6f6;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 0; } }
 
 @media (min-width: 900px) {
   .index-archives_nrong {
@@ -2443,6 +2462,8 @@ blockquote p {
     color: #999; }
   .sidebar-biaot {
     color: #666; }
+  .page-left {
+    background: var(--background-dark-color); }
   .index_archives_one, .archives_one {
     border: 0.5px solid var(--frame-dark-color); } }
 
