@@ -486,9 +486,6 @@ blockquote p{
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 
-.bb-list-li{
-  background: var(--background-dark-color);
-}
 .memos-tag-sc-2{
   color: #666;
 }
