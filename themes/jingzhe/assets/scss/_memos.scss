@@ -461,6 +461,11 @@ blockquote p{
     margin-bottom: 10px;
     border-radius: 6px;
   }
+  @media (prefers-color-scheme: dark) {
+    .bb-list-li{
+      background: var(--background-dark-color);
+    }
+  }
 }
 // 页面宽度大于700样式
 //首页图片样式
@@ -485,7 +490,6 @@ blockquote p{
   }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-
 .memos-tag-sc-2{
   color: #666;
 }

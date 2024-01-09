@@ -2036,6 +2036,10 @@ blockquote p {
     margin-bottom: 10px;
     border-radius: 6px; } }
 
+@media (max-width: 700px) and (prefers-color-scheme: dark) {
+  .bb-list-li {
+    background: var(--background-dark-color); } }
+
 @media (min-width: 700px) {
   .memos_diaoyong .resimg {
     width: 100% !important;
@@ -2435,6 +2439,10 @@ blockquote p {
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 0; } }
+
+@media (max-width: 900px) and (prefers-color-scheme: dark) {
+  .page-left {
+    background: var(--background-dark-color); } }
 
 @media (min-width: 900px) {
   .index-archives_nrong {
