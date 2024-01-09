@@ -1668,7 +1668,8 @@ img[atk-emoticon] {
 .datacont p {
   font-size: 1rem;
   line-height: 1.8;
-  margin: 0; }
+  margin: 0;
+  text-align: justify; }
 
 .datacont a {
   color: var(--text-highlight-color); }
@@ -2450,7 +2451,7 @@ blockquote p {
     display: grid; }
   .new-index-nrong {
     display: grid;
-    grid-gap: 55px;
+    grid-gap: 50px;
     /* 中间空10px间距 */
     grid-template-columns: 2.1fr 1fr;
     margin-top: 30px; } }
