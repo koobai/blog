@@ -1,15 +1,14 @@
 .artalk{
-  margin-bottom: 10px;
   margin-top: 20px;
 }
 .atk-list-read-more{
   padding-bottom: 0px !important;
 }
 .atk-comment {
-    padding: 20px !important;
-    background: var(--bankuai-color);
-    margin-bottom: 10px;
-    border-radius:4px;
+    padding: 15px 0 15px 0!important;
+}
+.artalk>.atk-list>.atk-list-header {
+  display: none !important;
 }
 .atk-content p {
   font-size: 16px !important;
@@ -142,9 +141,6 @@ img[atk-emoticon] {
   }
 .pinglun{
   color:var(--text-content-dark-color);
-}
-.atk-comment {
-  background: var(--background-dark-color);
 }
 .atk-main-editor {
   background:  var(--background-dark-color) !important;

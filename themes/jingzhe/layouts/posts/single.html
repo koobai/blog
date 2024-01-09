@@ -22,7 +22,7 @@
  <div class="single-tag">
      {{ with .GetTerms "tags" }}
           {{ range . }}
-     <div class="single-tag-c"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+     <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
           {{ end }}
           {{ end }}
  </div>

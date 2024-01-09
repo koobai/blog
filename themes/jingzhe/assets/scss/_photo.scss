@@ -1,8 +1,9 @@
 //首页相册
 .photo-about,.photo-home{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px; 
+    margin-bottom: 30px;
 }
 .photo-home-top{
     position: relative;
@@ -13,7 +14,7 @@
     object-fit: cover;
     border-radius: 2px;
     transition: transform 0.3s ease;
-    height: 170px; 
+    height: 90px; 
     display: block; 
     cursor: zoom-in;
 }
@@ -22,7 +23,7 @@
 }
 .photo-home-title{
     background: rgba(0, 0, 0, 0.6);
-    font-size:14px;
+    font-size:12px;
     color: #FFF;
     position:absolute;
     bottom: 0;
@@ -32,13 +33,13 @@
     width: 100%;
 } 
 // 页面宽度小于700样式
-@media (max-width:700px){
+@media (max-width:900px){
     .photo-about,.photo-home{
         display:none;
     }
     }
 // 页面宽度大于900样式   
- @media (min-width:950px){
+ @media (min-width:900px){
     .photo-home-top:hover span.photo-home-title{
         display:block;
     }

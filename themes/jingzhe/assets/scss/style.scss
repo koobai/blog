@@ -8,12 +8,13 @@
   --base-offset-color: {{ .Site.Params.baseOffsetColor | default "#eaeaea" }};
   --heading-color: {{ .Site.Params.headingColor | default "#1c1b1d" }};
   --dot-color: {{ .Site.Params.dotColor | default "#7b16ff" }};
-  --bankuai-color: #FFF;
-  --background-color: #f6f6f6;
+  --bankuai-color: #f6f6f6;
+  --background-color: #fff;
   --background-dark-color: #201d1e;
   --text-content-color:#222;
   --text-content-dark-color:#BBB;
   --text-highlight-color:#FC9151;
+  --frame-dark-color: #332D2F;
 }
 $breakpoints: (
   'small': 700px,
@@ -78,7 +79,7 @@ body {
 //日间模式新增属性
 
 .highlight {
-pre {background: var(--background-color);}
+pre {background: var(--bankuai-color);}
 }
 .highlight{background-color: var(--bankuai-color);}
 
@@ -108,7 +109,7 @@ a {
 .summary-date{color: #AAAAAA;}
 .highlight {
 pre {
-  background: #2c2829;
+  background: #1f1d1d;
   color: var(--text-content-dark-color);}
 }
 .highlight{background-color: var(--background-dark-color);}

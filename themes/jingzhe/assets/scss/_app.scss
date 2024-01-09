@@ -7,7 +7,7 @@
 .appquanju,.app-index{
   border-radius:4px;
   align-items: center;
-  background-color:var(--bankuai-color);
+  border: 0.5px solid #e6e6e6;
   transition: all .3s cubic-bezier(0,0,.5,1);
   display: grid;
   grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
@@ -119,7 +119,7 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .appquanju{
-  background-color:  var(--background-dark-color);
+  border: 0.5px solid var(--frame-dark-color);
 }
 .macos{
   color: #666;

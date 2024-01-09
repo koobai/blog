@@ -1,30 +1,17 @@
 .footer-background{
-  background: #FFF;
-  margin-left: calc(50% - 50vw);
+  height: 60px;
   width: 100vw;
+  margin-left: calc(50% - 50vw);
   margin-top: 40px;
-  height: 90px;
-  /* 先隐藏元素 */
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  @include breakpoint('small') {
-    height: 64px;
-    }
-  }
-.loaded .footer-background {
-  visibility: visible;
-  opacity: 1;
   }
 .footer {
-    margin: auto;
-    padding: 15px 20px 0 20px;
-    display: flex;
-    justify-content: center;
+    padding-top: 10px; 
+    border-top: 0.5px solid #EEE;
+    text-align: center;
   }
 .footer-info, .footer-info a{
   font-size: 12px;
-  line-height: 1.8em;
+  line-height: 1.6em;
   color: #a7a7a7;
   }
 #gotop {
@@ -60,6 +47,9 @@
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a{
   color: #666;
+}
+.footer {
+  border-top: 0.5px solid #231e20;
 }
 .gotop {
     background: #999;

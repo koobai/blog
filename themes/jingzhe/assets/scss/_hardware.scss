@@ -5,7 +5,7 @@
 	grid-gap: 15px; /* 中间空10px间距 */	
 }
 .bankuai{
-	background-color:var(--bankuai-color);
+	border: 0.5px solid #e6e6e6;
 	border-radius:4px;
 	padding: 20px;
 	transition: all .3s cubic-bezier(0,0,.5,1);
@@ -107,7 +107,7 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .bankuai{
-  background:  var(--background-dark-color);
+	border: 0.5px solid var(--frame-dark-color);
 }
 .note{
 	color: #999;

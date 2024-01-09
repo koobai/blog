@@ -2,8 +2,53 @@
 
 {{ define "main" }}
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-  <div class="content-index">{{ .Content }}</div>
-<!--博文-->
+
+<div class="new-index-nrong">
+  <div>
+
+<!--菜单导航切换-->
+    <div class="index-menu">
+    <div onclick="showContent('1')" class="index-menu-tab">唠叨</div>
+    <div class="index-menu-bowen">
+    <div onclick="showContent('2')" class="index-menu-tab">博文</div>
+    <!--30 天内新博文-->  
+    {{ if gt .Date (now.AddDate 0 0 -15) }}
+    <div class="index-memu-article_new"></div>
+    {{ end }}
+    </div>
+    <!--<!--30 天内新博文结束-->
+    <div class="memos-title"></div>
+    </div>
+    <!--菜单导航切换结束-->
+    <div id="index-article-page1" class="index-article-page index-article-memos index-menu-current">
+     <!--memos--> 
+      <div class="memos-header">
+        
+        <div id="memos" class="img-hide"></div>
+        
+        </div>
+        <div id="bber"></div>
+        <script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script type="text/javascript">
+          var bbMemos = {
+            memos : 'https://memos.koobai.com/',//修改为自己部署 Memos 的网址，末尾有 / 斜杠
+            limit : '10',//默认每次显示 10条 
+            creatorId:'1' ,//用户id
+            domId: '',//默认为 <div id="bber"></div>
+          }
+        </script>
+        <script src="/js/memos.js"></script>
+        <!--发布 memos 内容-->
+        <script src="/js/memos-editor.js"></script>
+        <script src="/js/coco-message.min.js"></script>
+        <!--评论加载-->
+        <link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
+        <script src="https://img.koobai.com/Artalk.js"></script>
+        <!--memos结束--> 
+    </div>
+    
+    <div id="index-article-page2" class="index-article-page">    
+      <!--博文-->
 {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
 {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
 {{ $PageContext := . }}
@@ -30,10 +75,6 @@
 {{ end }}
 </div>
 
-<div class="photo-home img-hide" view-image>
-<script src="/js/photo.js"></script>
-</div>
-
 <div class="index-archives_nrong" >
 {{ range after 4 $pages }}
   <div class="index_archives_one img-hide">
@@ -48,7 +89,75 @@
   </div>
 {{ end }}
 </div>
+</div>
 <!--博文结束-->
+    </div>  
+<!--侧边栏--> 
+<div>
+
+<div class="sidebar-biaot">随机照片</div>
+<div class="photo-home img-hide" view-image>
+  <script src="/js/photo.js"></script>
+  </div>
+
+  <div class="sidebar-biaot">最新博文</div>
+  <div class="sidebar-page-zt">
+  {{ range first 4 $pages }}
+  <div class="sidebar-page img-hide">
+
+   <!-- <div class="sidebar-archive-img img-hide">
+      {{ if .Params.image }}
+      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
+      {{ end }}
+      </div>-->
+<div>
+  <!--30 天内新博文-->  
+{{ if gt .Date (now.AddDate 0 0 -15) }}
+<div class="sidebar_article_new">NEW</div>
+{{ end }}
+<!--<!--30 天内新博文结束-->
+    <div class="sidebar-posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
+    <div class="archive-time">
+      <script>
+        document.write(formatDate({{ .Date.Unix }})); 
+      </script>
+    </div>
+  </div>
+</div>
+{{ end }}
+</div>
+
+
+<div class="sidebar-biaot">最新观影</div>
+<div class="content-index">{{ .Content }}</div>
+</div>
+<!--侧边栏结束--> 
+</div>
+<!--唠叨博文切换js--> 
+<script>
+  // 在页面加载时执行一次showContent，根据默认显示的内容设置初始菜单项颜色
+  document.addEventListener("DOMContentLoaded", function () {
+    showContent('1');
+  });
+  function showContent(contentId) {
+    // 隐藏所有内容块
+    var contents = document.querySelectorAll('.index-article-page');
+    contents.forEach(function (content) {
+      content.classList.remove('index-article-memos', 'index-menu-current');
+    });
+    // 显示指定的内容块
+    var selectedContent = document.getElementById('index-article-page' + contentId);
+    selectedContent.classList.add('index-article-memos');
+    // 设置菜单项颜色
+    var menuItems = document.querySelectorAll('.index-menu-tab');
+    menuItems.forEach(function (menuItem) {
+      menuItem.classList.remove('index-menu-current');
+    });
+    var selectedMenuItem = document.querySelector('[onclick="showContent(\'' + contentId + '\')"]');
+    selectedMenuItem.classList.add('index-menu-current');
+  }
+</script>  
+<!--唠叨博文切换js结束--> 
 {{ end }}
 {{ define "footer_js" }}
 {{ end }}
