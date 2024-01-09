@@ -2251,16 +2251,12 @@ blockquote p {
 .index-article-page {
   display: none; }
 
-.index-article-memos {
-  display: block; }
-
 .index-menu-tab {
-  /* 设置默认菜单项颜色 */
   color: #999;
   display: inline-block;
   cursor: pointer; }
 
-.index-menu-current {
+.index-menu-tab.active {
   color: var(--text-highlight-color); }
 
 .index-menu {
@@ -2469,12 +2465,7 @@ blockquote p {
   .sidebar-biaot {
     color: #666; }
   .index_archives_one, .archives_one {
-    border: 0.5px solid var(--frame-dark-color); }
-  .index-menu-tab {
-    /* 设置默认菜单项颜色 */
-    color: #999; }
-  .index-menu-current {
-    color: var(--text-highlight-color); } }
+    border: 0.5px solid var(--frame-dark-color); } }
 
 .about-img {
   position: relative; }

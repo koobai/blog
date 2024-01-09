@@ -1,19 +1,15 @@
-
 .index-article-page {
   display: none;
 }
-.index-article-memos {
-  display: block;
-}
 .index-menu-tab {
-  /* 设置默认菜单项颜色 */
   color: #999;
   display: inline-block;
   cursor: pointer;
 }
-.index-menu-current {
-  color: var(--text-highlight-color); 
+.index-menu-tab.active {
+  color: var(--text-highlight-color)
 }
+
 .index-menu{
   display: flex;
   gap: 20px;
@@ -241,12 +237,5 @@ margin-bottom: 20px;
   }
   .index_archives_one,.archives_one{
     border: 0.5px solid var(--frame-dark-color);
-  }
-  .index-menu-tab {
-    /* 设置默认菜单项颜色 */
-    color: #999;
-  }
-  .index-menu-current {
-    color: var(--text-highlight-color); 
   }
     }
