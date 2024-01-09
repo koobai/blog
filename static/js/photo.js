@@ -28,7 +28,7 @@ const insertRandomImages = images => {
 fetch('/suju/photo.json')
   .then(response => response.json())
   .then(data => {
-    insertRandomImages(getRandomImages(data, 5));
+    insertRandomImages(getRandomImages(data, 3));
   })
   .catch(error => {
     console.error('无法加载 photo.json 文件:', error);

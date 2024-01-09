@@ -4,15 +4,11 @@
   margin: auto;
   padding-bottom: 20px;
 }
-.content-index p{}
-.bb-list-li,.memos-random-background,.memos-search-all{
+.memos-random-background,.memos-search-all{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:20px; 
   transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.bb-list-li:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
 }
 .memos-diaoyong-tag .memos-tag-dg{
   cursor: auto;
@@ -59,7 +55,7 @@
   margin-top: 1.5px;
 }
 .memos_diaoyong_top{
-  margin-top: 10px;
+  margin-top: 5px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -84,14 +80,15 @@
 //唠叨页
 
 .bb-list-ul{
-  margin-top: 15px;
+  display: grid;
+  grid-gap: 50px; /* 可选项，设置列之间的间隔 */
 }
-.bb-timeline ul li{
-  margin-top: 15px;
+.bb-timeline{
+  margin-top: 40px;
 }
 .datacont p{
-  font-size:18px;
-  line-height:1.9;
+  font-size:16px;
+  line-height:1.8;
   margin:0;
 }
 .datacont a{
@@ -106,12 +103,12 @@
   gap: 6px;
   width: 60%;
   grid-template-columns: repeat(2, 1fr); 
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 .gallery-thumbnail img{
   width: 100% !important;
-  height: 170px !important;
+  height: 150px !important;
   object-fit: cover;
   border-radius:4px;
   transition: transform 0.3s ease;
@@ -125,18 +122,12 @@
   grid-template-columns: repeat(3, 1fr); 
 }
 .grid-3 img,.grid-5 img,.grid-6 img,.grid-7 img,.grid-8 img,.grid-9 img{
-  height: 140px !important;
-}
-.memos-tag-wz{
-  float: left;
-  margin-top: 4px;
+  height: 110px !important;
 }
 .memos-tag-dg,.memos-tag-sc{
   display: inline-block; /* 根据padding宽度自动调整 */
-  padding: 4px 6px 4px 6px;
-  margin-right: 8px;
+  padding: 4px 4px 4px 2px;
   color: #999;
-  background: #f2f2f2;
   font-size: 14px;
   border-radius:4px;
   vertical-align: middle;
@@ -189,15 +180,15 @@
   gap: 6px;
 }
 .bb-load button{
-  border: none;
-  background: #fff;
+  background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
   border-radius:4px;
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
-  font-size: 16px;
+  font-size: 14px;
+  border: 1px solid var(--text-highlight-color);
 }
 .bb-load button:hover{
   opacity: 0.8;
@@ -206,9 +197,11 @@
 pre{
   border-radius: 4px;
   line-height: 1.8;
-  background: var(--background-color);
-  padding: 20px;
+  background: #f6f6f6;
+  padding: 10px;
   white-space: pre-wrap; 
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 pre code{
   background: transparent;
@@ -252,6 +245,8 @@ blockquote p{
 .load-memos-editor{
   cursor: pointer;
   color: transparent;
+  margin-left: auto;
+  display: inline-block;
 }
 .d-flex {
   display: -ms-flexbox !important;
@@ -262,10 +257,8 @@ blockquote p{
 }
 .memos-editor-body{
   border-radius:4px;
-  background: var(--bankuai-color);
-  transition: all .3s cubic-bezier(0,0,.5,1);
-  padding: 20px;
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+  border: 1px solid #EEE;
+  padding: 15px;
 }
 .memos-editor-content .memos-editor-textarea{
   border: transparent;
@@ -482,13 +475,13 @@ blockquote p{
   }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.bb-timeline ul li {
-  background: var(--background-dark-color) !important;
-}
-.memos-tag-dg,.memos-tag-sc,.memos-tag-all{
-  background: #332E2F;
-}
 .memos-tag-sc-2{
+  color: #666;
+}
+.memos-editor-body{
+  border: 1px solid #332D2F;
+}
+.memos-tag-dg{
   color: #666;
 }
 .memos-tag-sc{
@@ -497,9 +490,6 @@ blockquote p{
 }
 .bb-load button{
   background:var(--background-dark-color);
-}
-.bb-list-li,.memos-random-background,.memos-search-all{
-  background: var(--background-dark-color) !important;
 }
 .memos_diaoyong_from a{
   color: #999;
@@ -537,15 +527,10 @@ blockquote p{
 .memos_diaoyong_info blockquote p{
   color: #888 !important;
 }
-.memos-editor-body{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.3);
-}
+
 //memos页发布唠叨
 .memos-path-input,.memos-token-input{
   color: var(--text-content-dark-color) !important;
-}
-.memos-editor-body{
-  background: var(--background-dark-color) !important;
 }
 .editor-selector select {
   border: 0.5px solid #454545 !important;

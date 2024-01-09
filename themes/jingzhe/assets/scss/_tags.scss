@@ -29,24 +29,21 @@
 .page-time,.single-tag-c{
   font-size: 16px; 
   border-radius:4px;
-  background: #F2F2F2;
-  color:var(--text-content-color);
-  padding: 10px;
+  color:#999;
   display: inline-block;
 }
 .single-tag-c a{
-  color: var(--text-content-color);
+  color: #999;
 }
 
 // 夜间模式文章页标签
 @media (prefers-color-scheme: dark) {
 
 .page-time,.single-tag-c {
-  background: #2f2b2c;
-  color:var(--text-content-dark-color);
+  color:#666;
 }
 .single-tag-c a{
-  color:var(--text-content-dark-color);
+  color:#666;
 }
 .list-tags{
   background-color:  var(--background-dark-color);

@@ -33,9 +33,6 @@ ul {
   }
 }
 .content_zhengwen {
-  border-radius:8px;
-  background-color: var(--bankuai-color);
-  padding: 20px;
   margin: 20px 0 20px 0;
 }
 .content_zhengwen img,.top-img {
@@ -184,9 +181,3 @@ ul {
     }
   }
 }
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-  .content_zhengwen{
-    background-color: var(--background-dark-color);
-  }
-  }
