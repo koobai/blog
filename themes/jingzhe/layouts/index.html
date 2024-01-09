@@ -1,124 +1,122 @@
 {{ define "body_classes" }}page-home{{ end }}
 {{ define "main" }}
 <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-<!--唠叨博文切换js--> 
-<script>
-  // 在页面加载时执行一次showContent，根据默认显示的内容设置初始菜单项颜色
-  document.addEventListener("DOMContentLoaded", function () {
-    showContent('1');
-  });
-  function showContent(contentId) {
-    // 隐藏所有内容块
-    var contents = document.querySelectorAll('.index-article-page');
-    contents.forEach(function (content) {
-      content.classList.remove('index-article-memos', 'index-menu-current');
-    });
-    // 显示指定的内容块
-    var selectedContent = document.getElementById('index-article-page' + contentId);
-    selectedContent.classList.add('index-article-memos');
-    // 设置菜单项颜色
-    var menuItems = document.querySelectorAll('.index-menu-tab');
-    menuItems.forEach(function (menuItem) {
-      menuItem.classList.remove('index-menu-current');
-    });
-    var selectedMenuItem = document.querySelector('[onclick="showContent(\'' + contentId + '\')"]');
-    selectedMenuItem.classList.add('index-menu-current');
-  }
-</script>  
-<!--唠叨博文切换js结束--> 
+
 
 <div class="new-index-nrong">
-  <div>
-<!--菜单导航切换-->
-    <div class="index-menu">
-    <div onclick="showContent('1')" class="index-menu-tab">唠叨</div>
-    <div class="index-menu-bowen">
-    <div onclick="showContent('2')" class="index-menu-tab">博文</div>
-    <!--30 天内新博文-->  
-    {{ if gt .Date (now.AddDate 0 0 -15) }}
-    <div class="index-memu-article_new"></div>
-    {{ end }}
-    </div>
-    <!--<!--30 天内新博文结束-->
-    <div class="memos-title"></div>
-    </div>
-    <!--菜单导航切换结束-->
-    <div id="index-article-page1" class="index-article-page index-article-memos index-menu-current">
-     <!--memos--> 
-      <div class="memos-header">
-        
-        <div id="memos" class="img-hide"></div>
-        
-        </div>
-        <div id="bber"></div>
-        <script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script type="text/javascript">
-          var bbMemos = {
-            memos : 'https://memos.koobai.com/',//修改为自己部署 Memos 的网址，末尾有 / 斜杠
-            limit : '10',//默认每次显示 10条 
-            creatorId:'1' ,//用户id
-            domId: '',//默认为 <div id="bber"></div>
-          }
-        </script>
-        <script src="/js/memos.js"></script>
-        <!--发布 memos 内容-->
-        <script src="/js/memos-editor.js"></script>
-        <script src="/js/coco-message.min.js"></script>
-        <!--评论加载-->
-        <link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
-        <script src="https://img.koobai.com/Artalk.js"></script>
-        <!--memos结束--> 
-    </div>
-    
-    <div id="index-article-page2" class="index-article-page">    
-      <!--博文-->
+<div>
+<!--tab切换内容-->
+<div class="index-menu">
+<div class="index-menu-tab" onclick="showContent('1', this)" id="tab1">唠叨</div>
+<div class="index-menu-bowen">
+<div class="index-menu-tab" onclick="showContent('2', this)" id="tab2">博文</div>
+<!--30 天内新博文-->  
+{{ if gt .Date (now.AddDate 0 0 -15) }}
+<div class="index-memu-article_new"></div>
+{{ end }}
+</div>
+<!--<!--30 天内新博文结束-->
+<div class="memos-title"></div>
+</div>
+<!--tab切换内容结束--> 
+<div id="content1" class="index-article-page">
+<!--memos--> 
+<div class="memos-header">
+<div id="memos" class="img-hide"></div>
+</div>
+<div id="bber"></div>
+<script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script type="text/javascript">
+  var bbMemos = {
+    memos : 'https://memos.koobai.com/',//修改为自己部署 Memos 的网址，末尾有 / 斜杠
+    limit : '10',//默认每次显示 10条 
+    creatorId:'1' ,//用户id
+    domId: '',//默认为 <div id="bber"></div>
+  }
+</script>
+<script src="/js/memos.js"></script>
+<!--发布 memos 内容-->
+<script src="/js/memos-editor.js"></script>
+<script src="/js/coco-message.min.js"></script>
+<!--评论加载-->
+<link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
+<script src="https://img.koobai.com/Artalk.js"></script>
+<!--memos结束--> 
+</div>
+<div id="content2" class="index-article-page">  
+<!--博文-->
 {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
 {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
 {{ $PageContext := . }}
 {{ if .IsHome }}
-  {{ $PageContext = .Site }}
+{{ $PageContext = .Site }}
 {{ end }}
 {{ $pages := (where $PageContext.RegularPages "Type" $contentTypeName) }}
 <div class="posts-background">
 {{ range first 4 $pages }}
-  <div class="page-left img-hide">
+<div class="page-left img-hide">
 <!--30 天内新博文-->  
 {{ if gt .Date (now.AddDate 0 0 -15) }}
 <div class="article_new">NEW</div>
 {{ end }}
 <!--<!--30 天内新博文结束-->
-    <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
-    <div class="posts-description">{{ .Params.description }}</div>
-    <div class="archive-time">@ 
-      <script>
-        document.write(formatDate({{ .Date.Unix }})); 
-      </script>
-    </div>
-  </div>
+<div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
+<div class="posts-description">{{ .Params.description }}</div>
+<div class="archive-time">@ 
+  <script>
+    document.write(formatDate({{ .Date.Unix }})); 
+  </script>
+</div>
+</div>
 {{ end }}
 </div>
 
 <div class="index-archives_nrong" >
 {{ range after 4 $pages }}
-  <div class="index_archives_one img-hide">
-    <div>
-      <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-      <div class="archive-time">
-        <script>
-          document.write(formatDate({{ .Date.Unix }})); 
-        </script>
-      </div>
-      </div>
+<div class="index_archives_one img-hide">
+<div>
+  <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+  <div class="archive-time">
+    <script>
+      document.write(formatDate({{ .Date.Unix }})); 
+    </script>
   </div>
+  </div>
+</div>
 {{ end }}
 </div>
-</div>
 <!--博文结束-->
-    </div>  
+</div>
+<!--tab切换内容js-->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Set the default active tab
+    showContent('1', document.getElementById('tab1'));
+  });
+
+  function showContent(tab, element) {
+    document.querySelectorAll('.index-menu-tab').forEach(tabElement => {
+      tabElement.classList.remove('active');
+    });
+
+    element.classList.add('active');
+
+    document.querySelectorAll('.index-article-page').forEach(contentElement => {
+      contentElement.style.display = 'none';
+    });
+
+    if (tab === '1') {
+      document.getElementById('content1').style.display = 'block';
+    } else if (tab === '2') {
+      document.getElementById('content2').style.display = 'block';
+    }
+  }
+</script>  
+<!--tab切换内容js结束-->
+</div>  
 
 <!--侧边栏--> 
 <div>
-
 <div class="sidebar-biaot">随机照片</div>
 <div class="photo-home img-hide" view-image>
   <script src="/js/photo.js"></script>
@@ -128,12 +126,6 @@
   <div class="sidebar-page-zt">
   {{ range first 4 $pages }}
   <div class="sidebar-page img-hide">
-
-   <!-- <div class="sidebar-archive-img img-hide">
-      {{ if .Params.image }}
-      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>
-      {{ end }}
-      </div>-->
 <div>
   <!--30 天内新博文-->  
 {{ if gt .Date (now.AddDate 0 0 -15) }}
@@ -150,8 +142,6 @@
 </div>
 {{ end }}
 </div>
-
-
 <div class="sidebar-biaot">最新观影</div>
 <div class="content-index">{{ .Content }}</div>
 </div>
