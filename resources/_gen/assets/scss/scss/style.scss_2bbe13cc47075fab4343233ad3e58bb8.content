@@ -1591,8 +1591,7 @@ img[atk-emoticon] {
 .memos-random-background, .memos-search-all {
   border-radius: 4px;
   background: var(--bankuai-color) !important;
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
+  padding: 10px; }
 
 .memos-diaoyong-tag .memos-tag-dg {
   cursor: auto; }
