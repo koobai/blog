@@ -9,7 +9,7 @@
     border-top: 0.5px solid #EEE;
     text-align: center;
   }
-.footer-info, .footer-info a{
+.footer-info, .footer-info a,.footer-rss,.footer-rss a{
   font-size: 12px;
   line-height: 1.6em;
   color: #a7a7a7;
@@ -17,6 +17,7 @@
 .footer-info{
   padding: 0 20px;
   }
+
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */

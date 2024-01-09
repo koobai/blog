@@ -122,7 +122,7 @@ h1, h2, h3 {
   border-top: 0.5px solid #EEE;
   text-align: center; }
 
-.footer-info, .footer-info a {
+.footer-info, .footer-info a, .footer-rss, .footer-rss a {
   font-size: 12px;
   line-height: 1.6em;
   color: #a7a7a7; }
@@ -2469,7 +2469,12 @@ blockquote p {
   .sidebar-biaot {
     color: #666; }
   .index_archives_one, .archives_one {
-    border: 0.5px solid var(--frame-dark-color); } }
+    border: 0.5px solid var(--frame-dark-color); }
+  .index-menu-tab {
+    /* 设置默认菜单项颜色 */
+    color: #999; }
+  .index-menu-current {
+    color: var(--text-highlight-color); } }
 
 .about-img {
   position: relative; }
