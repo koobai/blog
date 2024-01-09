@@ -77,11 +77,6 @@
 }
 
 //唠叨页
-
-.bb-list-ul{
-  display: grid;
-  grid-gap: 50px; /* 可选项，设置列之间的间隔 */
-}
 .bb-timeline{
   margin-top: 40px;
 }
@@ -454,6 +449,18 @@ blockquote p{
   .memos_diaoyong{
     display: none;
   }
+  .bb-load button{
+    margin-top: 10px;
+  }
+  .bb-timeline{
+    margin-top: 15px;
+  }
+  .bb-list-li{
+    background: #f6f6f6;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
 }
 // 页面宽度大于700样式
 //首页图片样式
@@ -471,9 +478,17 @@ blockquote p{
   .memos_diaoyong .grid-3 img,.memos_diaoyong .grid-5 img,.memos_diaoyong .grid-6 img,.memos_diaoyong .grid-7 img,.memos_diaoyong .grid-8 img,.memos_diaoyong .grid-9 img{
     height: 130px !important;
   }
+  .bb-list-ul{
+    display: grid;
+    grid-row-gap: 50px; /* 可选项，设置列之间的间隔 */
+  }
   }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
+
+.bb-list-li{
+  background: var(--background-dark-color);
+}
 .memos-tag-sc-2{
   color: #666;
 }

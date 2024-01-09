@@ -187,11 +187,18 @@ margin-bottom: 20px;
     height: 80px;
   }
   .posts-background {
-    margin-top: 30px;
+    margin-top: 10px;
+    gap: 10px;
   }
   .index-archives_nrong{
     grid-gap: 15px; /* 中间空10px间距 */
     display: grid;
+  }
+  .page-left{
+    background: #f6f6f6;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 0;
   }
    } 
 // 页面宽度大于900样式
@@ -226,6 +233,9 @@ margin-bottom: 20px;
   }
   .sidebar-biaot{
     color: #666;
+  }
+  .page-left{
+    background: var(--background-dark-color);
   }
 .index_archives_one,.archives_one{
     border: 0.5px solid var(--frame-dark-color);
