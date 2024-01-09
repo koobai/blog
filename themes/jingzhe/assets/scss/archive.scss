@@ -200,6 +200,11 @@ margin-bottom: 20px;
     border-radius: 6px;
     margin-bottom: 0;
   }
+  @media (prefers-color-scheme: dark) {
+    .page-left{
+      background: var(--background-dark-color);
+    }
+  }
    } 
 // 页面宽度大于900样式
 @media (min-width:900px){
@@ -217,7 +222,7 @@ margin-bottom: 20px;
     grid-gap: 40px; /* 中间空10px间距 */
     grid-template-columns: 2fr 1fr;
     margin-top: 30px;
-  }
+  } 
   } 
 
   // 夜间模式页面样式
@@ -234,7 +239,6 @@ margin-bottom: 20px;
   .sidebar-biaot{
     color: #666;
   }
-
 .index_archives_one,.archives_one{
     border: 0.5px solid var(--frame-dark-color);
   }
