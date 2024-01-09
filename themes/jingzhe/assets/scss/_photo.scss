@@ -2,7 +2,7 @@
 .photo-about,.photo-home{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px; 
+    grid-gap: 6px; 
     margin-bottom: 30px;
 }
 .photo-home-top{
@@ -14,7 +14,7 @@
     object-fit: cover;
     border-radius: 2px;
     transition: transform 0.3s ease;
-    height: 90px; 
+    height: 80px; 
     display: block; 
     cursor: zoom-in;
 }
