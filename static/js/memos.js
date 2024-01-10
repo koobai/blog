@@ -103,7 +103,7 @@ function meNums() {
   fetch(bbUrl).then(res => res.json()).then(resdata => {
     if (Array.isArray(resdata)) {
      // var allnums = ' ( 目前共唠叨了 ' + resdata.length + ' 条 )';
-      bbLoad.insertAdjacentHTML('afterend', allnums);
+      //bbLoad.insertAdjacentHTML('afterend', allnums);
     }
   });
 }
