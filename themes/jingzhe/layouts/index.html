@@ -132,7 +132,7 @@
 <div class="sidebar_article_new">NEW</div>
 {{ end }}
 <!--<!--30 天内新博文结束-->
-    <div class="sidebar-posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
+    <div class="sidebar-posts-title"><a href="{{ .Permalink }}" target="_blank">{{ .Title | markdownify }}</a></div>
     <div class="archive-time">
       <script>
         document.write(formatDate({{ .Date.Unix }})); 
@@ -144,6 +144,14 @@
 </div>
 <div class="sidebar-biaot">最新观影</div>
 <div class="content-index">{{ .Content }}</div>
+
+<div class="sidebar-biaot">博文标签</div>
+<div class="archives_tags">
+  {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
+  <div class="list-tags img-hide"><a href="/tags/{{ $name | urlize }}" target="_blank"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a></div>
+  {{- end -}}
+</div>
+
 </div>
 <!--侧边栏结束--> 
 </div>

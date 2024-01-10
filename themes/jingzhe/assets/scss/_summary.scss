@@ -1,47 +1,30 @@
 .content-index{
-  margin-bottom: 15px;
-  margin-top: 15px;
+  margin-bottom: 30px;
+}
+.summary{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-gap: 15px;
+  margin-top: 20px;
 }
 .summary-nrong{
-  background: var(--bankuai-color);
+  border: 0.5px solid #e6e6e6;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .summary-nrong:hover{
   box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
 }
-.summary-1{
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 40px;
-}
-.summary-tag-left{
-  margin-right: 10px;
-}
-.summary-tag-right{
-  flex-shrink:0;
-  grid-column: 2;
-}
-.summary-tag-right svg{
-  fill: #c0c0c0;
-  width: 0.85rem;
-}
-.summary-nrong:hover .summary-tag-right svg{
-  fill:#666;
-}
-.summary-tag a{
-  font-size: 1rem;
-  color: #999;
-}
 .summary-date {
   font-size: 0.85rem;
   color: #999;
   font-family: var(--font-family-code);
+  margin-top: 6px;
 }
 .summary-title{
   font-family:var(--font-family-title);
-  font-size: 20px;
+  font-size: 1.25rem;
   margin-top: 6px;
   line-height: 1.6;
 }
@@ -56,62 +39,14 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-.read-more{
-  margin-top: 20px;
-}
-.list-more{
-  margin-top: 0.75rem;
-}
-.read-more a,.list-more a{
-  font-size: 1rem;
-  color: #666;
-  font-family: var(--font-family-paragraph);
-}
-// 页面宽度小于700样式
-@media (max-width:700px){
- .summary-nrong{
-    margin-bottom: 15px;
-  }
-  }
-  
-  // 页面宽度大于700小于900样式
-  @media screen and (min-width:700px) and (max-width:900px){
-    .summary{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 10px;
-    }
-  }
-  // 页面宽度大于900样式   
- @media (min-width:900px){
-  .summary{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-    margin: 0 auto;
-    max-width: 1000px;
-  }
-  }
 
   // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .summary-nrong{
-    background: var(--background-dark-color);
-  }
-  .summary-tag-right svg{
-    fill: #666;
-  }
-  .summary-nrong:hover .summary-tag-right svg{
-    fill: #c0c0c0;
-  }
-  .summary-tag a{
-    color: #666;
+    border: 0.5px solid var(--frame-dark-color);
   }
   .summary-description{
     color: #999;
-  }
-  .read-more a,.list-more a{
-    color: var(--text-content-dark-color);
   }
   .summary-date{
     color: #666 !important;
