@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("//s1.hdslb.com/bfs/static/jinkela/long/font/regular.css");
+@import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css");
 @import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css");
 :root {
   --font-family-paragraph: 'HarmonyOS_Regular', Helvetica, sans-serif;
@@ -1287,7 +1287,7 @@ img[atk-emoticon] {
 .list-tags {
   border-radius: 20px;
   padding: 8px;
-  border: 1px solid #eee;
+  border: 1px solid var(--frame-color);
   font-size: 0.85rem; }
 
 .list-tags a {
@@ -1323,7 +1323,7 @@ img[atk-emoticon] {
   .archives_tags_f {
     color: #666; }
   .list-tags {
-    border: 1px solid var(--frame-dark-color); }
+    border: 0.5px solid var(--frame-dark-color); }
   .list-tags a {
     color: #999; } }
 
