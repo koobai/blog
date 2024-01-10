@@ -308,7 +308,6 @@ ul {
     margin: 10px 0 0 0;
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
     cursor: zoom-in; }
   .content figure {
     margin: 2.6rem 0 1.18rem; }
@@ -374,7 +373,6 @@ ul {
       line-height: 32px; } }
 .intro img {
   max-width: 100%;
-  border-radius: 8px;
   cursor: zoom-in; }
 
 .content-index {
@@ -1349,7 +1347,7 @@ img[atk-emoticon] {
   /* 放置在第一列 */ }
 
 .movie-content-left img {
-  border-radius: 6px !important;
+  border-radius: 4px !important;
   object-fit: cover;
   width: 80px;
   height: 110px; }
