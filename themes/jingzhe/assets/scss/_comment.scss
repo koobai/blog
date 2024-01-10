@@ -11,7 +11,7 @@
   display: none !important;
 }
 .atk-content p {
-  font-size: 16px !important;
+  font-size: 1rem !important;
   color: var(--text-content-color) !important;
 }
 .atk-content{
@@ -88,14 +88,14 @@
   --at-color-border: #DDD !important;
 }
 .atk-content img{
-  max-height: 18px!important;
+  max-height: 1.1rem!important;
   vertical-align: middle;
   margin-left: 2px;
   margin-right: 2px;
   margin-top: -4px !important;
 }
 .atk-comment > .atk-main > .atk-body > .atk-content img{
-  width:  18px!important;
+  width:  1.1rem!important;
 }
 .atk-comment .atk-height-limit:after{
   margin-bottom: 20px;

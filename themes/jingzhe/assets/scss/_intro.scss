@@ -12,26 +12,26 @@
     }
   }
   p {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 1.8;
     @include breakpoint('small') {
       width: 100%;
-      font-size: 18px;
+      font-size: 1.1rem;
       line-height: 32px;
     }
   }
   .article_title {
-    font-size: 30px;
+    font-size: 1.8rem;
     line-height: 35px;
     margin-bottom: 20px;
     font-weight:normal;
   }
   .read-more {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 26px;
     font-weight: bold;
     @include breakpoint('small') {
-      font-size: 18px;
+      font-size: 1.1rem;
       line-height: 32px;
     }
   }

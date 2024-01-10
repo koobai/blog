@@ -17,7 +17,7 @@
   padding: 20px;
 }
 .appquanju:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+  box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
 }
 .appquanju:hover .appimg img{
   transform: scale(1.04);
@@ -27,11 +27,11 @@
   transition: transform 0.3s ease;
 }
 .apptitle{
-  font-size:18px;
+  font-size:1.1rem;
   font-family: var(--font-family-title);
 }
 .appnote,.appnote-index{
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: #666;
   text-align: justify;
@@ -63,7 +63,7 @@
 .macos{
   padding: 0 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   border-radius:20px;
   font-family: var(--font-family-code);
   height: 28px;
@@ -79,7 +79,7 @@
   display:none;
 }
 .kaiyuan,.shoufei,.free{
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 2px 6px;
   border-radius:20px;
 }
@@ -105,7 +105,7 @@
 	text-decoration: underline;
 }
 .pagetitle{
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 20px;
   max-width: 700px;

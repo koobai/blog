@@ -11,7 +11,7 @@
 	transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .bankuai:hover{
-	box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+	box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
 }
 .duiqi{
   display: flex;
@@ -28,11 +28,11 @@
 }
 .title{
 	font-family: var(--font-family-title);
-	font-size:18px;
+	font-size:1.1rem;
 	margin: 8px 0 8px 0;
 }
 .note{
-	font-size: 16px;
+	font-size: 1rem;
 	line-height: 1.6;
 	color: #666;
 } 
@@ -46,7 +46,7 @@
 .details,.tiyi,.jiage{
 	padding: 0 10px;
 	text-align: center;
-	font-size: 14px;
+	font-size: 0.85rem;
 	border-radius:20px;
 	font-family: var(--font-family-code);
 	height: 30px;

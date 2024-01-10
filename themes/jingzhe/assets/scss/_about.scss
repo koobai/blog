@@ -11,7 +11,7 @@
   transform: translate(-50%, -50%);
   color: #fff;
   font-family: var(--font-family-code);
-  font-size: 30px;
+  font-size: 1.8rem;
   @include breakpoint('small') {
     font-size: 70px;
   }
@@ -19,7 +19,7 @@
 .about-text {
     margin: 20px 0 20px 0;
     line-height: 2;
-    font-size: 18px;
+    font-size: 1.1rem;
     text-align: justify;
 }
 .about-text a{
@@ -28,7 +28,7 @@
 .about-img-intro{
   padding: 8px;
   border-radius:2px;
-  font-size: 12px;
+  font-size: 0.75rem;
   background: rgba(0, 0, 0, 0.4);
   position:absolute;
   color: #FFF;

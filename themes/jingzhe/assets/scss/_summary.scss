@@ -9,7 +9,7 @@
   transition: all .3s cubic-bezier(0,0,.5,1);
 }
 .summary-nrong:hover{
-  box-shadow: 2px 4px 16px rgba(0,0,0,.05);
+  box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
 }
 .summary-1{
   display: flex;
@@ -25,17 +25,17 @@
 }
 .summary-tag-right svg{
   fill: #c0c0c0;
-  width: 14px;
+  width: 0.85rem;
 }
 .summary-nrong:hover .summary-tag-right svg{
   fill:#666;
 }
 .summary-tag a{
-  font-size: 16px;
+  font-size: 1rem;
   color: #999;
 }
 .summary-date {
-  font-size: 14px;
+  font-size: 0.85rem;
   color: #999;
   font-family: var(--font-family-code);
 }
@@ -46,7 +46,7 @@
   line-height: 1.6;
 }
 .summary-description{
-  font-size: 16px;
+  font-size: 1rem;
   line-height:1.8;
   color: #666;
   margin-top: 10px;
@@ -60,10 +60,10 @@
   margin-top: 20px;
 }
 .list-more{
-  margin-top: 12px;
+  margin-top: 0.75rem;
 }
 .read-more a,.list-more a{
-  font-size: 16px;
+  font-size: 1rem;
   color: #666;
   font-family: var(--font-family-paragraph);
 }
