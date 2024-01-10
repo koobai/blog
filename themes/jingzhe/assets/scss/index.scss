@@ -21,12 +21,12 @@
 }
 .posts-background{
   display: grid;
-  grid-gap: 30px; /* 中间空10px间距 */
+  grid-gap: 50px; /* 中间空10px间距 */
 }
-.archives_one,.index_archives_one{
+.archives_one{
   display: flex;
   border-radius:4px;
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   align-items: center;
 }
 .article_new{
@@ -51,15 +51,12 @@
 .index-menu-bowen{
   display: flex;
 }
-.index_archives_one{
-  padding: 10px;
-}
 .archives_one{
   padding: 15px 20px 15px 20px;
 }
 .archive-title{
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 .archive-time{
@@ -138,8 +135,6 @@
 }
 .page-left{
   transition: all .3s cubic-bezier(0,0,.5,1);
-
-margin-bottom: 20px;
 }
 .posts-title a{
   font-family: var(--font-family-title);
@@ -164,8 +159,8 @@ margin-bottom: 20px;
 .posts-description {
   line-height: 1.8;
   font-size: 1rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   color: #666;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -187,19 +182,20 @@ margin-bottom: 20px;
   .posts-background {
     margin-top: 10px;
     gap: 10px;
+    margin-bottom: 10px;
   }
   .index-archives_nrong{
-    grid-gap: 15px; /* 中间空10px间距 */
+    grid-gap: 10px; /* 中间空10px间距 */
     display: grid;
   }
-  .page-left{
+  .page-left,.index_archives_one{
     background: #f6f6f6;
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 0;
   }
   @media (prefers-color-scheme: dark) {
-    .page-left{
+    .page-left,.index_archives_one{
       background: var(--background-dark-color);
     }
   }
@@ -207,20 +203,27 @@ margin-bottom: 20px;
 // 页面宽度大于900样式
 @media (min-width:900px){
   .index-archives_nrong{
-    margin-top: 15px;
-   //margin-left: calc(50% - 50vw);
-   //width: 100vw;
+    margin-top: 40px;
     grid-gap: 15px; /* 中间空10px间距 */
-    grid-template-columns: 1fr 1fr;
-    justify-content: center; 
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
   }
   .new-index-nrong{
     display: grid;
     grid-gap: 50px; /* 中间空10px间距 */
     grid-template-columns: 2.1fr 1fr;
     margin-top: 30px;
-  } 
+  }
+  .index_archives_one{
+    border: 1px solid var(--frame-color);
+    padding: 10px;
+    border-radius: 6px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .index_archives_one{
+      border: 0.5px solid var(--frame-dark-color);
+    }
+  }
   } 
 
   // 夜间模式页面样式
@@ -237,7 +240,7 @@ margin-bottom: 20px;
   .sidebar-biaot{
     color: #666;
   }
-  .index_archives_one,.archives_one{
+  .archives_one{
     border: 0.5px solid var(--frame-dark-color);
   }
     }
