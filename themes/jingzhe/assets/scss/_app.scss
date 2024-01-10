@@ -7,7 +7,7 @@
 .appquanju,.app-index{
   border-radius:4px;
   align-items: center;
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   transition: all .3s cubic-bezier(0,0,.5,1);
   display: grid;
   grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */

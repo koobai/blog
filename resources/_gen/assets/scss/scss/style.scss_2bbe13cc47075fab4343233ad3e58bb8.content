@@ -17,7 +17,8 @@
   --text-content-color:#222;
   --text-content-dark-color:#BBB;
   --text-highlight-color:#FC9151;
-  --frame-dark-color: #332D2F; }
+  --frame-dark-color: #332D2F;
+  --frame-color: #eee; }
 
 body, html {
   margin: 0;
@@ -119,7 +120,7 @@ h1, h2, h3 {
 
 .footer {
   padding-top: 10px;
-  border-top: 0.5px solid #EEE;
+  border-top: 0.5px solid var(--frame-color);
   text-align: center; }
 
 .footer-info, .footer-info a, .footer-rss, .footer-rss a {
@@ -386,7 +387,7 @@ ul {
   margin-top: 20px; }
 
 .summary-nrong {
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   padding: 20px;
   border-radius: 6px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
@@ -897,7 +898,7 @@ ul {
 
 .atk-ua {
   color: #999 !important;
-  background: #E6E6E6 !important; }
+  background: var(--frame-color) !important; }
 
 .atk-ua-wrap {
   font-size: 11px; }
@@ -1032,7 +1033,7 @@ img[atk-emoticon] {
 .appquanju, .app-index {
   border-radius: 4px;
   align-items: center;
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1160,7 +1161,7 @@ img[atk-emoticon] {
   /* 中间空10px间距 */ }
 
 .bankuai {
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   border-radius: 4px;
   padding: 20px;
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
@@ -2221,13 +2222,13 @@ blockquote p {
 
 .posts-background {
   display: grid;
-  grid-gap: 30px;
+  grid-gap: 50px;
   /* 中间空10px间距 */ }
 
-.archives_one, .index_archives_one {
+.archives_one {
   display: flex;
   border-radius: 4px;
-  border: 0.5px solid #e6e6e6;
+  border: 0.5px solid var(--frame-color);
   align-items: center; }
 
 .article_new {
@@ -2252,15 +2253,12 @@ blockquote p {
 .index-menu-bowen {
   display: flex; }
 
-.index_archives_one {
-  padding: 10px; }
-
 .archives_one {
   padding: 15px 20px 15px 20px; }
 
 .archive-title {
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6; }
 
 .archive-time {
@@ -2335,8 +2333,7 @@ blockquote p {
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
 
 .page-left {
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
-  margin-bottom: 20px; }
+  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
 
 .posts-title a {
   font-family: var(--font-family-title);
@@ -2361,8 +2358,8 @@ blockquote p {
 .posts-description {
   line-height: 1.8;
   font-size: 1rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   color: #666;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2378,35 +2375,43 @@ blockquote p {
     height: 80px; }
   .posts-background {
     margin-top: 10px;
-    gap: 10px; }
+    gap: 10px;
+    margin-bottom: 10px; }
   .index-archives_nrong {
-    grid-gap: 15px;
+    grid-gap: 10px;
     /* 中间空10px间距 */
     display: grid; }
-  .page-left {
+  .page-left, .index_archives_one {
     background: #f6f6f6;
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 0; } }
 
 @media (max-width: 900px) and (prefers-color-scheme: dark) {
-  .page-left {
+  .page-left, .index_archives_one {
     background: var(--background-dark-color); } }
 
 @media (min-width: 900px) {
   .index-archives_nrong {
-    margin-top: 15px;
+    margin-top: 40px;
     grid-gap: 15px;
     /* 中间空10px间距 */
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    display: grid; }
+    display: flex;
+    flex-wrap: wrap; }
   .new-index-nrong {
     display: grid;
     grid-gap: 50px;
     /* 中间空10px间距 */
     grid-template-columns: 2.1fr 1fr;
-    margin-top: 30px; } }
+    margin-top: 30px; }
+  .index_archives_one {
+    border: 1px solid var(--frame-color);
+    padding: 10px;
+    border-radius: 6px; } }
+
+@media (min-width: 900px) and (prefers-color-scheme: dark) {
+  .index_archives_one {
+    border: 0.5px solid var(--frame-dark-color); } }
 
 @media (prefers-color-scheme: dark) {
   .archive-time {
@@ -2417,7 +2422,7 @@ blockquote p {
     color: #999; }
   .sidebar-biaot {
     color: #666; }
-  .index_archives_one, .archives_one {
+  .archives_one {
     border: 0.5px solid var(--frame-dark-color); } }
 
 .about-img {

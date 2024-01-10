@@ -5,7 +5,7 @@
 	grid-gap: 15px; /* 中间空10px间距 */	
 }
 .bankuai{
-	border: 0.5px solid #e6e6e6;
+	border: 0.5px solid var(--frame-color);
 	border-radius:4px;
 	padding: 20px;
 	transition: all .3s cubic-bezier(0,0,.5,1);
