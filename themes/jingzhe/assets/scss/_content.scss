@@ -17,7 +17,7 @@ h3 {
 p {
   color: var(--text-content-color);
   font-family: var(--font-family-paragraph);
-  font-size: 18px;
+  font-size: 1.1rem;
   line-height: 24px;
 }
 p:empty {
@@ -39,9 +39,9 @@ ul {
   cursor: pointer;
 }
 .content {
-  font-size: 18px;
+  font-size: 1.1rem;
   p {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 2;
     margin: 0;
     padding: 0;
@@ -70,7 +70,7 @@ ul {
       margin-top: 0;
     }
     @include breakpoint('small') {
-      font-size: 30px;
+      font-size: 1.8rem;
       line-height: 1.4;
     }
   }
@@ -100,7 +100,7 @@ ul {
     margin-top: 10px;
     margin-bottom: 20px;
     li {
-      font-size: 18px;
+      font-size: 1.1rem;
       line-height: 2;
       margin-bottom: 10px;
       margin-left: 20px;
@@ -164,12 +164,12 @@ ul {
   .highlight {
     pre {
       border-radius: 3px;
-      font-size: 16px;
+      font-size: 1rem;
       line-height: 22px;
       padding: 30px;
       overflow: auto;
       font-family: var(--font-family-monospace);
-      border-radius:12px;
+      border-radius:0.75rem;
     }
   }
 }

@@ -40,7 +40,7 @@ h1, h2, h3 {
 
 .biaot-beian {
   color: #999;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .header-logo img {
   width: 32px;
@@ -63,7 +63,7 @@ h1, h2, h3 {
 .header-title {
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-content-color);
   font-family: var(--font-family-title); }
 
@@ -76,7 +76,7 @@ h1, h2, h3 {
 
 .header-menu a {
   color: #666;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: var(--font-family-title); }
 
 .heard-rss svg path, .menu-main svg {
@@ -123,7 +123,7 @@ h1, h2, h3 {
   text-align: center; }
 
 .footer-info, .footer-info a, .footer-rss, .footer-rss a {
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.6em;
   color: #a7a7a7; }
 
@@ -156,8 +156,8 @@ h1, h2, h3 {
   background: #ededed; }
 
 .gotop img {
-  width: 18px;
-  height: 18px;
+  width: 1.1rem;
+  height: 1.1rem;
   position: absolute;
   /* 设置绝对定位 */
   top: 50%;
@@ -202,7 +202,7 @@ h3 {
 p {
   color: var(--text-content-color);
   font-family: var(--font-family-paragraph);
-  font-size: 18px;
+  font-size: 1.1rem;
   line-height: 24px; }
 
 p:empty {
@@ -224,9 +224,9 @@ ul {
   cursor: pointer; }
 
 .content {
-  font-size: 18px; }
+  font-size: 1.1rem; }
   .content p {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 2;
     margin: 0;
     padding: 0;
@@ -251,7 +251,7 @@ ul {
       margin-top: 0; }
     @media (min-width: 700px) {
       .content h2 {
-        font-size: 30px;
+        font-size: 1.8rem;
         line-height: 1.4; } }
   .content h3 {
     font-size: 20px;
@@ -275,7 +275,7 @@ ul {
     margin-bottom: 20px; }
     .content ul li,
     .content ol li {
-      font-size: 18px;
+      font-size: 1.1rem;
       line-height: 2;
       margin-bottom: 10px;
       margin-left: 20px; }
@@ -327,12 +327,12 @@ ul {
     line-height: 1.8em; }
   .content .highlight pre {
     border-radius: 3px;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 22px;
     padding: 30px;
     overflow: auto;
     font-family: var(--font-family-monospace);
-    border-radius: 12px; }
+    border-radius: 0.75rem; }
 
 .footnotes ol {
   list-style: decimal; }
@@ -351,25 +351,25 @@ ul {
       .intro h2 {
         width: 80%; } }
   .intro p {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 1.8; }
     @media (min-width: 700px) {
       .intro p {
         width: 100%;
-        font-size: 18px;
+        font-size: 1.1rem;
         line-height: 32px; } }
   .intro .article_title {
-    font-size: 30px;
+    font-size: 1.8rem;
     line-height: 35px;
     margin-bottom: 20px;
     font-weight: normal; }
   .intro .read-more {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 26px;
     font-weight: bold; }
     @media (min-width: 700px) {
       .intro .read-more {
-        font-size: 18px;
+        font-size: 1.1rem;
         line-height: 32px; } }
   .intro img {
     max-width: 100%;
@@ -387,7 +387,7 @@ ul {
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
 
 .summary-nrong:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
 
 .summary-1 {
   display: flex;
@@ -403,17 +403,17 @@ ul {
 
 .summary-tag-right svg {
   fill: #c0c0c0;
-  width: 14px; }
+  width: 0.85rem; }
 
 .summary-nrong:hover .summary-tag-right svg {
   fill: #666; }
 
 .summary-tag a {
-  font-size: 16px;
+  font-size: 1rem;
   color: #999; }
 
 .summary-date {
-  font-size: 14px;
+  font-size: 0.85rem;
   color: #999;
   font-family: var(--font-family-code); }
 
@@ -424,7 +424,7 @@ ul {
   line-height: 1.6; }
 
 .summary-description {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.8;
   color: #666;
   margin-top: 10px;
@@ -438,10 +438,10 @@ ul {
   margin-top: 20px; }
 
 .list-more {
-  margin-top: 12px; }
+  margin-top: 0.75rem; }
 
 .read-more a, .list-more a {
-  font-size: 16px;
+  font-size: 1rem;
   color: #666;
   font-family: var(--font-family-paragraph); }
 
@@ -912,7 +912,7 @@ ul {
   display: none !important; }
 
 .atk-content p {
-  font-size: 16px !important;
+  font-size: 1rem !important;
   color: var(--text-content-color) !important; }
 
 .atk-content {
@@ -986,14 +986,14 @@ ul {
   --at-color-border: #DDD !important; }
 
 .atk-content img {
-  max-height: 18px !important;
+  max-height: 1.1rem !important;
   vertical-align: middle;
   margin-left: 2px;
   margin-right: 2px;
   margin-top: -4px !important; }
 
 .atk-comment > .atk-main > .atk-body > .atk-content img {
-  width: 18px !important; }
+  width: 1.1rem !important; }
 
 .atk-comment .atk-height-limit:after {
   margin-bottom: 20px; }
@@ -1098,7 +1098,7 @@ img[atk-emoticon] {
   padding: 20px; }
 
 .appquanju:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
 
 .appquanju:hover .appimg img {
   transform: scale(1.04); }
@@ -1108,11 +1108,11 @@ img[atk-emoticon] {
   transition: transform 0.3s ease; }
 
 .apptitle {
-  font-size: 18px;
+  font-size: 1.1rem;
   font-family: var(--font-family-title); }
 
 .appnote, .appnote-index {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: #666;
   text-align: justify;
@@ -1144,7 +1144,7 @@ img[atk-emoticon] {
 .macos {
   padding: 0 10px;
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   border-radius: 20px;
   font-family: var(--font-family-code);
   height: 28px;
@@ -1160,7 +1160,7 @@ img[atk-emoticon] {
   display: none; }
 
 .kaiyuan, .shoufei, .free {
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 2px 6px;
   border-radius: 20px; }
 
@@ -1186,7 +1186,7 @@ img[atk-emoticon] {
   text-decoration: underline; }
 
 .pagetitle {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 20px;
   max-width: 700px;
@@ -1220,7 +1220,7 @@ img[atk-emoticon] {
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
 
 .bankuai:hover {
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.05); }
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
 
 .duiqi {
   display: flex;
@@ -1237,11 +1237,11 @@ img[atk-emoticon] {
 
 .title {
   font-family: var(--font-family-title);
-  font-size: 18px;
+  font-size: 1.1rem;
   margin: 8px 0 8px 0; }
 
 .note {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: #666; }
 
@@ -1255,7 +1255,7 @@ img[atk-emoticon] {
 .details, .tiyi, .jiage {
   padding: 0 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.85rem;
   border-radius: 20px;
   font-family: var(--font-family-code);
   height: 30px;
@@ -1348,7 +1348,7 @@ img[atk-emoticon] {
 
 .archives_tags_f {
   color: #999;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 /*文章页标签*/
 .single-biaoq {
@@ -1361,7 +1361,7 @@ img[atk-emoticon] {
   align-items: center; }
 
 .page-time, .single-tag-c {
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 4px;
   color: #999;
   display: inline-block; }
@@ -1391,7 +1391,7 @@ img[atk-emoticon] {
   display: grid;
   grid-template-columns: auto 1fr;
   /* 第一列宽度自动，第二列平分剩余空间 */
-  grid-gap: 12px;
+  grid-gap: 0.75rem;
   /* 可选项，设置列之间的间隔 */ }
 
 .movie-content-left {
@@ -1411,16 +1411,16 @@ img[atk-emoticon] {
   margin-bottom: 5px; }
 
 .movie-content-right-1 img {
-  width: 12px;
-  height: 12px; }
+  width: 0.75rem;
+  height: 0.75rem; }
 
 .movie-content-right-2 {
   font-family: var(--font-family-title);
-  font-size: 16px; }
+  font-size: 1rem; }
 
 .movie-content-right-3 {
   line-height: 1.6;
-  font-size: 14px;
+  font-size: 0.85rem;
   margin-top: 5px;
   color: #666;
   overflow: hidden;
@@ -1435,7 +1435,7 @@ img[atk-emoticon] {
   /* 当鼠标悬停时取消行数限制，显示完整内容 */ }
 
 .movie-content-right-4 {
-  font-size: 14px;
+  font-size: 0.85rem;
   margin-top: 8px;
   color: #999;
   font-family: var(--font-family-code); }
@@ -1549,7 +1549,7 @@ img[atk-emoticon] {
     bottom: 0;
     padding: 60px 30px 20px 30px;
     color: #fff;
-    font-size: 13px;
+    font-size: 0.85rem;
     display: none;
     position: absolute; }
   .HPRth:hover .movies-nrong {
@@ -1559,14 +1559,14 @@ img[atk-emoticon] {
     margin-top: 7px; }
   .movie-title {
     font-family: var(--font-family-title);
-    font-size: 16px;
+    font-size: 1rem;
     margin: 6px 0 6px 0; }
   .movie-pfeng {
     margin-bottom: 6px;
     color: #c7c7c7; }
   .movie-pfeng img {
-    width: 12px;
-    height: 12px; }
+    width: 0.75rem;
+    height: 0.75rem; }
   .movie-info {
     line-height: 1.6;
     color: #FFF;
@@ -1620,7 +1620,7 @@ img[atk-emoticon] {
 
 .talks_comments a {
   display: flex;
-  font-size: 14px;
+  font-size: 0.85rem;
   color: #999;
   text-decoration: none;
   cursor: pointer; }
@@ -1631,7 +1631,7 @@ img[atk-emoticon] {
 .comment-s {
   margin-right: 4px;
   color: #999;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .talks_comments svg {
   fill: #c0c0c0;
@@ -1648,13 +1648,13 @@ img[atk-emoticon] {
 
 .memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz, .memos_diaoyong_more {
   color: #999;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .memos_diaoyong_laiz a, .memos_diaoyong_more a {
   color: #999; }
 
 .memos_diaoyong_info p {
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-content-color);
   line-height: 1.8;
   margin: 0; }
@@ -1709,7 +1709,7 @@ img[atk-emoticon] {
   /* 根据padding宽度自动调整 */
   padding: 4px 4px 4px 2px;
   color: #999;
-  font-size: 14px;
+  font-size: 0.85rem;
   border-radius: 4px;
   vertical-align: middle;
   cursor: pointer; }
@@ -1717,14 +1717,14 @@ img[atk-emoticon] {
 #tag-list-all {
   margin-top: 15px;
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   flex-wrap: wrap; }
 
 .memos-tag-all {
   padding: 6px;
   color: #999;
   background: #f2f2f2;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 4px;
   cursor: pointer; }
 
@@ -1732,18 +1732,18 @@ img[atk-emoticon] {
   align-items: center;
   display: flex;
   margin-top: 20px;
-  font-size: 16px;
+  font-size: 1rem;
   color: #999; }
 
 .memos-tag-sc {
   margin-left: 10px;
-  font-size: 16px !important;
+  font-size: 1rem !important;
   color: #666 !important;
   background: #e5e5e5 !important;
   padding: 8px !important; }
 
 .memos-tag-sc svg {
-  width: 16px;
+  width: 1rem;
   margin-left: 6px;
   vertical-align: middle;
   margin-top: -4px; }
@@ -1768,8 +1768,8 @@ img[atk-emoticon] {
   margin-top: 40px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
-  font-size: 14px;
-  border: 1px solid var(--text-highlight-color); }
+  font-size: 0.85rem;
+  border: 0.5px solid var(--text-highlight-color); }
 
 .bb-load button:hover {
   opacity: 0.8;
@@ -1786,7 +1786,7 @@ pre {
 
 pre code {
   background: transparent;
-  font-size: 14px;
+  font-size: 0.85rem;
   padding: 0;
   color: #666;
   border: none;
@@ -1796,21 +1796,21 @@ code {
   background: #ffe4d4;
   border: 1px solid #FFBE98;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   padding: 2px 6px 2px 6px;
   font-family: var(--font-family-code);
   margin: 0 4px 0 4px;
   word-wrap: break-word; }
 
 .memos_diaoyong code {
-  font-size: 14px;
+  font-size: 0.85rem;
   padding: 3px 6px 2px 6px; }
 
 blockquote p {
   background: var(--background-color);
   border-radius: 0 4px 4px 0;
   padding: 10px;
-  font-size: 16px !important;
+  font-size: 1rem !important;
   line-height: 1.6 !important;
   border-left: 4px solid #bfbfbf;
   color: #666 !important;
@@ -1851,7 +1851,7 @@ blockquote p {
   resize: none;
   background: transparent;
   font-family: var(--font-family-paragraph);
-  font-size: 16px; }
+  font-size: 1rem; }
 
 .memos-editor-tools {
   margin-top: 4px;
@@ -1889,7 +1889,7 @@ blockquote p {
   background: transparent;
   color: #666;
   font-family: var(--font-family-paragraph);
-  font-size: 14px;
+  font-size: 0.85rem;
   outline: 0.5px solid transparent; }
 
 .editor-selector::after {
@@ -1938,7 +1938,7 @@ blockquote p {
   gap: 15px;
   color: #999;
   margin-bottom: 15px;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .memos-img-edit {
   background: #f5f5f5;
@@ -1956,7 +1956,7 @@ blockquote p {
   padding: 6px 0 6px 0;
   outline: 0.5px solid transparent;
   background: transparent;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: var(--font-family-code);
   width: 50%; }
 
@@ -1993,7 +1993,7 @@ blockquote p {
   top: 8px;
   background-color: #fff;
   padding: 8px 0 8px 0;
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
   border-radius: 4px;
   display: none; }
@@ -2005,7 +2005,7 @@ blockquote p {
   cursor: pointer;
   line-height: 1.8;
   color: #999;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .edit-btn:hover, .archive-btn:hover, .delete-btn:hover {
   text-decoration: underline; }
@@ -2124,7 +2124,7 @@ blockquote p {
     color: #666 !important; }
   #memos-tag-menu {
     background-color: #282527 !important;
-    box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.3) !important;
     color: #888 !important; }
   .tag-option.selected {
     background-color: #3e3e3e !important;
@@ -2162,7 +2162,7 @@ blockquote p {
   border: transparent;
   background: transparent;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   resize: none;
   outline: 0.5px solid transparent;
   color: var(--text-content-color);
@@ -2180,10 +2180,10 @@ blockquote p {
   background-color: white;
   z-index: 100;
   padding: 5px;
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   color: #999;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.85rem;
   column-count: 3;
   /* 每列显示的数量 */
   column-gap: 4;
@@ -2228,7 +2228,7 @@ blockquote p {
 
 .photo-home-title {
   background: rgba(0, 0, 0, 0.6);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #FFF;
   position: absolute;
   bottom: 0;
@@ -2258,13 +2258,15 @@ blockquote p {
   cursor: pointer; }
 
 .index-menu-tab.active {
-  color: var(--text-highlight-color); }
+  color: var(--text-highlight-color);
+  border-bottom: 2px solid var(--text-highlight-color);
+  padding-bottom: 3px; }
 
 .index-menu {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: var(--font-family-title); }
 
 .posts-background {
@@ -2287,7 +2289,7 @@ blockquote p {
   margin-top: 3px;
   font-family: var(--font-family-code);
   border-radius: 4px;
-  font-size: 14px; }
+  font-size: 0.85rem; }
 
 .index-memu-article_new {
   background: var(--text-highlight-color);
@@ -2308,11 +2310,11 @@ blockquote p {
 
 .archive-title {
   font-family: var(--font-family-title);
-  font-size: 18px;
+  font-size: 1.1rem;
   line-height: 1.6; }
 
 .archive-time {
-  font-size: 14px;
+  font-size: 0.85rem;
   color: #999;
   font-family: var(--font-family-code); }
 
@@ -2332,7 +2334,7 @@ blockquote p {
 
 .sidebar-biaot {
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   color: #999;
   padding-bottom: 8px; }
 
@@ -2351,7 +2353,7 @@ blockquote p {
 .sidebar-posts-title {
   margin-top: 4px;
   font-family: var(--font-family-title);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6; }
 
 .sidebar-posts-title a {
@@ -2368,7 +2370,7 @@ blockquote p {
   margin-top: 3px;
   font-family: var(--font-family-code);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 0.75rem;
   display: inline-block; }
 
 .posts-background {
@@ -2388,7 +2390,7 @@ blockquote p {
 
 .posts-title a {
   font-family: var(--font-family-title);
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.5; }
 
 .posts-img {
@@ -2408,7 +2410,7 @@ blockquote p {
 
 .posts-description {
   line-height: 1.8;
-  font-size: 16px;
+  font-size: 1rem;
   margin-top: 10px;
   margin-bottom: 10px;
   color: #666;
@@ -2481,14 +2483,14 @@ blockquote p {
   transform: translate(-50%, -50%);
   color: #fff;
   font-family: var(--font-family-code);
-  font-size: 30px; }
+  font-size: 1.8rem; }
   @media (min-width: 700px) {
     .about-img-text {
       font-size: 70px; } }
 .about-text {
   margin: 20px 0 20px 0;
   line-height: 2;
-  font-size: 18px;
+  font-size: 1.1rem;
   text-align: justify; }
 
 .about-text a {
@@ -2497,7 +2499,7 @@ blockquote p {
 .about-img-intro {
   padding: 8px;
   border-radius: 2px;
-  font-size: 12px;
+  font-size: 0.75rem;
   background: rgba(0, 0, 0, 0.4);
   position: absolute;
   color: #FFF;

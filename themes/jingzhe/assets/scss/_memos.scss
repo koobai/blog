@@ -33,7 +33,7 @@
 }
 .talks_comments a{
   display: flex;
-  font-size: 14px;
+  font-size: 0.85rem;
   color: #999;
   text-decoration: none;
   cursor:pointer;
@@ -44,7 +44,7 @@
 .comment-s{
   margin-right: 4px;
   color: #999;
-  font-size: 14px;
+  font-size: 0.85rem;
 }
 .talks_comments svg {
   fill: #c0c0c0;
@@ -61,13 +61,13 @@
 }
 .memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz,.memos_diaoyong_more{
   color: #999;
-  font-size: 14px;
+  font-size: 0.85rem;
 }
 .memos_diaoyong_laiz a,.memos_diaoyong_more a{
   color: #999;
 }
 .memos_diaoyong_info p{
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-content-color);
   line-height:1.8;
   margin: 0;
@@ -123,7 +123,7 @@
   display: inline-block; /* 根据padding宽度自动调整 */
   padding: 4px 4px 4px 2px;
   color: #999;
-  font-size: 14px;
+  font-size: 0.85rem;
   border-radius:4px;
   vertical-align: middle;
   cursor: pointer;
@@ -131,14 +131,14 @@
 #tag-list-all{
   margin-top: 15px;
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 .memos-tag-all{
   padding: 6px;
   color: #999;
   background: #f2f2f2;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius:4px;
   cursor: pointer;
 }
@@ -146,18 +146,18 @@
   align-items: center;
   display: flex;
   margin-top: 20px; 
-  font-size: 16px;
+  font-size: 1rem;
   color: #999;
 }
 .memos-tag-sc{
   margin-left: 10px;
-  font-size: 16px !important;
+  font-size: 1rem !important;
   color: #666 !important;
   background: #e5e5e5 !important;
   padding: 8px !important;
 }
 .memos-tag-sc svg{
-  width: 16px;
+  width: 1rem;
   margin-left: 6px;
   vertical-align: middle;
   margin-top: -4px;
@@ -182,8 +182,8 @@
   margin-top: 40px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
-  font-size: 14px;
-  border: 1px solid var(--text-highlight-color);
+  font-size: 0.85rem;
+  border: 0.5px solid var(--text-highlight-color);
 }
 .bb-load button:hover{
   opacity: 0.8;
@@ -200,7 +200,7 @@ pre{
 }
 pre code{
   background: transparent;
-  font-size: 14px;
+  font-size: 0.85rem;
   padding: 0;
   color: #666;
   border: none;
@@ -210,21 +210,21 @@ code{
   background: #ffe4d4;
   border: 1px solid #FFBE98;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   padding: 2px 6px 2px 6px;
   font-family: var(--font-family-code);
   margin: 0 4px 0 4px;
   word-wrap: break-word;
 }
 .memos_diaoyong code{
-  font-size: 14px;
+  font-size: 0.85rem;
   padding: 3px 6px 2px 6px;
 }
 blockquote p{
   background: var(--background-color);
   border-radius: 0 4px 4px 0;
   padding: 10px;
-  font-size: 16px !important;
+  font-size: 1rem !important;
   line-height: 1.6 !important;
   border-left: 4px solid #bfbfbf;
   color: #666 !important;
@@ -267,7 +267,7 @@ blockquote p{
   resize:none;
   background: transparent;
   font-family: var(--font-family-paragraph);
-  font-size: 16px;
+  font-size: 1rem;
 }
 .memos-editor-tools{
   margin-top:4px;
@@ -305,7 +305,7 @@ blockquote p{
   background: transparent;
   color: #666;
   font-family: var(--font-family-paragraph);
-  font-size: 14px;
+  font-size: 0.85rem;
   outline:0.5px solid transparent;
 }
 .editor-selector::after {
@@ -350,7 +350,7 @@ blockquote p{
   gap: 15px;
   color: #999;
   margin-bottom: 15px;
-  font-size: 14px;
+  font-size: 0.85rem;
 }
 .memos-img-edit{
   background: #f5f5f5;
@@ -370,7 +370,7 @@ blockquote p{
   padding:6px 0 6px 0;
   outline:0.5px solid transparent;
   background: transparent;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: var(--font-family-code);
   width: 50%;
 }
@@ -409,7 +409,7 @@ blockquote p{
   top: 8px;
   background-color: #fff;
   padding: 8px 0 8px 0;
-  box-shadow: 2px 4px 16px rgba(0,0,0,.15);
+  box-shadow: 2px 4px 1rem rgba(0,0,0,.15);
   text-align: center;
   border-radius:4px;
   display: none;
@@ -421,7 +421,7 @@ blockquote p{
   cursor: pointer;
   line-height: 1.8;
   color: #999;
-  font-size: 14px;
+  font-size: 0.85rem;
 }
 .edit-btn:hover,.archive-btn:hover,.delete-btn:hover {
   text-decoration: underline;
@@ -592,7 +592,7 @@ blockquote p{
 // 标签自动补全
 #memos-tag-menu {
   background-color: #282527 !important;
-  box-shadow: 2px 4px 16px rgba(0,0,0,.3) !important;
+  box-shadow: 2px 4px 1rem rgba(0,0,0,.3) !important;
   color: #888 !important;
 }
 .tag-option.selected {
@@ -638,7 +638,7 @@ blockquote p{
   border: transparent;
   background: transparent;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   resize: none;
   outline: 0.5px solid transparent;
   color: var(--text-content-color);
@@ -659,10 +659,10 @@ blockquote p{
   background-color: white;
   z-index: 100;
   padding: 5px;
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   color: #999;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.85rem;
   column-count: 3; /* 每列显示的数量 */
   column-gap: 4; /* 列之间的间距 */
 }
