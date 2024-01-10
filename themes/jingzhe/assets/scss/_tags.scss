@@ -1,15 +1,17 @@
 /*归档页标签*/
 .archives_tags {
-  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;//宽度显示不下自动换行
   grid-gap: 10px;
-  margin-bottom: 15px;
   }
 .list-tags {
-  border-radius:4px;
-  padding: 10px;
-  background-color: #FFF;
+  border-radius:20px;
+  padding: 8px;
+  border: 1px solid #eee;
+  font-size: 0.85rem;
+}
+.list-tags a{
+  color: #666;
 }
 .archives_tags_f{
   color: #999;
@@ -45,10 +47,13 @@
 .single-tag-c a{
   color:#666;
 }
-.list-tags{
-  background-color:  var(--background-dark-color);
-}
 .archives_tags_f{
   color: #666;
+}
+.list-tags {
+  border: 1px solid var(--frame-dark-color);
+}
+.list-tags a{
+  color: #999;
 }
 }
