@@ -149,7 +149,7 @@
 <div class="sidebar-biaot">博文标签</div>
 <div class="archives_tags">
   {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
-  <div class="list-tags img-hide"><a href="/tags/{{ $name | urlize }}" target="_blank"><span class="archives_tags_f">#</span> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a></div>
+  <div class="list-tags img-hide"><a href="/tags/{{ $name | urlize }}" target="_blank"> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a></div>
   {{- end -}}
 </div>
 
