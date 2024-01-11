@@ -2024,11 +2024,6 @@ blockquote p {
     color: var(--text-content-dark-color) !important; }
   .talks_comments svg {
     fill: #666; }
-  .reactions {
-    --start-smile-svg-fill-color: #666 !important;
-    --start-smile-border-color: #393939;
-    --start-smile-border-color-hover:#535353 !important;
-    --start-smile-bg-color:transparent; }
   pre, blockquote p {
     background: #2c2829; }
   pre code {
@@ -2093,10 +2088,6 @@ blockquote p {
 .emoji-item:hover {
   background: #ebebeb;
   border-radius: 4px; }
-
-.reactions {
-  --start-smile-svg-fill-color: #999;
-  --start-smile-border-color-hover:#afafaf; }
 
 .memos-search-all {
   margin-top: 15px; }
