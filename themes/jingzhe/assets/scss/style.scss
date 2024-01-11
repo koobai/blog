@@ -69,12 +69,16 @@ body {
 }
 
 .wrapper {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   min-height: calc(100vh - 130px);
   @include breakpoint('small') {
     min-height: calc(100vh - 104px);
     }
+}
+.page-blog-single,.page-hardware,.page-app,.page-about,.page-movies{
+  max-width: 940px;
+  margin: auto;
 }
 
 //日间模式新增属性
