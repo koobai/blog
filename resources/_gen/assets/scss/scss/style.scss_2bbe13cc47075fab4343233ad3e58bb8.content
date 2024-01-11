@@ -1286,7 +1286,7 @@ img[atk-emoticon] {
 
 .list-tags {
   border-radius: 20px;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid var(--frame-color);
   font-size: 0.85rem; }
 
