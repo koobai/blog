@@ -519,12 +519,6 @@ blockquote p{
 .talks_comments svg {
   fill: #666;
 }
-.reactions {
-  --start-smile-svg-fill-color: #666 !important;
-  --start-smile-border-color: #393939;
-  --start-smile-border-color-hover:#535353 !important;
-  --start-smile-bg-color:transparent;
-}
 pre,blockquote p{
   background: #2c2829;
 }
@@ -617,12 +611,6 @@ blockquote p{
 .emoji-item:hover{
   background: #ebebeb;
   border-radius:4px;
-}
-
-// memoslike
-.reactions {
-  --start-smile-svg-fill-color: #999;
-  --start-smile-border-color-hover:#afafaf;
 }
 
 // memos搜索
