@@ -2167,7 +2167,7 @@ blockquote p {
   object-fit: cover;
   border-radius: 2px;
   transition: transform 0.3s ease;
-  height: 80px;
+  height: 100px;
   display: block;
   cursor: zoom-in; }
 
@@ -2383,9 +2383,9 @@ blockquote p {
     flex-wrap: wrap; }
   .new-index-nrong {
     display: grid;
-    grid-gap: 50px;
+    grid-gap: 60px;
     /* 中间空10px间距 */
-    grid-template-columns: 2.1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     margin-top: 30px; }
   .index_archives_one {
     border: 1px solid var(--frame-color);
@@ -2465,12 +2465,16 @@ body {
     body {
       padding: 0 30px 0 30px; } }
 .wrapper {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   min-height: calc(100vh - 130px); }
   @media (min-width: 700px) {
     .wrapper {
       min-height: calc(100vh - 104px); } }
+.page-blog-single, .page-hardware, .page-app, .page-about, .page-movies {
+  max-width: 940px;
+  margin: auto; }
+
 .highlight pre {
   background: var(--bankuai-color); }
 
