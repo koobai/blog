@@ -847,7 +847,7 @@ ul {
   padding-bottom: 0px !important; }
 
 .atk-comment {
-  padding: 15px 0 15px 0 !important; }
+  padding: 10px 0 !important; }
 
 .artalk > .atk-list > .atk-list-header {
   display: none !important; }
@@ -856,6 +856,9 @@ ul {
   font-size: 1rem !important;
   color: var(--text-content-color) !important; }
 
+.atk-comment-children > .atk-comment-wrap {
+  margin-top: 6px !important; }
+
 .atk-content {
   line-height: 1.5 !important; }
 
@@ -863,12 +866,12 @@ ul {
   border-radius: 50% !important; }
 
 .atk-comment > .atk-avatar img {
-  width: 32px !important;
-  height: 32px !important;
-  margin-top: 6px; }
+  width: 24px !important;
+  height: 24px !important;
+  margin-top: 8px; }
 
 .atk-main {
-  margin-left: 45px !important; }
+  margin-left: 34px !important; }
 
 .atk-comment-children > .atk-comment-wrap > .atk-comment {
   padding: 0px !important;
