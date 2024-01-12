@@ -973,7 +973,7 @@ img[atk-emoticon] {
   padding: 5px 10px 10px 10px !important; }
 
 .atk-main-editor {
-  border: 1px solid #EEE !important; }
+  border: 1px solid var(--frame-color) !important; }
 
 @media (prefers-color-scheme: dark) {
   .atk-content p {
@@ -981,12 +981,12 @@ img[atk-emoticon] {
   .pinglun {
     color: var(--text-content-dark-color); }
   .atk-main-editor {
-    background: var(--background-dark-color) !important;
-    border: 1px solid var(--at-color-border) !important; }
+    background: transparent !important;
+    border: 1px solid var(--frame-dark-color) !important; }
   .atk-textarea {
     color: var(--text-content-dark-color) !important;
     font-size: 15px;
-    background: var(--background-dark-color) !important; }
+    background: transparent !important; }
   .atk-content, .atk-header {
     color: var(--text-content-dark-color) !important; }
   .atk-ua {
@@ -1783,7 +1783,7 @@ blockquote p {
 
 .memos-editor-body {
   border-radius: 4px;
-  border: 1px solid #EEE;
+  border: 1px solid var(--frame-color);
   padding: 15px; }
 
 .memos-editor-content .memos-editor-textarea {
@@ -2007,7 +2007,7 @@ blockquote p {
   .memos-tag-sc-2 {
     color: #666; }
   .memos-editor-body {
-    border: 1px solid #332D2F; }
+    border: 1px solid var(--frame-dark-color); }
   .memos-tag-dg {
     color: #666; }
   .memos-tag-sc {

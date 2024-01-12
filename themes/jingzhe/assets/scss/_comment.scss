@@ -134,7 +134,7 @@ img[atk-emoticon] {
   padding: 5px 10px 10px 10px!important;
 }
 .atk-main-editor {
-  border: 1px solid #EEE!important;
+  border: 1px solid var(--frame-color)!important;
 }
 
 // 夜间模式页面样式
@@ -146,13 +146,13 @@ img[atk-emoticon] {
   color:var(--text-content-dark-color);
 }
 .atk-main-editor {
-  background:  var(--background-dark-color) !important;
-  border: 1px solid var(--at-color-border)!important;
+  background:  transparent !important;
+  border: 1px solid var(--frame-dark-color)!important;
 }
 .atk-textarea {
   color: var(--text-content-dark-color)!important;
   font-size: 15px;
-  background:  var(--background-dark-color) !important;
+  background:  transparent !important;
 }
 .atk-content, .atk-header {
   color: var(--text-content-dark-color) !important;
