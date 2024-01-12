@@ -76,7 +76,7 @@
 {{ range after 4 $pages }}
 <div class="index_archives_one img-hide">
 <div>
-  <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+  <div class="archive-title"><a href="{{ .RelPermalink }}" target="_blank">{{ .Title }}</a></div>
   <div class="archive-time">
     <script>
       document.write(formatDate({{ .Date.Unix }})); 
