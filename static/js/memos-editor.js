@@ -554,9 +554,14 @@ const insertSelectedTag = (tag) => {
   const cursorPosition = memosTextarea.selectionStart;
 
   const textBeforeCursor = inputValue.substring(0, cursorPosition);
-  const wordsBeforeCursor = textBeforeCursor.split(/\s+/);
+  const lines = textBeforeCursor.split('\n');
+  const lastLine = lines[lines.length - 1];
+  const wordsBeforeCursor = lastLine.split(/\s+/);
+
   wordsBeforeCursor.pop();
-  const newValue = `${wordsBeforeCursor.join(' ')} ${tag} ${inputValue.substring(cursorPosition)}`;
+
+  const newLastLine = `${wordsBeforeCursor.join(' ')} ${tag} `;  
+  const newValue = inputValue.replace(lastLine, newLastLine);
 
   memosTextarea.value = newValue;
 
