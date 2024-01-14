@@ -1610,7 +1610,7 @@ img[atk-emoticon] {
   margin-left: auto; }
 
 .bb-timeline {
-  margin-top: 40px; }
+  margin-top: 30px; }
 
 .datacont p {
   font-size: 1rem;
@@ -1703,7 +1703,7 @@ img[atk-emoticon] {
 
 .memos-pl {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   align-items: center;
   gap: 6px; }
 
@@ -2000,7 +2000,7 @@ blockquote p {
     height: 130px !important; }
   .bb-list-ul {
     display: grid;
-    grid-row-gap: 50px;
+    grid-row-gap: 40px;
     /* 可选项，设置列之间的间隔 */ } }
 
 @media (prefers-color-scheme: dark) {
@@ -2200,16 +2200,19 @@ blockquote p {
   border-bottom: 2px solid var(--text-highlight-color);
   padding-bottom: 3px; }
 
+.index-menu-tab svg {
+  margin-right: 5px; }
+
 .index-menu {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   margin-bottom: 20px;
   font-size: 1rem;
   font-family: var(--font-family-title); }
 
 .posts-background {
   display: grid;
-  grid-gap: 50px;
+  grid-gap: 40px;
   /* 中间空10px间距 */ }
 
 .archives_one {
@@ -2299,7 +2302,7 @@ blockquote p {
 
 .posts-background {
   margin-bottom: 15px;
-  margin-top: 40px; }
+  margin-top: 30px; }
 
 .archives_nrong {
   margin-top: 20px;

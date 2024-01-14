@@ -11,17 +11,19 @@
   border-bottom: 2px solid var(--text-highlight-color);
   padding-bottom: 3px;
 }
-
+.index-menu-tab svg{
+  margin-right: 5px;
+}
 .index-menu{
   display: flex;
-  gap: 20px;
+  gap: 30px;
   margin-bottom: 20px;
   font-size: 1rem;
   font-family: var(--font-family-title);
 }
 .posts-background{
   display: grid;
-  grid-gap: 50px; /* 中间空10px间距 */
+  grid-gap: 40px; /* 中间空10px间距 */
 }
 .archives_one{
   display: flex;
@@ -114,7 +116,7 @@
 //博客列表页
 .posts-background {
   margin-bottom: 15px; 
-  margin-top: 40px;
+  margin-top: 30px;
 }
 .archives_nrong{
   margin-top: 20px;
