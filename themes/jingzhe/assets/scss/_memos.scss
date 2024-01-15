@@ -597,7 +597,8 @@ blockquote p{
 
 //表情
 .emoji-selector{
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   flex-wrap: wrap; 
   gap: 6px;
   margin-bottom: 15px;

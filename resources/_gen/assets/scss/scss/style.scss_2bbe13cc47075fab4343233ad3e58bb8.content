@@ -970,7 +970,16 @@ img[atk-emoticon] {
   max-height: 20px !important; }
 
 .atk-bottom {
-  padding: 5px 10px 10px 10px !important; }
+  padding: 5px 10px 10px 5px !important; }
+
+.atk-main-editor > .atk-header {
+  padding: 10px 5px 0 !important; }
+
+.atk-main-editor > .atk-plug-panel-wrap {
+  border-top: 0.5px solid var(--at-color-border) !important; }
+
+.atk-textarea {
+  padding: 10px !important; }
 
 .atk-main-editor {
   border: 1px solid var(--frame-color) !important; }
@@ -1020,6 +1029,10 @@ img[atk-emoticon] {
 
 .artalk.hidden {
   display: none; }
+
+@media (max-width: 700px) {
+  .atk-main-editor > .atk-header {
+    display: block !important; } }
 
 .appdquanjudiv {
   display: grid;
@@ -2073,7 +2086,8 @@ blockquote p {
     color: #bdbdbd !important; } }
 
 .emoji-selector {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 15px; }
