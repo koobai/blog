@@ -2069,8 +2069,6 @@ blockquote p {
     background-color: #282527; }
   .cancel-edit-btn {
     border: 0.5px solid #201d1e; }
-  .emoji-item:hover {
-    background: #3a3a3a !important; }
   #memos-search-input {
     color: var(--text-content-dark-color) !important; }
   .memos-search ::placeholder {
@@ -2088,19 +2086,18 @@ blockquote p {
 .emoji-selector {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-  flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 15px; }
 
 .emoji-item {
   padding: 4px;
   font-size: 24px;
-  line-height: 1;
-  cursor: pointer; }
+  line-height: 0.8;
+  cursor: pointer;
+  text-align: center; }
 
 .emoji-item:hover {
-  background: #ebebeb;
-  border-radius: 4px; }
+  opacity: 0.6; }
 
 .memos-search-all {
   margin-top: 15px; }
