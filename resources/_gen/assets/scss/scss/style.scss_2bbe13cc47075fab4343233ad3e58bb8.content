@@ -1634,6 +1634,9 @@ img[atk-emoticon] {
 .datacont a {
   color: var(--text-highlight-color); }
 
+.datacont-link {
+  margin: 0px 2px; }
+
 .resimg figure {
   margin: 0;
   margin-bottom: -4px; }
