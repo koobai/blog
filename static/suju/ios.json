@@ -2,7 +2,7 @@
   "name": "空白Koobai",
   "short_name": "Koobai",
   "start_url": "/",
-  "theme_color": "transparent"
+  "theme_color": "transparent",
   "display": "standalone",
   "splash_screen": [
     {
