@@ -1810,11 +1810,12 @@ blockquote p {
   overflow-x: hidden;
   overflow-y: clip;
   width: 100%;
-  outline: 0.5px solid transparent;
+  outline: 0.1px solid transparent;
   resize: none;
   background: transparent;
   font-family: var(--font-family-paragraph);
-  font-size: 1rem; }
+  font-size: 1rem;
+  padding: 0; }
 
 .memos-editor-tools {
   margin-top: 4px;
