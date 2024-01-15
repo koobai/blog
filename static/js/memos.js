@@ -130,7 +130,7 @@ function updateHTMl(data){
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
-      .replace(LINK_REG, '<a href="$2" target="_blank">$1</a>')
+      .replace(LINK_REG, '<img src="https://img.koobai.com/memos/memos_index_link.svg" class="datacont-link" /><a href="$2" target="_blank">$1</a>')
       bbContREG = marked.parse(bbContREG)
 
       //解析 content 内 md 格式图片
