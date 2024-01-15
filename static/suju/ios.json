@@ -11,5 +11,15 @@
       "sizes": "192x192",
       "type": "image/png"
     }
-  ]
+  ],
+  "splash_screen": [{
+    "media": "(prefers-color-scheme: light)",
+    "image": "https://img.koobai.com/ios_light.png",
+    "color": "#ffffff"
+  },
+  {
+    "media": "(prefers-color-scheme: dark)",
+    "image": "https://img.koobai.com/ios_dark.png",
+    "color": "#1A1718"
+}]
 }
