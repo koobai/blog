@@ -2,19 +2,9 @@
   "name": "空白Koobai",
   "short_name": "Koobai",
   "start_url": "/",
-  "display": "工作生活记录、折腾备忘, 同时分享下日常使用的软件、 观看的影视、喜欢的好物等",
-  "splash_screen": [
-    {
-      "media": "(prefers-color-scheme: light)",
-      "image": "https://img.koobai.com/ios_light.png",
-      "color": "#ffffff"
-    },
-    {
-      "media": "(prefers-color-scheme: dark)",
-      "image": "https://img.koobai.com/ios_dark.png",
-      "color": "#1A1718"
-    }
-  ],
+  
+  "display": "standalone",
+
   "icons": [
     {
       "src": "https://img.koobai.com/ios_ico.png",
