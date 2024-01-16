@@ -1,5 +1,4 @@
 .footer-background{
-  height: 70px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-top: 40px;
@@ -9,6 +8,9 @@
     border-top: 0.5px solid var(--frame-color);
     text-align: center;
   }
+.footer-rss{
+  margin-bottom: 20px;
+}
 .footer-info, .footer-info a,.footer-rss,.footer-rss a{
   font-size: 0.75rem;
   line-height: 1.6em;
