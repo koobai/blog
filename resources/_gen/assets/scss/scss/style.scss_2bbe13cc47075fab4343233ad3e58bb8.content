@@ -1951,11 +1951,12 @@ blockquote p {
   list-style-type: none; }
 
 .memos-edit {
-  margin-left: auto; }
+  margin-left: auto;
+  position: relative; }
 
 .memos-menu {
   margin-left: 40px;
-  color: #fff; }
+  color: transparent; }
 
 .memos-menu-d {
   width: 60px;
@@ -2075,8 +2076,6 @@ blockquote p {
     color: var(--text-highlight-color) !important; }
   .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .memos-image-list {
     color: #666; }
-  .memos-menu {
-    color: #201d1e; }
   .memos-menu-d, .memos-img-edit {
     background-color: #282527; }
   .cancel-edit-btn {

@@ -402,10 +402,11 @@ blockquote p{
 //唠叨编辑
 .memos-edit{
   margin-left: auto;
+  position: relative;
 }
 .memos-menu{
   margin-left: 40px;
-  color: #fff;
+  color: transparent;
 }
 .memos-menu-d {
   width: 60px;
@@ -565,9 +566,6 @@ blockquote p{
 }
 .edit-btn,.archive-btn,.delete-btn,.cancel-edit-btn,.memos-image-list{
   color: #666;
-}
-.memos-menu{
-  color: #201d1e;
 }
 .memos-menu-d,.memos-img-edit{
   background-color: #282527;
