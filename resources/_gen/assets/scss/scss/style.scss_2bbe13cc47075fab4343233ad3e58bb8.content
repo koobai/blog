@@ -109,7 +109,7 @@ h1, h2, h3 {
     fill: #999; } }
 
 .footer-background {
-  height: 60px;
+  height: 70px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-top: 40px; }
@@ -167,7 +167,7 @@ h1, h2, h3 {
   margin: 0 4px 0 4px; }
 
 @media (prefers-color-scheme: dark) {
-  .footer-info, .footer-info a {
+  .footer-info, .footer-info a, .footer-rss a, .footer-rss {
     color: #666; }
   .footer {
     border-top: 0.5px solid #231e20; }
