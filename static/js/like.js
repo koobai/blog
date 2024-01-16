@@ -43,7 +43,7 @@ class EmojiReaction extends s {
       --start-smile-border-color-hover-default: #ccc;
       --start-smile-bg-color-default: transparent;
       --start-smile-svg-fill-color-default: #999;
-      --reaction-got-not-reacted-bg-color-default: #fff;
+      --reaction-got-not-reacted-bg-color-default: transparent;
       --reaction-got-not-reacted-bg-color-hover-default: #f6f6f6;
       --reaction-got-not-reacted-border-color-default: #eee;
       --reaction-got-not-reacted-text-color-default: #666;
@@ -65,7 +65,7 @@ class EmojiReaction extends s {
       --start-smile-border-color-hover-default: #423a3d;
       --start-smile-bg-color-default: transparent;
       --start-smile-svg-fill-color-default: #666;
-      --reaction-got-not-reacted-bg-color-default: #00000000;
+      --reaction-got-not-reacted-bg-color-default: transparent;
       --reaction-got-not-reacted-bg-color-hover-default: #332D2F;
       --reaction-got-not-reacted-border-color-default: #332D2F;
       --reaction-got-not-reacted-text-color-default: #999;
