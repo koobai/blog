@@ -1814,7 +1814,7 @@ blockquote p {
   border: transparent;
   border-radius: 4px;
   line-height: 1.6;
-  min-height: 80px;
+  min-height: 40px;
   overflow-x: hidden;
   overflow-y: clip;
   width: 100%;
