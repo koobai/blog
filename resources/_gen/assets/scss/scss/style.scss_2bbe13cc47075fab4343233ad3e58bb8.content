@@ -1551,7 +1551,7 @@ img[atk-emoticon] {
   margin: auto;
   padding-bottom: 20px; }
 
-.memos-random-background, .memos-search-all {
+.memos-random-background {
   border-radius: 4px;
   background: var(--bankuai-color) !important;
   padding: 10px; }
@@ -2077,8 +2077,12 @@ blockquote p {
     color: var(--text-content-dark-color) !important; }
   .memos-search ::placeholder {
     color: #666 !important; }
-  .memos-search svg {
+  .memos-search svg, .memos-search-ico svg {
     color: #666 !important; }
+  .memos-search-ico svg:hover {
+    color: #999 !important; }
+  .memos-search-all {
+    border: 1px solid var(--frame-dark-color) !important; }
   #memos-tag-menu {
     background-color: #282527 !important;
     box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.3) !important;
@@ -2104,7 +2108,9 @@ blockquote p {
   opacity: 0.6; }
 
 .memos-search-all {
-  margin-top: 15px; }
+  border-radius: 4px;
+  border: 1px solid var(--frame-color);
+  padding: 15px 10px; }
 
 .memos-search {
   width: 100%;
@@ -2114,7 +2120,7 @@ blockquote p {
 #memos-search-input {
   border: transparent;
   background: transparent;
-  padding: 10px;
+  padding: 0;
   font-size: 1rem;
   resize: none;
   outline: 0.5px solid transparent;
@@ -2126,7 +2132,16 @@ blockquote p {
 
 .memos-search svg {
   width: 20px;
+  margin-right: 5px;
   color: #b8b8b8; }
+
+.memos-search-ico svg {
+  width: 20px;
+  color: #999;
+  cursor: pointer; }
+
+.memos-search-ico svg:hover {
+  color: #666; }
 
 #memos-tag-menu {
   position: absolute;
@@ -2284,10 +2299,9 @@ blockquote p {
   transform: scale(1.05); }
 
 .sidebar-biaot {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-size: 1rem;
-  color: #999;
-  padding-bottom: 8px; }
+  color: #999; }
 
 .sidebar-page {
   margin-bottom: 20px; }

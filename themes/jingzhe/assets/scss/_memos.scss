@@ -4,7 +4,7 @@
   margin: auto;
   padding-bottom: 20px;
 }
-.memos-random-background,.memos-search-all{
+.memos-random-background{
   border-radius:4px;
   background: var(--bankuai-color) !important;
   padding:10px; 
@@ -579,8 +579,14 @@ blockquote p{
 .memos-search ::placeholder {
   color: #666 !important;
 }
-.memos-search svg{
+.memos-search svg,.memos-search-ico svg{
   color: #666 !important;
+}
+.memos-search-ico svg:hover{
+  color: #999 !important;
+}
+.memos-search-all{
+  border: 1px solid var(--frame-dark-color) !important;
 }
 
 // 标签自动补全
@@ -615,7 +621,9 @@ blockquote p{
 
 // memos搜索
 .memos-search-all{
-  margin-top: 15px;
+  border-radius:4px;
+  border: 1px solid var(--frame-color);
+  padding:15px 10px; 
 }
 .memos-search {
   width: 100%;
@@ -625,7 +633,7 @@ blockquote p{
 #memos-search-input{
   border: transparent;
   background: transparent;
-  padding: 10px;
+  padding: 0;
   font-size: 1rem;
   resize: none;
   outline: 0.5px solid transparent;
@@ -637,7 +645,16 @@ blockquote p{
 }
 .memos-search svg{
   width: 20px;
+  margin-right: 5px;
   color: #b8b8b8;
+}
+.memos-search-ico svg{
+  width: 20px;
+  color: #999;
+  cursor: pointer;
+}
+.memos-search-ico svg:hover{
+  color: #666;
 }
 
 // 标签自动补全
