@@ -146,6 +146,13 @@ img[atk-emoticon] {
   border: 1px solid var(--frame-color)!important;
 }
 
+.artalk code{
+  border: 1px solid #FFBE98 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  margin: 0 4px !important;
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .atk-content p {
