@@ -984,6 +984,12 @@ img[atk-emoticon] {
 .atk-main-editor {
   border: 1px solid var(--frame-color) !important; }
 
+.artalk code {
+  border: 1px solid #FFBE98 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  margin: 0 4px !important; }
+
 @media (prefers-color-scheme: dark) {
   .atk-content p {
     color: var(--text-content-dark-color) !important; }
