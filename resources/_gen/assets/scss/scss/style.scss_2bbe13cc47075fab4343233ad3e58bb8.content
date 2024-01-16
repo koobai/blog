@@ -109,7 +109,6 @@ h1, h2, h3 {
     fill: #999; } }
 
 .footer-background {
-  height: 70px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-top: 40px; }
@@ -118,6 +117,9 @@ h1, h2, h3 {
   padding-top: 10px;
   border-top: 0.5px solid var(--frame-color);
   text-align: center; }
+
+.footer-rss {
+  margin-bottom: 20px; }
 
 .footer-info, .footer-info a, .footer-rss, .footer-rss a {
   font-size: 0.75rem;
