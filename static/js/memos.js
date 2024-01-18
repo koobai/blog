@@ -52,7 +52,7 @@ btn.addEventListener("click", function () {
 }
 function getFirstList(){
 bbDom.insertAdjacentHTML('afterend', load);
-let tagHtml = `<div id="memos-search-hide" style="display:none">
+let tagHtml = `<div id="memos-search-hide" style="display:none;margin-bottom: 30px;">
 <div class="memos-search-all img-hide">
 <div class="memos-search">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto opacity-30 dark:text-gray-200"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -200,7 +200,7 @@ function updateHTMl(data){
          <div class="memos-menu-d">
          <div class="edit-btn" onclick="editMemo(${JSON.stringify(data[i]).replace(/"/g, '&quot;')})">修改</div>
          <div class="archive-btn" onclick="archiveMemo('${data[i].id}')">归档</div>
-         <div class="delete-btn" onclick="confirmDelete('${data[i].id}')">删除</div> 
+         <div class="delete-btn" onclick="deleteMemo('${data[i].id}')">删除</div> 
           </div>
           </div>
         `}
@@ -383,14 +383,4 @@ input.focus();
 } else {
 searchContainer.style.display = "none"; 
 }
-}
-
-//确认是否删除某条唠叨
-function confirmDelete(id) {
-  var confirmDelete = confirm("确定要删除这条唠叨吗？");
-
-  if (confirmDelete) {
-      deleteMemo(id);
-  } else {
-  }
 }

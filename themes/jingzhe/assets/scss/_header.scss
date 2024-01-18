@@ -1,6 +1,42 @@
 .header {
   display: flex;
   padding: 25px 0 25px 0;
+  align-items: center;
+  @include breakpoint('medium') {
+    display: block;
+    padding: 0;
+    z-index: 100;
+    padding: 20px 0 10px 0;
+  }
+}
+.about-koobai{
+  display: none;
+  @include breakpoint('medium') {
+    margin-bottom: 30px;
+    margin-left: 2px;
+    display: block;
+  }
+}
+.about-koobai img{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #222;
+  opacity: .5;
+  transition: opacity .3s ease-in-out;
+}
+.about-koobai img:hover{
+  opacity: 1;
+}
+.new-heard-menu{
+  display: grid;
+  gap: 30px;
+}
+.menu-current svg{
+  color: var(--text-highlight-color) !important;
+}
+.menu-current a{
+  color: var(--text-highlight-color) !important;
 }
 .header-logo img {
   width: 32px;
@@ -31,15 +67,32 @@
 .menu-main {
   display: flex;
   grid-gap: 25px; /* 中间空10px间距 */
-  margin-left: auto;
   align-items: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
  }
  .header-menu a {
   color: #666;
   font-size: 1rem;
   font-family: var(--font-family-title);
  }
-
+ .header-menu{
+  display: flex;
+  align-items: center;
+ }
+.header-menu svg{
+  margin-right: 10px;
+  color: #666;
+  width: 20px;
+  height: 20px;
+}
+.header-menu img{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #222;
+  margin-right: 10px;
+}
 .heard-rss svg path,.menu-main svg{
   fill: #999;
 }
@@ -58,20 +111,14 @@
    }
 }
 @media (min-width:900px){
-  .new-heard-menu{
-    display: flex;
-    grid-gap: 20px; /* 中间空10px间距 */
-    align-items: center;
-    padding: 10px 0 10px 0;
-  }
   .header-logo,.header-title{
     display: none;
   }
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .header-title,.header-menu a{
-    color: var(--text-content-dark-color);
+  .header-title,.header-menu a,.header-menu svg{
+    color: #999;
   }
   .githuab svg,.heard-rss svg path,.menu-main svg{
     fill: #666;

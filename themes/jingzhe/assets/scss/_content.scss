@@ -1,3 +1,16 @@
+.article_details img{
+ max-width: 100%;
+ cursor: zoom-in;
+}
+.article_details_title{
+  font-size: 1.2rem;
+  font-family: var(--font-family-title);
+  line-height: 1.3;
+  margin-bottom: 15px;
+  @include breakpoint('small') {
+    font-size: 1.8rem;
+  }
+}
 a {
   color: var(--text-content-color);
   text-decoration: none;
@@ -33,7 +46,7 @@ ul {
   }
 }
 .content_zhengwen {
-  margin: 20px 0 20px 0;
+  margin: 15px 0 20px 0;
 }
 .content_zhengwen img,.top-img {
   cursor: pointer;

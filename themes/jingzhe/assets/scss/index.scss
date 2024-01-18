@@ -1,83 +1,11 @@
-.index-article-page {
-  display: none;
+.new-index-nrong{
+  @include breakpoint('medium') {
+    display: grid;
+    grid-gap: 60px; /* 中间空10px间距 */
+    grid-template-columns: 2fr 1fr;
+    margin-top: 20px;
 }
-.index-menu-tab {
-  color: #999;
-  display: inline-block;
-  cursor: pointer;
 }
-.index-menu-tab.active {
-  color: var(--text-highlight-color);
-  border-bottom: 2px solid var(--text-highlight-color);
-  padding-bottom: 3px;
-}
-.index-menu-tab svg{
-  margin-right: 5px;
-}
-.index-menu{
-  display: flex;
-  gap: 30px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  font-family: var(--font-family-title);
-}
-.posts-background{
-  display: grid;
-  grid-gap: 40px; /* 中间空10px间距 */
-}
-.archives_one{
-  display: flex;
-  border-radius:4px;
-  border: 0.5px solid var(--frame-color);
-  align-items: center;
-  padding: 15px;
-}
-.article_new{
-  float: left;
-  background: var(--text-highlight-color);
-  color: #fff;
-  padding: 2px 4px;
-  margin-right: 8px;
-  margin-top: 2px;
-  font-family: var(--font-family-code);
-  border-radius: 4px;
-  font-size: 0.75rem;
-}
-.index-memu-article_new{
-  background: var(--text-highlight-color);
-  border-radius: 50%;
-  width: 6px;
-  height: 6px;
-  margin-left: 5px; 
-  margin-top: 2px;
-}
-.index-menu-bowen{
-  display: flex;
-}
-.archive-title{
-  font-family: var(--font-family-title);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-.archive-time{
-    font-size: 0.85rem;
-    color: #999;
-    font-family: var(--font-family-code);
-  }
-.archive-img {
-    margin-left: auto;
-  }
-.archive-img img{
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
-    border-radius:6px;
-    transition: transform 0.3s ease; 
-    margin-left: 10px;
-  }
-.archives_one:hover .archive-img img{
-	  transform: scale(1.05);
-  }
 
 //侧边栏
 .sidebar-biaot{
@@ -86,7 +14,9 @@
   color: #999;
 }
 .sidebar-page{
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  display: grid;
+  gap: 20px;
 }
 .sidebar-posts-title{
   margin-top: 4px;
@@ -96,9 +26,6 @@
 }
 .sidebar-posts-title a{
   color: #666;
-}
-.sidebar-page-zt{
-  margin-bottom: 30px;
 }
 .sidebar_article_new{
     background: var(--text-highlight-color);
@@ -112,121 +39,19 @@
     display: inline-block;
 }
 
-//博客列表页
-.posts-background {
-  margin-bottom: 15px; 
-  margin-top: 30px;
-}
-.archives_nrong{
-  margin-top: 20px;
-  display: grid;
-  grid-gap: 20px; /* 中间空10px间距 */
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-}
-.page-left{
-  transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.posts-title a{
-  font-family: var(--font-family-title);
-  font-size: 1.2rem;
-  line-height: 1.5;
-}
-.posts-img {
-  display: block;
-  margin-bottom: -4px;
-  margin-left: 20px;
-}
-.posts-img img{
-  width: 400px;
-  height: 280px;
-  border-radius:6px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-.posts-background:hover .posts-img img{
-  transform: scale(1.03);
-}
-.posts-description {
-  line-height: 1.8;
-  font-size: 1rem;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  color: #666;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-
-}
-
-// 页面宽度小于700样式
+// 页面宽度小于900样式
 @media (max-width:900px){
-  .posts-img,.archives_tags,.sidebar-biaot,.sidebar-page-zt{
+.archives_tags,.sidebar-biaot,.sidebar-page-zt,.sidebar-page{
     display: none;
   }
-  .posts-background {
-    margin-top: 10px;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .index-archives_nrong{
-    grid-gap: 10px; /* 中间空10px间距 */
-    display: grid;
-  }
-  .page-left,.index_archives_one{
-    background: #f6f6f6;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 0;
-  }
-  @media (prefers-color-scheme: dark) {
-    .page-left,.index_archives_one{
-      background: var(--background-dark-color);
-    }
-  }
    } 
-// 页面宽度大于900样式
-@media (min-width:900px){
-  .index-archives_nrong{
-    margin-top: 40px;
-    grid-gap: 15px; /* 中间空10px间距 */
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .new-index-nrong{
-    display: grid;
-    grid-gap: 60px; /* 中间空10px间距 */
-    grid-template-columns: 2fr 1fr;
-    margin-top: 30px;
-  }
-  .index_archives_one{
-    border: 1px solid var(--frame-color);
-    padding: 10px;
-    border-radius: 6px;
-  }
-  @media (prefers-color-scheme: dark) {
-    .index_archives_one{
-      border: 0.5px solid var(--frame-dark-color);
-    }
-  }
-  } 
 
-  // 夜间模式页面样式
-  @media (prefers-color-scheme: dark) {
-  .archive-time{
-        color: #666;
-      }
-  .posts-description{
-    color: #999;
-  }
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
   .sidebar-posts-title a{
     color: #999;
   }
   .sidebar-biaot{
     color: #666;
-  }
-  .archives_one{
-    border: 0.5px solid var(--frame-dark-color);
   }
     }

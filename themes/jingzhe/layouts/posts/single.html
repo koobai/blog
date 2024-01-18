@@ -1,10 +1,7 @@
 {{ define "body_classes" }}page-blog-single{{ end }}
-
-{{ define "main" }}
-  <div class="blog">
-    
-    <div class="intro">
-      <h1 class="article_title">{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</h1>
+{{ define "main" }} 
+    <div class="article_details">
+      <div class="article_details_title">{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</div>
       {{ if .Params.image }}
       <img src="{{ .Params.image | relURL }}" class="top-img img-hide" />
       {{ end }}

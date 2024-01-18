@@ -78,7 +78,10 @@
 
 //唠叨页
 .bb-timeline{
-  margin-top: 30px;
+  margin-bottom: 0;
+  @include breakpoint('medium') {
+    margin-bottom: 40px;
+  }
 }
 .datacont p{
   font-size:1rem;
@@ -148,9 +151,10 @@
 .memos-tag-sc-2{
   align-items: center;
   display: flex;
-  margin-top: 20px; 
+  margin-top: 10px; 
   font-size: 0.85rem;
   color: #999;
+  margin-bottom: 10px;
 }
 .memos-tag-sc{
   margin-left: 10px;
@@ -182,7 +186,6 @@
   cursor: pointer;
   color: var(--text-highlight-color);
   border-radius:4px;
-  margin-top: 40px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
   font-size: 0.85rem;
@@ -242,9 +245,15 @@ blockquote p{
 }
 .load-memos-editor{
   cursor: pointer;
-  color: transparent;
-  margin-left: auto;
   display: inline-block;
+  margin-left: 30px;
+  color: transparent;
+  @include breakpoint('medium') {
+    margin-left: 0;
+  }
+}
+.memos-title{
+  display: none;
 }
 .d-flex {
   display: -ms-flexbox !important;
@@ -257,6 +266,10 @@ blockquote p{
   border-radius:4px;
   border: 1px solid var(--frame-color);
   padding: 15px;
+  margin-bottom: 10px;
+  @include breakpoint('medium') {
+    margin-bottom: 30px;
+  }
 }
 .memos-editor-content .memos-editor-textarea{
   border: transparent;
@@ -439,7 +452,7 @@ blockquote p{
 }
 
 // 页面宽度小于700样式
-@media (max-width:700px){
+@media (max-width:900px){
   .resimg{
     width: 100% !important;
   }
@@ -458,9 +471,6 @@ blockquote p{
   .bb-load button{
     margin-top: 10px;
   }
-  .bb-timeline{
-    margin-top: 15px;
-  }
   .bb-list-li{
     background: #f6f6f6;
     padding: 15px;
@@ -475,7 +485,7 @@ blockquote p{
 }
 // 页面宽度大于700样式
 //首页图片样式
-@media (min-width:700px){
+@media (min-width:900px){
   .memos_diaoyong .resimg{
     width: 100% !important;
     grid-template-columns: repeat(5, 1fr); 
@@ -577,13 +587,10 @@ blockquote p{
 #memos-search-input{
   color: var(--text-content-dark-color) !important;
 }
-.memos-search ::placeholder {
+.memos-search ::placeholder,.memos-search svg {
   color: #666 !important;
 }
-.memos-search svg,.memos-search-ico svg{
-  color: #666 !important;
-}
-.memos-search-ico svg:hover{
+.memos-search-ico svg,.memos-search-ico{
   color: #999 !important;
 }
 .memos-search-all{
@@ -651,13 +658,25 @@ blockquote p{
 }
 .memos-search-ico svg{
   width: 20px;
-  color: #999;
-  cursor: pointer;
-}
-.memos-search-ico svg:hover{
   color: #666;
+  cursor: pointer;
+  margin-right: 10px;
 }
-
+.memos-search-ico {
+  display: none;
+  @include breakpoint('medium') {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #666;
+    font-family: var(--font-family-title);
+  }
+}
+.memos-search-ico:hover{
+  text-decoration: underline;
+}
 // 标签自动补全
 
 #memos-tag-menu {
