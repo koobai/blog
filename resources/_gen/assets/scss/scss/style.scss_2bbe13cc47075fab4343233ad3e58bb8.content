@@ -2305,7 +2305,7 @@ blockquote p {
   object-fit: cover;
   border-radius: 2px;
   transition: transform 0.3s ease;
-  height: 100px;
+  height: 90px;
   display: block;
   cursor: zoom-in; }
 
@@ -2313,7 +2313,7 @@ blockquote p {
   transform: scale(1.1); }
 
 .photo-home-title {
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
   font-size: 0.75rem;
   color: #FFF;
   position: absolute;
@@ -2535,6 +2535,10 @@ blockquote p {
   @media (prefers-color-scheme: dark) and (min-width: 900px) {
     .posts-background {
       border: 0.5px solid var(--frame-dark-color); } }
+@media (prefers-color-scheme: dark) {
+  .posts-description {
+    color: #999; } }
+
 @font-face {
   font-family: JetBrainsMono;
   font-display: swap;
