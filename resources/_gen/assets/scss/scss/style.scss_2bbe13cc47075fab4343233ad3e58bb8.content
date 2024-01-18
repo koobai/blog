@@ -2333,7 +2333,9 @@ blockquote p {
 
 @media (prefers-color-scheme: dark) {
   .photo-home-top img:hover {
-    filter: brightness(0.7); } }
+    filter: brightness(0.7); }
+  .photo-home-title {
+    color: #ebebeb; } }
 
 @media (min-width: 900px) {
   .new-index-nrong {
@@ -2534,7 +2536,8 @@ blockquote p {
     background: var(--background-dark-color); } }
   @media (prefers-color-scheme: dark) and (min-width: 900px) {
     .posts-background {
-      border: 0.5px solid var(--frame-dark-color); } }
+      border: 0.5px solid var(--frame-dark-color);
+      background: transparent; } }
 @media (prefers-color-scheme: dark) {
   .posts-description {
     color: #999; } }
