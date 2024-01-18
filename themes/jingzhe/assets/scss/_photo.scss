@@ -34,7 +34,7 @@
     object-fit: cover;
     border-radius: 2px;
     transition: transform 0.3s ease;
-    height: 100px; 
+    height: 90px; 
     display: block; 
     cursor: zoom-in;
 }
@@ -42,7 +42,7 @@
     transform: scale(1.1);
 }
 .photo-home-title{
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
     font-size:0.75rem;
     color: #FFF;
     position:absolute;
@@ -52,6 +52,7 @@
     display:none;
     width: 100%;
 } 
+
 // 页面宽度小于700样式
 @media (max-width:900px){
     .photo-home{
