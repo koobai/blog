@@ -1,0 +1,127 @@
+//博客列表页
+.posts-new {
+  display: grid;
+  gap: 10px;
+  @include breakpoint('medium') {
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  }
+}
+.posts-background {
+    padding: 15px;
+    border-radius:4px;
+    background: #f6f6f6;
+  @include breakpoint('medium') {
+    border: 0.5px solid var(--frame-color);
+    background: transparent;
+  }
+}
+.article_new{
+  float: left;
+  background: var(--text-highlight-color);
+  color: #fff;
+  padding: 2px 4px;
+  margin-right: 8px;
+  margin-top: 3px;
+  font-family: var(--font-family-code);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+.posts-title a{
+  font-family: var(--font-family-title);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+.posts-description {
+  line-height: 1.8;
+  font-size: 1rem;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.posts_list{
+  display: grid;
+  gap: 10px;
+  @include breakpoint('small') {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+}
+.posts_list_article{
+  border-radius:4px;
+  background: #f6f6f6;
+  padding: 15px;
+  @include breakpoint('small') {
+    background: transparent;
+    border: 0.5px solid var(--frame-color);
+}
+}
+
+//详情页博文推荐
+.archives_nrong{
+  margin-top: 15px;
+  display: grid;
+  grid-gap: 15px; /* 中间空10px间距 */
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+.archives_one{
+  display: flex;
+  border-radius:4px;
+  border: 0.5px solid var(--frame-color);
+  align-items: center;
+  padding: 15px;
+}
+.archive-title{
+  font-family: var(--font-family-title);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.archive-time{
+    font-size: 0.85rem;
+    color: #999;
+    font-family: var(--font-family-code);
+  }
+.archive-img {
+    margin-left: auto;
+  }
+.archive-img img{
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius:6px;
+    transition: transform 0.3s ease; 
+    margin-left: 10px;
+  }
+.archives_one:hover .archive-img img{
+	  transform: scale(1.05);
+  }
+
+  // 夜间模式页面样式
+  @media (prefers-color-scheme: dark) {
+  .archive-time{
+        color: #666;
+      }
+  .archives_one{
+    border: 0.5px solid var(--frame-dark-color);
+  }
+  .posts_list_article{
+    background: var(--background-dark-color);
+    @include breakpoint('small') {
+      background: transparent;
+      border: 0.5px solid var(--frame-dark-color);
+  }
+  }
+  .posts-background {
+     background: var(--background-dark-color);
+    @include breakpoint('medium') {
+      border: 0.5px solid var(--frame-dark-color);
+    }
+  }
+    }

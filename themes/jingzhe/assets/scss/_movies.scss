@@ -2,7 +2,6 @@
 .movie-quanju{
   display: grid;
 	grid-gap: 20px; /* 中间空10px间距 */
-
 }
 .movie-index{
   border-radius: 4px;
@@ -67,11 +66,11 @@
 
 // 影视页面
 .fIuTG{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  //width: 100vw;
+  //margin-left: calc(50% - 50vw);
   display: grid;
   grid-gap: 2px; /* 中间空10px间距 */
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 .dfdORB{
   overflow: hidden;
@@ -79,7 +78,7 @@
 .sc-hKFxyN img{
    width:100%;
    border-radius:4px;
-   height: 370px;
+   height: 340px;
    object-fit: cover;
 }
 .dfdORB a{text-decoration:none}
@@ -118,7 +117,6 @@
 }
 .dvtjjf.active{
   color: var(--text-highlight-color);
-
 }
 .sc-hint{
   color: #999;
@@ -132,7 +130,19 @@
 color: var(--text-highlight-color);
 }
 .sort-by-item svg{margin-right:5px}
-
+.movies_loadMore{
+  padding: 15px;
+  border: 0.5px solid var(--frame-color);
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+  color: var(--text-highlight-color);
+  font-size: 0.85rem;
+}
+.movies_loadMore:hover{
+  text-decoration: underline;
+}
 // 页面宽度小于700样式
 @media (max-width:700px){
 .fIuTG{
@@ -141,7 +151,7 @@ color: var(--text-highlight-color);
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
 }
 .sc-hKFxyN img{
-   height: 180px;
+   height: 190px;
 }
 .movie-content-left img{
   width: 120px;
@@ -228,5 +238,8 @@ color: var(--text-highlight-color);
 }
 .movie-content-right-3{
   color: #999;
+}
+.movies_loadMore{
+  border: 0.5px solid var(--frame-dark-color);
 }
 }

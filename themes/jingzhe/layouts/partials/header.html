@@ -1,24 +1,35 @@
 <div class="header">
 <a href="/about" class="header-logo"><img src="https://img.koobai.com/photo/koobai.webp" alt="koobai" /></a>
+<div class="about-koobai"><a href="/about" title="我"><img src="https://img.koobai.com/photo/koobai.webp"></a></div>
 <!--<a href="{{ .Site.Home.RelPermalink }}" class="header-title">{{ .Site.Title }}</a>-->
 <div class="new-heard-menu">
 {{ $currentPage := . }}
 {{ range .Site.Menus.main }}
 {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
 {{ $active = or $active (eq (.URL | relLangURL) ($currentPage.RelPermalink | relLangURL)) }}
-<div class="header-menu">
+<div class="header-menu{{ if $active }} menu-current{{ end }}">
+  {{ if eq .Name "唠叨" }}
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 1024 1024"><path fill="currentColor" d="M951 731q0 122-75 207.5T695 1024t-181-85.5T439 731H73q-30 0-51.5-21T0 658.5t21.5-52T73 585h878q30 0 51.5 21.5t21.5 52t-21.5 51.5t-51.5 21m-366 0q0 61 32 104t77.5 43t78-43T805 731zm219.5-365Q744 366 701 312.5T658 183t43-129.5T804.5 0T908 53.5T951 183t-43 129.5T804.5 366m-585 0Q159 366 116 312.5T73 183t43-129.5T219.5 0T323 53.5T366 183t-43 129.5T219.5 366"/></svg>
+  {{ else if eq .Name "博文" }}
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 w-6 h-auto opacity-70"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 8h7"></path><path d="M8 12h6"></path><path d="M11 16h5"></path></svg>
+  {{ else if eq .Name "软件" }}
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16M8.823 15.343l-.79 1.37a.823.823 0 1 1-1.428-.822l.589-1.016c.66-.206 1.201-.048 1.629.468M13.21 8.66l2.423 4.194h2.141a.82.82 0 0 1 .823.822a.82.82 0 0 1-.823.823h-1.19l.803 1.391a.824.824 0 0 1-1.427.823l-3.04-5.266c-.69-1.19-.198-2.383.29-2.787m.278-3.044c.395.226.528.73.302 1.125l-3.528 6.109h2.553c.826 0 1.29.972.931 1.645h-7.48a.82.82 0 0 1-.822-.823a.82.82 0 0 1 .822-.822h2.097l2.685-4.653l-.838-1.456a.824.824 0 0 1 1.427-.823l.359.633l.367-.633a.823.823 0 0 1 1.125-.302"/></svg>
+  {{ else if eq .Name "好物" }}
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M237 77.47A28 28 0 0 0 216 68h-52V56a44.05 44.05 0 0 0-44-44a12 12 0 0 0-10.73 6.63L72.58 92H32a20 20 0 0 0-20 20v88a20 20 0 0 0 20 20h172a28 28 0 0 0 27.78-24.53l12-96a28 28 0 0 0-6.78-22M36 116h32v80H36Zm184-19.5l-12 96a4 4 0 0 1-4 3.5H92v-89.17l34.82-69.63A20 20 0 0 1 140 56v24a12 12 0 0 0 12 12h64a4 4 0 0 1 4 4.5"/></svg>
+  {{ else if eq .Name "观影" }}
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 20h8v2h-8C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10a9.956 9.956 0 0 1-2 6h-2.708A8 8 0 1 0 12 20m0-10a2 2 0 1 1 0-4a2 2 0 0 1 0 4m-4 4a2 2 0 1 1 0-4a2 2 0 0 1 0 4m8 0a2 2 0 1 1 0-4a2 2 0 0 1 0 4m-4 4a2 2 0 1 1 0-4a2 2 0 0 1 0 4"/></svg>
+{{ end }}
   <a href="{{.URL}}">{{ .Name }}</a>
 </div>
 {{end}}
 </div>
+<div onclick="toggleSearch()" class="memos-search-ico" title="搜索唠叨"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21l-4.486-4.494M19 10.5a8.5 8.5 0 1 1-17 0a8.5 8.5 0 0 1 17 0Z"/></svg>搜索</div>
   <div class="menu-main"> 
-
-    <a href="/about" class="about-logo" title="我"><img src="https://img.koobai.com/photo/koobai.webp" alt="koobai" /></a>
-    <!--<a href="/index.xml" target="_blank" title="RSS" data-umami-event="Rss" class="heard-rss"><svg width="17px" height="17px" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" ><path d="M1.25,7 C6.91091869,7 11.5,11.5890813 11.5,17.25 C11.5,17.9403559 10.9403559,18.5 10.25,18.5 C9.55964406,18.5 9,17.9403559 9,17.25 C9,12.9697932 5.53020681,9.5 1.25,9.5 C0.559644063,9.5 0,8.94035594 0,8.25 C0,7.55964406 0.559644063,7 1.25,7 Z M1.25,0 C10.7769119,0 18.5,7.72308807 18.5,17.25 C18.5,17.9403559 17.9403559,18.5 17.25,18.5 C16.5596441,18.5 16,17.9403559 16,17.25 C16,9.10379994 9.39620006,2.5 1.25,2.5 C0.559644063,2.5 0,1.94035594 0,1.25 C0,0.559644063 0.559644063,0 1.25,0 Z M2.25,14 C3.49264069,14 4.5,15.0073593 4.5,16.25 C4.5,17.4926407 3.49264069,18.5 2.25,18.5 C1.00735931,18.5 0,17.4926407 0,16.25 C0,15.0073593 1.00735931,14 2.25,14 Z M2.25,16 C2.11192881,16 2,16.1119288 2,16.25 C2,16.3880712 2.11192881,16.5 2.25,16.5 C2.38807119,16.5 2.5,16.3880712 2.5,16.25 C2.5,16.1119288 2.38807119,16 2.25,16 Z"></path></svg></a> -->
     <a href="https://github.com/koobai/blog" title="Github" target="_blank" data-umami-event="Github" class="githuab"><svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" data-view-component="true" ><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
     </svg></a>    
     <a href="https://space.bilibili.com/2084095738" target="_blank" title="当UP主的一天" data-umami-event="Bilibili"><svg width="20" height="20" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="zhuzhan-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.73252 2.67094C3.33229 2.28484 3.33229 1.64373 3.73252 1.25764C4.11291 0.890684 4.71552 0.890684 5.09591 1.25764L7.21723 3.30403C7.27749 3.36218 7.32869 3.4261 7.37081 3.49407H10.5789C10.6211 3.4261 10.6723 3.36218 10.7325 3.30403L12.8538 1.25764C13.2342 0.890684 13.8368 0.890684 14.2172 1.25764C14.6175 1.64373 14.6175 2.28484 14.2172 2.67094L13.364 3.49407H14C16.2091 3.49407 18 5.28493 18 7.49407V12.9996C18 15.2087 16.2091 16.9996 14 16.9996H4C1.79086 16.9996 0 15.2087 0 12.9996V7.49406C0 5.28492 1.79086 3.49407 4 3.49407H4.58579L3.73252 2.67094ZM4 5.42343C2.89543 5.42343 2 6.31886 2 7.42343V13.0702C2 14.1748 2.89543 15.0702 4 15.0702H14C15.1046 15.0702 16 14.1748 16 13.0702V7.42343C16 6.31886 15.1046 5.42343 14 5.42343H4ZM5 9.31747C5 8.76519 5.44772 8.31747 6 8.31747C6.55228 8.31747 7 8.76519 7 9.31747V10.2115C7 10.7638 6.55228 11.2115 6 11.2115C5.44772 11.2115 5 10.7638 5 10.2115V9.31747ZM12 8.31747C11.4477 8.31747 11 8.76519 11 9.31747V10.2115C11 10.7638 11.4477 11.2115 12 11.2115C12.5523 11.2115 13 10.7638 13 10.2115V9.31747C13 8.76519 12.5523 8.31747 12 8.31747Z"></path></svg></a>
 </div>
+  <div class="memos-title"></div>
   <div id="toggle-menu-main-mobile" class="hamburger-trigger">
     <button class="hamburger">Menu</button>
   </div>

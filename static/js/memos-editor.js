@@ -713,6 +713,8 @@ function archiveMemo(memoId) {
 
 //增加memo删除功能
 function deleteMemo(memoId) {
+  let isOk = confirm("确定要删除此条唠叨吗？");
+  if(isOk){
   memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
   if(memosOpenId && memoId){
     let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
@@ -734,4 +736,5 @@ function deleteMemo(memoId) {
       cocoMessage.error('出错了，再检查一下吧')
     })
   }
+}
 }

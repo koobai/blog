@@ -42,6 +42,7 @@ $breakpoints: (
 @import 'photo';
 @import 'index';
 @import 'about';
+@import 'list';
 @import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css');
 @import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css');
 
@@ -69,16 +70,21 @@ body {
 }
 
 .wrapper {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-  min-height: calc(100vh - 130px);
-  @include breakpoint('small') {
-    min-height: calc(100vh - 104px);
+  @include breakpoint('medium') {
+      display: grid;
+      grid-gap: 40px;
+      grid-template-columns: 100px 1fr;
+      margin-top: 60px;
     }
 }
-.page-blog-single,.page-hardware,.page-app,.page-about,.page-movies{
-  max-width: 940px;
+.page-blog-single,.page-hardware,.page-app,.page-about,.page-blog-list{
+  max-width: 1080px;
   margin: auto;
+}
+.page-blog-single .memos-search-ico,.page-hardware .memos-search-ico,.page-app .memos-search-ico,.page-about .memos-search-ico,.page-movies .memos-search-ico,.page-blog-list .memos-search-ico{
+  display: none;
 }
 
 //日间模式新增属性
