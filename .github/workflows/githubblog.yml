@@ -24,8 +24,9 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Onionsite Pull Webhook
-        uses: jasongitmail/fast-webhook@v1
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          url: ${{ secrets.ONION_WEBHOOK_URL }}
-          json: '{"onion": "pull"}'
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          external_repository: koobai/koobai.github.io
+          publish_dir: ./public
