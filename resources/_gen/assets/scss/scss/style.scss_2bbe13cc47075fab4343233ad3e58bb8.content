@@ -1831,12 +1831,14 @@ img[atk-emoticon] {
 pre {
   border-radius: 4px;
   line-height: 1.8;
-  background: #f6f6f6;
+  background: #ececec;
   padding: 10px;
   white-space: pre-wrap;
   margin-top: 5px;
   margin-bottom: 10px; }
-
+  @media (min-width: 900px) {
+    pre {
+      background: #f6f6f6; } }
 pre code {
   background: transparent;
   font-size: 0.85rem;
