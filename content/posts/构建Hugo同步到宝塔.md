@@ -47,7 +47,7 @@ jobs:
           publish_dir: ./public
 ```
 
-**2.** 打开宝塔面板，终端生成 git 公钥
+~~**2.** 打开宝塔面板，终端生成 git 公钥~~
 
 ```yml
 # 安装 Git
@@ -64,7 +64,7 @@ ssh-keygen -t rsa -C "你的@email.com"
 cat ~/.ssh/id_rsa.pub
 ```
 
-**3.** 添加公钥到到 Github：头像--Settings--SSH and GPG keys--New SSH key
+~~**3.** 添加公钥到到 Github：头像--Settings--SSH and GPG keys--New SSH key~~
 
 **4.** 打开宝塔面板商店，安装 WebHook 插件--添加执行脚本 (复制以下代码)。其中"gitHttp 为需同步的 github 仓库地址"，"gh-pages"为仓库分支名称。
 
