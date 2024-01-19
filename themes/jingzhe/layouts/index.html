@@ -37,7 +37,7 @@
 {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
 <div class="sidebar-page img-hide">
 {{ range $posts }} 
-<div>
+<div class="sidebar-bowen">
 <!--30 天内新博文-->  
 {{ if gt .Date (now.AddDate 0 0 -15) }}
 <div class="sidebar_article_new">NEW</div>

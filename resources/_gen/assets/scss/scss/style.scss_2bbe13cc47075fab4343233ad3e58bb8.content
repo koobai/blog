@@ -2361,9 +2361,10 @@ blockquote p {
   color: #999; }
 
 .sidebar-page {
-  margin-bottom: 30px;
-  display: grid;
-  gap: 20px; }
+  margin-bottom: 30px; }
+
+.sidebar-bowen {
+  margin-bottom: 20px; }
 
 .sidebar-posts-title {
   margin-top: 4px;
