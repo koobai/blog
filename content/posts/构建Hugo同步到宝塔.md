@@ -6,7 +6,7 @@ tags: ['博客','折腾','Hugo']
 description: '折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。'
 image: https://img.koobai.com/article/webhooks2.svg
 ---
-折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。
+(2024.01.19晚更新) 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。
 
 部署步骤流程记录下：
 
@@ -66,7 +66,17 @@ cat ~/.ssh/id_rsa.pub
 
 ~~**3.** 添加公钥到到 Github：头像--Settings--SSH and GPG keys--New SSH key~~
 
-**4.** 打开宝塔面板商店，安装 WebHook 插件--添加执行脚本 (复制以下代码)。其中"gitHttp 为需同步的 github 仓库地址"，"gh-pages"为仓库分支名称。
+**4.** 打开宝塔面板商店，安装 WebHook 插件--添加执行脚本 (复制以下代码)。~~其中"gitHttp 为需同步的 github 仓库地址"，"gh-pages"为仓库分支名称。~~
+
+```
+cd 网站目录
+git config pull.rebase true
+git pull
+echo Onion Site Updated! $(TZ=UTC-8 date +"%Y-%m-%d"" ""%T")
+echo ======================================================
+```
+
+**以下代码已过时，暂不使用。**
 
 ```script
 #!/bin/bash
@@ -130,6 +140,17 @@ fi
 ```
 
 **6.** 初始化宝塔网站目录
+
+```
+在宝塔终端执行：
+
+cd 网站目录
+git clone --depth 1 https://mirror.ghproxy.com/https://github.com/koobai/koobai.github.io --single-branch .
+
+解释上面意思：mirror.ghproxy.com为github加速地址，koobai为github用户名，koobai.github.io为仓库名。最后 . 为当前目录。
+```
+
+**以下代码已过时，暂不使用。**
 
 ```sh
 cd 网站目录
