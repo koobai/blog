@@ -50,7 +50,7 @@ h1, h2, h3 {
   @media (min-width: 900px) {
     .about-koobai {
       margin-bottom: 30px;
-      margin-left: 2px;
+      margin-left: 3px;
       display: block; } }
 .about-koobai img {
   width: 64px;
@@ -109,7 +109,8 @@ h1, h2, h3 {
 .header-menu a {
   color: #666;
   font-size: 1rem;
-  font-family: var(--font-family-title); }
+  font-family: var(--font-family-title);
+  padding-top: 2px; }
 
 .header-menu {
   display: flex;
@@ -117,9 +118,9 @@ h1, h2, h3 {
 
 .header-menu svg {
   margin-right: 10px;
-  color: #666;
-  width: 20px;
-  height: 20px; }
+  color: #999;
+  width: 22px;
+  height: 22px; }
 
 .header-menu img {
   width: 20px;
@@ -147,8 +148,10 @@ h1, h2, h3 {
     display: none; } }
 
 @media (prefers-color-scheme: dark) {
-  .header-title, .header-menu a, .header-menu svg {
+  .header-title, .header-menu a {
     color: #999; }
+  .header-menu svg {
+    color: #666; }
   .githuab svg, .heard-rss svg path, .menu-main svg {
     fill: #666; }
   .heard-rss svg path:hover, .githuab svg:hover, .menu-main svg:hover {
@@ -1821,6 +1824,10 @@ img[atk-emoticon] {
   opacity: 0.8;
   transition: opacity .3s ease-in-out; }
 
+.memos-hide {
+  margin-left: auto;
+  color: var(--text-highlight-color); }
+
 pre {
   border-radius: 4px;
   line-height: 1.8;
@@ -2165,9 +2172,9 @@ blockquote p {
     border: 0.5px solid #201d1e; }
   #memos-search-input {
     color: var(--text-content-dark-color) !important; }
-  .memos-search ::placeholder, .memos-search svg {
+  .memos-search ::placeholder, .memos-search svg, .memos-search-ico svg {
     color: #666 !important; }
-  .memos-search-ico svg, .memos-search-ico {
+  .memos-search-ico {
     color: #999 !important; }
   .memos-search-all {
     border: 1px solid var(--frame-dark-color) !important; }
@@ -2224,8 +2231,9 @@ blockquote p {
   color: #b8b8b8; }
 
 .memos-search-ico svg {
-  width: 20px;
-  color: #666;
+  width: 22px;
+  height: 22px;
+  color: #999;
   cursor: pointer;
   margin-right: 10px; }
 

@@ -195,6 +195,10 @@
   opacity: 0.8;
   transition: opacity .3s ease-in-out;
 }
+.memos-hide{
+  margin-left: auto;
+  color: var(--text-highlight-color);
+}
 pre{
   border-radius: 4px;
   line-height: 1.8;
@@ -236,7 +240,6 @@ blockquote p{
   color: #666 !important;
   margin: -10px -40px 0 -40px !important;
 }
-
 //memos页发布唠叨
 *,
 *::before,
@@ -587,10 +590,10 @@ blockquote p{
 #memos-search-input{
   color: var(--text-content-dark-color) !important;
 }
-.memos-search ::placeholder,.memos-search svg {
+.memos-search ::placeholder,.memos-search svg,.memos-search-ico svg {
   color: #666 !important;
 }
-.memos-search-ico svg,.memos-search-ico{
+.memos-search-ico{
   color: #999 !important;
 }
 .memos-search-all{
@@ -657,8 +660,9 @@ blockquote p{
   color: #b8b8b8;
 }
 .memos-search-ico svg{
-  width: 20px;
-  color: #666;
+  width: 22px;
+  height: 22px;
+  color: #999;
   cursor: pointer;
   margin-right: 10px;
 }
