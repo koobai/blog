@@ -13,7 +13,7 @@
   display: none;
   @include breakpoint('medium') {
     margin-bottom: 30px;
-    margin-left: 2px;
+    margin-left: 3px;
     display: block;
   }
 }
@@ -75,6 +75,7 @@
   color: #666;
   font-size: 1rem;
   font-family: var(--font-family-title);
+  padding-top: 2px;
  }
  .header-menu{
   display: flex;
@@ -82,9 +83,9 @@
  }
 .header-menu svg{
   margin-right: 10px;
-  color: #666;
-  width: 20px;
-  height: 20px;
+  color: #999;
+  width: 22px;
+  height: 22px;
 }
 .header-menu img{
   width: 20px;
@@ -117,8 +118,11 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .header-title,.header-menu a,.header-menu svg{
+  .header-title,.header-menu a{
     color: #999;
+  }
+  .header-menu svg{
+    color: #666;
   }
   .githuab svg,.heard-rss svg path,.menu-main svg{
     fill: #666;
