@@ -941,14 +941,14 @@ ul {
   color: #999 !important; }
 
 .atk-send-btn {
-  padding: 0 20px !important;
+  padding: 0 10px !important;
   width: auto !important;
   background: transparent !important;
-  border: 0.5px solid #dadada !important;
+  border: 0 solid transparent !important;
   color: var(--text-highlight-color) !important; }
 
 .atk-send-btn:hover {
-  opacity: 0.8; }
+  opacity: 0.7; }
 
 .atk-list-header .atk-dropdown-wrap .atk-dropdown-item.active span, .atk-list-header .atk-dropdown-wrap .atk-dropdown-item span:hover {
   color: var(--text-highlight-color) !important; }
@@ -1021,6 +1021,9 @@ img[atk-emoticon] {
   background: transparent !important;
   margin: 0 4px !important; }
 
+.atk-main-editor > .atk-textarea-wrap > .atk-textarea {
+  line-height: 1.6; }
+
 @media (prefers-color-scheme: dark) {
   .atk-content p {
     color: var(--text-content-dark-color) !important; }
@@ -1052,8 +1055,6 @@ img[atk-emoticon] {
     color: #666 !important; }
   .atk-item.atk-nick {
     color: var(--text-content-dark-color) !important; }
-  .atk-send-btn {
-    border: solid #454545 0.5px !important; }
   .atk-pinned-badge {
     color: var(--text-content-dark-color) !important;
     background: #666 !important; }
@@ -1890,7 +1891,7 @@ blockquote p {
 
 .memos-editor-tools {
   margin-top: 4px;
-  margin-bottom: 15px; }
+  margin-bottom: 10px; }
 
 .memos-editor-tools .action-btn {
   margin-right: 15px;
@@ -1918,9 +1919,9 @@ blockquote p {
 .editor-selector select {
   appearance: none;
   /* 隐藏原生控件样式 */
-  border: 0.5px solid #dadada;
+  border: 0 solid transparent;
   border-radius: 4px;
-  padding: 8px 20px 8px 6px;
+  padding: 8px 20px 8px 0;
   background: transparent;
   color: #666;
   font-family: var(--font-family-paragraph);
@@ -1944,11 +1945,10 @@ blockquote p {
 
 .submit-memos-btn, .edit-memos-btn {
   background: transparent;
-  border: 0.5px solid #dadada;
   cursor: pointer;
   color: var(--text-highlight-color);
   border-radius: 4px;
-  padding: 6px 15px 6px 15px; }
+  padding: 6px 0; }
 
 .cancel-edit-btn {
   padding: 6px 15px 6px 15px;
@@ -1958,7 +1958,7 @@ blockquote p {
   color: #999; }
 
 .submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
-  opacity: 0.8;
+  opacity: 0.7;
   transition: opacity .3s ease-in-out; }
 
 .memos-editor-footer {
@@ -2132,12 +2132,9 @@ blockquote p {
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .editor-selector select {
-    border: 0.5px solid #454545 !important;
     color: #999 !important; }
   .memos-editor-content .memos-editor-textarea {
     color: var(--text-content-dark-color); }
-  .submit-memos-btn, .edit-memos-btn {
-    border: solid #454545 0.5px !important; }
   .memos-open-api-submit {
     background: #1A1718 !important;
     color: var(--text-highlight-color) !important; }
@@ -2167,7 +2164,7 @@ blockquote p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   gap: 6px;
-  margin-bottom: 15px; }
+  margin-bottom: 10px; }
 
 .emoji-item {
   padding: 4px;
