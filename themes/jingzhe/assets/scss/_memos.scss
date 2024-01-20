@@ -258,6 +258,12 @@ blockquote p{
     margin-left: 0;
   }
 }
+.outline svg{
+  color: #999;
+}
+.outline svg:hover{
+  color: #444;
+}
 .memos-title{
   display: none;
 }
@@ -563,6 +569,12 @@ blockquote p{
 }
 
 //memos页发布唠叨
+.outline svg{
+  color: #666;
+}
+.outline svg:hover{
+  color: #999;
+}
 .memos-path-input,.memos-token-input{
   color: var(--text-content-dark-color) !important;
 }
