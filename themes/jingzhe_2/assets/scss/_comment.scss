@@ -70,14 +70,14 @@
   color: #999!important;
 }
 .atk-send-btn {
-  padding: 0 20px!important;
+  padding: 0 10px!important;
   width: auto !important;
   background: transparent !important;
-  border: 0.5px solid #dadada !important;
+  border: 0 solid transparent !important;
   color: var(--text-highlight-color) !important;
 }
 .atk-send-btn:hover {
-  opacity:0.8
+  opacity:0.7
 }
 
 .atk-list-header .atk-dropdown-wrap .atk-dropdown-item.active span, .atk-list-header .atk-dropdown-wrap .atk-dropdown-item span:hover {
@@ -152,6 +152,9 @@ img[atk-emoticon] {
   background: transparent !important;
   margin: 0 4px !important;
 }
+.atk-main-editor>.atk-textarea-wrap>.atk-textarea{
+  line-height: 1.6;
+}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -194,9 +197,6 @@ img[atk-emoticon] {
 }
 .atk-item.atk-nick{
   color: var(--text-content-dark-color)!important;
-}
-.atk-send-btn {
-  border: solid #454545 0.5px !important;
 }
 .atk-pinned-badge {
   color: var(--text-content-dark-color)!important;

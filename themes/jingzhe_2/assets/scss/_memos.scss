@@ -297,7 +297,7 @@ blockquote p{
 }
 .memos-editor-tools{
   margin-top:4px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .memos-editor-tools .action-btn{
   margin-right: 15px;
@@ -325,9 +325,9 @@ blockquote p{
 }
 .editor-selector select {
   appearance: none; /* 隐藏原生控件样式 */
-  border: 0.5px solid #dadada;
+  border: 0 solid transparent;
   border-radius: 4px;
-  padding: 8px 20px 8px 6px;
+  padding: 8px 20px 8px 0;
   background: transparent;
   color: #666;
   font-family: var(--font-family-paragraph);
@@ -347,11 +347,10 @@ blockquote p{
 }
 .submit-memos-btn,.edit-memos-btn{
   background: transparent;
-  border: 0.5px solid #dadada;
   cursor: pointer;
   color: var(--text-highlight-color);
   border-radius:4px;
-  padding: 6px 15px 6px 15px;
+  padding: 6px 0;
 }
 .cancel-edit-btn{
   padding: 6px 15px 6px 15px;
@@ -361,7 +360,7 @@ blockquote p{
   color: #999;
 }
 .submit-memos-btn:hover,.memos-open-api-submit:hover,.edit-memos-btn:hover,.cancel-edit-btn:hover{
-  opacity: 0.8;
+  opacity: 0.7;
   transition: opacity .3s ease-in-out;
 }
 .memos-editor-footer{
@@ -576,14 +575,10 @@ blockquote p{
   color: var(--text-content-dark-color) !important;
 }
 .editor-selector select {
-  border: 0.5px solid #454545 !important;
   color: #999 !important;
 }
 .memos-editor-content .memos-editor-textarea{
   color: var(--text-content-dark-color);
-}
-.submit-memos-btn,.edit-memos-btn{
-  border: solid #454545 0.5px !important;
 }
 .memos-open-api-submit{
   background: #1A1718 !important;
@@ -629,7 +624,7 @@ blockquote p{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   gap: 6px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .emoji-item {
   padding: 4px;
