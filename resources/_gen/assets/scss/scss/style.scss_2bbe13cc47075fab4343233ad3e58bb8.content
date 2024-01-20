@@ -7,10 +7,10 @@
   --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
   --font-family-monospace: 'HarmonyOS_Regular',monospace;
   --font-family-teshu: 'SmileySans',Helvetica,sans-serif;
-  --base-color: var(--background-color);
+  --base-color: #ffffff;
   --base-offset-color: #eaeaea;
-  --heading-color: #000;
-  --dot-color: var(--text-highlight-color);
+  --heading-color: #1c1b1d;
+  --dot-color: #7b16ff;
   --bankuai-color: #f6f6f6;
   --background-color: #fff;
   --background-dark-color: #201d1e;
@@ -482,38 +482,6 @@ ul {
     color: #999; }
   .summary-date {
     color: #666 !important; } }
-
-.pagination {
-  display: flex;
-  font-size: 15px;
-  margin: 30px 0 -10px 20px;
-  font-family: var(--font-family-heading); }
-  @media (min-width: 700px) {
-    .pagination {
-      margin: 30px 0 -10px 25px; } }
-.pagination a {
-  background-color: #999;
-  margin-right: 8px;
-  text-align: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  line-height: 2.2;
-  color: #fff; }
-
-.pagination a:hover, .pagination li:hover {
-  background-color: var(--text-highlight-color);
-  color: white;
-  text-decoration: none; }
-
-.pagination li {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%; }
-  .pagination li.pagination-item-current {
-    background-color: var(--text-highlight-color);
-    margin-right: 8px;
-    color: white; }
 
 .menu-main-mobile {
   position: fixed;
