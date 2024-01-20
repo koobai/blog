@@ -1925,11 +1925,11 @@ blockquote p {
   margin-bottom: 15px; }
 
 .memos-editor-tools .action-btn {
-  margin-right: 20px;
+  margin-right: 15px;
   cursor: pointer; }
 
 .p-2 {
-  margin-left: 15px; }
+  margin-left: 12px; }
 
 .memos-editor-tools .memos-tag-list {
   display: flex;
