@@ -1884,6 +1884,12 @@ blockquote p {
   @media (min-width: 900px) {
     .load-memos-editor {
       margin-left: 0; } }
+.outline svg {
+  color: #999; }
+
+.outline svg:hover {
+  color: #444; }
+
 .memos-title {
   display: none; }
 
@@ -2154,6 +2160,10 @@ blockquote p {
     color: #888 !important; }
   .memos_diaoyong_info blockquote p {
     color: #888 !important; }
+  .outline svg {
+    color: #666; }
+  .outline svg:hover {
+    color: #999; }
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .editor-selector select {
