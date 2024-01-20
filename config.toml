@@ -1,9 +1,8 @@
 baseURL = "https://koobai.com"
 languageCode = "zh-cn"
-theme = "jingzhe"
+theme = "jingzhe_2"
 themesDir = "themes"
 title = "空白Koobai"
-paginate = 6
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
@@ -13,14 +12,6 @@ enableRobotsTXT = true
   [module.hugoVersion]
     extended = true
     min = "0.55.0"
-
-[params]
-  showPostsOnHomepage = true
-  addDot = true
-  baseColor = "var(--background-color)"
-  baseOffsetColor = "#eaeaea"
-  headingColor = "#000"
-  dotColor = "var(--text-highlight-color)"
 
 [permalinks]
   posts = '/:slug/'
