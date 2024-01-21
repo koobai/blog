@@ -1,5 +1,26 @@
 {{ define "body_classes" }}page-movies{{ end }}
 {{ define "main" }}
+<div class="movies_video">
+  <video
+    class="video-source"
+    id="TopGif"
+    width="100%"
+    height="100%"
+    style="object-fit: cover"
+    webkit-playsinline="true"
+    x-webkit-airplay="true"
+    playsinline="true"
+    x5-video-player-type="h5"
+    x5-video-orientation="h5"
+    x5-video-player-fullscreen="true"
+    preload="auto"
+    autoplay="true"
+    loop=""
+    muted=""
+  >
+    <source src="" type="video/mp4" />
+  </video>
+</div>
 <div class="pagetitle">自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中 ( 数据来源于豆瓣 )～～</div>
   <div id="movies_page" class="fIuTG">
   {{$movies := getCSV "," "data/douban/movie.csv" }}
@@ -52,30 +73,7 @@
       {{end}}
     </div>  
 <div id="movies_loadMore" class="movies_loadMore">看更多...</div>
-<!--分页加载更多-->
-<script>
-  let visibleMovies = 20; // 最初可见的电影数量
-  const movies_page = document.getElementById('movies_page');
-  const movies_loadMore = document.getElementById('movies_loadMore');
-
-  // 根据可见性计数显示/隐藏电影的函数
-  function updateVisibility() {
-    const movies = document.querySelectorAll('.sc-gKAaRy.dfdORB.img-hide');
-    movies.forEach((movie, idx) => {
-      movie.style.display = idx < visibleMovies ? 'block' : 'none';
-    });
-  }
-
-  // “加载更多”按钮点击事件
-  movies_loadMore.addEventListener('click', () => {
-    visibleMovies += 20; // 增加可见数量
-    updateVisibility(); // 更新电影可见性
-  });
-
-  // 初始可见性设置
-  updateVisibility();
-</script>
-<!--分页加载更多结束-->
+<script src="/js/movies.js"></script>
 <div class="article-comments">
   {{- partial "artalk" . -}}
 </div>
