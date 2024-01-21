@@ -65,6 +65,34 @@
 }
 
 // 影视页面
+
+//顶部视频--
+.movies_video {
+  position: absolute;
+  height: 30rem;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top:0;
+  z-index: -10;
+}
+.movies_video:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #FFF 100%);
+}
+.page-movies .pagetitle,.page-movies .header-menu a{
+  color: #FFF;
+}
+.page-movies .header-menu svg{
+  color: #e0e0e0;
+}
+//顶部视频介绍--
+
 .fIuTG{
   //width: 100vw;
   //margin-left: calc(50% - 50vw);
@@ -241,5 +269,14 @@ color: var(--text-highlight-color);
 }
 .movies_loadMore{
   border: 0.5px solid var(--frame-dark-color);
+}
+.movies_video:after {
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #1A1718 100%);
+}
+.page-movies .pagetitle,.page-movies .header-menu a{
+  color: #ebebeb;
+}
+.page-movies .header-menu svg{
+  color: #bfbfbf;
 }
 }
