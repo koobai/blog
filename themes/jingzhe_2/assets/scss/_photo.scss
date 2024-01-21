@@ -10,10 +10,10 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px; 
     margin: 10px 0;
-    @include breakpoint('small') {
+    @include breakpoint('medium') {
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 15px;
-        margin: 15px 0;
+        margin: 40px 0;
     }
 }
 .posts_photo img{

@@ -4,7 +4,7 @@
   gap: 10px;
   @include breakpoint('medium') {
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 40px;
   }
 }
 .posts-background {
@@ -12,8 +12,8 @@
     border-radius:4px;
     background: #f6f6f6;
   @include breakpoint('medium') {
-    border: 0.5px solid var(--frame-color);
     background: transparent;
+    padding: 0;
   }
 }
 .article_new{
@@ -47,36 +47,36 @@
 .posts_list{
   display: grid;
   gap: 10px;
-  @include breakpoint('small') {
+  @include breakpoint('medium') {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 15px;
+    gap: 45px;
 }
 }
 .posts_list_article{
   border-radius:4px;
   background: #f6f6f6;
   padding: 15px;
-  @include breakpoint('small') {
+  @include breakpoint('medium') {
     background: transparent;
-    border: 0.5px solid var(--frame-color);
+    padding: 0;
 }
 }
 
 //详情页博文推荐
 .archives_nrong{
-  margin-top: 15px;
+  margin-top: 40px;
+  margin-bottom: 30px;
   display: grid;
   grid-gap: 15px; /* 中间空10px间距 */
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	@include breakpoint('small') {
+		grid-gap: 40px; /* 中间空10px间距 */
+	  }	
 }
 .archives_one{
   display: flex;
-  border-radius:4px;
-  border: 0.5px solid var(--frame-color);
   align-items: center;
-  padding: 15px;
 }
 .archive-title{
   font-family: var(--font-family-title);
@@ -108,20 +108,15 @@
   .archive-time{
         color: #666;
       }
-  .archives_one{
-    border: 0.5px solid var(--frame-dark-color);
-  }
   .posts_list_article{
     background: var(--background-dark-color);
     @include breakpoint('small') {
       background: transparent;
-      border: 0.5px solid var(--frame-dark-color);
   }
   }
   .posts-background {
      background: var(--background-dark-color);
     @include breakpoint('medium') {
-      border: 0.5px solid var(--frame-dark-color);
       background: transparent;
     }
   }

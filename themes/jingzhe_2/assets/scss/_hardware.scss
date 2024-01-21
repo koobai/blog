@@ -1,47 +1,49 @@
 // hardware硬件页样式
 .quanju{
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-	grid-gap: 15px; /* 中间空10px间距 */	
-}
-.bankuai{
-	border: 0.5px solid var(--frame-color);
-	border-radius:4px;
-	padding: 20px;
-	transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.bankuai:hover{
-	box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
-}
-.duiqi{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 30px; /* 中间空10px间距 */
+	@include breakpoint('small') {
+		grid-template-columns: repeat(3, 1fr);
+		grid-gap: 40px; /* 中间空10px间距 */
+	  }	
 }
 .duiqi img{
-	width:80%;
+	max-width: 80%;
 	margin: 0;
 	transition: transform 0.3s ease;
+	@include breakpoint('small') {
+		max-width: 70%;
+	  }	
 }
 .bankuai:hover .duiqi img{
 	transform: scale(1.05);
 }
 .title{
 	font-family: var(--font-family-title);
-	font-size:1.1rem;
+	font-size:1rem;
 	margin: 8px 0 8px 0;
+	@include breakpoint('small') {
+		font-size: 1.1rem;
+	  }	
 }
 .note{
-	font-size: 1rem;
+	font-size: 0.9rem;
 	line-height: 1.6;
 	color: #666;
+	@include breakpoint('small') {
+		font-size: 1rem;
+	  }	
 } 
 .hardware_link,.hardware_index_link{
 	margin-bottom: 15px;
 	margin-top: 10px;
-	display: flex;
-	grid-gap: 10px;
+	display: none;
 	flex-wrap: wrap;//宽度显示不下自动换行
+	@include breakpoint('small') {
+		display: flex;
+		grid-gap: 10px;
+	  }	
 }
 .details,.tiyi,.jiage{
 	padding: 0 10px;
@@ -106,9 +108,6 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.bankuai{
-	border: 0.5px solid var(--frame-dark-color);
-}
 .note{
 	color: #999;
 }

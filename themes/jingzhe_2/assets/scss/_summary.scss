@@ -4,18 +4,10 @@
 .summary{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 15px;
+  grid-gap: 40px;
   margin-top: 20px;
 }
-.summary-nrong{
-  border: 0.5px solid var(--frame-color);
-  padding: 20px;
-  border-radius: 6px;
-  transition: all .3s cubic-bezier(0,0,.5,1);
-}
-.summary-nrong:hover{
-  box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
-}
+
 .summary-date {
   font-size: 0.85rem;
   color: #999;
@@ -42,9 +34,6 @@
 
   // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .summary-nrong{
-    border: 0.5px solid var(--frame-dark-color);
-  }
   .summary-description{
     color: #999;
   }

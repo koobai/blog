@@ -2,22 +2,17 @@
 .appdquanjudiv{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-	grid-gap: 15px; /* 中间空10px间距 */
+	grid-gap: 40px; /* 中间空10px间距 */
+  margin-top: 20px;
 }
 .appquanju,.app-index{
   border-radius:4px;
   align-items: center;
-  border: 0.5px solid var(--frame-color);
+ 
   transition: all .3s cubic-bezier(0,0,.5,1);
   display: grid;
   grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
   grid-gap: 15px; /* 可选项，设置列之间的间隔 */
-}
-.appquanju{
-  padding: 20px;
-}
-.appquanju:hover{
-  box-shadow: 2px 4px 1rem rgba(0,0,0,.05);
 }
 .appquanju:hover .appimg img{
   transform: scale(1.04);
@@ -121,9 +116,6 @@
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.appquanju{
-  border: 0.5px solid var(--frame-dark-color);
-}
 .macos{
   color: #666;
   background-color: #2E282A;

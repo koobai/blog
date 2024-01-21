@@ -440,17 +440,8 @@ ul {
 .summary {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 15px;
+  grid-gap: 40px;
   margin-top: 20px; }
-
-.summary-nrong {
-  border: 0.5px solid var(--frame-color);
-  padding: 20px;
-  border-radius: 6px;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
-
-.summary-nrong:hover {
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
 
 .summary-date {
   font-size: 0.85rem;
@@ -476,8 +467,6 @@ ul {
   -webkit-box-orient: vertical; }
 
 @media (prefers-color-scheme: dark) {
-  .summary-nrong {
-    border: 0.5px solid var(--frame-dark-color); }
   .summary-description {
     color: #999; }
   .summary-date {
@@ -1075,25 +1064,19 @@ img[atk-emoticon] {
 .appdquanjudiv {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 15px;
-  /* 中间空10px间距 */ }
+  grid-gap: 40px;
+  /* 中间空10px间距 */
+  margin-top: 20px; }
 
 .appquanju, .app-index {
   border-radius: 4px;
   align-items: center;
-  border: 0.5px solid var(--frame-color);
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   display: grid;
   grid-template-columns: auto 1fr;
   /* 第一列宽度自动，第二列平分剩余空间 */
   grid-gap: 15px;
   /* 可选项，设置列之间的间隔 */ }
-
-.appquanju {
-  padding: 20px; }
-
-.appquanju:hover {
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
 
 .appquanju:hover .appimg img {
   transform: scale(1.04); }
@@ -1194,8 +1177,6 @@ img[atk-emoticon] {
     .pagetitle {
       padding-top: 10px; } }
 @media (prefers-color-scheme: dark) {
-  .appquanju {
-    border: 0.5px solid var(--frame-dark-color); }
   .macos {
     color: #666;
     background-color: #2E282A; }
@@ -1206,49 +1187,47 @@ img[atk-emoticon] {
 
 .quanju {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  grid-gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
   /* 中间空10px间距 */ }
-
-.bankuai {
-  border: 0.5px solid var(--frame-color);
-  border-radius: 4px;
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0, 0, 0.5, 1); }
-
-.bankuai:hover {
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.05); }
-
-.duiqi {
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
+  @media (min-width: 700px) {
+    .quanju {
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 40px;
+      /* 中间空10px间距 */ } }
 .duiqi img {
-  width: 80%;
+  max-width: 80%;
   margin: 0;
   transition: transform 0.3s ease; }
-
+  @media (min-width: 700px) {
+    .duiqi img {
+      max-width: 70%; } }
 .bankuai:hover .duiqi img {
   transform: scale(1.05); }
 
 .title {
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
-  margin: 8px 0 8px 0; }
-
-.note {
   font-size: 1rem;
+  margin: 8px 0 8px 0; }
+  @media (min-width: 700px) {
+    .title {
+      font-size: 1.1rem; } }
+.note {
+  font-size: 0.9rem;
   line-height: 1.6;
   color: #666; }
-
+  @media (min-width: 700px) {
+    .note {
+      font-size: 1rem; } }
 .hardware_link, .hardware_index_link {
   margin-bottom: 15px;
   margin-top: 10px;
-  display: flex;
-  grid-gap: 10px;
+  display: none;
   flex-wrap: wrap; }
-
+  @media (min-width: 700px) {
+    .hardware_link, .hardware_index_link {
+      display: flex;
+      grid-gap: 10px; } }
 .details, .tiyi, .jiage {
   padding: 0 10px;
   text-align: center;
@@ -1305,8 +1284,6 @@ img[atk-emoticon] {
     /* 中间空10px间距 */ } }
 
 @media (prefers-color-scheme: dark) {
-  .bankuai {
-    border: 0.5px solid var(--frame-dark-color); }
   .note {
     color: #999; }
   .hardware-index-button {
@@ -2265,11 +2242,11 @@ blockquote p {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
   margin: 10px 0; }
-  @media (min-width: 700px) {
+  @media (min-width: 900px) {
     .posts_photo {
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 15px;
-      margin: 15px 0; } }
+      margin: 40px 0; } }
 .posts_photo img {
   height: 150px !important; }
   @media (min-width: 900px) {
@@ -2411,15 +2388,15 @@ blockquote p {
   @media (min-width: 900px) {
     .posts-new {
       grid-template-columns: 1fr 1fr;
-      gap: 15px; } }
+      gap: 40px; } }
 .posts-background {
   padding: 15px;
   border-radius: 4px;
   background: #f6f6f6; }
   @media (min-width: 900px) {
     .posts-background {
-      border: 0.5px solid var(--frame-color);
-      background: transparent; } }
+      background: transparent;
+      padding: 0; } }
 .article_new {
   float: left;
   background: var(--text-highlight-color);
@@ -2451,33 +2428,33 @@ blockquote p {
 .posts_list {
   display: grid;
   gap: 10px; }
-  @media (min-width: 700px) {
+  @media (min-width: 900px) {
     .posts_list {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 15px; } }
+      gap: 45px; } }
 .posts_list_article {
   border-radius: 4px;
   background: #f6f6f6;
   padding: 15px; }
-  @media (min-width: 700px) {
+  @media (min-width: 900px) {
     .posts_list_article {
       background: transparent;
-      border: 0.5px solid var(--frame-color); } }
+      padding: 0; } }
 .archives_nrong {
-  margin-top: 15px;
+  margin-top: 40px;
+  margin-bottom: 30px;
   display: grid;
   grid-gap: 15px;
   /* 中间空10px间距 */
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
-
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  @media (min-width: 700px) {
+    .archives_nrong {
+      grid-gap: 40px;
+      /* 中间空10px间距 */ } }
 .archives_one {
   display: flex;
-  border-radius: 4px;
-  border: 0.5px solid var(--frame-color);
-  align-items: center;
-  padding: 15px; }
+  align-items: center; }
 
 .archive-title {
   font-family: var(--font-family-title);
@@ -2506,20 +2483,16 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .archive-time {
     color: #666; }
-  .archives_one {
-    border: 0.5px solid var(--frame-dark-color); }
   .posts_list_article {
     background: var(--background-dark-color); } }
   @media (prefers-color-scheme: dark) and (min-width: 700px) {
     .posts_list_article {
-      background: transparent;
-      border: 0.5px solid var(--frame-dark-color); } }
+      background: transparent; } }
 @media (prefers-color-scheme: dark) {
   .posts-background {
     background: var(--background-dark-color); } }
   @media (prefers-color-scheme: dark) and (min-width: 900px) {
     .posts-background {
-      border: 0.5px solid var(--frame-dark-color);
       background: transparent; } }
 @media (prefers-color-scheme: dark) {
   .posts-description {
