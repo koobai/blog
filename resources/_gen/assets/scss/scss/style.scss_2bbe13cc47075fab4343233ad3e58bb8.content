@@ -49,14 +49,14 @@ h1, h2, h3 {
   display: none; }
   @media (min-width: 900px) {
     .about-koobai {
-      margin-bottom: 30px;
-      margin-left: 3px;
+      margin-bottom: 25px;
+      margin-left: 6px;
       display: block; } }
 .about-koobai img {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: 2px solid #222;
+  border: 1.5px solid #222;
   opacity: .5;
   transition: opacity .3s ease-in-out; }
 
@@ -79,17 +79,7 @@ h1, h2, h3 {
   vertical-align: middle;
   margin-right: 8px;
   border-radius: 50%;
-  border: 1.5px solid #222; }
-
-.about-logo img {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid #222;
-  transition: opacity .3s ease-in-out; }
-
-.about-logo img:hover {
-  opacity: 0.6; }
+  border: 1px solid #222; }
 
 .header-title {
   display: flex;
@@ -2301,8 +2291,7 @@ blockquote p {
     display: grid;
     grid-gap: 60px;
     /* 中间空10px间距 */
-    grid-template-columns: 2fr 1fr;
-    margin-top: 20px; } }
+    grid-template-columns: 2fr 1fr; } }
 
 .sidebar-biaot {
   margin-bottom: 20px;
