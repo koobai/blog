@@ -35,6 +35,9 @@ var load = '<div class="bb-load"><button class="load-btn button-load">加载中�
 var memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
 var memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
 var getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
+var memoChangeDate = 0;
+var getSelectedValue = window.localStorage && window.localStorage.getItem("memos-visibility-select") || "PUBLIC";
+
 
 if(bbDom){
 getFirstList() //首次加载数据
@@ -195,7 +198,7 @@ function updateHTMl(data){
             resLink = resexlink
           }else{
             fileId = resourceList[j].publicId || resourceList[j].filename
-            resLink = memos+'o/r/'+resourceList[j].id+'/'+fileId
+            resLink = memos+'o/r/'+resourceList[j].id //+'/'+fileId
           }
           if(restype == 'image'){
             imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" src="'+resLink+'"/></figure>'
@@ -652,8 +655,12 @@ function getEditIcon() {
   }
 
   memosVisibilitySelect.addEventListener('change', function() {
+    memoNowSelct = window.localStorage && window.localStorage.getItem("memos-visibility-select");
     var selectedValue = memosVisibilitySelect.value;
     window.localStorage && window.localStorage.setItem("memos-visibility-select",selectedValue);
+    if(memoNowSelct == "PRIVATE" && selectedValue == "PUBLIC"){
+      memoChangeDate = 1;
+    }
   });
   
   //私有模式筛选浏览
@@ -681,11 +688,13 @@ function getEditIcon() {
       let filesData = uploadImageInput.files[0];
       if (uploadImageInput.files.length !== 0){
         uploadImage(filesData);
+        cocoMessage.info('图片上传中……');
       }
     }
   });
 
   async function uploadImage(data) {
+        let memosResourceListNow = JSON.parse(window.localStorage && window.localStorage.getItem("memos-resource-list")) || [];
     let imageData = new FormData();
     let blobUrl = `${memosPath}/api/v1/resource/blob`;
     imageData.append('file', data, data.name)
@@ -698,14 +707,23 @@ function getEditIcon() {
     })
     let res = await resp.json();
     if(res.id){
+      let resexlink = res.externalLink;
+      let imgLink = '', fileId = '';
+      if (resexlink) {
+          imgLink = resexlink
+      } else {
+          fileId = res.publicId || res.filename
+          imgLink = `${memosPath}/o/r/${res.id}`;///${fileId}
+      }
       let imageList = "";
-      imageList += `<div data-id="${res.id}" class="memos-tag d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex px-2 justify-content-center">${res.filename}</div></div>`;
+      imageList += `<div data-id="${res.id}" class="imagelist-item d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex memos-up-image" style="background-image:url(${imgLink})"><span class="d-none">${fileId}</span></div></div>`;
       document.querySelector(".memos-image-list").insertAdjacentHTML('afterbegin', imageList);
       cocoMessage.success(
       '上传成功',
       ()=>{
-        memosResource.push(res.id);
-        window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
+        memosResourceListNow.push(res.id);
+        window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResourceListNow));
+        imageListDrag()
       })
     }
   };
@@ -903,6 +921,57 @@ function deleteImage(e){
   } 
 }
 
+//图片上传缩略图拖动顺序
+function imageListDrag(){// 获取包含所有图像元素的父元素
+  const imageList = document.querySelector('.memos-image-list');
+  // 存储被拖动的元素
+  let draggedItem = null;
+  let memosResourceList;
+  // 为每个图像元素添加拖动事件监听器
+  imageList.querySelectorAll('.imagelist-item').forEach(item => {
+    item.draggable = true;
+    // 当拖动开始时
+    item.addEventListener('dragstart', function(e) {
+      // 存储被拖动的元素
+      draggedItem = this;
+      memosResourceList = [];
+    });
+    // 当拖动元素进入目标区域时
+    item.addEventListener('dragover', function(e) {
+      e.preventDefault(); // 阻止默认行为
+      this.classList.add('dragover'); // 添加拖动进入样式
+    });
+  
+    // 当拖动元素离开目标区域时
+    item.addEventListener('dragleave', function() {
+      this.classList.remove('dragover'); // 移除拖动进入样式
+    });
+  
+    // 当拖动元素放置到目标区域时
+    item.addEventListener('drop', function(e) {
+      e.preventDefault(); // 阻止默认行为
+      this.classList.remove('dragover'); // 移除拖动进入样式
+      // 计算拖动元素中心点
+      const rect = this.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      // 判断鼠标相对中心点的位置
+      const isLeft = e.clientX < centerX;
+      if (isLeft) {
+        // 插入到前一个元素前
+        this.parentNode.insertBefore(draggedItem, this.previousElementSibling);
+      } else {
+        // 插入到后一个元素后  
+        this.parentNode.insertBefore(draggedItem, this.nextElementSibling); 
+      }
+      document.querySelectorAll('.memos-image-list .imagelist-item').forEach((item) => {
+        let itemId = Number(item.dataset.id)
+        memosResourceList.push(itemId);
+      })
+      window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResourceList));
+    });
+  });
+}
+
 // Emoji表情选择
 
 let emojiSelectorVisible = false;
@@ -1081,15 +1150,25 @@ function editMemo(memo) {
     memoResList = e.resourceList,memosResource = [],imageList = "";
     memosVisibilitySelect.value = e.visibility;
     window.localStorage && window.localStorage.setItem("memos-editor-dataform",JSON.stringify(e));
+    window.localStorage && window.localStorage.setItem("memos-visibility-select",memosVisibilitySelect.value);
     memosTextarea.value = e.content;
     memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
     submitMemoBtn.classList.add("d-none");
     editMemoDom.classList.remove("d-none");
     if(memoResList.length > 0){
       for (let i = 0; i < memoResList.length; i++) {
+        let imgLink = '', fileId = '',resexlink = memoResList[i].externalLink;
+        if (resexlink) {
+            imgLink = resexlink
+        } else {
+            fileId = memoResList[i].publicId || memoResList[i].filename
+            imgLink = `${memosPath}/o/r/${memoResList[i].id}`;///${fileId}
+        }
         memosResource.push(memoResList[i].id);
-        imageList += `<div data-id="${memoResList[i].id}" class="memos-tag d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex px-2 justify-content-center" style="back">${memoResList[i].filename}</div></div>`;
+        imageList += `<div data-id="${memoResList[i].id}" class="imagelist-item d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex memos-up-image" style="background-image:url(${imgLink})"><span class="d-none">${fileId}</span></div></div>`;
       }
+
+
       window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
       document.querySelector(".memos-image-list").insertAdjacentHTML('afterbegin', imageList);
     }
@@ -1102,12 +1181,16 @@ editMemoBtn.addEventListener("click", function () {
   let memoId = dataformNow.id,memoRelationList = dataformNow.relationList,
   memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token"),
   memoContent = memosTextarea.value,
+  memocreatedTs = dataformNow.createdTs,
   memoVisibility = memosVisibilitySelect.value,
   memoResourceList = window.localStorage && JSON.parse(window.localStorage.getItem("memos-resource-list"));
+  if(memoChangeDate == 1){
+    memocreatedTs = Math.floor(Date.now() / 1000);;
+  }
   let hasContent = memoContent.length !== 0;
   if (hasContent) {
     let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
-    let memoBody = {content:memoContent,id:memoId,relationList:memoRelationList,resourceIdList:memoResourceList,visibility:memoVisibility}
+    let memoBody = {content:memoContent,id:memoId,createdTs:memocreatedTs,relationList:memoRelationList,resourceIdList:memoResourceList,visibility:memoVisibility}
     fetch(memoUrl, {
       method: 'PATCH',
       body: JSON.stringify(memoBody),
@@ -1120,6 +1203,7 @@ editMemoBtn.addEventListener("click", function () {
         cocoMessage.success(
         '修改成功',
         ()=>{
+            memoChangeDate = 0;
             memosVisibilitySelect.value = memosOldSelect;
             submitMemoBtn.classList.remove("d-none");
             editMemoDom.classList.add("d-none");
