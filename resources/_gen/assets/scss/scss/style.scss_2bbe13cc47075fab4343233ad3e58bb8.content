@@ -1937,10 +1937,20 @@ blockquote p {
 
 .memos-image-list {
   cursor: pointer;
-  gap: 15px;
+  gap: 10px;
   color: #999;
-  margin-bottom: 15px;
-  font-size: 0.85rem; }
+  margin-bottom: 15px; }
+
+.memos-image-list .memos-up-image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 4px;
+  transition: opacity .3s ease-in-out; }
+
+.memos-image-list .memos-up-image:hover {
+  opacity: 0.6; }
 
 .memos-img-edit {
   background: #f5f5f5;
