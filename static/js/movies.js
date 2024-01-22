@@ -28,11 +28,11 @@ let visibleMovies = 20; // 最初可见的电影数量
     const videoSource = videoElement.querySelector("source");
 
     const movieVideos = [
-      'https://img.koobai.com/douban/movies.mp4', 
-      'https://img.koobai.com/douban/movie2.mp4', 
-      'https://img.koobai.com/douban/movie4.mp4', 
-      'https://img.koobai.com/douban/movie5.mp4', 
-      'https://img.koobai.com/douban/movie6.mp4', 
+      'https://img.koobai.com/douban/movies.webm', 
+      'https://img.koobai.com/douban/movie2.webm', 
+      'https://img.koobai.com/douban/movie4.webm', 
+      'https://img.koobai.com/douban/movie5.webm', 
+      'https://img.koobai.com/douban/movie6.webm', 
       // ...更多电影视频...
     ];
 
