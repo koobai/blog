@@ -2,143 +2,106 @@
 .quanju{
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	grid-gap: 30px; /* 中间空10px间距 */
-	@include breakpoint('small') {
+	grid-gap: 10px; /* 中间空10px间距 */
+	@include breakpoint('medium') {
 		grid-template-columns: repeat(3, 1fr);
-		grid-gap: 40px; /* 中间空10px间距 */
+		grid-gap: 15px; /* 中间空10px间距 */
 	  }	
+}
+.duiqi{
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .duiqi img{
-	max-width: 80%;
+	max-width: 70%;
 	margin: 0;
 	transition: transform 0.3s ease;
-	@include breakpoint('small') {
-		max-width: 70%;
+	@include breakpoint('medium') {
+		max-width: 60%;
 	  }	
 }
-.bankuai:hover .duiqi img{
-	transform: scale(1.05);
-}
-.title{
-	font-family: var(--font-family-title);
-	font-size:1rem;
-	margin: 8px 0 8px 0;
-	@include breakpoint('small') {
-		font-size: 1.1rem;
-	  }	
-}
-.note{
-	font-size: 0.9rem;
-	line-height: 1.6;
-	color: #666;
-	@include breakpoint('small') {
-		font-size: 1rem;
-	  }	
-} 
-.hardware_link,.hardware_index_link{
-	margin-bottom: 15px;
-	margin-top: 10px;
-	display: none;
-	flex-wrap: wrap;//宽度显示不下自动换行
-	@include breakpoint('small') {
-		display: flex;
-		grid-gap: 10px;
-	  }	
-}
-.details,.tiyi,.jiage{
-	padding: 0 10px;
-	text-align: center;
-	font-size: 0.85rem;
-	border-radius:20px;
-	font-family: var(--font-family-code);
-	height: 30px;
-	display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.tiyi{
-	color: var(--text-highlight-color);
-    background-color: transparent;
-	border: 0.5px solid var(--text-highlight-color);
-}
-.liing_2_right{
-	margin-top: 10px;
-    max-width: 100px;
-}
-.details,.jiage{
-	color: #666;
-	background-color: transparent;
-	border: 0.5px solid #dadada;
+.bankuai{
+	background: #F8F8F8;
+	padding: 40px 0 50px 0;
+	border-radius: 4px;
 }
 .bankuai a:hover{
 	text-decoration: none;
+}
+.hardware-text{
+	text-align: center;
+	color: #999;
+	margin-top: 20px;
+}
+.hardware-title{
+	font-size:0.85rem;	
+	margin-bottom: 4px;
+}
+.hardware-title a{	
+	color: var(--text-content-color);
+}
+.hardware-title a:hover{
+	text-decoration: underline;
+}
+.hardware-jiage{
+	margin-left: auto;
+	font-size: 0.75rem;
+	border-radius:20px;
+	font-family: var(--font-family-code);
+}
+.liing_2_right{
+	justify-content: center; /* 水平居中对齐 */
+	display: flex;
+}
+.tiyi{
+	color: var(--text-highlight-color);
+	font-size: 0.75rem;
+	border: 0.5px solid var(--text-highlight-color);
+    padding: 5px 8px;
+	border-radius: 20px;
+	margin-top: 6px;
+}
+.tiyi:hover{
+	text-decoration: underline;
 }
 .tiyi:empty,.details:empty {
 	display:none;
   }
 
-// 页面宽度小于700样式
-@media (max-width:700px){
-.hardware-index-nrong{
-	height: 400px !important;
+.note {
+	display: none;
+	@include breakpoint('medium') {
+	display: block;
+	position: absolute;
+	padding: 15px;
+	z-index: 10;
+	top: 0;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
+	color: #666;
+	font-size: 0.85rem;
+	line-height: 1.4;
+	opacity: 0;
+	transition: opacity 0.6s ease;
+	  }	
   }
-  .hardware-img{
-	padding-top: 20px !important;
+.bankuai:hover .note {
+	opacity: 1;
   }
-.hardware-img img{
-	width:200px !important;
-  }
-}
 
-// 页面宽度大于700小于900样式
-@media screen and (min-width:700px) and (max-width:900px){
-.tuij-index{
-	display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 10px; /* 中间空10px间距 */
-}
-}
-// 页面宽度大于900样式
-@media (min-width:900px){
-.tuij-index{
-	display: grid;
-	grid-template-columns: 1fr 1fr; /* 两列等宽 */
-	grid-gap: 15px; /* 中间空10px间距 */
-}
-}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.note{
-	color: #999;
-}
-.hardware-index-button {
-	border:0.5px solid #544d4e !important;
-	color: #666;
-  }
-.hardware-index{
-	background: #201d1e !important;
-  }
-  .hardware-info{
-	color: #666 !important;
-  }
-  .hardware-1{
-	background-color: #3c3739 !important; 
-  }
-  .hardware-2{
-	background-color: #5f595b !important; 
-  }
-  .hardware-index-nrong{
-	background-color: #2f2b2c !important; 
-  }
-  .hardware-note{
-	color: #999 !important;
-  }
-  .details,.jiage{
-	border: 0.5px solid #454545;
-	color: #999;
-  }
-  .hardware_index_link a{
-	color: #999 !important;
-  }
-
+	.bankuai{
+		background: var(--background-dark-color);
+	}
+	.hardware-text{
+		color: #666;
+	}
+	.note{
+		color: #999;
+	}
+	.hardware-title a{
+		color: var(--text-content-dark-color);
+	}
 }
