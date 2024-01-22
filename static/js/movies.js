@@ -32,7 +32,7 @@ let visibleMovies = 20; // 最初可见的电影数量
       'https://img.koobai.com/douban/video02.mp4', 
       'https://img.koobai.com/douban/video03.mp4', 
       'https://img.koobai.com/douban/video04.mp4', 
-      'https://img.koobai.com/douban/video05.mp4', 
+      'https://img.koobai.com/douban/video005.mp4', 
       // ...更多电影视频...
     ];
 

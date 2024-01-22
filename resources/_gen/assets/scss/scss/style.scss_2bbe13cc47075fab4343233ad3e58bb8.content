@@ -1433,7 +1433,7 @@ img[atk-emoticon] {
   color: #FFF; }
 
 .page-movies .header-menu svg {
-  color: #e0e0e0; }
+  color: #ebebeb; }
 
 .fIuTG {
   display: grid;
