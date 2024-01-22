@@ -38,8 +38,8 @@
   top: 0;
   bottom: 0;
 	color: #666;
-	font-size: 0.85rem;
-	line-height: 1.4;
+	font-size: 0.9rem;
+	line-height: 1.6;
 	align-items: center;
 	opacity: 0;
 	transition: opacity 0.3s ease;
@@ -108,8 +108,11 @@
 .macos{
   color: #666;
 }
-.appnote,.pagetitle{
+.pagetitle{
   color: #999;
+}
+.appnote,.apptitle a{
+  color: var(--text-content-dark-color);
 }
 .appquanju,.appnote{
   background: var(--background-dark-color);
