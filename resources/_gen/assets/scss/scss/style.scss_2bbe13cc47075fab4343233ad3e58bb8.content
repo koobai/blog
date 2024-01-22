@@ -1058,41 +1058,32 @@ img[atk-emoticon] {
   /* 中间空10px间距 */
   margin-top: 20px; }
 
-.appquanju, .app-index {
-  border-radius: 4px;
-  align-items: center;
+.appquanju {
   transition: all 0.3s cubic-bezier(0, 0, 0.5, 1);
   display: grid;
   grid-template-columns: auto 1fr;
-  /* 第一列宽度自动，第二列平分剩余空间 */
   grid-gap: 15px;
-  /* 可选项，设置列之间的间隔 */ }
+  align-items: center; }
 
 .appquanju:hover .appimg img {
   transform: scale(1.04); }
 
 .appimg img {
-  width: 90px;
+  width: 80px;
   transition: transform 0.3s ease; }
 
 .apptitle {
   font-size: 1.1rem;
   font-family: var(--font-family-title); }
 
-.appnote, .appnote-index {
+.appnote {
   font-size: 1rem;
   line-height: 1.6;
   color: #666;
-  text-align: justify;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical; }
-
-.appnote {
-  margin-bottom: 15px;
-  -webkit-line-clamp: 3; }
-
+  text-align: justify; }
+  @media (min-width: 700px) {
+    .appnote {
+      margin-bottom: 10px; } }
 .app-title-all {
   margin-bottom: 8px; }
 
@@ -1105,25 +1096,20 @@ img[atk-emoticon] {
   flex-wrap: wrap;
   align-items: center; }
 
-.appnote-index {
-  margin-bottom: 0;
-  -webkit-line-clamp: 2; }
-
 .macos {
-  padding: 0 10px;
-  text-align: center;
-  font-size: 0.75rem;
-  border-radius: 20px;
-  font-family: var(--font-family-code);
-  height: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
-.macos {
-  color: #999;
-  background-color: #F2F2F2; }
-
+  display: none; }
+  @media (min-width: 700px) {
+    .macos {
+      padding: 4px 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      border-radius: 20px;
+      font-family: var(--font-family-code);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #999;
+      background-color: #F2F2F2; } }
 .macos:empty, .kaiyuan:empty, .shoufei:empty, .free:empty {
   display: none; }
 
@@ -1133,19 +1119,19 @@ img[atk-emoticon] {
   border-radius: 20px; }
 
 .kaiyuan {
-  color: #e59c13;
+  color: var(--text-highlight-color);
   background-color: transparent;
-  box-shadow: inset 0 0 0 0.5px #e59c13; }
+  border: 0.5px solid var(--text-highlight-color); }
 
 .shoufei {
   color: #0774e0;
   background-color: transparent;
-  box-shadow: inset 0 0 0 0.5px #0774e0; }
+  border: 0.5px solid #0774e0; }
 
 .free {
   color: #11a173;
   background-color: transparent;
-  box-shadow: inset 0 0 0 0.5px #11a173; }
+  border: 0.5px solid #11a173; }
 
 .appdquanjudiv a:hover {
   text-decoration: none; }
