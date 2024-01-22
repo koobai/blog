@@ -1,73 +1,70 @@
 // apps页样式
 .appdquanjudiv{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-	grid-gap: 40px; /* 中间空10px间距 */
-  margin-top: 20px;
+	grid-gap: 10px; /* 中间空10px间距 */
+  @include breakpoint('medium') {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 15px; /* 中间空10px间距 */
+	  }	
 }
 .appquanju{
-  transition: all .3s cubic-bezier(0,0,.5,1);
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   grid-gap: 15px;
   align-items: center;
-  @include breakpoint('small') {
-    align-items: flex-start;;
-  }
-}
-.appquanju:hover .appimg img{
-  transform: scale(1.04);
+  justify-content: center;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 4px;
 }
 .appimg img{
-  width:80px;
+  width:90px;
   transition: transform 0.3s ease;
 }
 .apptitle{
-  font-size:1.1rem;
-  font-family: var(--font-family-title);
+  font-size:1rem;
+  margin-bottom: 4px;
+  @include breakpoint('medium') {
+    font-size:0.85rem;
+      }	
 }
 .appnote{
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #666;
-  text-align: justify;
-  @include breakpoint('small') {
-    margin-bottom: 10px;
-  }
-}
-.app-title-all{
-  margin-bottom: 8px;
-}
-.appzhuangtai-right{
-  margin-left: auto;
-}
-.appzhuangtai,.app-title-all{
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;//宽度显示不下自动换行
-  align-items: center;
-}
-.macos{
   display: none;
-  @include breakpoint('small') {
-    padding: 4px 8px;
-    text-align: center;
-    font-size: 0.75rem;
-    border-radius:20px;
-    font-family: var(--font-family-code);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #999;
-    background-color: #F2F2F2;
+	@include breakpoint('medium') {
+	display: grid;
+	position: absolute;
+  padding: 20px 20px 20px 0;
+  background: #f8f8f8;
+  top: 0;
+  bottom: 0;
+	color: #666;
+	font-size: 0.85rem;
+	line-height: 1.4;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	  }	
+}
+.appquanju:hover .appnote {
+	opacity: 1;
   }
+  
+.appzhuangtai{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;//宽度显示不下自动换行
+}
+.macos{ 
+    font-size: 0.75rem;
+    font-family: var(--font-family-code);
+    color: #999;
 }
 .macos:empty,.kaiyuan:empty,.shoufei:empty,.free:empty {
   display:none;
 }
 .kaiyuan,.shoufei,.free{
   font-size: 0.75rem;
-  padding: 2px 6px;
+  padding: 5px 8px;
   border-radius:20px;
 }
 .kaiyuan{
@@ -110,12 +107,11 @@
 @media (prefers-color-scheme: dark) {
 .macos{
   color: #666;
-  background-color: #2E282A;
 }
-.appnote,.appnote-index,.pagetitle{
+.appnote,.pagetitle{
   color: #999;
 }
-.app-index{
-  background-color: #2f2b2c ; 
+.appquanju,.appnote{
+  background: var(--background-dark-color);
 }
 }
