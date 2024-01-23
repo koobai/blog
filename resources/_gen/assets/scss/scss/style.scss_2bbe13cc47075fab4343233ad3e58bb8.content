@@ -1801,11 +1801,6 @@ blockquote p {
   color: #666 !important;
   margin: -10px -40px 0 -40px !important; }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit; }
-
 .load-memos-editor {
   cursor: pointer;
   display: inline-block;
@@ -1815,7 +1810,50 @@ blockquote p {
     .load-memos-editor {
       margin-left: 0; } }
 .outline svg {
+  color: #999;
+  width: 18px;
+  height: 18px; }
+
+.memos-more-ico {
+  position: relative; }
+
+.memos-xiala {
+  width: 80px;
+  position: absolute;
+  background-color: #fff;
+  padding: 6px 0;
+  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border-radius: 4px;
+  display: none;
+  font-size: 0.85rem;
+  right: -30px; }
+
+.memos-more-ico:hover .memos-xiala {
+  display: block; }
+
+.memos-more-ico svg {
   color: #999; }
+
+.memos-xiala svg {
+  width: 18px;
+  height: 18px;
+  color: #ababab; }
+
+.memos-xiala .switchUser-btn {
+  margin-top: 20px !important; }
+
+.memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
+  margin: 12px 0;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; }
+
+.memos-xiala .switchUser-btn:hover, .memos-xiala .private-btn:hover, .memos-xiala .oneday-btn:hover, .image-btn:hover, .code-btn:hover {
+  text-decoration: underline; }
 
 .outline svg:hover {
   color: #444; }
@@ -1824,8 +1862,9 @@ blockquote p {
   display: none; }
 
 .d-flex {
-  display: -ms-flexbox !important;
-  display: flex !important; }
+  display: flex;
+  align-items: center;
+  gap: 18px; }
 
 .d-none {
   display: none !important; }
@@ -1842,7 +1881,7 @@ blockquote p {
   border: transparent;
   border-radius: 4px;
   line-height: 1.6;
-  min-height: 40px;
+  min-height: 60px;
   overflow-x: hidden;
   overflow-y: clip;
   width: 100%;
@@ -1857,12 +1896,8 @@ blockquote p {
   margin-top: 4px;
   margin-bottom: 10px; }
 
-.memos-editor-tools .action-btn {
-  margin-right: 15px;
+.action-btn {
   cursor: pointer; }
-
-.p-2 {
-  margin-left: 12px; }
 
 .memos-editor-tools .memos-tag-list {
   display: flex;
@@ -1915,10 +1950,9 @@ blockquote p {
   padding: 6px 0; }
 
 .cancel-edit-btn {
-  padding: 6px 15px 6px 15px;
+  padding: 6px 0;
   cursor: pointer;
   border: 0.5px solid #FFF;
-  margin-right: 8px;
   color: #999; }
 
 .submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
@@ -1983,11 +2017,12 @@ blockquote p {
   align-items: center;
   justify-content: center; }
 
-.memos-random-background {
-  margin-top: 15px; }
+.memos-oneday {
+  margin-bottom: 40px;
+  list-style: none; }
 
-.memos-random {
-  list-style-type: none; }
+.memos-oneday .memos_diaoyong_time {
+  color: var(--text-highlight-color); }
 
 .memos-edit {
   margin-left: auto;
@@ -2024,7 +2059,8 @@ blockquote p {
   color: #c70000 !important; }
 
 .edit-memos {
-  display: flex; }
+  display: flex;
+  gap: 20px; }
 
 @media (max-width: 900px) {
   .resimg {
@@ -2065,6 +2101,12 @@ blockquote p {
     /* 可选项，设置列之间的间隔 */ } }
 
 @media (prefers-color-scheme: dark) {
+  .memos-xiala {
+    background-color: #282527; }
+  .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
+    color: #999; }
+  .memos-more-ico svg {
+    color: #666; }
   .memos-tag-all {
     background: #332E2F; }
   .memos-tag-sc-2 {
@@ -2138,7 +2180,7 @@ blockquote p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   gap: 6px;
-  margin-bottom: 10px; }
+  margin-top: 6px; }
 
 .emoji-item {
   padding: 4px;

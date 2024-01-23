@@ -69,6 +69,7 @@ bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
 showTaglist(); // 显示所有 TAG
 var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
 let memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+let oneDay = window.localStorage && window.localStorage.getItem("memos-oneday");
 if(memosOpenId && memosOpenId != null){
   fetch(bbUrl,{
     headers:{
@@ -88,6 +89,9 @@ if(memosOpenId && memosOpenId != null){
     offset = limit*(mePage-1)
     getNextList()
   });
+  if(oneDay == "open"){
+    reloadList("ONEDAY");
+  }
 }else{
   fetch(bbUrl).then(res => res.json()).then( resdata =>{
     updateHTMl(resdata);
@@ -136,7 +140,7 @@ function meNums() {
 }
 
 // 插入 html 
-function updateHTMl(data){
+function updateHTMl(data,mode){
   var result="",resultAll="";
   //登录显示编辑归档按钮
   if(memosOpenId && getEditor == "show"){ 
@@ -256,15 +260,24 @@ function updateHTMl(data){
         result += `</div></li>`;
       }        
   } // end for
-
-  var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>";
-  var bbAfter = "</ul></section>";
-  resultAll = bbBefore + result + bbAfter;
-  bbDom.insertAdjacentHTML('beforeend', resultAll);
-
-  animateSummaries(); // 在DOM加载完毕后执行滑动加载动画
-
-  if(document.querySelector('button.button-load')) document.querySelector('button.button-load').textContent = '看更多 ...';
+  if(mode == "ONEDAY"){
+    var bbBefore = "<li class='memos-oneday'><ul class='bb-list-ul'>";
+    var bbAfter = "</ul></li>";
+    resultAll = bbBefore + result + bbAfter;
+    bbDom.insertAdjacentHTML('afterbegin', resultAll);
+  }else{
+    var bbBefore = "<section class='bb-timeline'><ul class='bb-list-ul'>";
+    var bbAfter = "</ul></section>";
+    resultAll = bbBefore + result + bbAfter;
+    bbDom.insertAdjacentHTML('beforeend', resultAll);
+  
+    // 在动画执行之前调整 z-index
+    document.querySelector('.memos-more-ico').style.zIndex = '10';
+    // 在DOM加载完毕后执行滑动加载动画
+    animateSummaries();
+  
+    if(document.querySelector('button.button-load')) document.querySelector('button.button-load').textContent = '看更多 ...';
+  }
 }
 
 // TAG 筛选
@@ -421,69 +434,75 @@ var memosDom = document.querySelector(memosData.dom);
 var editIcon = "<div class='load-memos-editor'>唠叨一下</div>";
 var memosEditorCont = `
 <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
-  <div class="memos-editor-body mb-3 p-3">
+  <div class="memos-editor-body">
     <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
       <div class="memos-editor-content">
         <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
       </div>
       <div id="memos-tag-menu"></div>
       <div class="memos-image-list d-flex flex-fill line-xl"></div>
-      <div class="memos-editor-tools pt-3">
+      <div class="memos-tag-list d-none animate__animated animate__fadeIn"></div>
+      <div class="memos-editor-footer border-t">
         <div class="d-flex">
-          <div class="button outline action-btn image-btn mr-2" onclick="this.lastElementChild.click()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-            <input class="memos-upload-image-input d-none" type="file" accept="image/*">
+          <div class="button outline action-btn code-single">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-highlighter">
+              <path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>
+            </svg>
           </div>
-          <div class="button outline action-btn code-btn mr-2 p-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m24 12l-5.657 5.657l-1.414-1.414L21.172 12l-4.243-4.243l1.414-1.414zM2.828 12l4.243 4.243l-1.414 1.414L0 12l5.657-5.657L7.07 7.757zm6.96 9H7.66l6.552-18h2.128z"/></svg>
+          <div class="button outline action-btn link-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/>
+            </svg>
           </div>
-          <div class="button outline action-btn code-single mr-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-highlighter"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+          <div class="button outline action-btn link-img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/>
+            </svg>
           </div>
-          <div class="button outline action-btn mr-2 link-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg>
+          <div class="button outline action-btn biao-qing">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smile">
+              <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>
+            </svg>
           </div>
-          <div class="button outline action-btn mr-2 link-img">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/></svg>
-          </div>
-          <div class="button outline action-btn biao-qing mr-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smile"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
-          </div>
-          <div class="button outline action-btn p-2 switchUser-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="22" height="14" x="1" y="5" rx="7" ry="7"/><circle cx="16" cy="12" r="3"/></g></svg>
-          </div>
-          <div class="button outline action-btn private-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m9.343 18.782l-1.932-.518l.787-2.939a10.99 10.99 0 0 1-3.237-1.872l-2.153 2.154l-1.414-1.414l2.153-2.154a10.957 10.957 0 0 1-2.371-5.07l1.968-.359a9.002 9.002 0 0 0 17.713 0l1.968.358a10.958 10.958 0 0 1-2.372 5.071l2.154 2.154l-1.414 1.414l-2.154-2.154a10.991 10.991 0 0 1-3.237 1.872l.788 2.94l-1.932.517l-.788-2.94a11.068 11.068 0 0 1-3.74 0z"/></svg>
+          <div class="memos-more-ico">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <g fill="none">
+                <path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/>
+                <path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/>
+              </g>
+            </svg>
+            <div class="memos-xiala">
+              <div class="code-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m24 12l-5.657 5.657l-1.414-1.414L21.172 12l-4.243-4.243l1.414-1.414zM2.828 12l4.243 4.243l-1.414 1.414L0 12l5.657-5.657L7.07 7.757zm6.96 9H7.66l6.552-18h2.128z"/></svg>代码</div>
+              <div class="image-btn" onclick="this.lastElementChild.click()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>图片
+                <input class="memos-upload-image-input d-none" type="file" accept="image/*">
+              </div>
+              <div class="switchUser-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-cog"><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="10" cy="8" r="5"/><circle cx="18" cy="18" r="3"/><path d="m19.5 14.3-.4.9"/><path d="m16.9 20.8-.4.9"/><path d="m21.7 19.5-.9-.4"/><path d="m15.2 16.9-.9-.4"/><path d="m21.7 16.5-.9.4"/><path d="m15.2 19.1-.9.4"/><path d="m19.5 21.7-.4-.9"/><path d="m16.9 15.2-.4-.9"/></svg>帐户</div>
+              <div class="private-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m9.343 18.782l-1.932-.518l.787-2.939a10.99 10.99 0 0 1-3.237-1.872l-2.153 2.154l-1.414-1.414l2.153-2.154a10.957 10.957 0 0 1-2.371-5.07l1.968-.359a9.002 9.002 0 0 0 17.713 0l1.968.358a10.958 10.958 0 0 1-2.372 5.071l2.154 2.154l-1.414 1.414l-2.154-2.154a10.991 10.991 0 0 1-3.237 1.872l.788 2.94l-1.932.517l-.788-2.94a11.068 11.068 0 0 1-3.74 0z"/></svg>私有</div>
+              <div class="oneday-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M17 2a4 4 0 0 1 4 4v9a4.002 4.002 0 0 1-3.127 3.904L19.6 20.2a1 1 0 0 1-1.2 1.6L14.667 19H9.333L5.6 21.8a1 1 0 1 1-1.2-1.6l1.727-1.296A4.001 4.001 0 0 1 3 15V6a4 4 0 0 1 4-4zm2 10H5v3a2 2 0 0 0 1.85 1.995L7 17h10a2 2 0 0 0 1.995-1.85L19 15zm-7 1a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3m7-5H5v2h14zm-2-4H7a2 2 0 0 0-1.995 1.85L5 6h14a2 2 0 0 0-1.85-1.995z"/></g></svg>回忆</div>
+            </div>
           </div>
         </div>
-        <div class="d-flex flex-fill">
-          <div class="memos-tag-list d-none mt-2 animate__animated animate__fadeIn"></div>
-        </div>
-      </div>
-      <div class="memos-editor-footer border-t mt-3 pt-3">
-        <div class="d-flex">
+        <div class="editor-submit d-flex flex-fill justify-content-end">
           <div class="editor-selector select outline">
-            <select class="select-memos-value pl-2 pr-4 py-2">
+            <select class="select-memos-value">
               <option value="PUBLIC">公开</option>
               <!--<option value="PROTECTED">仅登录可见</option>-->
               <option value="PRIVATE">私有</option>
             </select>
           </div>
-        </div>
-        <div class="editor-submit d-flex flex-fill justify-content-end">
           <div class="edit-memos d-none">
-            <div class="primary cancel-edit-btn mr-2 px-3 py-2">取消</div>
-            <div class="primary edit-memos-btn px-3 py-2">修改完成</div>
+            <div class="primary cancel-edit-btn">取消</div>
+            <div class="primary edit-memos-btn">修改完成</div>
           </div>
-          <div class="primary submit-memos-btn px-3 py-1">唠叨一下</div>
+          <div class="primary submit-memos-btn">唠叨一下</div>
         </div>
       </div>
     </div>
     <div class="memos-editor-option animate__animated animate__fadeIn d-none">
-        <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" value="" placeholder="Memos 地址">
-        <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" value="" placeholder="Token">
+      <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" value="" placeholder="Memos 地址">
+      <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" value="" placeholder="Token">
       <div class="memos-open-api-submit">
-        <div class="primary submit-openapi-btn px-3 py-1">保存</div>
+        <div class="primary submit-openapi-btn">保存</div>
       </div>
     </div>
   </div>
@@ -503,6 +522,7 @@ var codesingle = document.querySelector(".code-single");
 var linkBtn = document.querySelector(".link-btn");
 var linkimg = document.querySelector(".link-img");
 var privateBtn = document.querySelector(".private-btn");
+var oneDayBtn = document.querySelector(".oneday-btn");
 var switchUserBtn = document.querySelector(".switchUser-btn");
 var loadEditorBtn = document.querySelector(".load-memos-editor");
 var submitApiBtn = document.querySelector(".submit-openapi-btn");
@@ -670,13 +690,26 @@ function getEditIcon() {
       memosVisibilitySelect.value = "PRIVATE"
       window.localStorage && window.localStorage.setItem("memos-mode",  "NOPUBLIC");
       reloadList("NOPUBLIC")
-      cocoMessage.success("进入「私有浏览」模式")
+      cocoMessage.success("已进入私有浏览")
     }else{
       memosVisibilitySelect.value = "PUBLIC"
       window.localStorage && window.localStorage.setItem("memos-mode",  "");
       privateBtn.classList.remove("private")
       reloadList()
-      cocoMessage.success("已退出「私有浏览」模式")
+      cocoMessage.success("已退出私有浏览")
+    }
+  });
+
+  //开启回忆一条
+  oneDayBtn.addEventListener("click", async function () {
+    let oneDay = window.localStorage && window.localStorage.getItem("memos-oneday");
+    if (oneDay == null ) {
+      window.localStorage && window.localStorage.setItem("memos-oneday","open");
+      cocoMessage.success("已开启回忆，请刷新页面")
+    }else{
+      window.localStorage && window.localStorage.removeItem("memos-oneday");
+      reloadList()
+      cocoMessage.success("已退出回忆")
     }
   });
 
@@ -1027,7 +1060,7 @@ function displayEmojiSelector() {
   });
 
   // 将表情下拉框插入到对应位置
-  const memosEditorTools = document.querySelector(".memos-editor-tools");
+  const memosEditorTools = document.querySelector(".memos-editor-footer");
   if (memosEditorTools) {
     memosEditorTools.insertAdjacentElement('afterend', emojiSelector);
   }
@@ -1299,6 +1332,10 @@ function reloadList(mode){
   var bbUrl;
   if(mode == "NOPUBLIC"){
     bbUrl = memos+"api/v1/memo";
+  }if(mode == "ONEDAY"){
+    let memosCount = window.localStorage && window.localStorage.getItem("memos-response-count");
+    let random = Math.floor(Math.random() * memosCount)
+    bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset="+random;
   }else{
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
   }
@@ -1313,14 +1350,18 @@ function reloadList(mode){
     if (mode == "NOPUBLIC") {
       resdata = resdata.filter((item) => item.visibility !== "PUBLIC");
     }
-    updateHTMl(resdata);
-    var nowLength = resdata.length;
-    if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
-      document.querySelector("button.button-load").remove()
-      return
+    if(mode == "ONEDAY"){
+      updateHTMl(resdata,"ONEDAY");
+    }else{
+      updateHTMl(resdata);
+      var nowLength = resdata.length;
+      if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
+        document.querySelector("button.button-load").remove()
+        return
+      }
+      mePage++
+      offset = limit*(mePage-1)
+      getNextList(mode)
     }
-    mePage++
-    offset = limit*(mePage-1)
-    getNextList(mode)
   });
 }
