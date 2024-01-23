@@ -35,8 +35,13 @@
 	margin-top: 20px;
 }
 .hardware-title{
-	font-size:0.85rem;	
 	margin-bottom: 4px;
+	font-size:1rem;
+	padding: 0 10px;
+	@include breakpoint('medium') {
+	  font-size:0.85rem;
+	  padding: 0;
+	}	
 }
 .hardware-title a{	
 	color: var(--text-content-color);
@@ -46,9 +51,12 @@
 }
 .hardware-jiage{
 	margin-left: auto;
-	font-size: 0.75rem;
+	font-size: 0.85rem;
 	border-radius:20px;
 	font-family: var(--font-family-code);
+	@include breakpoint('medium') {
+		font-size: 0.75rem;
+	  }
 }
 .liing_2_right{
 	justify-content: center; /* 水平居中对齐 */
@@ -56,11 +64,14 @@
 }
 .tiyi{
 	color: var(--text-highlight-color);
-	font-size: 0.75rem;
+	font-size: 1rem;
 	border: 0.5px solid var(--text-highlight-color);
     padding: 5px 8px;
 	border-radius: 20px;
 	margin-top: 6px;
+	@include breakpoint('medium') {
+		font-size: 0.75rem;
+	  }
 }
 .tiyi:hover{
 	text-decoration: underline;
