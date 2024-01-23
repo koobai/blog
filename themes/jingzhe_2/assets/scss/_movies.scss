@@ -27,11 +27,14 @@
   grid-column: 2;
 }
 .movie-content-right-1{
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 4px;
 }
-.movie-content-right-1 img{
-  width: 0.75rem;
-  height: 0.75rem;
+.movie-content-right-1 svg{
+  width: 0.85rem;
+  height: 0.85rem;
+  color: #fcb68d;
 }
 .movie-content-right-2{
   font-family:var(--font-family-title);
@@ -233,12 +236,15 @@ color: var(--text-highlight-color);
     margin: 6px 0 6px 0;
   }
   .movie-pfeng{
-    margin-bottom: 6px;
     color: #c7c7c7;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 4px;
   }
-  .movie-pfeng img{
-    width: 0.75rem;
-    height: 0.75rem;
+  .movie-pfeng svg{
+    width: 0.85rem;
+    height: 0.85rem;
+    color: #fcb68d;
   }
   .movie-info{
     line-height:1.6;
