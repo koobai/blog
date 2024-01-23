@@ -2024,9 +2024,11 @@ blockquote p {
   justify-content: center; }
 
 .memos-oneday {
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   list-style: none; }
-
+  @media (min-width: 900px) {
+    .memos-oneday {
+      margin-bottom: 40px; } }
 .memos-oneday .memos_diaoyong_time {
   color: var(--text-highlight-color); }
 
