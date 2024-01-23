@@ -272,7 +272,7 @@ function updateHTMl(data,mode){
     bbDom.insertAdjacentHTML('beforeend', resultAll);
   
     // 在动画执行之前调整 z-index
-    document.querySelector('.memos-more-ico').style.zIndex = '10';
+    document.querySelector('.memos-more-ico').style.zIndex = '1';
     // 在DOM加载完毕后执行滑动加载动画
     animateSummaries();
   
