@@ -1365,3 +1365,12 @@ function reloadList(mode){
     }
   });
 }
+
+//发布框中无内容时，唠叨一下按钮为透明度0.4
+function handleTextareaInput() {
+  var textarea = document.querySelector('.memos-editor-textarea');
+  var submitButton = document.querySelector('.submit-memos-btn');
+  submitButton.style.opacity = textarea.value.trim() !== '' ? 1 : 0.4;
+}
+handleTextareaInput();
+document.querySelector('.memos-editor-textarea').addEventListener('input', handleTextareaInput);

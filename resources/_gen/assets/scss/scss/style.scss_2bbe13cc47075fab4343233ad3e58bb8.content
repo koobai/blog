@@ -1877,7 +1877,7 @@ blockquote p {
 
 .memos-editor-body {
   border-radius: 4px;
-  border: 1px solid var(--frame-color);
+  border: 0.5px solid #eaeaea;
   padding: 15px;
   margin-bottom: 10px; }
   @media (min-width: 900px) {
@@ -1961,9 +1961,12 @@ blockquote p {
   border: 0.5px solid #FFF;
   color: #999; }
 
-.submit-memos-btn:hover, .memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
+.memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
   opacity: 0.7;
   transition: opacity .3s ease-in-out; }
+
+.memos-editor-textarea::placeholder {
+  color: #bbbbbb; }
 
 .memos-editor-footer {
   display: flex;
@@ -2115,12 +2118,14 @@ blockquote p {
     color: #999; }
   .memos-more-ico svg {
     color: #666; }
+  .memos-editor-textarea::placeholder {
+    color: #444; }
   .memos-tag-all {
     background: #332E2F; }
   .memos-tag-sc-2 {
     color: #666; }
   .memos-editor-body {
-    border: 1px solid var(--frame-dark-color); }
+    border: 0.5px solid var(--frame-dark-color); }
   .memos-tag-dg {
     color: #666; }
   .memos-tag-sc {
