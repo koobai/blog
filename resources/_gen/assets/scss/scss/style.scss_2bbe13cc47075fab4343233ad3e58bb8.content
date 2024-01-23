@@ -1928,7 +1928,7 @@ blockquote p {
   border-radius: 4px;
   padding: 8px 20px 8px 0;
   background: transparent;
-  color: #666;
+  color: #999;
   font-family: var(--font-family-paragraph);
   font-size: 0.85rem;
   outline: 0.5px solid transparent; }
@@ -2154,7 +2154,10 @@ blockquote p {
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .editor-selector select {
-    color: #999 !important; }
+    color: #666 !important; }
+  .editor-selector::after {
+    border-color: #666 transparent transparent transparent;
+    /* 控制箭头的颜色 */ }
   .memos-editor-content .memos-editor-textarea {
     color: var(--text-content-dark-color); }
   .memos-open-api-submit {
