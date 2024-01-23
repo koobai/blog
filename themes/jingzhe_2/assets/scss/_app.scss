@@ -63,23 +63,23 @@
   display:none;
 }
 .kaiyuan,.shoufei,.free{
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   padding: 5px 8px;
   border-radius:20px;
+  @include breakpoint('medium') {
+		font-size: 0.75rem;
+	  }
 }
 .kaiyuan{
   color: var(--text-highlight-color);
-  background-color: transparent;
   border: 0.5px solid var(--text-highlight-color);
 }
 .shoufei{
   color: #0774e0;
-  background-color: transparent;
   border: 0.5px solid #0774e0;
 }
 .free{
   color: #11a173;
-  background-color: transparent;
   border: 0.5px solid #11a173;
 }
 .appdquanjudiv a:hover{

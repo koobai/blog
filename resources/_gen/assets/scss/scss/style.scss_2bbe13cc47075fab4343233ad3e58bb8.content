@@ -1113,23 +1113,22 @@ img[atk-emoticon] {
   display: none; }
 
 .kaiyuan, .shoufei, .free {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   padding: 5px 8px;
   border-radius: 20px; }
-
+  @media (min-width: 900px) {
+    .kaiyuan, .shoufei, .free {
+      font-size: 0.75rem; } }
 .kaiyuan {
   color: var(--text-highlight-color);
-  background-color: transparent;
   border: 0.5px solid var(--text-highlight-color); }
 
 .shoufei {
   color: #0774e0;
-  background-color: transparent;
   border: 0.5px solid #0774e0; }
 
 .free {
   color: #11a173;
-  background-color: transparent;
   border: 0.5px solid #11a173; }
 
 .appdquanjudiv a:hover {
@@ -1197,9 +1196,13 @@ img[atk-emoticon] {
   margin-top: 20px; }
 
 .hardware-title {
-  font-size: 0.85rem;
-  margin-bottom: 4px; }
-
+  margin-bottom: 4px;
+  font-size: 1rem;
+  padding: 0 10px; }
+  @media (min-width: 900px) {
+    .hardware-title {
+      font-size: 0.85rem;
+      padding: 0; } }
 .hardware-title a {
   color: var(--text-content-color); }
 
@@ -1208,10 +1211,12 @@ img[atk-emoticon] {
 
 .hardware-jiage {
   margin-left: auto;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   border-radius: 20px;
   font-family: var(--font-family-code); }
-
+  @media (min-width: 900px) {
+    .hardware-jiage {
+      font-size: 0.75rem; } }
 .liing_2_right {
   justify-content: center;
   /* 水平居中对齐 */
@@ -1219,12 +1224,14 @@ img[atk-emoticon] {
 
 .tiyi {
   color: var(--text-highlight-color);
-  font-size: 0.75rem;
+  font-size: 1rem;
   border: 0.5px solid var(--text-highlight-color);
   padding: 5px 8px;
   border-radius: 20px;
   margin-top: 6px; }
-
+  @media (min-width: 900px) {
+    .tiyi {
+      font-size: 0.75rem; } }
 .tiyi:hover {
   text-decoration: underline; }
 
