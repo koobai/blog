@@ -5,7 +5,7 @@ var memosData = {
   }
   
 var bbMemo = {
-  memos: 'https://memos.koobai.com/',
+  memos: 'https://n.koobai.com:9958/',
   limit: '10',
   creatorId: '1',
   domId: '#bber',
@@ -572,21 +572,6 @@ function getEditIcon() {
     getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
   });
 
-  codeBtn.addEventListener("click", function() {
-    const memosPath = window.localStorage?.getItem("memos-access-path");
-    const memosOpenId = window.localStorage?.getItem("memos-access-token");
-    if (memosPath && memosOpenId) {
-      const memoCode = '```\n\n```';
-      const textareaValue = memosTextarea.value;
-      const lastBacktickIndex = textareaValue.lastIndexOf('```');
-      const caretPos = lastBacktickIndex !== -1 ? lastBacktickIndex : textareaValue.length; // 将光标定位到最后一个 ``` 的位置
-      memosTextarea.value = textareaValue.substring(0, caretPos) + memoCode;
-      memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
-      memosTextarea.setSelectionRange(caretPos + 4, caretPos + 4); // 将光标定位到 ``` 中间
-      memosTextarea.focus();
-    }
-  });
-
   //标签数据
   document.addEventListener("DOMContentLoaded", function () {
     memosPath = window.localStorage && window.localStorage.getItem("memos-access-path");
@@ -596,82 +581,54 @@ function getEditIcon() {
     }
  });
 
+ //代码
+  codeBtn.addEventListener("click", function () {
+    let memoCode = "\n```\n\n```\n";
+    insertValue(memoCode,"",5);
+  });
+
   //代码单反引号
-  codesingle.addEventListener("click", function() {
-    const memosPath = window.localStorage?.getItem("memos-access-path");
-    const memosOpenId = window.localStorage?.getItem("memos-access-token");
-    if (memosPath && memosOpenId) {
-      const memoCode = '`'; // 行内代码的起始和结束标记为单个反引号
-      const textareaValue = memosTextarea.value;
-      const selectionStart = memosTextarea.selectionStart;
-      const selectionEnd = memosTextarea.selectionEnd;
-      const selectedText = textareaValue.substring(selectionStart, selectionEnd);
-      const insertCode = `${memoCode}${selectedText}${memoCode}`;
-      const caretPos = selectionStart !== selectionEnd ? selectionEnd + memoCode.length * 2 : selectionStart + memoCode.length;
-      
-      memosTextarea.setRangeText(
-        insertCode,
-        selectionStart,
-        selectionEnd,
-        "end"
-      ); 
-      // 根据是否有选中内容，决定光标位置
-      memosTextarea.setSelectionRange(caretPos, caretPos);
-  
-      memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
-      memosTextarea.focus();
-    }
+  codesingle.addEventListener("click", function () {
+    insertValue(" `` ","`",2)
   });
 
   //超级链接
-  linkBtn.addEventListener("click", function() {
-    const memosPath = window.localStorage?.getItem("memos-access-path");
-    const memosOpenId = window.localStorage?.getItem("memos-access-token");
-    if (memosPath && memosOpenId) {
-      const memoLink = '[]()';
-      const selectedText = memosTextarea.value.substring(memosTextarea.selectionStart, memosTextarea.selectionEnd);
-      let caretPos;
-  
-      if (selectedText) {
-        // 如果有选中的文本，则插入到 [] 中
-        const startText = memosTextarea.value.substring(0, memosTextarea.selectionStart);
-        const endText = memosTextarea.value.substring(memosTextarea.selectionEnd);
-        caretPos = startText.length + '['.length + selectedText.length + ']'.length + 1;
-        memosTextarea.value = startText + '[' + selectedText + ']' + memoLink.substring(2) + endText;
-      } else {
-        // 如果没有选中文本，则将光标定位在 ()
-        const startText = memosTextarea.value.substring(0, memosTextarea.selectionStart);
-        const endText = memosTextarea.value.substring(memosTextarea.selectionEnd);
-        caretPos = startText.length + memoLink.indexOf("()") + 1;
-        memosTextarea.value = startText + memoLink + endText;
-      }
-  
-      memosTextarea.setSelectionRange(caretPos, caretPos);
-      memosTextarea.focus();
-    }
+  linkBtn.addEventListener("click", function () {
+    insertValue(" []() ","[",2)
   });
-
+  
   //图片外链引用
-  linkimg.addEventListener("click", function() {
-    const memosPath = window.localStorage?.getItem("memos-access-path");
-    const memosOpenId = window.localStorage?.getItem("memos-access-token");
-    if (memosPath && memosOpenId) {
-      const memoLink = '![]()';
-      const caretPos = memosTextarea.selectionStart + memoLink.indexOf("()") + 1;
-      memosTextarea.value = memosTextarea.value.substring(0, memosTextarea.selectionStart) + memoLink + memosTextarea.value.substring(memosTextarea.selectionEnd);
-      memosTextarea.setSelectionRange(caretPos, caretPos);
-      memosTextarea.focus();
-    }
+  linkimg.addEventListener("click", function () {
+    insertValue(" ![]() ","!",2)
   });
 
-  function insertValue(t) {
-    let textLength = t.length;
-    memosTextarea.value += t;
-    memosTextarea.style.height = memosTextarea.scrollHeight + 'px';
-    // 更新光标位置
-    memosTextarea.selectionStart = textLength;
-    memosTextarea.selectionEnd = textLength;
-    memosTextarea.focus()
+  //以上四项的光标定位
+  function insertValue(text,wrap,back) {
+    memosTextarea.focus();
+    const start = memosTextarea.selectionStart;
+    const end = memosTextarea.selectionEnd;
+    const selectedText = memosTextarea.value.substring(start, end);
+    if(selectedText == ""){
+      memosTextarea.value = memosTextarea.value.substring(0, start) + text + memosTextarea.value.substring(end);
+      memosTextarea.selectionStart = start + text.length - back;
+      memosTextarea.selectionEnd = start + text.length - back;
+    }else{
+      let wrapSelText;
+      if( wrap == "`" ){
+        wrapSelText = " `" + selectedText + "` ";
+        back = 0;
+      }
+      if( wrap == "[" ){
+        wrapSelText = " [" + selectedText + "]() ";
+      }
+      if( wrap == "!" ){
+        wrapSelText = " ![" + selectedText + "]() ";
+      }
+      const newText = memosTextarea.value.substring(0, start) + wrapSelText + memosTextarea.value.substring(end);
+      memosTextarea.value = newText;
+      memosTextarea.selectionStart = start + wrapSelText.length - back;
+      memosTextarea.selectionEnd = end + wrapSelText.length - back - selectedText.length;
+    }
   }
 
   memosVisibilitySelect.addEventListener('change', function() {
