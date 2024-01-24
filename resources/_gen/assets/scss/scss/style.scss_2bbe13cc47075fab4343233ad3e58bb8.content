@@ -18,7 +18,9 @@
   --text-content-dark-color:#BBB;
   --text-highlight-color:#FC9151;
   --frame-dark-color: #332D2F;
-  --frame-color: #eee; }
+  --frame-color: #eee;
+  --erji-color: #666;
+  --sanji-color: #999; }
 
 body, html {
   margin: 0;
@@ -97,7 +99,7 @@ h1, h2, h3 {
   margin-bottom: 20px; }
 
 .header-menu a {
-  color: #666;
+  color: var(--erji-color);
   font-size: 1rem;
   font-family: var(--font-family-title);
   padding-top: 2px; }
@@ -108,7 +110,7 @@ h1, h2, h3 {
 
 .header-menu svg {
   margin-right: 10px;
-  color: #999;
+  color: var(--sanji-color);
   width: 22px;
   height: 22px; }
 
@@ -139,9 +141,9 @@ h1, h2, h3 {
 
 @media (prefers-color-scheme: dark) {
   .header-title, .header-menu a {
-    color: #999; }
+    color: var(--sanji-color); }
   .header-menu svg {
-    color: #666; }
+    color: var(--erji-color); }
   .githuab svg, .heard-rss svg path, .menu-main svg {
     fill: #666; }
   .heard-rss svg path:hover, .githuab svg:hover, .menu-main svg:hover {
@@ -209,7 +211,7 @@ h1, h2, h3 {
 
 @media (prefers-color-scheme: dark) {
   .footer-info, .footer-info a, .footer-rss a, .footer-rss {
-    color: #666; }
+    color: var(--erji-color); }
   .footer {
     border-top: 0.5px solid #231e20; }
   .gotop {
@@ -342,9 +344,11 @@ ul {
     word-wrap: break-word;
     word-break: break-all;
     text-decoration: none;
-    color: var(--text-highlight-color); }
+    text-decoration: underline;
+    margin: 0 2px;
+    transition: opacity 0.3s ease-in-out 0s; }
     .content a:hover {
-      text-decoration: underline; }
+      opacity: 0.6; }
   .content blockquote {
     border-left: 5px solid #666;
     margin: 30px 0;
@@ -435,7 +439,7 @@ ul {
 
 .summary-date {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   font-family: var(--font-family-code);
   margin-top: 6px; }
 
@@ -448,7 +452,7 @@ ul {
 .summary-description {
   font-size: 1rem;
   line-height: 1.8;
-  color: #666;
+  color: var(--erji-color);
   margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -458,7 +462,7 @@ ul {
 
 @media (prefers-color-scheme: dark) {
   .summary-description {
-    color: #999; }
+    color: var(--sanji-color); }
   .summary-date {
     color: #666 !important; } }
 
@@ -1090,7 +1094,7 @@ img[atk-emoticon] {
       background: #f8f8f8;
       top: 0;
       bottom: 0;
-      color: #666;
+      color: var(--erji-color);
       font-size: 0.9rem;
       line-height: 1.6;
       align-items: center;
@@ -1107,7 +1111,7 @@ img[atk-emoticon] {
 .macos {
   font-size: 0.75rem;
   font-family: var(--font-family-code);
-  color: #999; }
+  color: var(--sanji-color); }
 
 .macos:empty, .kaiyuan:empty, .shoufei:empty, .free:empty {
   display: none; }
@@ -1146,15 +1150,15 @@ img[atk-emoticon] {
   padding-bottom: 20px;
   padding-top: 0;
   text-align: center;
-  color: #666; }
+  color: var(--erji-color); }
   @media (min-width: 900px) {
     .pagetitle {
       padding-top: 10px; } }
 @media (prefers-color-scheme: dark) {
   .macos {
-    color: #666; }
+    color: var(--erji-color); }
   .pagetitle {
-    color: #999; }
+    color: var(--sanji-color); }
   .appnote, .apptitle a {
     color: var(--text-content-dark-color); }
   .appquanju, .appnote {
@@ -1192,7 +1196,7 @@ img[atk-emoticon] {
 
 .hardware-text {
   text-align: center;
-  color: #999;
+  color: var(--sanji-color);
   margin-top: 20px; }
 
 .hardware-title {
@@ -1248,7 +1252,7 @@ img[atk-emoticon] {
       z-index: 10;
       top: 0;
       background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
-      color: #666;
+      color: var(--erji-color);
       font-size: 0.9rem;
       line-height: 1.6;
       opacity: 0;
@@ -1260,7 +1264,7 @@ img[atk-emoticon] {
   .bankuai {
     background: var(--background-dark-color); }
   .hardware-text {
-    color: #666; }
+    color: var(--erji-color); }
   .hardware-title a, .note {
     color: var(--text-content-dark-color); } }
 
@@ -1277,10 +1281,10 @@ img[atk-emoticon] {
   font-size: 0.85rem; }
 
 .list-tags a {
-  color: #666; }
+  color: var(--erji-color); }
 
 .archives_tags_f {
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem; }
 
 /*文章页标签*/
@@ -1299,7 +1303,7 @@ img[atk-emoticon] {
   display: inline-block; }
 
 .single-tag-c a {
-  color: #999; }
+  color: var(--sanji-color); }
 
 @media (prefers-color-scheme: dark) {
   .page-time, .single-tag-c {
@@ -1307,11 +1311,11 @@ img[atk-emoticon] {
   .single-tag-c a {
     color: #666; }
   .archives_tags_f {
-    color: #666; }
+    color: var(--erji-color); }
   .list-tags {
     border: 0.5px solid var(--frame-dark-color); }
   .list-tags a {
-    color: #999; } }
+    color: var(--sanji-color); } }
 
 .movie-quanju {
   display: grid;
@@ -1355,11 +1359,14 @@ img[atk-emoticon] {
   font-family: var(--font-family-title);
   font-size: 1rem; }
 
+.movie-content-right-2 a {
+  color: var(--erji-color); }
+
 .movie-content-right-3 {
   line-height: 1.6;
   font-size: 0.85rem;
   margin-top: 5px;
-  color: #666;
+  color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -1374,11 +1381,11 @@ img[atk-emoticon] {
 .movie-content-right-4 {
   font-size: 0.85rem;
   margin-top: 8px;
-  color: #999;
+  color: var(--sanji-color);
   font-family: var(--font-family-code); }
 
 .movie-laiz a {
-  color: #999;
+  color: var(--sanji-color);
   margin-left: 6px; }
 
 .movies_video {
@@ -1459,7 +1466,7 @@ img[atk-emoticon] {
   color: var(--text-highlight-color); }
 
 .sc-hint {
-  color: #999;
+  color: var(--sanji-color);
   margin-right: 20px; }
 
 .hide {
@@ -1555,11 +1562,11 @@ img[atk-emoticon] {
   .dvtjjf.active, .sort-by-item.active {
     color: var(--text-highlight-color) !important; }
   .type-index-left, .type-index-right a, .movie-content-right-4, .movie-laiz a {
-    color: #666; }
+    color: var(--erji-color); }
   .movie-index:hover .type-index-right a {
     color: #c0c0c0; }
-  .movie-content-right-3 {
-    color: #999; }
+  .movie-content-right-3, .movie-content-right-2 a {
+    color: var(--sanji-color); }
   .movies_loadMore {
     border: 0.5px solid var(--frame-dark-color); }
   .movies_video:after {
@@ -1586,7 +1593,7 @@ img[atk-emoticon] {
   text-decoration: none; }
 
 .memos_diaoyong_from a {
-  color: #666;
+  color: var(--erji-color);
   font-family: var(--font-family-code); }
 
 .memos-logo, .memos-logo2 {
@@ -1604,7 +1611,7 @@ img[atk-emoticon] {
 .talks_comments a {
   display: flex;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   text-decoration: none;
   cursor: pointer; }
 
@@ -1613,7 +1620,7 @@ img[atk-emoticon] {
 
 .comment-s {
   margin-right: 4px;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem; }
 
 .talks_comments svg {
@@ -1630,11 +1637,11 @@ img[atk-emoticon] {
   gap: 6px; }
 
 .memos_diaoyong_from, .memos_diaoyong_time, .memos_diaoyong_laiz, .memos_diaoyong_more {
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem; }
 
 .memos_diaoyong_laiz a, .memos_diaoyong_more a {
-  color: #999; }
+  color: var(--sanji-color); }
 
 .memos_diaoyong_info p {
   font-size: 1rem;
@@ -1657,7 +1664,11 @@ img[atk-emoticon] {
   text-align: justify; }
 
 .datacont a {
-  color: var(--text-highlight-color); }
+  text-decoration: underline;
+  margin: 0 2px;
+  transition: opacity 0.3s ease-in-out 0s; }
+  .datacont a:hover {
+    opacity: 0.6; }
 
 .resimg figure {
   margin: 0;
@@ -1693,7 +1704,7 @@ img[atk-emoticon] {
   display: inline-block;
   /* 根据padding宽度自动调整 */
   padding: 4px 4px 4px 2px;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
   border-radius: 4px;
   vertical-align: middle;
@@ -1707,7 +1718,7 @@ img[atk-emoticon] {
 
 .memos-tag-all {
   padding: 6px;
-  color: #999;
+  color: var(--sanji-color);
   background: #f2f2f2;
   font-size: 0.85rem;
   border-radius: 4px;
@@ -1718,7 +1729,7 @@ img[atk-emoticon] {
   display: flex;
   margin-top: 10px;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   margin-bottom: 10px; }
 
 .memos-tag-sc {
@@ -1779,7 +1790,7 @@ pre code {
   background: transparent;
   font-size: 0.85rem;
   padding: 0;
-  color: #666;
+  color: var(--erji-color);
   border: none;
   margin: 0; }
 
@@ -1816,7 +1827,7 @@ blockquote p {
     .load-memos-editor {
       margin-left: 0; } }
 .outline svg {
-  color: #999;
+  color: var(--sanji-color);
   width: 18px;
   height: 18px; }
 
@@ -1839,7 +1850,7 @@ blockquote p {
   display: block; }
 
 .memos-more-ico svg {
-  color: #999; }
+  color: var(--sanji-color); }
 
 .memos-xiala svg {
   width: 18px;
@@ -1852,7 +1863,7 @@ blockquote p {
 .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
   margin: 12px 0;
   cursor: pointer;
-  color: #666;
+  color: var(--erji-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1915,7 +1926,7 @@ blockquote p {
   cursor: pointer; }
 
 .memos-editor-tools .memos-tag a {
-  color: #999; }
+  color: var(--sanji-color); }
 
 .editor-selector {
   position: relative;
@@ -1928,7 +1939,7 @@ blockquote p {
   border-radius: 4px;
   padding: 8px 20px 8px 0;
   background: transparent;
-  color: #999;
+  color: var(--sanji-color);
   font-family: var(--font-family-paragraph);
   font-size: 0.85rem;
   outline: 0.5px solid transparent; }
@@ -1959,7 +1970,7 @@ blockquote p {
   padding: 6px 0;
   cursor: pointer;
   border: 0.5px solid #FFF;
-  color: #999; }
+  color: var(--sanji-color); }
 
 .memos-open-api-submit:hover, .edit-memos-btn:hover, .cancel-edit-btn:hover {
   opacity: 0.7;
@@ -1978,7 +1989,7 @@ blockquote p {
 .memos-image-list {
   cursor: pointer;
   gap: 10px;
-  color: #999;
+  color: var(--sanji-color);
   margin-bottom: 15px; }
 
 .memos-image-list .memos-up-image {
@@ -2060,7 +2071,7 @@ blockquote p {
 .edit-btn, .archive-btn, .delete-btn {
   cursor: pointer;
   line-height: 1.8;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem; }
 
 .edit-btn:hover, .archive-btn:hover, .delete-btn:hover {
@@ -2115,28 +2126,28 @@ blockquote p {
   .memos-xiala {
     background-color: #282527; }
   .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
-    color: #999; }
+    color: var(--sanji-color); }
   .memos-more-ico svg {
-    color: #666; }
+    color: var(--erji-color); }
   .memos-editor-textarea::placeholder {
     color: #444; }
   .memos-tag-all {
     background: #332E2F; }
   .memos-tag-sc-2 {
-    color: #666; }
+    color: var(--erji-color); }
   .memos-editor-body {
     border: 0.5px solid var(--frame-dark-color); }
   .memos-tag-dg {
-    color: #666; }
+    color: var(--erji-color); }
   .memos-tag-sc {
     color: #999 !important;
     background: #332E2F !important; }
   .bb-load button {
     background: var(--background-dark-color); }
   .memos_diaoyong_from a {
-    color: #999; }
+    color: var(--sanji-color); }
   .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_more a, .memos_diaoyong_from, .talks_comments a, .comment-s {
-    color: #666; }
+    color: var(--erji-color); }
   .memos_diaoyong_info p, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
   .talks_comments svg {
@@ -2144,7 +2155,7 @@ blockquote p {
   pre, blockquote p {
     background: #2c2829; }
   pre code {
-    color: #999; }
+    color: var(--sanji-color); }
   code {
     background: #2c2829;
     border: 1px solid #2c2829;
@@ -2155,9 +2166,9 @@ blockquote p {
   .memos_diaoyong_info blockquote p {
     color: #888 !important; }
   .outline svg {
-    color: #666; }
+    color: var(--erji-color); }
   .outline svg:hover {
-    color: #999; }
+    color: var(--sanji-color); }
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .editor-selector select {
@@ -2171,7 +2182,7 @@ blockquote p {
     background: #1A1718 !important;
     color: var(--text-highlight-color) !important; }
   .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .memos-image-list {
-    color: #666; }
+    color: var(--erji-color); }
   .memos-menu-d, .memos-img-edit {
     background-color: #282527; }
   .cancel-edit-btn {
@@ -2239,7 +2250,7 @@ blockquote p {
 .memos-search-ico svg {
   width: 22px;
   height: 22px;
-  color: #999;
+  color: var(--sanji-color);
   cursor: pointer;
   margin-right: 10px; }
 
@@ -2252,7 +2263,7 @@ blockquote p {
       cursor: pointer;
       margin-top: 30px;
       margin-bottom: 30px;
-      color: #666;
+      color: var(--erji-color);
       font-family: var(--font-family-title); } }
 .memos-search-ico:hover {
   text-decoration: underline; }
@@ -2263,7 +2274,7 @@ blockquote p {
   z-index: 100;
   padding: 5px;
   box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
-  color: #999;
+  color: var(--sanji-color);
   border-radius: 4px;
   font-size: 0.85rem;
   column-count: 3;
@@ -2284,7 +2295,7 @@ blockquote p {
 .tag-option.selected {
   background-color: #f0f0f0;
   border-radius: 4px;
-  color: #666; }
+  color: var(--erji-color); }
 
 .photo-home {
   display: grid;
@@ -2361,7 +2372,7 @@ blockquote p {
 .sidebar-biaot {
   margin-bottom: 20px;
   font-size: 1rem;
-  color: #999; }
+  color: var(--sanji-color); }
 
 .sidebar-page {
   margin-bottom: 30px; }
@@ -2376,7 +2387,7 @@ blockquote p {
   line-height: 1.6; }
 
 .sidebar-posts-title a {
-  color: #666; }
+  color: var(--erji-color); }
 
 .sidebar_article_new {
   background: var(--text-highlight-color);
@@ -2395,9 +2406,9 @@ blockquote p {
 
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
-    color: #999; }
+    color: var(--sanji-color); }
   .sidebar-biaot {
-    color: #666; } }
+    color: var(--erji-color); } }
 
 .about-img {
   position: relative; }
@@ -2472,7 +2483,7 @@ blockquote p {
   font-size: 1rem;
   margin-top: 6px;
   margin-bottom: 6px;
-  color: #666;
+  color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -2517,7 +2528,7 @@ blockquote p {
 
 .archive-time {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   font-family: var(--font-family-code); }
 
 .archive-img {
@@ -2536,7 +2547,7 @@ blockquote p {
 
 @media (prefers-color-scheme: dark) {
   .archive-time {
-    color: #666; }
+    color: var(--erji-color); }
   .posts_list_article {
     background: var(--background-dark-color); } }
   @media (prefers-color-scheme: dark) and (min-width: 700px) {
@@ -2550,7 +2561,7 @@ blockquote p {
       background: transparent; } }
 @media (prefers-color-scheme: dark) {
   .posts-description {
-    color: #999; } }
+    color: var(--sanji-color); } }
 
 @font-face {
   font-family: JetBrainsMono;

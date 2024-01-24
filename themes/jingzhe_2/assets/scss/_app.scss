@@ -37,7 +37,7 @@
   background: #f8f8f8;
   top: 0;
   bottom: 0;
-	color: #666;
+	color: var(--erji-color);
 	font-size: 0.9rem;
 	line-height: 1.6;
 	align-items: center;
@@ -57,7 +57,7 @@
 .macos{ 
     font-size: 0.75rem;
     font-family: var(--font-family-code);
-    color: #999;
+    color: var(--sanji-color);
 }
 .macos:empty,.kaiyuan:empty,.shoufei:empty,.free:empty {
   display:none;
@@ -97,7 +97,7 @@
   padding-bottom: 20px;
   padding-top: 0;
   text-align: center;
-  color: #666;
+  color: var(--erji-color);
   @include breakpoint('medium') {
     padding-top: 10px;
   }
@@ -106,10 +106,10 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .macos{
-  color: #666;
+  color: var(--erji-color);
 }
 .pagetitle{
-  color: #999;
+  color: var(--sanji-color);
 }
 .appnote,.apptitle a{
   color: var(--text-content-dark-color);

@@ -15,7 +15,7 @@
   text-decoration: none;
 }
 .memos_diaoyong_from a{
-  color: #666;
+  color: var(--erji-color);
   font-family: var(--font-family-code);
 }
 .memos-logo,.memos-logo2{
@@ -33,7 +33,7 @@
 .talks_comments a{
   display: flex;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   text-decoration: none;
   cursor:pointer;
 }
@@ -42,7 +42,7 @@
 }
 .comment-s{
   margin-right: 4px;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
 }
 .talks_comments svg {
@@ -59,11 +59,11 @@
   gap: 6px;
 }
 .memos_diaoyong_from,.memos_diaoyong_time,.memos_diaoyong_laiz,.memos_diaoyong_more{
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
 }
 .memos_diaoyong_laiz a,.memos_diaoyong_more a{
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos_diaoyong_info p{
   font-size: 1rem;
@@ -89,7 +89,12 @@
   text-align: justify;
 }
 .datacont a{
-  color: var(--text-highlight-color);
+  text-decoration: underline;
+  margin: 0 2px;
+  transition: opacity 0.3s ease-in-out 0s;
+  &:hover{
+    opacity: 0.6;
+  }
 }
 .resimg figure{
   margin:0;
@@ -124,7 +129,7 @@
 .memos-tag-dg,.memos-tag-sc{
   display: inline-block; /* 根据padding宽度自动调整 */
   padding: 4px 4px 4px 2px;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
   border-radius:4px;
   vertical-align: middle;
@@ -138,7 +143,7 @@
 }
 .memos-tag-all{
   padding: 6px;
-  color: #999;
+  color: var(--sanji-color);
   background: #f2f2f2;
   font-size: 0.85rem;
   border-radius:4px;
@@ -149,7 +154,7 @@
   display: flex;
   margin-top: 10px; 
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   margin-bottom: 10px;
 }
 .memos-tag-sc{
@@ -211,7 +216,7 @@ pre code{
   background: transparent;
   font-size: 0.85rem;
   padding: 0;
-  color: #666;
+  color: var(--erji-color);
   border: none;
   margin: 0;
 }
@@ -250,7 +255,7 @@ blockquote p{
   }
 }
 .outline svg{
-  color: #999;
+  color: var(--sanji-color);
   width: 18px;
   height: 18px;
 }
@@ -273,7 +278,7 @@ blockquote p{
   display: block;
 }
 .memos-more-ico svg{
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos-xiala svg{
   width: 18px;
@@ -286,7 +291,7 @@ blockquote p{
 .memos-xiala .switchUser-btn,.memos-xiala .private-btn,.memos-xiala .oneday-btn,.image-btn,.code-btn{
   margin: 12px 0;
   cursor: pointer;
-  color: #666;
+  color: var(--erji-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -351,7 +356,7 @@ blockquote p{
   cursor: pointer;
 }
 .memos-editor-tools .memos-tag a{
-  color: #999;
+  color: var(--sanji-color);
 }
 .editor-selector {
   position: relative;
@@ -363,7 +368,7 @@ blockquote p{
   border-radius: 4px;
   padding: 8px 20px 8px 0;
   background: transparent;
-  color: #999;
+  color: var(--sanji-color);
   font-family: var(--font-family-paragraph);
   font-size: 0.85rem;
   outline:0.5px solid transparent;
@@ -390,7 +395,7 @@ blockquote p{
   padding: 6px 0;
   cursor: pointer;
   border: 0.5px solid #FFF;
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos-open-api-submit:hover,.edit-memos-btn:hover,.cancel-edit-btn:hover{
   opacity: 0.7;
@@ -411,7 +416,7 @@ blockquote p{
 .memos-image-list{
   cursor: pointer;
   gap: 10px;
-  color: #999;
+  color: var(--sanji-color);
   margin-bottom: 15px;
 }
 .memos-image-list .memos-up-image{
@@ -500,7 +505,7 @@ blockquote p{
 .edit-btn,.archive-btn,.delete-btn {
   cursor: pointer;
   line-height: 1.8;
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
 }
 .edit-btn:hover,.archive-btn:hover,.delete-btn:hover {
@@ -573,10 +578,10 @@ blockquote p{
   background-color: #282527;
 }
 .memos-xiala .switchUser-btn,.memos-xiala .private-btn,.memos-xiala .oneday-btn,.image-btn,.code-btn{
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos-more-ico svg{
-  color: #666;
+  color: var(--erji-color);
 }
 .memos-editor-textarea::placeholder{
   color: #444;
@@ -585,13 +590,13 @@ blockquote p{
   background: #332E2F;
 }
 .memos-tag-sc-2{
-  color: #666;
+  color: var(--erji-color);
 }
 .memos-editor-body{
   border: 0.5px solid var(--frame-dark-color);
 }
 .memos-tag-dg{
-  color: #666;
+  color: var(--erji-color);
 }
 .memos-tag-sc{
   color: #999 !important;
@@ -601,10 +606,10 @@ blockquote p{
   background:var(--background-dark-color);
 }
 .memos_diaoyong_from a{
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos_diaoyong_time, .memos_diaoyong_laiz a,.memos_diaoyong_more a,.memos_diaoyong_from,.talks_comments a,.comment-s{
-  color: #666;
+  color: var(--erji-color);
 }
 .memos_diaoyong_info p, .memos_diaoyong_info a {
   color: var(--text-content-dark-color) !important;
@@ -616,7 +621,7 @@ pre,blockquote p{
   background: #2c2829;
 }
 pre code{
-  color: #999;
+  color: var(--sanji-color);
 }
 code{
   background: #2c2829;
@@ -633,10 +638,10 @@ blockquote p{
 
 //memos页发布唠叨
 .outline svg{
-  color: #666;
+  color: var(--erji-color);
 }
 .outline svg:hover{
-  color: #999;
+  color: var(--sanji-color);
 }
 .memos-path-input,.memos-token-input{
   color: var(--text-content-dark-color) !important;
@@ -656,7 +661,7 @@ blockquote p{
   color: var(--text-highlight-color) !important;
 }
 .edit-btn,.archive-btn,.delete-btn,.cancel-edit-btn,.memos-image-list{
-  color: #666;
+  color: var(--erji-color);
 }
 .memos-menu-d,.memos-img-edit{
   background-color: #282527;
@@ -740,7 +745,7 @@ blockquote p{
 .memos-search-ico svg{
   width: 22px;
   height: 22px;
-  color: #999;
+  color: var(--sanji-color);
   cursor: pointer;
   margin-right: 10px;
 }
@@ -752,7 +757,7 @@ blockquote p{
     cursor: pointer;
     margin-top: 30px;
     margin-bottom: 30px;
-    color: #666;
+    color: var(--erji-color);
     font-family: var(--font-family-title);
   }
 }
@@ -767,7 +772,7 @@ blockquote p{
   z-index: 100;
   padding: 5px;
   box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
-  color: #999;
+  color: var(--sanji-color);
   border-radius: 4px;
   font-size: 0.85rem;
   column-count: 3; /* 每列显示的数量 */
@@ -786,5 +791,5 @@ blockquote p{
 .tag-option.selected {
   background-color: #f0f0f0;
   border-radius: 4px;
-  color: #666;
+  color: var(--erji-color);
 }

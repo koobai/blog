@@ -37,7 +37,7 @@
   font-size: 1rem;
   margin-top: 6px;
   margin-bottom: 6px;
-  color: #666;
+  color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -85,7 +85,7 @@
 }
 .archive-time{
     font-size: 0.85rem;
-    color: #999;
+    color: var(--sanji-color);
     font-family: var(--font-family-code);
   }
 .archive-img {
@@ -106,7 +106,7 @@
   // 夜间模式页面样式
   @media (prefers-color-scheme: dark) {
   .archive-time{
-        color: #666;
+        color: var(--erji-color);
       }
   .posts_list_article{
     background: var(--background-dark-color);
@@ -121,6 +121,6 @@
     }
   }
   .posts-description{
-    color: #999;
+    color: var(--sanji-color);
   }
     }

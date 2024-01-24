@@ -52,7 +52,7 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a,.footer-rss a,.footer-rss{
-  color: #666;
+  color: var(--erji-color);
 }
 .footer {
   border-top: 0.5px solid #231e20;

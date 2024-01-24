@@ -31,7 +31,7 @@
 }
 .hardware-text{
 	text-align: center;
-	color: #999;
+	color: var(--sanji-color);
 	margin-top: 20px;
 }
 .hardware-title{
@@ -89,7 +89,7 @@
 	z-index: 10;
 	top: 0;
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
-	color: #666;
+	color: var(--erji-color);
 	font-size: 0.9rem;
 	line-height: 1.6;
 	opacity: 0;
@@ -107,7 +107,7 @@
 		background: var(--background-dark-color);
 	}
 	.hardware-text{
-		color: #666;
+		color: var(--erji-color);
 	}
 	.hardware-title a,.note{
 		color: var(--text-content-dark-color);
