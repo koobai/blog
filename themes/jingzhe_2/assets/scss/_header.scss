@@ -62,7 +62,7 @@
   margin-bottom: 20px;
  }
  .header-menu a {
-  color: #666;
+  color: var(--erji-color);
   font-size: 1rem;
   font-family: var(--font-family-title);
   padding-top: 2px;
@@ -73,7 +73,7 @@
  }
 .header-menu svg{
   margin-right: 10px;
-  color: #999;
+  color: var(--sanji-color);
   width: 22px;
   height: 22px;
 }
@@ -109,10 +109,10 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .header-title,.header-menu a{
-    color: #999;
+    color: var(--sanji-color);
   }
   .header-menu svg{
-    color: #666;
+    color: var(--erji-color);
   }
   .githuab svg,.heard-rss svg path,.menu-main svg{
     fill: #666;

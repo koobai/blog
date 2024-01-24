@@ -130,9 +130,11 @@ ul {
     word-wrap:break-word;
     word-break: break-all;
     text-decoration: none;
-    color: var(--text-highlight-color);
+    text-decoration: underline;
+    margin: 0 2px;
+    transition: opacity 0.3s ease-in-out 0s;
     &:hover{
-      text-decoration: underline;
+      opacity: 0.6;
     }
   }
   blockquote {

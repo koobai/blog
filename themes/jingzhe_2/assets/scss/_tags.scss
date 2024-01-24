@@ -11,10 +11,10 @@
   font-size: 0.85rem;
 }
 .list-tags a{
-  color: #666;
+  color: var(--erji-color);
 }
 .archives_tags_f{
-  color: #999;
+  color: var(--sanji-color);
   font-size: 0.85rem;
 }
 
@@ -34,7 +34,7 @@
   display: inline-block;
 }
 .single-tag-c a{
-  color: #999;
+  color: var(--sanji-color);
 }
 
 // 夜间模式文章页标签
@@ -47,12 +47,12 @@
   color:#666;
 }
 .archives_tags_f{
-  color: #666;
+  color: var(--erji-color);
 }
 .list-tags {
   border: 0.5px solid var(--frame-dark-color);
 }
 .list-tags a{
-  color: #999;
+  color: var(--sanji-color);
 }
 }

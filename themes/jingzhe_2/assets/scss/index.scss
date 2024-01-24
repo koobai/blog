@@ -10,7 +10,7 @@
 .sidebar-biaot{
   margin-bottom: 20px;
   font-size: 1rem;
-  color: #999;
+  color: var(--sanji-color);
 }
 .sidebar-page{
   margin-bottom: 30px;
@@ -25,7 +25,7 @@
   line-height: 1.6;
 }
 .sidebar-posts-title a{
-  color: #666;
+  color: var(--erji-color);
 }
 .sidebar_article_new{
     background: var(--text-highlight-color);
@@ -49,9 +49,9 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a{
-    color: #999;
+    color: var(--sanji-color);
   }
   .sidebar-biaot{
-    color: #666;
+    color: var(--erji-color);
   }
     }
