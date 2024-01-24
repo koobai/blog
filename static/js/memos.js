@@ -583,8 +583,8 @@ function getEditIcon() {
 
  //代码
   codeBtn.addEventListener("click", function () {
-    let memoCode = "\n```\n\n```\n";
-    insertValue(memoCode,"",5);
+    let memoCode = "```\n\n```";
+    insertValue(memoCode,"",4);
   });
 
   //代码单反引号
