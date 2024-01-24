@@ -13,13 +13,13 @@
   display: none;
   @include breakpoint('medium') {
     margin-bottom: 25px;
-    margin-left: 6px;
+    margin-left: 8px;
     display: block;
   }
 }
 .about-koobai img{
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   border: 1.5px solid #222;
   opacity: .5;
