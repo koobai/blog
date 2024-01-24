@@ -18,11 +18,7 @@ a {
     text-decoration: underline;
   }
 }
-
-h1,
-h2,
 h3 {
-  color: var(--heading-color);
   font-family: var(--font-family-title);
   font-weight:normal; 
   font-display: swap; 
@@ -63,37 +59,13 @@ ul {
   strong {
     color:  var(--text-highlight-color);
   }
-  h1 {
-    font-size: 40px;
-    line-height: 1.6;
-    font-weight:normal;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    &:first-of-type {
-      margin-top: 0;
-    }
-  }
-  h2 {
-    font-size: 28px;
-    line-height: 1.4;
-    font-weight:normal;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    &:first-of-type {
-      margin-top: 0;
-    }
-    @include breakpoint('small') {
-      font-size: 1.8rem;
-      line-height: 1.4;
-    }
-  }
   h3 {
-    font-size: 20px;
-    line-height: 1.4;
-    font-weight:normal;
-    margin-top: 30px;
+    font-size: 1.1rem;
+    line-height: 1.6;
     margin-bottom: 6px;
-    letter-spacing: 0.5px
+    letter-spacing: 0.5px;
+    color: var(--text-highlight-color);
+    
   }
   ul {
     list-style: disc;
@@ -182,7 +154,7 @@ ul {
       line-height: 22px;
       padding: 30px;
       overflow: auto;
-      font-family: var(--font-family-monospace);
+      font-family: var(--font-family-paragraph);
       border-radius:0.75rem;
     }
   }
