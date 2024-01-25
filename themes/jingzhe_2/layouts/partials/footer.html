@@ -8,6 +8,7 @@
       <a href="https://memos.koobai.com/u/1/rss.xml" target="_blank">唠叨 RSS</a> / 
       <a href="https://koobai.com/index.xml" target="_blank">博文 RSS</a>
       </div>
+      <div class="footer-cmdk"><div class="footer-cmdk-key">⌘</div>+<div class="footer-cmdk-key">K</div></div>
     </div>
   </div>
  <!--图片灯箱 -->
@@ -20,3 +21,6 @@
 <div class="gotop_hide">
   <div class="gotop" onclick="smoothScrollTop()" id="gotop"><img src="https://img.koobai.com/up.svg" alt="回到顶部" /></div>
 </div>
+  <!--⌘+k功能-->
+{{ partial "cmdk" . }}
+<script src="/js/cmdk.js"></script>

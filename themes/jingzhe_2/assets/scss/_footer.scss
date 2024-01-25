@@ -8,9 +8,6 @@
     border-top: 0.5px solid var(--frame-color);
     text-align: center;
   }
-.footer-rss{
-  margin-bottom: 20px;
-}
 .footer-info, .footer-info a,.footer-rss,.footer-rss a{
   font-size: 0.75rem;
   line-height: 1.6em;
@@ -49,6 +46,26 @@
 .youpaiyun {
   margin: 0 4px 0 4px;
 }
+
+.footer-cmdk{
+  display: flex;
+  gap: 6px;
+  font-size: 0.75rem;
+  align-items: center;
+  color: #a2a2a2;
+  margin: 10px 0 30px 0;
+  justify-content: center;
+}
+.footer-cmdk-key{
+  background: #e8e8e8;
+  padding: 4px;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 4px;
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a,.footer-rss a,.footer-rss{
@@ -65,6 +82,12 @@
   border-top:solid #3d3d3d 0.5px;
   box-sizing: border-box;
   }
+.footer-cmdk{
+  color: #666;
+}
+.footer-cmdk-key{
+  background: #292526;
+}
 }
 // 页面宽度小于1200px样式
 @media (max-width:1200px){
