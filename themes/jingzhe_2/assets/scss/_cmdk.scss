@@ -184,27 +184,27 @@ li.group-option:hover a {
 
 @media (prefers-color-scheme: dark) {
   li.group-option:hover ,.command-menu .focused {
-    background-color: rgba(102, 102, 102, 0.2);
+    background-color: rgba(55, 49, 51, 0.6);
   }
   .shortcuts {
-    background: #3e3e3e;
+    background: #393235;
   }
   kbd {
-    color: var(--text-content-dark-color);
+    color: #ccc;
   }
   .group-option-link {
     color: var(--text-content-dark-color);
   }
   .group-option-link svg{
-    color: #9f9f9f;
+    color: #827478;
   }
   .group-label {
     color: #8a8a8a;
   }
   .command-menu {
-    background-color: rgba(34, 34, 34, 0.8); /* #222222 */
-    border: 0.5px solid #555;
-    box-shadow: 0 0 0 1px #222;
+    background-color: rgba(26, 23, 24, 0.6);
+    //border: 0.5px solid #555;
+    box-shadow: 0 0 0 1px #322d2e;
   }
   .group-option-link:not(:hover):focus,li.group-option:hover a{
     color: #eee;

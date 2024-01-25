@@ -136,9 +136,9 @@ h1, h2, h3 {
   .header-title, .header-menu a {
     color: var(--sanji-color); }
   .header-menu svg {
-    color: var(--erji-color); }
+    color: #827478; }
   .githuab svg, .heard-rss svg path, .menu-main svg {
-    fill: #666; }
+    fill: #6b6063; }
   .heard-rss svg path:hover, .githuab svg:hover, .menu-main svg:hover {
     fill: #999; } }
 
@@ -2177,8 +2177,10 @@ blockquote p {
     border: 0.5px solid #201d1e; }
   #memos-search-input {
     color: var(--text-content-dark-color) !important; }
-  .memos-search ::placeholder, .memos-search svg, .memos-search-ico svg {
+  .memos-search ::placeholder, .memos-search svg {
     color: #666 !important; }
+  .memos-search-ico svg {
+    color: #827478 !important; }
   .memos-search-ico {
     color: #999 !important; }
   .memos-search-all {
@@ -2712,22 +2714,20 @@ li.group-option:hover a {
 
 @media (prefers-color-scheme: dark) {
   li.group-option:hover, .command-menu .focused {
-    background-color: rgba(102, 102, 102, 0.2); }
+    background-color: rgba(55, 49, 51, 0.6); }
   .shortcuts {
-    background: #3e3e3e; }
+    background: #393235; }
   kbd {
-    color: var(--text-content-dark-color); }
+    color: #ccc; }
   .group-option-link {
     color: var(--text-content-dark-color); }
   .group-option-link svg {
-    color: #9f9f9f; }
+    color: #827478; }
   .group-label {
     color: #8a8a8a; }
   .command-menu {
-    background-color: rgba(34, 34, 34, 0.8);
-    /* #222222 */
-    border: 0.5px solid #555;
-    box-shadow: 0 0 0 1px #222; }
+    background-color: rgba(26, 23, 24, 0.6);
+    box-shadow: 0 0 0 1px #322d2e; }
   .group-option-link:not(:hover):focus, li.group-option:hover a {
     color: #eee; } }
 
