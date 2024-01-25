@@ -673,8 +673,11 @@ blockquote p{
 #memos-search-input{
   color: var(--text-content-dark-color) !important;
 }
-.memos-search ::placeholder,.memos-search svg,.memos-search-ico svg {
+.memos-search ::placeholder,.memos-search svg {
   color: #666 !important;
+}
+.memos-search-ico svg{
+  color: #827478 !important;
 }
 .memos-search-ico{
   color: #999 !important;
