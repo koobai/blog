@@ -56,10 +56,9 @@
 
 .menu-main {
   display: flex;
-  grid-gap: 25px; /* 中间空10px间距 */
+  grid-gap: 19px; /* 中间空10px间距 */
   align-items: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin: 40px 0 30px 3px;
  }
  .header-menu a {
   color: var(--erji-color);
@@ -94,7 +93,6 @@
 .heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
   fill: #666;
 }
-
  // 页面宽度小于900样式
 @media (max-width:900px){
   .menu-main,.new-heard-menu {
