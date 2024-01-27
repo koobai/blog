@@ -36,7 +36,7 @@
         {
             "image2": "https://img.koobai.com/app/star_home.webp",
             "title2": "Home",
-            "info": "家里 App 接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过 Home assistant 接入 HomeKit。",
+            "info": "家庭 App 接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过 Home assistant 接入 HomeKit。",
             "macos": "macOS",
             "ios": "iOS",
             "tvos": "tvOS",
