@@ -34,13 +34,24 @@
             "link": "https://apps.apple.com/us/app/chatgpt/id6448311069"
         },
         {
-            "image": "https://img.koobai.com/app/reeder.webp",
-            "title": "Reeder 5",
-            "info": "RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。",
+            "image2": "https://img.koobai.com/app/star_home.webp",
+            "title2": "Home",
+            "info": "家里 App 接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过 Home assistant 接入 HomeKit。",
             "macos": "macOS",
             "ios": "iOS",
+            "tvos": "tvOS",
+            "free": "免费",
+            "link": "https://apps.apple.com/cn/app/%E5%AE%B6%E5%BA%AD/id1110145103"
+        },
+        {
+            "image2": "https://img.koobai.com/app/star_Infuse.webp",
+            "title2": "Infuse",
+            "info": "如果你有Apple TV，那它就是必备软件。可以让你的视频流以海报的形式展示，并且支持各类格式。",
+            "macos": "macOS",
+            "ios": "iOS",
+            "tvos": "tvOS",
             "shoufei": "付费",
-            "link": "https://reederapp.com/"
+            "link": "https://firecore.com/infuse"
         },
         {
             "image": "https://img.koobai.com/app/chrome.webp",
@@ -58,7 +69,7 @@
             "macos": "macOS",
             "free": "免费",
             "link": "https://code.visualstudio.com/"
-        },
+        },   
         {
             "image": "https://img.koobai.com/app/keka.webp",
             "title": "Keka",
@@ -66,7 +77,7 @@
             "macos": "macOS",
             "free": "免费",
             "link": "https://www.keka.io/en/"
-        },        
+        }, 
         {
             "image": "https://img.koobai.com/app/obsidiannew.webp",
             "title": "Obsidian",
@@ -83,15 +94,7 @@
             "macos": "macOS",
             "shoufei": "付费",
             "link": "https://www.sketch.com/"
-        },        
-        {
-            "image": "https://img.koobai.com/app/pixelmator.webp",
-            "title": "Pixelmator Pro",
-            "info": "一直使用Photoshop，在想有没有平替，于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，还在摸索中～～",
-            "macos": "macOS",
-            "shoufei": "付费",
-            "link": "https://www.pixelmator.com/pro/"
-        },        
+        },              
         {
             "image": "https://img.koobai.com/app/ai.webp",
             "title": "Illustrator 2022",
@@ -150,6 +153,23 @@
             "kaiyuan": "开源",
             "link": "https://github.com/MonitorControl/MonitorControl"
         },
+        {
+            "image2": "https://img.koobai.com/app/star_pixelmator.webp",
+            "title2": "Pixelmator Pro",
+            "info": "一直使用Photoshop，在想有没有平替，于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，还在摸索中～～",
+            "macos": "macOS",
+            "shoufei": "付费",
+            "link": "https://www.pixelmator.com/pro/"
+        },  
+        {
+            "image2": "https://img.koobai.com/app/star_reeder.webp",
+            "title2": "Reeder 5",
+            "info": "RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。",
+            "macos": "macOS",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://reederapp.com/"
+        }, 
         {
             "image": "https://img.koobai.com/app/hidden.webp",
             "title": "Hidden Bar",
@@ -212,16 +232,6 @@
             "link": "https://youtube.com"
         },
         {
-            "image": "https://img.koobai.com/app/infuse.webp",
-            "title": "Infuse",
-            "info": "如果你有Apple TV，那它就是必备软件。可以让你的视频流以海报的形式展示，并且支持各类格式。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "tvos": "tvOS",
-            "shoufei": "付费",
-            "link": "https://firecore.com/infuse"
-        },
-        {
             "image": "https://img.koobai.com/app/netflix.webp",
             "title": "Netflix",
             "info": "流媒体视频软件，缺点就是每个月的订阅费确实蛮贵。独自订阅几个月后，在合租平台租了个合租号。",
@@ -239,16 +249,6 @@
             "web": "Web",
             "free": "免费",
             "link": "https://www.xiaoyuzhoufm.com/"
-        },
-        {
-            "image": "https://img.koobai.com/app/home.webp",
-            "title": "家庭",
-            "info": "家里接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过Home assistant接入HomeKit。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "tvos": "tvOS",
-            "free": "免费",
-            "link": "https://apps.apple.com/cn/app/%E5%AE%B6%E5%BA%AD/id1110145103"
         },
         {
             "image": "https://img.koobai.com/app/tinycal.webp",

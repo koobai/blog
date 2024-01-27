@@ -490,7 +490,7 @@ ul {
       .menu-main-mobile.open li:nth-of-type(6) {
         animation-delay: 0.35s; }
   .menu-main-mobile ul {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-family: var(--font-family-title);
     text-align: center;
     list-style: none;
@@ -1059,12 +1059,14 @@ img[atk-emoticon] {
   grid-gap: 15px;
   align-items: center;
   justify-content: center;
-  background: #f8f8f8;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 20px 0px;
   padding: 15px;
-  border-radius: 4px; }
+  border-radius: 4px;
+  z-index: 1; }
 
 .appimg img {
-  width: 90px;
+  width: 80px;
   transition: transform 0.3s ease; }
 
 .apptitle {
@@ -1080,7 +1082,7 @@ img[atk-emoticon] {
       display: grid;
       position: absolute;
       padding: 20px 20px 20px 0;
-      background: #f8f8f8;
+      background: #fff;
       top: 0;
       bottom: 0;
       color: var(--erji-color);
@@ -1143,6 +1145,63 @@ img[atk-emoticon] {
   @media (min-width: 900px) {
     .pagetitle {
       padding-top: 10px; } }
+.app-star {
+  display: block;
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  padding: 25px; }
+
+.app-star .appnote {
+  opacity: 1;
+  background: transparent;
+  padding: 0;
+  position: static;
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.6; }
+  @media (min-width: 900px) {
+    .app-star .appnote {
+      font-size: 0.9rem; } }
+.star-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; }
+
+.star-img img {
+  height: 100%;
+  min-width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s ease; }
+
+.star-img img:hover {
+  transform: scale(1.1); }
+
+.app-star .apptitle2 {
+  font-size: 2rem;
+  margin-bottom: 5px; }
+
+.app-star .apptitle2 a, .app-star .appnote, .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
+  color: #fff;
+  font-family: var(--font-family-code);
+  transition: opacity .3s ease-in-out; }
+
+.app-star .apptitle2 a:hover {
+  opacity: 0.8; }
+
+.app-star .macos {
+  margin-bottom: 20px; }
+
+.app-star .kaiyuan, .app-star .shoufei, .app-star .free {
+  border: 0.5px solid #fff; }
+
+.app-star .appzhuangtai-right {
+  display: inline-block; }
+
 @media (prefers-color-scheme: dark) {
   .macos {
     color: var(--erji-color); }
@@ -1151,7 +1210,11 @@ img[atk-emoticon] {
   .appnote, .apptitle a {
     color: var(--text-content-dark-color); }
   .appquanju, .appnote {
-    background: var(--background-dark-color); } }
+    background: var(--background-dark-color); }
+  .app-star .apptitle2 a, .app-star .appnote, .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
+    color: #eee; }
+  .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
+    border: 0.5px solid #eee; } }
 
 .quanju {
   display: grid;
