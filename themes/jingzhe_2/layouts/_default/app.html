@@ -25,7 +25,9 @@
         <a href="{{ $app.link }}" target="_blank"><div class="shoufei">{{ $app.shoufei }}</div></a>
         <a href="{{ $app.link }}" target="_blank"><div class="free">{{ $app.free }}</div></a>
       </div>
+      {{ with $app.image2 }}
       <div class="star-img img-hide"><img loading="lazy" decoding="async" src="{{ $app.image2 }}"></div>
+    {{ end }}
     </div>
   {{ end }}
 </div>
