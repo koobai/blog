@@ -1,4 +1,3 @@
-// apps页样式
 .appdquanjudiv{
   display: grid;
 	grid-gap: 10px; /* 中间空10px间距 */
@@ -13,12 +12,14 @@
   grid-gap: 15px;
   align-items: center;
   justify-content: center;
-  background: #f8f8f8;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 20px 0px;
   padding: 15px;
   border-radius: 4px;
+  z-index: 1;
 }
 .appimg img{
-  width:90px;
+  width:80px;
   transition: transform 0.3s ease;
 }
 .apptitle{
@@ -34,7 +35,7 @@
 	display: grid;
 	position: absolute;
   padding: 20px 20px 20px 0;
-  background: #f8f8f8;
+  background: #fff;
   top: 0;
   bottom: 0;
 	color: var(--erji-color);
@@ -103,6 +104,66 @@
   }
 }
 
+//卡片形式
+.app-star{
+  display: block;
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  padding: 25px;
+}
+.app-star .appnote{
+  opacity: 1;
+  background: transparent;
+  padding: 0;
+  position: static;
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  @include breakpoint('medium') {
+    font-size: 0.9rem; 
+  }
+}
+.star-img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.star-img img{
+  height: 100%;
+  min-width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+.star-img img:hover{
+  transform: scale(1.1);
+}
+.app-star .apptitle2{
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+.app-star .apptitle2 a,.app-star .appnote,.app-star .macos,.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  color: #fff;
+  font-family: var(--font-family-code);
+  transition: opacity .3s ease-in-out;
+}
+.app-star .apptitle2 a:hover{
+  opacity: 0.8;
+}
+.app-star .macos{ 
+  margin-bottom: 20px;
+}
+.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  border: 0.5px solid #fff;
+}
+.app-star .appzhuangtai-right{
+  display: inline-block;
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .macos{
@@ -116,5 +177,11 @@
 }
 .appquanju,.appnote{
   background: var(--background-dark-color);
+}
+.app-star .apptitle2 a,.app-star .appnote,.app-star .macos,.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  color: #eee;
+}
+.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  border: 0.5px solid #eee;
 }
 }

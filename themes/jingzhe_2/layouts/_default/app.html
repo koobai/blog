@@ -4,31 +4,33 @@
 
 <div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-11-12 更新 )</div>
 <div class="appdquanjudiv">
-  {{ range $goods.good}}
-<div class="appquanju img-hide">
-<div class="appimg"><a href="{{ .link }}" target="_blank"><img loading="lazy" decoding="async" src={{ .image }}></a></div>
+  {{ range $index, $app := $goods.good }}
+    <div class="appquanju img-hide {{if or (eq $index 4) (eq $index 5) (eq $index 18) (eq $index 19)}}app-star{{end}}">
+      <div class="appimg"><a href="{{ $app.link }}" target="_blank"><img loading="lazy" decoding="async" src="{{ $app.image }}"></a></div>
 
-<div class="app-title-all">
-  <div class="appnote"><div>{{ .info }}</div></div>
-<div class="apptitle"><a href="{{ .link }}" target="_blank">{{ .title }}</a></div>
-  <div class="appzhuangtai">
-    <div class="macos">{{ .macos }}</div>
-    <div class="macos">{{ .ios }}</div>
-    <div class="macos">{{ .tvos }}</div>
-    <div class="macos">{{ .web }}</div>
+      <div class="app-title-all">
+        <div class="apptitle2"><a href="{{ $app.link }}" target="_blank">{{ $app.title2 }}</a></div>
+        <div class="appnote"><div>{{ $app.info }}</div></div>
+        <div class="apptitle"><a href="{{ $app.link }}" target="_blank">{{ $app.title }}</a></div>
+        <div class="appzhuangtai">
+          <div class="macos">{{ $app.macos }}</div>
+          <div class="macos">{{ $app.ios }}</div>
+          <div class="macos">{{ $app.tvos }}</div>
+          <div class="macos">{{ $app.web }}</div>
+        </div>
+      </div>
+
+      <div class="appzhuangtai-right">
+        <a href="{{ $app.link }}" target="_blank"><div class="kaiyuan">{{ $app.kaiyuan }}</div></a>
+        <a href="{{ $app.link }}" target="_blank"><div class="shoufei">{{ $app.shoufei }}</div></a>
+        <a href="{{ $app.link }}" target="_blank"><div class="free">{{ $app.free }}</div></a>
+      </div>
+      <div class="star-img img-hide"><img loading="lazy" decoding="async" src="{{ $app.image2 }}"></div>
     </div>
-</div>
-
-<div class="appzhuangtai-right">
-  <a href="{{ .link }}" target="_blank"><div class="kaiyuan">{{ .kaiyuan }}</div></a>
-  <a href="{{ .link }}" target="_blank"><div class="shoufei">{{ .shoufei }}</div></a>
-  <a href="{{ .link }}" target="_blank"><div class="free">{{ .free }}</div></a>
-</div>
-
-</div>
   {{ end }}
 </div>
-  <div class="article-comments">
-    {{- partial "artalk" . -}}
-  </div>
+
+<div class="article-comments">
+  {{- partial "artalk" . -}}
+</div>
 {{ end }}
