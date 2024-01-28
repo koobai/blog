@@ -1623,9 +1623,9 @@ img[atk-emoticon] {
   .movies_video:after {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #1A1718 100%); }
   .page-movies .pagetitle, .page-movies .header-menu a {
-    color: #ebebeb; }
+    color: var(--sanji-color); }
   .page-movies .header-menu svg {
-    color: #bfbfbf; } }
+    color: #827478; } }
 
 .memos_diaoyong {
   max-width: 700px;
@@ -2877,7 +2877,7 @@ body {
   max-width: 1080px;
   margin: auto; }
 
-.page-blog-single .memos-search-ico, .page-hardware .memos-search-ico, .page-app .memos-search-ico, .page-about .memos-search-ico, .page-movies .memos-search-ico, .page-blog-list .memos-search-ico {
+.page-blog-single .memos-search-ico, .page-hardware .memos-search-ico, .page-app .memos-search-ico, .page-about .memos-search-ico, .page-movies .memos-search-ico, .page-blog-list .memos-search-ico, .page-photo .memos-search-ico {
   display: none; }
 
 .highlight pre {
