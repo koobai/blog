@@ -2424,6 +2424,7 @@ blockquote p {
       grid-template-columns: repeat(4, 1fr); } }
 .photo-moment {
   width: 100%;
+  position: relative;
   overflow: hidden;
   aspect-ratio: 1; }
 

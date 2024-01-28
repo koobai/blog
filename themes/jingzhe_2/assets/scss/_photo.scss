@@ -81,13 +81,14 @@
 .photo-quanju{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 6px; 
+    grid-gap: 6px;
     @include breakpoint('small') {
       grid-template-columns: repeat(4, 1fr);  
     }
 }
 .photo-moment {
-    width: 100%; 
+    width: 100%;
+    position: relative;
     overflow: hidden;
     aspect-ratio: 1; //保持比例 1:1
 }
