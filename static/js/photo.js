@@ -25,7 +25,7 @@ const insertRandomImages = images => {
   });
 };
 
-fetch('/suju/photo.json')
+fetch('/suju/photo3.json')
   .then(response => response.json())
   .then(data => {
     insertRandomImages(getRandomImages(data, 3));

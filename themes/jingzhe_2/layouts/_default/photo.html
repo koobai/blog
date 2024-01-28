@@ -1,0 +1,41 @@
+{{ define "main" }}
+  {{ $goods := getJSON "static/suju/photo.json" }}
+  <div class="pagetitle">镜头捕捉生活中稍纵即逝的瞬间，随着时间推移，留下一张张情感记忆。时不时分享几张瞬间，与你一同感受这份真实与美好。</div>
+  <div class="photo-quanju">
+    {{ range $index, $photo := $goods.good }}
+      <div class="photo-moment img-hide {{if or (eq $index 8) (eq $index 9) (eq $index 18) (eq $index 19) }}photo-star{{end}}">       
+          {{ if $photo.video }}
+            <div class="photo_video">
+              <video
+                class="video-source"
+                id="TopGif"
+                width="100%"
+                height="100%"
+                style="object-fit: cover"
+                webkit-playsinline="true"
+                x-webkit-airplay="true"
+                playsinline="true"
+                x5-video-player-type="h5"
+                x5-video-orientation="h5"
+                x5-video-player-fullscreen="true"
+                preload="auto"
+                autoplay="true"
+                loop=""
+                muted=""
+              >
+                <source src="{{ $photo.video }}" type="video/mp4" />
+              </video>
+            </div>
+          {{ else }}
+          <a href="{{ .img }}">
+            <img src="{{ .imgSmall }}" alt="{{ .title }}">
+          {{ end }}
+        </a> 
+        <div class="photo-moment-title">{{ .title }}</div>
+      </div>
+    {{ end }}
+  </div>
+  <div class="article-comments">
+    {{- partial "artalk" . -}}
+  </div>
+{{ end }}

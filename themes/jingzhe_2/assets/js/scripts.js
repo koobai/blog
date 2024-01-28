@@ -14,7 +14,7 @@ if (menuTrigger !== null) {
 window.onscroll=function(){(document.body.scrollTop>500||document.documentElement.scrollTop>500)?document.getElementById("gotop").style.display="block":document.getElementById("gotop").style.display="none"};function smoothScrollTop(){var e=null;cancelAnimationFrame(e),e=requestAnimationFrame(function n(){var o=document.body.scrollTop||document.documentElement.scrollTop;o>0?(document.body.scrollTop=document.documentElement.scrollTop=o-150,e=requestAnimationFrame(n)):cancelAnimationFrame(e)})}
 
 // 灯箱调用(首页顶部/Memos页面)
-window.ViewImage && ViewImage.init('.photo-home a, .content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a');
+window.ViewImage && ViewImage.init('.photo-home a, .content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a,.photo-moment a');
 
 // 页面上滑加载动画
 function animateSummaries() {
