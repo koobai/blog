@@ -1,5 +1,4 @@
-{
-    "good": [
+[
     {
         "img": "https://img.koobai.com/photo/IMG_8198.webp",
         "imgSmall": "https://img.koobai.com/photo/IMG_8198_small.webp",
@@ -9,10 +8,6 @@
         "img": "https://img.koobai.com/photo/IMG_0182.webp",
         "imgSmall": "https://img.koobai.com/photo/IMG_0182_small.webp",
         "title": "可以漂浮了"
-    },
-    {
-        "video": "https://img.koobai.com/photo/20240128_xihuwanxia.mp4",
-        "title": "西湖晚霞"
     },
     {
         "img": "https://img.koobai.com/photo/IMG_0371.webp",
@@ -25,14 +20,14 @@
         "title": "上海天文馆"
     },
     {
+        "img": "https://img.koobai.com/photo/IMG_1033.webp",
+        "imgSmall": "https://img.koobai.com/photo/IMG_1033_small.webp",
+        "title": "迪卡侬AF105"
+    },
+    {
       "img": "https://img.koobai.com/photo/415.webp",
       "imgSmall": "https://img.koobai.com/photo/415-small.webp",
       "title": "每周骑行"
-    },
-    {
-        "img": "https://img.koobai.com/photo/changc.webp",
-        "imgSmall": "https://img.koobai.com/photo/changc-small.webp",
-        "title": "不到长城非好汉"
     },
     {
       "img": "https://img.koobai.com/photo/422.webp",
@@ -40,8 +35,14 @@
       "title": "骑行中发现风景"
     },
     {
-        "video": "https://img.koobai.com/photo/20240128_linpbeizhan.mp4",
-        "title": "骑行路上"
+      "img": "https://img.koobai.com/photo/changc.webp",
+      "imgSmall": "https://img.koobai.com/photo/changc-small.webp",
+      "title": "不到长城非好汉"
+    },
+    {
+        "img": "https://img.koobai.com/photo/caihong.webp",
+        "imgSmall": "https://img.koobai.com/photo/caihong-small.webp",
+        "title": "雨后"
     },
     {
         "img": "https://img.koobai.com/photo/dazi.webp",
@@ -94,10 +95,6 @@
         "title": "快乐的成长"
     },
     {
-        "video": "https://img.koobai.com/photo/20240128_xihucchuan.mp4",
-        "title": "西湖乘船"
-    },
-    {
         "img": "https://img.koobai.com/article/zoom.jpg",
         "imgSmall": "https://img.koobai.com/photo/jianpan-small.webp",
         "title": "客制化机械键盘"
@@ -111,16 +108,5 @@
         "img": "https://img.koobai.com/photo/nguang.webp",
         "imgSmall": "https://img.koobai.com/photo/nguang-small.webp",
         "title": "逆光"
-    },
-    {
-        "img": "https://img.koobai.com/photo/caihong.webp",
-        "imgSmall": "https://img.koobai.com/photo/caihong-small.webp",
-        "title": "雨后"
-    },
-    {
-        "img": "https://img.koobai.com/photo/IMG_1033.webp",
-        "imgSmall": "https://img.koobai.com/photo/IMG_1033_small.webp",
-        "title": "迪卡侬AF105"
     }
   ]
-}

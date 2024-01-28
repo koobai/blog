@@ -1,20 +1,16 @@
 //博客列表页
 .posts-new {
   display: grid;
-  gap: 10px;
+  gap: 30px;
   @include breakpoint('medium') {
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  column-gap: 50px;
+  row-gap: 30px;
   }
 }
 .posts-background {
-    padding: 15px;
-    border-radius:4px;
-    background: #f6f6f6;
-  @include breakpoint('medium') {
-    background: transparent;
-    padding: 0;
-  }
+    position: relative;
+    overflow: hidden;
 }
 .article_new{
   float: left;
@@ -29,24 +25,28 @@
 }
 .posts-title a{
   font-family: var(--font-family-title);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 .posts-description {
   line-height: 1.8;
-  font-size: 1rem;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  font-size: 0.9rem;
+  margin: 6px 0;
   color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 .posts_list{
   display: grid;
   gap: 10px;
+  margin-top: 30px;
   @include breakpoint('medium') {
     display: flex;
     flex-wrap: wrap;
@@ -61,6 +61,21 @@
     background: transparent;
     padding: 0;
 }
+}
+.posts-img{
+ height: 180px;
+ margin:10px 0;
+ overflow: hidden;
+}
+.posts-img img{
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.posts-img img:hover{
+  transform: scale(1.1);
 }
 
 //详情页博文推荐
@@ -113,12 +128,6 @@
     @include breakpoint('small') {
       background: transparent;
   }
-  }
-  .posts-background {
-     background: var(--background-dark-color);
-    @include breakpoint('medium') {
-      background: transparent;
-    }
   }
   .posts-description{
     color: var(--sanji-color);

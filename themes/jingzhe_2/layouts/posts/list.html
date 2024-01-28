@@ -10,24 +10,29 @@
 <div class="posts-new">
 {{ range first 4 $pages }}
 <div class="posts-background img-hide">
+  
+ 
 <!--30 天内新博文-->  
 {{ if gt .Date (now.AddDate 0 0 -15) }}
 <div class="article_new">NEW</div>
 {{ end }}
 <!--<!--30 天内新博文结束-->
     <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
-    <div class="posts-description">{{ .Params.description }}</div>
-    <div class="archive-time">
-      <script>
-        document.write(formatDate({{ .Date.Unix }})); 
-      </script>
-    </div>  
+    <div class="posts-img img-hide">
+      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+      </div>
+      <div class="posts-description">{{ .Params.description }}</div>
+      <div class="archive-time">
+        <script>
+          document.write(formatDate({{ .Date.Unix }})); 
+        </script>
+      </div>  
 </div>
 {{ end }}
 </div>
-<div class="posts_photo img-hide" view-image>
+<!--<div class="posts_photo img-hide" view-image>
   <script src="/js/posts_photo.js"></script>
-  </div>
+  </div>-->
 <div class="posts_list" >
 {{ range after 4 $pages }}
   <div class="posts_list_article img-hide"> 
