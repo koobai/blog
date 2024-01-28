@@ -1,83 +1,3 @@
-//首页相册
-.photo-home{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 6px; 
-    margin-bottom: 30px;
-}
-.posts_photo{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px; 
-    margin: 10px 0;
-    @include breakpoint('medium') {
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 15px;
-        margin: 40px 0;
-    }
-}
-.posts_photo img{
-    height: 150px !important;
-    @include breakpoint('medium') {
-        height: 200px !important;
-    }
-}
-.posts_photo .photo-home-title{
-    font-size: 1rem;
-}
-.photo-home-top{
-    position: relative;
-    overflow: hidden;
-}
-.photo-home-top img {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 2px;
-    transition: transform 0.3s ease;
-    height: 90px; 
-    display: block; 
-    cursor: zoom-in;
-}
-.photo-home-top img:hover{
-    transform: scale(1.1);
-}
-.photo-home-title{
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-    font-size:0.75rem;
-    color: #FFF;
-    position:absolute;
-    bottom: 0;
-    padding: 8px 0 8px 0;
-    text-align: center;
-    display:none;
-    width: 100%;
-} 
-
-// 页面宽度小于700样式
-@media (max-width:900px){
-    .photo-home{
-        display:none;
-    }
-    }
-// 页面宽度大于900样式   
- @media (min-width:900px){
-    .photo-home-top:hover span.photo-home-title{
-        display:block;
-    }
-    }
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-    .photo-home-top img:hover{
-        filter: brightness(0.7);
-      }
-      .photo-home-title{
-        color: #ebebeb;
-    } 
-    }
-
-
-
-
 .photo-quanju{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -120,3 +40,21 @@
 .photo-moment:hover .photo-moment-title {
     opacity: 1;
 }
+
+//首页调用
+.photo-index{
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 30px;
+}
+.photo-index .photo-moment-title{
+    font-size: 0.75rem;
+}
+
+//夜间模式
+@media (prefers-color-scheme: dark) {
+    .photo-moment-title{
+        color: #dfdfdf;
+    }
+    }
