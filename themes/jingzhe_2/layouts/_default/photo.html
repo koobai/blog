@@ -1,7 +1,7 @@
 {{ define "body_classes" }}page-photo{{ end }}
 {{ define "main" }}
   {{ $goods := getJSON "static/suju/photo.json" }}
-  <div class="pagetitle">镜头捕捉生活中稍纵即逝的瞬间，随着时间推移，留下一张张情感记忆。时不时分享几张瞬间，与你一同感受这份真实与美好。</div>
+  <div class="pagetitle">用镜头捕捉生活中稍纵即逝的瞬间，随着时间推移，留下一张张情感记忆。时不时分享几张，一同感受这份真实与美好。</div>
   <div class="photo-quanju">
     {{ range $index, $photo := $goods.good }}
       <div class="photo-moment img-hide {{if or (eq $index 8) (eq $index 9) (eq $index 18) (eq $index 19) }}photo-star{{end}}">       
