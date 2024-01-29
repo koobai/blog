@@ -417,9 +417,6 @@ ul {
   max-width: 100%;
   cursor: zoom-in; }
 
-.content-index {
-  margin-bottom: 30px; }
-
 .summary {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -1381,7 +1378,8 @@ img[atk-emoticon] {
 .movie-quanju {
   display: grid;
   grid-gap: 20px;
-  /* 中间空10px间距 */ }
+  /* 中间空10px间距 */
+  margin-bottom: 30px; }
 
 .movie-index {
   border-radius: 4px; }
