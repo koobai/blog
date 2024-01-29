@@ -44,10 +44,8 @@
 </div>
 {{ end }}
 </div>
-
 <div class="sidebar-biaot">最新观影</div>
-<div class="content-index">{{ .Content }}</div>
-
+{{ partial "movies" 4 }}
 <div class="sidebar-biaot">博文标签</div>
 <div class="archives_tags">
   {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
