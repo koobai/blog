@@ -15,17 +15,6 @@
       grid-template-columns: 1fr 130px;
     }
 }
-.article_new{
-  float: left;
-  background: var(--text-highlight-color);
-  color: #fff;
-  padding: 2px 4px;
-  margin-right: 8px;
-  margin-top: 3px;
-  font-family: var(--font-family-code);
-  border-radius: 4px;
-  font-size: 0.75rem;
-}
 .posts-title a{
   font-family: var(--font-family-title);
   font-size: 1.4rem;
