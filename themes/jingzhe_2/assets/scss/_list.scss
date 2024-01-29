@@ -3,14 +3,17 @@
   display: grid;
   gap: 30px;
   @include breakpoint('medium') {
-  grid-template-columns: 1fr 1fr;
-  column-gap: 50px;
-  row-gap: 30px;
+    gap: 40px;
   }
 }
 .posts-background {
     position: relative;
     overflow: hidden;
+    @include breakpoint('medium') {
+      display: grid;
+      gap: 40px;
+      grid-template-columns: 1fr 130px;
+    }
 }
 .article_new{
   float: left;
@@ -25,7 +28,7 @@
 }
 .posts-title a{
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   line-height: 1.5;
   overflow: hidden;
   display: -webkit-box;
@@ -34,38 +37,40 @@
 }
 .posts-description {
   line-height: 1.8;
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 6px 0;
   color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 .posts_list{
   display: grid;
-  gap: 10px;
+  gap: 15px;
   margin-top: 30px;
   @include breakpoint('medium') {
     display: flex;
     flex-wrap: wrap;
-    gap: 45px;
 }
 }
 .posts_list_article{
   border-radius:4px;
-  background: #f6f6f6;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
   padding: 15px;
   @include breakpoint('medium') {
-    background: transparent;
-    padding: 0;
+    padding: 20px;
 }
 }
 .posts-img{
- height: 180px;
+ height: 200px;
  margin:10px 0;
  overflow: hidden;
+ @include breakpoint('medium') {
+  height: 400px;
+}
 }
 .posts-img img{
   width: 100%;
@@ -76,6 +81,17 @@
 }
 .posts-img img:hover{
   transform: scale(1.1);
+}
+.posts-time{
+  margin: 6px 0;
+}
+.posts-tag{
+  display: none;
+  @include breakpoint('medium') {
+    display: block;
+    width: 100%;
+    margin-bottom: 6px;
+  }
 }
 
 //详情页博文推荐
@@ -125,9 +141,6 @@
       }
   .posts_list_article{
     background: var(--background-dark-color);
-    @include breakpoint('small') {
-      background: transparent;
-  }
   }
   .posts-description{
     color: var(--sanji-color);

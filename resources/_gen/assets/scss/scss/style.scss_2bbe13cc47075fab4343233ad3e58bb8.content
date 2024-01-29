@@ -2494,13 +2494,15 @@ blockquote p {
   gap: 30px; }
   @media (min-width: 900px) {
     .posts-new {
-      grid-template-columns: 1fr 1fr;
-      column-gap: 50px;
-      row-gap: 30px; } }
+      gap: 40px; } }
 .posts-background {
   position: relative;
   overflow: hidden; }
-
+  @media (min-width: 900px) {
+    .posts-background {
+      display: grid;
+      gap: 40px;
+      grid-template-columns: 1fr 130px; } }
 .article_new {
   float: left;
   background: var(--text-highlight-color);
@@ -2514,7 +2516,7 @@ blockquote p {
 
 .posts-title a {
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   line-height: 1.5;
   overflow: hidden;
   display: -webkit-box;
@@ -2523,37 +2525,38 @@ blockquote p {
 
 .posts-description {
   line-height: 1.8;
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 6px 0;
   color: var(--erji-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
 
 .posts_list {
   display: grid;
-  gap: 10px;
+  gap: 15px;
   margin-top: 30px; }
   @media (min-width: 900px) {
     .posts_list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 45px; } }
+      flex-wrap: wrap; } }
 .posts_list_article {
   border-radius: 4px;
-  background: #f6f6f6;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
   padding: 15px; }
   @media (min-width: 900px) {
     .posts_list_article {
-      background: transparent;
-      padding: 0; } }
+      padding: 20px; } }
 .posts-img {
-  height: 180px;
+  height: 200px;
   margin: 10px 0;
   overflow: hidden; }
-
+  @media (min-width: 900px) {
+    .posts-img {
+      height: 400px; } }
 .posts-img img {
   width: 100%;
   height: 100%;
@@ -2564,6 +2567,16 @@ blockquote p {
 .posts-img img:hover {
   transform: scale(1.1); }
 
+.posts-time {
+  margin: 6px 0; }
+
+.posts-tag {
+  display: none; }
+  @media (min-width: 900px) {
+    .posts-tag {
+      display: block;
+      width: 100%;
+      margin-bottom: 6px; } }
 .archives_nrong {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -2607,11 +2620,7 @@ blockquote p {
   .archive-time {
     color: var(--erji-color); }
   .posts_list_article {
-    background: var(--background-dark-color); } }
-  @media (prefers-color-scheme: dark) and (min-width: 700px) {
-    .posts_list_article {
-      background: transparent; } }
-@media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color); }
   .posts-description {
     color: var(--sanji-color); } }
 
@@ -2620,7 +2629,7 @@ blockquote p {
   display: flex;
   flex-direction: column;
   max-height: 55vh;
-  width: 320px;
+  width: 340px;
   overflow: hidden;
   pointer-events: none;
   text-align: left;
