@@ -85,18 +85,23 @@
 
 //详情页博文推荐
 .archives_nrong{
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin: 30px 0;
   display: grid;
   grid-gap: 15px; /* 中间空10px间距 */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	@include breakpoint('small') {
-		grid-gap: 40px; /* 中间空10px间距 */
+		grid-gap: 20px; /* 中间空10px间距 */
 	  }	
 }
 .archives_one{
   display: flex;
   align-items: center;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 15px;
+  @include breakpoint('small') {
+		grid-gap: 20px; /* 中间空10px间距 */
+	  }	
 }
 .archive-title{
   font-family: var(--font-family-title);
@@ -128,7 +133,7 @@
   .archive-time{
         color: var(--erji-color);
       }
-  .posts_list_article{
+  .posts_list_article,.archives_one{
     background: var(--background-dark-color);
   }
   .posts-description{

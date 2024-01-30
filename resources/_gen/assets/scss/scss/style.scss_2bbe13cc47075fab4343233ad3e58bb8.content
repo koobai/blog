@@ -2572,20 +2572,25 @@ blockquote p {
       width: 100%;
       margin-bottom: 6px; } }
 .archives_nrong {
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin: 30px 0;
   display: grid;
   grid-gap: 15px;
   /* 中间空10px间距 */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
   @media (min-width: 700px) {
     .archives_nrong {
-      grid-gap: 40px;
+      grid-gap: 20px;
       /* 中间空10px间距 */ } }
 .archives_one {
   display: flex;
-  align-items: center; }
-
+  align-items: center;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 15px; }
+  @media (min-width: 700px) {
+    .archives_one {
+      grid-gap: 20px;
+      /* 中间空10px间距 */ } }
 .archive-title {
   font-family: var(--font-family-title);
   font-size: 1rem;
@@ -2613,7 +2618,7 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .archive-time {
     color: var(--erji-color); }
-  .posts_list_article {
+  .posts_list_article, .archives_one {
     background: var(--background-dark-color); }
   .posts-description {
     color: var(--sanji-color); } }
