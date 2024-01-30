@@ -21,10 +21,10 @@
 
 <!--侧边栏--> 
 <div>
-<div class="sidebar-biaot">随机瞬间</div>
+<!--<div class="sidebar-biaot">随机瞬间</div>
 <div class="photo-quanju photo-index" view-image>
   <script src="/js/photo.js"></script>
-  </div>
+  </div>-->
 <div class="sidebar-biaot">最新博文</div> 
 {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
 <div class="sidebar-page img-hide">
@@ -46,12 +46,12 @@
 </div>
 <div class="sidebar-biaot">最新观影</div>
 {{ partial "movies" 4 }}
-<div class="sidebar-biaot">博文标签</div>
+<!--<div class="sidebar-biaot">博文标签</div>
 <div class="archives_tags">
   {{- range $name, $taxonomy := .Site.Taxonomies.tags -}}
   <div class="list-tags img-hide"><a href="/tags/{{ $name | urlize }}"> {{ $name }} <span class="archives_tags_f">({{ .Count }})</span></a></div>
   {{- end -}}
-</div>
+</div>-->
 
 </div>
 <!--侧边栏结束--> 
