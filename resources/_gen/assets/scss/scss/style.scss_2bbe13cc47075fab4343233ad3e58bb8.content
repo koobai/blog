@@ -1038,6 +1038,21 @@ img[atk-emoticon] {
   .atk-main-editor > .atk-header {
     display: block !important; } }
 
+#MoreComments {
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-highlight-color);
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  border: 0.5px solid var(--text-highlight-color);
+  display: inline-block; }
+
+#MoreComments:hover {
+  opacity: 0.8;
+  transition: opacity .3s ease-in-out; }
+
 .appdquanjudiv {
   display: grid;
   grid-gap: 10px;
