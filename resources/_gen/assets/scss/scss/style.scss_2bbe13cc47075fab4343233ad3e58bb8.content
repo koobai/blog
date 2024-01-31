@@ -1375,11 +1375,13 @@ img[atk-emoticon] {
     color: var(--sanji-color); } }
 
 .movie-quanju {
-  display: grid;
-  grid-gap: 20px;
-  /* 中间空10px间距 */
-  margin-bottom: 30px; }
-
+  display: none; }
+  @media (min-width: 900px) {
+    .movie-quanju {
+      display: grid;
+      grid-gap: 20px;
+      /* 中间空10px间距 */
+      margin-bottom: 30px; } }
 .movie-content {
   display: grid;
   grid-template-columns: auto 1fr;

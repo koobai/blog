@@ -1,8 +1,11 @@
 // 首页调用
 .movie-quanju{
-  display: grid;
-	grid-gap: 20px; /* 中间空10px间距 */
-  margin-bottom: 30px;
+  display: none;
+  @include breakpoint('medium') {
+    display: grid;
+    grid-gap: 20px; /* 中间空10px间距 */
+    margin-bottom: 30px;
+  }
 }
 .movie-content{
   display: grid;
