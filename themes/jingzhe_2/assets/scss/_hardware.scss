@@ -36,10 +36,9 @@
 }
 .hardware-title{
 	margin-bottom: 4px;
-	font-size:1rem;
+	font-size:0.85rem;
 	padding: 0 10px;
 	@include breakpoint('medium') {
-	  font-size:0.85rem;
 	  padding: 0;
 	}	
 }
