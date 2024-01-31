@@ -55,18 +55,8 @@ btn.addEventListener("click", function () {
 }
 function getFirstList(){
 bbDom.insertAdjacentHTML('afterend', load);
-let tagHtml = `<div id="memos-search-hide" style="display:none;margin-bottom: 30px;">
-<div class="memos-search-all img-hide">
-<div class="memos-search">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto opacity-30 dark:text-gray-200"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-<input type="text" id="memos-search-input" placeholder="输入关键词，搜索唠叨..." onkeydown="searchMemoevent(event)">
-</div>
-</div>
-<div id="tag-list-all"></div>
-</div>
-<div id="tag-list"></div>` // TAG筛选 memos搜索
+let tagHtml = `<div id="tag-list"></div>` // TAG筛选 memos搜索
 bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
-showTaglist(); // 显示所有 TAG
 var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
 let memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
 let oneDay = window.localStorage && window.localStorage.getItem("memos-oneday");
@@ -118,12 +108,6 @@ fetch(bbUrl).then(res => res.json()).then( resdata =>{
     document.querySelector("button.button-load").remove()
     return
   }
-  //在未展开评论时，默认显示评论数
-  Artalk.loadCountWidget({
-    server: 'https://c.koobai.com/',
-    site: '空白唠叨', 
-    countEl: '#ArtalkCount'
-  });
 })
 }
 
@@ -245,10 +229,7 @@ function updateHTMl(data,mode){
 
       if(memoVis == "PUBLIC"){
         result += `<div class="talks_comments">
-            <a onclick="loadArtalk('${memo_id}')">
-              <span id="ArtalkCount" data-page-key="/m/${memo_id}" class="comment-s"></span> 条评论  <span id="btn_memo_${memo_id}">
-              </span>
-            </a>
+            <a onclick="loadArtalk('${memo_id}')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11.25a.75.75 0 1 0 0 1.5a.75.75 0 0 0 0-1.5m-3 0a.75.75 0 1 0 0 1.5a.75.75 0 0 0 0-1.5m6 0a.75.75 0 1 0 0 1.5a.75.75 0 0 0 0-1.5m4.415-5.96C15.71 1.195 9.385.88 5.29 4.584C1.195 8.289.88 14.614 4.584 18.709l-2.438 2.437A.5.5 0 0 0 2.5 22H12a10 10 0 0 0 6.709-2.585c4.096-3.705 4.412-10.03.706-14.125M12 21H3.707l1.929-1.929a.5.5 0 0 0 0-.707a8.999 8.999 0 0 1 6.362-15.362A8.999 8.999 0 0 1 12 21"/></svg><span id="btn_memo_${memo_id}"></span></a>
           </div>
         </div>
         <div id="memo_${memo_id}" class="artalk hidden"></div>
@@ -295,65 +276,7 @@ function getTagNow(e){
     document.querySelector(bbMemo.domId).innerHTML = ""
     if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove()
     updateHTMl(resdata)
-
-  //在未展开评论时，默认显示评论数
-  Artalk.loadCountWidget({
-    server: 'https://c.koobai.com/',
-    site: '空白唠叨', 
-    countEl: '#ArtalkCount'
-  });
   })
-}
-
-// 显示所有 TAG
-function showTaglist(){
-  let bbUrl = 'https://memostag.yangle.vip/'
-  let tagListDom = ""
-  fetch(bbUrl).then(res => res.json()).then( resdata =>{
-    for(let i=0;i < resdata.length;i++){
-      tagListDom += `<div class="memos-tag-all img-hide" onclick='getTagNow(this)'>#${resdata[i]}</div>`
-    }
-    document.querySelector('#tag-list-all').innerHTML = tagListDom
-
-    animateSummaries(); // 加载完毕后执行滑动加载动画
-  })
-}
-
-// 搜索 Memos
-function searchMemoevent(event) {
-  if (event.key === "Enter") {
-      searchMemo();
-  }
-}
-
-function searchMemo() {
-  let searchText = document.querySelector('#memos-search-input').value;
-  let tagHtmlNow = `<div class='memos-tag-sc-2' onclick='javascript:location.reload();'><div class='memos-tag-sc-1' >关键词搜索:</div><div class='memos-tag-sc' >${searchText}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></div></div>`
-  document.querySelector('#tag-list').innerHTML = tagHtmlNow;
-  let bbUrl = memos + "api/v1/memo?creatorId=" + bbMemo.creatorId + "&content=" + searchText + "&limit=20";
-  fetchMemoDOM(bbUrl);
-}
-
-function fetchMemoDOM(bbUrl) {
-  fetch(bbUrl)
-    .then(res => res.json())
-    .then(resdata => {
-      let arrData = resdata || '';
-      if (resdata.data) {
-        arrData = resdata.data;
-      }
-      if (arrData.length > 0) {
-        // 清空旧的搜索结果和加载按钮
-        document.querySelector(bbMemo.domId).innerHTML = "";
-        if (document.querySelector("button.button-load")) {
-          document.querySelector("button.button-load").remove();
-        }
-        updateHTMl(resdata);
-      } else {
-        alert("搜不到，尝试换一个关键词");
-        setTimeout(() => location.reload(), 1000);
-      }
-    });
 }
 
 //增加memos评论
@@ -400,7 +323,6 @@ function loadArtalk(memo_id) {
   }
 }
 
-
 //调用coco-message插件暗黑模式
 const darkModeMatcher = window.matchMedia('(prefers-color-scheme: dark)'); 
 darkModeMatcher.addEventListener('change', handleDarkModeChange);
@@ -412,21 +334,6 @@ function handleDarkModeChange(e) {
   }
 }
 handleDarkModeChange(darkModeMatcher);
-
-//点击按钮显示搜索框
-function toggleSearch() {
-  var searchContainer = document.getElementById("memos-search-hide");
-  if(searchContainer.style.display === "none") {
-    searchContainer.style.display = "block";
-    
-var input = document.getElementById("memos-search-input");
-input.focus(); 
-} else {
-searchContainer.style.display = "none"; 
-}
-}
-
-
 
 // memos-editor唠叨编辑开始 
 var memosDom = document.querySelector(memosData.dom);

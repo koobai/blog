@@ -2,7 +2,7 @@
 @import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css");
 @import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css");
 :root {
-  --font-family-paragraph: 'HarmonyOS_Regular', Helvetica, sans-serif;
+  --font-family-paragraph: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
   --font-family-title: 'HarmonyOS_Medium', Helvetica, sans-serif;
   --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', Helvetica, sans-serif;
   --bankuai-color: #f6f6f6;
@@ -1660,27 +1660,14 @@ img[atk-emoticon] {
 .talks_comments {
   margin-left: auto; }
 
-.talks_comments a {
-  display: flex;
-  font-size: 0.85rem;
-  color: var(--sanji-color);
-  text-decoration: none;
-  cursor: pointer; }
-
-.talks_comments a:hover {
-  text-decoration: underline; }
-
-.comment-s {
-  margin-right: 4px;
-  color: var(--sanji-color);
-  font-size: 0.85rem; }
-
 .talks_comments svg {
-  fill: #c0c0c0;
-  margin-left: 6px;
-  display: flex;
-  align-items: center;
-  margin-top: 1.5px; }
+  color: var(--sanji-color);
+  cursor: pointer;
+  width: 18px;
+  height: 18px; }
+
+.talks_comments svg:hover {
+  color: var(--erji-color); }
 
 .memos_diaoyong_top {
   margin-top: 5px;
@@ -1940,7 +1927,7 @@ blockquote p {
   margin-bottom: 10px; }
   @media (min-width: 900px) {
     .memos-editor-body {
-      margin-bottom: 30px; } }
+      margin-bottom: 40px; } }
 .memos-editor-content .memos-editor-textarea {
   border: transparent;
   border-radius: 4px;
@@ -2185,12 +2172,14 @@ blockquote p {
     background: var(--background-dark-color); }
   .memos_diaoyong_from a {
     color: var(--sanji-color); }
-  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_more a, .memos_diaoyong_from, .talks_comments a, .comment-s {
+  .memos_diaoyong_time, .memos_diaoyong_laiz a, .memos_diaoyong_more a, .memos_diaoyong_from {
     color: var(--erji-color); }
   .memos_diaoyong_info p, .memos_diaoyong_info a {
     color: var(--text-content-dark-color) !important; }
   .talks_comments svg {
-    fill: #666; }
+    color: var(--erji-color); }
+  .talks_comments svg:hover {
+    color: var(--sanji-color); }
   pre, blockquote p {
     background: #2c2829; }
   pre code {
@@ -2226,16 +2215,6 @@ blockquote p {
     background-color: #282527; }
   .cancel-edit-btn {
     border: 0.5px solid #201d1e; }
-  #memos-search-input {
-    color: var(--text-content-dark-color) !important; }
-  .memos-search ::placeholder, .memos-search svg {
-    color: #666 !important; }
-  .memos-search-ico svg {
-    color: #827478 !important; }
-  .memos-search-ico {
-    color: #999 !important; }
-  .memos-search-all {
-    border: 1px solid var(--frame-dark-color) !important; }
   #memos-tag-menu {
     background-color: #282527 !important;
     box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.3) !important;
@@ -2259,55 +2238,6 @@ blockquote p {
 
 .emoji-item:hover {
   opacity: 0.6; }
-
-.memos-search-all {
-  border-radius: 4px;
-  border: 1px solid var(--frame-color);
-  padding: 15px 10px; }
-
-.memos-search {
-  width: 100%;
-  display: flex;
-  align-items: center; }
-
-#memos-search-input {
-  border: transparent;
-  background: transparent;
-  padding: 0;
-  font-size: 1rem;
-  resize: none;
-  outline: 0.5px solid transparent;
-  color: var(--text-content-color);
-  width: 100%; }
-
-.memos-search ::placeholder {
-  color: #b8b8b8; }
-
-.memos-search svg {
-  width: 20px;
-  margin-right: 5px;
-  color: #b8b8b8; }
-
-.memos-search-ico svg {
-  width: 22px;
-  height: 22px;
-  color: var(--sanji-color);
-  cursor: pointer;
-  margin-right: 10px; }
-
-.memos-search-ico {
-  display: none; }
-  @media (min-width: 900px) {
-    .memos-search-ico {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      margin-top: 30px;
-      margin-bottom: 30px;
-      color: var(--erji-color);
-      font-family: var(--font-family-title); } }
-.memos-search-ico:hover {
-  text-decoration: underline; }
 
 #memos-tag-menu {
   position: absolute;
@@ -2749,9 +2679,6 @@ body {
 .page-blog-list, .page-blog-single {
   max-width: 860px;
   margin: auto; }
-
-.page-blog-single .memos-search-ico, .page-hardware .memos-search-ico, .page-app .memos-search-ico, .page-about .memos-search-ico, .page-movies .memos-search-ico, .page-blog-list .memos-search-ico, .page-photo .memos-search-ico {
-  display: none; }
 
 .highlight pre {
   background: var(--bankuai-color); }
