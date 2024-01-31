@@ -52,12 +52,9 @@
 }
 }
 .posts-img{
- height: 200px;
  margin:10px 0;
  overflow: hidden;
- @include breakpoint('medium') {
-  height: 420px;
-}
+ aspect-ratio: 5.3 / 3;
 }
 .posts-img img{
   width: 100%;
@@ -109,7 +106,7 @@
   }
 .archive-img img{
     width: 120px;
-    height: 80px;
+    aspect-ratio: 4.5 / 3;
     object-fit: cover;
     border-radius:6px;
     transition: transform 0.3s ease; 
