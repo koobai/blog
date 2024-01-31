@@ -6,7 +6,7 @@ let visibleMovies = 20; // 最初可见的电影数量
 
   // 根据可见性计数显示/隐藏电影的函数
   function updateVisibility() {
-    const movies = document.querySelectorAll('.sc-gKAaRy.dfdORB.img-hide');
+    const movies = document.querySelectorAll('.movies_bankuai');
     movies.forEach((movie, idx) => {
       movie.style.display = idx < visibleMovies ? 'block' : 'none';
     });

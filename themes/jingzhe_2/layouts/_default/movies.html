@@ -22,7 +22,7 @@
   </video>
 </div>
 <div class="pagetitle">自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中 ( 数据来源于豆瓣 )～～</div>
-  <div id="movies_page" class="fIuTG">
+  <div id="movies_page">
   {{$movies := getCSV "," "data/douban/movie.csv" }}
   {{$scratch := newScratch}}
   {{$scratch.Add "genres" slice}}
@@ -30,29 +30,17 @@
     {{if ne $idx 0}}
       {{$scratch.Set "genres" (union ($scratch.Get "genres") (split (index $movie 7) ","))}}
     {{end}}
-  {{end}}
-   
+  {{end}}  
       {{range $idx, $movie := $movies}}
       {{if ne $idx 0 }}
       <!--封面地址替换 -->
       {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $movie 3)) }}
       <!--个人评分改成星星 -->
       {{ $rating := index $movie 8 }}
-      <div 
-        class="sc-gKAaRy dfdORB img-hide" 
-        data-year="{{index $movie 11}}" 
-        data-star="{{index $movie 8}}"
-        data-rating="{{index $movie 6}}"
-        data-genres="{{index $movie 7}}"  
-      >
-      <div class="sc-hKFxyN HPRth">
-          <a rel="link" href="{{index $movie 5}}" target="_blank" > <div class="lazyload-wrapper ">
-            <img class="avatar" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $movie 1 }}">
-            </div></a>
-            <a rel="link" href="{{index $movie 5}}" target="_blank" >
+      <div class="movies_bankuai img-hide">
+          <a rel="link" href="{{index $movie 5}}" target="_blank" ><img class="avatar" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $movie 1 }}"></a>
             <div class="movies-nrong">
-            <!--<div class="movie-time">{{index $movie 4}}</div>-->
-            <div class="movie-title">{{index $movie 1}}</div>
+            <div class="movie-title"><a rel="link" href="{{index $movie 5}}" target="_blank" >{{index $movie 1}}</a></div>
             <div class="movie-pfeng">
               {{ with $rating }}
                 {{ $ratingCount := . }}
@@ -65,9 +53,8 @@
             <div class="movie-time">@ <script>
               document.write(formatDate({{ index $movie 11 }})); 
          </script></div>
-          </div></a>
           </div>
-      </div>
+          </div>
       {{end}}
       {{end}}
     </div>  
