@@ -9,30 +9,28 @@
 <div class="posts-new">
 {{ range first 4 $pages }}
 <div class="posts-background img-hide"> 
- <div>
     <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
     <div class="posts-img img-hide">
       <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
       </div>
       <div class="posts-description">{{ .Params.description }}</div>
-    </div>
-    <div>
-    <!--30 天内新博文-->  
-    {{ if gt .Date (now.AddDate 0 0 -15) }}
-    <div class="sidebar_article_new">NEW</div>
-    {{ end }}
-    <!--<!--30 天内新博文结束-->
-      <div class="archive-time posts-time">
-        <script>
-          document.write(formatDate({{ .Date.Unix }})); 
-        </script>
-      </div>  
-      {{ with .GetTerms "tags" }}
-      {{ range . }}
-        <div class="single-tag-c posts-tag"># <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
-      {{ end }}
-    {{ end }}
-    </div>    
+      <div class="posts-time-new">
+        <!--30 天内新博文-->  
+        {{ if gt .Date (now.AddDate 0 0 -15) }}
+        <div class="sidebar_article_new">NEW</div>
+        {{ end }}
+        <!--<!--30 天内新博文结束-->
+          <div class="archive-time posts-time">
+            <script>
+              document.write(formatDate({{ .Date.Unix }})); 
+            </script>
+          </div>
+          {{ with .GetTerms "tags" }}
+          {{ range . }}
+            <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+          {{ end }}
+        {{ end }}
+      </div>
 </div>
 {{ end }}
 </div>
