@@ -97,7 +97,7 @@
 }
 .gallery-thumbnail img{
   width: 100% !important;
-  aspect-ratio: 1;
+  aspect-ratio: 3.5 / 3;
   object-fit: cover;
   border-radius:4px;
   transition: transform 0.3s ease;

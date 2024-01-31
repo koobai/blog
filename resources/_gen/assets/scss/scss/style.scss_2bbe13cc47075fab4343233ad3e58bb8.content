@@ -1393,7 +1393,7 @@ img[atk-emoticon] {
   border-radius: 4px !important;
   object-fit: cover;
   width: 80px;
-  height: 110px; }
+  aspect-ratio: 3 / 4.2; }
 
 .movie-content-right-1 {
   margin-bottom: 8px;
@@ -1466,10 +1466,8 @@ img[atk-emoticon] {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 220px; }
-  @media (min-width: 700px) {
-    .movies_bankuai {
-      height: 340px; } }
+  aspect-ratio: 3 / 4.5; }
+
 .movies_bankuai img {
   width: 100%;
   height: 100%;
@@ -1649,7 +1647,7 @@ img[atk-emoticon] {
 
 .gallery-thumbnail img {
   width: 100% !important;
-  aspect-ratio: 1;
+  aspect-ratio: 3.5 / 3;
   object-fit: cover;
   border-radius: 4px;
   transition: transform 0.3s ease;
@@ -2324,12 +2322,10 @@ blockquote p {
     .posts_list_article {
       padding: 20px; } }
 .posts-img {
-  height: 200px;
   margin: 10px 0;
-  overflow: hidden; }
-  @media (min-width: 900px) {
-    .posts-img {
-      height: 420px; } }
+  overflow: hidden;
+  aspect-ratio: 5.3 / 3; }
+
 .posts-img img {
   width: 100%;
   height: 100%;
@@ -2379,7 +2375,7 @@ blockquote p {
 
 .archive-img img {
   width: 120px;
-  height: 80px;
+  aspect-ratio: 4.5 / 3;
   object-fit: cover;
   border-radius: 6px;
   transition: transform 0.3s ease;
