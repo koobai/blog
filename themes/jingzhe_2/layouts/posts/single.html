@@ -57,7 +57,22 @@
       </div>
     {{ end }}
       </div>
-<div class="article-comments">
-  {{- partial "artalk" . -}}
-</div>
+      <!----评论加载-->
+      <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
+      <div class="article-comments" id="articlecomments" style="display: none;">
+        {{- partial "artalk" . -}}
+      </div> 
+      <script>
+      function loadComments() {
+        var articlecomments = document.getElementById("articlecomments");
+        var MoreComments = document.getElementById("MoreComments");      
+        articlecomments.style.display = "block";
+        MoreComments.style.display = "none";     
+        var buttonRect = MoreComments.getBoundingClientRect();
+        window.scroll({
+          top: window.scrollY + buttonRect.top + 300,
+          behavior: 'smooth'
+        });
+      }
+      </script>     
 {{ end }}
