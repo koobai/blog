@@ -34,7 +34,6 @@ $breakpoints: (
 @import 'tags';
 @import 'movies';
 @import 'memos';
-@import 'photo';
 @import 'index';
 @import 'about';
 @import 'list';
@@ -66,19 +65,18 @@ body {
 }
 
 .wrapper {
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
-  @include breakpoint('medium') {
-      display: grid;
-      grid-gap: 40px;
-      grid-template-columns: 100px 1fr;
-      margin-top: 60px;
-    }
 }
-.page-blog-single,.page-hardware,.page-app,.page-about,.page-blog-list{
-  max-width: 1080px;
+.page-hardware,.page-app,.page-about,.page-blog-tag{
+  max-width: 940px;
   margin: auto;
 }
+.page-blog-list,.page-blog-single{
+  max-width: 860px;
+  margin: auto;
+}
+
 .page-blog-single .memos-search-ico,.page-hardware .memos-search-ico,.page-app .memos-search-ico,.page-about .memos-search-ico,.page-movies .memos-search-ico,.page-blog-list .memos-search-ico,.page-photo .memos-search-ico{
   display: none;
 }

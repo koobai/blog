@@ -110,7 +110,7 @@
 }
 .gallery-thumbnail img{
   width: 100% !important;
-  height: 150px !important;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius:4px;
   transition: transform 0.3s ease;
@@ -122,9 +122,6 @@
 }
 .grid-3,.grid-5,.grid-6,.grid-7,.grid-8,.grid-9{
   grid-template-columns: repeat(3, 1fr); 
-}
-.grid-3 img,.grid-5 img,.grid-6 img,.grid-7 img,.grid-8 img,.grid-9 img{
-  height: 110px !important;
 }
 .memos-tag-dg,.memos-tag-sc{
   display: inline-block; /* 根据padding宽度自动调整 */
@@ -250,9 +247,6 @@ blockquote p{
   display: inline-block;
   margin-left: 30px;
   color: transparent;
-  @include breakpoint('medium') {
-    margin-left: 0;
-  }
 }
 .outline svg{
   color: var(--sanji-color);
@@ -524,12 +518,6 @@ blockquote p{
   .resimg{
     width: 100% !important;
   }
-  .gallery-thumbnail img{
-    height: 140px !important;
-  }
-  .grid-3 img,.grid-5 img,.grid-6 img,.grid-7 img,.grid-8 img,.grid-9 img{
-    height: 100px !important;
-  }
   .resimg figure{
     margin-bottom: -8px;
   }
@@ -558,14 +546,8 @@ blockquote p{
     width: 100% !important;
     grid-template-columns: repeat(5, 1fr); 
   }
-  .memos_diaoyong .gallery-thumbnail img{
-    height: 130px !important;
-  }
   .memos_diaoyong .grid-3,.memos_diaoyong .grid-5,.memos_diaoyong .grid-6,.memos_diaoyong .grid-7,.memos_diaoyong grid-8,.memos_diaoyong .grid-9{
     grid-template-columns: repeat(5, 1fr); 
-  }
-  .memos_diaoyong .grid-3 img,.memos_diaoyong .grid-5 img,.memos_diaoyong .grid-6 img,.memos_diaoyong .grid-7 img,.memos_diaoyong .grid-8 img,.memos_diaoyong .grid-9 img{
-    height: 130px !important;
   }
   .bb-list-ul{
     display: grid;

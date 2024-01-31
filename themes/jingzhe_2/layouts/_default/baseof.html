@@ -37,10 +37,8 @@
   {{ partial "menu-main-mobile.html" . }}
   <div id="wrapper" class="wrapper">
     {{ partial "header.html" . }}
-    <div>
     {{ block "main" . }}
     {{ end }}
-    </div>
   </div>
   {{ partial "footer.html" . }}
   {{ $scripts := resources.Get "js/scripts.js" }}

@@ -224,7 +224,7 @@ function updateHTMl(data,mode){
       result += `
       <li class="bb-list-li img-hide" id="${memo_id}">
         <div class="memos-pl">
-        <div class="memos-zan"><emoji-reaction class="reactions" reactTargetId="/m/${memo_id}" theme="system" endpoint="https://like.yangle.vip" availableArrayString="👍,thumbs-up;"></emoji-reaction></div>`
+        <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>`
 
       if(hasLogin !== 0){
         result += `<div class="memos-edit">
@@ -241,7 +241,6 @@ function updateHTMl(data,mode){
       result += `</div>       
         <div class="datacont" view-image>${bbContREG}</div>
         <div class="memos_diaoyong_top">
-        <div class="memos_diaoyong_time">${moment(data[i].createdTs * 1000).twitterLong()}</div>
         <div class="memos-tag-wz">${memosTag}</div>`
 
       if(memoVis == "PUBLIC"){

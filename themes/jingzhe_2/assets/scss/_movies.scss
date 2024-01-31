@@ -98,6 +98,9 @@
 .page-movies .header-menu svg{
   color: #ebebeb;
 }
+.page-movies .menu-main svg {
+  fill: #dfdfdf;
+}
 //顶部视频结束--
 
 .fIuTG{
@@ -287,5 +290,14 @@ color: var(--text-highlight-color);
 }
 .page-movies .header-menu svg{
   color: #827478;
+}
+.page-movies .pagetitle,.page-movies .header-menu a{
+  color: #dfdfdf;
+}
+.page-movies .header-menu svg{
+  color: #dfdfdf;
+}
+.page-movies .menu-main svg {
+  fill: #c3c3c3;
 }
 }

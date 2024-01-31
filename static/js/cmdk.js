@@ -28,7 +28,7 @@ document.addEventListener('click', function(e) {
 });
 
 function handleKeyPress(e) {
-  const commandToggle = ((e.ctrlKey || e.altKey || e.metaKey) && e.code == 'KeyK');
+  const commandToggle = ((e.altKey || e.metaKey) && e.code == 'KeyK');
   const isDigitKey = e.key >= '1' && e.key <= '9';
   const isEscKey = e.code === 'Escape';
 

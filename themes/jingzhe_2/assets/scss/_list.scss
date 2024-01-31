@@ -10,9 +10,7 @@
     position: relative;
     overflow: hidden;
     @include breakpoint('medium') {
-      display: grid;
-      gap: 40px;
-      grid-template-columns: 1fr 130px;
+
     }
 }
 .posts-title a{
@@ -58,7 +56,7 @@
  margin:10px 0;
  overflow: hidden;
  @include breakpoint('medium') {
-  height: 400px;
+  height: 420px;
 }
 }
 .posts-img img{
@@ -69,18 +67,12 @@
   transition: transform 0.3s ease;
 }
 .posts-img img:hover{
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
-.posts-time{
-  margin: 6px 0;
-}
-.posts-tag{
-  display: none;
-  @include breakpoint('medium') {
-    display: block;
-    width: 100%;
-    margin-bottom: 6px;
-  }
+.posts-time-new{
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 //详情页博文推荐

@@ -3,33 +3,28 @@
   padding: 25px 0 25px 0;
   align-items: center;
   @include breakpoint('medium') {
-    display: block;
-    padding: 0;
     z-index: 100;
-    padding: 20px 0 10px 0;
+    padding: 40px 0 60px 0;
   }
 }
 .about-koobai{
   display: none;
   @include breakpoint('medium') {
-    margin-bottom: 25px;
-    margin-left: 8px;
     display: block;
   }
 }
 .about-koobai img{
-  width: 52px;
-  height: 52px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 1.5px solid #222;
-  opacity: .5;
+  border: 1px solid #222;
   transition: opacity .3s ease-in-out;
 }
 .about-koobai img:hover{
-  opacity: 1;
+  opacity: 0.6;
 }
 .new-heard-menu{
-  display: grid;
+  display: flex;
   gap: 30px;
 }
 .menu-current svg{
@@ -56,9 +51,10 @@
 
 .menu-main {
   display: flex;
-  grid-gap: 19px; /* 中间空10px间距 */
+  grid-gap: 20px; /* 中间空10px间距 */
   align-items: center;
-  margin: 40px 0 30px 3px;
+  margin-left: auto;
+  
  }
  .header-menu a {
   color: var(--erji-color);
@@ -71,26 +67,19 @@
   align-items: center;
  }
 .header-menu svg{
-  margin-right: 10px;
+  margin-right: 8px;
   color: var(--sanji-color);
   width: 22px;
   height: 22px;
 }
-.header-menu img{
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid #222;
-  margin-right: 10px;
-}
-.heard-rss svg path,.menu-main svg{
+.menu-main svg{
   fill: #999;
 }
 .githuab svg{
   width: 20px;
   fill: #999;
 }
-.heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
+.githuab svg:hover,.menu-main svg:hover{
   fill: #666;
 }
  // 页面宽度小于900样式
