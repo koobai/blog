@@ -1,12 +1,12 @@
 {{ define "body_classes" }}page-tiaozhuan{{ end }}
 {{ define "main" }}
 <div class="tiaozhuan-all">
-<div class="tiaozhuan-title">即将离开 {{ block "title" . }}{{ .Site.Title }}{{ end }}，跳转到以下外部链接</div>
-<div class="tiaozhuan-info">请自行识别是否安全，并保管好个人帐号。</div>
+<div class="tiaozhuan-title">即将离开 {{ .Site.Title }}，跳转到以下外部链接</div>
+<div class="tiaozhuan-info">请自行识别该链接是否安全，并保管好个人信息。</div>
 <div id="tiaozhuan-link"></div> 
 <div class="tiaozhuan-tis">
 <div class="tiaozhuan-button"><a href='' id='direct-link'>立即前往</a></div>
-<div class="">或 <span id="tiaozhuan-countdown">3</span> 秒后自动跳转。</div>
+<div>或 <span id="tiaozhuan-countdown">3</span> 秒后自动跳转。</div>
 </div>
 </div>
 <script>
