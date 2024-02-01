@@ -17,7 +17,9 @@ window.addEventListener('load', (event) => {
         if (target && target.nodeName === 'A' && 
             !checkParent(target, excludedClasses) && 
             !target.href.includes('koobai.com') && 
-            !target.href.includes('douban.com') && 
+            !target.href.includes('douban.com') &&
+            !target.href.includes('bilibili.com') &&
+            !target.href.includes('github.com') &&
             target.hostname !== window.location.hostname) {
             e.preventDefault();
             let encodedUrl = btoa(target.href); // Base64 encode the URL
