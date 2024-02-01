@@ -2392,6 +2392,49 @@ blockquote p {
   .posts-description {
     color: var(--sanji-color); } }
 
+.page-tiaozhuan .header, .page-tiaozhuan .footer-background {
+  display: none; }
+
+.tiaozhuan-all {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  border-radius: 10px;
+  background: #fff;
+  display: grid;
+  padding: 40px;
+  gap: 10px;
+  color: #666; }
+
+.tiaozhuan-title {
+  font-size: 1.5rem;
+  font-family: var(--font-family-title);
+  color: #222; }
+
+.tiaozhuan-tis {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px; }
+
+.tiaozhuan-button a {
+  color: var(--text-highlight-color);
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  border: 0.5px solid var(--text-highlight-color);
+  display: inline-block; }
+
+@media (prefers-color-scheme: dark) {
+  .tiaozhuan-all {
+    background: var(--background-dark-color);
+    color: #999; }
+  .tiaozhuan-title {
+    color: #ddd; } }
+
 .command-menu {
   border-radius: 1rem;
   display: flex;
