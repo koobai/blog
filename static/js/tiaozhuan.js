@@ -7,7 +7,7 @@ function checkParent(element, classNames) {
     }
     return false;
 }
-var excludedClasses = ['talks_comments']; // 添加你需要排除的类名到
+var excludedClasses = ['talks_comments','tiaozhuan-button']; // 添加你需要排除的类名到
 window.addEventListener('load', (event) => {
     document.body.addEventListener('click', function(e) {
         let target = e.target;
