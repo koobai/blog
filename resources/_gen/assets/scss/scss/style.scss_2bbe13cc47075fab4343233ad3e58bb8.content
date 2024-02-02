@@ -2258,13 +2258,14 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .tiaozhuan-all {
     background: var(--background-dark-color);
-    color: #999; }
+    color: #acacac; }
   .tiaozhuan-title {
     color: #ddd; }
   .tiaozhuan-img-default {
     display: none; }
   .tiaozhuan-img-dark {
-    display: block; } }
+    display: block;
+    filter: brightness(1) contrast(1); } }
 
 .command-menu {
   border-radius: 1rem;
