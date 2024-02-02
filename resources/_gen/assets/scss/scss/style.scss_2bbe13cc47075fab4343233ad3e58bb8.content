@@ -2501,7 +2501,7 @@ body {
   img {
     filter: brightness(0.8) contrast(1.2); }
   .highlight pre {
-    background: #1E2030 !important; } }
+    background: var(--background-dark-color) !important; } }
 
 @media (min-width: 900px) {
   .img-hide {
