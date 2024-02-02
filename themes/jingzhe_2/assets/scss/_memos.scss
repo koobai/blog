@@ -586,13 +586,13 @@ blockquote p{
 .talks_comments svg:hover{
   color: var(--sanji-color);
 }
-pre,blockquote p{
+.datacont pre,blockquote p{
   background: #2c2829;
 }
-pre code{
+.datacont pre code{
   color: var(--sanji-color);
 }
-code{
+.datacont code{
   background: #2c2829;
   border: 1px solid #2c2829;
   color: var(--text-highlight-color);

@@ -1898,11 +1898,11 @@ blockquote p {
     color: var(--erji-color); }
   .talks_comments svg:hover {
     color: var(--sanji-color); }
-  pre, blockquote p {
+  .datacont pre, blockquote p {
     background: #2c2829; }
-  pre code {
+  .datacont pre code {
     color: var(--sanji-color); }
-  code {
+  .datacont code {
     background: #2c2829;
     border: 1px solid #2c2829;
     color: var(--text-highlight-color); }
@@ -2461,7 +2461,9 @@ body {
   .highlight {
     background-color: var(--background-dark-color); }
   img {
-    filter: brightness(0.8) contrast(1.2); } }
+    filter: brightness(0.8) contrast(1.2); }
+  .highlight pre {
+    background: #1E2030 !important; } }
 
 @media (min-width: 900px) {
   .img-hide {
