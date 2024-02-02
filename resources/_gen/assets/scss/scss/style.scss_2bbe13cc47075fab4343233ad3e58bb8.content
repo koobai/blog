@@ -2222,6 +2222,12 @@ blockquote p {
   height: 100%;
   object-fit: cover; }
 
+.tiaozhuan-img-default {
+  display: block; }
+
+.tiaozhuan-img-dark {
+  display: none; }
+
 .tiaozhuan-title {
   font-size: 1.3rem;
   font-family: var(--font-family-title);
@@ -2254,7 +2260,11 @@ blockquote p {
     background: var(--background-dark-color);
     color: #999; }
   .tiaozhuan-title {
-    color: #ddd; } }
+    color: #ddd; }
+  .tiaozhuan-img-default {
+    display: none; }
+  .tiaozhuan-img-dark {
+    display: block; } }
 
 .command-menu {
   border-radius: 1rem;

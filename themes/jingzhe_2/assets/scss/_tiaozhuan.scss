@@ -37,6 +37,12 @@
   height: 100%;
   object-fit: cover;
 }
+.tiaozhuan-img-default{
+  display: block;
+}
+.tiaozhuan-img-dark{
+  display: none;
+}
 .tiaozhuan-title{
   font-size: 1.3rem;
   font-family: var(--font-family-title);
@@ -73,5 +79,11 @@
   }
   .tiaozhuan-title{
     color: #ddd;
+  }
+  .tiaozhuan-img-default{
+    display: none;
+  }
+  .tiaozhuan-img-dark{
+    display: block;
   }
 }
