@@ -2194,34 +2194,29 @@ blockquote p {
   border-radius: 10px;
   background: #fff;
   color: #666;
-  padding: 20px;
   word-break: break-all;
-  width: 600px;
-  aspect-ratio: 2 / 1;
+  max-width: 700px;
+  height: 350px;
   text-align: center;
   font-size: 0.85rem;
-  overflow: hidden; }
+  overflow: hidden;
+  margin: 100px auto 0; }
   @media (min-width: 700px) {
     .tiaozhuan-all {
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 40px; } }
+      aspect-ratio: 2 / 1;
+      height: auto; } }
 .tiaozhuan-nrong {
   position: absolute;
-  bottom: 40px;
-  left: 0;
-  right: 0; }
-
-.tiaozhuan-img {
-  position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  z-index: -1; }
+  padding: 20px 20px 30px 20px; }
 
+.tiaozhuan-img {
+  height: 350px; }
+  @media (min-width: 700px) {
+    .tiaozhuan-img {
+      height: auto; } }
 .tiaozhuan-img img {
   width: 100%;
   height: 100%;
