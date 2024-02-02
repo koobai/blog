@@ -31,7 +31,7 @@
 {{ range $posts }} 
 <div class="sidebar-bowen">
 <!--30 天内新博文-->  
-{{ if gt .Date (now.AddDate 0 0 -15) }}
+{{ if gt .Date (now.AddDate 0 0 -7) }}
 <div class="sidebar_article_new">NEW</div>
 {{ end }}
 <!--<!--30 天内新博文结束-->
