@@ -571,8 +571,7 @@ ul {
 
 .highlight .err, .highlight .gr, .highlight .gt {
   color: #ff6c6b;
-  /* Error, generic error, traceback color */
-  background-color: #3e4451; }
+  /* Error, generic error, traceback color */ }
 
 .highlight .k, .highlight .kv, .highlight .kc, .highlight .kd, .highlight .kn,
 .highlight .kp, .highlight .kr, .highlight .kt, .highlight .ow {
@@ -2190,28 +2189,37 @@ blockquote p {
   display: none; }
 
 .tiaozhuan-all {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 50%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   border-radius: 10px;
   background: #fff;
   display: grid;
-  padding: 40px;
   gap: 10px;
-  color: #666; }
-
+  color: #666;
+  padding: 20px;
+  word-break: break-all; }
+  @media (min-width: 700px) {
+    .tiaozhuan-all {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 0;
+      padding: 40px; } }
 .tiaozhuan-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-family: var(--font-family-title);
-  color: #222; }
-
+  color: #222;
+  line-height: 1.4; }
+  @media (min-width: 700px) {
+    .tiaozhuan-title {
+      font-size: 1.5rem; } }
 .tiaozhuan-tis {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-top: 20px; }
+  margin-top: 20px;
+  flex-wrap: wrap; }
 
 .tiaozhuan-button a {
   color: var(--text-highlight-color);
