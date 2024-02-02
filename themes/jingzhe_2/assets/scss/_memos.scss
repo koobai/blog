@@ -184,7 +184,7 @@
   margin-left: auto;
   color: var(--text-highlight-color);
 }
-pre{
+.datacont pre{
   border-radius: 4px;
   line-height: 1.8;
   background: #ececec;
@@ -196,7 +196,7 @@ pre{
     background: #f6f6f6;
   }
 }
-pre code{
+.datacont pre code{
   background: transparent;
   font-size: 0.85rem;
   padding: 0;
@@ -204,7 +204,7 @@ pre code{
   border: none;
   margin: 0;
 }
-code{
+.datacont code{
   background: #ffe4d4;
   border: 1px solid #FFBE98;
   border-radius: 4px;
@@ -214,10 +214,7 @@ code{
   margin: 0 4px 0 4px;
   word-wrap: break-word;
 }
-.memos_diaoyong code{
-  font-size: 0.85rem;
-  padding: 3px 6px 2px 6px;
-}
+
 blockquote p{
   background: var(--background-color);
   border-radius: 0 4px 4px 0;
