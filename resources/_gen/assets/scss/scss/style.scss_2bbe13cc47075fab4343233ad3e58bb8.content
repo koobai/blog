@@ -2190,7 +2190,6 @@ blockquote p {
 
 .tiaozhuan-all {
   position: relative;
-  margin-top: 50%;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 10px;
   background: #fff;
@@ -2208,7 +2207,6 @@ blockquote p {
       top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
-      margin-top: 0;
       padding: 40px; } }
 .tiaozhuan-nrong {
   position: absolute;
