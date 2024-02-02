@@ -2189,15 +2189,19 @@ blockquote p {
   display: none; }
 
 .tiaozhuan-all {
+  position: relative;
   margin-top: 50%;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 10px;
   background: #fff;
-  display: grid;
-  gap: 10px;
   color: #666;
   padding: 20px;
-  word-break: break-all; }
+  word-break: break-all;
+  width: 600px;
+  aspect-ratio: 2 / 1;
+  text-align: center;
+  font-size: 0.85rem;
+  overflow: hidden; }
   @media (min-width: 700px) {
     .tiaozhuan-all {
       position: fixed;
@@ -2206,17 +2210,39 @@ blockquote p {
       transform: translate(-50%, -50%);
       margin-top: 0;
       padding: 40px; } }
+.tiaozhuan-nrong {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0; }
+
+.tiaozhuan-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; }
+
+.tiaozhuan-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; }
+
 .tiaozhuan-title {
   font-size: 1.3rem;
   font-family: var(--font-family-title);
   color: #222;
-  line-height: 1.4; }
-  @media (min-width: 700px) {
-    .tiaozhuan-title {
-      font-size: 1.5rem; } }
+  line-height: 1.4;
+  margin-bottom: 4px; }
+
+.tiaozhuan-info {
+  margin-top: 6px; }
+
 .tiaozhuan-tis {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   margin-top: 20px;
   flex-wrap: wrap; }
