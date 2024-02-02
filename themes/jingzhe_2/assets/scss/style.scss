@@ -77,12 +77,6 @@ body {
   max-width: 860px;
   margin: auto;
 }
-
-//日间模式新增属性
-
-.highlight {
-pre {background: var(--bankuai-color);}
-}
 .highlight{background-color: var(--bankuai-color);}
 
 
@@ -109,11 +103,6 @@ a {
   color: #CCCCCC;
 }
 .summary-date{color: #AAAAAA;}
-.highlight {
-pre {
-  background: #1f1d1d;
-  color: var(--text-content-dark-color);}
-}
 .highlight{background-color: var(--background-dark-color);}
 img {filter: brightness(0.8) contrast(1.2); }
 }
