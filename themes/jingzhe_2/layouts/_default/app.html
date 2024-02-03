@@ -6,12 +6,12 @@
 <div class="appdquanjudiv">
   {{ range $index, $app := $goods.good }}
     <div class="appquanju img-hide {{if or (eq $index 4) (eq $index 5) (eq $index 18) (eq $index 19)}}app-star{{end}}">
-      <div class="appimg"><a href="{{ $app.link }}" target="_blank"><img loading="lazy" decoding="async" src="{{ $app.image }}"></a></div>
+      <div class="appimg"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><img loading="lazy" decoding="async" src="{{ $app.image }}"></a></div>
 
       <div class="app-title-all">
-        <div class="apptitle2"><a href="{{ $app.link }}" target="_blank">{{ $app.title2 }}</a></div>
+        <div class="apptitle2"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title2 }}</a></div>
         <div class="appnote"><div>{{ $app.info }}</div></div>
-        <div class="apptitle"><a href="{{ $app.link }}" target="_blank">{{ $app.title }}</a></div>
+        <div class="apptitle"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title }}</a></div>
         <div class="appzhuangtai">
           <div class="macos">{{ $app.macos }}</div>
           <div class="macos">{{ $app.ios }}</div>
@@ -21,9 +21,9 @@
       </div>
 
       <div class="appzhuangtai-right">
-        <a href="{{ $app.link }}" target="_blank"><div class="kaiyuan">{{ $app.kaiyuan }}</div></a>
-        <a href="{{ $app.link }}" target="_blank"><div class="shoufei">{{ $app.shoufei }}</div></a>
-        <a href="{{ $app.link }}" target="_blank"><div class="free">{{ $app.free }}</div></a>
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="kaiyuan">{{ $app.kaiyuan }}</div></a>
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="shoufei">{{ $app.shoufei }}</div></a>
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="free">{{ $app.free }}</div></a>
       </div>
       {{ with $app.image2 }}
       <div class="star-img img-hide"><img loading="lazy" decoding="async" src="{{ $app.image2 }}"></div>

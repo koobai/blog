@@ -5,43 +5,21 @@
     <img src="https://img.koobai.com/tiaozhuanico.webp" class="tiaozhuan-img-default"/>
     <img src="https://img.koobai.com/tiaozhuandark.webp" class="tiaozhuan-img-dark"/>
   </div>
-<div class="tiaozhuan-nrong">
-<div class="tiaozhuan-title">即将离开 {{ .Site.Title }}，跳转到以下外部链接</div>
-<div id="tiaozhuan-link"></div> 
-<div class="tiaozhuan-info">请自行识别该链接是否安全，并保管好个人信息。</div>
-<div class="tiaozhuan-tis">
-<div class="tiaozhuan-button"><a href='' id='direct-link'>立即前往</a></div>
-<div>或 <span id="tiaozhuan-countdown">3</span> 秒后自动跳转。</div>
-</div>
-</div>
+  <div class="tiaozhuan-nrong">
+    <div class="tiaozhuan-title">即将离开 {{ .Site.Title }}，跳转到以下外部链接</div>
+    <div id="tiaozhuan-link"></div> 
+    <div class="tiaozhuan-info">请自行识别该链接是否安全，并保管好个人信息。</div>
+      <div class="tiaozhuan-button"><a href='' id='direct-link'>继续访问</a></div>
+  </div>
 </div>
 <script>
   const params = new URLSearchParams(window.location.search);
   const encodedTarget = params.get('target');
   const target = atob(encodedTarget); // 使用 atob 进行 Base64 解码
   
-  let countdown = 3; // 初始倒计时时间
-
   if (target) {
     document.getElementById('direct-link').href = target;
     document.getElementById('tiaozhuan-link').textContent = '' + target; // 在新增的元素中显示原地址    
-
-    // 更新倒计时显示
-    function updateCountdown() {
-      const countdownElement = document.getElementById('tiaozhuan-countdown');
-      countdownElement.textContent = countdown;
-
-      if (countdown > 0) {
-        setTimeout(updateCountdown, 1000); // 每秒更新一次
-        countdown--;
-      } else {
-        // 到达零时跳转
-        window.location.href = target;
-      }
-    }
-
-    // 启动倒计时
-    setTimeout(updateCountdown, 1000);
   } else {
     console.error('未指定重定向目标。');
   }

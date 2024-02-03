@@ -63,6 +63,7 @@
         {{- partial "artalk" . -}}
       </div> 
       <script>
+        //评论默认隐藏
       function loadComments() {
         var articlecomments = document.getElementById("articlecomments");
         var MoreComments = document.getElementById("MoreComments");      
@@ -74,5 +75,15 @@
           behavior: 'smooth'
         });
       }
+      //评论跳转中间页
+      document.body.addEventListener('click', function(e) {
+        let target = e.target.closest('.atk-comment-wrap a');
+        if (target) {
+            e.preventDefault();
+            let encodedUrl = btoa(target.href);
+            let url = '/tiaozhuan?target=' + encodedUrl;
+            window.open(url, '_blank');
+        }
+      });
       </script>     
 {{ end }}

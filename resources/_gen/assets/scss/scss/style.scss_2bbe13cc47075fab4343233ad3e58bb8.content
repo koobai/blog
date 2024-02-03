@@ -2238,13 +2238,8 @@ blockquote p {
 .tiaozhuan-info {
   margin-top: 6px; }
 
-.tiaozhuan-tis {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-  flex-wrap: wrap; }
+.tiaozhuan-button {
+  margin-top: 20px; }
 
 .tiaozhuan-button a {
   color: var(--text-highlight-color);
