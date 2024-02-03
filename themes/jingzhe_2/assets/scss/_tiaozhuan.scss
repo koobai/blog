@@ -5,7 +5,7 @@
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 10px;
-  background: #fff;
+  background: #fff url(https://img.koobai.com/tiaozhuanico.webp) no-repeat center center / cover;
   color: #666;
   word-break: break-all;
   max-width: 700px;
@@ -25,23 +25,6 @@
   left: 0;
   right: 0;
   padding: 20px 20px 30px 20px;
-}
-.tiaozhuan-img{
-  height: 350px;
-  @include breakpoint('small') {
-    height: auto;
-  }
-}
-.tiaozhuan-img img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.tiaozhuan-img-default{
-  display: block;
-}
-.tiaozhuan-img-dark{
-  display: none;
 }
 .tiaozhuan-title{
   font-size: 1.3rem;
@@ -69,17 +52,10 @@
 
 @media (prefers-color-scheme: dark) {
   .tiaozhuan-all{
-    background: var(--background-dark-color);
+    background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center / cover;
     color: #acacac;
   }
   .tiaozhuan-title{
     color: #ddd;
-  }
-  .tiaozhuan-img-default{
-    display: none;
-  }
-  .tiaozhuan-img-dark{
-    display: block;
-    filter: brightness(1) contrast(1);
   }
 }
