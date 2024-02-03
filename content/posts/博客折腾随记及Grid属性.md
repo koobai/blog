@@ -8,7 +8,7 @@ image: https://img.koobai.com/article/grid.webp
 ---
 最近一直在不断的折腾博客，就跟唠叨里说的一样：对博客的折腾真是越折腾越来劲，一旦停下来，瞬间心里觉得空落落的。几乎把各个页面都重新梳理优化了下，特别是首页，各模块的信息流都给聚合起来了。因为更新博文的频率实在是不高，也许降低博文信息展示权重，让其首页更丰富起来，可读性更高点。
 
-折腾过程中，ChatGPT 给出了 CSS display: grid; 属性，想起之前 <a href="https://www.thyuu.com/word/tips/75680" target="_blank">风记星辰</a> 也分享过，真是不了解不知道，一试用，发现用于并列容器的布局实在是太好用了，一直困扰我的自适应、等高等宽问题迎刃而解。索性把现有的页面全部基于 Grid 属性更改掉。其中 grid-gap 也很牛逼，不像以前用 margin-right 导致最右边的容器也会空出一定的距离。
+折腾过程中，ChatGPT 给出了 CSS display: grid; 属性，想起之前 [风记星辰](https://www.thyuu.com/word/tips/75680) 也分享过，真是不了解不知道，一试用，发现用于并列容器的布局实在是太好用了，一直困扰我的自适应、等高等宽问题迎刃而解。索性把现有的页面全部基于 Grid 属性更改掉。其中 grid-gap 也很牛逼，不像以前用 margin-right 导致最右边的容器也会空出一定的距离。
 ```css
 display: grid;
 grid-gap: 10px; /* 中间空10px间距 */
@@ -25,5 +25,4 @@ grid-template-columns: repeat(4, 1fr); /* 多列等宽，4为平均分为四列 
 
 有时候在想，这样折腾博客的意义是什么，日志没写多少，每天净搞些有的没的，内容才是重要的才对，再说折腾来折腾去，也没几个人看，图啥？嗯。。。。，开心最重要。意义就在于不停的折腾，就跟开头说的一样：一旦停下来，瞬间心里觉得空落落的。
 
-感谢折腾过程中， <a href="https://immmmm.com/" target="_blank">林木木</a> 、 <a href="https://www.thyuu.com/word/tips/75680" target="_blank">风记星辰</a> 老师帮忙。同时折腾过程中，又认识了一些新朋友 <a href="https://dongjunke.cn/" target="_blank">小饿</a>、<a href="https://linlinxing.com/" target="_blank">linlinxing</a>、<a href="https://www.saphead.cn/" target="_blank">小熊</a>、<a href="https://wananaiko.com/" target="_blank">wananaiko
-</a>、<a href="https://laomai.org/" target="_blank">老麦</a>、<a href="https://eallion.com/" target="_blank">大大的小蜗牛</a>、<a href="https://zhou.ge/" target="_blank">忆往事</a>、<a href="https://nuoea.com/" target="_blank">归臧</a>、<a href="https://yzrss.com/" target="_blank">叶子笔记</a>、<a href="https://www.shaodaishan.com/" target="_blank">少岱山</a> 等等，博客真好。
+感谢折腾过程中，[林木木](https://immmmm.com/) 、[风记星辰](https://www.thyuu.com/word/tips/75680) 老师帮忙。同时折腾过程中，又认识了一些新朋友 [小饿](https://dongjunke.cn/)、[linlinxing](https://linlinxing.com/)、[小熊](https://www.saphead.cn/)、[wananaiko](https://wananaiko.com/)、[老麦](https://laomai.org/)、[大大的小蜗牛](https://eallion.com/)、[忆往事](https://zhou.ge/)、[归臧](https://nuoea.com/)、[叶子笔记](https://yzrss.com/)、[少岱山](https://www.shaodaishan.com/) 等等，博客真好。
