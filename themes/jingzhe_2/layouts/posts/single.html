@@ -78,7 +78,7 @@
       //评论跳转中间页
       document.body.addEventListener('click', function(e) {
         let target = e.target.closest('.atk-comment-wrap a');
-        if (target) {
+        if (target && !target.href.includes('koobai.com')) {
             e.preventDefault();
             let encodedUrl = btoa(target.href);
             let url = '/tiaozhuan?target=' + encodedUrl;

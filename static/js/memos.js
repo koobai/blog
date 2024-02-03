@@ -147,14 +147,7 @@ function updateHTMl(data,mode){
       var bbContREG = data[i].content
       .replace(TAG_REG, "")
       .replace(IMG_REG, '')
-      .replace(LINK_REG, function(match, text, url) {
-        if (url.includes('koobai.com')) {
-            return match; 
-        } else {
-            var encodedURL = btoa(url);
-            return '<a href="/tiaozhuan?target=' + encodedURL + '" target="_blank">' + text + '</a>';
-        }
-    })
+      .replace(LINK_REG, '<a href="$2" target="_blank">$1</a>')
       bbContREG = marked.parse(bbContREG)
 
       //解析 content 内 md 格式图片
@@ -1246,10 +1239,10 @@ handleTextareaInput();
 document.querySelector('.memos-editor-textarea').addEventListener('input', handleTextareaInput);
 
 
-//评论链接跳转中间页
+//memos、评论链接跳转中间页
 document.body.addEventListener('click', function(e) {
-  let target = e.target.closest('.atk-comment-wrap a');
-  if (target) {
+  let target = e.target.closest('.atk-comment-wrap a, .datacont a');
+  if (target && !target.href.includes('koobai.com')) {
       e.preventDefault();
       let encodedUrl = btoa(target.href);
       let url = '/tiaozhuan?target=' + encodedUrl;
