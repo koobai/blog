@@ -30,6 +30,6 @@ HKEY_LOCAL_MACHINE\SYSTEM\Setup
 找到安装盘的 bootcamp 文件夹，整个拷贝到安装好的 Win 系统下，点击文件夹中的 setup.exe 安装 bootcamp 软件，安装完在线更新下 bootcamp 软件。
 
 ### 5. 怎么激活系统？原生纯净的系统从哪获取？
-自动激活：<a href="https://github.com/TGSAN/CMWTAT_Digital_Edition" target="_blank">Official Site</a>。系统包iso：<a href="https://next.itellyou.cn" target="_blank">ITELLYOU</a> 或 <a href="https://tb.rg-adguard.net/public.php?lang=zh-CN" target="_blank">TechBench</a> 
+自动激活：[Official Site](https://github.com/TGSAN/CMWTAT_Digital_Edition)。系统包iso：[ITELLYOU](https://next.itellyou.cn) 或 [TechBench](https://tb.rg-adguard.net/public.php?lang=zh-CN) 
 
 装之前准备一个有线鼠标，不然过程中很不方便。装完体验下来，界面跟之前的对比漂亮非常多，至于其他的，由于是老硬件，还要啥自行车。自己平常不玩游戏，所以这些年用 Mac 习惯了，而且其他对应的设备也都是 Apple，生态的互通互动方便很多。

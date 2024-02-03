@@ -173,8 +173,4 @@ git pull origin gh-pages
 
 至此，步骤全部完成。当本地提交新文件到 Github hugo 源码 main 分支，就会自动触发（hugo 生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是 vercel 或 cloudflare 服务，当 hugo 源码更新的时候也会自动触发构建更新。
 
-详细步骤参考资料：<br />
-<a href="https://juejin.cn/post/6974203582602018829" target="_blank">GitHub+webHook 实现项目代码自动更新 </a><br />
-<a href="https://cloud.tencent.com/developer/article/2207775?areaSource=&traceId=" target="_blank">宝塔利用 Git + WebHook 实现与码云同步 </a>
-
 **题外**: 由于使用了轻量服务器，原先备案过的域名也需要重新接入备案。整个流程下来发现，现在备案审核速度是相当的快，必须点个赞。周一提交服务商，周二服务商提交管理局，周三审核通过。周三上午提交公安网安，下午审核通过。
