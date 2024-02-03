@@ -1,0 +1,10 @@
+{{ $url := .Destination }}
+<a 
+    {{ if or (in $url "koobai.com") (strings.HasPrefix $url "/") }}
+        href="{{ $url }}"
+    {{ else }}
+        href="/tiaozhuan?target={{ $url | base64Encode }}"
+    {{ end }}
+    {{ if strings.HasPrefix .Destination "http" }} target="_blank"{{ end }}
+>
+{{ .Text | safeHTML }}</a>
