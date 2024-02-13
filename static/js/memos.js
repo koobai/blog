@@ -495,17 +495,17 @@ function getEditIcon() {
 
   //代码单反引号
   codesingle.addEventListener("click", function () {
-    insertValue(" `` ","`",2)
+    insertValue("``","`",1)
   });
 
   //超级链接
   linkBtn.addEventListener("click", function () {
-    insertValue(" []() ","[",2)
+    insertValue("[]()","[",1)
   });
   
   //图片外链引用
   linkimg.addEventListener("click", function () {
-    insertValue(" ![]() ","!",2)
+    insertValue("![]()","!",1)
   });
 
   //以上四项的光标定位
@@ -521,14 +521,14 @@ function getEditIcon() {
     }else{
       let wrapSelText;
       if( wrap == "`" ){
-        wrapSelText = " `" + selectedText + "` ";
+        wrapSelText = "`" + selectedText + "`";
         back = 0;
       }
       if( wrap == "[" ){
-        wrapSelText = " [" + selectedText + "]() ";
+        wrapSelText = "[" + selectedText + "]()";
       }
       if( wrap == "!" ){
-        wrapSelText = " ![" + selectedText + "]() ";
+        wrapSelText = "![" + selectedText + "]()";
       }
       const newText = memosTextarea.value.substring(0, start) + wrapSelText + memosTextarea.value.substring(end);
       memosTextarea.value = newText;
