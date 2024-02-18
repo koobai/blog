@@ -48,7 +48,6 @@ h1, h2, h3 {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1px solid #222;
   transition: opacity .3s ease-in-out; }
 
 .about-koobai img:hover {
@@ -69,8 +68,7 @@ h1, h2, h3 {
   height: 32px;
   vertical-align: middle;
   margin-right: 8px;
-  border-radius: 50%;
-  border: 1px solid #222; }
+  border-radius: 50%; }
 
 .header-title {
   display: flex;
