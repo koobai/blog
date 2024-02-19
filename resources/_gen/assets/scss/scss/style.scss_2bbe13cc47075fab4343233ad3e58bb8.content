@@ -762,6 +762,9 @@ img[atk-emoticon] {
 .atk-main-editor > .atk-textarea-wrap > .atk-textarea {
   line-height: 1.6; }
 
+.atk-main-editor > .atk-bottom .atk-state-btn .atk-text-wrap {
+  color: #999; }
+
 @media (prefers-color-scheme: dark) {
   .atk-content p {
     color: var(--text-content-dark-color) !important; }
@@ -801,7 +804,11 @@ img[atk-emoticon] {
   .atk-comment .atk-main .atk-footer .atk-actions span:hover {
     color: #999 !important; }
   .atk-item.atk-nick a {
-    color: #666 !important; } }
+    color: #666 !important; }
+  .atk-main-editor > .atk-bottom .atk-state-btn {
+    background: var(--background-dark-color) !important; }
+  .atk-main-editor > .atk-bottom .atk-state-btn .atk-text-wrap {
+    color: #666; } }
 
 .artalk.hidden {
   display: none; }
