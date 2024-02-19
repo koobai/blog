@@ -682,7 +682,7 @@ ul {
   padding: 0 10px !important;
   width: auto !important;
   background: transparent !important;
-  border: 0 solid transparent !important;
+  border: 0.5px solid var(--text-highlight-color) !important;
   color: var(--text-highlight-color) !important; }
 
 .atk-send-btn:hover {
