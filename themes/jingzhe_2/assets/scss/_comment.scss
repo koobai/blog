@@ -71,7 +71,7 @@
 }
 .atk-send-btn {
   padding: 0 10px!important;
-  width: auto !important;
+  min-width: 5em !important;
   background: transparent !important;
   border: 0.5px solid var(--text-highlight-color) !important;
   color: var(--text-highlight-color) !important;
