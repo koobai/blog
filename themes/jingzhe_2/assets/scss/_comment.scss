@@ -155,6 +155,9 @@ img[atk-emoticon] {
 .atk-main-editor>.atk-textarea-wrap>.atk-textarea{
   line-height: 1.6;
 }
+.atk-main-editor>.atk-bottom .atk-state-btn .atk-text-wrap{
+  color: #999;
+}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -210,6 +213,12 @@ img[atk-emoticon] {
 }
 .atk-item.atk-nick a{
   color: #666 !important;
+}
+.atk-main-editor>.atk-bottom .atk-state-btn{
+  background: var(--background-dark-color) !important;
+}
+.atk-main-editor>.atk-bottom .atk-state-btn .atk-text-wrap{
+  color: #666;
 }
 }
 //memos首页评论
