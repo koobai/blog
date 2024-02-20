@@ -27,10 +27,6 @@ ol, ul {
   ol li, ul li {
     list-style: none; }
 
-h1, h2, h3 {
-  margin-top: 20px;
-  margin-bottom: 20px; }
-
 .header {
   display: flex;
   padding: 25px 0 25px 0;
@@ -242,7 +238,7 @@ a {
   a:hover {
     text-decoration: underline; }
 
-h3 {
+h2, h3 {
   font-family: var(--font-family-title);
   font-weight: normal;
   font-display: swap; }
@@ -281,7 +277,7 @@ ul {
     margin-bottom: 15px; }
   .content strong {
     color: var(--text-highlight-color); }
-  .content h3 {
+  .content h2, .content h3 {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 6px;
@@ -364,6 +360,49 @@ ul {
   list-style: decimal; }
   .footnotes ol li {
     list-style: decimal; }
+
+.single-nrong {
+  display: flex; }
+
+.single-zw {
+  width: 100%; }
+
+.paragraph-dh {
+  display: none; }
+  @media (min-width: 1200px) {
+    .paragraph-dh {
+      display: block;
+      position: fixed;
+      opacity: 0;
+      top: 70px;
+      margin-left: 40px;
+      transition: opacity 0.5s ease;
+      border-left: 4px solid #f0f0f0;
+      padding: 0 15px;
+      max-width: 300px; } }
+.paragraph-dh a {
+  line-height: 1.4;
+  color: #666; }
+
+.paragraph-dh ul {
+  gap: 15px;
+  display: grid; }
+
+.paragraph-dh ul ul {
+  padding-inline-start: 1rem;
+  margin-top: 10px; }
+
+.paragraph-dh a.active {
+  color: var(--text-highlight-color);
+  transition: all .25s ease-in-out; }
+
+@media (prefers-color-scheme: dark) and (min-width: 1200px) {
+  .paragraph-dh {
+    border-left: 4px solid var(--frame-dark-color); } }
+
+@media (prefers-color-scheme: dark) {
+  .paragraph-dh a {
+    color: #999; } }
 
 .intro h1 {
   font-size: 40px;

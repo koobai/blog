@@ -1,5 +1,7 @@
 {{ define "body_classes" }}page-blog-single{{ end }}
 {{ define "main" }} 
+<div class="single-nrong">
+<div class="single-zw">
     <div class="article_details">
       <div class="article_details_title">{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</div>
       {{ if .Params.image }}
@@ -62,28 +64,18 @@
       <div class="article-comments" id="articlecomments" style="display: none;">
         {{- partial "artalk" . -}}
       </div> 
-      <script>
-        //评论默认隐藏
-      function loadComments() {
-        var articlecomments = document.getElementById("articlecomments");
-        var MoreComments = document.getElementById("MoreComments");      
-        articlecomments.style.display = "block";
-        MoreComments.style.display = "none";     
-        var buttonRect = MoreComments.getBoundingClientRect();
-        window.scroll({
-          top: window.scrollY + buttonRect.top + 300,
-          behavior: 'smooth'
-        });
-      }
-      //评论跳转中间页
-      document.body.addEventListener('click', function(e) {
-        let target = e.target.closest('.atk-comment-wrap a');
-        if (target && !target.href.includes('koobai.com')) {
-            e.preventDefault();
-            let encodedUrl = btoa(target.href);
-            let url = '/tiaozhuan?target=' + encodedUrl;
-            window.open(url, '_blank');
-        }
-      });
-      </script>     
+</div>
+
+<div>
+  {{ $toc := .TableOfContents }}
+  {{ if findRE "<li>" $toc 1 }}
+    <div class="paragraph-dh">
+      <div class="sidebar-biaot">文章段落导航</div>
+      {{ $toc }}
+    </div>
+  {{ end }}
+</div>
+
+</div>
+<script src="/js/single.js"></script>    
 {{ end }}

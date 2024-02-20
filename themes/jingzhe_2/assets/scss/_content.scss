@@ -18,7 +18,7 @@ a {
     text-decoration: underline;
   }
 }
-h3 {
+h2,h3 {
   font-family: var(--font-family-title);
   font-weight:normal; 
   font-display: swap; 
@@ -59,7 +59,7 @@ ul {
   strong {
     color:  var(--text-highlight-color);
   }
-  h3 {
+  h2,h3 {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 6px;
@@ -164,4 +164,54 @@ ul {
       list-style: decimal;
     }
   }
+}
+
+//文章页段落导航
+
+.single-nrong{
+  display: flex;
+}
+.single-zw{
+  width: 100%;
+}
+.paragraph-dh {
+   display: none;
+  @include breakpoint('large') {
+    display: block;
+    position: fixed;
+    opacity: 0;
+    top: 70px;
+    margin-left: 40px;
+    transition: opacity 0.5s ease; 
+    border-left: 4px solid #f0f0f0;
+    padding: 0 15px;
+    max-width: 300px;
+  }
+}
+.paragraph-dh a{
+  line-height: 1.4;
+  color: #666;
+}
+.paragraph-dh ul{
+  gap: 15px;
+  display: grid;
+}
+.paragraph-dh ul ul {
+  padding-inline-start: 1rem;
+  margin-top: 10px;
+}
+.paragraph-dh a.active {
+  color: var(--text-highlight-color);
+  transition: all .25s ease-in-out;
+}
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .paragraph-dh {
+   @include breakpoint('large') {
+     border-left: 4px solid var(--frame-dark-color);
+   }
+ }
+ .paragraph-dh a{
+  color: #999;
+}
 }
