@@ -1196,7 +1196,7 @@ img[atk-emoticon] {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2px;
-  margin-bottom: 30px; }
+  margin-bottom: 40px; }
 
 .movies_video {
   position: absolute;
@@ -1975,7 +1975,7 @@ blockquote p {
   color: var(--sanji-color); }
 
 .sidebar-bowen {
-  margin-bottom: 30px; }
+  margin-bottom: 40px; }
 
 .sidebar-posts-title {
   margin-top: 4px;
