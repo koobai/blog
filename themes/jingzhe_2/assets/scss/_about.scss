@@ -13,13 +13,13 @@
   font-family: var(--font-family-code);
   font-size: 1.8rem;
   @include breakpoint('small') {
-    font-size: 70px;
+    font-size: 65px;
   }
 }
 .about-text {
     margin: 20px 0 20px 0;
     line-height: 2;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     text-align: justify;
 }
 .about-text a{
