@@ -1,31 +1,33 @@
-.new-index-nrong{
-  @include breakpoint('medium') {
-    display: grid;
-    grid-gap: 60px; /* 中间空10px间距 */
-    grid-template-columns: 2fr 1fr;
-}
-}
 
-//侧边栏
+.index-laodao{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 8px;
+  font-size: 1rem;
+  color: #999;
+}
+.index-laodao svg{
+  color: var(--text-highlight-color);
+  width: 24px;
+  height: 24px;
+}
 .sidebar-biaot{
   margin-bottom: 20px;
   font-size: 1rem;
   color: var(--sanji-color);
 }
-.sidebar-page{
-  margin-bottom: 30px;
-}
 .sidebar-bowen{
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .sidebar-posts-title{
   margin-top: 4px;
   font-family: var(--font-family-title);
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 .sidebar-posts-title a{
-  color: var(--erji-color);
+  color: var(--text-content-color);
 }
 .sidebar_article_new{
     background: var(--text-highlight-color);
@@ -37,19 +39,12 @@
     display: inline-block;
 }
 
-// 页面宽度小于900样式
-@media (max-width:900px){
-.archives_tags,.sidebar-biaot,.sidebar-page-zt,.sidebar-page,.photo-index{
-    display: none;
-  }
-   } 
-
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a{
-    color: var(--sanji-color);
+    color: var(--text-content-dark-color);
   }
-  .sidebar-biaot{
+  .sidebar-biaot,.index-laodao{
     color: var(--erji-color);
   }
     }

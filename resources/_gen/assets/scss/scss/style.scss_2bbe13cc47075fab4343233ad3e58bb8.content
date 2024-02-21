@@ -2,7 +2,7 @@
 @import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css");
 @import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css");
 :root {
-  --font-family-paragraph: 'JetBrainsMono','HarmonyOS_Regular', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-paragraph: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --font-family-title: 'HarmonyOS_Medium', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --font-family-code: 'JetBrainsMono','HarmonyOS_Regular', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
@@ -246,7 +246,7 @@ h2, h3 {
 p {
   color: var(--text-content-color);
   font-family: var(--font-family-paragraph);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 24px; }
 
 p:empty {
@@ -268,9 +268,9 @@ ul {
   cursor: pointer; }
 
 .content {
-  font-size: 1.1rem; }
+  font-size: 1.05rem; }
   .content p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 2;
     margin: 0;
     padding: 0;
@@ -1193,58 +1193,10 @@ img[atk-emoticon] {
     color: var(--sanji-color); } }
 
 .movie-quanju {
-  display: none; }
-  @media (min-width: 900px) {
-    .movie-quanju {
-      display: grid;
-      grid-gap: 20px;
-      /* 中间空10px间距 */
-      margin-bottom: 30px; } }
-.movie-content {
   display: grid;
-  grid-template-columns: auto 1fr;
-  /* 第一列宽度自动，第二列平分剩余空间 */
-  grid-gap: 0.75rem;
-  /* 可选项，设置列之间的间隔 */ }
-
-.movie-content-left img {
-  border-radius: 4px !important;
-  object-fit: cover;
-  width: 80px;
-  aspect-ratio: 3 / 4.2; }
-
-.movie-content-right-1 {
-  margin-bottom: 8px;
-  display: flex;
-  gap: 4px; }
-
-.movie-content-right-1 svg {
-  width: 0.85rem;
-  height: 0.85rem;
-  color: #fcb68d; }
-
-.movie-content-right-2 {
-  font-family: var(--font-family-title);
-  font-size: 1rem; }
-
-.movie-content-right-2 a {
-  color: var(--erji-color); }
-
-.movie-content-right-3 {
-  line-height: 1.6;
-  font-size: 0.85rem;
-  margin-top: 5px;
-  color: var(--erji-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  /* 设置显示的行数为2行 */
-  -webkit-box-orient: vertical; }
-
-.movie-content-right-3:hover {
-  -webkit-line-clamp: unset;
-  /* 当鼠标悬停时取消行数限制，显示完整内容 */ }
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2px;
+  margin-bottom: 30px; }
 
 .movies_video {
   position: absolute;
@@ -1277,9 +1229,7 @@ img[atk-emoticon] {
   display: grid;
   grid-gap: 2px;
   grid-template-columns: repeat(3, 1fr); }
-  @media (min-width: 700px) {
-    #movies_page {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+
 .movies_bankuai {
   position: relative;
   overflow: hidden;
@@ -2006,32 +1956,35 @@ blockquote p {
   border-radius: 4px;
   color: var(--erji-color); }
 
-@media (min-width: 900px) {
-  .new-index-nrong {
-    display: grid;
-    grid-gap: 60px;
-    /* 中间空10px间距 */
-    grid-template-columns: 2fr 1fr; } }
+.index-laodao {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 8px;
+  font-size: 1rem;
+  color: #999; }
+
+.index-laodao svg {
+  color: var(--text-highlight-color);
+  width: 24px;
+  height: 24px; }
 
 .sidebar-biaot {
   margin-bottom: 20px;
   font-size: 1rem;
   color: var(--sanji-color); }
 
-.sidebar-page {
-  margin-bottom: 30px; }
-
 .sidebar-bowen {
-  margin-bottom: 20px; }
+  margin-bottom: 30px; }
 
 .sidebar-posts-title {
   margin-top: 4px;
   font-family: var(--font-family-title);
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6; }
 
 .sidebar-posts-title a {
-  color: var(--erji-color); }
+  color: var(--text-content-color); }
 
 .sidebar_article_new {
   background: var(--text-highlight-color);
@@ -2042,14 +1995,10 @@ blockquote p {
   font-size: 0.75rem;
   display: inline-block; }
 
-@media (max-width: 900px) {
-  .archives_tags, .sidebar-biaot, .sidebar-page-zt, .sidebar-page, .photo-index {
-    display: none; } }
-
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
-    color: var(--sanji-color); }
-  .sidebar-biaot {
+    color: var(--text-content-dark-color); }
+  .sidebar-biaot, .index-laodao {
     color: var(--erji-color); } }
 
 .about-img {
@@ -2068,11 +2017,11 @@ blockquote p {
   font-size: 1.8rem; }
   @media (min-width: 700px) {
     .about-img-text {
-      font-size: 70px; } }
+      font-size: 65px; } }
 .about-text {
   margin: 20px 0 20px 0;
   line-height: 2;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   text-align: justify; }
 
 .about-text a {
@@ -2460,15 +2409,11 @@ body {
     body {
       padding: 0 30px 0 30px; } }
 .wrapper {
-  max-width: 960px;
+  max-width: 800px;
   margin: 0 auto; }
 
-.page-hardware, .page-app, .page-about, .page-blog-tag {
-  max-width: 940px;
-  margin: auto; }
-
-.page-blog-list, .page-blog-single {
-  max-width: 860px;
+.page-home, .page-blog-list, .page-blog-single {
+  max-width: 760px;
   margin: auto; }
 
 .highlight {

@@ -26,7 +26,7 @@ h2,h3 {
 p {
   color: var(--text-content-color);
   font-family: var(--font-family-paragraph);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 24px;
 }
 p:empty {
@@ -48,9 +48,9 @@ ul {
   cursor: pointer;
 }
 .content {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 2;
     margin: 0;
     padding: 0;

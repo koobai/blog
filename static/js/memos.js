@@ -6,7 +6,7 @@ var memosData = {
   
 var bbMemo = {
   memos: 'https://memos.koobai.com/',
-  limit: '10',
+  limit: '5',
   creatorId: '1',
   domId: '#bber',
 };
@@ -415,7 +415,7 @@ var memosEditorCont = `
   <div class="memos-random d-none"></div>
 </div>
 `;
-const element = document.querySelector('.memos-title'); // 选择器是你想要操作的元素的选择器
+const element = document.querySelector('.index-laodao-titile'); // 选择器是你想要操作的元素的选择器
 element.insertAdjacentHTML('afterend', editIcon);
 memosDom.insertAdjacentHTML('afterbegin',memosEditorCont);
 

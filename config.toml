@@ -30,6 +30,6 @@ enableRobotsTXT = true
 [menu]
   [[menu.main]]
     identifier = 'home'
-    name = '唠叨'
+    name = '首页'
     url = '/'
     weight = 1

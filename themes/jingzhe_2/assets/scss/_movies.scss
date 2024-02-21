@@ -1,55 +1,9 @@
 // 首页调用
 .movie-quanju{
-  display: none;
-  @include breakpoint('medium') {
     display: grid;
-    grid-gap: 20px; /* 中间空10px间距 */
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2px; 
     margin-bottom: 30px;
-  }
-}
-.movie-content{
-  display: grid;
-  grid-template-columns: auto 1fr; /* 第一列宽度自动，第二列平分剩余空间 */
-  grid-gap: 0.75rem; /* 可选项，设置列之间的间隔 */
-  // align-items: center;
-}
-.movie-content-left img{
-  border-radius: 4px !important;
-  object-fit:cover;
-  width: 80px;
-  aspect-ratio: 3 / 4.2;
-}
-.movie-content-right-1{
-  margin-bottom: 8px;
-  display: flex;
-  gap: 4px;
-}
-.movie-content-right-1 svg{
-  width: 0.85rem;
-  height: 0.85rem;
-  color: #fcb68d;
-}
-.movie-content-right-2{
-  font-family:var(--font-family-title);
-  font-size: 1rem;
-}
-.movie-content-right-2 a{
-  color: var(--erji-color);
-}
-.movie-content-right-3 {
-  line-height: 1.6;
-  font-size: 0.85rem;
-  margin-top: 5px;
-  color: var(--erji-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* 设置显示的行数为2行 */
-  -webkit-box-orient: vertical;
-}
-
-.movie-content-right-3:hover {
-  -webkit-line-clamp: unset; /* 当鼠标悬停时取消行数限制，显示完整内容 */
 }
 
 // 影视页面
@@ -88,9 +42,6 @@
   display: grid;
   grid-gap: 2px; 
   grid-template-columns: repeat(3, 1fr);
-  @include breakpoint('small') {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
 }
 .movies_bankuai{
   position:relative;
