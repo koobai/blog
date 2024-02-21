@@ -1,6 +1,6 @@
 //分页加载更多
 
-let visibleMovies = 20; // 最初可见的电影数量
+let visibleMovies = 18; // 最初可见的电影数量
   const movies_page = document.getElementById('movies_page');
   const movies_loadMore = document.getElementById('movies_loadMore');
 
