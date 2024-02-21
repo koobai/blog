@@ -14,7 +14,7 @@ let visibleMovies = 18; // 最初可见的电影数量
 
   // “加载更多”按钮点击事件
   movies_loadMore.addEventListener('click', () => {
-    visibleMovies += 20; // 增加可见数量
+    visibleMovies += 18; // 增加可见数量
     updateVisibility(); // 更新电影可见性
   });
 
