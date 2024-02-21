@@ -4,6 +4,10 @@
 .about-img img{
   width: 100%;
 }
+.page-about .pagetitle{
+  max-width: 620px;
+
+}
 .about-img-text{
   position: absolute;
   top: 50%;
@@ -13,7 +17,7 @@
   font-family: var(--font-family-code);
   font-size: 1.8rem;
   @include breakpoint('small') {
-    font-size: 65px;
+    font-size: 55px;
   }
 }
 .about-text {

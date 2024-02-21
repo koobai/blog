@@ -2007,6 +2007,9 @@ blockquote p {
 .about-img img {
   width: 100%; }
 
+.page-about .pagetitle {
+  max-width: 620px; }
+
 .about-img-text {
   position: absolute;
   top: 50%;
@@ -2017,7 +2020,7 @@ blockquote p {
   font-size: 1.8rem; }
   @media (min-width: 700px) {
     .about-img-text {
-      font-size: 65px; } }
+      font-size: 55px; } }
 .about-text {
   margin: 20px 0 20px 0;
   line-height: 2;
@@ -2412,7 +2415,7 @@ body {
   max-width: 800px;
   margin: 0 auto; }
 
-.page-home, .page-blog-list, .page-blog-single {
+.page-home, .page-blog-list, .page-blog-single, .page-about {
   max-width: 760px;
   margin: auto; }
 
