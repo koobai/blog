@@ -38,7 +38,13 @@
     font-size: 0.75rem;
     display: inline-block;
 }
-
+//博文热力图
+#heatmap{
+  display: none;
+  @include breakpoint('medium') {
+		display: block;
+	  }	
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a{
