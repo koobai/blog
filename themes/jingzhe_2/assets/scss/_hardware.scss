@@ -23,7 +23,7 @@
 }
 .bankuai{
 	background: #F8F8F8;
-	padding: 40px 0 50px 0;
+	padding: 30px 0 40px 0;
 	border-radius: 4px;
 }
 .bankuai a:hover{
@@ -87,12 +87,14 @@
 	padding: 15px;
 	z-index: 10;
 	top: 0;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
+	background: rgba(248, 248, 248, 0.6);
 	color: var(--erji-color);
 	font-size: 0.9rem;
 	line-height: 1.6;
 	opacity: 0;
-	transition: opacity 0.6s ease;
+	backdrop-filter: saturate(140%) blur(20px);
+	-webkit-backdrop-filter: saturate(140%) blur(20px);
+	transition: opacity 0.4s ease;
 	  }	
   }
 .bankuai:hover .note {
@@ -111,4 +113,9 @@
 	.hardware-title a,.note{
 		color: var(--text-content-dark-color);
 	}
+	.note {
+		@include breakpoint('medium') {	
+			background: rgba(32, 29, 30, 0.6);
+		  }	
+	  }
 }
