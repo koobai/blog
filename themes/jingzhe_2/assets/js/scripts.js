@@ -28,7 +28,7 @@ function animateSummaries() {
   }
 
   const options = {
-    rootMargin: '0px 0px -80px 0px',
+    rootMargin: '0px 0px -70px 0px',
   };
 
   const observer = new IntersectionObserver((entries) => {
