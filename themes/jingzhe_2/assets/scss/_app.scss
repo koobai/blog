@@ -9,7 +9,7 @@
 .appquanju{
   display: grid;
   grid-template-columns: auto 1fr auto;
-  grid-gap: 15px;
+  grid-gap: 10px;
   align-items: center;
   justify-content: center;
   background: #fff;
@@ -19,7 +19,7 @@
   z-index: 1;
 }
 .appimg img{
-  width:80px;
+  width:70px;
   transition: transform 0.3s ease;
 }
 .apptitle{
@@ -34,15 +34,16 @@
 	@include breakpoint('medium') {
 	display: grid;
 	position: absolute;
-  padding: 20px 20px 20px 0;
+  padding: 6px 15px 6px 0;
   background: #fff;
   top: 0;
   bottom: 0;
 	color: var(--erji-color);
 	font-size: 0.9rem;
-	line-height: 1.6;
+	line-height: 1.4;
 	align-items: center;
 	opacity: 0;
+  text-align: justify;
 	transition: opacity 0.3s ease;
 	  }	
 }
@@ -93,7 +94,7 @@
   font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 20px;
-  max-width: 700px;
+  max-width: 620px;
   margin: auto;
   padding-bottom: 20px;
   text-align: center;
@@ -106,7 +107,7 @@
   position: relative;
   aspect-ratio:1;
   overflow: hidden;
-  padding: 25px;
+  padding: 10px 25px 40px 25px;
 }
 .app-star .appnote{
   opacity: 1;
@@ -139,7 +140,7 @@
   transform: scale(1.1);
 }
 .app-star .apptitle2{
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin-bottom: 5px;
 }
 .app-star .apptitle2 a,.app-star .appnote,.app-star .macos,.app-star .kaiyuan,.app-star .shoufei,.app-star .free{

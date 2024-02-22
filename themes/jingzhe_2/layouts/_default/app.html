@@ -2,7 +2,7 @@
 {{ define "main" }}
 {{ $goods := getJSON "static/suju/app.json" }}
 
-<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：( 2023-11-12 更新 )</div>
+<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：<br />( 2023-11-12 更新 )</div>
 <div class="appdquanjudiv">
   {{ range $index, $app := $goods.good }}
     <div class="appquanju img-hide {{if or (eq $index 4) (eq $index 5) (eq $index 18) (eq $index 19)}}app-star{{end}}">
