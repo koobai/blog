@@ -1078,7 +1078,7 @@ img[atk-emoticon] {
 
 .hardware-title {
   margin-bottom: 4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   padding: 0 10px; }
   @media (min-width: 900px) {
     .hardware-title {
@@ -1106,12 +1106,12 @@ img[atk-emoticon] {
   color: var(--text-highlight-color);
   font-size: 1rem;
   border: 0.5px solid var(--text-highlight-color);
-  padding: 5px 8px;
+  padding: 4px 10px;
   border-radius: 20px;
   margin-top: 6px; }
   @media (min-width: 900px) {
     .tiyi {
-      font-size: 0.75rem; } }
+      font-size: 0.85rem; } }
 .tiyi:hover {
   text-decoration: underline; }
 
