@@ -2002,6 +2002,11 @@ blockquote p {
   font-size: 0.75rem;
   display: inline-block; }
 
+#heatmap {
+  display: none; }
+  @media (min-width: 900px) {
+    #heatmap {
+      display: block; } }
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
     color: var(--text-content-dark-color); }
