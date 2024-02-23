@@ -2427,6 +2427,9 @@ body {
 .highlight {
   background-color: var(--bankuai-color); }
 
+::selection {
+  background: #ffe8da; }
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #1A1718;
@@ -2449,7 +2452,9 @@ body {
   img {
     filter: brightness(0.8) contrast(1.2); }
   .highlight pre {
-    background: var(--background-dark-color) !important; } }
+    background: var(--background-dark-color) !important; }
+  ::selection {
+    background: #634939; } }
 
 @media (min-width: 900px) {
   .img-hide {

@@ -71,7 +71,10 @@ body {
 }
 
 .highlight{background-color: var(--bankuai-color);}
-
+//文本选择高亮颜色
+::selection {
+  background: #ffe8da;
+}
 
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -99,6 +102,9 @@ a {
 .highlight{background-color: var(--background-dark-color);}
 img {filter: brightness(0.8) contrast(1.2); }
 .highlight pre { background: var(--background-dark-color) !important;}
+::selection {
+  background: #634939;
+}
 }
 
 // 页面上滑加载动画
