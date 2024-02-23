@@ -11,26 +11,20 @@
   {{ range ((where .Site.RegularPages "Type" "posts")) }}
     var key = {{ .Date.Format "2006-01-02" }};
     var value = dataMap.get(key);
-    var wordCount = {{ .WordCount }};
     var link = {{ .RelPermalink}};
     var title = {{ .Title }};
     
     // multiple posts in same day
     if (value == null) {
-      dataMap.set(key, [{wordCount, link, title}]);
+      dataMap.set(key, [{link, title}]);
     } else {
-      value.push({wordCount, link, title});
+      value.push({link, title});
     }
   {{- end -}}
 
   var data = [];
-  // sum up the word count
   for (const [key, value] of dataMap.entries()) {
-    var sum = 0;
-    for (const v of value) {
-      sum += v.wordCount;
-    }
-    data.push([key, (sum / 1000).toFixed(1)]);
+    data.push([key, value.length]);
   }
 
   var startDate = new Date();
@@ -81,7 +75,6 @@
             content += "<br>";          
             var link = post.link;
             var title = post.title;
-            var wordCount = (post.wordCount / 1000).toFixed(1);
             content += `<a href="${link}" target="_blank">${title}</a>` + '<br>';
         }
         return content;
@@ -118,9 +111,9 @@
             }
         },
         splitLine: {
-          lineStyle: {
-            color: currentTheme.xiankuangcolor,
-          }
+            lineStyle: {
+                color: currentTheme.xiankuangcolor,
+            }
         }
     },
     series: {
