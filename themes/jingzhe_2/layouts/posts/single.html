@@ -27,38 +27,56 @@
  </div>
   </div> 
  </div>
-    <div class="archives_nrong" >
-      {{ with .PrevInSection }}
-        <div class="archives_one">
-          <div>
-            <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-            <div class="archive-time">
-              <script>
-                document.write(formatDate({{ .Date.Unix }})); 
-              </script>
-            </div>
-            </div>
-            <div class="archive-img">
-            <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
-            </div>
+ <!-- 上一篇下一篇文章 -->
+ <div class="archives_nrong" >
+  {{ with .PrevInSection }}
+    <div class="archives_one">
+      <div>
+        <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+        <div class="archive-time">
+          <script>
+            document.write(formatDate({{ .Date.Unix }})); 
+          </script>
         </div>
-      {{ end }}
-      {{ with .NextInSection }}
-      <div class="archives_one">
-        <div>
-          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-          <div class="archive-time">
-            <script>
-              document.write(formatDate({{ .Date.Unix }})); 
-            </script>
-          </div>
-          </div>
-          <div class="archive-img">
-          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
-          </div>
-      </div>
-    {{ end }}
-      </div>
+        </div>
+        <div class="archive-img">
+        <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+        </div>
+    </div>
+  {{ end }}
+  {{ with .NextInSection }}
+    <div class="archives_one">
+      <div>
+        <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+        <div class="archive-time">
+          <script>
+            document.write(formatDate({{ .Date.Unix }})); 
+          </script>
+        </div>
+        </div>
+        <div class="archive-img">
+        <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+        </div>
+    </div>
+  {{ else }}
+    <!-- 如果没有下一篇文章，则从所有文章中随机选择一篇作为推荐 -->
+    {{ $pages := where site.RegularPages "Type" "posts" }}
+    {{ $randomPage := index $pages (add (mod (now.Unix) (len $pages)) 1) }}
+    <div class="archives_one">
+      <div>
+        <div class="archive-title"><a href="{{ $randomPage.RelPermalink }}">{{ $randomPage.Title }}</a></div>
+        <div class="archive-time">
+          <script>
+            document.write(formatDate({{ $randomPage.Date.Unix }})); 
+          </script>
+        </div>
+        </div>
+        <div class="archive-img">
+        <a href="{{ $randomPage.RelPermalink }}"><img loading="lazy" decoding="async" src="{{ $randomPage.Params.image | relURL }}" /></a>          
+        </div>
+    </div>
+  {{ end }}
+</div>
       <!----评论加载-->
       <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
       <div class="article-comments" id="articlecomments" style="display: none;">
