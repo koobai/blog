@@ -74,8 +74,9 @@
     formatter: function (p) {
         const date = p.data[0];
         const posts = dataMap.get(date);
-        var content = ``;
-        for (const [i, post] of posts.entries()) {          
+        var content = `<span style="font-size: 0.75rem;font-family: var(--font-family-code);">${date}</span>`;
+        for (const [i, post] of posts.entries()) {
+            content += "<br>";          
             var link = post.link;
             var title = post.title;
             var wordCount = (post.wordCount / 1000).toFixed(1);
