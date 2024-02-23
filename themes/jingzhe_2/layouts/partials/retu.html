@@ -51,6 +51,7 @@
       gaoliangcolor: ['#ffd0b6'],
       riqiColor: '#999',
       textbrcolor: '#FFF',
+      xiankuangcolor:'rgba(0, 0, 0, 0.1)',
   };
 
   // 定义暗黑模式下的颜色方案
@@ -60,6 +61,7 @@
       gaoliangcolor: ['#b25f2f'],
       riqiColor: '#666',
       textbrcolor: '#332D2F',
+      xiankuangcolor:'rgba(0, 0, 0, 0.0)',
   };
 
   // 根据浏览器主题模式选择当前主题
@@ -119,7 +121,7 @@
         },
         splitLine: {
           lineStyle: {
-            color: 'rgba(0, 0, 0, 0.0)',
+            color: currentTheme.xiankuangcolor,
           }
         }
     },
