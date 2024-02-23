@@ -9,7 +9,7 @@
     <div class="duiqi img-hide"><img loading="lazy" decoding="async" src="{{ .image }}"></div>
     <!--<a href="{{ .link }}" target="_blank"><div class="details">{{ .details }}</div></a>-->
     <div class="hardware-text">
-    <div class="hardware-title"><a href="{{ .link }}" target="_blank">{{ .title }}</a></div>
+    <div class="hardware-title"><a href="/tiaozhuan?target={{ .link | base64Encode }}" target="_blank">{{ .title }}</a></div>
     <div class="hardware-jiage">{{ .jiage }}</div>
     </div>
     <div class="liing_2_right"><a href="{{ .link_2 }}" target="_blank"><div class="tiyi">{{ .tiyi }}</div></a></div> 
