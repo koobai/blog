@@ -1,4 +1,4 @@
-<div id="heatmap" style="max-width: 700px;height: 145px;"></div>
+<div id="heatmap" style="max-width: 700px;height: 110px;margin-bottom: 40px;"></div>
 <script src="https://img.koobai.com/echarts.min.js"></script>
 <script type="text/javascript">
   var chartDom = document.getElementById('heatmap');
@@ -89,6 +89,8 @@
     calendar: {
         left: 20,
         top:20,
+        bottom:0,
+        right: 0,
         cellSize: ['auto', 13],
         range: [startDate, endDate],
         itemStyle: {
