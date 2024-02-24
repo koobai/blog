@@ -12,11 +12,11 @@
 <div class="posts-description">{{ .Params.description }}</div>
 
 <div class="posts-time-new">
-  <!--30 天内新博文-->  
+  <!--30 天内新博文  
   {{ if gt .Date (now.AddDate 0 0 -7) }}
   <div class="sidebar_article_new">NEW</div>
-  {{ end }}
-  <!--<!--30 天内新博文结束-->
+  {{ end }}-->
+<!--30 天内新博文结束-->
     <div class="archive-time posts-time">
       <script>
         document.write(formatDate({{ .Date.Unix }})); 
