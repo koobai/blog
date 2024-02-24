@@ -36,9 +36,48 @@
   endDate = echarts.format.formatTime('yyyy-MM-dd', endDate);
   
   // 检测浏览器主题模式并选择颜色方案
-  var prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  function detectTheme() {
+    var prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDarkMode ? darkTheme : lightTheme;
+  }
 
-  // 定义明亮模式下的颜色方案
+  // 监听浏览器主题模式变化
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    var newTheme = detectTheme();
+    myChart.setOption({
+        backgroundColor: newTheme.backgroundColor,
+        visualMap: {
+            inRange: {
+                color: newTheme.gaoliangcolor
+            }
+        },
+        calendar: {
+            itemStyle: {
+                color: newTheme.fangkuaicolor,
+                borderColor: newTheme.backgroundColor
+            },
+            monthLabel: {
+                textStyle: {
+                    color: newTheme.riqiColor
+                }
+            },
+            dayLabel: {
+                textStyle: {
+                    color: newTheme.riqiColor
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: newTheme.xiankuangcolor
+                }
+            }
+        },
+        tooltip: {
+            backgroundColor: newTheme.textbrcolor
+        }
+    });
+  });
+
   var lightTheme = {
       backgroundColor: '#FFFFFF',
       fangkuaicolor:'#F4F4F4',
@@ -48,7 +87,6 @@
       xiankuangcolor:'rgba(0, 0, 0, 0.0)',
   };
 
-  // 定义暗黑模式下的颜色方案
   var darkTheme = {
       backgroundColor: '#1A1718',
       fangkuaicolor:'#282325',
@@ -58,8 +96,7 @@
       xiankuangcolor:'rgba(0, 0, 0, 0.0)',
   };
 
-  // 根据浏览器主题模式选择当前主题
-  var currentTheme = prefersDarkMode ? darkTheme : lightTheme;
+  var currentTheme = detectTheme(); // 初始化当前主题
 
   option = {
     tooltip: {
@@ -133,5 +170,5 @@
       const link = window.location.origin + post.link;
       window.open(link, '_blank').focus();
     }
-});
+  });
 </script>
