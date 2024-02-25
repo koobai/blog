@@ -39,13 +39,6 @@
   margin-right: 8px;
   border-radius: 50%;
 }
-.header-title {
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  color: var(--text-content-color);
-  font-family: var(--font-family-title);
- }
 
 .menu-main {
   display: flex;
@@ -57,7 +50,7 @@
  .header-menu a {
   color: var(--erji-color);
   font-size: 1rem;
-  font-family: var(--font-family-title);
+  font-family: var(--font-family-paragraph);
   padding-top: 2px;
  }
  .header-menu{
@@ -87,13 +80,13 @@
    }
 }
 @media (min-width:900px){
-  .header-logo,.header-title{
+  .header-logo{
     display: none;
   }
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .header-title,.header-menu a{
+  .header-menu a{
     color: var(--sanji-color);
   }
   .header-menu svg{
