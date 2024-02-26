@@ -1,9 +1,8 @@
 @charset "UTF-8";
-@import url("https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css");
 :root {
-  --font-family-paragraph: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
-  --font-family-title: 'HarmonyOS_Medium', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
-  --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,Arial,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-paragraph: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
   --background-color: #fff;
   --background-dark-color: #201d1e;
@@ -233,7 +232,8 @@ a {
 h2, h3 {
   font-family: var(--font-family-title);
   font-weight: normal;
-  font-display: swap; }
+  font-display: swap;
+  font-weight: bold; }
 
 p {
   color: var(--text-content-color);
@@ -453,7 +453,7 @@ ul {
 
 .summary-title {
   font-family: var(--font-family-title);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-top: 6px;
   line-height: 1.6; }
 
@@ -855,6 +855,7 @@ img[atk-emoticon] {
   border-radius: 4px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
+  font-weight: bold;
   font-size: 0.85rem;
   border: 0.5px solid var(--text-highlight-color);
   display: inline-block; }
@@ -1266,6 +1267,7 @@ img[atk-emoticon] {
 
 .movie-title {
   font-family: var(--font-family-title);
+  font-weight: bold;
   font-size: 1rem;
   margin: 6px 0 6px 0; }
 
@@ -1979,7 +1981,7 @@ blockquote p {
 .sidebar-posts-title {
   margin-top: 4px;
   font-family: var(--font-family-title);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   line-height: 1.6; }
 
 .sidebar-posts-title a {
