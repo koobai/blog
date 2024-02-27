@@ -23,8 +23,11 @@
   opacity: 0.6;
 }
 .new-heard-menu{
-  display: flex;
-  gap: 30px;
+  display: none;
+  @include breakpoint('medium') {
+    display: flex;
+    gap: 30px;
+  }
 }
 .menu-current svg{
   color: var(--text-highlight-color) !important;
@@ -36,22 +39,25 @@
   width: 32px;
   height: 32px;
   vertical-align: middle;
-  margin-right: 8px;
   border-radius: 50%;
+  display: block;
+  @include breakpoint('medium') {
+    display: none;
+  }
 }
-
 .menu-main {
-  display: flex;
-  grid-gap: 20px; /* 中间空10px间距 */
-  align-items: center;
-  margin-left: auto;
-  
+  display: none;
+  @include breakpoint('medium') {
+    display: flex;
+    grid-gap: 20px; /* 中间空10px间距 */
+    align-items: center;
+    margin-left: auto;
+  }
  }
  .header-menu a {
   color: var(--erji-color);
   font-size: 1rem;
   font-family: var(--font-family-paragraph);
-  padding-top: 2px;
  }
  .header-menu{
   display: flex;
@@ -65,24 +71,10 @@
 }
 .menu-main svg{
   fill: #999;
-}
-.githuab svg{
   width: 20px;
-  fill: #999;
 }
-.githuab svg:hover,.menu-main svg:hover{
+.menu-main svg:hover{
   fill: #666;
-}
- // 页面宽度小于900样式
-@media (max-width:900px){
-  .menu-main,.new-heard-menu {
-    display: none;
-   }
-}
-@media (min-width:900px){
-  .header-logo{
-    display: none;
-  }
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
@@ -92,10 +84,10 @@
   .header-menu svg{
     color: #827478;
   }
-  .githuab svg,.heard-rss svg path,.menu-main svg{
+  .menu-main svg{
     fill: #6b6063;
   }
-  .heard-rss svg path:hover,.githuab svg:hover,.menu-main svg:hover{
+  .menu-main svg:hover{
     fill: #999;
   }
 }
