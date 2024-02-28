@@ -181,38 +181,70 @@ ul {
     display: block;
     position: fixed;
     opacity: 0;
-    top: 70px;
+    top: 200px;
     margin-left: 40px;
     transition: opacity 0.5s ease; 
-    border-left: 4px solid #f0f0f0;
-    padding: 0 15px;
     max-width: 300px;
   }
-}
-.paragraph-dh a{
-  line-height: 1.4;
-  color: #666;
 }
 .paragraph-dh ul{
   gap: 15px;
   display: grid;
 }
 .paragraph-dh ul ul {
-  padding-inline-start: 1rem;
   margin-top: 10px;
+}
+.paragraph-dh ul ul a {
+  color: #999;
 }
 .paragraph-dh a.active {
   color: var(--text-highlight-color);
-  transition: all .25s ease-in-out;
+  text-indent: 0; 
 }
+
+.paragraph-dh a {
+  padding-left: 25px; 
+  position: relative;
+  display: flex; 
+  align-items: center;
+  text-indent: -9999px; /* 把文字移出可视区域 */
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1.4;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.paragraph-dh:hover a{
+  text-indent: 0;   /* 重置文字缩进，使文本可见 */
+}
+
+.paragraph-dh li > a:before {
+  content: '';
+  display: inline-block;
+  width: 16px; 
+  height: 4px;
+  border-radius: 6px;
+  background-color: #ddd;
+  position: absolute;
+  left: 0;
+}
+.paragraph-dh li li > a:before {
+  width: 10px; 
+}
+.paragraph-dh a.active:before {
+  background-color: var(--text-highlight-color); 
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-  .paragraph-dh {
-   @include breakpoint('large') {
-     border-left: 4px solid var(--frame-dark-color);
-   }
- }
  .paragraph-dh a{
   color: #999;
+}
+.paragraph-dh ul ul a {
+  color: #7e7174;
+}
+.paragraph-dh li > a:before {
+  background-color: #6b6063;
 }
 }
