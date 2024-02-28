@@ -85,13 +85,9 @@
 </div>
 
 <div>
-  {{ $toc := .TableOfContents }}
-  {{ if findRE "<li>" $toc 1 }}
     <div class="paragraph-dh">
-      <div class="sidebar-biaot">文章段落导航</div>
-      {{ $toc }}
+     {{ .TableOfContents }}
     </div>
-  {{ end }}
 </div>
 
 </div>
