@@ -33,50 +33,12 @@ ol, ul {
     .header {
       z-index: 100;
       padding: 40px 0 60px 0; } }
-.about-koobai {
-  display: none; }
-  @media (min-width: 900px) {
-    .about-koobai {
-      display: block; } }
-.about-koobai img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  transition: opacity .3s ease-in-out; }
-
-.about-koobai img:hover {
-  opacity: 0.6; }
-
 .new-heard-menu {
   display: none; }
   @media (min-width: 900px) {
     .new-heard-menu {
       display: flex;
       gap: 30px; } }
-.menu-current svg {
-  color: var(--text-highlight-color) !important; }
-
-.menu-current a {
-  color: var(--text-highlight-color) !important; }
-
-.header-logo img {
-  width: 32px;
-  height: 32px;
-  vertical-align: middle;
-  border-radius: 50%;
-  display: block; }
-  @media (min-width: 900px) {
-    .header-logo img {
-      display: none; } }
-.menu-main {
-  display: none; }
-  @media (min-width: 900px) {
-    .menu-main {
-      display: flex;
-      grid-gap: 20px;
-      /* 中间空10px间距 */
-      align-items: center;
-      margin-left: auto; } }
 .header-menu a {
   color: var(--erji-color);
   font-size: 1rem;
@@ -86,17 +48,47 @@ ol, ul {
   display: flex;
   align-items: center; }
 
-.header-menu svg {
-  margin-right: 8px;
-  color: var(--sanji-color);
-  width: 22px;
-  height: 22px; }
+.menu-current a {
+  color: var(--text-highlight-color) !important; }
 
-.menu-main svg {
-  fill: #999;
-  width: 20px; }
+.heard-right {
+  display: flex;
+  grid-gap: 0;
+  /* 中间空10px间距 */
+  align-items: center;
+  margin-left: auto; }
+  @media (min-width: 900px) {
+    .heard-right {
+      grid-gap: 20px;
+      /* 中间空10px间距 */ } }
+.about-koobai {
+  width: 32px;
+  height: 32px; }
+  @media (min-width: 900px) {
+    .about-koobai {
+      width: 20px;
+      height: 20px; } }
+.about-koobai img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: opacity .3s ease-in-out; }
+  @media (min-width: 900px) {
+    .about-koobai img {
+      width: 20px;
+      height: 20px; } }
+.about-koobai img:hover {
+  opacity: 0.6; }
 
-.menu-main svg:hover {
+.heard-right svg {
+  display: none; }
+  @media (min-width: 900px) {
+    .heard-right svg {
+      fill: #999;
+      width: 20px;
+      height: 20px;
+      display: block; } }
+.heard-right svg:hover {
   fill: #666; }
 
 @media (prefers-color-scheme: dark) {
@@ -104,9 +96,9 @@ ol, ul {
     color: var(--sanji-color); }
   .header-menu svg {
     color: #827478; }
-  .menu-main svg {
+  .heard-right svg {
     fill: #6b6063; }
-  .menu-main svg:hover {
+  .heard-right svg:hover {
     fill: #999; } }
 
 .footer-background {
@@ -537,7 +529,6 @@ ul {
 .hamburger-trigger {
   height: 30px;
   display: flex;
-  margin-left: auto;
   align-items: center; }
   @media (min-width: 900px) {
     .hamburger-trigger {

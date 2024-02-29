@@ -74,7 +74,7 @@
 .hamburger-trigger {
   height: 30px;
   display: flex;
-  margin-left: auto;
+
   align-items: center;
   @include breakpoint('medium') {
     display: none;
