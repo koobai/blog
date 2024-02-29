@@ -32,7 +32,8 @@ ol, ul {
   @media (min-width: 900px) {
     .header {
       z-index: 100;
-      padding: 40px 0 60px 0; } }
+      padding: 40px 0 60px 0;
+      height: 20px; } }
 .new-heard-menu {
   display: none; }
   @media (min-width: 900px) {
@@ -61,13 +62,6 @@ ol, ul {
     .heard-right {
       grid-gap: 20px;
       /* 中间空10px间距 */ } }
-.about-koobai {
-  width: 32px;
-  height: 32px; }
-  @media (min-width: 900px) {
-    .about-koobai {
-      width: 20px;
-      height: 20px; } }
 .about-koobai img {
   width: 32px;
   height: 32px;
@@ -76,7 +70,8 @@ ol, ul {
   @media (min-width: 900px) {
     .about-koobai img {
       width: 20px;
-      height: 20px; } }
+      height: 20px;
+      display: block; } }
 .about-koobai img:hover {
   opacity: 0.6; }
 
