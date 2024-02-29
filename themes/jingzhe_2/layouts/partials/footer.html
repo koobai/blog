@@ -1,24 +1,18 @@
 <div class="footer-background">
 <div class="footer">
         <div class="footer-info">&copy; {{ now.Year }} <a href="{{ .Sites.First.Home.RelPermalink }}">空白Koobai</a>. 
-        由 <a href="https://gohugo.io/" target="_blank"> Hugo </a> 提供强力驱动,<span class="youpaiyun"><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">又拍云</a>提供图片存储/加速</span>. 
+        由 <a href="https://gohugo.io/" target="_blank"> Hugo </a> 提供强力驱动,<span class="youpaiyun"><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">又拍云</a>提供存储/加速</span>. 
         <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备16011784号-1</a> <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343">浙公网安备 33011302000343 号</a>
       </div>
       <div class="footer-rss">
       <a href="https://memos.koobai.com/u/1/rss.xml" target="_blank">唠叨 RSS</a> / 
       <a href="https://koobai.com/index.xml" target="_blank">博文 RSS</a>
       </div>
-      <div class="footer-cmdk"><div class="footer-cmdk-key">⌘</div>+<div class="footer-cmdk-key">K</div>或<div class="footer-cmdk-key">⌥</div>+<div class="footer-cmdk-key">K</div></div>
     </div>
   </div>
  <!--图片灯箱 -->
  <script src="/js/view-image.min.js"></script>
-  <!--访问统计
- <script async src="https://u.koobai.com/yangle2024.js" data-website-id="c1bc7bfa-c492-452c-a7ae-5a8f5966a833" data-domains="koobai.com"></script>-->
   <!--回到顶部-->
 <div class="gotop_hide">
   <div class="gotop" onclick="smoothScrollTop()" id="gotop"><img src="https://img.koobai.com/up.svg" alt="回到顶部" /></div>
 </div>
-<!--⌘+k功能-->
-{{ partial "cmdk" . }}
-<script src="/js/cmdk.js"></script>
