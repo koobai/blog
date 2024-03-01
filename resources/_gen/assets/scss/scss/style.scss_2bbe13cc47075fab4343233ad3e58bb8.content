@@ -844,7 +844,6 @@ img[atk-emoticon] {
   border-radius: 4px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
-  font-weight: bold;
   font-size: 0.85rem;
   border: 0.5px solid var(--text-highlight-color);
   display: inline-block; }
@@ -2076,9 +2075,7 @@ blockquote p {
   background: #fff;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
   padding: 15px; }
-  @media (min-width: 900px) {
-    .posts_list_article {
-      padding: 20px; } }
+
 .posts-img {
   margin: 10px 0;
   overflow: hidden;
