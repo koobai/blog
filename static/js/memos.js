@@ -476,6 +476,13 @@ function getEditIcon() {
     document.querySelector(".memos-editor").classList.toggle("d-none"); 
     window.localStorage && window.localStorage.setItem("memos-editor-display", document.querySelector(".memos-editor").classList.contains("d-none") ? "hide" : "show");
     getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
+
+     // 点击唠叨一下，平滑滚动到.index-laodao
+     let editorBody = document.querySelector('.index-laodao');
+     if (editorBody && !document.querySelector(".memos-editor").classList.contains("d-none")) {
+         editorBody.scrollIntoView({ behavior: 'smooth' });
+     }
+     
   });
 
   //标签数据
@@ -1068,7 +1075,11 @@ function editMemo(memo) {
       window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
       document.querySelector(".memos-image-list").insertAdjacentHTML('afterbegin', imageList);
     }
-    document.body.scrollIntoView({behavior: 'smooth'});
+    //平滑滚动到对应的class
+    let editorBody = document.querySelector('.index-laodao');
+    if (editorBody) {
+    editorBody.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }
 
