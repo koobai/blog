@@ -153,6 +153,9 @@ ol, ul {
 .youpaiyun {
   margin: 0 4px 0 4px; }
 
+/*.footer-rss{
+  margin-bottom: 30px;
+}*/
 .footer-cmdk {
   display: flex;
   gap: 6px;
@@ -172,9 +175,6 @@ ol, ul {
   justify-content: center;
   border-radius: 4px; }
 
-/*.footer-rss{
-  margin-bottom: 30px;
-}*/
 @media (prefers-color-scheme: dark) {
   .footer-info, .footer-info a, .footer-rss a, .footer-rss {
     color: var(--erji-color); }

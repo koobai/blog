@@ -46,6 +46,9 @@
 .youpaiyun {
   margin: 0 4px 0 4px;
 }
+/*.footer-rss{
+  margin-bottom: 30px;
+}*/
 .footer-cmdk{
   display: flex;
   gap: 6px;
@@ -65,9 +68,6 @@
   justify-content: center; 
   border-radius: 4px;
 }
-/*.footer-rss{
-  margin-bottom: 30px;
-}*/
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a,.footer-rss a,.footer-rss{
