@@ -1,0 +1,212 @@
+.command-menu {
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-height: 55vh;
+  width: 340px;
+  overflow: hidden;
+  pointer-events: none;
+  text-align: left;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  z-index: 999;
+  opacity: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  transform: translate3d(-50%, calc(50% + 0.5rem), 0) scale(0.95);
+  transform-origin: 50% 0;
+  animation: fadeInOut 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
+  display: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: saturate(140%) blur(20px);
+  backdrop-filter: saturate(140%) blur(20px);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, calc(50% + 0.5rem), 0) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(-50%, 50%, 0) scale(1);
+  }
+}
+
+.command-menu.visible {
+  opacity: 1;
+  transform: translate3d(-50%, 50%, 0) scale(1);
+}
+
+.command-menu:not([hidden]) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(-50%, 50%, 0) scale(1);
+}
+
+.list-reset {
+  list-style-type: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.group-option-link {
+  display: block;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: var(--erji-color);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  font-family: var(--font-family-title);
+  width: 100%;
+}
+.group-option-link svg{
+  color: var(--sanji-color);
+}
+.group-option a{
+  text-decoration: none !important;
+}
+
+.command-menu-search {
+  border-radius: 0.75rem 0.75rem 0 0;
+  border-width: 0;
+  display: block;
+  font: inherit;
+  padding: 1rem 1.5rem;
+  width: 100%;
+}
+
+.command-menu-header {
+  flex: 0 0 100%;
+}
+
+.command-menu-content {
+  flex: auto;
+  overflow-y: auto;
+  scroll-padding-top: 3rem;
+  scroll-padding-bottom: 3rem;
+}
+
+.group {
+  padding: 0.75rem;
+}
+
+.group-label {
+  display: block;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #9e9e9e;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.command-menu-header {
+  border-bottom: 1px solid #666666;
+}
+
+.command-menu-search {
+  background-color: transparent;
+  color: #cccccc;
+}
+
+.command-menu-search:focus {
+  outline: 0;
+}
+
+.group-option-link:focus-visible {
+  outline: 0;
+}
+
+.group-option-link:not(:hover):focus {
+  color: var(--text-content-color);
+  outline: none;
+  position: relative;
+  text-decoration: underline;
+}
+
+/*.group-option-link:not(:hover):focus:after {
+  border-radius: 0.75rem;
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 0;
+}*/
+
+.shortcuts {
+  display: flex;
+  margin-left: auto;
+  gap: 8px;
+  background: #b7b7b7;
+  border-radius: 6px
+}
+
+kbd {
+  font-size: .85rem;
+  width: 14px;
+  height: 14px;
+  padding: 4px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-family: var(--font-family-code);
+}
+
+li.group-option {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 15px;
+}
+
+li.group-option:hover ,.command-menu .focused {
+  background-color: rgba(102, 102, 102, 0.15);
+  border-radius: 6px;
+}
+
+li.group-option:hover a {
+  color: var(--text-content-color);
+  text-decoration: none;
+}
+
+.kbd-btn {
+  color: inherit;
+  gap: 0.25rem;
+  display: flex;
+  align-items: center;
+  opacity: .5;
+}
+
+@media (prefers-color-scheme: dark) {
+  li.group-option:hover ,.command-menu .focused {
+    background-color: rgba(55, 49, 51, 0.6);
+  }
+  .shortcuts {
+    background: #393235;
+  }
+  kbd {
+    color: #ccc;
+  }
+  .group-option-link {
+    color: var(--text-content-dark-color);
+  }
+  .group-option-link svg{
+    color: #827478;
+  }
+  .group-label {
+    color: #8a8a8a;
+  }
+  .command-menu {
+    background-color: rgba(26, 23, 24, 0.6);
+    //border: 0.5px solid #555;
+    box-shadow: 0 0 0 1px #322d2e;
+  }
+  .group-option-link:not(:hover):focus,li.group-option:hover a{
+    color: #eee;
+  }
+}
