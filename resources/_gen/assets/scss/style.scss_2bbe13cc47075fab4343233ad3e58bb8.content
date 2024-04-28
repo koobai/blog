@@ -2007,11 +2007,6 @@ blockquote p {
   font-size: 0.75rem;
   display: inline-block; }
 
-#heatmap {
-  display: none; }
-  @media (min-width: 900px) {
-    #heatmap {
-      display: block; } }
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
     color: var(--text-content-dark-color); }
@@ -2403,6 +2398,115 @@ li.group-option:hover a {
     box-shadow: 0 0 0 1px #322d2e; }
   .group-option-link:not(:hover):focus, li.group-option:hover a {
     color: #eee; } }
+
+.ch-container {
+  display: block; }
+
+#cal-heatmap {
+  display: none; }
+  @media (min-width: 900px) {
+    #cal-heatmap {
+      display: block;
+      max-width: 700px;
+      overflow: hidden;
+      margin-bottom: 40px; } }
+.ch-container,
+.ch-domain,
+.ch-domain-container,
+.ch-domain-container,
+.ch-domain-container-animation-wrapper {
+  overflow: visible; }
+
+.ch-domain-container.in-transition .ch-domain-container-animation-wrapper {
+  overflow: hidden; }
+
+.ch-domain-bg {
+  fill: transparent; }
+
+.ch-domain-text {
+  fill: #999;
+  font-size: 10px; }
+
+.ch-subdomain {
+  overflow: visible; }
+
+.ch-subdomain-bg {
+  fill: #f1f1f1;
+  transition: opacity .3s ease-in-out; }
+
+.ch-subdomain-bg.highlight {
+  stroke: #444;
+  stroke-width: 1px; }
+
+.ch-subdomain-bg:hover {
+  opacity: 0.4; }
+
+.ch-subdomain-text {
+  font-size: 8px;
+  pointer-events: none; }
+
+#ch-plugin-legend > svg {
+  background: transparent;
+  color: currentColor; }
+
+#ch-tooltip {
+  background: #827679;
+  color: #fff;
+  display: none;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: 4px; }
+
+#ch-tooltip[data-show] {
+  display: block; }
+
+#ch-tooltip-arrow,
+#ch-tooltip-arrow:before {
+  background: inherit;
+  height: 8px;
+  position: absolute;
+  width: 8px; }
+
+#ch-tooltip-arrow {
+  visibility: hidden; }
+
+#ch-tooltip-arrow:before {
+  content: "";
+  transform: rotate(45deg);
+  visibility: visible; }
+
+#ch-tooltip[data-popper-placement^=top] > #ch-tooltip-arrow {
+  bottom: -4px;
+  margin-left: -4px; }
+
+#ch-tooltip[data-popper-placement^=bottom] > #ch-tooltip-arrow {
+  margin-left: -4px;
+  top: -4px; }
+
+#ch-tooltip[data-popper-placement^=left] > #ch-tooltip-arrow {
+  right: -4px; }
+
+#ch-tooltip[data-popper-placement^=right] > #ch-tooltip-arrow {
+  left: -4px; }
+
+.ch-plugin-calendar-label-text {
+  fill: #999 !important;
+  font-size: 10px !important;
+  transform: translate(6px, 24px); }
+
+.retu_title {
+  margin-top: 2px; }
+
+@media (prefers-color-scheme: dark) {
+  .ch-subdomain-bg {
+    fill: #252121; }
+  .ch-plugin-calendar-label-text, .ch-domain-text {
+    fill: #666 !important; }
+  #ch-tooltip {
+    background: #484043;
+    color: #eeeeee; } }
 
 @font-face {
   font-family: JetBrainsMono;

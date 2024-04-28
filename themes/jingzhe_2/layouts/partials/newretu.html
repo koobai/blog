@@ -1,0 +1,166 @@
+<!-- 基础图表库 -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- cal-heatmap 核心库-->
+<script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
+
+<!-- 悬浮提示插件 -->
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
+<!-- 日历标签插件 -->
+<script src="https://unpkg.com/cal-heatmap/dist/plugins/CalendarLabel.min.js"></script>
+<!-- 容器代码 -->
+<div id="cal-heatmap"></div>
+
+<script type="text/javascript">
+    // 获取最近一年的文章数据
+    {{ $pages := where .Site.RegularPages "Date" ">" (now.AddDate -1 0 0) }}
+    {{ $pages := $pages.Reverse }}
+    var data = {
+        "pages": [
+            {{ range $index, $element := $pages }}
+                {
+                    "title": "{{ .Title }}",
+                    "date": "{{ .Date.Format "2006-01-02" }}",
+                    "url": "{{ .RelPermalink }}",  // 添加url
+                    "year": "{{ .Date.Format "2006" }}",
+                    "month": "{{ .Date.Format "01" }}",
+                    "day": "{{ .Date.Format "02" }}",
+                    "word_count": "{{ .WordCount }}"
+                }{{ if ne (add $index 1) (len $pages) }},{{ end }}
+                {{ end }}
+        ]
+    };
+    // console.log(data)
+
+document.addEventListener("DOMContentLoaded", function () {
+
+// 创建新的Calheatmap实例
+const cal = new CalHeatmap(); 
+// 获取今天的日期
+const today = new Date();  
+// 将之前定义的数据放在blogInfo中
+let blogInfo = data;
+// 该时间用于告诉Cal-heatmap从那一天开始展示数据
+let startDate = new Date(today.setMonth(today.getMonth() - 9));
+
+//定义一个点击时间，我这里是点击热力图上的方块，自动跳转到文章归档页面对应的时间位置
+cal.on('click', (event, timestamp, value) => {
+  if (value) {
+    // 将时间戳转换成标准时间，并截去前面的 "2024-04" 部分。
+    var date = new Date(timestamp).toISOString().substring(0,7);
+  
+    // 你现在需要找出对应日期的文章，先初始化URL为空
+    var url = '';
+  
+    // 之后，你在blogInfo的所有页面（blogInfo.pages）中查找日期匹配的文章
+    for (var i = 0; i < blogInfo.pages.length; i++) {
+      if (blogInfo.pages[i].date.startsWith(date)) {
+        // 如果找到了对应日期的文章，就把它的URL赋值给url
+        url = blogInfo.pages[i].url;
+        break; // 一旦找到，就不需要在后面的文章中继续查找了
+      }
+    }
+    
+    // 跳转页面，到对应日期的文章页面
+    if (url) {
+      window.location.href = url;
+    }
+  }
+});
+
+// 绘制热力图
+cal.paint({
+  // 展示几个月的数据
+  range: 10,
+  // 热力图上的方块颜色部分
+  scale: {
+    color: {
+      type: 'threshold',
+      // 下面的range和domain定义了两个有四个值4的数组，domain为需要判断的数值内容（这里判断的是word_count)，如果在100到1000则使用'rgba(77, 208, 90,0.1)'颜色，其他类推。
+      range: ['rgba(77, 208, 90,0.1)', 'rgba(77, 208, 90,0.3)', 'rgba(77, 208, 90,0.6)', 'rgba(77, 208, 90,1)'],
+      domain: [100, 1000, 2000, 4000],
+    },
+  },
+  // 设置主数据的格式
+  domain: {
+    //按月形式展示，可选的还有year等
+    type: 'month',
+    // 设置月和月之间的间隙，类似css中的gap属性
+    gutter: 4,
+    // 标签的位置
+    label: { text: 'MM', textAlign: 'start', position: 'top' },
+    // 我这里不想让他显示标签所以设置的null（但是不起作用，最后我通过css隐藏的）
+    text: null
+  },
+  // 设置子数据
+  subDomain: {
+    // subDomain的数据形式，可以设置week、hour等，根据颗粒度来。
+    // ghDay为该月的每一天的第一周和周末，按列展示，具有比较规整的排列
+    type: 'ghDay',
+    // 小格子的圆角度
+    radius: 2,
+    // 小格子的大小
+    width: 12,
+    height: 12,
+    // 小格子的间隙，类似css中的gap
+    gutter: 4,
+  },
+  // 设置展示时间
+  date: {
+    // 从合适开始展示数据，我们之前定义的startDate为2个月
+    start: startDate,
+    // 开始时间设置为周一
+    locale: { weekStart: 1 },
+  },
+  // 设置数据部分
+  data: {
+    //数据设置为blogInfo.pages，x轴为date，y轴为我们的wordcount，并用groupY进汇总分组（把每天的写的字数加在一起）
+    source: blogInfo.pages, x: "date", y: item => {
+      return parseInt(item.word_count);
+    }, groupY: 'sum'
+  },
+}, 
+// 以下部分为插件定义
+[[
+    // 悬浮提示插件
+    Tooltip,
+{
+  text: function (date, value, dayjsDate) {
+    const currentPost = blogInfo.pages.filter(page => page.date === dayjsDate.format('YYYY-MM-DD'));
+    // 字数文本，直接显示字数值
+    const wordText = value ? `共 ${value} 字` : '';
+    // 获取文章标题，并使用逗号将多个标题分隔
+    const titleText = currentPost.map(post => post.title).join(", ");
+    
+    // 如果没有字数也没有文章标题，设置气泡文案为“今天没写博文”
+    if (!value && currentPost.length === 0) {
+      return `<span>${dayjsDate.format('YYYY-MM-DD')} 今天没写</span>`;
+    }
+
+    // 组合最终显示的字符串
+    // 日期后面直接跟着字数（如果有），如果有标题则在下一行显示
+    return (
+      `<span>${dayjsDate.format('YYYY-MM-DD')} ${wordText}</span>` +
+      (titleText ? `<div class="retu_title">${titleText}</div>` : '')
+    );
+  },
+},
+  ],
+  [
+    // 日历标签插件，用以自定义右侧的周几标签
+    CalendarLabel,
+    {
+      // 显示在右侧
+      position: 'right',
+      // 中周一开始显示一、二、三等
+      text: () => ["一", "", "三", "", "五", "", "日"],
+      // 居中显示
+      textAlign:'middle',
+      // 圆角弧度
+      radius: 5
+    },
+  ],
+
+]);
+});
+</script>

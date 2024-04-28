@@ -2,7 +2,7 @@
 {{ define "main" }}
 <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
 <!--博文日历热力图-->  
-{{ partial "retu" . }}
+{{ partial "newretu" . }}
  <!--<div class="sidebar-biaot">最新博文</div>--> 
 {{ $posts := first 2 (where .Site.RegularPages "Type" "in" "posts") }}
 <div class="sidebar-page">
