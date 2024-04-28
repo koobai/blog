@@ -37,6 +37,6 @@ hasCJKLanguage = true
 
   [[menu.main]]
     identifier = "sport"
-    name = "锻炼"
+    name = "骑行"
     url = "https://sport.koobai.com/"
     weight = 3
