@@ -138,10 +138,15 @@ function addTooltipEventListeners(dayElement, dateString, pageData) {
   });
 }
 
-  // 格式化日期为"YYYY-MM-DD"格式的函数
-  function formatDate(date) {
-    return `${date.getUTCFullYear()}-${('0' + (date.getUTCMonth() + 1)).slice(-2)}-${('0' + date.getUTCDate()).slice(-2)}`;
+// 格式化日期为"YYYY-MM-DD"格式的函数
+function formatDate(date) {
+  if (!(date instanceof Date)) {
+    // 处理 date 不是 Date 对象的情况
+    return '无效日期';
   }
+
+  return `${date.getUTCFullYear()}-${('0' + (date.getUTCMonth() + 1)).slice(-2)}-${('0' + date.getUTCDate()).slice(-2)}`;
+}
 
   // 显示提示框的函数，确保tooltip只被创建一次
   function showTooltip(event, content) {
