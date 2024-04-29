@@ -5,10 +5,22 @@
     display: none;
     @include breakpoint('medium') {
           display: block;
-          max-width: 700px;
-          overflow: hidden;
+        
           margin-bottom: 40px;
         }	
+}
+.retu{
+    display: flex;
+    font-size: 10px;
+    color: #999;
+}
+.retu_week{
+    margin-right: 4px;
+    margin-left: -2px;
+    margin-top: 25px;
+    writing-mode: vertical-rl; /* 从上到下竖排 */
+    text-orientation: upright; /* 文字方向正常显示 */
+    letter-spacing: 22.6px;
 }
 .ch-container,
 .ch-domain,

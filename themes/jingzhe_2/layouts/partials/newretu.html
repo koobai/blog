@@ -6,8 +6,6 @@
 <!-- 悬浮提示插件 -->
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
-<!-- 日历标签插件 -->
-<script src="https://unpkg.com/cal-heatmap/dist/plugins/CalendarLabel.min.js"></script>
 
 <!-- 容器代码 -->
 <div id="cal-heatmap"></div>
@@ -147,21 +145,6 @@ cal.paint({
   },
 },
   ],
-  [
-    // 日历标签插件，用以自定义右侧的周几标签
-    CalendarLabel,
-    {
-      // 显示在右侧
-      position: 'right',
-      // 中周一开始显示一、二、三等
-      text: () => ["一", "", "三", "", "五", "", "日"],
-      // 居中显示
-      textAlign:'middle',
-      // 圆角弧度
-      radius: 5
-    },
-  ],
-
 ]);
 });
 </script>
