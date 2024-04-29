@@ -104,31 +104,38 @@
     return "4";
   }
 
-  // 创建每一天的元素
-  function createDayElement(date, pages) {
-    const dayElement = createElementWithClass("div", "day");
-    const dateString = formatDate(date);
-    const pageData = pages.find(page => page.date === dateString);
+// 创建每一天的元素
+function createDayElement(date, pages) {
+  const dayElement = createElementWithClass("div", "day");
+  const dateString = formatDate(date);
+  const pageData = pages.find(page => page.date === dateString);
 
-    if (pageData) {
-      const wordCount = parseInt(pageData.word_count);
-      dayElement.classList.add("level-" + determineLevel(wordCount));
-      addTooltipEventListeners(dayElement, dateString, pageData);
-    } else {
-      dayElement.classList.add("no-data");
-    }
-
-    return dayElement;
+  if (pageData) {
+    const wordCount = parseInt(pageData.word_count);
+    dayElement.classList.add("level-" + determineLevel(wordCount));
+  } else {
+    dayElement.classList.add("no-data");
   }
 
-  // 添加事件监听
-  function addTooltipEventListeners(dayElement, dateString, pageData) {
-    dayElement.addEventListener("mouseenter", function(event) {
-        showTooltip(event, `${dateString}<br><a href='${pageData.url}'>${pageData.title}</a>`);
-    });
-    dayElement.addEventListener("mouseleave", function() {
-        hideTooltip();
-    });
+  // 给所有格子（无论是否有数据）都绑定鼠标事件监听器来显示日期
+  addTooltipEventListeners(dayElement, dateString, pageData);
+
+  return dayElement;
+}
+
+// 修改添加事件监听，以便无数据时也显示日期
+function addTooltipEventListeners(dayElement, dateString, pageData) {
+  dayElement.addEventListener("mouseenter", function(event) {
+    if (pageData) {
+      showTooltip(event, `${dateString}<br><a href='${pageData.url}'>${pageData.title}</a>`);
+    } else {
+      // 如果没有页面数据，只显示日期
+      showTooltip(event, `${dateString} 稿子丢了`);
+    }
+  });
+  dayElement.addEventListener("mouseleave", function() {
+    hideTooltip();
+  });
 }
 
   // 格式化日期为"YYYY-MM-DD"格式的函数

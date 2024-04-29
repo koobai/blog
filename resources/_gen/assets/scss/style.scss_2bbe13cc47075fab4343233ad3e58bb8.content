@@ -2451,7 +2451,7 @@ li.group-option:hover a {
   color: #fff;
   padding: 6px;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   z-index: 100; }
 
 .tooltip a {
