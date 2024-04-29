@@ -1,0 +1,67 @@
+  #heatmap {
+    display: none;
+    @include breakpoint('medium') {
+          display: grid;
+          margin-bottom: 40px;
+        }	
+}
+  .day {
+    width: 12px;
+    height: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+  }
+  .day.no-data {
+    background: #f1f1f1;
+  }
+  .month-row{  
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: #999;
+    margin-bottom: 24px;
+  }
+  .retu_week{
+    display: flex;
+    gap: 3.6px;
+  }
+  /* 假设根据 word_count 定义了四个颜色级别 */
+  .level-1 {background-color: rgba(77, 208, 90,0.1);}
+  .level-2 {background-color: rgba(77, 208, 90,0.3);}
+  .level-3 {background-color: rgba(77, 208, 90,0.6);}
+  .level-4 {background-color: rgba(77, 208, 90,1);}
+
+  .week {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 3.6px;
+  }
+  .tooltip {
+    position: absolute;
+    background: #827679;
+    color: #fff;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    z-index: 100;    // 确保浮层位于其他内容之上
+}
+.tooltip a{
+    color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+    .day.no-data {
+        background: #252121;
+      }
+      .tooltip {
+        background: #484043;
+        color: #eeeeee;
+    }
+    .tooltip a{
+        color: #eeeeee;
+    }
+    .month-row{  
+      color: #666;
+    }
+}
