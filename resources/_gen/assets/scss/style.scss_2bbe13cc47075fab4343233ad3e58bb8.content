@@ -2403,16 +2403,16 @@ li.group-option:hover a {
   display: block; }
 
 #cal-heatmap {
+  margin-bottom: 40px; }
+
+.retu {
   display: none; }
   @media (min-width: 900px) {
-    #cal-heatmap {
+    .retu {
       display: block;
-      margin-bottom: 40px; } }
-.retu {
-  display: flex;
-  font-size: 10px;
-  color: #999; }
-
+      display: flex;
+      font-size: 10px;
+      color: #999; } }
 .retu_week {
   margin-right: 4px;
   margin-left: -2px;
