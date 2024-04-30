@@ -32,7 +32,7 @@
   let monthNames = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
  
   //显示多少月份
-  let numMonths = 8;
+  let numMonths = 9;
 
   let startMonthIndex = (currentDate.getMonth() - (numMonths - 1) + 12) % 12;
   for (let i = startMonthIndex; i < startMonthIndex + numMonths; i++) {
@@ -45,7 +45,7 @@
   function getStartDate() {
       const today = new Date();
     //显示多少月份格子
-      let numMonths = 8;
+      let numMonths = 9;
 
       const startDate = new Date(today.getFullYear(), today.getMonth() - numMonths + 1, 1);
 

@@ -7,32 +7,33 @@
       }	
 }
 #heatmap {
-  display: flex;
+  width: 675px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12px, 1fr)); 
   margin-bottom: 40px;
-  gap: 5.4px;
+  gap: 5px;
 }
-.month{
-  color: #999;
+.month {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  align-items: center;
   margin-bottom: 8px;
-  display: flex;
-  gap: 70px;
-
 }
 .retu_week{
   margin-right: 8px;
   margin-top: 24px;
   writing-mode: vertical-rl; /* 从上到下竖排 */
   text-orientation: upright; /* 文字方向正常显示 */
-  letter-spacing: 24.1px;
+  letter-spacing: 26.2px;
 }
 .heatmap_week {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .heatmap_day {
-  width: 14px;
+  width: 100%;
   height: 14px;
   border-radius: 4px;
   position: relative;
