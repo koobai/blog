@@ -140,8 +140,8 @@
           }
 
           const dateString = `${currentDate.getFullYear()}-${("0" + (currentDate.getMonth()+1)).slice(-2)}-${("0" + (currentDate.getDate())).slice(-2)}`;
+          const articleDataList = blogInfo.pages.filter(page => page.date === dateString);
 
-          const articleDataList = blogInfo.pages.filter(page => page.date === currentDate.toISOString().split('T')[0]);
 
           if (articleDataList.length > 0) {
               const titles = articleDataList.map(data => data.title);
