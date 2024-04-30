@@ -2399,73 +2399,89 @@ li.group-option:hover a {
   .group-option-link:not(:hover):focus, li.group-option:hover a {
     color: #eee; } }
 
-#heatmap {
+.retu {
   display: none; }
   @media (min-width: 900px) {
-    #heatmap {
-      display: grid;
-      margin-bottom: 40px; } }
-.day {
-  width: 12px;
-  height: 12px;
+    .retu {
+      display: flex;
+      font-size: 12px;
+      color: #999; } }
+#heatmap {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px; }
+  margin-bottom: 40px;
+  gap: 5.4px; }
 
-.day.no-data {
-  background: #f1f1f1; }
-
-.month-row {
-  font-size: 12px;
-  margin-bottom: 6px;
+.month {
   color: #999;
-  margin-bottom: 24px; }
+  margin-bottom: 8px;
+  display: flex;
+  gap: 70px; }
 
 .retu_week {
-  display: flex;
-  gap: 3.6px; }
+  margin-right: 8px;
+  margin-top: 24px;
+  writing-mode: vertical-rl;
+  /* 从上到下竖排 */
+  text-orientation: upright;
+  /* 文字方向正常显示 */
+  letter-spacing: 24.1px; }
 
-/* 假设根据 word_count 定义了四个颜色级别 */
-.level-1 {
-  background-color: rgba(77, 208, 90, 0.1); }
-
-.level-2 {
-  background-color: rgba(77, 208, 90, 0.3); }
-
-.level-3 {
-  background-color: rgba(77, 208, 90, 0.6); }
-
-.level-4 {
-  background-color: #4dd05a; }
-
-.week {
+.heatmap_week {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  gap: 3.6px; }
+  gap: 4px; }
 
-.tooltip {
+.heatmap_day {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  position: relative; }
+
+.heatmap_tooltip {
   position: absolute;
+  bottom: 12px;
+  left: 50%;
+  width: max-content;
   background: #827679;
   color: #fff;
-  padding: 6px;
-  border-radius: 4px;
   font-size: 0.85rem;
-  z-index: 100; }
+  padding: 8px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  opacity: 1;
+  transition: 0.3s;
+  z-index: 1000;
+  transform: translateX(-50%);
+  gap: 2px;
+  display: grid; }
 
-.tooltip a {
+.heatmap_tooltip_title a {
   color: #fff; }
 
+.heatmap_day_level_0 {
+  background-color: #f1f1f1; }
+
+.heatmap_day_level_1 {
+  background-color: #4dd05a1a; }
+
+.heatmap_day_level_2 {
+  background-color: #05b0164d; }
+
+.heatmap_day_level_3 {
+  background-color: #23c53399; }
+
+.heatmap_day_level_4 {
+  background-color: #35c243; }
+
 @media (prefers-color-scheme: dark) {
-  .day.no-data {
+  .heatmap_day_level_0 {
     background: #252121; }
-  .tooltip {
+  .heatmap_tooltip {
     background: #484043;
     color: #eeeeee; }
-  .tooltip a {
+  .heatmap_tooltip_title a {
     color: #eeeeee; }
-  .month-row {
+  .retu {
     color: #666; } }
 
 @font-face {
