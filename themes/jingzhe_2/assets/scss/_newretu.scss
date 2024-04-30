@@ -24,7 +24,7 @@
   margin-top: 24px;
   writing-mode: vertical-rl; /* 从上到下竖排 */
   text-orientation: upright; /* 文字方向正常显示 */
-  letter-spacing: 26.2px;
+  letter-spacing: 24px;
 }
 .heatmap_week {
   display: flex;
@@ -34,7 +34,7 @@
 
 .heatmap_day {
   width: 100%;
-  height: 14px;
+  height: 13px;
   border-radius: 4px;
   position: relative;
 }
