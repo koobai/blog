@@ -2462,16 +2462,20 @@ li.group-option:hover a {
   background-color: #f1f1f1; }
 
 .heatmap_day_level_1 {
-  background-color: #4dd05a1a; }
+  background-color: #4dd05a1a;
+  z-index: 1000; }
 
 .heatmap_day_level_2 {
-  background-color: #05b0164d; }
+  background-color: #05b0164d;
+  z-index: 1000; }
 
 .heatmap_day_level_3 {
-  background-color: #23c53399; }
+  background-color: #23c53399;
+  z-index: 1000; }
 
 .heatmap_day_level_4 {
-  background-color: #35c243; }
+  background-color: #35c243;
+  z-index: 1000; }
 
 @media (prefers-color-scheme: dark) {
   .heatmap_day_level_0 {
