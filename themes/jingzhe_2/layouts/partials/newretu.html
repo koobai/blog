@@ -22,6 +22,8 @@
 
   let startDate;
 
+  var weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
   function getStartDate() {
     const numWeeksToShow = 39; // 显示的周数
     const today = new Date();
@@ -60,10 +62,13 @@
           tooltip.className = "heatmap_tooltip";
 
           let tooltipContent = "";
+          const dayDate = new Date(date); // 将传入的日期字符串转换为Date对象
+          const weekDay = weekDays[dayDate.getDay()]; // 获取星期信息
           if (date && count && parseInt(count, 10) !== 0) {
-            tooltipContent += '<span class="heatmap_tooltip_date_and_count">' + date + ' (' + count + ' 字)</span>';
+            // 添加星期信息
+            tooltipContent += '<div class="heatmap_tooltip_date_and_count">' + date + ' ' + weekDay + '</div>';
         } else if (date) {
-            tooltipContent += '<span class="heatmap_tooltip_date">' + date + ' 稿子丢了' + '</span>';
+            tooltipContent += '<div class="heatmap_tooltip_date">' + date + ' ' + weekDay + ' 稿子丢了' + '</div>';
         }
 
           if (title && parseInt(title, 10) !== 0) {
