@@ -2444,19 +2444,19 @@ li.group-option:hover a {
   background-color: #f1f1f1; }
 
 .heatmap_day_level_1 {
-  background-color: #4dd05a1a;
+  background-color: #ffdcc8;
   z-index: 1000; }
 
 .heatmap_day_level_2 {
-  background-color: #05b0164d;
+  background-color: #ffc5a4;
   z-index: 1000; }
 
 .heatmap_day_level_3 {
-  background-color: #23c53399;
+  background-color: #ffa672;
   z-index: 1000; }
 
 .heatmap_day_level_4 {
-  background-color: #35c243;
+  background-color: #ff843c;
   z-index: 1000; }
 
 @media (prefers-color-scheme: dark) {
@@ -2468,7 +2468,19 @@ li.group-option:hover a {
   .heatmap_tooltip_title a {
     color: #eeeeee; }
   .retu {
-    color: #666; } }
+    color: #666; }
+  .heatmap_day_level_1 {
+    background-color: #573e2e;
+    z-index: 1000; }
+  .heatmap_day_level_2 {
+    background-color: #815c47;
+    z-index: 1000; }
+  .heatmap_day_level_3 {
+    background-color: #cc7d4f;
+    z-index: 1000; }
+  .heatmap_day_level_4 {
+    background-color: #ff853e;
+    z-index: 1000; } }
 
 @font-face {
   font-family: JetBrainsMono;
