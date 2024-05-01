@@ -2526,11 +2526,11 @@ body {
     background: #634939; } }
 
 @media (min-width: 900px) {
-  .img-hide {
+  .img-hide, .retu-hide {
     opacity: 0;
     transform: translateY(6%);
     transition: opacity 0.4s ease, transform 0.8s ease; }
-  .img-hide.visible {
+  .img-hide.visible, .retu-hide.visible {
     opacity: 1;
     transform: translateY(0); } }
 
