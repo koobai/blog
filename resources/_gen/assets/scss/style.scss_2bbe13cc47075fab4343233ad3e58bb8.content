@@ -2399,35 +2399,15 @@ li.group-option:hover a {
   .group-option-link:not(:hover):focus, li.group-option:hover a {
     color: #eee; } }
 
-.retu {
+#heatmap {
   display: none; }
   @media (min-width: 900px) {
-    .retu {
-      display: flex;
-      font-size: 12px;
-      color: #999; } }
-#heatmap {
-  width: 675px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12px, 1fr));
-  margin-bottom: 40px;
-  gap: 5px; }
-
-.month {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-  align-items: center;
-  margin-bottom: 8px; }
-
-.retu_week {
-  margin-right: 8px;
-  margin-top: 24px;
-  writing-mode: vertical-rl;
-  /* 从上到下竖排 */
-  text-orientation: upright;
-  /* 文字方向正常显示 */
-  letter-spacing: 24px; }
-
+    #heatmap {
+      width: 700px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12px, 1fr));
+      margin-bottom: 40px;
+      gap: 5px; } }
 .heatmap_week {
   display: flex;
   flex-direction: column;

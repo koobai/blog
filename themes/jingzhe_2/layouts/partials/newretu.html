@@ -1,10 +1,4 @@
-<div class="retu">
-  <div class="retu_week">一三五日</div>
-  <div>
-    <div class="month"></div>
-    <div id="heatmap"></div>
-</div>
-</div>
+<div id="heatmap"></div>
 
 <script type="text/javascript">
   // 获取最近一年的文章数据
@@ -28,33 +22,23 @@
 
   let startDate;
 
-  let monthDiv = document.querySelector('.month');
-  let monthNames = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
- 
-  //显示多少月份
-  let numMonths = 9;
-
-  let startMonthIndex = (currentDate.getMonth() - (numMonths - 1) + 12) % 12;
-  for (let i = startMonthIndex; i < startMonthIndex + numMonths; i++) {
-      let monthSpan = document.createElement('span');
-      let monthIndex = i % 12;
-      monthSpan.textContent = monthNames[monthIndex];
-      monthDiv.appendChild(monthSpan);
-  }
-
   function getStartDate() {
-      const today = new Date();
-    //显示多少月份格子
-      let numMonths = 9;
+    const numWeeksToShow = 39; // 显示的周数
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 将时间设置为午夜（00:00:00）来避免时间差异
 
-      const startDate = new Date(today.getFullYear(), today.getMonth() - numMonths + 1, 1);
+    // 获取当天是星期几（星期日为0，星期六为6），调整到星期一开始
+    const dayOfWeek = today.getDay();
+    // 如果今天是星期日，我们将它看做是上一周的最后一天
+    const daysSinceMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
 
-      while (startDate.getDay() !== 1) {
-          startDate.setDate(startDate.getDate() + 1);
-      }
+    // 计算今天到上个星期一的天数
+    const daysToLastMonday = daysSinceMonday + ((numWeeksToShow - 1) * 7);
 
-      return startDate;
-  }
+    let startDate = new Date(today.setDate(today.getDate() - daysToLastMonday));
+
+    return startDate;
+}
 
   function getWeekDay(date) {
       const day = date.getDay();
@@ -122,49 +106,57 @@
   }
 
   function createHeatmap() {
-      const container = document.getElementById('heatmap');
-      const startDate = getStartDate();
-      const endDate = new Date();
-      const weekDay = getWeekDay(startDate);
+    const container = document.getElementById('heatmap');
+    const startDate = getStartDate();
+    const endDate = new Date();
+    // 将结束日期设置为今天的最后一分钟来确保包括今天所有的文章
+    endDate.setHours(23, 59, 59, 999);
 
-      let currentWeek = createWeek();
-      container.appendChild(currentWeek);
+    // 创建一个临时日期用来遍历和生成热图的天数
+    let currentDate = new Date(startDate.getTime());
 
-      let currentDate = startDate;
-      let i = 0;
+    // 准备生成热图的所有“周”容器
+    let currentWeek = document.createElement('div');
+    currentWeek.className = 'heatmap_week';
+    container.appendChild(currentWeek);
 
-      while (currentDate <= endDate) {
-          if (i % 7 === 0 && i !== 0) {
-              currentWeek = createWeek();
-              container.appendChild(currentWeek);
-          }
+    let daysCount = 0;
 
-          const dateString = `${currentDate.getFullYear()}-${("0" + (currentDate.getMonth()+1)).slice(-2)}-${("0" + (currentDate.getDate())).slice(-2)}`;
-          const articleDataList = blogInfo.pages.filter(page => page.date === dateString);
+    // 遍历日期直到结束日期
+    while (currentDate <= endDate) {
+        // 每七天创建一个新的“周”容器
+        if (daysCount % 7 === 0 && daysCount !== 0) {
+            currentWeek = document.createElement('div');
+            currentWeek.className = 'heatmap_week';
+            container.appendChild(currentWeek);
+        }
 
+        // 格式化当前日期为YYYY-MM-DD格式
+        const dateString = `${currentDate.getFullYear()}-${("0" + (currentDate.getMonth()+1)).slice(-2)}-${("0" + (currentDate.getDate())).slice(-2)}`;
+        // 检索对应日期的文章数据
+        const articleDataList = blogInfo.pages.filter(page => page.date === dateString);
 
-          if (articleDataList.length > 0) {
-              const titles = articleDataList.map(data => data.title);
-              const title = titles.map(t => `${t}`).join('<br />');
+        // 根据文章数据创建热图的“天”
+        if (articleDataList.length > 0) {
+            const titles = articleDataList.map(data => data.title);
+            const titlesString = titles.map(title => `${title}`).join('<br />');
 
-              let count = 0;
-              let post = articleDataList.length;
+            const count = articleDataList.reduce((acc, data) => acc + parseInt(data.word_count, 10), 0);
 
-              articleDataList.forEach(data => {
-                  count += parseInt(data.word_count, 10);
-              });
+            const dayElem = createDay(dateString, titlesString, count);
+            currentWeek.appendChild(dayElem);
+        } else {
+            const dayElem = createDay(dateString, '', 0);
+            currentWeek.appendChild(dayElem);
+        }
 
-              const day = createDay(dateString, title, count, post);
-              currentWeek.appendChild(day);
-          } else {
-              const day = createDay(dateString, '', '0', '0');
-              currentWeek.appendChild(day);
-          }
+        // 将currentDate增加一天
+        currentDate.setDate(currentDate.getDate() + 1);
 
-          i++;
-          currentDate.setDate(currentDate.getDate() + 1);
-      }
-  }
+        // 增加天数计数器
+        daysCount++;
+    }
+}
 
-  createHeatmap();
+createHeatmap();
 </script>
