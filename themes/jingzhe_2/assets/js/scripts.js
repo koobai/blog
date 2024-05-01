@@ -18,7 +18,7 @@ window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thu
 
 // 页面上滑加载动画
 function animateSummaries() {
-  const articles = document.querySelectorAll('.img-hide');
+  const articles = document.querySelectorAll('.img-hide,.retu-hide'); // 包含新的类
   const shuffledArticles = Array.from(articles).sort(() => Math.random() - 0.5);
 
   function animate(article, delay) {
@@ -34,8 +34,10 @@ function animateSummaries() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
-        animate(entry.target, index * 8); // 添加延迟，实现错落效果
-        observer.unobserve(entry.target); // 动画触发后停止观察
+         // 类名 retu-hide 延迟 100 默认 img-hide 延迟 8，实现错落效果
+        const delay = entry.target.classList.contains('retu-hide') ? index * 100 : index * 8; 
+        animate(entry.target, delay);
+        observer.unobserve(entry.target);
       }
     });
   }, options);
