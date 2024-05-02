@@ -2481,7 +2481,7 @@ li.group-option:hover a {
     color: #eeeeee; }
   .heatmap_tooltip_title a {
     color: #eeeeee; }
-  .retu {
+  .retu, .month {
     color: #666; }
   .heatmap_day_level_1 {
     background-color: #56311b; }
