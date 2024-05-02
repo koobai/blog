@@ -21,6 +21,19 @@
   position: relative;
 }
 
+.month {
+  display: flex;
+  justify-content: space-between; /* 将月份平均分布在容器内 */
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+.month span {
+  flex: 1; /* 将月份平均分配可用空间 */
+  text-align: center; /* 文字居中 */
+}
+
 .heatmap_tooltip {
   position: absolute;
   bottom: 12px;
