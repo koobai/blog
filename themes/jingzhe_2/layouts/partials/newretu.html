@@ -1,4 +1,4 @@
-<div class="month"></div>
+<!--<div class="month"></div>-->
 <div id="heatmap"></div>
 
 <script type="text/javascript">
@@ -18,7 +18,7 @@
       ]
   };
 
-  let currentDate = new Date();
+  /*let currentDate = new Date();
   currentDate.setFullYear(currentDate.getFullYear() - 1);
 
   let startDate;
@@ -48,12 +48,12 @@
         let monthSpan = document.createElement('span');
         monthSpan.textContent = monthNames[monthIndex];
         monthDiv.appendChild(monthSpan);
-    }
+    }*/
 
   var weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
   function getStartDate() {
-    const numWeeksToShow = 39; // 显示的周数
+    const numWeeksToShow = 34; // 显示的周数
     const today = new Date();
     today.setHours(0, 0, 0, 0); // 将时间设置为午夜（00:00:00）来避免时间差异
 
@@ -76,61 +76,84 @@
   }
 
   function createDay(date, title, count, post) {
-      const day = document.createElement("div");
+  const day = document.createElement("div");
+  day.className = "heatmap_day";
+  day.setAttribute("data-title", title);
+  day.setAttribute("data-count", count);
+  day.setAttribute("data-post", post);
+  day.setAttribute("data-date", date);
 
-      day.className = "heatmap_day";
+  let tooltip;
 
-      day.setAttribute("data-title", title);
-      day.setAttribute("data-count", count);
-      day.setAttribute("data-post", post);
-      day.setAttribute("data-date", date);
+  const generateTooltipContent = () => {
+    const dayDate = new Date(date);
+    const weekDay = weekDays[dayDate.getDay()];
 
-      day.addEventListener("mouseenter", function () {
-          const tooltip = document.createElement("div");
-          tooltip.className = "heatmap_tooltip";
+    let content = `<div>${date} ${weekDay}${parseInt(count, 10) === 0 ? ' 稿子丢了' : ''}</div>`;
 
-          let tooltipContent = "";
-          const dayDate = new Date(date); // 将传入的日期字符串转换为Date对象
-          const weekDay = weekDays[dayDate.getDay()]; // 获取星期信息
-          if (date && count && parseInt(count, 10) !== 0) {
-            // 添加星期信息
-            tooltipContent += '<div>' + date + ' ' + weekDay + '</div>';
-        } else if (date) {
-            tooltipContent += '<div>' + date + ' ' + weekDay + ' 稿子丢了' + '</div>';
-        }
+    if (title && parseInt(title, 10) !== 0) {
+      const articleData = blogInfo.pages.find(page => page.title === title);
+      if (articleData) {
+        content += `<div class="heatmap_tooltip_title"><a href="${articleData.url}">${title}</a></div>`;
+      }
+    }
+    return content;
+  };
 
-          if (title && parseInt(title, 10) !== 0) {
-            const articleData = blogInfo.pages.find(page => page.title === title);
-            if (articleData) {
-                tooltipContent += '<div class="heatmap_tooltip_title"><a href="' + articleData.url + '">' + title + '</a></div>';
-            }
-        }
+  const showTooltip = () => {
+    if (!tooltip) {
+      tooltip = document.createElement("div");
+      tooltip.className = "heatmap_tooltip";
+      tooltip.innerHTML = generateTooltipContent();
+      document.body.appendChild(tooltip);
 
-          tooltip.innerHTML = tooltipContent;
-          day.appendChild(tooltip);
+      const rect = day.getBoundingClientRect();
+      tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+      tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 2}px`;
+
+      tooltip.addEventListener("mouseenter", () => {
+        tooltip.style.opacity = "1";
       });
+      tooltip.addEventListener("mouseleave", hideTooltip);
+    }
+    tooltip.style.opacity = "1";
+  };
 
-      day.addEventListener("mouseleave", function () {
-          const tooltip = day.querySelector(".heatmap_tooltip");
-          if (tooltip) {
-              day.removeChild(tooltip);
-          }
-      });
-
-        if (count == 0) {
-            day.classList.add("heatmap_day_level_0");
-        } else if (count > 0 && count < 100) {
-            day.classList.add("heatmap_day_level_1", "retu-hide");
-        } else if (count >= 100 && count < 1000) {
-            day.classList.add("heatmap_day_level_2", "retu-hide");
-        } else if (count >= 1000 && count < 1500) {
-            day.classList.add("heatmap_day_level_3", "retu-hide");
-        } else {
-            day.classList.add("heatmap_day_level_4", "retu-hide");
+  const hideTooltip = () => {
+    if (tooltip) {
+      tooltip.style.opacity = "0";
+      setTimeout(() => {
+        if (tooltip) {
+          tooltip.remove();
+          tooltip = null;
         }
+      }, 300); // 延迟以确保动画完成
+    }
+  };
 
-      return day;
+  day.addEventListener("mouseenter", showTooltip);
+  day.addEventListener("mouseleave", () => {
+    setTimeout(() => {
+      if (!tooltip.matches(':hover')) {
+        hideTooltip();
+      }
+    }, 100);
+  });
+
+  if (count == 0) {
+    day.classList.add("heatmap_day_level_0");
+  } else if (count > 0 && count < 100) {
+    day.classList.add("heatmap_day_level_1", "retu-hide");
+  } else if (count >= 100 && count < 1000) {
+    day.classList.add("heatmap_day_level_2", "retu-hide");
+  } else if (count >= 1000 && count < 1500) {
+    day.classList.add("heatmap_day_level_3", "retu-hide");
+  } else {
+    day.classList.add("heatmap_day_level_4", "retu-hide");
   }
+
+  return day;
+}
 
   function createWeek() {
       const week = document.createElement('div');
