@@ -16,28 +16,26 @@
 
 .heatmap_day {
   width: 100%;
-  height: 13px;
+  height: 15px;
   border-radius: 4px;
   position: relative;
 }
 
 .month {
   display: flex;
-  justify-content: space-between; /* 将月份平均分布在容器内 */
+  justify-content: space-between;
   margin-bottom: 8px;
   font-size: 12px;
   color: #999;
 }
 
 .month span {
-  flex: 1; /* 将月份平均分配可用空间 */
-  text-align: center; /* 文字居中 */
+  flex: 1;
+  text-align: center;
 }
 
 .heatmap_tooltip {
   position: absolute;
-  bottom: 12px;
-  left: 50%;
   width: max-content;
   background: #827679;
   color: #fff;
@@ -45,39 +43,39 @@
   padding: 8px;
   border-radius: 4px;
   white-space: pre-wrap;
-  opacity: 1;
-  transition: 0.3s;
+  opacity: 0; /* 初始隐藏 */
+  transition: opacity 0.3s;
   z-index: 1000;
   transform: translateX(-50%);
   gap: 2px;
   display: grid;
+  pointer-events: auto; /* 确保浮层可交互 */
 }
-.heatmap_tooltip_title a{
+
+.heatmap_tooltip_title a {
   color: #fff;
 }
 
 .heatmap_day_level_0 {
-  background-color:#f1f1f1;
+  background-color: #f1f1f1;
 }
+
 .heatmap_day_level_1 {
   background-color: #fcdecd;
-  z-index: 1000;
- }
- 
- .heatmap_day_level_2 {
+}
+
+.heatmap_day_level_2 {
   background-color: #ffd4bb;
-  z-index: 1000;
- }
- 
- .heatmap_day_level_3 {
+}
+
+.heatmap_day_level_3 {
   background-color: #FFBE98;
-  z-index: 1000;
- }
- 
- .heatmap_day_level_4 {
+}
+
+.heatmap_day_level_4 {
   background-color: #FC9151;
-  z-index: 1000;
- }
+}
+
 
 @media (prefers-color-scheme: dark) {
   .heatmap_day_level_0 {
