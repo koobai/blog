@@ -13,7 +13,7 @@
   <link href="/index.xml" title="{{ $.Site.Title }}" type="application/rss+xml">
   <link rel="canonical" href="{{ .Permalink }}" />
 
-  {{ if .Site.IsServer }}
+  {{ if hugo.IsServer }}
   {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" true) }}
   <link rel="stylesheet" href="{{ ($style).RelPermalink }}">
   {{ else }}
@@ -45,7 +45,7 @@
 
   {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
 
-  {{ if .Site.IsServer }}
+  {{ if hugo.IsServer }}
   <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
   {{ else }}
   <script type="text/javascript" src="{{ ($js | minify | fingerprint).RelPermalink }}"></script>
