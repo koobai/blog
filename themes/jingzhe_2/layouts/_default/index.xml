@@ -39,7 +39,7 @@
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{ with site.Author.email }}<author>{{.}}{{ with site.Author.name }} ({{.}}){{end}}</author>{{end}}
       <guid>{{ .Permalink }}</guid>
-      <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}}feedId:52982633250295857+userId:58707550957768704</description>
+      <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}} feedId:52982633250295857+userId:58707550957768704</description>
       {{- if not site.Params.RSSNoContent}}
       {{ $image := printf `<img loading="lazy" decoding="async" src="%s" alt="%s" />` (.Params.image | relURL) .Title }}
      <content:encoded>{{ (printf "<![CDATA[%s%s]]>" $image .Content)  | safeHTML }}</content:encoded>
