@@ -40,3 +40,10 @@ hasCJKLanguage = true
     name = "骑行"
     url = "https://sport.koobai.com/"
     weight = 3
+
+  [[menu.main]]
+    identifier = "Goods"
+    name = "好物"
+    url = "https://qiszy.taobao.com"
+    weight = 6
+    params = { new_window = true }
