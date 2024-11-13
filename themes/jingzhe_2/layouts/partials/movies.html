@@ -1,4 +1,4 @@
-{{$items := getCSV "," "data/douban/movie.csv" }}
+{{ $items := resources.Get "movie.csv" | transform.Unmarshal }}
 {{$numb := .}}
 {{ if . }}
     {{$numb = add . 1 }}
