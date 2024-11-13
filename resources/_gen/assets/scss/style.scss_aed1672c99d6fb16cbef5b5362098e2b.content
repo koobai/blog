@@ -1979,11 +1979,25 @@ blockquote p {
     .posts_list {
       display: flex;
       flex-wrap: wrap; } }
+.posts_list_index {
+  display: grid;
+  gap: 15px;
+  margin-bottom: 25px; }
+  @media (min-width: 900px) {
+    .posts_list_index {
+      display: flex;
+      flex-wrap: wrap; } }
 .posts_list_article {
   border-radius: 4px;
   background: #fff;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
   padding: 15px; }
+
+.posts_list_article-index {
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 10px; }
 
 .posts-img {
   margin: 10px 0;
@@ -2029,6 +2043,19 @@ blockquote p {
   font-size: 1rem;
   line-height: 1.6; }
 
+.archive-title-index {
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  line-height: 1.6; }
+
+.archive-time-index {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--sanji-color);
+  font-family: var(--font-family-code); }
+  @media (min-width: 900px) {
+    .archive-time-index {
+      display: none; } }
 .archive-time {
   font-size: 0.85rem;
   color: var(--sanji-color);
@@ -2049,9 +2076,9 @@ blockquote p {
   transform: scale(1.05); }
 
 @media (prefers-color-scheme: dark) {
-  .archive-time {
+  .archive-time, .archive-time-index {
     color: var(--erji-color); }
-  .posts_list_article, .archives_one {
+  .posts_list_article, .archives_one, .posts_list_article-index {
     background: var(--background-dark-color); }
   .posts-description {
     color: var(--sanji-color); } }

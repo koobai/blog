@@ -42,11 +42,26 @@
     flex-wrap: wrap;
 }
 }
+.posts_list_index{
+  display: grid;
+  gap: 15px;
+  margin-bottom: 25px;
+  @include breakpoint('medium') {
+    display: flex;
+    flex-wrap: wrap;
+}
+}
 .posts_list_article{
   border-radius:4px;
   background: #fff;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
   padding: 15px;
+}
+.posts_list_article-index{
+  border-radius:2px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 10px;
 }
 .posts-img{
  margin:10px 0;
@@ -93,6 +108,20 @@
   font-size: 1rem;
   line-height: 1.6;
 }
+.archive-title-index{
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.archive-time-index{
+  display: block;
+  font-size: 0.75rem;
+  color: var(--sanji-color);
+  font-family: var(--font-family-code);
+  @include breakpoint('medium') {
+    display: none;
+}
+}
 .archive-time{
     font-size: 0.85rem;
     color: var(--sanji-color);
@@ -115,10 +144,10 @@
 
   // 夜间模式页面样式
   @media (prefers-color-scheme: dark) {
-  .archive-time{
+  .archive-time,.archive-time-index{
         color: var(--erji-color);
       }
-  .posts_list_article,.archives_one{
+  .posts_list_article,.archives_one,.posts_list_article-index{
     background: var(--background-dark-color);
   }
   .posts-description{
