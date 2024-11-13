@@ -6,7 +6,11 @@
 <div class="posts_list_index" >
   {{ range $posts }} 
   <div class="posts_list_article-index img-hide"> 
-    <div class="archive-title-index"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+    <div class="archive-title-index">
+  {{ if gt .Date (now.AddDate 0 0 -7) }}
+  <div class="sidebar_article_new">NEW</div>
+  {{ end }}
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
     <div class="archive-time-index">
       <script>
         document.write(formatDate({{ .Date.Unix }})); 
