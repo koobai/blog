@@ -1892,7 +1892,7 @@ blockquote p {
 .sidebar_article_new {
   background: var(--text-highlight-color);
   color: #fff;
-  padding: 2px 4px;
+  padding: 1px 4px;
   font-family: var(--font-family-code);
   border-radius: 2px;
   font-size: 0.75rem;
