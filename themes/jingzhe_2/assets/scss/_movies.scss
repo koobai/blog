@@ -1,9 +1,9 @@
 // 首页调用
 .movie-quanju{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 2px; 
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 // 影视页面
