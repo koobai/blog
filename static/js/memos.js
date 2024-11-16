@@ -6,7 +6,7 @@ var memosData = {
   
 var bbMemo = {
   memos: 'https://memos.koobai.com/',
-  limit: '5',
+  limit: '8',
   creatorId: '1',
   domId: '#bber',
 };
