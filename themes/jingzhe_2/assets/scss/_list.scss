@@ -44,11 +44,13 @@
 }
 .posts_list_index{
   display: grid;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 12px;
+  margin-bottom: 20px;
   @include breakpoint('medium') {
     display: flex;
     flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 }
 .posts_list_article{
@@ -110,8 +112,11 @@
 }
 .archive-title-index{
   font-family: var(--font-family-title);
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.6;
+  @include breakpoint('medium') {
+    font-size: 0.85rem;
+}
 }
 .archive-time-index{
   display: block;
