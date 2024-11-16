@@ -66,7 +66,7 @@
 .bb-timeline{
   margin-bottom: 0;
   @include breakpoint('medium') {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
 .datacont p{
@@ -298,7 +298,7 @@ blockquote p{
   padding: 15px;
   margin-bottom: 10px;
   @include breakpoint('medium') {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
 .memos-editor-content .memos-editor-textarea{
@@ -496,7 +496,12 @@ blockquote p{
   display: flex;
   gap: 20px;
 }
-
+.bb-list-li{
+  border-radius:4px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 15px;
+}
 // 页面宽度小于700样式
 @media (max-width:900px){
   .resimg{
@@ -512,10 +517,7 @@ blockquote p{
     margin-top: 10px;
   }
   .bb-list-li{
-    background: #f6f6f6;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
+    margin-bottom: 15px;
   }
   @media (prefers-color-scheme: dark) {
     .bb-list-li{
@@ -535,11 +537,14 @@ blockquote p{
   }
   .bb-list-ul{
     display: grid;
-    grid-row-gap: 40px; /* 可选项，设置列之间的间隔 */
+    grid-row-gap: 20px; /* 可选项，设置列之间的间隔 */
   }
   }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
+.bb-list-li{
+  background: var(--background-dark-color);
+}
 .memos-xiala{
   background-color: #282527;
 }

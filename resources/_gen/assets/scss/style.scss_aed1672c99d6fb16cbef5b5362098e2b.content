@@ -1290,7 +1290,7 @@ img[atk-emoticon] {
   margin-bottom: 0; }
   @media (min-width: 900px) {
     .bb-timeline {
-      margin-bottom: 40px; } }
+      margin-bottom: 20px; } }
 .datacont p {
   font-size: 1rem;
   line-height: 1.8;
@@ -1518,7 +1518,7 @@ blockquote p {
   margin-bottom: 10px; }
   @media (min-width: 900px) {
     .memos-editor-body {
-      margin-bottom: 40px; } }
+      margin-bottom: 20px; } }
 .memos-editor-content .memos-editor-textarea {
   border: transparent;
   border-radius: 4px;
@@ -1709,6 +1709,12 @@ blockquote p {
   display: flex;
   gap: 20px; }
 
+.bb-list-li {
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 15px; }
+
 @media (max-width: 900px) {
   .resimg {
     width: 100% !important; }
@@ -1719,10 +1725,7 @@ blockquote p {
   .bb-load button {
     margin-top: 10px; }
   .bb-list-li {
-    background: #f6f6f6;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 6px; } }
+    margin-bottom: 15px; } }
 
 @media (max-width: 900px) and (prefers-color-scheme: dark) {
   .bb-list-li {
@@ -1736,10 +1739,12 @@ blockquote p {
     grid-template-columns: repeat(5, 1fr); }
   .bb-list-ul {
     display: grid;
-    grid-row-gap: 40px;
+    grid-row-gap: 20px;
     /* 可选项，设置列之间的间隔 */ } }
 
 @media (prefers-color-scheme: dark) {
+  .bb-list-li {
+    background: var(--background-dark-color); }
   .memos-xiala {
     background-color: #282527; }
   .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
@@ -1981,12 +1986,14 @@ blockquote p {
       flex-wrap: wrap; } }
 .posts_list_index {
   display: grid;
-  gap: 15px;
-  margin-bottom: 25px; }
+  gap: 12px;
+  margin-bottom: 20px; }
   @media (min-width: 900px) {
     .posts_list_index {
       display: flex;
-      flex-wrap: wrap; } }
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px; } }
 .posts_list_article {
   border-radius: 4px;
   background: #fff;
@@ -2045,9 +2052,11 @@ blockquote p {
 
 .archive-title-index {
   font-family: var(--font-family-title);
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.6; }
-
+  @media (min-width: 900px) {
+    .archive-title-index {
+      font-size: 0.85rem; } }
 .archive-time-index {
   display: block;
   font-size: 0.75rem;
