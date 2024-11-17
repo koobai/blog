@@ -794,7 +794,8 @@ img[atk-emoticon] {
   padding: 10px !important; }
 
 .atk-main-editor {
-  border: 1px solid var(--frame-color) !important; }
+  border: 1px solid var(--frame-color) !important;
+  background: transparent !important; }
 
 .artalk code {
   border: 1px solid #FFBE98 !important;
@@ -803,6 +804,7 @@ img[atk-emoticon] {
   margin: 0 4px !important; }
 
 .atk-main-editor > .atk-textarea-wrap > .atk-textarea {
+  background: transparent !important;
   line-height: 1.6; }
 
 .atk-main-editor > .atk-bottom .atk-state-btn .atk-text-wrap {
