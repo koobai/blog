@@ -47,10 +47,9 @@
   gap: 12px;
   margin-bottom: 20px;
   @include breakpoint('medium') {
-    display: flex;
+    grid-template-columns: repeat(2, 1fr); 
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 25px;
 }
 }
 .posts_list_article{
@@ -119,13 +118,10 @@
 }
 }
 .archive-time-index{
-  display: block;
   font-size: 0.75rem;
   color: var(--sanji-color);
+  margin-bottom: 2px;
   font-family: var(--font-family-code);
-  @include breakpoint('medium') {
-    display: none;
-}
 }
 .archive-time{
     font-size: 0.85rem;

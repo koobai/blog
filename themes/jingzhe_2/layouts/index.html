@@ -1,21 +1,23 @@
 {{ define "body_classes" }}page-home{{ end }}
 {{ define "main" }}
 <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+<!--博文日历热力图
+{{ partial "newretu" . }}-->  
  <!--<div class="sidebar-biaot">最新博文</div>--> 
 {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
 <div class="posts_list_index" >
   {{ range $posts }} 
   <div class="posts_list_article-index img-hide"> 
-    <div class="archive-title-index">
-  {{ if gt .Date (now.AddDate 0 0 -7) }}
-  <div class="sidebar_article_new">NEW</div>
-  {{ end }}
-      <a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
     <div class="archive-time-index">
+      {{ if gt .Date (now.AddDate 0 0 -7) }}
+      <div class="sidebar_article_new">NEW</div>
+      {{ end }}
       <script>
         document.write(formatDate({{ .Date.Unix }})); 
       </script>
     </div> 
+    <div class="archive-title-index">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
   </div>
   {{ end }}
 </div>
