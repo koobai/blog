@@ -13,9 +13,13 @@
   height: 24px;
 }
 .sidebar-biaot{
-  margin-bottom: 20px;
-  font-size: 1rem;
-  color: var(--sanji-color);
+  display: none;
+  @include breakpoint('medium') {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: var(--sanji-color);
+  }
 }
 .sidebar-bowen{
   margin-bottom: 40px;

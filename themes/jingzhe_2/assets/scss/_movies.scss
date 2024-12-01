@@ -1,9 +1,47 @@
 // 首页调用
 .movie-quanju{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 2px; 
-    margin-bottom: 20px;
+  display: none;
+    @include breakpoint('medium') {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 15px; 
+      margin-bottom: 20px;
+    }
+}
+
+.movies_bankuai_index{
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+}
+.movies_bankuai_index img{
+  width:120px;
+  border-radius: 4px;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+}
+.movies_ingdex_title{
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  margin-top: 14px;
+}
+.movies_right{
+  margin-left: 10px;
+}
+.movies_index_info{
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.movie_index_time{
+  font-size: 0.75rem;
+  margin-top: 5px;
+  color: #999;
 }
 
 // 影视页面
@@ -144,5 +182,8 @@
 }
 .page-movies .menu-main svg {
   fill: #c3c3c3;
+}
+.movies_index_info{
+  color: #999;
 }
 }

@@ -9,10 +9,12 @@
         {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $item 3)) }} <!--封面地址替换 -->
         {{ $rating := index $item 8 }}  <!--个人评分改成星星 -->
         {{ $movietype := replace (index $item 7) "," " / " }} <!--影视类型 , 改成 / -->
-            <div class="movies_bankuai img-hide">
-                <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $item 1 }}"  title="{{ index $item 4 }}"></a>        
-                <div class="movies-nrong">
-                  <div class="movie-title"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>  
+            <div class="movies_bankuai_index img-hide">
+              <div class="movies_left">
+                <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $item 1 }}"  title="{{ index $item 4 }}"></a>
+              </div>        
+                <div class="movies_right">
+                  <div class="movies_ingdex_title"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>  
                     <div class="movie-pfeng">
                         {{ with $rating }}
                           {{ $ratingCount := . }}
@@ -21,8 +23,8 @@
                           {{ end }}
                         {{ end }}
                     </div>
-                <!-- <div class="movie-info">{{ index $item 9 }}</div>
-              <div class="movie-time">
+                <div class="movies_index_info">{{ index $item 9 }}</div>
+              <!--<div class="movie_index_time">
                     <script>
                          document.write(formatDate({{ index $item 11 }})); 
                     </script>

@@ -1097,10 +1097,45 @@ img[atk-emoticon] {
     color: var(--sanji-color); } }
 
 .movie-quanju {
+  display: none; }
+  @media (min-width: 900px) {
+    .movie-quanju {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 15px;
+      margin-bottom: 20px; } }
+.movies_bankuai_index {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 2px;
-  margin-bottom: 20px; }
+  grid-template-columns: auto 1fr; }
+
+.movies_bankuai_index img {
+  width: 120px;
+  border-radius: 4px;
+  object-fit: cover;
+  aspect-ratio: 3 / 4; }
+
+.movies_ingdex_title {
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  margin-top: 14px; }
+
+.movies_right {
+  margin-left: 10px; }
+
+.movies_index_info {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical; }
+
+.movie_index_time {
+  font-size: 0.75rem;
+  margin-top: 5px;
+  color: #999; }
 
 .movies_video {
   position: absolute;
@@ -1223,7 +1258,9 @@ img[atk-emoticon] {
   .page-movies .header-menu svg {
     color: #dfdfdf; }
   .page-movies .menu-main svg {
-    fill: #c3c3c3; } }
+    fill: #c3c3c3; }
+  .movies_index_info {
+    color: #999; } }
 
 .memos_diaoyong {
   max-width: 700px;
@@ -1880,10 +1917,13 @@ blockquote p {
   height: 24px; }
 
 .sidebar-biaot {
-  margin-bottom: 20px;
-  font-size: 1rem;
-  color: var(--sanji-color); }
-
+  display: none; }
+  @media (min-width: 900px) {
+    .sidebar-biaot {
+      display: block;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: var(--sanji-color); } }
 .sidebar-bowen {
   margin-bottom: 40px; }
 
@@ -1989,7 +2029,7 @@ blockquote p {
 .posts_list_index {
   display: grid;
   gap: 12px;
-  margin-bottom: 20px; }
+  margin-bottom: 25px; }
   @media (min-width: 900px) {
     .posts_list_index {
       grid-template-columns: repeat(2, 1fr);
