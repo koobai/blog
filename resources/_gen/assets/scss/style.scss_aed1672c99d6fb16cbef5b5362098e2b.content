@@ -2029,7 +2029,7 @@ blockquote p {
 .posts_list_index {
   display: grid;
   gap: 12px;
-  margin-bottom: 25px; }
+  margin-bottom: 20px; }
   @media (min-width: 900px) {
     .posts_list_index {
       grid-template-columns: repeat(2, 1fr);
