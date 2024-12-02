@@ -1103,21 +1103,29 @@ img[atk-emoticon] {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-gap: 15px;
-      margin-bottom: 20px; } }
+      margin-bottom: 25px; } }
 .movies_bankuai_index {
   display: grid;
-  grid-template-columns: auto 1fr; }
+  grid-template-columns: auto 1fr;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  padding: 10px; }
 
 .movies_bankuai_index img {
-  width: 120px;
+  width: 110px;
   border-radius: 4px;
   object-fit: cover;
-  aspect-ratio: 3 / 4; }
+  aspect-ratio: 3 / 4;
+  transition: transform .3s ease; }
+
+.movies_bankuai_index img:hover {
+  transform: scale(1.03); }
 
 .movies_ingdex_title {
   font-size: 0.85rem;
   margin-bottom: 5px;
-  margin-top: 14px; }
+  margin-top: 6px; }
 
 .movies_right {
   margin-left: 10px; }
@@ -1260,7 +1268,9 @@ img[atk-emoticon] {
   .page-movies .menu-main svg {
     fill: #c3c3c3; }
   .movies_index_info {
-    color: #999; } }
+    color: #999; }
+  .movies_bankuai_index {
+    background: var(--background-dark-color); } }
 
 .memos_diaoyong {
   max-width: 700px;
@@ -2029,7 +2039,7 @@ blockquote p {
 .posts_list_index {
   display: grid;
   gap: 12px;
-  margin-bottom: 20px; }
+  margin-bottom: 25px; }
   @media (min-width: 900px) {
     .posts_list_index {
       grid-template-columns: repeat(2, 1fr);
