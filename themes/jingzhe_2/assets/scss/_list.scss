@@ -45,7 +45,7 @@
 .posts_list_index{
   display: grid;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr); 
     flex-wrap: wrap;
