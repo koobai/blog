@@ -4,7 +4,6 @@
   <button class="hamburger">Menu</button>
 </div>
 <div class="new-heard-menu">
-  <div style="font-size: 11px;color: #999;justify-content: center;align-items: center;display: flex;margin-top: 4px;">空白生活</div>
 {{ $currentPage := . }}
 {{ range .Site.Menus.main }}
 {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
