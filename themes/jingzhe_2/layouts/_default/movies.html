@@ -34,7 +34,7 @@
       {{range $idx, $movie := $movies}}
       {{if ne $idx 0 }}
       <!--封面地址替换 -->
-      {{ $yingshiimg := printf "https://img.koobai.com/douban/%s" (path.Base (index $movie 3)) }}
+      {{ $yingshiimg := printf "https://img.koobai.com/douban/%s.webp" (path.Base (strings.TrimSuffix ".jpg" (index $movie 3))) }} <!--封面地址替换 -->
       <!--个人评分改成星星 -->
       {{ $rating := index $movie 8 }}
       <div class="movies_bankuai img-hide">
