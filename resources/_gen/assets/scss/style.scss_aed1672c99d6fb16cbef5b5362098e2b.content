@@ -5,13 +5,14 @@
   --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
   --background-color: #fff6f2;
-  --background-dark-color: #201d1e;
+  --background-dark-color: #56453F;
+  --background-dark-body-color: #4b3c37;
   --text-content-color:#222;
-  --text-content-dark-color:#CCC;
+  --text-content-dark-color:#e1e1d5;
   --text-highlight-color:#A47864;
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
-  --erji-color: #666;
+  --erji-color: #ac9d87;
   --sanji-color: #999; }
 
 body, html {
@@ -41,7 +42,7 @@ ol, ul {
       display: flex;
       gap: 30px; } }
 .header-menu a {
-  color: var(--erji-color);
+  color: #666;
   font-size: 1rem;
   font-family: var(--font-family-paragraph); }
 
@@ -88,13 +89,13 @@ ol, ul {
 
 @media (prefers-color-scheme: dark) {
   .header-menu a {
-    color: var(--sanji-color); }
+    color: var(--erji-color); }
   .header-menu svg {
     color: #827478; }
   .heard-right svg {
-    fill: #6b6063; }
+    fill: var(--erji-color); }
   .heard-right svg:hover {
-    fill: #999; } }
+    fill: var(--text-highlight-color); } }
 
 .footer-background {
   width: 100vw;
@@ -139,16 +140,14 @@ ol, ul {
 .gotop:hover {
   background: #ededed; }
 
-.gotop img {
-  width: 1.1rem;
-  height: 1.1rem;
+.gotop svg {
+  fill: var(--text-highlight-color);
   position: absolute;
-  /* 设置绝对定位 */
   top: 50%;
-  /* 将图片的顶部对齐容器的中间位置 */
   left: 50%;
-  /* 将图片的左侧对齐容器的中间位置 */
-  transform: translate(-50%, -50%); }
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px; }
 
 .youpaiyun {
   margin: 0 4px 0 4px; }
@@ -177,19 +176,23 @@ ol, ul {
 
 @media (prefers-color-scheme: dark) {
   .footer-info, .footer-info a, .footer-rss a, .footer-rss {
-    color: var(--erji-color); }
+    color: #726859; }
   .footer {
-    border-top: 0.5px solid #231e20; }
+    border-top: 0px solid #231e20; }
   .gotop {
-    background: #999; }
+    background: var(--background-dark-color); }
+  .gotop:hover {
+    background: var(--text-highlight-color); }
+  .gotop svg {
+    fill: var(--text-content-dark-color); }
   .footer-background {
-    background: #1A1718;
-    border-top: solid #3d3d3d 0.5px;
+    background: var(--background-dark-body-color);
+    border-top: solid var(--background-dark-color) 0.5px;
     box-sizing: border-box; }
   .footer-cmdk {
-    color: #666; }
+    color: #887c6a; }
   .footer-cmdk-key {
-    background: #292526; } }
+    background: var(--background-dark-color); } }
 
 @media (max-width: 1200px) {
   .gotop_hide {
@@ -817,11 +820,20 @@ img[atk-emoticon] {
     color: var(--text-content-dark-color); }
   .atk-main-editor {
     background: transparent !important;
-    border: 1px solid var(--frame-dark-color) !important; }
+    border: 1px solid #67534c !important; }
   .atk-textarea {
     color: var(--text-content-dark-color) !important;
     font-size: 15px;
     background: transparent !important; }
+  .atk-textarea::placeholder, .atk-main-editor > .atk-header input::placeholder {
+    color: #726859 !important; }
+  .atk-comment > .atk-main > .atk-footer .atk-actions > span {
+    color: var(--erji-color) !important; }
+  .atk-comment > .atk-main > .atk-header .atk-item, .atk-comment > .atk-main > .atk-header .atk-item.atk-reply-at > .atk-nick {
+    color: #726859 !important; }
+  .atk-list-read-more .atk-list-read-more-inner {
+    background: #67534c !important;
+    border-color: transparent !important; }
   .atk-content, .atk-header {
     color: var(--text-content-dark-color) !important; }
   .atk-ua {
@@ -829,7 +841,7 @@ img[atk-emoticon] {
     background: var(--background-dark-color) !important; }
   .artalk {
     --at-color-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0), #242021)!important;
-    --at-color-bg: #1A1718 !important;
+    --at-color-bg: var(--background-dark-color) !important;
     --at-color-border: #332D2F !important;
     --at-color-meta:#666 !important;
     --at-color-font:#BBB !important;
@@ -838,7 +850,9 @@ img[atk-emoticon] {
   .artalk.atk-dark-mode {
     --at-color-grey:#747474 !important; }
   .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
-    color: #666 !important; }
+    color: var(--erji-color) !important; }
+  .atk-list-read-more {
+    border-top: 1px dashed #67534c !important; }
   .atk-item.atk-nick {
     color: var(--text-content-dark-color) !important; }
   .atk-pinned-badge {
@@ -849,7 +863,7 @@ img[atk-emoticon] {
   .atk-comment .atk-main .atk-footer .atk-actions span:hover {
     color: #999 !important; }
   .atk-item.atk-nick a {
-    color: #666 !important; }
+    color: var(--erji-color) !important; }
   .atk-main-editor > .atk-bottom .atk-state-btn {
     background: var(--background-dark-color) !important; }
   .atk-main-editor > .atk-bottom .atk-state-btn .atk-text-wrap {
@@ -974,7 +988,7 @@ img[atk-emoticon] {
   margin: auto;
   padding-bottom: 20px;
   text-align: center;
-  color: var(--erji-color); }
+  color: #666; }
 
 .app-star {
   display: block;
@@ -1037,7 +1051,7 @@ img[atk-emoticon] {
   .macos {
     color: var(--erji-color); }
   .pagetitle {
-    color: var(--sanji-color); }
+    color: var(--erji-color); }
   .appnote, .apptitle a {
     color: var(--text-content-dark-color); }
   .appquanju, .appnote {
@@ -1086,9 +1100,9 @@ img[atk-emoticon] {
 
 @media (prefers-color-scheme: dark) {
   .page-time, .single-tag-c {
-    color: #666; }
+    color: var(--erji-color); }
   .single-tag-c a {
-    color: #666; }
+    color: var(--erji-color); }
   .archives_tags_f {
     color: var(--erji-color); }
   .list-tags {
@@ -1256,7 +1270,7 @@ img[atk-emoticon] {
   .movie-content-right-3, .movie-content-right-2 a {
     color: var(--sanji-color); }
   .movies_video:after {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #1A1718 100%); }
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--background-dark-body-color) 100%); }
   .page-movies .pagetitle, .page-movies .header-menu a {
     color: var(--sanji-color); }
   .page-movies .header-menu svg {
@@ -1268,7 +1282,7 @@ img[atk-emoticon] {
   .page-movies .menu-main svg {
     fill: #c3c3c3; }
   .movies_index_info {
-    color: #999; }
+    color: #e1e1d5; }
   .movies_bankuai_index {
     background: var(--background-dark-color); } }
 
@@ -1801,13 +1815,13 @@ blockquote p {
   .memos-more-ico svg {
     color: var(--erji-color); }
   .memos-editor-textarea::placeholder {
-    color: #444; }
+    color: #726859; }
   .memos-tag-all {
     background: #332E2F; }
   .memos-tag-sc-2 {
     color: var(--erji-color); }
   .memos-editor-body {
-    border: 0.5px solid var(--frame-dark-color); }
+    border: 0.5px solid #67534c; }
   .memos-tag-dg {
     color: var(--erji-color); }
   .memos-tag-sc {
@@ -1824,7 +1838,7 @@ blockquote p {
   .talks_comments svg {
     color: var(--erji-color); }
   .talks_comments svg:hover {
-    color: var(--sanji-color); }
+    color: var(--text-highlight-color); }
   .datacont pre, blockquote p {
     background: #2c2829; }
   .datacont pre code {
@@ -1845,14 +1859,14 @@ blockquote p {
   .memos-path-input, .memos-token-input {
     color: var(--text-content-dark-color) !important; }
   .editor-selector select {
-    color: #666 !important; }
+    color: var(--erji-color) !important; }
   .editor-selector::after {
-    border-color: #666 transparent transparent transparent;
+    border-color: var(--erji-color) transparent transparent transparent;
     /* 控制箭头的颜色 */ }
   .memos-editor-content .memos-editor-textarea {
     color: var(--text-content-dark-color); }
   .memos-open-api-submit {
-    background: #1A1718 !important;
+    background: var(--background-dark-color) !important;
     color: var(--text-highlight-color) !important; }
   .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .memos-image-list {
     color: var(--erji-color); }
@@ -2139,7 +2153,7 @@ blockquote p {
   .posts_list_article, .archives_one, .posts_list_article-index {
     background: var(--background-dark-color); }
   .posts-description {
-    color: var(--sanji-color); } }
+    color: #b7b7ab; } }
 
 .page-tiaozhuan .header, .page-tiaozhuan .footer-background {
   display: none; }
@@ -2491,7 +2505,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: #1A1718;
+    background: var(--background-dark-body-color);
     color: var(--text-content-dark-color); }
   p {
     color: var(--text-content-dark-color); }
@@ -2513,7 +2527,7 @@ body {
   .highlight pre {
     background: var(--background-dark-color) !important; }
   ::selection {
-    background: #634939; } }
+    background: #67534c; } }
 
 @media (min-width: 900px) {
   .img-hide, .retu-hide {

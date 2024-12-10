@@ -4,13 +4,14 @@
   --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
   --background-color: #fff6f2;
-  --background-dark-color: #201d1e;
+  --background-dark-color: #56453F;
+  --background-dark-body-color: #4b3c37;
   --text-content-color:#222;
-  --text-content-dark-color:#CCC;
+  --text-content-dark-color:#e1e1d5;
   --text-highlight-color:#A47864;
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
-  --erji-color: #666;
+  --erji-color: #ac9d87;
   --sanji-color: #999;
 }
 $breakpoints: (
@@ -78,7 +79,7 @@ body {
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 body {
-    background: #1A1718;
+    background: var(--background-dark-body-color);
     color: var(--text-content-dark-color);
 }
 p {
@@ -102,7 +103,7 @@ a {
 img {filter: brightness(0.8) contrast(1.2); }
 .highlight pre { background: var(--background-dark-color) !important;}
 ::selection {
-  background: #634939;
+  background: #67534c;
 }
 }
 

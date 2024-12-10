@@ -41,10 +41,10 @@
 @media (prefers-color-scheme: dark) {
 
 .page-time,.single-tag-c {
-  color:#666;
+  color:var(--erji-color);
 }
 .single-tag-c a{
-  color:#666;
+  color:var(--erji-color);
 }
 .archives_tags_f{
   color: var(--erji-color);

@@ -35,13 +35,14 @@
 .gotop:hover {
 	background: #ededed; 
 }
-.gotop img{
-  width: 1.1rem;
-  height: 1.1rem;
-  position: absolute; /* 设置绝对定位 */
-  top: 50%; /* 将图片的顶部对齐容器的中间位置 */
-  left: 50%; /* 将图片的左侧对齐容器的中间位置 */
-  transform: translate(-50%, -50%); 
+.gotop svg{
+  fill: var(--text-highlight-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
 }
 .youpaiyun {
   margin: 0 4px 0 4px;
@@ -71,24 +72,30 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a,.footer-rss a,.footer-rss{
-  color: var(--erji-color);
+  color: #726859;
 }
 .footer {
-  border-top: 0.5px solid #231e20;
+  border-top: 0px solid #231e20;
 }
 .gotop {
-    background: #999;
+    background: var(--background-dark-color);
   }
+.gotop:hover {
+	background: var(--text-highlight-color); 
+}
+.gotop svg{
+  fill: var(--text-content-dark-color);
+}
 .footer-background{
-  background: #1A1718;
-  border-top:solid #3d3d3d 0.5px;
+  background: var(--background-dark-body-color);
+  border-top:solid var(--background-dark-color) 0.5px;
   box-sizing: border-box;
   }
   .footer-cmdk{
-    color: #666;
+    color: #887c6a;
   }
   .footer-cmdk-key{
-    background: #292526;
+    background: var(--background-dark-color);
   }
 }
 // 页面宽度小于1200px样式
