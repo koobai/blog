@@ -4,11 +4,11 @@
   --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
-  --background-color: #fff9f6;
+  --background-color: #fff6f2;
   --background-dark-color: #201d1e;
   --text-content-color:#222;
   --text-content-dark-color:#CCC;
-  --text-highlight-color:#FC9151;
+  --text-highlight-color:#A47864;
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
   --erji-color: #666;
@@ -1230,7 +1230,7 @@ img[atk-emoticon] {
 .movie-pfeng svg {
   width: 0.85rem;
   height: 0.85rem;
-  color: #fcb68d; }
+  color: #e0b29c; }
 
 .movie-info {
   line-height: 1.6;
