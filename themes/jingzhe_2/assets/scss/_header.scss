@@ -16,7 +16,7 @@
   }
 }
 .header-menu a {
-  color: var(--erji-color);
+  color: #666;
   font-size: 1rem;
   font-family: var(--font-family-paragraph);
  }
@@ -65,15 +65,15 @@
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .header-menu a{
-    color: var(--sanji-color);
+    color: var(--erji-color);
   }
   .header-menu svg{
     color: #827478;
   }
   .heard-right svg{
-    fill: #6b6063;
+    fill: var(--erji-color);
   }
   .heard-right svg:hover{
-    fill: #999;
+    fill: var(--text-highlight-color);
   }
 }
