@@ -80,12 +80,12 @@ ol, ul {
   display: none; }
   @media (min-width: 900px) {
     .heard-right svg {
-      fill: #999;
+      fill: var(--erji-color);
       width: 20px;
       height: 20px;
       display: block; } }
 .heard-right svg:hover {
-  fill: #666; }
+  fill: var(--text-highlight-color); }
 
 @media (prefers-color-scheme: dark) {
   .header-menu a {
@@ -2374,7 +2374,7 @@ li.group-option:hover a {
   li.group-option:hover, .command-menu .focused {
     background-color: rgba(55, 49, 51, 0.6); }
   .shortcuts {
-    background: #393235; }
+    background: var(--background-dark-color); }
   kbd {
     color: #ccc; }
   .group-option-link {
