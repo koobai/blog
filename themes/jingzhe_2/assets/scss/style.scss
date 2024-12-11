@@ -12,7 +12,7 @@
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
   --erji-color: #ac9d87;
-  --sanji-color: #999;
+  --sanji-color: #ac9d87;
 }
 $breakpoints: (
   'small': 700px,
@@ -73,7 +73,7 @@ body {
 .highlight{background-color: var(--bankuai-color);}
 //文本选择高亮颜色
 ::selection {
-  background: #ffe8da;
+  background: #E4C7B8;
 }
 
 // 夜间模式页面样式
