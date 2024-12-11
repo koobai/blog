@@ -13,7 +13,7 @@
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
   --erji-color: #ac9d87;
-  --sanji-color: #999; }
+  --sanji-color: #ac9d87; }
 
 body, html {
   margin: 0;
@@ -932,7 +932,7 @@ img[atk-emoticon] {
       background: #fff;
       top: 0;
       bottom: 0;
-      color: var(--erji-color);
+      color: var(--text-content-color);
       font-size: 0.9rem;
       line-height: 1.4;
       align-items: center;
@@ -1092,7 +1092,7 @@ img[atk-emoticon] {
 
 .page-time, .single-tag-c {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--sanji-color);
   display: inline-block; }
 
 .single-tag-c a {
@@ -2035,7 +2035,7 @@ blockquote p {
   line-height: 1.8;
   font-size: 1rem;
   margin: 6px 0;
-  color: var(--erji-color);
+  color: var(--text-content-color);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -2501,7 +2501,7 @@ body {
   background-color: var(--bankuai-color); }
 
 ::selection {
-  background: #ffe8da; }
+  background: #E4C7B8; }
 
 @media (prefers-color-scheme: dark) {
   body {
