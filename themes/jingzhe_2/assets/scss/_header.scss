@@ -53,14 +53,14 @@
 .heard-right svg{
   display: none;
   @include breakpoint('medium') {
-    fill: #999;
+    fill: var(--erji-color);
     width: 20px;
     height: 20px;
     display: block;
   }
  }
 .heard-right svg:hover{
-  fill: #666;
+  fill: var(--text-highlight-color);
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {

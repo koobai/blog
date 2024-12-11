@@ -187,7 +187,7 @@ li.group-option:hover a {
     background-color: rgba(55, 49, 51, 0.6);
   }
   .shortcuts {
-    background: #393235;
+    background: var(--background-dark-color);
   }
   kbd {
     color: #ccc;
