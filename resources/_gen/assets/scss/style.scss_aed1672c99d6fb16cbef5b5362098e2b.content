@@ -4,7 +4,7 @@
   --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
-  --background-color: #fff6f2;
+  --background-color: #faf4f1;
   --background-dark-color: #56453F;
   --background-dark-body-color: #4b3c37;
   --text-content-color:#222;
@@ -1175,7 +1175,7 @@ img[atk-emoticon] {
   right: 0;
   top: 0;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff9f6 100%); }
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #faf4f1 100%); }
 
 .page-movies .pagetitle, .page-movies .header-menu a {
   color: #FFF; }
