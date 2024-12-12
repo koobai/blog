@@ -62,27 +62,6 @@
 .heard-right svg:hover{
   fill: var(--text-highlight-color);
 }
-.header-cmdk{
-  display: none;
-  @include breakpoint('medium') {
-    display: flex;
-    gap: 4px;
-    font-size: 0.75rem;
-    align-items: center;
-    color: var(--sanji-color);
-    justify-content: center;
-  }
-}
-.header-cmdk-key{
-  background: #ece6e3;
-  padding: 4px;
-  width: 10px;
-  height: 10px;
-  display: flex;
-  align-items: center; 
-  justify-content: center; 
-  border-radius: 4px;
-}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .header-menu a{
@@ -96,8 +75,5 @@
   }
   .heard-right svg:hover{
     fill: var(--text-highlight-color);
-  }
-  .header-cmdk-key{
-    background: var(--background-dark-color);
   }
 }
