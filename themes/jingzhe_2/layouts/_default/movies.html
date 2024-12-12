@@ -1,6 +1,6 @@
 {{ define "body_classes" }}page-movies{{ end }}
 {{ define "main" }}
-<div class="movies_video">
+<!--<div class="movies_video">
   <video
     class="video-source"
     id="TopGif"
@@ -20,7 +20,7 @@
   >
     <source src="" type="video/mp4" />
   </video>
-</div>
+</div>-->
 <div class="pagetitle">自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中 ( 数据来源于豆瓣 )～～</div>
   <div id="movies_page">
   {{ $movies := resources.Get "movie.csv" | transform.Unmarshal }}

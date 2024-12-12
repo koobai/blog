@@ -54,7 +54,7 @@
 // 影视页面
 
 //顶部视频--
-.movies_video {
+/*.movies_video {
   position: absolute;
   height: 30rem;
   width: 100%;
@@ -80,7 +80,7 @@
 }
 .page-movies .menu-main svg {
   fill: #dfdfdf;
-}
+}*/
 //顶部视频结束--
 
 #movies_page{
@@ -169,29 +169,8 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.movie-content-right-3,.movie-content-right-2 a{
-  color: var(--sanji-color);
-}
-.movies_video:after {
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--background-dark-body-color) 100%);
-}
-.page-movies .pagetitle,.page-movies .header-menu a{
-  color: var(--sanji-color);
-}
-.page-movies .header-menu svg{
-  color: #827478;
-}
-.page-movies .pagetitle,.page-movies .header-menu a,.movie-info,.movie-title a{
-  color: #dfdfdf;
-}
-.page-movies .header-menu svg{
-  color: #dfdfdf;
-}
-.page-movies .menu-main svg {
-  fill: #c3c3c3;
-}
 .movies_index_info{
-  color: #e1e1d5;
+  color: #b7b7ab;
 }
 .movies_bankuai_index{
   background: var(--background-dark-color);
