@@ -1,8 +1,6 @@
 {{ define "body_classes" }}page-home{{ end }}
 {{ define "main" }}
 <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-<!--博文日历热力图
-{{ partial "newretu" . }}-->  
  <!--<div class="sidebar-biaot">最新博文</div>--> 
 {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
 <div class="posts_list_index" >
