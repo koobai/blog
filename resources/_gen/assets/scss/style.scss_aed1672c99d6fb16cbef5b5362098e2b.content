@@ -13,7 +13,8 @@
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
   --erji-color: #ac9d87;
-  --sanji-color: #ac9d87; }
+  --sanji-color: #ac9d87;
+  --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px; }
 
 body, html {
   margin: 0;
@@ -456,7 +457,7 @@ ul {
 .summary-nrong {
   border-radius: 4px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px; }
   @media (min-width: 900px) {
     .summary-nrong {
@@ -907,7 +908,7 @@ img[atk-emoticon] {
   align-items: center;
   justify-content: center;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px;
   border-radius: 4px;
   z-index: 1; }
@@ -1123,7 +1124,7 @@ img[atk-emoticon] {
   grid-template-columns: auto 1fr;
   border-radius: 4px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 10px; }
 
 .movies_bankuai_index img {
@@ -1775,7 +1776,7 @@ blockquote p {
 .bb-list-li {
   border-radius: 4px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px; }
 
 @media (max-width: 900px) {
@@ -2062,13 +2063,13 @@ blockquote p {
 .posts_list_article {
   border-radius: 4px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px; }
 
 .posts_list_article-index {
   border-radius: 2px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 10px; }
 
 .posts-img {
@@ -2104,7 +2105,7 @@ blockquote p {
   display: flex;
   align-items: center;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px; }
   @media (min-width: 700px) {
     .archives_one {
