@@ -499,7 +499,7 @@ blockquote p{
 .bb-list-li{
   border-radius:4px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 6px 20px 0px;
+  box-shadow: var(--touy-color);
   padding: 15px;
 }
 // 页面宽度小于700样式
