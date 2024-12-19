@@ -205,14 +205,15 @@
   margin: 0;
 }
 .datacont code{
-  background: #ffe4d4;
-  border: 1px solid #FFBE98;
+  background: var(--background-color);
+  border: 1px solid #e9e2de;
   border-radius: 4px;
   font-size: 1rem;
   padding: 2px 6px 2px 6px;
   font-family: var(--font-family-code);
   margin: 0 4px 0 4px;
   word-wrap: break-word;
+  color: var(--text-highlight-color);
 }
 
 blockquote p{
@@ -598,8 +599,8 @@ blockquote p{
   color: var(--sanji-color);
 }
 .datacont code{
-  background: #2c2829;
-  border: 1px solid #2c2829;
+  background: var(--background-dark-body-color);
+  border: 1px solid var(--background-dark-body-color);
   color: var(--text-highlight-color);
 }
 blockquote p{
