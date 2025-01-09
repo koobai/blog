@@ -454,7 +454,7 @@ ul {
 .summary-description {
   font-size: 1rem;
   line-height: 1.8;
-  color: var(--erji-color);
+  color: #666;
   margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -464,9 +464,9 @@ ul {
 
 @media (prefers-color-scheme: dark) {
   .summary-description {
-    color: var(--sanji-color); }
+    color: #b7b7ab; }
   .summary-date {
-    color: #666 !important; }
+    color: var(--erji-color) !important; }
   .summary-nrong {
     background: var(--background-dark-color); } }
 
@@ -2014,7 +2014,7 @@ blockquote p {
   margin-top: 30px; }
   @media (min-width: 900px) {
     .posts_list {
-      display: flex;
+      grid-template-columns: repeat(2, 1fr);
       flex-wrap: wrap; } }
 .posts_list_index {
   display: grid;
@@ -2030,7 +2030,9 @@ blockquote p {
   background: #fff;
   box-shadow: var(--touy-color);
   padding: 15px; }
-
+  @media (min-width: 900px) {
+    .posts_list_article {
+      padding: 12px; } }
 .posts_list_article-index {
   border-radius: 2px;
   background: #fff;

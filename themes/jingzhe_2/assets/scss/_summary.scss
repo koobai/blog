@@ -28,7 +28,7 @@
 .summary-description{
   font-size: 1rem;
   line-height:1.8;
-  color: var(--erji-color);
+  color: #666;
   margin-top: 10px;
   overflow : hidden;
   text-overflow: ellipsis;
@@ -40,10 +40,10 @@
   // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
   .summary-description{
-    color: var(--sanji-color);
+    color: #b7b7ab;
   }
   .summary-date{
-    color: #666 !important;
+    color: var(--erji-color) !important;
   }
   .summary-nrong{
     background: var(--background-dark-color);
