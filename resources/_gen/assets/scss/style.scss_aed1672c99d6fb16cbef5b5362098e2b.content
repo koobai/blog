@@ -1933,7 +1933,7 @@ blockquote p {
   border-radius: 2px;
   font-size: 0.75rem;
   display: inline-block;
-  margin-right: 2px; }
+  margin-right: 4px; }
 
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
