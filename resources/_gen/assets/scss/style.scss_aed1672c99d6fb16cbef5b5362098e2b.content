@@ -1932,7 +1932,8 @@ blockquote p {
   font-family: var(--font-family-code);
   border-radius: 2px;
   font-size: 0.75rem;
-  display: inline-block; }
+  display: inline-block;
+  margin-right: 2px; }
 
 @media (prefers-color-scheme: dark) {
   .sidebar-posts-title a {
