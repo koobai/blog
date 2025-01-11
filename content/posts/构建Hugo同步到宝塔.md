@@ -145,9 +145,9 @@ fi
 在宝塔终端执行：
 
 cd 网站目录
-git clone --depth 1 https://mirror.ghproxy.com/https://github.com/koobai/koobai.github.io --single-branch .
+git clone --depth 1 https://ghgo.top/https://github.com/koobai/koobai.github.io --single-branch .
 或
-git clone --depth 1 --branch main https://mirror.ghproxy.com/https://github.com/koobai/koobai.github.io .
+git clone --depth 1 --branch main https://ghgo.top/https://github.com/koobai/koobai.github.io .
 
 解释上面意思：--depth 1 只克隆最新的一次提交。mirror.ghproxy.com为github加速地址，koobai为github用户名，koobai.github.io为仓库名。最后 . 为当前目录。
 --single-branch 克隆一个分支。或 --branch main 克隆 main 分支。
