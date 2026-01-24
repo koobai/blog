@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI on 空白Koobai</title><link>https://koobai.com/tags/ai/</link><description>Recent content in AI on 空白Koobai</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Feb 2024 22:28:55 +0800</lastBuildDate><atom:link href="https://koobai.com/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>HUGO 外链跳转到中间页</title><link>https://koobai.com/zhongjiantiaozhuan/</link><pubDate>Thu, 01 Feb 2024 22:28:55 +0800</pubDate><guid>https://koobai.com/zhongjiantiaozhuan/</guid><description>&lt;p&gt;前天在老麦博客中看到&amp;quot;
+&lt;a 
+ 
+ href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuaWFtbG0uY29tLw%3d%3d"
+ 
+ target="_blank"
+&gt;
+给Twikoo添加链接跳转中间页&lt;/a&gt;&amp;ldquo;博文，因为外部链接你无法确定未来某一天可能就会变成不安全链接，从而影响到自己博客。同时又见到
+&lt;a 
+ 
+ href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuZWFsbGlvbi5jb20v"
+ 
+ target="_blank"
+&gt;
+大大的小蜗牛&lt;/a&gt;也是因为安全的原因，把博客评论换成了GitHub Discussions。网上也有不少的案例，因为某个链接的原因，而被请喝茶或电话让自己排查。今天在
+&lt;a 
+ 
+ href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9sbXMucHViLw%3d%3d"
+ 
+ target="_blank"
+&gt;
+不亦乐乎&lt;/a&gt;那见链接也是跳转到中间页，于是请教了下怎么实现的，感谢。之后经过与 AI 的博弈，搞定。这次使用 ChatGPT 跟 Claude 都不行，说了一堆，完全不懂，最后使用 coze 搞定基本框架，然后再来回沟通逐步完善功能。估计跟它使用的 ChatGPT 4.0 接口有关。想充值 ChatGPT，奈何月费太贵了。&lt;/p&gt;</description></item><item><title>使用 ChatGPT 优雅的折腾博客</title><link>https://koobai.com/chatgpt/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/chatgpt/</guid><description>&lt;p&gt;ChatGPT 现在铺天盖地的报道及使用，好像你不参与讨论或使用就跟不上时代一样，科技发展是真快。自己第一次使用 ChatGPT 还是去年刚推出，花了几块钱买了个虚拟手机号注册体验的，当时最大的感受就是它能结合上下文的意思来回答你，感觉很牛逼，之后就没怎么体验。今年在国内大面积出圈，也一直只是看看报道，自身并没有真正去体验使用。&lt;/p&gt;</description></item></channel></rss>
