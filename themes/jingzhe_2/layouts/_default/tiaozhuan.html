@@ -1,0 +1,23 @@
+{{ define "body_classes" }}page-tiaozhuan{{ end }}
+{{ define "main" }}
+<div class="tiaozhuan-all">
+  <div class="tiaozhuan-nrong">
+    <div class="tiaozhuan-title">即将离开 {{ .Site.Title }}，跳转到以下外部链接</div>
+    <div id="tiaozhuan-link"></div> 
+    <div class="tiaozhuan-info">请自行识别该链接是否安全，并保管好个人信息。</div>
+      <div class="tiaozhuan-button"><a href='' id='direct-link'>继续访问</a></div>
+  </div>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const encodedTarget = params.get('target');
+  const target = atob(encodedTarget); // 使用 atob 进行 Base64 解码
+  
+  if (target) {
+    document.getElementById('direct-link').href = target;
+    document.getElementById('tiaozhuan-link').textContent = '' + target; // 直接显示目标地址    
+  } else {
+    console.error('未指定重定向目标。');
+  }
+</script>
+{{ end }}

@@ -1,0 +1,16 @@
+<link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
+<script src="https://img.koobai.com/Artalk.js"></script>
+
+<!-- Artalk -->
+<div id="Comments"></div>
+
+<script>
+  Artalk.init({
+    el:        '#Comments',
+    pageKey:   '{{ .Permalink }}',
+    pageTitle: '{{ .Title }}',
+    server:    '{{ $.Site.Params.artalk.server }}',
+    site:      '{{ $.Site.Params.artalk.site }}',
+    // ...你的其他配置
+  })
+</script>

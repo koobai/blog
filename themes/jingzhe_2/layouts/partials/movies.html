@@ -1,0 +1,37 @@
+{{ $items := resources.Get "movie.csv" | transform.Unmarshal }}
+{{$numb := .}}
+{{ if . }}
+    {{$numb = add . 1 }}
+{{ end }}
+    <div class="movie-quanju">
+        {{range $idx,$item := first $numb $items}}
+        {{if ne $idx 0}}
+        {{ $yingshiimg := printf "https://img.koobai.com/douban/%s.webp" (path.Base (strings.TrimSuffix ".jpg" (index $item 3))) }} <!--封面地址替换 -->
+        {{ $rating := index $item 8 }}  <!--个人评分改成星星 -->
+        {{ $movietype := replace (index $item 7) "," " / " }} <!--影视类型 , 改成 / -->
+            <div class="movies_bankuai_index img-hide">
+              <div class="movies_left">
+                <a rel="noreferrer" href="{{ index $item 5 }}" target="_blank"> <img src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $item 1 }}"  title="{{ index $item 4 }}"></a>
+              </div>        
+                <div class="movies_right">
+                  <div class="movies_ingdex_title"><a rel="noreferrer" href="{{ index $item 5 }}" target="_blank">{{ index $item 1 }}</a></div>  
+                    <div class="movie-pfeng">
+                        {{ with $rating }}
+                          {{ $ratingCount := . }}
+                          {{ range $i := seq $ratingCount }}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/></svg>
+                          {{ end }}
+                        {{ end }}
+                    </div>
+                <div class="movies_index_info">{{ index $item 9 }}</div>
+              <!--<div class="movie_index_time">
+                    <script>
+                         document.write(formatDate({{ index $item 11 }})); 
+                    </script>
+                  </div>-->
+                </div>
+  
+            </div>
+        {{end}}
+        {{end}}
+    </div>

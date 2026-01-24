@@ -1,0 +1,250 @@
+.article_details img{
+ max-width: 100%;
+ cursor: zoom-in;
+}
+.article_details_title{
+  font-size: 1.4rem;
+  font-family: var(--font-family-title);
+  line-height: 1.3;
+  margin-bottom: 15px;
+  @include breakpoint('small') {
+    font-size: 1.8rem;
+  }
+}
+a {
+  color: var(--text-content-color);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+h2,h3 {
+  font-family: var(--font-family-title);
+  font-weight:normal; 
+  font-display: swap; 
+  font-weight: bold;
+}
+p {
+  color: var(--text-content-color);
+  font-family: var(--font-family-paragraph);
+  font-size: 1.05rem;
+  line-height: 24px;
+}
+p:empty {
+  display: none;
+}
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li {
+    list-style: none;
+  }
+}
+.content_zhengwen {
+  margin: 15px 0 20px 0;
+}
+.content_zhengwen img,.top-img {
+  cursor: pointer;
+}
+.content {
+  font-size: 1.05rem;
+  p {
+    font-size: 1.05rem;
+    line-height: 2;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 15px;
+  }
+  strong {
+    color:  var(--text-highlight-color);
+  }
+  h2,h3 {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    color: var(--text-highlight-color);
+    
+  }
+  ul {
+    list-style: disc;
+    li {
+      list-style: disc;
+    }
+  }
+  ol {
+    list-style: decimal;
+    li {
+      list-style: decimal;
+    }
+  }
+  ul,
+  ol {
+    margin-left: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    li {
+      font-size: 1.1rem;
+      line-height: 2;
+      margin-bottom: 10px;
+      margin-left: 20px;
+      @include breakpoint('small') {
+        margin-left: 0;
+      }
+    }
+    @include breakpoint('small') {
+      margin-left: 20px;
+    }
+  }
+  a {
+    text-decoration: underline;
+    word-wrap:break-word;
+    word-break: break-all;
+    text-decoration: none;
+    text-decoration: underline;
+    margin: 0 2px;
+    transition: opacity 0.3s ease-in-out 0s;
+    &:hover{
+      opacity: 0.6;
+    }
+  }
+  blockquote {
+    border-left: 5px solid #666;
+    margin: 30px 0;
+    padding: 20px;
+  }
+  blockquote p {
+    font-size: 20px;
+    display: inline;
+    color: var(--color-base-text);
+  }
+  img {
+    margin: 10px 0 0 0;
+    max-width: 100%;
+    height: auto;
+    cursor: zoom-in;
+  }
+  figure {
+    margin: 2.6rem 0 1.18rem;
+    img {
+      margin: 0;
+    }
+    figcaption {
+      margin-top: 10px;
+      h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+      p {
+        margin: 0;
+      }
+    }
+  }
+  code,
+  pre {
+      font-family: var(--font-family-code);
+      line-height: 1.9;
+  }
+  .highlight {
+    pre {
+      font-size: 0.9rem;
+      padding: 20px;
+      overflow: auto;
+      border-radius:6px;
+      background: #24273A;
+    }
+  }
+}
+.footnotes {
+  ol {
+    list-style: decimal;
+    li {
+      list-style: decimal;
+    }
+  }
+}
+
+//文章页段落导航
+
+.single-nrong{
+  display: flex;
+}
+.single-zw{
+  width: 100%;
+}
+.paragraph-dh {
+   display: none;
+  @include breakpoint('large') {
+    display: block;
+    position: fixed;
+    opacity: 0;
+    top: 30%;
+    margin-left: 40px;
+    transition: opacity 0.5s ease; 
+    max-width: 300px;
+  }
+}
+.paragraph-dh ul{
+  gap: 10px;
+  display: grid;
+}
+.paragraph-dh ul ul {
+  margin-top: 10px;
+}
+.paragraph-dh ul ul a {
+  color: #999;
+}
+.paragraph-dh a.active {
+  color: var(--text-highlight-color);
+  text-indent: 0; 
+}
+
+.paragraph-dh a {
+  padding-left: 25px; 
+  position: relative;
+  display: flex; 
+  align-items: center;
+  text-indent: -9999px; /* 把文字移出可视区域 */
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1.4;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.paragraph-dh:hover a{
+  text-indent: 0;   /* 重置文字缩进，使文本可见 */
+}
+
+.paragraph-dh li > a:before {
+  content: '';
+  display: inline-block;
+  width: 16px; 
+  height: 5px;
+  border-radius: 6px;
+  background-color: #ddd;
+  position: absolute;
+  left: 0;
+}
+.paragraph-dh li li > a:before {
+  width: 10px; 
+}
+.paragraph-dh a.active:before {
+  background-color: var(--text-highlight-color); 
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+ .paragraph-dh a{
+  color: #999;
+}
+.paragraph-dh ul ul a {
+  color: #7e7174;
+}
+.paragraph-dh li > a:before {
+  background-color: #6b6063;
+}
+}

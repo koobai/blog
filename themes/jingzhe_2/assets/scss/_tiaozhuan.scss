@@ -1,0 +1,61 @@
+.page-tiaozhuan .header,.page-tiaozhuan .footer-background{
+  display: none;
+}
+.tiaozhuan-all{
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  border-radius: 10px;
+  background: #fff url(https://img.koobai.com/tiaozhuanico.webp) no-repeat center center / cover;
+  color: #666;
+  word-break: break-all;
+  max-width: 700px;
+  height: 350px;
+  text-align: center;
+  font-size: 0.85rem;
+  overflow: hidden;
+  margin: 100px auto 0; 
+  @include breakpoint('small') {
+    aspect-ratio: 2 / 1;
+    height: auto;
+  }
+}
+.tiaozhuan-nrong{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 30px 20px;
+}
+.tiaozhuan-title{
+  font-size: 1.3rem;
+  font-family: var(--font-family-title);
+  color: #222;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.tiaozhuan-info{
+  margin-top: 6px;
+}
+.tiaozhuan-button{
+  margin-top: 20px;
+}
+
+.tiaozhuan-button a{
+  color: var(--text-highlight-color);
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  border: 0.5px solid var(--text-highlight-color);
+  display: inline-block;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tiaozhuan-all{
+    background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center / cover;
+    color: #acacac;
+  }
+  .tiaozhuan-title{
+    color: #ddd;
+  }
+}

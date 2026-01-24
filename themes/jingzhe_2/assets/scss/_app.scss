@@ -1,0 +1,184 @@
+.appdquanjudiv{
+  display: grid;
+	grid-gap: 10px; /* 中间空10px间距 */
+  @include breakpoint('medium') {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 15px; /* 中间空10px间距 */
+	  }	
+}
+.appquanju{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  box-shadow: var(--touy-color);
+  padding: 15px;
+  border-radius: 4px;
+  z-index: 1;
+}
+.appimg img{
+  width:70px;
+  transition: transform 0.3s ease;
+}
+.apptitle{
+  font-size:1rem;
+  margin-bottom: 4px;
+  @include breakpoint('medium') {
+    font-size:0.85rem;
+      }	
+}
+.appnote{
+  display: none;
+	@include breakpoint('medium') {
+	display: grid;
+	position: absolute;
+  padding: 6px 15px 6px 0;
+  background: #fff;
+  top: 0;
+  bottom: 0;
+	color: var(--text-content-color);
+	font-size: 0.9rem;
+	line-height: 1.4;
+	align-items: center;
+	opacity: 0;
+  text-align: justify;
+	transition: opacity 0.3s ease;
+	  }	
+}
+.appquanju:hover .appnote {
+	opacity: 1;
+  }
+  
+.appzhuangtai{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;//宽度显示不下自动换行
+}
+.macos{ 
+    font-size: 0.75rem;
+    font-family: var(--font-family-code);
+    color: var(--sanji-color);
+}
+.macos:empty,.kaiyuan:empty,.shoufei:empty,.free:empty {
+  display:none;
+}
+.kaiyuan,.shoufei,.free{
+  font-size: 0.9rem;
+  padding: 5px 8px;
+  border-radius:20px;
+  @include breakpoint('medium') {
+		font-size: 0.75rem;
+	  }
+}
+.kaiyuan{
+  color: var(--text-highlight-color);
+  border: 0.5px solid var(--text-highlight-color);
+}
+.shoufei{
+  color: #0774e0;
+  border: 0.5px solid #0774e0;
+}
+.free{
+  color: #11a173;
+  border: 0.5px solid #11a173;
+}
+.appdquanjudiv a:hover{
+	text-decoration: none;
+}
+.apptitle a:hover{
+	text-decoration: underline;
+}
+.pagetitle{
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  max-width: 620px;
+  margin: auto;
+  padding-bottom: 20px;
+  text-align: center;
+  color: #666;
+}
+
+//卡片形式
+.app-star{
+  display: block;
+  position: relative;
+  aspect-ratio:1;
+  overflow: hidden;
+  padding: 10px 25px 40px 25px;
+}
+.app-star .appnote{
+  opacity: 1;
+  background: transparent;
+  padding: 0;
+  position: static;
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  @include breakpoint('medium') {
+    font-size: 0.9rem; 
+  }
+}
+.star-img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.star-img img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+.star-img img:hover{
+  transform: scale(1.1);
+}
+.app-star .apptitle2{
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+.app-star .apptitle2 a,.app-star .appnote,.app-star .macos,.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  color: #fff;
+  font-family: var(--font-family-code);
+  transition: opacity .3s ease-in-out;
+}
+.app-star .apptitle2 a:hover{
+  opacity: 0.8;
+}
+.app-star .macos{ 
+  margin-bottom: 20px;
+}
+.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  border: 0.5px solid #fff;
+}
+.app-star .appzhuangtai-right{
+  display: inline-block;
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.macos{
+  color: var(--erji-color);
+}
+.pagetitle{
+  color: var(--erji-color);
+}
+.appnote,.apptitle a{
+  color: var(--text-content-dark-color);
+}
+.appquanju,.appnote{
+  background: var(--background-dark-color);
+}
+.app-star .apptitle2 a,.app-star .appnote,.app-star .macos,.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  color: #dfdfdf;
+}
+.app-star .kaiyuan,.app-star .shoufei,.app-star .free{
+  border: 0.5px solid #dfdfdf;
+}
+}

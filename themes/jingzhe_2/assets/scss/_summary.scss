@@ -1,0 +1,51 @@
+.summary{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-gap: 20px;
+}
+.summary-nrong{
+  border-radius:4px;
+  background: #fff;
+  box-shadow: var(--touy-color);
+  padding: 15px;
+  @include breakpoint('medium') {
+    padding: 20px;
+}
+}
+
+.summary-date {
+  font-size: 0.85rem;
+  color: var(--sanji-color);
+  font-family: var(--font-family-code);
+  margin-top: 6px;
+}
+.summary-title{
+  font-family:var(--font-family-title);
+  font-size: 1.2rem;
+  margin-top: 6px;
+  line-height: 1.6;
+}
+.summary-description{
+  font-size: 1rem;
+  line-height:1.8;
+  color: #666;
+  margin-top: 10px;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+  // 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .summary-description{
+    color: #b7b7ab;
+  }
+  .summary-date{
+    color: var(--erji-color) !important;
+  }
+  .summary-nrong{
+    background: var(--background-dark-color);
+  }
+  }

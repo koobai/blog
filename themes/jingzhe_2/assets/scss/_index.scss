@@ -1,0 +1,54 @@
+
+.index-laodao{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 8px;
+  font-size: 1rem;
+  color: #999;
+}
+.index-laodao svg{
+  color: var(--text-highlight-color);
+  width: 24px;
+  height: 24px;
+}
+.sidebar-biaot{
+  display: none;
+  @include breakpoint('medium') {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: var(--sanji-color);
+  }
+}
+.sidebar-bowen{
+  margin-bottom: 40px;
+}
+.sidebar-posts-title{
+  margin-top: 4px;
+  font-family: var(--font-family-title);
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+.sidebar-posts-title a{
+  color: var(--text-content-color);
+}
+.sidebar_article_new{
+    background: var(--text-highlight-color);
+    color: #fff;
+    padding: 1px 4px;
+    font-family: var(--font-family-code);
+    border-radius: 2px;
+    font-size: 0.75rem;
+    display: inline-block;
+    margin-right: 4px;
+}
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .sidebar-posts-title a{
+    color: var(--text-content-dark-color);
+  }
+  .sidebar-biaot,.index-laodao{
+    color: var(--erji-color);
+  }
+    }

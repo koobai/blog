@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{{ block "title" . }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/suju/ios.json">
+  <link rel="icon" href="https://img.koobai.com/koobai.png">
+  <link href="/index.xml" title="{{ $.Site.Title }}" type="application/rss+xml">
+  <link rel="canonical" href="{{ .Permalink }}" />
+
+  {{ if hugo.IsServer }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" true) }}
+  <link rel="stylesheet" href="{{ ($style).RelPermalink }}">
+  {{ else }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" false) }}
+  <link rel="stylesheet" href="{{ ($style | minify | fingerprint).RelPermalink }}">
+  {{ end }}
+
+  {{ block "meta_tags" . }}
+    {{ if .Params.description }}<meta name="description" content="{{ .Params.description }}"/>{{ end }}
+    <meta property="og:title" content="{{ .Title }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ .Permalink }}"/>
+    {{ if .Params.image }}<meta property="og:image" content="{{ .Params.image | absURL }}"/>{{ end }}
+    {{ if .Params.description }}<meta property="og:description" content="{{ .Params.description }}"/>{{ end }}
+  {{ end }}
+</head>
+
+{{ $themeStyle := slice "" }}
+
+<body class='page{{ delimit $themeStyle " " }} {{ block "body_classes" . }}{{ end }}'>
+  {{ partial "menu-main-mobile.html" . }}
+  <div id="wrapper" class="wrapper">
+    {{ partial "header.html" . }}
+    {{ block "main" . }}
+    {{ end }}
+  </div>
+  {{ partial "footer.html" . }}
+  {{ $scripts := resources.Get "js/scripts.js" }}
+
+  {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
+
+  {{ if hugo.IsServer }}
+  <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+  {{ else }}
+  <script type="text/javascript" src="{{ ($js | minify | fingerprint).RelPermalink }}"></script>
+  {{ end }}
+
+  {{ block "footer_js" . }}
+  {{ end }} 
+</body>
+</html>

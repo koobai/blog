@@ -1,0 +1,12 @@
+# Hugo 编译锁文件
+.hugo_build_lock
+
+# Mac 系统生成的缓存文件
+.DS_Store
+
+# Hugo 默认的输出目录
+public/
+resources/
+
+# 临时文件
+*.log

@@ -1,0 +1,120 @@
+:root {
+  --font-family-paragraph: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --bankuai-color: #f6f6f6;
+  --background-color: #faf4f1;
+  --background-dark-color: #56453F;
+  --background-dark-body-color: #4b3c37;
+  --text-content-color:#222;
+  --text-content-dark-color:#e1e1d5;
+  --text-highlight-color:#A47864;
+  --frame-dark-color: #332D2F;
+  --frame-color: #eee;
+  --erji-color: #ac9d87;
+  --sanji-color: #ac9d87;
+  --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
+}
+$breakpoints: (
+  'small': 700px,
+  'medium': 900px,
+  'large': 1200px,
+);
+
+@import 'normalize';
+@import 'breakpoints';
+@import 'header';
+@import 'footer';
+@import 'content';
+@import 'intro';
+@import 'summary';
+@import 'main-menu-mobile';
+@import 'pygments/github';
+@import 'comment';
+@import 'app';
+@import 'tags';
+@import 'movies';
+@import 'memos';
+@import 'index';
+@import 'about';
+@import 'list';
+@import 'tiaozhuan';
+//@import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css');
+
+@font-face {
+  font-family: JetBrainsMono;
+  font-display: swap;
+  src: url('https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  unicode-range: U+61-7a,U+41-5a,U+30-39;
+}
+
+html, body {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background-color);
+  font-family: var(--font-family-paragraph);
+  color: var(--text-content-color);
+  margin: 0;
+  padding: 0 20px 0 20px;
+  overflow-x: hidden;
+  @include breakpoint('small') {
+    padding: 0 30px 0 30px;
+  }
+}
+
+.wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.highlight{background-color: var(--bankuai-color);}
+//文本选择高亮颜色
+::selection {
+  background: #E4C7B8;
+}
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+body {
+    background: var(--background-dark-body-color);
+    color: var(--text-content-dark-color);
+}
+p {
+  color: var(--text-content-dark-color);
+}
+h1,
+h2{
+  color: #CCCCCC;
+}
+h3 {
+  color: #FFF;
+}
+a {
+  color: var(--text-content-dark-color);
+}
+.author{
+  color: #CCCCCC;
+}
+.summary-date{color: #AAAAAA;}
+.highlight{background-color: var(--background-dark-color);}
+img {filter: brightness(0.8) contrast(1.2); }
+.highlight pre { background: var(--background-dark-color) !important;}
+::selection {
+  background: #67534c;
+}
+}
+
+// 页面上滑加载动画
+@media (min-width: 900px) {
+.img-hide,.retu-hide {
+  opacity: 0;
+  transform: translateY(6%);
+  transition: opacity 0.4s ease, transform 0.8s ease;
+}
+.img-hide.visible,.retu-hide.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+}

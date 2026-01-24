@@ -1,0 +1,178 @@
+// 首页调用
+.movie-quanju{
+  display: none;
+    @include breakpoint('medium') {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 15px; 
+      margin-bottom: 25px;
+    }
+}
+
+.movies_bankuai_index{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: var(--touy-color);
+  padding: 10px;
+}
+.movies_bankuai_index img{
+  width:110px;
+  border-radius: 4px;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+  transition: transform .3s ease;
+}
+.movies_bankuai_index img:hover {
+  transform: scale(1.03);
+}
+.movies_ingdex_title{
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  margin-top: 6px;
+}
+.movies_right{
+  margin-left: 10px;
+}
+.movies_index_info{
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.movie_index_time{
+  font-size: 0.75rem;
+  margin-top: 5px;
+  color: #999;
+}
+
+// 影视页面
+
+//顶部视频--
+/*.movies_video {
+  position: absolute;
+  height: 30rem;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top:0;
+  z-index: -10;
+}
+.movies_video:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #faf4f1 100%);
+}
+.page-movies .pagetitle,.page-movies .header-menu a{
+  color: #FFF;
+}
+.page-movies .header-menu svg{
+  color: #ebebeb;
+}
+.page-movies .menu-main svg {
+  fill: #dfdfdf;
+}*/
+//顶部视频结束--
+
+#movies_page{
+  display: grid;
+  grid-gap: 2px; 
+  grid-template-columns: repeat(3, 1fr);
+}
+.movies_bankuai{
+  position:relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 3 / 4.4;
+}
+.movies_bankuai img{
+  width:100%;
+  height: 100%;
+  object-fit: cover;
+}
+.movies-nrong{
+  display: none;
+  @include breakpoint('small') {
+    display: block;
+    padding: 60px 20px 20px 20px;
+    color: #fff;
+    font-size: 0.85rem;
+    position:absolute;
+    transition: transform 0.3s ease;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    opacity: 0;
+  }
+} 
+.movies_bankuai:hover .movies-nrong{
+  opacity: 1; 
+  transform: scale(1.05);
+}
+
+.movie-time{
+  color: #c7c7c7;
+  margin-top: 7px;
+}
+.movie-title{
+  font-family:var(--font-family-title);
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 6px 0 6px 0;
+}
+.movie-title a{
+  color: #FFF;
+}
+.movie-pfeng{
+  color: #c7c7c7;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 4px;
+}
+.movie-pfeng svg{
+  width: 0.85rem;
+  height: 0.85rem;
+  color: #e0b29c;
+}
+.movie-info{
+  line-height:1.6;
+  color: #FFF;
+  text-align: justify;
+}
+
+//加载更多
+.movies_loadMore{
+  background: 0 0;
+  cursor: pointer;
+  color: var(--text-highlight-color);
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-family: var(--font-family-title);
+  font-size: .85rem;
+  border: 0.5px solid var(--text-highlight-color);
+  margin-top: 20px;
+  display: inline-block;
+}
+.movies_loadMore:hover{
+  opacity: 0.8;
+}
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.movies_index_info{
+  color: #b7b7ab;
+}
+.movies_bankuai_index{
+  background: var(--background-dark-color);
+}
+}

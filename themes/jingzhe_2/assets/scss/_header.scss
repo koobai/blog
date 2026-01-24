@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  padding: 25px 0 25px 0;
+  align-items: center;
+  @include breakpoint('medium') {
+    z-index: 100;
+    padding: 40px 0 60px 0;
+    height: 20px;
+  }
+}
+.new-heard-menu{
+  display: none;
+  @include breakpoint('medium') {
+    display: flex;
+    gap: 30px;
+  }
+}
+.header-menu a {
+  color: #666;
+  font-size: 1rem;
+  font-family: var(--font-family-paragraph);
+ }
+ .header-menu{
+  display: flex;
+  align-items: center;
+ }
+.menu-current a{
+  color: var(--text-highlight-color) !important;
+}
+.heard-right {
+    display: flex;
+    grid-gap: 0; /* 中间空10px间距 */
+    align-items: center;
+    margin-left: auto;
+    @include breakpoint('medium') {
+      grid-gap: 20px; /* 中间空10px间距 */
+    }
+ }
+.about-koobai img{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: opacity .3s ease-in-out;
+  @include breakpoint('medium') {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+}
+.about-koobai img:hover{
+  opacity: 0.6;
+}
+.heard-right svg{
+  display: none;
+  @include breakpoint('medium') {
+    fill: var(--erji-color);
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+ }
+.heard-right svg:hover{
+  fill: var(--text-highlight-color);
+}
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+  .header-menu a{
+    color: var(--erji-color);
+  }
+  .header-menu svg{
+    color: #827478;
+  }
+  .heard-right svg{
+    fill: var(--erji-color);
+  }
+  .heard-right svg:hover{
+    fill: var(--text-highlight-color);
+  }
+}

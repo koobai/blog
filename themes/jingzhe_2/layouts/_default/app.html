@@ -1,0 +1,34 @@
+{{ define "body_classes" }}page-app{{ end }}
+{{ define "main" }}
+{{ $goods := resources.Get "app.json" | transform.Unmarshal }}
+
+<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：<br />( 2023-11-12 更新 )</div>
+<div class="appdquanjudiv">
+  {{ range $index, $app := $goods.good }}
+    <div class="appquanju img-hide {{if or (eq $index 4) (eq $index 5) (eq $index 18) (eq $index 19)}}app-star{{end}}">
+      <div class="appimg"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><img loading="lazy" decoding="async" src="{{ $app.image }}"></a></div>
+
+      <div class="app-title-all">
+        <div class="apptitle2"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title2 }}</a></div>
+        <div class="appnote"><div>{{ $app.info }}</div></div>
+        <div class="apptitle"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title }}</a></div>
+        <div class="appzhuangtai">
+          <div class="macos">{{ $app.macos }}</div>
+          <div class="macos">{{ $app.ios }}</div>
+          <div class="macos">{{ $app.tvos }}</div>
+          <div class="macos">{{ $app.web }}</div>
+        </div>
+      </div>
+
+      <div class="appzhuangtai-right">
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="kaiyuan">{{ $app.kaiyuan }}</div></a>
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="shoufei">{{ $app.shoufei }}</div></a>
+        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="free">{{ $app.free }}</div></a>
+      </div>
+      {{ with $app.image2 }}
+      <div class="star-img img-hide"><img loading="lazy" decoding="async" src="{{ $app.image2 }}"></div>
+    {{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}

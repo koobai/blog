@@ -1,0 +1,17 @@
+{{ define "body_classes" }}page-blog-tag{{ end }}
+{{ define "main" }}
+  <div class="summary">
+  {{ .Content }}
+  {{ range .Pages }}
+  <div class="summary-nrong img-hide">
+    <div class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+    <div class="summary-description">{{ .Params.description }}</div>
+    <div class="summary-date">
+      <script>
+        document.write(formatDate({{ .Date.Unix }})); 
+      </script>
+    </div>
+  </div>
+  {{ end }}
+</div>
+{{ end }}

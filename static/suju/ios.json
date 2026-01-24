@@ -1,0 +1,23 @@
+{
+  "name": "空白Koobai",
+  "short_name": "Koobai",
+  "start_url": "/",
+
+  "display": "standalone",
+
+  "icons": [
+    {
+      "src": "https://img.koobai.com/ios_ico.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "splash_screen": [{
+    "media": "(prefers-color-scheme: light)",
+    "color": "#ffffff"
+  },
+  {
+    "media": "(prefers-color-scheme: dark)",
+    "color": "#1A1718"
+}]
+}

@@ -1,0 +1,16 @@
+{{ define "body_classes" }}page-default-single{{ end }}
+
+{{ define "main" }}
+<div class="intro">
+  <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+  {{ if .Params.image }}
+  <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" />
+  {{ end }}
+</div>
+<div class="content">
+  {{ .Content }}
+</div>
+<div class="article-comments">
+  {{- partial "artalk" . -}}
+</div>
+{{ end }}
