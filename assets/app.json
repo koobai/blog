@@ -19,7 +19,7 @@
         },
         {
             "image": "https://img.koobai.com/app/upic.webp",
-            "title": "uPiccesshiyong",
+            "title": "uPic",
             "info": "快速上传图片资源到各大存储平台，如腾讯云、又拍云、Github 等等。同类型开源的有 PicGO。",
             "macos": "macOS",
             "shoufei": "付费",
@@ -35,7 +35,7 @@
         },
         {
             "image2": "https://img.koobai.com/app/star_home.webp",
-            "title2": "Homessss",
+            "title2": "Home",
             "info": "家庭 App 接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过 Home assistant 接入 HomeKit。",
             "macos": "macOS",
             "ios": "iOS",
