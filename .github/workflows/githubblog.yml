@@ -41,4 +41,4 @@ jobs:
           REMOTE_USER: root
           TARGET: ${{ secrets.REMOTE_PATH }}
           SOURCE: "public/" # 重点：推送刚编译出来的 public 文件夹
-          ARGS: "-avzr --delete" # 增量同步
+          ARGS: "-avzrc --delete" # 增量同步
