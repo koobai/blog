@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - main  # 监听源码主分支
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4 # 升级到 v4
         with:
           submodules: true
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3 # 建议升级到 v3
         with:
           hugo-version: 'latest'
           extended: true
@@ -24,9 +24,21 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Deploy
+      # 1. 部署到当前仓库的 gh-pages 分支
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          external_repository: koobai/koobai.github.io
+          github_token: ${{ secrets.GITHUB_TOKEN }} # 使用内置 token 即可，无需额外的 PERSONAL_TOKEN
           publish_dir: ./public
+          publish_branch: gh-pages # 指定推送到当前仓库的这个分支
+
+      # 2. 同时将编译好的文件推送到宝塔服务器
+      - name: Deploy to BT Panel via SSH
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }} # 确保已在当前仓库配置 Secret
+          REMOTE_HOST: ${{ secrets.SERVER_IP }}
+          REMOTE_USER: root
+          TARGET: ${{ secrets.REMOTE_PATH }}
+          SOURCE: "public/" # 重点：推送刚编译出来的 public 文件夹
+          ARGS: "-avzr --delete" # 增量同步
