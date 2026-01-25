@@ -1,52 +1,42 @@
 {
     "good": [
         {
-            "image": "https://img.koobai.com/app/jiany.webp",
-            "title": "剪映专业版",
-            "info": "自从开始剪视频之后，必备软件，适合我这种小白。喜欢里面各种预制的音乐/热梗/贴纸素材。",
+            "image": "https://img.koobai.com/app/helium.webp",
+            "title": "Helium",
+            "info": "已从 Chrome 切换到这，轻量好用。兼容 Chrome 插件。",
             "macos": "macOS",
-            "ios": "iOS",
-            "shoufei": "付费",
-            "link": "https://www.capcut.cn/"
+            "kaiyuan": "开源",
+            "link": "https://helium.computer/"
         },
         {
-            "image": "https://img.koobai.com/app/optimage.webp",
-            "title": "Optimage",
-            "info": "图片压缩软件，支持全格式，每天前 25 张免费。博客大部分图片都经过它的手，推荐。",
+            "image": "https://img.koobai.com/app/gemini.webp",
+            "title": "Gemini",
+            "info": "现在主要使用的 ai 工具，利用学生证搞了一年的会员。每天必备。",
             "macos": "macOS",
             "shoufei": "付费",
-            "link": "https://optimage.app/"
+            "link": "https://gemini.google.com/"
         },
         {
-            "image": "https://img.koobai.com/app/upic.webp",
-            "title": "uPic",
-            "info": "快速上传图片资源到各大存储平台，如腾讯云、又拍云、Github 等等。同类型开源的有 PicGO。",
-            "macos": "macOS",
-            "shoufei": "付费",
-            "link": "https://github.com/gee1k/uPic"
-        },
-        {
-            "image": "https://img.koobai.com/app/chatgptios.webp",
-            "title": "ChatGPT",
-            "info": "官方客户端，方便订阅 Plus 会员。历史记录同步 PC 端，整体体验不错。",
+            "image": "https://img.koobai.com/app/weibo.webp",
+            "title": "微博",
+            "info": "每天必刷，算是了解社会的一个窗口。",
             "ios": "iOS",
             "free": "免费",
-            "link": "https://apps.apple.com/us/app/chatgpt/id6448311069"
+            "link": "https://www.weibo.com"
         },
         {
-            "image2": "https://img.koobai.com/app/star_home.webp",
-            "title2": "Home",
-            "info": "家庭 App 接入了不少的智能设备，买的是小米系，日常除了使用米家之外，可通过 Home assistant 接入 HomeKit。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "tvos": "tvOS",
-            "free": "免费",
-            "link": "https://apps.apple.com/cn/app/%E5%AE%B6%E5%BA%AD/id1110145103"
+            "image": "https://img.koobai.com/app/nextflux.webp",
+            "title": "Nextflux",
+            "info": "RSS，后端使用 Miniflux，前端使用这个，界面非常喜欢友好，现在电脑跟手机上每天必用。",
+            "web": "Web",
+            "kaiyuan": "开源",
+            "link": "https://github.com/electh/nextflux"
         },
+
         {
             "image2": "https://img.koobai.com/app/star_Infuse.webp",
             "title2": "Infuse",
-            "info": "如果你有Apple TV，那它就是必备软件。可以让你的视频流以海报的形式展示，并且支持各类格式。",
+            "info": "影视聚合软件，虽然现在同类型软件很多，但还是习惯使用它。",
             "macos": "macOS",
             "ios": "iOS",
             "tvos": "tvOS",
@@ -54,13 +44,106 @@
             "link": "https://firecore.com/infuse"
         },
         {
-            "image": "https://img.koobai.com/app/chrome.webp",
-            "title": "Google Chrome",
-            "info": "有些站点对 Chrome 的支持更完善，所以现在与 Firefox 交替使用。",
+            "image2": "https://img.koobai.com/app/cuto2.webp",
+            "title2": "Cuto",
+            "info": "手机壁纸软件，每天更新一张，质量都不错，免费版也够用。",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://apps.apple.com/us/app/cuto-wallpaper/id1068086465"
+        },
+        {
+            "image": "https://img.koobai.com/app/jfxj.webp",
+            "title": "飓风相机",
+            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845"
+        },
+        {
+            "image": "https://img.koobai.com/app/boke.webp",
+            "title": "播客",
+            "info": "睡前必须有声音才能睡得着，跟小宇宙交替着使用。",
+            "ios": "iOS",
+            "free": "免费",
+            "link": "https://apps.apple.com/cn/app/apple%E6%92%AD%E5%AE%A2/id525463029"
+        },
+        {
+            "image": "https://img.koobai.com/app/xiaoyuz.webp",
+            "title": "小宇宙",
+            "info": "播客应用，其实很少听播客，但在开车的时候，放着声音很不错。",
+            "ios": "iOS",
+            "free": "免费",
+            "link": "https://www.xiaoyuzhoufm.com/"
+        },
+        {
+            "image": "https://img.koobai.com/app/x.webp",
+            "title": "X",
+            "info": "每天必刷，算是了解世界的一个窗口。",
+            "ios": "iOS",
+            "web": "Web",
+            "free": "免费",
+            "link": "https://www.x.com"
+        },
+        {
+            "image": "https://img.koobai.com/app/surge.webp",
+            "title": "Surge",
+            "info": "上网必备软件，已使用多年。日常也作为旁路由跟 Ponte 使用。",
+            "macos": "macOS",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://nssurge.com/"
+        },  
+        {
+            "image": "https://img.koobai.com/app/bob.webp",
+            "title": "Bob",
+            "info": "翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。",
+            "macos": "macOS",
+            "shoufei": "付费",
+            "link": "https://bobtranslate.com/"
+        },
+        {
+            "image": "https://img.koobai.com/app/bilibili.webp",
+            "title": "哔哩哔哩",
+            "info": "干家务的时候，看影视解说或听视频播客",
+            "ios": "iOS",
+            "free": "免费",
+            "link": "https://apps.apple.com/cn/app/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-%E5%BC%B9%E5%B9%95%E7%95%AA%E5%89%A7%E7%9B%B4%E6%92%AD%E9%AB%98%E6%B8%85%E8%A7%86%E9%A2%91/id736536022"
+        },
+        {
+            "image": "https://img.koobai.com/app/youtube.webp",
+            "title": "Youtube",
+            "info": "没什么说的，关注你喜欢的视频频道。",
+            "macos": "macOS",
+            "tvos": "tvOS",
+            "web": "Web",
+            "free": "免费",
+            "link": "https://youtube.com"
+        },
+        {
+            "image": "https://img.koobai.com/app/wxsrf.webp",
+            "title": "微信输入法",
+            "info": "看中的是跨设备复制同步，有一个不好，按住空格键光标移动不顺滑。",
             "macos": "macOS",
             "ios": "iOS",
             "free": "免费",
-            "link": "https://www.google.com/chrome/"
+            "link": "https://apps.apple.com/cn/app/%E5%BE%AE%E4%BF%A1%E8%BE%93%E5%85%A5%E6%B3%95/id1618175312"
+        },
+        {
+            "image": "https://img.koobai.com/app/telegram.webp",
+            "title": "Telegram",
+            "info": "关注你想关注的，你能想到的资源都有。",
+            "macos": "macOS",
+            "ios": "iOS",
+            "free": "免费",
+            "link": "https://telegram.org/"
+        },
+        {
+            "image": "https://img.koobai.com/app/1writer.webp",
+            "title": "1writer",
+            "info": "主要在手机端配合 WebDav 同步 MD 文件使用。想找替代，但没发现比这个好的。",
+            "ios": "iOS",
+            "shoufei": "付费",
+            "link": "https://apps.apple.com/us/app/1writer-markdown-text-editor/id680469088"
         },
         {
             "image": "https://img.koobai.com/app/vscode.webp",
@@ -69,74 +152,39 @@
             "macos": "macOS",
             "free": "免费",
             "link": "https://code.visualstudio.com/"
-        },   
+        },  
         {
-            "image": "https://img.koobai.com/app/keka.webp",
-            "title": "Keka",
-            "info": "压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。",
-            "macos": "macOS",
-            "free": "免费",
-            "link": "https://www.keka.io/en/"
-        }, 
-        {
-            "image": "https://img.koobai.com/app/obsidiannew.webp",
-            "title": "Obsidian",
-            "info": "知识管理笔记类软件，插件丰富，配合WebDav各端同步。自己当日常记录、写博客日志使用。",
-            "macos": "macOS",
+            "image2": "https://img.koobai.com/app/mijia3.webp",
+            "title2": "米家",
+            "info": "大大小小有不少小米生态链产品了，所以必须使用，方便日常控制。特别喜欢一句小爱同学操作灯光。",
             "ios": "iOS",
             "free": "免费",
-            "link": "https://obsidian.md/"
-        },             
+            "link": "https://apps.apple.com/cn/app/%E7%B1%B3%E5%AE%B6/id957323480"
+        },                      
         {
-            "image": "https://img.koobai.com/app/sketch.webp",
-            "title": "Sketch",
-            "info": "2022年做项目才开始学会使用，画稿利器。虽然现在大家都用Figma，但还是得看环境使用，适合自己才是最好的。",
+            "image2": "https://img.koobai.com/app/star_pixelmator.webp",
+            "title2": "Pixelmator Pro",
+            "info": "一直使用Photoshop，在想有没有平替，于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，还在摸索中～～",
             "macos": "macOS",
             "shoufei": "付费",
-            "link": "https://www.sketch.com/"
-        },              
+            "link": "https://www.pixelmator.com/pro/"
+        },  
         {
-            "image": "https://img.koobai.com/app/ai.webp",
-            "title": "Illustrator 2022",
-            "info": "Adobe的矢量软件，平常主要用于素材的修改调整，只会基本的功能。",
+            "image": "https://img.koobai.com/app/ai2.webp",
+            "title": "Illustrator",
+            "info": "Adobe的矢量软件，工作必备。",
             "macos": "macOS",
             "shoufei": "付费",
             "link": "https://adobe.com/"
-        },        
+        },    
         {
-            "image": "https://img.koobai.com/app/eagle.webp",
-            "title": "Eagle",
-            "info": "素材管理软件，支持各类格式。很多年前就已购买，设计师应该人手备一个。",
+            "image": "https://img.koobai.com/app/ps.webp",
+            "title": "PhotoShop",
+            "info": "Adobe的修图软件，工作必备。",
             "macos": "macOS",
             "shoufei": "付费",
-            "link": "https://eagle.cool/"
-        },        
-        {
-            "image": "https://img.koobai.com/app/mindnode.webp",
-            "title": "Mindnode",
-            "info": "思维导图软件，单纯因为它的颜值才入手的，使用起来也方便简单。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "shoufei": "付费",
-            "link": "https://apps.apple.com/us/app/mindnode-mind-map-outline/id1218718027"
-        },        
-        {
-            "image": "https://img.koobai.com/app/surge.webp",
-            "title": "Surge",
-            "info": "上网必备软件，已使用多年。虽然现在同质化的软件很多，但已使用习惯，主要还支持iCloud同步。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "shoufei": "付费",
-            "link": "https://nssurge.com/"
-        },        
-        {
-            "image": "https://img.koobai.com/app/bob.webp",
-            "title": "Bob",
-            "info": "翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。",
-            "macos": "macOS",
-            "shoufei": "付费",
-            "link": "https://bobtranslate.com/"
-        },        
+            "link": "https://adobe.com/"
+        },                          
         {
             "image": "https://img.koobai.com/app/maccy.webp",
             "title": "Maccy",
@@ -154,42 +202,17 @@
             "link": "https://github.com/MonitorControl/MonitorControl"
         },
         {
-            "image2": "https://img.koobai.com/app/star_pixelmator.webp",
-            "title2": "Pixelmator Pro",
-            "info": "一直使用Photoshop，在想有没有平替，于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，还在摸索中～～",
-            "macos": "macOS",
-            "shoufei": "付费",
-            "link": "https://www.pixelmator.com/pro/"
-        },  
-        {
-            "image2": "https://img.koobai.com/app/star_reeder.webp",
-            "title2": "Reeder 5",
-            "info": "RSS 阅读器，强悍的交互体验及出色的界面设计，让使用变得优雅且快捷。",
-            "macos": "macOS",
-            "ios": "iOS",
-            "shoufei": "付费",
-            "link": "https://reederapp.com/"
-        }, 
-        {
-            "image": "https://img.koobai.com/app/hidden.webp",
-            "title": "Hidden Bar",
-            "info": "隐藏菜单栏图标软件，菜单栏图标过多的时候，使用它非常不错。免费开源。",
+            "image": "https://img.koobai.com/app/loop.webp",
+            "title": "Loop",
+            "info": "调整窗口大小软件，配合触发键方式让窗口根据需要分屏。免费开源。",
             "macos": "macOS",
             "kaiyuan": "开源",
-            "link": "https://github.com/dwarvesf/hidden"
-        },
-        {
-            "image": "https://img.koobai.com/app/rectangle.webp",
-            "title": "Rectangle",
-            "info": "调整窗口大小软件，用快捷键方式让窗口根据需要分屏。免费开源。",
-            "macos": "macOS",
-            "kaiyuan": "开源",
-            "link": "https://rectangleapp.com/"
+            "link": "https://github.com/MrKai77/Loop"
         },
         {
             "image": "https://img.koobai.com/app/bitwarden.webp",
-            "title": "Bitwarden",
-            "info": "密码管理工具，服务器使用Docker版的vaultwarden，数据存储本地，再也不用记该死的密码了。免费开源。",
+            "title": "vaultwarden",
+            "info": "密码管理工具，后端使用Docker版，前端使用 Bitwarden，再也不用记该死的密码了。免费开源。",
             "macos": "macOS",
             "ios": "iOS",
             "web": "Web",
@@ -205,15 +228,6 @@
             "link": "https://freemacsoft.net/appcleaner/"
         },
         {
-            "image": "https://img.koobai.com/app/firefox.webp",
-            "title": "Firefox",
-            "info": "最近用了下 Firefox，发现打开网站速度似乎比 Chrome 快，那就再继续尝试下～～",
-            "macos": "macOS",
-            "ios": "iOS",
-            "free": "免费",
-            "link": "https://www.mozilla.org/zh-CN/firefox/new/"
-        },
-        {
             "image": "https://img.koobai.com/app/iina.webp",
             "title": "IINA",
             "info": "视频播放软件，并且支持IPTV播放。免费开源。",
@@ -222,67 +236,54 @@
             "link": "https://iina.io/"
         },
         {
-            "image": "https://img.koobai.com/app/youtube.webp",
-            "title": "Youtube",
-            "info": "没什么说的，关注你喜欢的视频频道。",
+            "image": "https://img.koobai.com/app/zipic.webp",
+            "title": "Zipic",
+            "info": "图片压缩软件，电商必备，推荐。",
             "macos": "macOS",
-            "tvos": "tvOS",
-            "web": "Web",
-            "free": "免费",
-            "link": "https://youtube.com"
-        },
-        {
-            "image": "https://img.koobai.com/app/netflix.webp",
-            "title": "Netflix",
-            "info": "流媒体视频软件，缺点就是每个月的订阅费确实蛮贵。独自订阅几个月后，在合租平台租了个合租号。",
-            "ios": "iOS",
-            "tvos": "tvOS",
-            "web": "Web",
             "shoufei": "付费",
-            "link": "https://netflix.com/"
+            "link": "https://zipic.app/cn/"
         },
         {
-            "image": "https://img.koobai.com/app/xiaoyuz.webp",
-            "title": "小宇宙",
-            "info": "播客应用，其实很少听播客，但在开车的时候，放着声音很不错。",
-            "ios": "iOS",
-            "web": "Web",
-            "free": "免费",
-            "link": "https://www.xiaoyuzhoufm.com/"
-        },
-        {
-            "image": "https://img.koobai.com/app/tinycal.webp",
-            "title": "小历",
-            "info": "一款日历的组件，使用了很多年，主要用来查看农历跟日常的节假日。",
+            "image": "https://img.koobai.com/app/upic.webp",
+            "title": "uPic",
+            "info": "快速上传图片资源到各大存储平台，如腾讯云、又拍云、Github 等等。同类型开源的有 PicGO。",
             "macos": "macOS",
-            "ios": "iOS",
             "shoufei": "付费",
-            "link": "https://apps.apple.com/cn/app/%E5%B0%8F%E5%8E%86-%E5%B0%8F%E8%80%8C%E7%BE%8E%E7%9A%84%E6%97%A5%E5%8E%86/id1031088612"
-        },
+            "link": "https://github.com/gee1k/uPic"
+        }, 
         {
-            "image": "https://img.koobai.com/app/telegram.webp",
-            "title": "Telegram",
-            "info": "关注你想关注的，你能想到的资源都有。",
+            "image": "https://img.koobai.com/app/keka.webp",
+            "title": "Keka",
+            "info": "压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。",
+            "macos": "macOS",
+            "free": "免费",
+            "link": "https://www.keka.io/en/"
+        }, 
+        {
+            "image": "https://img.koobai.com/app/obsidiannew.webp",
+            "title": "Obsidian",
+            "info": "知识管理笔记类软件，插件丰富，自己当日常记录、写博客日志使用。",
             "macos": "macOS",
             "ios": "iOS",
             "free": "免费",
-            "link": "https://telegram.org/"
+            "link": "https://obsidian.md/"
+        }, 
+        {
+            "image": "https://img.koobai.com/app/Bark.webp",
+            "title": "Bark",
+            "info": "信息实时推送，譬如博客有人留言会推送到手机。",
+            "ios": "iOS",
+            "free": "免费",
+            "link": "https://apps.apple.com/cn/app/bark-%E7%BB%99%E4%BD%A0%E7%9A%84%E6%89%8B%E6%9C%BA%E5%8F%91%E6%8E%A8%E9%80%81/id1403753865"
         },
         {
-            "image": "https://img.koobai.com/app/tianqi.webp",
-            "title": "彩云天气 Pro",
-            "info": "一段时间内，特别喜欢收集天气类app，只要看着好看就下载，最终留下了这款，可能因为它数据相对准确。",
+            "image": "https://img.koobai.com/app/jiany.webp",
+            "title": "剪映专业版",
+            "info": "现在年付太贵了，只用它的免费功能。",
+            "macos": "macOS",
             "ios": "iOS",
             "shoufei": "付费",
-            "link": "https://apps.apple.com/cn/app/%E5%BD%A9%E4%BA%91%E5%A4%A9%E6%B0%94-%E4%B8%BA%E6%82%A8%E9%A2%84%E6%8A%A5%E5%87%A0%E7%82%B9%E5%87%A0%E5%88%86%E4%B8%8B%E9%9B%A8/id847764912"
-        },
-        {
-            "image": "https://img.koobai.com/app/sms.webp",
-            "title": "熊猫吃短信",
-            "info": "过滤垃圾信息必备，iOS相关的过滤真是太垃圾了，羡慕隔壁的Android。",
-            "ios": "iOS",
-            "shoufei": "付费",
-            "link": "https://apps.apple.com/cn/app/%E7%86%8A%E7%8C%AB%E5%90%83%E7%9F%AD%E4%BF%A1-%E5%9E%83%E5%9C%BE%E7%9F%AD%E4%BF%A1%E8%BF%87%E6%BB%A4/id1319191852"
+            "link": "https://www.capcut.cn/"
         }
     ]
 }
