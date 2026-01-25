@@ -44,14 +44,25 @@ jobs:
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
           
        #刷新缓存
+      # 3. 刷新阿里云 ESA 全球缓存 (使用 API 标准参数 purgeall)
       - name: Purge Aliyun ESA Cache
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
+          # 1. 安装阿里云 CLI
+          /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
+
+          # 2. 配置凭证 (Region 必须填，虽然 ESA 是全球的，但 CLI 需要一个入口)
           aliyun configure set \
-            --profile default \
-            --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
-            --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
+            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
-          aliyun esa PurgeCache \
-            --InstanceId ${{ secrets.ESA_INSTANCE_ID }} \
-            --Type all
+          # 3. 执行全站刷新
+          # API 名称: PurgeCaches (复数)
+          # 参数 Type: purgeall (全小写，这是 API 规定的唯一正确值)
+          aliyun esa PurgeCaches \
+            --SiteId "$ESA_SITE_ID" \
+            --Type purgeall
