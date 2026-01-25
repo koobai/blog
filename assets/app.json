@@ -230,7 +230,7 @@
         {
             "image": "https://img.koobai.com/app/iina.webp",
             "title": "IINA",
-            "info": "视频播放软件，并且支持IPTV播放。免费开源。",
+            "info": "视频播放软件，并且支持IPTV播放。",
             "macos": "macOS",
             "kaiyuan": "开源",
             "link": "https://iina.io/"
