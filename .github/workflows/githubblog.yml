@@ -50,9 +50,8 @@ jobs:
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
           ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
-          # 下载并安装阿里云命令行工具
-          curl -fsSL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | tar xz
-          sudo mv aliyun /usr/local/bin/aliyun
+          # 安装阿里云 CLI
+          /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
 
           # 配置子账号凭证
           aliyun configure set \
@@ -60,7 +59,7 @@ jobs:
             --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
-          # 调用 ESA 刷新接口 (已修正为 PurgeCaches)
+          # 全站刷新缓存：让全球节点立刻去服务器拉取最新内容
           aliyun esa PurgeCaches \
             --SiteId "$ESA_SITE_ID" \
-            --Type everything
+            --Type Everything
