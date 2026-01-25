@@ -1,4 +1,91 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>空白Koobai</title><link>https://koobai.com/</link><description>工作生活记录、折腾备忘, 同时分享下日常使用的软件、 观看的影视、喜欢的好物等~~</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 30 Dec 2025 19:43:00 +0800</lastBuildDate><atom:link href="https://koobai.com/index.xml" rel="self" type="application/rss+xml"/><item><title>2025 关键词</title><link>https://koobai.com/2025/</link><pubDate>Tue, 30 Dec 2025 19:43:00 +0800</pubDate><guid>https://koobai.com/2025/</guid><description>差不多一年时间没写日志了，由于电脑里啥都没配置，怎么装HUGO、怎么配置Git，完全忘记不会了。也懒得去研究配置，最后直接文件上传Github。2025 年自己的几个关键词：病、金牌卖家、AI。</description><content:encoded><![CDATA[<img loading="lazy" decoding="async" src="https://img.koobai.com/article/2025.webp" alt="2025 关键词" /><p>这里应该有句开场白，但没想好怎么写，所以直接进入正题～</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>空白Koobai</title><link>https://koobai.com/</link><description>工作生活记录、折腾备忘, 同时分享下日常使用的软件、 观看的影视、喜欢的好物等~~</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 25 Jan 2026 16:43:00 +0800</lastBuildDate><atom:link href="https://koobai.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo 通过 Github 自动推送到宝塔 (2026 年版备忘)</title><link>https://koobai.com/hugo_action_github/</link><pubDate>Sun, 25 Jan 2026 16:43:00 +0800</pubDate><guid>https://koobai.com/hugo_action_github/</guid><description>太久没折腾博客了，服务器失效了也没打算续费，昨天兴致来了，把费续上。既然网站正常了，就想着顺手折腾下。但太久没整了，完全忘光，之前的一篇日志还是手动传到 Github，然后手动把静态文件传到宝塔。为了方便，还是得把链路打通：本地通过 VC 上传，Github 自动构建 Hugo 静态文件，然后自动推送到宝塔。</description><content:encoded><![CDATA[<img loading="lazy" decoding="async" src="https://img.koobai.com/article/githubrsync.webp" alt="Hugo 通过 Github 自动推送到宝塔 (2026 年版备忘)" /><p>太久没折腾博客了，服务器失效了也没打算续费，昨天兴致来了，把费续上。既然网站正常了，就想着顺手折腾下。但太久没整了，完全忘光，之前的一篇日志还是手动传到 Github，然后手动把静态文件传到宝塔。为了方便，还是得把链路打通：本地通过 VC 上传，Github 自动构建 Hugo 静态文件，然后自动推送到宝塔。得益于 ai 的进步，本地到 Github 很快搞定，但原先的 WebHook 不知道为什么不启作用，来回跟 ai 聊也无效，记得以前 WebHook 也老是失效。干脆让 ai 换个思路不用 WebHook 了，于是有了这篇备忘～</p>
+<h3 id="宝塔面板端">宝塔面板端</h3>
+<p>打开宝塔终端，创建推送用户</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="l">useradd -m -s /bin/bash deploy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 建立一个名为 `deploy` 的受限账户，专门负责搬运文件，即便密钥泄露也拿不到系统 `root` 权限。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 为了更安全可禁止 root SSH 远程登录，修改 `/etc/ssh/sshd_config` -&gt; `PermitRootLogin no`，重新启动 systemctl restart sshd</span><span class="w">
+</span></span></span></code></pre></div><p>生成并授权 SSH 密钥</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="c"># 生成密钥</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">ssh-keygen -t rsa -b 4096 -f ~/.ssh/github_actions</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 配置权限：</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">mkdir -p /home/deploy/.ssh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">cp ~/.ssh/authorized_keys /home/deploy/.ssh/ </span><span class="w"> </span><span class="c"># 复制已有的公钥授权</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">chown -R deploy:deploy /home/deploy/.ssh     </span><span class="w"> </span><span class="c"># 修正所有权</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">chmod 700 /home/deploy/.ssh                  </span><span class="w"> </span><span class="c"># 设置目录权限</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">chmod 600 /home/deploy/.ssh/authorized_keys  </span><span class="w"> </span><span class="c"># 设置文件权限</span><span class="w">
+</span></span></span></code></pre></div><p>赋予静态文件存储目录权限及安装 rsync</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="l">chown -R deploy:deploy /www/wwwroot/blog</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">chmod -R 755 /www/wwwroot/blog</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 作用：让 `deploy` 用户有权读写该网站目录，否则 `rsync` 会报错。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">yum install -y rsync --disablerepo=docker-ce-stable</span><span class="w"> </span><span class="c"># 安装依赖：确保系统有同步工具</span><span class="w">
+</span></span></span></code></pre></div><p>获取私钥内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="l">cat ~/.ssh/github_actions</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 完整复制从 `-----BEGIN RSA PRIVATE KEY-----` 到结尾的所有字符。</span><span class="w">
+</span></span></span></code></pre></div><h3 id="github-仓库端">GitHub 仓库端</h3>
+<p>打开 Hugo 源码仓库 -&gt; Settings -&gt; Secrets and variables -&gt; Actions，点击 New repository secret 添加以下三项：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="l">SERVER_IP</span><span class="w"> </span><span class="c"># 服务器公网IP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">SERVER_SSH_KEY</span><span class="w"> </span><span class="c">#粘贴刚才的私钥内容</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">REMOTE_PATH</span><span class="w"> </span><span class="c">#静态文件在服务器的根目录（如 `/www/wwwroot/blog`）</span><span class="w">
+</span></span></span></code></pre></div><h3 id="完整的部署脚本">完整的部署脚本</h3>
+<p>GitHub Actions 脚本，新建.github/workflows/Githubblog.yml</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Githubblog</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">on</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span><span class="w">  </span><span class="c"># 支持手动运行</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">main </span><span class="w"> </span><span class="c"># 监听 main 分支推送</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">deploy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Checkout Code</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;latest&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo --minify </span><span class="w"> </span><span class="c"># hugo 编译静态文件 HTML</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># 1. 发布到本仓库的 gh-pages 分支</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy to GitHub Pages</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">github_token</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.GITHUB_TOKEN }}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">publish_dir</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">publish_branch</span><span class="p">:</span><span class="w"> </span><span class="l">gh-pages</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># 2. 通过 rsync 同步到宝塔</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy to BT Panel via rsync</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">burnett01/rsync-deployments@v8</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">switches</span><span class="p">:</span><span class="w"> </span>-<span class="l">avz --delete</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">public/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">remote_path</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.REMOTE_PATH }}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">remote_host</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.SERVER_IP }}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">deploy  </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">remote_key</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.SERVER_SSH_KEY }}</span><span class="w">
+</span></span></span></code></pre></div><p>完美搞定，似乎折腾的乐趣又勾起来了，把 
+<a 
+    
+        href="/apps"
+    
+    
+>
+Apps</a> 页面内容也重新梳理更新了下，上次更新还是 2023 年，几年过去了，软件使用是有一些变化～</p>
+]]></content:encoded></item><follow_challenge><feedId>52982633250295857</feedId><userId>58707550957768704</userId></follow_challenge><item><title>2025 关键词</title><link>https://koobai.com/2025/</link><pubDate>Tue, 30 Dec 2025 19:43:00 +0800</pubDate><guid>https://koobai.com/2025/</guid><description>差不多一年时间没写日志了，由于电脑里啥都没配置，怎么装HUGO、怎么配置Git，完全忘记不会了。也懒得去研究配置，最后直接文件上传Github。2025 年自己的几个关键词：病、金牌卖家、AI。</description><content:encoded><![CDATA[<img loading="lazy" decoding="async" src="https://img.koobai.com/article/2025.webp" alt="2025 关键词" /><p>这里应该有句开场白，但没想好怎么写，所以直接进入正题～</p>
 <h3 id="病">病</h3>
 <p>身体在某个时间段，坐着腿麻手也不舒服，站着也不是，八月份去医院一顿检查，最后确诊二型糖尿病。加上身体本身就有高血压，现在忘了当时心理活动是怎么样的，应该是慌跟紧张。首要任务就是减肥，2023 年还特意发了篇日志《
 <a 
