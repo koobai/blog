@@ -42,28 +42,24 @@ jobs:
           remote_host: ${{ secrets.SERVER_IP }}
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
-
-     # 3. 刷新 ESA 缓存 (终极 Python 版：稳、准、快)
+      # 3. 刷新 ESA 缓存 (Python SDK 修正版)
       - name: Purge Aliyun ESA Cache via Python
         env:
-          # 这里引用你刚刚设置的 3 个 Secret
           AK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
           SK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
           SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
-          # 1. 安装阿里云 ESA 官方 SDK
           pip install alibabacloud_esa20240910
-
-          # 2. 运行 Python 脚本
+          
           python -c "
           import os
           import sys
           from alibabacloud_esa20240910.client import Client
           from alibabacloud_tea_openapi.models import Config
-          from alibabacloud_esa20240910.models import PurgeCachesRequest
+          # 关键修正：引入 models 模块，用于创建强类型的 Content 对象
+          from alibabacloud_esa20240910 import models as esa_models
 
           try:
-              # 初始化配置
               config = Config(
                   access_key_id=os.environ['AK'],
                   access_key_secret=os.environ['SK'],
@@ -71,19 +67,25 @@ jobs:
               )
               client = Client(config)
 
-              # 构造请求：使用 directory (目录刷新)
-              # 这种方式一天有 2000 次额度，不会报错
-              request = PurgeCachesRequest(
-                  site_id=int(os.environ['SITE_ID']),
-                  type='directory',
-                  content={'Directories': ['https://koobai.com/', 'https://www.koobai.com/']}
+              # 关键修正步骤：
+              # 不能直接传 dict {'Directories':...}，必须创建一个 Content 对象
+              content_obj = esa_models.PurgeCachesRequestContent(
+                  directories=['https://koobai.com/', 'https://www.koobai.com/']
               )
 
-              # 发送请求
+              # 构造请求
+              request = esa_models.PurgeCachesRequest(
+                  site_id=int(os.environ['SITE_ID']),
+                  type='directory',  # 使用目录刷新，避开额度限制
+                  content=content_obj
+              )
+
               response = client.purge_caches(request)
               print(f'✅ Refresh Success! RequestId: {response.body.request_id}')
 
           except Exception as e:
               print(f'❌ Error: {e}')
+              # 打印出所有属性以供调试(万一类名不对)
+              # print(dir(esa_models)) 
               sys.exit(1)
           "
