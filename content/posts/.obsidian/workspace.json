@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "春节有什么不一样.md",
-                "mode": "preview",
+                "file": "Hugo自动推送到宝塔.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "春节有什么不一样"
+              "title": "Hugo自动推送到宝塔"
             }
           }
         ]
@@ -185,13 +185,16 @@
   },
   "active": "1184bcb690cb444f",
   "lastOpenFiles": [
-    "博客折腾随记及Grid属性.md",
-    "2025 关键词.md",
-    "春节有什么不一样.md",
-    "2023.md",
-    "机械键盘.md",
+    "ChatGPT折腾博客.md",
+    "Hugo自动推送到宝塔.md",
+    "Apple TV 使用体验.md",
     "构建Hugo同步到腾讯COS.md",
     "构建Hugo同步到宝塔.md",
+    "2025 关键词.md",
+    "春节有什么不一样.md",
+    "博客折腾随记及Grid属性.md",
+    "2023.md",
+    "机械键盘.md",
     "工作台.md"
   ]
 }
