@@ -44,10 +44,17 @@ jobs:
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
           
        #刷新缓存
-      - name: Purge ESA Cache
-        uses: aliyun/alibabacloud-esa-action@master
+      # 刷新 ESA 缓存（官方通用 API 插件方案）
+      - name: Purge Aliyun ESA Cache
+        uses: aliyun/alibabacloud-api-action@v1
         with:
           access-key-id: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          site-id: ${{ secrets.ESA_SITE_ID }}
-          type: everything  # 刷新全站缓存，确保所有页面都是最新的
+          product: 'ESA'
+          action: 'PurgeCache'
+          api-version: '2024-09-19'
+          params: |-
+            {
+              "SiteId": "${{ secrets.ESA_SITE_ID }}",
+              "Type": "everything"
+            }
