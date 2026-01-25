@@ -42,19 +42,27 @@ jobs:
           remote_host: ${{ secrets.SERVER_IP }}
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
-      # 3. 刷新 ESA 缓存 (使用 eryajf/cdn-refresh 插件)
-      - name: Refresh Aliyun ESA Cache
-        # 使用该项目的官方 Docker 镜像
-        uses: docker://eryajf/cdn-refresh:latest
+
+      # 3. 刷新 ESA 缓存 (回归 CLI 极简版)
+      # 关键点：Type 改为 file，对应免费版的 1000 次 URL 刷新额度
+      - name: Purge Aliyun ESA Cache
         env:
-          # 必填：云厂商类型，aliesa 代表阿里云 ESA
-          PLUGIN_KIND: "aliesa"
-          # 必填：刷新类型，path 代表目录刷新 (避开全站刷新的额度限制)
-          PLUGIN_RTYPE: "path"
-          # 必填：主域名
-          PLUGIN_DOMAIN: "koobai.com"
-          # 必填：AccessKey (从 Secrets 读取)
-          PLUGIN_AK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          PLUGIN_SK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          # 必填：需要刷新的地址列表，用逗号分隔
-          PLUGIN_URLS: "https://koobai.com/,https://www.koobai.com/"
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
+        run: |
+          # 1. 安装阿里云 CLI (一行命令搞定)
+          /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
+
+          # 2. 配置凭证
+          aliyun configure set \
+            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
+            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
+            --region cn-hangzhou
+
+          # 3. 执行刷新 (Type: file)
+          # 注意：Content 里要是 {"Files": [...]}，注意 Files 首字母大写
+          aliyun esa PurgeCaches \
+            --SiteId "$ESA_SITE_ID" \
+            --Type file \
+            --Content '{"Files": ["https://koobai.com/", "https://www.koobai.com/"]}'
