@@ -44,21 +44,23 @@ jobs:
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
           
        #刷新缓存
-      # 刷新 ESA 缓存（使用 CLI 脚本方式，最稳妥）
       - name: Purge Aliyun ESA Cache
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
           ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
+          # 下载并安装阿里云命令行工具
           curl -fsSL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | tar xz
           sudo mv aliyun /usr/local/bin/aliyun
 
+          # 配置子账号凭证
           aliyun configure set \
             --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
             --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
-          aliyun esa PurgeCache \
+          # 调用 ESA 刷新接口 (已修正为 PurgeCaches)
+          aliyun esa PurgeCaches \
             --SiteId "$ESA_SITE_ID" \
             --Type everything
