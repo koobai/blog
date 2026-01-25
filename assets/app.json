@@ -196,7 +196,7 @@
         {
             "image": "https://img.koobai.com/app/monitorcontrol.webp",
             "title": "MonitorControl",
-            "info": "调整显示器亮度软件，适合外接显示器使用。鼠标在哪个显示屏，调整就是哪个显示屏的亮度。免费开源",
+            "info": "调整显示器亮度软件，适合外接显示器使用。鼠标在哪个显示屏，调整就是哪个显示屏的亮度。",
             "macos": "macOS",
             "kaiyuan": "开源",
             "link": "https://github.com/MonitorControl/MonitorControl"
