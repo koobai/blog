@@ -43,25 +43,18 @@ jobs:
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
 
-      # 3. 刷新 AliyunESA 缓存
+      # 3. 刷新 ESA 缓存 (优化版)
       - name: Purge Aliyun ESA Cache
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
           ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
-          # 1. 安装阿里云 CLI (一行命令搞定)
           /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
-
-          # 2. 配置凭证
-          aliyun configure set \
+          
+          aliyun esa PurgeCaches \
             --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
             --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
-            --region cn-hangzhou
-
-          # 3. 执行刷新 (Type: file)
-          # 注意：Content 里要是 {"Files": [...]}，注意 Files 首字母大写
-          aliyun esa PurgeCaches \
             --SiteId "$ESA_SITE_ID" \
             --Type file \
             --Content '{"Files": ["https://koobai.com/"]}'

@@ -212,7 +212,7 @@
         {
             "image": "https://img.koobai.com/app/bitwarden.webp",
             "title": "vaultwarden",
-            "info": "密码管理工具，后端使用Docker版，前端使用 Bitwarden，再也不用记该死的密码了。免费开源。",
+            "info": "密码管理工具，后端使用Docker版，前端使用 Bitwarden，再也不用记该死的密码了。",
             "macos": "macOS",
             "ios": "iOS",
             "web": "Web",
