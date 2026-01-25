@@ -45,7 +45,6 @@ jobs:
           
        #刷新缓存
       # 3. 刷新阿里云 ESA 全球缓存 (使用 API 标准参数 purgeall)
-      # 3. 刷新 ESA 缓存 (同时刷新 @ 和 www 两个根目录)
       - name: Purge Aliyun ESA Cache
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
@@ -61,8 +60,8 @@ jobs:
             --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
-          # 3. 执行刷新
-          # Content 参数里添加了 www.koobai.com，中间用逗号分隔
+          # 3. 执行目录刷新 (额度充足，立刻生效)
+          # 注意：Type 必须是 directory，Content 必须严格符合 JSON 格式
           aliyun esa PurgeCaches \
             --SiteId "$ESA_SITE_ID" \
             --Type directory \
