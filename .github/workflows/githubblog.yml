@@ -42,27 +42,48 @@ jobs:
           remote_host: ${{ secrets.SERVER_IP }}
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
-          
-       #刷新缓存
-      # 3. 刷新阿里云 ESA 全球缓存 (使用 API 标准参数 purgeall)
-      - name: Purge Aliyun ESA Cache
+
+     # 3. 刷新 ESA 缓存 (终极 Python 版：稳、准、快)
+      - name: Purge Aliyun ESA Cache via Python
         env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
+          # 这里引用你刚刚设置的 3 个 Secret
+          AK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          SK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
-          # 1. 安装阿里云 CLI
-          /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
+          # 1. 安装阿里云 ESA 官方 SDK
+          pip install alibabacloud_esa20240910
 
-          # 2. 配置凭证
-          aliyun configure set \
-            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
-            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
-            --region cn-hangzhou
+          # 2. 运行 Python 脚本
+          python -c "
+          import os
+          import sys
+          from alibabacloud_esa20240910.client import Client
+          from alibabacloud_tea_openapi.models import Config
+          from alibabacloud_esa20240910.models import PurgeCachesRequest
 
-          # 3. 执行目录刷新 (额度充足，立刻生效)
-          # 注意：Type 必须是 directory，Content 必须严格符合 JSON 格式
-          aliyun esa PurgeCaches \
-            --SiteId "$ESA_SITE_ID" \
-            --Type directory \
-            --Content '{"Directories": ["https://koobai.com/", "https://www.koobai.com/"]}'
+          try:
+              # 初始化配置
+              config = Config(
+                  access_key_id=os.environ['AK'],
+                  access_key_secret=os.environ['SK'],
+                  endpoint='esa.cn-hangzhou.aliyuncs.com'
+              )
+              client = Client(config)
+
+              # 构造请求：使用 directory (目录刷新)
+              # 这种方式一天有 2000 次额度，不会报错
+              request = PurgeCachesRequest(
+                  site_id=int(os.environ['SITE_ID']),
+                  type='directory',
+                  content={'Directories': ['https://koobai.com/', 'https://www.koobai.com/']}
+              )
+
+              # 发送请求
+              response = client.purge_caches(request)
+              print(f'✅ Refresh Success! RequestId: {response.body.request_id}')
+
+          except Exception as e:
+              print(f'❌ Error: {e}')
+              sys.exit(1)
+          "
