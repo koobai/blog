@@ -43,7 +43,7 @@ jobs:
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
 
-      # 3. 刷新 ESA 缓存 (优化版)
+      # 3. 刷新 ESA 缓存 (极简稳定版)
       - name: Purge Aliyun ESA Cache
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
@@ -51,10 +51,11 @@ jobs:
           ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
         run: |
           /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
-          
+
           aliyun esa PurgeCaches \
             --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
             --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
+            --region cn-hangzhou \
             --SiteId "$ESA_SITE_ID" \
             --Type file \
-            --Content '{"Files": ["https://koobai.com/"]}'
+            --Content '{"Files": ["https://koobai.com/", "https://www.koobai.com/"]}'
