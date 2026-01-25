@@ -43,8 +43,7 @@ jobs:
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
 
-      # 3. 刷新 ESA 缓存 (回归 CLI 极简版)
-      # 关键点：Type 改为 file，对应免费版的 1000 次 URL 刷新额度
+      # 3. 刷新 AliyunESA 缓存
       - name: Purge Aliyun ESA Cache
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
@@ -65,4 +64,4 @@ jobs:
           aliyun esa PurgeCaches \
             --SiteId "$ESA_SITE_ID" \
             --Type file \
-            --Content '{"Files": ["https://koobai.com/", "https://www.koobai.com/"]}'
+            --Content '{"Files": ["https://koobai.com/"]}'
