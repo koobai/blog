@@ -42,50 +42,19 @@ jobs:
           remote_host: ${{ secrets.SERVER_IP }}
           remote_user: deploy
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
-      # 3. 刷新 ESA 缓存 (Python SDK 修正版)
-      - name: Purge Aliyun ESA Cache via Python
+      # 3. 刷新 ESA 缓存 (使用 eryajf/cdn-refresh 插件)
+      - name: Refresh Aliyun ESA Cache
+        # 使用该项目的官方 Docker 镜像
+        uses: docker://eryajf/cdn-refresh:latest
         env:
-          AK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          SK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          SITE_ID: ${{ secrets.ESA_SITE_ID }}
-        run: |
-          pip install alibabacloud_esa20240910
-          
-          python -c "
-          import os
-          import sys
-          from alibabacloud_esa20240910.client import Client
-          from alibabacloud_tea_openapi.models import Config
-          # 关键修正：引入 models 模块，用于创建强类型的 Content 对象
-          from alibabacloud_esa20240910 import models as esa_models
-
-          try:
-              config = Config(
-                  access_key_id=os.environ['AK'],
-                  access_key_secret=os.environ['SK'],
-                  endpoint='esa.cn-hangzhou.aliyuncs.com'
-              )
-              client = Client(config)
-
-              # 关键修正步骤：
-              # 不能直接传 dict {'Directories':...}，必须创建一个 Content 对象
-              content_obj = esa_models.PurgeCachesRequestContent(
-                  directories=['https://koobai.com/', 'https://www.koobai.com/']
-              )
-
-              # 构造请求
-              request = esa_models.PurgeCachesRequest(
-                  site_id=int(os.environ['SITE_ID']),
-                  type='directory',  # 使用目录刷新，避开额度限制
-                  content=content_obj
-              )
-
-              response = client.purge_caches(request)
-              print(f'✅ Refresh Success! RequestId: {response.body.request_id}')
-
-          except Exception as e:
-              print(f'❌ Error: {e}')
-              # 打印出所有属性以供调试(万一类名不对)
-              # print(dir(esa_models)) 
-              sys.exit(1)
-          "
+          # 必填：云厂商类型，aliesa 代表阿里云 ESA
+          PLUGIN_KIND: "aliesa"
+          # 必填：刷新类型，path 代表目录刷新 (避开全站刷新的额度限制)
+          PLUGIN_RTYPE: "path"
+          # 必填：主域名
+          PLUGIN_DOMAIN: "koobai.com"
+          # 必填：AccessKey (从 Secrets 读取)
+          PLUGIN_AK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          PLUGIN_SK: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          # 必填：需要刷新的地址列表，用逗号分隔
+          PLUGIN_URLS: "https://koobai.com/,https://www.koobai.com/"
