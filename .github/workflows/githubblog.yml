@@ -34,7 +34,7 @@ jobs:
 
       # 2. 同时将编译好的文件推送到宝塔服务器
       - name: Deploy to BT Panel via rsync
-        uses: burnett01/rsync-deployments@v6
+        uses: burnett01/rsync-deployments@v5
         with:
           switches: -avz --delete  # -a 归档, -v 显示, -z 压缩, --delete 删除冗余文件
           path: public/
