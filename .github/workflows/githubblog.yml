@@ -44,17 +44,21 @@ jobs:
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
           
        #刷新缓存
-      # 刷新 ESA 缓存（官方通用 API 插件方案）
+      # 刷新 ESA 缓存（使用 CLI 脚本方式，最稳妥）
       - name: Purge Aliyun ESA Cache
-        uses: aliyun/alibabacloud-api-action@v1
-        with:
-          access-key-id: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          product: 'ESA'
-          action: 'PurgeCache'
-          api-version: '2024-09-19'
-          params: |-
-            {
-              "SiteId": "${{ secrets.ESA_SITE_ID }}",
-              "Type": "everything"
-            }
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
+        run: |
+          curl -fsSL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | tar xz
+          sudo mv aliyun /usr/local/bin/aliyun
+
+          aliyun configure set \
+            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
+            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
+            --region cn-hangzhou
+
+          aliyun esa PurgeCache \
+            --SiteId "$ESA_SITE_ID" \
+            --Type everything
