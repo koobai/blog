@@ -204,7 +204,7 @@
         {
             "image": "https://img.koobai.com/app/loop.webp",
             "title": "Loop",
-            "info": "调整窗口大小软件，配合触发键方式让窗口根据需要分屏。免费开源。",
+            "info": "调整窗口大小软件，配合触发键方式让窗口根据需要分屏。",
             "macos": "macOS",
             "kaiyuan": "开源",
             "link": "https://github.com/MrKai77/Loop"

@@ -58,4 +58,4 @@ jobs:
             --region cn-hangzhou \
             --SiteId "$ESA_SITE_ID" \
             --Type file \
-            --Content '{"Files": ["https://koobai.com/", "https://www.koobai.com/"]}'
+            --Content '{"Files": ["https://koobai.com/"]}'
