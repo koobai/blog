@@ -40,7 +40,7 @@ ol, ul {
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 1000;
+      z-index: 1;
       padding: 20px 30px;
       /* 强制固定宽度，不随窗口伸缩 */
       width: 600px;
