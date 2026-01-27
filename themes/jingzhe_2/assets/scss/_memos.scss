@@ -162,7 +162,7 @@
 }
 .memos-pl{
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   align-items: center;
   gap: 6px;
 }
@@ -170,7 +170,7 @@
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius:4px;
+  border-radius:12px;
   padding: 10px 30px;
   font-family: var(--font-family-title);
   font-size: 0.85rem;
@@ -230,7 +230,6 @@ blockquote p{
 .load-memos-editor{
   cursor: pointer;
   display: inline-block;
-  margin-left: 30px;
   color: transparent;
 }
 .outline svg{
@@ -294,10 +293,11 @@ blockquote p{
   display: none !important;
 }
 .memos-editor-body{
-  border-radius:4px;
-  border: 0.5px solid #eaeaea;
   padding: 15px;
   margin-bottom: 10px;
+  border-radius: 16px;
+  background: var(--element-background-color);
+  box-shadow: var(--touy-color);
   @include breakpoint('medium') {
     margin-bottom: 20px;
   }
@@ -306,7 +306,7 @@ blockquote p{
   border: transparent;
   border-radius:4px;
   line-height:1.6;
-  min-height: 60px;
+  min-height: 90px;
   overflow-x:hidden;
   overflow-y:clip;
   width:100%;
@@ -498,9 +498,9 @@ blockquote p{
   gap: 20px;
 }
 .bb-list-li{
-  border-radius:4px;
-  background: #fff;
-  box-shadow: var(--touy-color);
+  border-radius:16px;
+  background: var(--element-background-color);
+  //box-shadow: var(--touy-color);
   padding: 15px;
 }
 // 页面宽度小于700样式
@@ -543,6 +543,19 @@ blockquote p{
   }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
+.memos-editor-body {
+    background: var(--background-dark-color);
+}
+.submit-memos-btn, .edit-memos-btn {
+    color: var(--text-highlight-dark-color);
+}
+.talks_comments a svg:hover{
+  color: var(--text-highlight-dark-color);
+}
+.bb-load button{
+  color: var(--text-highlight-dark-color);
+  border: 0.5px solid var(--text-highlight-dark-color);
+}
 .bb-list-li{
   background: var(--background-dark-color);
 }
@@ -563,9 +576,6 @@ blockquote p{
 }
 .memos-tag-sc-2{
   color: var(--erji-color);
-}
-.memos-editor-body{
-  border: 0.5px solid #67534c;
 }
 .memos-tag-dg{
   color: var(--erji-color);
@@ -601,7 +611,7 @@ blockquote p{
 .datacont code{
   background: var(--background-dark-body-color);
   border: 1px solid var(--background-dark-body-color);
-  color: var(--text-highlight-color);
+  color: var(--text-highlight-dark-color);
 }
 blockquote p{
   border-left: 4px solid #5f5f5f;

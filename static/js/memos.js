@@ -6,7 +6,7 @@ var memosData = {
   
 var bbMemo = {
   memos: 'https://memos.koobai.com/',
-  limit: '8',
+  limit: '16',
   creatorId: '1',
   domId: '#bber',
 };
@@ -233,7 +233,43 @@ function updateHTMl(data,mode){
           </div>
         </div>
         <div id="memo_${memo_id}" class="artalk hidden"></div>
-        </li>`;  
+        </li>`;      
+        if (typeof mePage !== 'undefined' && mePage <= 2) {
+        // 【位置 2】第 2 条动态后 (i=3) 显示第 1 篇博文
+            if (i == 1) {
+              var post1 = document.querySelectorAll('#temp-posts-data .one-post-item')[0]?.innerHTML;
+              if (post1) {
+                result += `<div class="inserted-post-section animated-fade-in">${post1}</div>`;
+              }
+            }
+            if (i == 1) {
+              var moviesHTML = document.getElementById('temp-movies-data')?.innerHTML;
+              if (moviesHTML) {
+                result += `
+                  <div class="inserted-movies-section animated-fade-in">
+                    <div class="movies-grid-container">${moviesHTML}</div>
+                  </div>`;
+              }
+            }
+            if (i == 4) {
+              var post2 = document.querySelectorAll('#temp-posts-data .one-post-item')[1]?.innerHTML;
+              if (post2) {
+                result += `<div class="inserted-post-section animated-fade-in">${post2}</div>`;
+              }
+            }
+             if (i == 7) {
+              var post3 = document.querySelectorAll('#temp-posts-data .one-post-item')[2]?.innerHTML;
+              if (post3) {
+                result += `<div class="inserted-post-section animated-fade-in">${post3}</div>`;
+              }
+            }
+             if (i == 9) {
+              var post4 = document.querySelectorAll('#temp-posts-data .one-post-item')[3]?.innerHTML;
+              if (post4) {
+                result += `<div class="inserted-post-section animated-fade-in">${post4}</div>`;
+              }
+            }
+          }
       }else if(memoVis !== "PUBLIC"){
         result += `<div class="memos-hide" onclick="reloadList("NOPUBLIC")"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></idv></div></li>`;  
       }else{
@@ -476,12 +512,6 @@ function getEditIcon() {
     document.querySelector(".memos-editor").classList.toggle("d-none"); 
     window.localStorage && window.localStorage.setItem("memos-editor-display", document.querySelector(".memos-editor").classList.contains("d-none") ? "hide" : "show");
     getEditor = window.localStorage && window.localStorage.getItem("memos-editor-display");
-
-     // 点击唠叨一下，平滑滚动到.index-laodao
-     let editorBody = document.querySelector('.index-laodao');
-     if (editorBody && !document.querySelector(".memos-editor").classList.contains("d-none")) {
-         editorBody.scrollIntoView({ behavior: 'smooth' });
-     }
      
   });
 
@@ -1074,11 +1104,6 @@ function editMemo(memo) {
 
       window.localStorage && window.localStorage.setItem("memos-resource-list",  JSON.stringify(memosResource));
       document.querySelector(".memos-image-list").insertAdjacentHTML('afterbegin', imageList);
-    }
-    //平滑滚动到对应的class
-    let editorBody = document.querySelector('.index-laodao');
-    if (editorBody) {
-    editorBody.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

@@ -25,7 +25,7 @@
 .posts-description {
   line-height: 1.8;
   font-size: 1rem;
-  margin: 6px 0;
+  margin: 3px 0;
   color: var(--text-content-color);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -53,7 +53,7 @@
 }
 }
 .posts_list_article{
-  border-radius:4px;
+  border-radius:16px;
   background: #fff;
   box-shadow: var(--touy-color);
   padding: 15px;
@@ -61,11 +61,33 @@
     padding: 12px;
 }
 }
-.posts_list_article-index{
-  border-radius:2px;
-  background: #fff;
+.posts_list_article-index {
+  position: relative; // 必须：作为角标定位的基准
+  border-radius: 16px;
+  background: var(--element-background-color);
   box-shadow: var(--touy-color);
-  padding: 10px;
+  padding: 15px;
+  overflow: hidden; // 确保三角形角标不溢出圆角
+  margin-bottom: 15px;
+    @include breakpoint('medium') {
+    margin-bottom: 0;
+}
+}
+.post-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 4px 14px;
+  background: #E5CABD;
+  color: #fff;
+  border-bottom-left-radius: 10px; // 左下角加个圆角更精致
+  z-index: 10;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 .posts-img{
  margin:10px 0;
@@ -77,6 +99,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  border-radius: 16px;
 }
 .posts-img img:hover{
   transform: scale(1.03);
@@ -102,6 +125,7 @@
   align-items: center;
   background: #fff;
   box-shadow: var(--touy-color);
+  border-radius:16px;
   padding: 15px;
   @include breakpoint('small') {
 		grid-gap: 20px; /* 中间空10px间距 */
@@ -117,13 +141,13 @@
   font-size: 1rem;
   line-height: 1.6;
   @include breakpoint('medium') {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
 }
 }
 .archive-time-index{
   font-size: 0.75rem;
   color: var(--sanji-color);
-  margin-bottom: 2px;
+  margin-bottom: 5px;
   font-family: var(--font-family-code);
 }
 .archive-time{
@@ -155,6 +179,9 @@
     background: var(--background-dark-color);
   }
   .posts-description{
-    color: #b7b7ab;
+    color: var(--text-content-dark-color);
   }
+  .post-badge {
+    background: #9B84A1;
+}
     }

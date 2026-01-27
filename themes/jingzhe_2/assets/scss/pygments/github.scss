@@ -62,3 +62,9 @@
     color: #f85149;
     font-weight: bold;
 }
+
+@media (prefers-color-scheme: dark) {
+.highlight .c {
+    color: var(--erji-color);
+}
+}

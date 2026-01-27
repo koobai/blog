@@ -2,23 +2,27 @@
 {{ define "main" }}
 <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
  <!--<div class="sidebar-biaot">最新博文</div>--> 
-{{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
-<div class="posts_list_index" >
+
+
+<div id="temp-posts-data" style="display:none;">
+  {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
   {{ range $posts }} 
-  <div class="posts_list_article-index img-hide"> 
-    <div class="archive-time-index">
-      {{ if gt .Date (now.AddDate 0 0 -7) }}
-      <div class="sidebar_article_new">NEW</div>
-      {{ end }}
-      <script>
-        document.write(formatDate({{ .Date.Unix }})); 
-      </script>
-    </div> 
-    <div class="archive-title-index">
-      <a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-  </div>
+    <div class="one-post-item"> <div class="posts_list_article-index img-hide"> 
+      <div class="post-badge">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>
+     </div>
+        <div class="archive-time-index">
+          <script>document.write(formatDate({{ .Date.Unix }}));</script>
+        </div> 
+        <div class="archive-title-index">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </div>
+        <div class="posts-description">{{ .Params.description }}</div>
+      </div>
+    </div>
   {{ end }}
 </div>
+
 <!--<div class="sidebar-page">
 {{ range $posts }} 
 <div class="sidebar-bowen img-hide">
@@ -47,12 +51,14 @@
 </div>-->
 
 <!--<div class="sidebar-biaot">最新观影</div>-->
-{{ partial "movies" 4 }}
+<div id="temp-movies-data" style="display:none;">
+    {{ partial "movies" 4 }}
+</div>
 
-<div class="index-laodao">
+<!--<div class="index-laodao">
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg>
 <div class="index-laodao-titile">唠里唠叨</div>
-</div>
+</div>-->
 <!--memos--> 
 <div id="memos"></div>
 <div id="bber"></div>
