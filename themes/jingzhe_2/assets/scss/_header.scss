@@ -1,7 +1,7 @@
 .header {
   /* 1. 定位与固定宽度 */
   position: fixed;
-  bottom: 30px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -26,6 +26,7 @@
     width: 600px; 
     height: auto;
     padding: 20px 30px;
+    bottom: 30px;
   }
 }
 .new-heard-menu{

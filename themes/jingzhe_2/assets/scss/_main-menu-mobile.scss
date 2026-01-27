@@ -137,21 +137,6 @@
     top: 0;
   }
 }
-//动画从下往上
-@keyframes fadeInBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(100%); /* 从底部弹出 */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.menu-main-mobile.open {
-  animation: fadeInBottom 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
 //夜间模式
 @media (prefers-color-scheme: dark) {
 .hamburger {
