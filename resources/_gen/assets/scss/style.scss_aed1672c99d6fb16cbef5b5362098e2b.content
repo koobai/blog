@@ -1866,7 +1866,7 @@ blockquote p {
   .memos-more-ico svg {
     color: var(--erji-color); }
   .memos-editor-textarea::placeholder {
-    color: #726859; }
+    color: var(--erji-color); }
   .memos-tag-all {
     background: #332E2F; }
   .memos-tag-sc-2 {
