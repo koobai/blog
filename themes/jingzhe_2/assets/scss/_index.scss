@@ -1,6 +1,10 @@
 .index-laodao{
+  font-size: 0.8rem;
+ 
+  @include breakpoint('medium') {
   font-size: 1.2rem;
   margin-left: 20px;
+  }
 }
 
 .sidebar-biaot{

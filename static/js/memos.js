@@ -373,7 +373,7 @@ handleDarkModeChange(darkModeMatcher);
 
 // memos-editor唠叨编辑开始 
 var memosDom = document.querySelector(memosData.dom);
-var editIcon = "<div class='load-memos-editor'>唠叨一下</div>";
+var editIcon = "<div class='load-memos-editor'>唠叨</div>";
 var memosEditorCont = `
 <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
   <div class="memos-editor-body">
