@@ -1,8 +1,11 @@
 .footer-background{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
   margin-top: 40px;
+  margin-bottom: 20px;
+  @include breakpoint('medium') {
+    display: block;
+    margin-bottom: 160px;
   }
+}
 .footer {
     padding-top: 10px; 
     border-top: 0.5px solid #e7e1de;
@@ -13,10 +16,6 @@
   line-height: 1.6em;
   color: #a7a7a7;
   }
-.footer-info{
-  padding: 0 20px;
-  }
-
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -47,13 +46,10 @@
 .youpaiyun {
   margin: 0 4px 0 4px;
 }
-.footer-rss{
-  margin-bottom: 30px;
-}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .footer-info, .footer-info a,.footer-rss a,.footer-rss{
-  color: #726859;
+  color: var(--erji-color);
 }
 .footer {
   border-top: 0px solid #231e20;

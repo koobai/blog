@@ -31,7 +31,7 @@ hasCJKLanguage = true
 [menu]
   [[menu.main]]
     identifier = 'home'
-    name = '首页'
+    name = '唠叨'
     url = '/'
     weight = 1
 

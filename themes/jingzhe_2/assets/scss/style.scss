@@ -3,17 +3,19 @@
   --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
   --bankuai-color: #f6f6f6;
-  --background-color: #faf4f1;
-  --background-dark-color: #56453F;
-  --background-dark-body-color: #4b3c37;
+  --background-color: #F2F0EB;
+  --background-dark-color: #7F7771;
+  --background-dark-body-color: #6E6B66;
   --text-content-color:#222;
-  --text-content-dark-color:#e1e1d5;
-  --text-highlight-color:#A47864;
+  --text-content-dark-color:#E5E3E1;
+  --text-highlight-color:#994D61;
+  --text-highlight-dark-color:#C3AACC;
   --frame-dark-color: #332D2F;
   --frame-color: #eee;
-  --erji-color: #ac9d87;
-  --sanji-color: #ac9d87;
+  --erji-color: #B8ABA2;
+  --sanji-color: #adaba6;
   --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
+  --element-background-color:#FFFDFA;
 }
 $breakpoints: (
   'small': 700px,
@@ -65,8 +67,11 @@ body {
 }
 
 .wrapper {
-  max-width: 700px;
+  max-width: 760px;
   margin: 0 auto;
+    @include breakpoint('medium') {
+  margin-top: 60px;
+  }
 }
 
 .highlight{background-color: var(--bankuai-color);}

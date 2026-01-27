@@ -3,29 +3,65 @@
   padding: 25px 0 25px 0;
   align-items: center;
   @include breakpoint('medium') {
-    z-index: 100;
-    padding: 40px 0 60px 0;
-    height: 20px;
+/* 1. 定位与固定宽度 */
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 20px 30px;
+    
+    /* 强制固定宽度，不随窗口伸缩 */
+    width: 600px; 
+    height: auto;
+    
+    /* 2. 布局：横向分布三大件（头像、菜单、右侧图标） */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* 均匀分布 */
+    align-items: center;
+    
+    /* 3. 视觉：胶囊外壳（年度色 #F2F0EB） */
+    background: rgba(242, 240, 235, 0.5);
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px) saturate(180%); 
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    
   }
 }
 .new-heard-menu{
   display: none;
   @include breakpoint('medium') {
     display: flex;
-    gap: 30px;
+    flex-direction: row;
+    gap: 40px; /* 菜单项之间的间距 */
+    margin: 0;
   }
 }
+.menu-icon {
+    display: flex;
+    svg {
+     width: 28px;       /* 统一图标大小 */
+     height: 28px;
+    }
+ }
 .header-menu a {
-  color: #666;
-  font-size: 1rem;
+  color: #444;
+  font-size: 0.8rem;
   font-family: var(--font-family-paragraph);
+  display: flex;
+  flex-direction: column; /* 核心：开启上下排列 */
+  align-items: center;    /* 居中对齐 */
+  gap: 4px;              /* 图标与文字的间距 */
  }
  .header-menu{
   display: flex;
   align-items: center;
  }
 .menu-current a{
-  color: var(--text-highlight-color) !important;
+  color: var(--text-highlight-color);
 }
 .heard-right {
     display: flex;
@@ -42,8 +78,8 @@
   border-radius: 50%;
   transition: opacity .3s ease-in-out;
   @include breakpoint('medium') {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     display: block;
   }
 }
@@ -64,16 +100,25 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
+.header {
+  @include breakpoint('medium') {
+    background: rgba(85, 82, 78, 0.6);
+    backdrop-filter: blur(25px) saturate(200%); 
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+}
   .header-menu a{
     color: var(--erji-color);
-  }
-  .header-menu svg{
-    color: #827478;
   }
   .heard-right svg{
     fill: var(--erji-color);
   }
   .heard-right svg:hover{
-    fill: var(--text-highlight-color);
+    fill: var(--text-highlight-dark-color);
+  }
+  .menu-current a{
+    color: var(--text-highlight-dark-color);
   }
 }

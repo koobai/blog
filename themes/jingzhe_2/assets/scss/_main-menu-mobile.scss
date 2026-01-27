@@ -1,6 +1,6 @@
 .menu-main-mobile {
   position: fixed;
-  background: var(--text-highlight-color);
+  background: var(--text-highlight-dark-color);
   top: 0;
   left: 0;
   width: 100%;
@@ -74,7 +74,7 @@
 .hamburger-trigger {
   height: 30px;
   display: flex;
-
+  margin-right: 30px;
   align-items: center;
   @include breakpoint('medium') {
     display: none;
@@ -94,7 +94,7 @@
   border-bottom: 2px solid;
   font-size: 0;
   transition: all 0.25s ease-in-out;
-  color: var(--text-highlight-color);
+  color: var(--text-highlight-dark-color);
   &:before,
   &:after {
     content: '';

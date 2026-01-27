@@ -36,3 +36,10 @@
   right: 0;
   margin-bottom: 4px;
 }
+
+// 夜间模式页面样式
+@media (prefers-color-scheme: dark) {
+.about-text a {
+    color: var(--text-highlight-dark-color);
+}
+}
