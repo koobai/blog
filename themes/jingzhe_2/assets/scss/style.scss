@@ -77,7 +77,7 @@ body {
 .highlight{background-color: var(--bankuai-color);}
 //文本选择高亮颜色
 ::selection {
-  background: #E4C7B8;
+  background: #f7dcd0;
 }
 
 // 夜间模式页面样式
@@ -107,7 +107,7 @@ a {
 img {filter: brightness(0.8) contrast(1.2); }
 .highlight pre { background: var(--background-dark-color) !important;}
 ::selection {
-  background: #67534c;
+  background: #6A635B;
 }
 }
 

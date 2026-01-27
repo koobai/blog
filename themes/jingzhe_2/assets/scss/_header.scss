@@ -98,6 +98,12 @@
 .heard-right svg:hover{
   fill: var(--text-highlight-color);
 }
+.menu-current{
+  .menu-icon svg {
+    transform: scale(1.1); 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .header {
@@ -121,4 +127,10 @@
   .menu-current a{
     color: var(--text-highlight-dark-color);
   }
+.menu-current{
+  .menu-icon svg {
+    /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+  }
+}
 }
