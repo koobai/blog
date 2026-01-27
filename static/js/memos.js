@@ -729,6 +729,8 @@ function getEditIcon() {
               memosTextarea.value = '';
               memosTextarea.style.height = 'inherit';
               let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
+              mePage = 1; 
+              offset = 0;
               reloadList(memosMode)
             })
         }
@@ -1144,6 +1146,8 @@ editMemoBtn.addEventListener("click", function () {
             window.localStorage && window.localStorage.removeItem("memos-relation-list");
             memosTextarea.value = '';
             memosTextarea.style.height = 'inherit';
+            mePage = 1; 
+            offset = 0;
             window.localStorage && window.localStorage.removeItem("memos-editor-dataform");
             let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
             reloadList(memosMode)

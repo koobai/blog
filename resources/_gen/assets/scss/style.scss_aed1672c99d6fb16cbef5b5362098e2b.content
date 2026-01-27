@@ -127,6 +127,10 @@ ol, ul {
 .heard-right svg:hover {
   fill: var(--text-highlight-color); }
 
+.menu-current .menu-icon svg {
+  transform: scale(1.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
 @media (prefers-color-scheme: dark) and (min-width: 900px) {
   .header {
     background: rgba(85, 82, 78, 0.6);
@@ -143,7 +147,10 @@ ol, ul {
   .heard-right svg:hover {
     fill: var(--text-highlight-dark-color); }
   .menu-current a {
-    color: var(--text-highlight-dark-color); } }
+    color: var(--text-highlight-dark-color); }
+  .menu-current .menu-icon svg {
+    /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3)); } }
 
 .footer-background {
   margin-top: 40px;
@@ -2304,7 +2311,7 @@ body {
   background-color: var(--bankuai-color); }
 
 ::selection {
-  background: #E4C7B8; }
+  background: #f7dcd0; }
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -2330,7 +2337,7 @@ body {
   .highlight pre {
     background: var(--background-dark-color) !important; }
   ::selection {
-    background: #67534c; } }
+    background: #6A635B; } }
 
 @media (min-width: 900px) {
   .img-hide, .retu-hide {
