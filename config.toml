@@ -39,7 +39,7 @@ hasCJKLanguage = true
     identifier = "sport"
     name = "骑行"
     url = "https://sport.koobai.com/"
-    weight = 3
+    weight = 5
 
   [[menu.main]]
     identifier = "Goods"
