@@ -1916,7 +1916,7 @@ blockquote p {
     color: var(--text-content-dark-color); }
   .memos-open-api-submit {
     background: var(--background-dark-color) !important;
-    color: var(--text-highlight-color) !important; }
+    color: var(--text-highlight-dark-color) !important; }
   .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .memos-image-list {
     color: var(--erji-color); }
   .memos-menu-d, .memos-img-edit {
