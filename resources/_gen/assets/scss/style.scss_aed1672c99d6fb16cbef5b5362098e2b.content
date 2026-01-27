@@ -32,7 +32,7 @@ ol, ul {
 .header {
   /* 1. 定位与固定宽度 */
   position: fixed;
-  bottom: 30px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -58,7 +58,8 @@ ol, ul {
       /* 强制固定宽度，不随窗口伸缩 */
       width: 600px;
       height: auto;
-      padding: 20px 30px; } }
+      padding: 20px 30px;
+      bottom: 30px; } }
 .new-heard-menu {
   display: none; }
   @media (min-width: 900px) {
@@ -640,18 +641,6 @@ ul {
   100% {
     opacity: 1;
     top: 0; } }
-
-@keyframes fadeInBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-    /* 从底部弹出 */ }
-  100% {
-    opacity: 1;
-    transform: translateY(0); } }
-
-.menu-main-mobile.open {
-  animation: fadeInBottom 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
 
 @media (prefers-color-scheme: dark) {
   .hamburger {
