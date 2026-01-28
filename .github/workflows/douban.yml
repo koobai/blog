@@ -1,18 +1,26 @@
 name: douban
 on: 
   workflow_dispatch:
- # schedule:
- #   - cron: '0 18 * * *'
+  # schedule:
+  #   - cron: '0 18 * * *'
 
 jobs:
   douban:
-    name: Douban mark data sync
+    name: Sync Douban Data and Posters
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkout Blog Repo
       uses: actions/checkout@v3
 
-    - name: movie
+    # 克隆私有的 img 仓库到 img_repo 文件夹
+    - name: Checkout Private Img Repo
+      uses: actions/checkout@v3
+      with:
+        repository: koobai/img
+        token: ${{ secrets.MY_IMG_TOKEN }}
+        path: img_repo
+
+    - name: Douban movie sync
       uses: lizheming/doumark-action@master
       with:
         id: jnnsu
@@ -20,13 +28,37 @@ jobs:
         format: csv
         dir: ./assets
 
-    - name: Commit
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: pip install pandas requests
+
+    - name: Download Posters
+      run: python .github/scripts/download_posters.py
+
+    # 第一步：把新图片推送到 img 仓库
+    - name: Push Images to Img Repo
+      run: |
+        cd img_repo
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add douban/
+        # 如果没有新图，commit 会报错，所以加上 || exit 0
+        git commit -m "chore: upload new douban posters" || exit 0
+        git push
+
+    # 第二步：把更新后的 CSV 推送到 blog 仓库
+    - name: Commit CSV to Blog Repo
       id: commit_step
       uses: EndBug/add-and-commit@v9
       with:
-        message: 'chore: update douban data'
+        message: 'chore: update movie.csv with local image paths'
         add: './assets'
-        
+
+    # 第三步：如果 CSV 有变动（意味着有新电影），触发博客构建
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
