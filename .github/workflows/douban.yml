@@ -1,8 +1,8 @@
 name: douban
 on: 
   workflow_dispatch:
-  schedule:
-    - cron: '0 18 */2 * *'
+ # schedule:
+ #   - cron: '0 18 * * *'
 
 jobs:
   douban:
@@ -26,6 +26,7 @@ jobs:
       with:
         message: 'chore: update douban data'
         add: './assets'
+        
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
