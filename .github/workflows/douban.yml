@@ -1,17 +1,26 @@
 name: douban
 on: 
   workflow_dispatch:
- # schedule:
- #   - cron: '0 18 * * *'
+  # schedule:
+  #   - cron: '0 18 * * *'
 
 jobs:
   douban:
     name: Douban mark data sync
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkout Blog Repo
       uses: actions/checkout@v3
 
+    # 1. 【新增】准备图片仓库：把 koobai/img 克隆到 img_repo 目录
+    - name: Checkout Private Img Repo
+      uses: actions/checkout@v3
+      with:
+        repository: koobai/img
+        token: ${{ secrets.MY_IMG_TOKEN }}
+        path: img_repo
+
+    # 2. 【原有】同步豆瓣数据到 assets/movie.csv
     - name: movie
       uses: lizheming/doumark-action@master
       with:
@@ -20,13 +29,98 @@ jobs:
         format: csv
         dir: ./assets
 
-    - name: Commit
+    # 3. 【新增】安装 Python 环境
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: pip install pandas requests
+
+    # 4. 【新增】运行下载脚本
+    # 逻辑说明：读取 assets/movie.csv -> 下载图片到 img_repo/douban/
+    - name: Download Posters
+      run: |
+        python - <<EOF
+        import pandas as pd
+        import requests
+        import os
+        import time
+
+        def download():
+            # 读取刚刚同步好的 CSV
+            csv_path = './assets/movie.csv'
+            # 图片存放在临时克隆的 img 仓库目录下
+            save_folder = './img_repo/douban/'
+            os.makedirs(save_folder, exist_ok=True)
+            
+            if not os.path.exists(csv_path):
+                print("CSV文件未找到")
+                return
+
+            try:
+                # 读取 CSV
+                df = pd.read_csv(csv_path)
+            except Exception as e:
+                print(f"读取CSV出错: {e}")
+                return
+            
+            print(f"开始检查 {len(df)} 条数据...")
+            
+            for index, row in df.iterrows():
+                image_url = row['poster']
+                # 简单的有效性检查
+                if pd.isna(image_url) or not str(image_url).startswith('http'):
+                    continue
+                
+                # 提取文件名 (例如 p2913217466.jpg)
+                file_name = image_url.split('/')[-1]
+                save_path = os.path.join(save_folder, file_name)
+                
+                # 增量下载：如果图有了，就跳过
+                if os.path.exists(save_path):
+                    continue
+                
+                # 伪装 Referer，防止 403
+                headers = {'Referer': 'https://movie.douban.com/'}
+                try:
+                    print(f"正在下载: {file_name}")
+                    res = requests.get(image_url, headers=headers, timeout=30)
+                    if res.status_code == 200:
+                        with open(save_path, 'wb') as f:
+                            f.write(res.content)
+                        time.sleep(1) # 礼貌延时
+                    else:
+                        print(f"下载失败: {res.status_code}")
+                except Exception as e:
+                    print(f"请求报错: {e}")
+        
+        download()
+        EOF
+
+    # 5. 【新增】进入 img_repo 目录，把新下载的图推送到 koobai/img
+    - name: Push to Img Repo
+      run: |
+        cd img_repo
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        # 确保 douban 目录存在（防止脚本没下载任何东西时报错）
+        mkdir -p douban
+        git add douban/
+        # 只有当有新图片时才提交，避免报错
+        git commit -m "chore: sync new posters" || exit 0
+        git push
+
+    # 6. 【原有】提交 CSV 数据到当前博客仓库
+    - name: Commit Blog CSV
       id: commit_step
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data'
         add: './assets'
         
+    # 7. 【原有】触发博客构建
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
