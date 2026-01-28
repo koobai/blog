@@ -12,7 +12,7 @@ jobs:
     - name: Checkout Blog Repo
       uses: actions/checkout@v3
 
-    # 1. 【新增】准备图片仓库：把 koobai/img 克隆到 img_repo 目录
+    # 1. 准备图片仓库
     - name: Checkout Private Img Repo
       uses: actions/checkout@v3
       with:
@@ -20,8 +20,8 @@ jobs:
         token: ${{ secrets.MY_IMG_TOKEN }}
         path: img_repo
 
-    # 2. 【原有】同步豆瓣数据到 assets/movie.csv
-    - name: movie
+    # 2. 同步豆瓣数据
+    - name: Douban movie sync
       uses: lizheming/doumark-action@master
       with:
         id: jnnsu
@@ -29,7 +29,7 @@ jobs:
         format: csv
         dir: ./assets
 
-    # 3. 【新增】安装 Python 环境
+    # 3. 环境准备
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -38,7 +38,7 @@ jobs:
     - name: Install dependencies
       run: pip install pandas requests
 
-# 4. 运行下载脚本（已修复 User-Agent 缺失导致的连接被重置问题）
+    # 4. 运行生产级下载脚本 (wsrv + lithub 混合双打)
     - name: Download Posters
       run: |
         python - <<EOF
@@ -47,75 +47,84 @@ jobs:
         import os
         import time
         import random
+        from urllib.parse import quote
 
         def download():
             csv_path = './assets/movie.csv'
-            # 图片保存路径，对齐 img 仓库结构
             save_folder = './img_repo/douban/'
             os.makedirs(save_folder, exist_ok=True)
             
             if not os.path.exists(csv_path):
-                print("CSV文件未找到")
+                print("❌ CSV文件未找到")
                 return
 
             try:
                 df = pd.read_csv(csv_path)
             except Exception as e:
-                print(f"读取CSV出错: {e}")
+                print(f"❌ 读取CSV出错: {e}")
                 return
             
-            print(f"开始检查 {len(df)} 条数据...")
+            print(f"📊 开始处理 {len(df)} 条数据...")
             
             for index, row in df.iterrows():
                 image_url = row['poster']
+                
+                # 基础过滤：空值或非 URL 跳过
                 if pd.isna(image_url) or not str(image_url).startswith('http'):
                     continue
                 
-                file_name = image_url.split('/')[-1]
+                # 使用 movie_id 作为文件名，确保和数据一一对应
+                # 这样即使 lithub 链接变了，只要 id 没变，图片就不会重复下
+                movie_id = str(row['id'])
+                file_name = f"{movie_id}.jpg"
                 save_path = os.path.join(save_folder, file_name)
                 
-                # 增量下载：如果图有了，就跳过
+                # ✅ 增量检测：文件存在则跳过
                 if os.path.exists(save_path):
                     continue
                 
-                # --- 核心修改：添加 User-Agent 伪装成浏览器 ---
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Referer': 'https://movie.douban.com/' 
-                }
+                # ✅ 核心逻辑：构造 wsrv 代理链接
+                # 1. 清理 http/https 前缀
+                clean_url = image_url.replace('https://', '').replace('http://', '')
+                # 2. URL 编码，防止特殊字符导致 wsrv 解析失败
+                encoded_url = quote(clean_url, safe='')
+                # 3. 拼接代理地址
+                proxy_url = f"https://wsrv.nl/?url={encoded_url}"
                 
                 try:
-                    print(f"正在下载: {file_name}")
-                    # 增加超时时间到 30秒
-                    res = requests.get(image_url, headers=headers, timeout=30)
-                    if res.status_code == 200:
+                    print(f"📥 代理下载中: {movie_id} -> {file_name}")
+                    # 超时设置长一点，给代理服务器缓冲时间
+                    res = requests.get(proxy_url, timeout=60)
+                    
+                    # ✅ 防脏数据：检查是否返回了 HTML (wsrv 报错页面)
+                    if res.status_code == 200 and res.content[:4] != b'<htm':
                         with open(save_path, 'wb') as f:
                             f.write(res.content)
-                        # 随机休眠 1-3 秒，防止速度过快再次被封
-                        time.sleep(random.uniform(1, 3))
+                        # 礼貌延时，对公共服务友好
+                        time.sleep(0.5)
                     else:
-                        print(f"下载失败 (状态码 {res.status_code}): {image_url}")
+                        print(f"⚠️ 下载失败或非图片内容: {image_url}")
+                        
                 except Exception as e:
-                    # 打印具体错误，但不要中断循环
-                    print(f"请求报错: {e}")
-        
-        download()
+                    print(f"❌ 请求异常: {e}")
+
+        if __name__ == "__main__":
+            download()
         EOF
 
-    # 5. 【新增】进入 img_repo 目录，把新下载的图推送到 koobai/img
+    # 5. 推送图片
     - name: Push to Img Repo
       run: |
         cd img_repo
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        # 确保 douban 目录存在（防止脚本没下载任何东西时报错）
         mkdir -p douban
         git add douban/
-        # 只有当有新图片时才提交，避免报错
-        git commit -m "chore: sync new posters" || exit 0
+        # 只有有变动才提交，防止报错
+        git commit -m "chore: sync posters via wsrv" || exit 0
         git push
 
-    # 6. 【原有】提交 CSV 数据到当前博客仓库
+    # 6. 提交 CSV (可选，如果只是为了触发构建)
     - name: Commit Blog CSV
       id: commit_step
       uses: EndBug/add-and-commit@v9
@@ -123,7 +132,7 @@ jobs:
         message: 'chore: update douban data'
         add: './assets'
         
-    # 7. 【原有】触发博客构建
+    # 7. 触发博客构建
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
