@@ -12,7 +12,7 @@ jobs:
     - name: Checkout Blog Repo
       uses: actions/checkout@v3
 
-    # 克隆私有的 img 仓库到 img_repo 文件夹
+    # 1. 克隆私有的 img 仓库到 img_repo 文件夹
     - name: Checkout Private Img Repo
       uses: actions/checkout@v3
       with:
@@ -20,6 +20,7 @@ jobs:
         token: ${{ secrets.MY_IMG_TOKEN }}
         path: img_repo
 
+    # 2. 同步豆瓣数据
     - name: Douban movie sync
       uses: lizheming/doumark-action@master
       with:
@@ -28,37 +29,43 @@ jobs:
         format: csv
         dir: ./assets
 
+    # 3. 设置 Python 并安装环境
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
     - name: Install dependencies
-      run: pip install pandas requests
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas requests
 
+    # 4. 运行下载脚本（只运行一次即可）
     - name: Download Posters
       run: python .github/scripts/download_posters.py
 
-    # 第一步：把新图片推送到 img 仓库
+    # 5. 把新图片推送到 img 仓库
     - name: Push Images to Img Repo
       run: |
         cd img_repo
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        # 确保 douban 目录存在
+        mkdir -p douban
         git add douban/
-        # 如果没有新图，commit 会报错，所以加上 || exit 0
         git commit -m "chore: upload new douban posters" || exit 0
         git push
 
-    # 第二步：把更新后的 CSV 推送到 blog 仓库
+    # 6. 把更新后的 CSV 推送到 blog 仓库
     - name: Commit CSV to Blog Repo
       id: commit_step
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update movie.csv with local image paths'
-        add: './assets'
+        # 明确指定更新 assets 目录下的 CSV
+        add: 'assets/movie.csv'
 
-    # 第三步：如果 CSV 有变动（意味着有新电影），触发博客构建
+    # 7. 如果 CSV 有变动，触发博客构建
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
