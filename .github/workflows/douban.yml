@@ -1,8 +1,6 @@
 name: douban
 on: 
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 18 * * *'
 
 jobs:
   douban:
@@ -38,7 +36,7 @@ jobs:
     - name: Install dependencies
       run: pip install pandas requests
 
-    # 4. 运行生产级下载脚本 (wsrv + lithub 混合双打)
+    # 4. 下载脚本：直接请求 CSV 里的 poster 链接
     - name: Download Posters
       run: |
         python - <<EOF
@@ -46,8 +44,6 @@ jobs:
         import requests
         import os
         import time
-        import random
-        from urllib.parse import quote
 
         def download():
             csv_path = './assets/movie.csv'
@@ -66,44 +62,40 @@ jobs:
             
             print(f"📊 开始处理 {len(df)} 条数据...")
             
+            # 关键：伪装成 Chrome 浏览器，解决脚本请求被拒的问题
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                # 既然是 lithub 镜像，一般不需要特定 Referer，或者留空即可
+            }
+
             for index, row in df.iterrows():
                 image_url = row['poster']
+                movie_id = str(row['id'])
                 
-                # 基础过滤：空值或非 URL 跳过
+                # 跳过空数据
                 if pd.isna(image_url) or not str(image_url).startswith('http'):
                     continue
-                
-                # 使用 movie_id 作为文件名，确保和数据一一对应
-                # 这样即使 lithub 链接变了，只要 id 没变，图片就不会重复下
-                movie_id = str(row['id'])
+
+                # 文件名使用 ID.jpg，方便管理
                 file_name = f"{movie_id}.jpg"
                 save_path = os.path.join(save_folder, file_name)
                 
-                # ✅ 增量检测：文件存在则跳过
+                # 增量检查：有了就不下
                 if os.path.exists(save_path):
                     continue
                 
-                # ✅ 核心逻辑：构造 wsrv 代理链接
-                # 1. 清理 http/https 前缀
-                clean_url = image_url.replace('https://', '').replace('http://', '')
-                # 2. URL 编码，防止特殊字符导致 wsrv 解析失败
-                encoded_url = quote(clean_url, safe='')
-                # 3. 拼接代理地址
-                proxy_url = f"https://wsrv.nl/?url={encoded_url}"
-                
                 try:
-                    print(f"📥 代理下载中: {movie_id} -> {file_name}")
-                    # 超时设置长一点，给代理服务器缓冲时间
-                    res = requests.get(proxy_url, timeout=60)
+                    print(f"📥 正在下载: {image_url}")
+                    # 直接请求 lithub 地址
+                    res = requests.get(image_url, headers=headers, timeout=30)
                     
-                    # ✅ 防脏数据：检查是否返回了 HTML (wsrv 报错页面)
-                    if res.status_code == 200 and res.content[:4] != b'<htm':
+                    if res.status_code == 200:
                         with open(save_path, 'wb') as f:
                             f.write(res.content)
-                        # 礼貌延时，对公共服务友好
+                        # 成功
                         time.sleep(0.5)
                     else:
-                        print(f"⚠️ 下载失败或非图片内容: {image_url}")
+                        print(f"⚠️ 下载失败 (状态码 {res.status_code}): {image_url}")
                         
                 except Exception as e:
                     print(f"❌ 请求异常: {e}")
@@ -120,21 +112,11 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         mkdir -p douban
         git add douban/
-        # 只有有变动才提交，防止报错
-        git commit -m "chore: sync posters via wsrv" || exit 0
+        git commit -m "chore: sync posters directly" || exit 0
         git push
 
-    # 6. 提交 CSV (可选，如果只是为了触发构建)
-    - name: Commit Blog CSV
-      id: commit_step
-      uses: EndBug/add-and-commit@v9
-      with:
-        message: 'chore: update douban data'
-        add: './assets'
-        
-    # 7. 触发博客构建
+    # 6. 触发构建
     - name: Trigger Blog
-      if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
