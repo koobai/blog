@@ -1,8 +1,8 @@
 name: douban
 on: 
   workflow_dispatch:
-  watch:
-    types: [started]
+  schedule:
+    - cron: '0 18 */2 * *'
 
 jobs:
   douban:
@@ -21,7 +21,20 @@ jobs:
         dir: ./assets
 
     - name: Commit
+      id: commit_step
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data'
         add: './assets'
+    - name: Trigger Blog
+      if: steps.commit_step.outputs.committed == 'true'
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'githubblog.yml',
+            ref: 'main'
+          })
