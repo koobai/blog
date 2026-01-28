@@ -1,6 +1,8 @@
 name: douban
 on: 
   workflow_dispatch:
+  # schedule:
+  #   - cron: '0 18 * * *'
 
 jobs:
   douban:
@@ -10,7 +12,7 @@ jobs:
     - name: Checkout Blog Repo
       uses: actions/checkout@v3
 
-    # 1. 准备图片仓库
+    # 1. 准备图片仓库 (克隆到 img_repo 目录)
     - name: Checkout Private Img Repo
       uses: actions/checkout@v3
       with:
@@ -18,7 +20,7 @@ jobs:
         token: ${{ secrets.MY_IMG_TOKEN }}
         path: img_repo
 
-    # 2. 同步豆瓣数据
+    # 2. 同步豆瓣数据 (生成 assets/movie.csv)
     - name: Douban movie sync
       uses: lizheming/doumark-action@master
       with:
@@ -27,7 +29,7 @@ jobs:
         format: csv
         dir: ./assets
 
-    # 3. 环境准备
+    # 3. 准备 Python 环境
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -36,7 +38,7 @@ jobs:
     - name: Install dependencies
       run: pip install pandas requests
 
-    # 4. 下载脚本：直接请求 CSV 里的 poster 链接
+    # 4. 核心下载脚本 (wsrv.nl 代理版)
     - name: Download Posters
       run: |
         python - <<EOF
@@ -44,6 +46,7 @@ jobs:
         import requests
         import os
         import time
+        from urllib.parse import quote
 
         def download():
             csv_path = './assets/movie.csv'
@@ -55,6 +58,7 @@ jobs:
                 return
 
             try:
+                # 读取 CSV
                 df = pd.read_csv(csv_path)
             except Exception as e:
                 print(f"❌ 读取CSV出错: {e}")
@@ -62,49 +66,60 @@ jobs:
             
             print(f"📊 开始处理 {len(df)} 条数据...")
             
-            # 关键：伪装成 Chrome 浏览器，解决脚本请求被拒的问题
+            # 伪装头 (虽然走代理，带上更稳)
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                # 既然是 lithub 镜像，一般不需要特定 Referer，或者留空即可
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
 
             for index, row in df.iterrows():
                 image_url = row['poster']
-                movie_id = str(row['id'])
                 
-                # 跳过空数据
+                # 1. 基础检查
                 if pd.isna(image_url) or not str(image_url).startswith('http'):
                     continue
 
-                # 文件名使用 ID.jpg，方便管理
+                # 2. 使用 id 命名图片 (例如 35774681.jpg)
+                movie_id = str(row['id'])
                 file_name = f"{movie_id}.jpg"
                 save_path = os.path.join(save_folder, file_name)
                 
-                # 增量检查：有了就不下
+                # 3. 增量检查：如果图已存在，直接跳过
                 if os.path.exists(save_path):
                     continue
                 
+                # 4. 构造 wsrv 代理链接 (核心防封锁逻辑)
+                # 原理: GitHub -> wsrv.nl -> lithub.cc -> 返回图片
                 try:
-                    print(f"📥 正在下载: {image_url}")
-                    # 直接请求 lithub 地址
-                    res = requests.get(image_url, headers=headers, timeout=30)
+                    # 去掉协议头
+                    clean_url = image_url.replace('https://', '').replace('http://', '')
+                    # URL 编码，防止特殊字符导致 wsrv 解析错误
+                    encoded_url = quote(clean_url, safe='')
+                    # 拼接代理地址
+                    proxy_url = f"https://wsrv.nl/?url={encoded_url}"
+
+                    print(f"📥 代理下载中: {movie_id}")
                     
-                    if res.status_code == 200:
+                    # 发起请求
+                    res = requests.get(proxy_url, headers=headers, timeout=60)
+                    
+                    # 5. 校验并保存 (排除 404 或 报错页面)
+                    # wsrv 如果失败可能会返回 JSON 或 HTML，我们要排除掉
+                    if res.status_code == 200 and res.content[:4] != b'{' and res.content[:4] != b'<htm':
                         with open(save_path, 'wb') as f:
                             f.write(res.content)
-                        # 成功
+                        # 礼貌延时
                         time.sleep(0.5)
                     else:
-                        print(f"⚠️ 下载失败 (状态码 {res.status_code}): {image_url}")
+                        print(f"⚠️ 代理失败或返回异常内容: {image_url}")
                         
                 except Exception as e:
-                    print(f"❌ 请求异常: {e}")
+                    print(f"❌ 下载异常: {e}")
 
         if __name__ == "__main__":
             download()
         EOF
 
-    # 5. 推送图片
+    # 5. 推送图片到 koobai/img 仓库
     - name: Push to Img Repo
       run: |
         cd img_repo
@@ -112,11 +127,21 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         mkdir -p douban
         git add douban/
-        git commit -m "chore: sync posters directly" || exit 0
+        # 仅在有新图片时提交
+        git commit -m "chore: sync posters via wsrv" || exit 0
         git push
 
-    # 6. 触发构建
+    # 6. 提交 CSV 更新到当前 blog 仓库
+    - name: Commit Blog CSV
+      id: commit_step
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'chore: update douban data'
+        add: './assets'
+        
+    # 7. 触发博客构建
     - name: Trigger Blog
+      if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
