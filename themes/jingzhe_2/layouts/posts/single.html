@@ -76,6 +76,14 @@
         </div>
     </div>
   {{ end }}
+  <!--返回上一级-->
+  <div href="javascript:void(0)" 
+   onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" class="fanhui" title="哪来回哪去">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
+  </svg>
+  </div>
+
 </div>
       <!----评论加载-->
       <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
@@ -83,7 +91,6 @@
         {{- partial "artalk" . -}}
       </div> 
 </div>
-
 <div>
     <div class="paragraph-dh">
      {{ .TableOfContents }}

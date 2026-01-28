@@ -443,6 +443,42 @@ ul {
 .paragraph-dh a.active:before {
   background-color: var(--text-highlight-color); }
 
+.fanhui {
+  display: none; }
+  @media (min-width: 900px) {
+    .fanhui {
+      cursor: pointer;
+      position: fixed;
+      right: calc(50% - 420px);
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      display: flex;
+      align-items: center;
+      /* 垂直居中 */
+      justify-content: center;
+      /* 水平居中 */
+      background: rgba(242, 240, 235, 0.5);
+      border-radius: 50px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      bottom: 53px;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.12);
+      /* 第二层：主投影 */
+      -webkit-transform: translateX(-50%) translateZ(0);
+      transform: translateX(-50%) translateZ(0); } }
+.fanhui svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-content-color); }
+
+.fanhui:hover svg {
+  color: var(--text-highlight-color); }
+
 @media (prefers-color-scheme: dark) {
   .paragraph-dh a {
     color: #999; }
@@ -461,6 +497,23 @@ ul {
   .content h2, .content h3 {
     color: var(--text-highlight-dark-color); }
   .content strong {
+    color: var(--text-highlight-dark-color); } }
+
+@media (prefers-color-scheme: dark) and (min-width: 900px) {
+  .fanhui {
+    background: rgba(85, 82, 78, 0.6);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3);
+    /* 开启硬件加速 */
+    -webkit-transform: translateX(-50%) translateZ(0);
+    transform: translateX(-50%) translateZ(0); } }
+
+@media (prefers-color-scheme: dark) {
+  .fanhui svg {
+    color: var(--erji-color); }
+  .fanhui:hover svg {
     color: var(--text-highlight-dark-color); } }
 
 .intro h1 {
@@ -975,7 +1028,7 @@ img[atk-emoticon] {
   grid-gap: 10px;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px;
   border-radius: 16px;
@@ -2191,7 +2244,7 @@ blockquote p {
 .archives_one {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: var(--element-background-color);
   box-shadow: var(--touy-color);
   border-radius: 16px;
   padding: 15px; }
