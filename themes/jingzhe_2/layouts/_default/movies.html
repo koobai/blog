@@ -33,12 +33,13 @@
   {{end}}  
       {{range $idx, $movie := $movies}}
       {{if ne $idx 0 }}
-      <!--封面地址替换 -->
-      {{ $yingshiimg := printf "https://img.koobai.com/douban/%s.webp" (path.Base (strings.TrimSuffix ".jpg" (index $movie 3))) }} <!--封面地址替换 -->
+      <!--封面地址替换
+      {{ $yingshiimg := printf "https://img.koobai.com/douban/%s.webp" (path.Base (strings.TrimSuffix ".jpg" (index $movie 3))) }} 封面地址替换 -->
+      {{ $yingshiimg := (index $movie 3) }} 
       <!--个人评分改成星星 -->
       {{ $rating := index $movie 8 }}
       <div class="movies_bankuai img-hide">
-          <a rel="link" href="{{index $movie 5}}" target="_blank" ><img class="avatar" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $movie 1 }}"></a>
+          <a rel="link" href="{{index $movie 5}}" target="_blank" ><img class="avatar" referrerpolicy="no-referrer" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $movie 1 }}"></a>
             <div class="movies-nrong">
             <div class="movie-title"><a rel="link" href="{{index $movie 5}}" target="_blank" >{{index $movie 1}}</a></div>
             <div class="movie-pfeng">
