@@ -24,7 +24,7 @@
 }
 .posts-description {
   line-height: 1.6;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
   overflow: hidden;
@@ -167,7 +167,7 @@
 }
 .archive-title-index{
   font-family: var(--font-family-title);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   @include breakpoint('medium') {
     font-size: 1.2rem;

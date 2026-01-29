@@ -286,10 +286,10 @@ ul {
   cursor: pointer; }
 
 .content {
-  font-size: 1.05rem; }
+  font-size: 1.1rem; }
   .content p {
-    font-size: 1.05rem;
-    line-height: 2;
+    font-size: 1.1rem;
+    line-height: 1.9;
     margin: 0;
     padding: 0;
     margin-bottom: 15px; }
@@ -1103,10 +1103,10 @@ img[atk-emoticon] {
   text-decoration: underline; }
 
 .pagetitle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
-  max-width: 620px;
+  max-width: 640px;
   margin: auto;
   padding-bottom: 20px;
   text-align: center;
@@ -1261,7 +1261,7 @@ img[atk-emoticon] {
   transform: scale(1.03); }
 
 .movies_ingdex_title {
-  font-size: 0.85rem;
+  font-size: 1rem;
   margin-bottom: 5px;
   margin-top: 6px; }
 
@@ -1468,7 +1468,7 @@ img[atk-emoticon] {
     .bb-timeline {
       margin-bottom: 20px; } }
 .datacont p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   margin: 0;
   text-align: justify; }
@@ -2111,8 +2111,8 @@ blockquote p {
       font-size: 55px; } }
 .about-text {
   margin: 20px 0 20px 0;
-  line-height: 2;
-  font-size: 1.05rem;
+  line-height: 1.9;
+  font-size: 1.1rem;
   text-align: justify; }
 
 .about-text a {
@@ -2154,7 +2154,7 @@ blockquote p {
 
 .posts-description {
   line-height: 1.6;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
   overflow: hidden;
@@ -2287,7 +2287,7 @@ blockquote p {
 
 .archive-title-index {
   font-family: var(--font-family-title);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 1.6; }
   @media (min-width: 900px) {
     .archive-title-index {
