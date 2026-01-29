@@ -1468,11 +1468,14 @@ img[atk-emoticon] {
     .bb-timeline {
       margin-bottom: 20px; } }
 .datacont p {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 1.2rem;
+  line-height: 1.6;
   margin: 0;
   text-align: justify; }
-
+  @media (min-width: 900px) {
+    .datacont p {
+      font-size: 1rem;
+      line-height: 1.8; } }
 .datacont a {
   text-decoration: underline;
   margin: 0 2px;
@@ -2150,8 +2153,8 @@ blockquote p {
   -webkit-box-orient: vertical; }
 
 .posts-description {
-  line-height: 1.8;
-  font-size: 1rem;
+  line-height: 1.6;
+  font-size: 1.2rem;
   margin: 3px 0;
   color: var(--text-content-color);
   overflow: hidden;
@@ -2159,7 +2162,10 @@ blockquote p {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
-
+  @media (min-width: 900px) {
+    .posts-description {
+      line-height: 1.8;
+      font-size: 1rem; } }
 .posts_list {
   display: grid;
   gap: 15px;
@@ -2210,7 +2216,29 @@ blockquote p {
   .post-badge svg {
     width: 20px;
     height: 20px; }
+  @media (min-width: 900px) {
+    .post-badge {
+      display: none; } }
+.post-biaoji {
+  display: flex;
+  gap: 8px;
+  align-items: center; }
 
+.post-biaoji-xinxi {
+  display: none; }
+  @media (min-width: 900px) {
+    .post-biaoji-xinxi {
+      font-size: 0.8rem;
+      background: var(--erji-color);
+      padding: 3px 6px;
+      color: var(--element-background-color);
+      border-radius: 10px;
+      align-items: center;
+      display: flex;
+      gap: 2px; }
+      .post-biaoji-xinxi svg {
+        width: 18px;
+        height: 18px; } }
 .posts-img {
   margin: 10px 0;
   overflow: hidden;
@@ -2259,7 +2287,7 @@ blockquote p {
 
 .archive-title-index {
   font-family: var(--font-family-title);
-  font-size: 1rem;
+  font-size: 1.4rem;
   line-height: 1.6; }
   @media (min-width: 900px) {
     .archive-title-index {
@@ -2298,6 +2326,11 @@ blockquote p {
     color: var(--text-content-dark-color); }
   .post-badge {
     background: #9B84A1; } }
+
+@media (prefers-color-scheme: dark) and (min-width: 900px) {
+  .post-biaoji-xinxi {
+    background: var(--text-highlight-dark-color);
+    color: #fff; } }
 
 .page-tiaozhuan .header, .page-tiaozhuan .footer-background {
   display: none; }
