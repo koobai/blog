@@ -27,15 +27,15 @@ jobs:
         message: 'chore: update douban data'
         add: './assets'
         
-    - name: Trigger Blog
-      if: steps.commit_step.outputs.committed == 'true'
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'githubblog.yml',
-            ref: 'main'
-          })
+   # - name: Trigger Blog
+   #   if: steps.commit_step.outputs.committed == 'true'
+   #   uses: actions/github-script@v6
+   #   with:
+   #     github-token: ${{ secrets.GITHUB_TOKEN }}
+   #     script: |
+   #       github.rest.actions.createWorkflowDispatch({
+   #         owner: context.repo.owner,
+   #         repo: context.repo.repo,
+   #         workflow_id: 'githubblog.yml',
+   #         ref: 'main'
+   #       })
