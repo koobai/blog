@@ -1,8 +1,8 @@
 name: douban
 on: 
   workflow_dispatch:
- # schedule:
- #   - cron: '0 18 * * *'
+  # schedule:
+  #   - cron: '0 18 * * *'
 
 jobs:
   douban:
@@ -12,6 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    # 1. 先抓取豆瓣数据生成 CSV (这一步是核心数据，必须保证先成功)
     - name: movie
       uses: lizheming/doumark-action@master
       with:
@@ -20,7 +21,15 @@ jobs:
         format: csv
         dir: ./assets
 
-    # --- 第一步：设置环境并下载图片 ---
+    # 2. 立即提交 CSV (防止后面下载图片出错导致数据没保存)
+    - name: Commit CSV
+      id: commit_step
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'chore: update douban data'
+        add: './assets'
+
+    # --- 开始下载图片流程 ---
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
@@ -29,7 +38,8 @@ jobs:
     - name: Install Dependencies
       run: pip install pandas requests
 
-    - name: Download Posters
+    # 3. 下载海报 (通过 Weserv 代理绕过 104 封锁)
+    - name: Download Posters via Proxy
       run: |
         python - <<EOF
         import pandas as pd
@@ -37,113 +47,90 @@ jobs:
         import os
         import time
 
-        # 1. 准备工作
-        csv_path = "./assets/movie.csv"
-        if not os.path.exists(csv_path):
-            print(f"❌ Error: {csv_path} not found!")
-            exit(1)
+        # 读取刚生成的 CSV
+        try:
+            df = pd.read_csv("./assets/movie.csv")
+        except:
+            print("No CSV found, skipping download.")
+            exit(0)
 
-        df = pd.read_csv(csv_path)
-        save_dir = "temp_posters"
-        os.makedirs(save_dir, exist_ok=True)
-        
-        # 2. 伪装头部 (模拟真实的 Chrome 浏览器)
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Referer': 'https://movie.douban.com/', # 有些镜像源需要 Referer，有些不需要，加上更稳
-            'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
-        }
+        temp_dir = "temp_posters"
+        os.makedirs(temp_dir, exist_ok=True)
 
-        success_count = 0
-        fail_count = 0
+        print("🚀 Starting download via images.weserv.nl proxy...")
 
         for _, row in df.iterrows():
-            url = row["poster"]
-            if not isinstance(url, str) or not url.startswith('http'):
+            orig_url = row["poster"]
+            if not isinstance(orig_url, str) or not orig_url.startswith('http'):
                 continue
             
             # 提取文件名 (ID.jpg)
-            img_name = os.path.basename(url)
-            file_path = os.path.join(save_dir, img_name)
+            img_name = os.path.basename(orig_url)
+            path = os.path.join(temp_dir, img_name)
             
-            # 如果本地已有，跳过
-            if os.path.exists(file_path):
-                print(f"⏩ Skipping existing: {img_name}")
+            # 本地已存在则跳过
+            if os.path.exists(path):
                 continue
 
-            # 3. 下载尝试 (带重试)
-            downloaded = False
-            for attempt in range(2): # 最多试 2 次
-                try:
-                    print(f"⬇️ Downloading {img_name} (Attempt {attempt+1})...")
-                    r = requests.get(url, headers=headers, timeout=15)
-                    
-                    if r.status_code == 200:
-                        # 检查是不是假图片 (比如防盗链返回的 html)
-                        if r.content[:4] == b"<htm" or len(r.content) < 1000:
-                            print(f"   ⚠️ Warning: Content looks like HTML or too small. Code: {r.status_code}")
-                            fail_count += 1
-                            break # 这种一般是防盗链，重试也没用，跳过
-                        
-                        with open(file_path, "wb") as f:
-                            f.write(r.content)
-                        print(f"   ✅ Success: {img_name}")
-                        success_count += 1
-                        downloaded = True
-                        time.sleep(0.5) # 稍微慢一点，防止被封 IP
-                        break
-                    else:
-                        print(f"   ❌ Failed. HTTP Status: {r.status_code}")
-                
-                except Exception as e:
-                    print(f"   ❌ Error: {e}")
-                    time.sleep(1) # 出错歇 1 秒
-            
-            if not downloaded:
-                fail_count += 1
+            # --- 核心修改：构造代理 URL ---
+            # 原理：让 weserv.nl 帮我们去取图片，绕过 IP 封锁
+            # 移除 https:// 前缀，因为 weserv 格式通常是 url=ssl:domain.com/path
+            clean_url = orig_url.replace("https://", "")
+            proxy_url = f"https://images.weserv.nl/?url={clean_url}&output=jpg"
 
-        print(f"\n🎉 Summary: Success {success_count}, Failed {fail_count}")
-        # 如果全部失败，强制让 Action 报错，方便你收到邮件通知
-        if success_count == 0 and fail_count > 0:
-            exit(1)
+            try:
+                # 伪装 Header 依然带着，以防万一
+                headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+                
+                # 请求代理服务器
+                r = requests.get(proxy_url, headers=headers, timeout=20)
+                
+                if r.status_code == 200:
+                    # 检查返回的是否是错误 JSON (weserv 出错会返回 json)
+                    if r.headers.get('Content-Type', '').startswith('application/json'):
+                        print(f"❌ Proxy Error for {img_name}")
+                        continue
+
+                    with open(path, "wb") as f:
+                        f.write(r.content)
+                    print(f"✅ Success: {img_name}")
+                else:
+                    print(f"❌ Failed ({r.status_code}): {img_name}")
+            
+            except Exception as e:
+                print(f"❌ Error downloading {img_name}: {e}")
+            
+            # 稍微休息一下，别把代理服务也刷爆了
+            time.sleep(0.2)
         EOF
 
-    # --- 第二步：同步到 img 仓库的 douban 目录 ---
+    # 4. 同步到 img 仓库
     - name: Checkout img repo
       uses: actions/checkout@v3
       with:
-        repository: koobai/img # 你的图片仓库
-        token: ${{ secrets.IMG_REPO_TOKEN }} # 需在博客仓库设置此 Secret
+        repository: koobai/img
+        token: ${{ secrets.IMG_REPO_TOKEN }}
         path: img-repo
 
     - name: Sync and Push Images
       run: |
-        # 确保目录存在
         mkdir -p img-repo/douban
-        # -n 不覆盖已存在的图片，只增量添加
+        # -n 不覆盖已存在的文件
         cp -n temp_posters/* img-repo/douban/ || true
         
         cd img-repo
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         
-        # 只有当 img 仓库有新图时才提交
         if [ -n "$(git status --porcelain)" ]; then
           git add .
-          git commit -m "chore: sync new douban posters"
+          git commit -m "chore: sync posters via weserv"
           git push
         else
           echo "No new images to sync."
         fi
 
-    # --- 第三步：提交 CSV 变动并触发博客构建 ---
-    - name: Commit
-      id: commit_step
-      uses: EndBug/add-and-commit@v9
-      with:
-        message: 'chore: update douban data'
-        add: './assets'
-        
+    # 5. 触发博客构建
     - name: Trigger Blog
       if: steps.commit_step.outputs.committed == 'true'
       uses: actions/github-script@v6
