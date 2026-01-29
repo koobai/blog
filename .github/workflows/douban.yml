@@ -20,6 +20,82 @@ jobs:
         format: csv
         dir: ./assets
 
+    # --- 第一步：设置环境并下载图片 ---
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: pip install pandas requests
+
+    - name: Download Posters
+      run: |
+        python - <<EOF
+        import pandas as pd
+        import requests
+        import os
+        import time
+
+        # 读取同步后的 CSV
+        df = pd.read_csv("./assets/movie.csv")
+        temp_dir = "temp_posters"
+        os.makedirs(temp_dir, exist_ok=True)
+
+        for _, row in df.iterrows():
+            url = row["poster"]
+            if not isinstance(url, str) or not url.startswith('http'):
+                continue
+            
+            # 以 CSV 里的 URL 文件名为准 (即 ID.jpg)
+            img_name = os.path.basename(url)
+            path = os.path.join(temp_dir, img_name)
+            
+            # 如果本地已下载则跳过
+            if os.path.exists(path):
+                continue
+
+            try:
+                # 伪装 User-Agent
+                r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0'})
+                if r.status_code == 200 and r.content[:4] != b"<htm":
+                    with open(path, "wb") as f:
+                        f.write(r.content)
+                    print(f"Downloaded: {img_name}")
+                    time.sleep(0.1)
+            except Exception as e:
+                print(f"Error {img_name}: {e}")
+        EOF
+
+    # --- 第二步：同步到 img 仓库的 douban 目录 ---
+    - name: Checkout img repo
+      uses: actions/checkout@v3
+      with:
+        repository: koobai/img # 你的图片仓库
+        token: ${{ secrets.IMG_REPO_TOKEN }} # 需在博客仓库设置此 Secret
+        path: img-repo
+
+    - name: Sync and Push Images
+      run: |
+        # 确保目录存在
+        mkdir -p img-repo/douban
+        # -n 不覆盖已存在的图片，只增量添加
+        cp -n temp_posters/* img-repo/douban/ || true
+        
+        cd img-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # 只有当 img 仓库有新图时才提交
+        if [ -n "$(git status --porcelain)" ]; then
+          git add .
+          git commit -m "chore: sync new douban posters"
+          git push
+        else
+          echo "No new images to sync."
+        fi
+
+    # --- 第三步：提交 CSV 变动并触发博客构建 ---
     - name: Commit
       id: commit_step
       uses: EndBug/add-and-commit@v9

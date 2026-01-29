@@ -234,14 +234,16 @@ function updateHTMl(data,mode){
         </div>
         <div id="memo_${memo_id}" class="artalk hidden"></div>
         </li>`;      
-        if (typeof mePage !== 'undefined' && mePage <= 2) {
-        // 【位置 2】第 2 条动态后 (i=3) 显示第 1 篇博文
-            if (i == 1) {
-              var post1 = document.querySelectorAll('#temp-posts-data .one-post-item')[0]?.innerHTML;
-              if (post1) {
-                result += `<div class="inserted-post-section animated-fade-in">${post1}</div>`;
-              }
+       if (typeof mePage !== 'undefined' && mePage <= 2) {
+            // 1. 插入博文 (插入到 1, 4, 7, 9 位置))
+            var postMapping = { 1: 0, 4: 1, 7: 2, 9: 3 };
+            if (postMapping[i] !== undefined) {
+                var postHTML = document.querySelectorAll('#temp-posts-data .one-post-item')[postMapping[i]]?.innerHTML;
+                if (postHTML) {
+                    result += `<div class="inserted-post-section animated-fade-in">${postHTML}</div>`;
+                }
             }
+            // 2. 插入影视 (映射逻辑)
             if (i == 1) {
               var moviesHTML = document.getElementById('temp-movies-data')?.innerHTML;
               if (moviesHTML) {
@@ -251,25 +253,34 @@ function updateHTMl(data,mode){
                   </div>`;
               }
             }
-            if (i == 4) {
-              var post2 = document.querySelectorAll('#temp-posts-data .one-post-item')[1]?.innerHTML;
-              if (post2) {
-                result += `<div class="inserted-post-section animated-fade-in">${post2}</div>`;
-              }
-            }
-             if (i == 7) {
-              var post3 = document.querySelectorAll('#temp-posts-data .one-post-item')[2]?.innerHTML;
-              if (post3) {
-                result += `<div class="inserted-post-section animated-fade-in">${post3}</div>`;
-              }
-            }
-             if (i == 9) {
-              var post4 = document.querySelectorAll('#temp-posts-data .one-post-item')[3]?.innerHTML;
-              if (post4) {
-                result += `<div class="inserted-post-section animated-fade-in">${post4}</div>`;
-              }
-            }
-          }
+            // 2. 插入电影 (第 2 条 i=1 和 第 6 条 i=5)
+           /* if (i === 1 || i === 5) {
+                var tempMovies = document.getElementById('temp-movies-data');
+                if (tempMovies) {
+                    var allMovies = tempMovies.querySelectorAll('.movies_bankuai_index');
+                    var selectedMoviesHTML = "";
+
+                    if (i === 1 && allMovies.length >= 1) {
+                        // 第 2 条动态后：取前两个 (索引 0, 1)
+                        selectedMoviesHTML = Array.from(allMovies).slice(0, 2).map(el => el.outerHTML).join('');
+                    } else if (i === 5 && allMovies.length >= 3) { 
+                        // 第 6 条动态后：只要总数有3个及以上，就取剩下的 (索引 2, 3)
+                        selectedMoviesHTML = Array.from(allMovies).slice(2, 4).map(el => el.outerHTML).join('');
+                    }
+
+                    if (selectedMoviesHTML) {
+                        result += `
+                          <div class="inserted-movies-section animated-fade-in">
+                            <div class="movies-grid-container">
+                              <div class="movie-quanju">
+                                ${selectedMoviesHTML}
+                              </div>
+                            </div>
+                          </div>`;
+                    }
+                }
+              } // <--- 补在这里：关闭 if (i == 1 || i == 5)*/
+        } // <--- 补在这里：关闭 if (mePage <= 2)
       }else if(memoVis !== "PUBLIC"){
         result += `<div class="memos-hide" onclick="reloadList("NOPUBLIC")"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></idv></div></li>`;  
       }else{
