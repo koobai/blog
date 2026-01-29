@@ -1,41 +1,123 @@
-name: douban
-on: 
+name: Download Douban Posters
+
+on:
   workflow_dispatch:
- # schedule:
- #   - cron: '0 18 * * *'
+  push:
+    paths:
+      - assets/movie.csv
 
 jobs:
-  douban:
-    name: Douban mark data sync
+  download:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      # 1️⃣ 拉当前仓库（有 CSV）
+      - name: Checkout source repo
+        uses: actions/checkout@v4
 
-    - name: movie
-      uses: lizheming/doumark-action@master
-      with:
-        id: jnnsu
-        type: movie
-        format: csv
-        dir: ./assets
+      # 2️⃣ 设置 Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Commit
-      id: commit_step
-      uses: EndBug/add-and-commit@v9
-      with:
-        message: 'chore: update douban data'
-        add: './assets'
-        
-    - name: Trigger Blog
-      if: steps.commit_step.outputs.committed == 'true'
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'githubblog.yml',
-            ref: 'main'
-          })
+      - name: Install deps
+        run: |
+          pip install pandas requests
+
+      # 3️⃣ 下载图片到临时目录 (⚠️ 核心修改：增加了代理防封锁)
+      - name: Download posters
+        run: |
+          python - <<EOF
+          import pandas as pd
+          import requests
+          import os
+          import time
+
+          # 读取 CSV
+          try:
+              df = pd.read_csv("assets/movie.csv")
+          except Exception as e:
+              print(f"Error reading CSV: {e}")
+              exit(0) # 没文件就优雅退出
+              
+          save_dir = "douban"
+          os.makedirs(save_dir, exist_ok=True)
+          
+          # 伪装 Header
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+
+          print("🚀 Starting smart download...")
+
+          for _, row in df.iterrows():
+              poster = row["poster"]
+              movie_id = str(row["id"])
+
+              if not isinstance(poster, str) or not poster.startswith('http'):
+                  continue
+
+              # 本地存储路径：使用 ID.jpg (如 123456.jpg)
+              path = os.path.join(save_dir, f"{movie_id}.jpg")
+              
+              # 如果已经下载过，跳过
+              if os.path.exists(path):
+                  continue
+
+              # --- 代理逻辑 ---
+              # 去掉协议头，构造 WP CDN 链接
+              clean_url = poster.replace("https://", "").replace("http://", "")
+              # 优先使用 i0.wp.com 代理 (最稳)
+              proxy_url = f"https://i0.wp.com/{clean_url}"
+
+              try:
+                  print(f"⬇️ Downloading {movie_id} via Proxy...")
+                  r = requests.get(proxy_url, headers=headers, timeout=20)
+                  
+                  if r.status_code == 200:
+                      # 简单的文件完整性检查
+                      if len(r.content) < 1000:
+                          print(f"   ⚠️ Warning: File too small, skipping.")
+                          continue
+                          
+                      with open(path, "wb") as f:
+                          f.write(r.content)
+                      print(f"   ✅ Success: {movie_id}.jpg")
+                      time.sleep(0.2) # 稍微休息防风控
+                  else:
+                      print(f"   ❌ Failed ({r.status_code}): {poster}")
+
+              except Exception as e:
+                  print(f"   ❌ Error: {e}")
+          EOF
+
+      # 4️⃣ checkout img 仓库
+      - name: Checkout img repo
+        uses: actions/checkout@v4
+        with:
+          repository: koobai/img  # 👈 已帮你填好
+          token: ${{ secrets.IMG_REPO_TOKEN }}
+          path: img-repo
+
+      # 5️⃣ 拷贝图片进去
+      - name: Copy images
+        run: |
+          mkdir -p img-repo/douban
+          # -n: 不覆盖已存在文件，只增量添加
+          cp -n douban/* img-repo/douban/ || true
+
+      # 6️⃣ 提交并推送（有变化才提交）
+      - name: Commit & push
+        run: |
+          cd img-repo
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "chore: sync douban posters via workflow"
+            git push
+          else
+            echo "No changes"
+          fi
