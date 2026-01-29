@@ -37,34 +37,75 @@ jobs:
         import os
         import time
 
-        # 读取同步后的 CSV
-        df = pd.read_csv("./assets/movie.csv")
-        temp_dir = "temp_posters"
-        os.makedirs(temp_dir, exist_ok=True)
+        # 1. 准备工作
+        csv_path = "./assets/movie.csv"
+        if not os.path.exists(csv_path):
+            print(f"❌ Error: {csv_path} not found!")
+            exit(1)
+
+        df = pd.read_csv(csv_path)
+        save_dir = "temp_posters"
+        os.makedirs(save_dir, exist_ok=True)
+        
+        # 2. 伪装头部 (模拟真实的 Chrome 浏览器)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Referer': 'https://movie.douban.com/', # 有些镜像源需要 Referer，有些不需要，加上更稳
+            'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+        }
+
+        success_count = 0
+        fail_count = 0
 
         for _, row in df.iterrows():
             url = row["poster"]
             if not isinstance(url, str) or not url.startswith('http'):
                 continue
             
-            # 以 CSV 里的 URL 文件名为准 (即 ID.jpg)
+            # 提取文件名 (ID.jpg)
             img_name = os.path.basename(url)
-            path = os.path.join(temp_dir, img_name)
+            file_path = os.path.join(save_dir, img_name)
             
-            # 如果本地已下载则跳过
-            if os.path.exists(path):
+            # 如果本地已有，跳过
+            if os.path.exists(file_path):
+                print(f"⏩ Skipping existing: {img_name}")
                 continue
 
-            try:
-                # 伪装 User-Agent
-                r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0'})
-                if r.status_code == 200 and r.content[:4] != b"<htm":
-                    with open(path, "wb") as f:
-                        f.write(r.content)
-                    print(f"Downloaded: {img_name}")
-                    time.sleep(0.1)
-            except Exception as e:
-                print(f"Error {img_name}: {e}")
+            # 3. 下载尝试 (带重试)
+            downloaded = False
+            for attempt in range(2): # 最多试 2 次
+                try:
+                    print(f"⬇️ Downloading {img_name} (Attempt {attempt+1})...")
+                    r = requests.get(url, headers=headers, timeout=15)
+                    
+                    if r.status_code == 200:
+                        # 检查是不是假图片 (比如防盗链返回的 html)
+                        if r.content[:4] == b"<htm" or len(r.content) < 1000:
+                            print(f"   ⚠️ Warning: Content looks like HTML or too small. Code: {r.status_code}")
+                            fail_count += 1
+                            break # 这种一般是防盗链，重试也没用，跳过
+                        
+                        with open(file_path, "wb") as f:
+                            f.write(r.content)
+                        print(f"   ✅ Success: {img_name}")
+                        success_count += 1
+                        downloaded = True
+                        time.sleep(0.5) # 稍微慢一点，防止被封 IP
+                        break
+                    else:
+                        print(f"   ❌ Failed. HTTP Status: {r.status_code}")
+                
+                except Exception as e:
+                    print(f"   ❌ Error: {e}")
+                    time.sleep(1) # 出错歇 1 秒
+            
+            if not downloaded:
+                fail_count += 1
+
+        print(f"\n🎉 Summary: Success {success_count}, Failed {fail_count}")
+        # 如果全部失败，强制让 Action 报错，方便你收到邮件通知
+        if success_count == 0 and fail_count > 0:
+            exit(1)
         EOF
 
     # --- 第二步：同步到 img 仓库的 douban 目录 ---
