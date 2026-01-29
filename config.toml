@@ -34,16 +34,18 @@ hasCJKLanguage = true
     name = '唠叨'
     url = '/'
     weight = 1
+    params = { umami_event = "Home" }
 
   [[menu.main]]
     identifier = "sport"
     name = "骑行"
     url = "https://sport.koobai.com/"
     weight = 5
+    params = { umami_event = "Qixing" }
 
   [[menu.main]]
     identifier = "Goods"
     name = "店铺"
     url = "https://qiszy.taobao.com"
     weight = 6
-    params = { new_window = true }
+    params = { new_window = true, umami_event = "Taobao" }
