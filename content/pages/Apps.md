@@ -8,4 +8,6 @@ menu:
   main:
     name: "软件"
     weight: 4
+    params:
+        umami_event: "Apps"
 ---
