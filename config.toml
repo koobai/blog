@@ -43,7 +43,7 @@ hasCJKLanguage = true
 
   [[menu.main]]
     identifier = "Goods"
-    name = "好物"
+    name = "店铺"
     url = "https://qiszy.taobao.com"
     weight = 6
     params = { new_window = true }
