@@ -1061,25 +1061,33 @@ img[atk-emoticon] {
   opacity: 0.8;
   transition: opacity .3s ease-in-out; }
 
+.pagetitle {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  max-width: 640px;
+  margin: auto;
+  padding-bottom: 20px;
+  text-align: center;
+  color: #666; }
+
 .appdquanjudiv {
   display: grid;
-  grid-gap: 10px;
-  /* 中间空10px间距 */ }
+  grid-gap: 10px; }
   @media (min-width: 900px) {
     .appdquanjudiv {
       grid-template-columns: repeat(2, 1fr);
-      grid-gap: 15px;
-      /* 中间空10px间距 */ } }
+      grid-gap: 15px; } }
 .appquanju {
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-gap: 10px;
   align-items: center;
-  justify-content: center;
   background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px;
   border-radius: 16px;
+  position: relative;
   z-index: 1; }
 
 .appimg img {
@@ -1087,7 +1095,7 @@ img[atk-emoticon] {
   transition: transform 0.3s ease; }
 
 .apptitle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 4px; }
   @media (min-width: 900px) {
     .apptitle {
@@ -1122,9 +1130,6 @@ img[atk-emoticon] {
   font-family: var(--font-family-code);
   color: var(--sanji-color); }
 
-.macos:empty, .kaiyuan:empty, .shoufei:empty, .free:empty {
-  display: none; }
-
 .kaiyuan, .shoufei, .free {
   font-size: 0.9rem;
   padding: 5px 8px;
@@ -1144,95 +1149,85 @@ img[atk-emoticon] {
   color: #11a173;
   border: 0.5px solid #11a173; }
 
-.appdquanjudiv a:hover {
-  text-decoration: none; }
-
-.apptitle a:hover {
-  text-decoration: underline; }
-
-.pagetitle {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  max-width: 640px;
-  margin: auto;
-  padding-bottom: 20px;
-  text-align: center;
-  color: #666; }
-
 .app-star {
-  display: block;
-  position: relative;
+  display: flex !important;
+  /* 强制重置 grid 为 flex */
+  flex-direction: column;
+  /* 垂直排列内容 */
+  grid-column: span 1;
   aspect-ratio: 1;
-  overflow: hidden;
-  padding: 30px 25px 40px 25px; }
-
-.app-star .appnote {
-  opacity: 1;
-  background: transparent;
-  padding: 0;
-  position: static;
-  display: block;
-  font-size: 0.85rem;
-  line-height: 1.6; }
-  @media (min-width: 900px) {
-    .app-star .appnote {
-      font-size: 0.9rem; } }
-.star-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1; }
-
-.star-img img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-  transition: transform 0.3s ease; }
-
-.star-img img:hover {
-  transform: scale(1.1); }
-
-.app-star .apptitle2 {
-  font-size: 1.6rem;
-  margin-bottom: 5px; }
-
-.app-star .apptitle2 a, .app-star .appnote, .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
-  color: #fff;
-  font-family: var(--font-family-code);
-  transition: opacity .3s ease-in-out; }
-
-.app-star .apptitle2 a:hover {
-  opacity: 0.8; }
-
-.app-star .macos {
-  margin-bottom: 20px; }
-
-.app-star .kaiyuan, .app-star .shoufei, .app-star .free {
-  border: 0.5px solid #fff; }
-
-.app-star .appzhuangtai-right {
-  display: inline-block; }
+  padding: 30px 25px;
+  justify-content: flex-start;
+  /* 顶部对齐标题 */
+  background: #000;
+  /* 背景兜底色 */
+  align-items: flex-start;
+  overflow: hidden; }
+  .app-star .app-title-all, .app-star .appzhuangtai-right {
+    position: relative;
+    z-index: 5; }
+  .app-star .appzhuangtai {
+    margin-top: 10px; }
+  .app-star .appzhuangtai-right {
+    display: flex;
+    justify-content: flex-start; }
+  .app-star .apptitle2 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    margin-top: 8px; }
+    .app-star .apptitle2 a {
+      color: var(--element-background-color); }
+  .app-star .appnote {
+    position: static;
+    display: block;
+    opacity: 1;
+    background: transparent;
+    padding: 0;
+    color: var(--element-background-color);
+    line-height: 1.6;
+    font-size: 1rem; }
+    @media (min-width: 900px) {
+      .app-star .appnote {
+        font-size: 0.9rem; } }
+  .app-star .star-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 16px; }
+    .app-star .star-img::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 80%);
+      z-index: 2; }
+  .app-star .star-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+  .app-star:hover .star-img img {
+    transform: scale(1.08); }
+  .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
+    color: var(--element-background-color);
+    border-color: rgba(255, 255, 255, 0.6) !important; }
 
 @media (prefers-color-scheme: dark) {
-  .macos {
-    color: var(--erji-color); }
-  .pagetitle {
-    color: var(--erji-color); }
-  .appnote, .apptitle a {
-    color: var(--text-content-dark-color); }
   .appquanju, .appnote {
     background: var(--background-dark-color); }
-  .app-star .apptitle2 a, .app-star .appnote, .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
-    color: #dfdfdf; }
-  .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
-    border: 0.5px solid #dfdfdf; }
+  .appnote, .apptitle a {
+    color: var(--text-content-dark-color); }
   .kaiyuan, .shoufei, .free {
     color: var(--erji-color);
-    border: 0.5px solid var(--erji-color); } }
+    border-color: var(--erji-color); }
+  .pagetitle {
+    color: var(--erji-color); } }
 
 /*归档页标签*/
 .archives_tags {
@@ -2556,13 +2551,23 @@ blockquote p {
   z-index: 1;
   /* 置于底层 */
   overflow: hidden; }
+  .hardware-star-img::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
+    z-index: 2; }
 
 .hardware-star-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   /* 确保图片铺满背景且不变形 */
-  transition: transform 0.5s ease; }
+  transition: transform 0.5s ease;
+  z-index: 1; }
 
 .hardware-star:hover .hardware-star-img img {
   transform: scale(1.1); }
