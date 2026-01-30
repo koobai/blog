@@ -2432,6 +2432,125 @@ blockquote p {
   .tiaozhuan-title {
     color: #ddd; } }
 
+.quanju {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  /* 中间空10px间距 */ }
+  @media (min-width: 900px) {
+    .quanju {
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 15px;
+      /* 中间空10px间距 */ } }
+.duiqi {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.duiqi img {
+  max-width: 70%;
+  margin: 0;
+  transition: transform 0.3s ease; }
+  @media (min-width: 900px) {
+    .duiqi img {
+      max-width: 60%; } }
+.bankuai {
+  background: var(--element-background-color);
+  padding: 30px 0 40px 0;
+  border-radius: 16px;
+  transition: opacity 0.4s ease, transform 0.8s ease; }
+
+.bankuai a:hover {
+  text-decoration: none; }
+
+.hardware-text {
+  text-align: center;
+  color: var(--sanji-color);
+  margin-top: 20px; }
+
+.hardware-title {
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+  padding: 0 10px; }
+  @media (min-width: 900px) {
+    .hardware-title {
+      padding: 0;
+      font-size: 0.9rem; } }
+.hardware-title a {
+  color: var(--text-content-color); }
+
+.hardware-title a:hover {
+  text-decoration: underline; }
+
+.hardware-jiage {
+  margin-left: auto;
+  font-size: 0.85rem;
+  border-radius: 20px;
+  font-family: var(--font-family-code); }
+  @media (min-width: 900px) {
+    .hardware-jiage {
+      font-size: 0.75rem; } }
+.liing_2_right {
+  justify-content: center;
+  /* 水平居中对齐 */
+  display: flex; }
+
+.tiyi {
+  color: var(--text-highlight-color);
+  font-size: 1rem;
+  border: 0.5px solid var(--text-highlight-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-top: 6px; }
+  @media (min-width: 900px) {
+    .tiyi {
+      font-size: 0.85rem; } }
+.tiyi:hover {
+  text-decoration: underline; }
+
+.tiyi:empty, .details:empty {
+  display: none; }
+
+.note {
+  display: none; }
+  @media (min-width: 900px) {
+    .note {
+      display: block;
+      position: absolute;
+      padding: 15px;
+      z-index: 10;
+      top: 0;
+      color: var(--erji-color);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0;
+      background: rgba(242, 240, 235, 0.5);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      transition: opacity 0.4s ease;
+      border-radius: 16px 16px 0 0; } }
+.bankuai:hover .note {
+  opacity: 1; }
+
+@media (prefers-color-scheme: dark) {
+  .bankuai {
+    background: var(--background-dark-color); }
+  .hardware-text {
+    color: var(--erji-color); }
+  .hardware-title a, .note {
+    color: var(--text-content-dark-color); } }
+
+@media (prefers-color-scheme: dark) and (min-width: 900px) {
+  .note {
+    background: rgba(125, 117, 108, 0.5);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%); } }
+
+@media (prefers-color-scheme: dark) {
+  .tiyi {
+    color: var(--text-highlight-dark-color);
+    border: 0.5px solid var(--text-highlight-dark-color); } }
+
 @font-face {
   font-family: JetBrainsMono;
   font-display: swap;
