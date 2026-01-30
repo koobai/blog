@@ -11,7 +11,7 @@
     border-top: 0.5px solid #e7e1de;
     text-align: center;
   }
-.footer-info, .footer-info a,.footer-rss,.footer-rss a{
+.footer-info, .footer-info a{
   font-size: 0.75rem;
   line-height: 1.6em;
   color: #a7a7a7;
@@ -48,7 +48,7 @@
 }
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
-.footer-info, .footer-info a,.footer-rss a,.footer-rss{
+.footer-info, .footer-info a{
   color: var(--erji-color);
 }
 .footer {
