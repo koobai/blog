@@ -116,8 +116,8 @@ ol, ul {
   transition: opacity .3s ease-in-out; }
   @media (min-width: 900px) {
     .about-koobai img {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       display: block; } }
 .about-koobai img:hover {
   opacity: 0.6; }
