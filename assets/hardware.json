@@ -9,14 +9,6 @@
             "link": "/"
         },
         {
-            "image": "https://img.koobai.com/hardware/macmini.webp",
-            "title": "Mac mini M4",
-            "jiage": "2025.06",
-            "note": "非常值得，完全胜任自己的工作，每天就安静的躺着运行。最具性价比的 Apple 产品。",
-            "details":"官网",
-            "link": "https://www.apple.com.cn/mac-mini/"
-        },
-        {
             "image": "https://img.koobai.com/hardware/iphone17.webp",
             "title": "iPhone 17 Pro Max",
             "jiage": "2025.11",
@@ -31,7 +23,7 @@
             "note": "主要搭配 Mac mini 使用，看中刷新率 160Hz，实际体验刷新率没什么感觉。但图像显示满足使用。",
             "details":"官网",
             "link": "https://www.mi.com/shop/buy/detail?product_id=21297&cfrom=search"
-        },
+        }, 
         {
             "image": "https://img.koobai.com/hardware/xiaomi14.webp",
             "title": "小米 14 Ultra",
@@ -43,15 +35,13 @@
             "link_2":"/iosandroid"
         },
         {
-            "image": "https://img.koobai.com/hardware/af105.webp",
-            "title": "迪卡侬 EDR AF 105",
-            "jiage": "2023.11",
-            "note": "锻炼身体的借口，实则抵惑不住这外观的颜值。大全套的禧玛诺 105 R7000 骑起来确实很顺畅。",
+            "image2": "https://img.koobai.com/hardware/macmini_1.webp",
+            "title": "Mac mini M4",
+            "jiage": "2025.06",
+            "note": "非常值得，完全胜任自己的工作，每天就安静的躺着运行。最具性价比的 Apple 产品。",
             "details":"官网",
-            "link": "https://www.decathlon.com.cn/product-detail?dsm_code=313279",
-            "tiyi": "败入过程",
-            "link_2":"https://www.bilibili.com/video/BV12Q4y1n7Qo"
-        },
+            "link": "https://www.apple.com.cn/mac-mini/"
+        }, 
         {
             "image": "https://img.koobai.com/hardware/leklek.webp",
             "title": "乐扣乐扣吨吨杯",
@@ -59,6 +49,16 @@
             "note": "对于不大爱去倒水喝的人，早上一次性灌满一天的量，非常爽，从此告别结晶结石。",
             "details":"官网",
             "link": "https://item.jd.com/100022018389.html"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/s920.webp",
+            "title": "群晖 DS920+",
+            "jiage": "2022.01",
+            "note": "配置过程相对麻烦，但调教好之后，它就是安全、娱乐之利器。就是硬盘太贵了。",
+            "details":"官网",
+            "link": "https://global.download.synology.com/download/Document/Hardware/DataSheet/DiskStation/20-year/DS920+/chs/Synology_DS920_Plus_Data_Sheet_chs.pdf",
+            "tiyi": "使用体验",
+            "link_2":"/synology_ds920"
         },
         {
             "image": "https://img.koobai.com/hardware/fengshan.webp",
@@ -96,22 +96,14 @@
             "link_2":"/apple_tv"
         },
         {
-            "image": "https://img.koobai.com/hardware/s920.webp",
-            "title": "群晖 DS920+",
-            "jiage": "2022.01",
-            "note": "配置过程相对麻烦，但调教好之后，它就是安全、娱乐之利器。就是硬盘太贵了。",
+            "image2": "https://img.koobai.com/hardware/af105g.webp",
+            "title": "迪卡侬 EDR AF 105",
+            "jiage": "2023.11",
+            "note": "锻炼身体的借口，除了车架/套件，该换的地方全部都改了一遍，享受这折腾的过程。也算是自己的减肥利器。",
             "details":"官网",
-            "link": "https://global.download.synology.com/download/Document/Hardware/DataSheet/DiskStation/20-year/DS920+/chs/Synology_DS920_Plus_Data_Sheet_chs.pdf",
-            "tiyi": "使用体验",
-            "link_2":"/synology_ds920"
-        },
-        {
-            "image": "https://img.koobai.com/hardware/ergotron.webp",
-            "title": "爱格升 MXV",
-            "jiage": "2022.03",
-            "note": "显示器支架，买它一是因为让桌面更简洁，二是为了能升降。",
-            "details":"官网",
-            "link": "https://item.jd.com/100032468648.html"
+            "link": "https://www.decathlon.com.cn/product-detail?dsm_code=313279",
+            "tiyi": "情绪价值",
+            "link_2":"/af105"
         },
         {
             "image": "https://img.koobai.com/hardware/benq.webp",
@@ -124,12 +116,12 @@
             "link_2": "/workbench"
         },
         {
-            "image": "https://img.koobai.com/hardware/mx3.webp",
-            "title": "罗技 MX Master 3",
-            "jiage": "2019.09",
-            "note": "用了很多年了，除了表面脱皮及起泡外，确实很顺手。",
+            "image": "https://img.koobai.com/hardware/ergotron.webp",
+            "title": "爱格升 MXV",
+            "jiage": "2022.03",
+            "note": "显示器支架，买它一是因为让桌面更简洁，二是为了能升降。",
             "details":"官网",
-            "link": "https://www.logitech.com/zh-cn/products/mice/mx-master-3s-business-wireless-mouse.910-006585.html"
+            "link": "https://item.jd.com/100032468648.html"
         },
         {
             "image": "https://img.koobai.com/hardware/black65.webp",
@@ -141,6 +133,14 @@
             "link": "https://zoom65.com/",
             "tiyi": "键盘路程",
             "link_2": "/mechanical_keyboard"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/mx3.webp",
+            "title": "罗技 MX Master 3",
+            "jiage": "2019.09",
+            "note": "用了很多年了，除了表面脱皮及起泡外，确实很顺手。",
+            "details":"官网",
+            "link": "https://www.logitech.com/zh-cn/products/mice/mx-master-3s-business-wireless-mouse.910-006585.html"
         },
         {
             "image": "https://img.koobai.com/hardware/misound.webp",
@@ -156,6 +156,14 @@
             "note": "电视Soundbar，用了很多年，看影视之利器，仿佛置身于其中。",
             "details":"官网",
             "link": "https://www.sony.com.hk/zh/electronics/sound-bars/ht-z9f"
+        },
+        {
+            "image": "https://img.koobai.com/hardware/dayinji.webp",
+            "title": "小米激光打印一体机",
+            "jiage": "2022.07",
+            "note": "主要职责是打印娃的作业，无线非常方便，性价比不错。",
+            "details":"官网",
+            "link": "https://www.mi.com/shop/buy/detail?product_id=15974"
         }
     ]
 }

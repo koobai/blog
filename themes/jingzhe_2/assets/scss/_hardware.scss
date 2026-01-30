@@ -105,6 +105,83 @@
   }
 
 
+//喜爱大图
+
+.hardware-star {
+    grid-column: span 2; 
+    display: flex;
+    flex-direction: column; /* 让内容垂直排列 */
+    position: relative;     /* 必须加这个，图片才能以此为背景基准 */
+    min-height: 320px;      /* 给大图卡片一个合适的高度 */
+    overflow: hidden;       /* 防止图片圆角溢出 */
+    padding: 30px;          /* 给文字留出呼吸空间 */
+}
+
+/* 1. 将图片设为绝对定位，撑满整个卡片背景 */
+.hardware-star-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;             /* 置于底层 */
+	overflow: hidden;
+}
+.hardware-star-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* 确保图片铺满背景且不变形 */
+	transition: transform 0.5s ease;
+}
+.hardware-star:hover .hardware-star-img img {
+    transform: scale(1.1);
+}
+
+.hardware-star .hardware-title{
+	padding: 0;
+}
+
+/* 2. 标题和价格：排在最上面 */
+.hardware-star .hardware-text {
+    position: relative;     /* 必须加，确保 z-index 生效 */
+    z-index: 3;             /* 置于最顶层 */
+    order: 1;               /* 逻辑顺序第一 */
+    text-align: left;       /* 根据你 image_8e119e 的风格，通常靠左 */
+	color: #fff;
+
+	a{
+		font-size: 1.6rem;
+		color: #fff;
+	}
+}
+
+/* 3. Note 文本：排在标题下面 */
+.hardware-star .note {
+	display: block;
+    position: relative;     /* 必须加 */
+    z-index: 2;             /* 置于图片之上，标题之下 */
+    order: 2;               /* 逻辑顺序第二 */
+    opacity: 1;
+    background: none;       /* 去掉背景色，直接透出底下的图片 */
+    margin-top: 10px;       /* 与标题的间距 */
+	padding: 0;
+	backdrop-filter: none; 
+	-webkit-backdrop-filter: none;
+	color: #fff;
+}
+.hardware-star .liing_2_right{
+	position: relative;     /* 必须加，确保 z-index 生效 */
+	order: 3;  
+	z-index: 2; 
+	justify-content: left; /* 水平居中对齐 */
+}
+.hardware-star .tiyi {
+    color: var(--element-background-color);
+    border: 0.5px solid var(--element-background-color);
+}
+
+//喜爱大图结束
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 	.bankuai{
@@ -127,4 +204,14 @@
 		color: var(--text-highlight-dark-color);
 		border: 0.5px solid var(--text-highlight-dark-color);
 	}
+
+.hardware-star .hardware-text {
+	color: var(--text-content-dark-color);
+	a{
+		color: var(--text-content-dark-color);
+	}
+}
+.hardware-star .note {
+	color:var(--text-content-dark-color);
+}
 }
