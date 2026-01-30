@@ -1518,8 +1518,8 @@ CSS unicode-range 特定字符使用 font-face 自定义字体</a><br>
 <h2 id="周边搭配">周边搭配</h2>
 <p>机器到位，对应的搭配组合：1.送的一条 4g 内存、一套防尘罩。2.三块希捷酷狼 4T 硬盘。3.两条三星 250g SSD。4.山特 850 UPS 不间断电源。</p>
 <h2 id="折腾之旅">折腾之旅</h2>
-<p>准备就绪，经过一年多的折腾及稳定运行使用，满足了自己需求：<strong>数据备份、影视存储</strong>。目前主要使用的套件：
-<img src="https://img.koobai.com/article/synologyphoto.webp" alt="Synology Photos" class="img-hide" loading="lazy" decoding="async" /></p>
+<p>准备就绪，经过一年多的折腾及稳定运行使用，满足了自己需求：<strong>数据备份、影视存储</strong>。目前主要使用的套件：</p>
+<p><img src="https://img.koobai.com/article/synologyphoto.webp" alt="Synology Photos" class="img-hide" loading="lazy" decoding="async" /></p>
 <h3 id="1-存储管理器">1. 存储管理器</h3>
 <p>三块硬盘使用逻辑：两块组 Raid 1，一块 Basic。重要数据存储在 Raid 上；极为重要数据，再通过 Hyper Backup 套件定期自动备份到 Basic 硬盘上，再定期备份到外置硬盘。影视、mac 系统备份，存储到 Basic 硬盘上。</p>
 <p>两条 ssd,作为 Raid 1 的读写缓存。</p>
@@ -1532,8 +1532,8 @@ CSS unicode-range 特定字符使用 font-face 自定义字体</a><br>
 <h3 id="5-迅雷">5. 迅雷</h3>
 <p>只要你是会员，下载速度还是杠杠的，有些资源电脑版本无法下载，但套件能下～～。很多人会用 PD、PT，然后通过 Docker 应用自动触发下载，发现自己平常也用不上。</p>
 <h2 id="6-docker">6. Docker</h2>
-<p>使用 NAS 前不知道什么是 Docker，使用之后，只能说没了它，乐趣要少一大半～～目前使用的应用为 <strong>4</strong> 个：
-<img src="https://img.koobai.com/article/infuse.webp" alt="infuse影视墙" class="img-hide" loading="lazy" decoding="async" /></p>
+<p>使用 NAS 前不知道什么是 Docker，使用之后，只能说没了它，乐趣要少一大半～～目前使用的应用为 <strong>4</strong> 个：</p>
+<p><img src="https://img.koobai.com/article/infuse.webp" alt="infuse影视墙" class="img-hide" loading="lazy" decoding="async" /></p>
 <h3 id="1-alist">1. Alist</h3>
 <p>官方介绍：一个支持多种存储的文件列表程序。自己使用主要的作用是影视中转站：先把资源存储到阿里云盘 &gt; Alist 连接阿里云盘 &gt; Infuse 通过 WebDAV 方式连接 Alist，之后就愉快的观影。</p>
 <h3 id="2-ddns-go">2. Ddns-go</h3>
