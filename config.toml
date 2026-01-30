@@ -35,14 +35,6 @@ hasCJKLanguage = true
     url = '/'
     weight = 1
     params = { umami_event = "Home" }
-
-  [[menu.main]]
-    identifier = "sport"
-    name = "骑行"
-    url = "https://sport.koobai.com/"
-    weight = 5
-    params = { umami_event = "Qixing" }
-
   [[menu.main]]
     identifier = "Goods"
     name = "店铺"
