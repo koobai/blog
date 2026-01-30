@@ -289,10 +289,13 @@ ul {
   font-size: 1.1rem; }
   .content p {
     font-size: 1.1rem;
-    line-height: 1.9;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
-    margin-bottom: 15px; }
+    margin-bottom: 15px;
+    text-align: justify;
+    /* 左右对齐 */
+    text-align-last: left; }
   .content strong {
     color: var(--text-highlight-color); }
   .content h2, .content h3 {
@@ -970,7 +973,7 @@ img[atk-emoticon] {
     --at-color-bg-grey: var(--background-dark-color) !important;
     --at-color-bg-grey:#332D2E!important; }
   .artalk.atk-dark-mode {
-    --at-color-grey:#747474 !important; }
+    --at-color-grey: var(--erji-color)!important; }
   .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
     color: var(--erji-color) !important; }
   .atk-list-read-more {
@@ -1469,13 +1472,10 @@ img[atk-emoticon] {
       margin-bottom: 20px; } }
 .datacont p {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 0;
   text-align: justify; }
-  @media (min-width: 900px) {
-    .datacont p {
-      font-size: 1rem;
-      line-height: 1.8; } }
+
 .datacont a {
   text-decoration: underline;
   margin: 0 2px;
@@ -2111,7 +2111,7 @@ blockquote p {
       font-size: 55px; } }
 .about-text {
   margin: 20px 0 20px 0;
-  line-height: 1.9;
+  line-height: 1.8;
   font-size: 1.1rem;
   text-align: justify; }
 
@@ -2153,7 +2153,7 @@ blockquote p {
   -webkit-box-orient: vertical; }
 
 .posts-description {
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
@@ -2162,10 +2162,7 @@ blockquote p {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
-  @media (min-width: 900px) {
-    .posts-description {
-      line-height: 1.8;
-      font-size: 1rem; } }
+
 .posts_list {
   display: grid;
   gap: 15px;
@@ -2185,7 +2182,7 @@ blockquote p {
       gap: 15px; } }
 .posts_list_article {
   border-radius: 16px;
-  background: #fff;
+  background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px; }
   @media (min-width: 900px) {
@@ -2204,18 +2201,20 @@ blockquote p {
       margin-bottom: 0; } }
 .post-badge {
   position: absolute;
+  font-size: 0.85rem;
+  gap: 2px;
   top: 0;
   right: 0;
   display: flex;
   align-items: center;
-  padding: 4px 14px;
-  background: #E5CABD;
-  color: #fff;
+  padding: 4px 10px;
+  background: var(--erji-color);
+  color: var(--element-background-color);
   border-bottom-left-radius: 10px;
   z-index: 1; }
   .post-badge svg {
-    width: 20px;
-    height: 20px; }
+    width: 18px;
+    height: 18px; }
   @media (min-width: 900px) {
     .post-badge {
       display: none; } }
@@ -2282,7 +2281,7 @@ blockquote p {
       /* 中间空10px间距 */ } }
 .archive-title {
   font-family: var(--font-family-title);
-  font-size: 1rem;
+  font-size: 1.1em;
   line-height: 1.6; }
 
 .archive-title-index {
@@ -2325,7 +2324,7 @@ blockquote p {
   .posts-description {
     color: var(--text-content-dark-color); }
   .post-badge {
-    background: #9B84A1; } }
+    background: var(--text-highlight-dark-color); } }
 
 @media (prefers-color-scheme: dark) and (min-width: 900px) {
   .post-biaoji-xinxi {

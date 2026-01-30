@@ -23,7 +23,7 @@
   -webkit-box-orient: vertical;
 }
 .posts-description {
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
@@ -32,10 +32,6 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  @include breakpoint('medium') {
-    line-height: 1.8;
-    font-size: 1rem;
-  }
 }
 .posts_list{
   display: grid;
@@ -58,7 +54,7 @@
 }
 .posts_list_article{
   border-radius:16px;
-  background: #fff;
+  background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px;
   @include breakpoint('medium') {
@@ -79,18 +75,20 @@
 }
 .post-badge {
   position: absolute;
+  font-size: 0.85rem;
+  gap: 2px;
   top: 0;
   right: 0;
   display: flex;
   align-items: center;
-  padding: 4px 14px;
-  background: #E5CABD;
-  color: #fff;
+  padding: 4px 10px;
+  background: var(--erji-color);
+  color: var(--element-background-color);
   border-bottom-left-radius: 10px; // 左下角加个圆角更精致
   z-index: 1;
   svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
   @include breakpoint('medium') {
     display:none;
@@ -162,7 +160,7 @@
 }
 .archive-title{
   font-family: var(--font-family-title);
-  font-size: 1rem;
+  font-size: 1.1em;
   line-height: 1.6;
 }
 .archive-title-index{
@@ -211,7 +209,7 @@
     color: var(--text-content-dark-color);
   }
   .post-badge {
-    background: #9B84A1;
+    background: var(--text-highlight-dark-color);
 }
 .post-biaoji-xinxi{
   @include breakpoint('medium') {
