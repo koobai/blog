@@ -111,6 +111,49 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
+//rss
+.header-Rss {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+.rss-box {
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  /* 核心视觉样式合并 */
+  background: rgba(85, 82, 78, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 0.5px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: .2s ease-in-out;
+  z-index: 100;
+}
+/* 填充间隙：高度随 bottom 调整即可 */
+.rss-box::before {
+  content: "";
+  position: absolute;
+  top: 100%; left: 0; width: 100%; height: 20px;
+}
+/* 悬停逻辑 */
+.header-Rss:hover .rss-box {
+  opacity: 1;
+  visibility: visible;
+  bottom: 135%; /* 悬停时向上位移一点，代替之前的 translateY */
+}
+.footer-rss, .footer-rss a {
+  font-size: 0.85rem;
+  color: var(--element-background-color);
+  text-decoration: none;
+}
+
 // 夜间模式页面样式
 @media (prefers-color-scheme: dark) {
 .header {
