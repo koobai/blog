@@ -35,7 +35,7 @@
 	display: grid;
 	position: absolute;
   padding: 6px 15px 6px 0;
-  background: #fff;
+  background: var(--element-background-color);
   top: 0;
   bottom: 0;
 	color: var(--text-content-color);
