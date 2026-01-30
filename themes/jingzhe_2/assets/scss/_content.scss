@@ -53,10 +53,12 @@ ul {
   font-size: 1.1rem;
   p {
     font-size: 1.1rem;
-    line-height: 1.9;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
     margin-bottom: 15px;
+    text-align: justify; /* 左右对齐 */
+    text-align-last: left;
   }
   strong {
     color:  var(--text-highlight-color);

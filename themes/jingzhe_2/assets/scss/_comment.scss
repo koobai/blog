@@ -218,7 +218,7 @@ img[atk-emoticon] {
 --at-color-bg-grey:#332D2E!important;
 }
 .artalk.atk-dark-mode{
---at-color-grey:#747474 !important;
+--at-color-grey: var(--erji-color)!important;
 }
 .atk-text, .atk-list-no-comment,.atk-copyright,.atk-copyright a{
   color: var(--erji-color)!important;

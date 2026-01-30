@@ -71,13 +71,10 @@
 }
 .datacont p{
   font-size:1.1rem;
-  line-height:1.6;
+  line-height:1.7;
   margin:0;
   text-align: justify;
-  @include breakpoint('medium') {
-    font-size:1rem;
-    line-height:1.8;
-  }
+
 }
 .datacont a{
   text-decoration: underline;
