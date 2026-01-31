@@ -1,14 +1,16 @@
-// 首页调用
-.movie-quanju{
+// ==========================================
+// 1. 首页调用 (Index Page)
+// ==========================================
+.movie-quanju {
   display: none;
-    @include breakpoint('medium') {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 15px; 
-    }
+  @include breakpoint('medium') {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
+  }
 }
 
-.movies_bankuai_index{
+.movies_bankuai_index {
   display: grid;
   grid-template-columns: auto 1fr;
   border-radius: 16px;
@@ -16,25 +18,36 @@
   box-shadow: var(--touy-color);
   padding: 15px;
 }
-.movies_bankuai_index img{
-  width:110px;
+
+.movies_bankuai_index img {
+  // 建议给固定宽高属性防止抖动，这里CSS做二次约束
+  width: 110px;
   border-radius: 14px;
   object-fit: cover;
   aspect-ratio: 3 / 4;
   transition: transform .3s ease;
+  will-change: transform; // 性能优化：提示浏览器提前准备
+  backface-visibility: hidden; // 性能优化：抗锯齿
 }
-.movies_bankuai_index img:hover {
-  transform: scale(1.03);
+
+// 交互优化：仅在支持鼠标悬停的设备上启用图片放大
+@media (hover: hover) {
+  .movies_bankuai_index img:hover {
+    transform: scale(1.03);
+  }
 }
-.movies_ingdex_title{
+
+.movies_ingdex_title {
   font-size: 1rem;
   margin-bottom: 5px;
   margin-top: 6px;
 }
-.movies_right{
+
+.movies_right {
   margin-left: 10px;
 }
-.movies_index_info{
+
+.movies_index_info {
   font-size: 0.85rem;
   color: #666;
   line-height: 1.6;
@@ -44,138 +57,190 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
-.movie_index_time{
+
+.movie_index_time {
   font-size: 0.75rem;
   margin-top: 5px;
   color: #999;
 }
 
-// 影视页面
 
-//顶部视频--
-/*.movies_video {
-  position: absolute;
-  height: 30rem;
-  width: 100%;
-  left: 0;
-  right: 0;
-  top:0;
-  z-index: -10;
-}
-.movies_video:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #faf4f1 100%);
-}
-.page-movies .pagetitle,.page-movies .header-menu a{
-  color: #FFF;
-}
-.page-movies .header-menu svg{
-  color: #ebebeb;
-}
-.page-movies .menu-main svg {
-  fill: #dfdfdf;
-}*/
-//顶部视频结束--
+// ==========================================
+// 2. 影视列表页 (Movies Page)
+// ==========================================
 
-#movies_page{
+#movies_page {
   display: grid;
-  grid-gap: 2px; 
-  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px; 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
-.movies_bankuai{
-  position:relative;
+
+.movies_bankuai {
+  position: relative;
   overflow: hidden;
   width: 100%;
+  border-radius: 16px; // 新增：给海报加一点圆角，更精致
   aspect-ratio: 3 / 4.4;
+  background: #f0f0f0; // 图片未加载时的占位背景色
 }
-.movies_bankuai img{
-  width:100%;
+
+.movies_bankuai img {
+  width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block; // 防止图片底部出现幽灵间隙
+  transition: transform 0.5s ease; // 让海报放大也带动画
 }
-.movies-nrong{
+
+// 悬停时海报本身微微放大，增加动感
+@media (hover: hover) {
+  .movies_bankuai:hover img {
+    transform: scale(1.05);
+  }
+}
+
+// --- 遮罩层内容 (核心交互优化) ---
+.movies-nrong {
   display: none;
+  
   @include breakpoint('small') {
-    display: block;
-    padding: 60px 20px 20px 20px;
+    display: flex; // 改用 flex 方便垂直居中或底部对齐
+    flex-direction: column;
+    justify-content: center; // 内容垂直居中
+    padding: 20px;
     color: #fff;
     font-size: 0.85rem;
-    position:absolute;
-    transition: transform 0.3s ease;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
-    opacity: 0;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    
+    // 默认样式 (全黑遮罩)
+    background: rgba(0, 0, 0, 0.7); // 稍微调透明一点，0.85太黑了
+    backdrop-filter: blur(2px); // 增加一点毛玻璃效果 (高级感)
+    
+    opacity: 0; // 默认隐藏
+    transition: all 0.3s ease;
+    will-change: opacity, transform;
   }
-} 
-.movies_bankuai:hover .movies-nrong{
-  opacity: 1; 
-  transform: scale(1.05);
 }
 
-.movie-time{
-  color: #c7c7c7;
+// 场景A：电脑端 (鼠标悬停显示)
+@media (hover: hover) {
+  .movies_bankuai:hover .movies-nrong {
+    opacity: 1;
+  }
+  // 悬停时内容微微上浮
+  .movies_bankuai:hover .movies-nrong > div { 
+    transform: translateY(0); 
+  }
+}
+
+// 场景B：触屏端 (手机/平板) - 核心优化
+// 让信息以“底部渐变”形式常驻显示，既不挡海报，又能看到片名评分
+@media (hover: none) {
+  .movies-nrong {
+    opacity: 1 !important; // 强制显示
+    justify-content: flex-end; // 内容沉底
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); // 底部渐变黑
+    backdrop-filter: none; // 手机端关掉毛玻璃省电
+    padding-bottom: 15px; // 底部留空
+  }
+  
+  // 手机端隐藏简介，只留标题和评分，保持清爽
+  .movie-info, .movie-time {
+    display: none !important; 
+  }
+  .movie-title, .movie-pfeng {
+    margin: 2px 0; // 紧凑一点
+  }
+}
+
+// --- 内部文本样式 ---
+.movie-time {
+  color: #ddd; // 提亮一点，c7c7c7有时候太暗
   margin-top: 7px;
+  font-size: 0.75rem;
 }
-.movie-title{
-  font-family:var(--font-family-title);
+
+.movie-title {
+  font-family: var(--font-family-title);
   font-weight: bold;
-  font-size: 1rem;
-  margin: 6px 0 6px 0;
+  font-size: 1.1rem; // 稍微加大一点标题
+  margin: 6px 0;
+  line-height: 1.3;
 }
-.movie-title a{
+.movie-title a {
   color: #FFF;
+  text-decoration: none;
 }
-.movie-pfeng{
-  color: #c7c7c7;
+
+.movie-pfeng {
+  color: #ddd;
   margin-bottom: 8px;
   display: flex;
+  align-items: center; // 垂直居中对齐图标
   gap: 4px;
 }
-.movie-pfeng svg{
-  width: 0.85rem;
-  height: 0.85rem;
-  color: #E5CABD;
-}
-.movie-info{
-  line-height:1.6;
-  color: #FFF;
-  text-align: justify;
+.movie-pfeng svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: #ffc107; // 星星改成金黄色 (比 E5CABD 更醒目)
 }
 
-//加载更多
-.movies_loadMore{
-  background: 0 0;
+.movie-info {
+  line-height: 1.5;
+  color: #eee;
+  text-align: justify;
+  // 限制简介行数，防止溢出
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+// ==========================================
+// 3. 加载更多按钮
+// ==========================================
+.movies_loadMore {
+  background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius: 16px;
-  padding: 10px 30px;
+  border-radius: 50px; // 改成胶囊圆角更现代
+  padding: 10px 40px;
   font-family: var(--font-family-title);
-  font-size: .85rem;
-  border: 0.5px solid var(--text-highlight-color);
-  margin-top: 20px;
-  display: inline-block;
+  font-size: .9rem;
+  border: 1px solid var(--text-highlight-color); // 0.5px在高分屏可能太细
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: block; // 块级居中
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.3s ease;
 }
-.movies_loadMore:hover{
-  opacity: 0.8;
+
+.movies_loadMore:hover {
+  background: var(--text-highlight-color);
+  color: #fff; // 悬停变实心色
+  opacity: 1;
 }
-// 夜间模式页面样式
+
+// ==========================================
+// 4. 夜间模式适配
+// ==========================================
 @media (prefers-color-scheme: dark) {
-.movies_index_info{
-  color: var(--text-content-dark-color);
-}
-.movies_bankuai_index{
-  background: var(--background-dark-color);
-}
-.movies_loadMore {
+  .movies_index_info {
+    color: var(--text-content-dark-color);
+  }
+  .movies_bankuai_index {
+    background: var(--background-dark-color);
+  }
+  .movies_loadMore {
     color: var(--text-highlight-dark-color);
-    border: 0.5px solid var(--text-highlight-dark-color);
-}
+    border-color: var(--text-highlight-dark-color);
+  }
+  .movies_loadMore:hover {
+    background: var(--text-highlight-dark-color);
+    color: var(--background-dark-color);
+  }
 }

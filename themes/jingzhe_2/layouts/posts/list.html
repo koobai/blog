@@ -15,16 +15,7 @@
       </div>
       <div class="posts-description">{{ .Params.description }}</div>
       <div class="posts-time-new">
-        <!--30 天内新博文-
-        {{ if gt .Date (now.AddDate 0 0 -7) }}
-        <div class="sidebar_article_new">NEW</div>
-        {{ end }}->
-        <!--<!--30 天内新博文结束-->
-          <div class="archive-time posts-time">
-            <script>
-              document.write(formatDate({{ .Date.Unix }})); 
-            </script>
-          </div>
+          <div class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
           {{ with .GetTerms "tags" }}
           {{ range . }}
             <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
@@ -38,11 +29,7 @@
 {{ range after 4 $pages }}
   <div class="posts_list_article img-hide"> 
       <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-      <div class="archive-time">
-        <script>
-          document.write(formatDate({{ .Date.Unix }})); 
-        </script>
-      </div> 
+      <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div> 
   </div>
 {{ end }}
 </div>

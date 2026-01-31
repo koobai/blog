@@ -17,6 +17,7 @@ Apple TV 连 Soundba 音响 ARC 接口 > Soundba 连电视 eARC 接口，这样�
 由于家里的智能设备也通过 HomeKit 控制，Apple TV 插着直流电，也就充当作为智能中枢使用。另外有台电视不支持杜比视界，可以使用机器配合 iPhone 给电视屏幕校色。
 
 目前 TV 中，常用的 App：
+
 ![netflix](https://img.koobai.com/article/netflix.webp)
 
 ### 1. Netflix

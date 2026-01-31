@@ -13,11 +13,7 @@
       {{ .Content }}
     </div>
     <div class="single-biaoq">
- <div class="page-time">更新于 
-  <script>
-    document.write(formatDate({{ .Date.Unix }})); 
-  </script>
- </div>
+  <div class="page-time twitter-time" data-time="{{ .Date.Unix }}"></div>
  <div class="single-tag">
      {{ with .GetTerms "tags" }}
           {{ range . }}
@@ -33,11 +29,7 @@
     <div class="archives_one">
       <div>
         <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-        <div class="archive-time">
-          <script>
-            document.write(formatDate({{ .Date.Unix }})); 
-          </script>
-        </div>
+        <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
         <div class="archive-img">
         <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
@@ -48,11 +40,7 @@
     <div class="archives_one">
       <div>
         <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-        <div class="archive-time">
-          <script>
-            document.write(formatDate({{ .Date.Unix }})); 
-          </script>
-        </div>
+        <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
         <div class="archive-img">
         <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
@@ -65,11 +53,7 @@
     <div class="archives_one">
       <div>
         <div class="archive-title"><a href="{{ $randomPage.RelPermalink }}">{{ $randomPage.Title }}</a></div>
-        <div class="archive-time">
-          <script>
-            document.write(formatDate({{ $randomPage.Date.Unix }})); 
-          </script>
-        </div>
+        <div class="archive-time twitter-time" data-time="{{ $randomPage.Date.Unix }}"></div> 
         </div>
         <div class="archive-img">
         <a href="{{ $randomPage.RelPermalink }}"><img loading="lazy" decoding="async" src="{{ $randomPage.Params.image | relURL }}" /></a>          
