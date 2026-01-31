@@ -84,7 +84,7 @@
   width: 100%;
   border-radius: 16px; // 新增：给海报加一点圆角，更精致
   aspect-ratio: 3 / 4.4;
-  background: #f0f0f0; // 图片未加载时的占位背景色
+  background: transparent;
 }
 
 .movies_bankuai img {
