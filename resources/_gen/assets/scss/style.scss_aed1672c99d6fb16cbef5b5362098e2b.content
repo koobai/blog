@@ -35,7 +35,7 @@ ol, ul {
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 3;
   width: 120px;
   height: 50px;
   max-width: 600px;
@@ -662,7 +662,7 @@ ul {
     opacity: 1;
     visibility: visible;
     height: 100%;
-    z-index: 2;
+    z-index: 3;
     display: flex; }
     .menu-main-mobile.open li {
       animation: fadeInTop 0.5s ease forwards;
@@ -2590,7 +2590,7 @@ blockquote p {
 .hardware-star .hardware-text {
   position: relative;
   /* 必须加，确保 z-index 生效 */
-  z-index: 1;
+  z-index: 2;
   /* 置于最顶层 */
   order: 1;
   /* 逻辑顺序第一 */
@@ -2606,8 +2606,6 @@ blockquote p {
   display: block;
   position: relative;
   /* 必须加 */
-  z-index: 1;
-  /* 置于图片之上，标题之下 */
   order: 2;
   /* 逻辑顺序第二 */
   opacity: 1;
@@ -2619,7 +2617,9 @@ blockquote p {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   color: #fff;
-  font-size: 1rem; }
+  font-size: 1rem;
+  z-index: 2;
+  /* 置于图片之上，标题之下 */ }
   @media (min-width: 900px) {
     .hardware-star .note {
       font-size: 0.9rem; } }
