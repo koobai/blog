@@ -19,21 +19,35 @@
   padding: 15px;
 }
 
-.movies_bankuai_index img {
-  // 建议给固定宽高属性防止抖动，这里CSS做二次约束
-  width: 110px;
-  border-radius: 14px;
-  object-fit: cover;
-  aspect-ratio: 3 / 4;
-  transition: transform .3s ease;
-  will-change: transform; // 性能优化：提示浏览器提前准备
-  backface-visibility: hidden; // 性能优化：抗锯齿
+.movies_bankuai_index .movies_left a {
+  display: block; // 变成块级元素
+  width: 110px;   // 宽度固定在这里
+  border-radius: 14px; // 圆角加在容器上
+  overflow: hidden;    // ★关键：锁住溢出，实现内部放大
+  aspect-ratio: 3 / 4; // 锁定 3:4 比例
+  position: relative;
+  line-height: 0; // 消除a标签底部的幽灵间隙
+  background: transparent;
 }
 
-// 交互优化：仅在支持鼠标悬停的设备上启用图片放大
+.movies_bankuai_index img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0; 
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform; 
+  backface-visibility: hidden;
+}
 @media (hover: hover) {
-  .movies_bankuai_index img:hover {
-    transform: scale(1.03);
+  .movies_bankuai_index .movies_left a:hover img {
+    transform: scale(1.08); 
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .movies_bankuai_index .movies_left a {
+    background: transparent;
   }
 }
 

@@ -1,3 +1,6 @@
+// ============================================
+// Memos 核心容器与布局
+// ============================================
 .memos_diaoyong{
   max-width: 700px;
   margin: auto;
@@ -62,7 +65,7 @@
   margin-left: auto;
 }
 
-//唠叨页
+//唠叨页 Timeline
 .bb-timeline{
   margin-bottom: 0;
   @include breakpoint('medium') {
@@ -74,7 +77,6 @@
   line-height:1.7;
   margin:0;
   text-align: justify;
-
 }
 .datacont a{
   text-decoration: underline;
@@ -84,35 +86,74 @@
     opacity: 0.6;
   }
 }
-.resimg figure{
-  margin:0;
-  margin-bottom: -4px;
-}
-.resimg{
+
+// ============================================
+// ★ 新版图片九宫格系统 (整合优化版)
+// ============================================
+
+.resimg {
   display: grid;
-  gap: 6px;
-  width: 60%;
-  grid-template-columns: repeat(2, 1fr); 
+  gap: 6px; 
+  width: 60%; // PC端默认宽度 (可根据喜好调整为 70% 等)
+  grid-template-columns: repeat(2, 1fr); // 默认双列
   margin-top: 5px;
   margin-bottom: 10px;
+
+  // 1. 手机端适配：撑满宽度
+  @media (max-width: 900px) {
+    width: 100% !important; 
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  // 2. 图片容器 (每一张图的框)
+  figure {
+    margin: 0;
+    position: relative;
+    border-radius: 16px; // 圆角 16px
+    overflow: hidden;
+    background-color: #f0f0f0; 
+    aspect-ratio: 1 / 1; // 强制正方形
+    
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+
+    // 深色模式适配
+    @media (prefers-color-scheme: dark) {
+      background-color: #333; 
+    }
+  }
 }
-.gallery-thumbnail img{
-  width: 100% !important;
-  aspect-ratio: 3.5 / 3;
-  object-fit: cover;
-  border-radius:4px;
-  transition: transform 0.3s ease;
+
+// 3. Grid 循环逻辑 (默认 3 列)
+@for $i from 3 through 9 {
+  .grid-#{$i} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// 4. 图片本体交互样式
+.gallery-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  margin: 0;
   cursor: zoom-in;
-  margin: 0 !important;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform; 
 }
-.resimg img:hover{
-  transform: scale(1.03);
+
+// 鼠标悬停特效
+.resimg figure:hover img {
+  transform: scale(1.08); 
 }
-.grid-3,.grid-5,.grid-6,.grid-7,.grid-8,.grid-9{
-  grid-template-columns: repeat(3, 1fr); 
-}
+
+// ============================================
+// 标签与 Tag 样式
+// ============================================
+
 .memos-tag-dg,.memos-tag-sc{
-  display: inline-block; /* 根据padding宽度自动调整 */
+  display: inline-block; 
   padding: 4px 4px 4px 2px;
   color: var(--sanji-color);
   font-size: 0.85rem;
@@ -161,6 +202,10 @@
 .memos-tag-dg:hover,.memos-tag-all:hover{
   text-decoration: underline;
 }
+
+// ============================================
+// 评论与交互区
+// ============================================
 .memos-pl{
   display: flex;
   margin-bottom: 5px;
@@ -227,7 +272,10 @@ blockquote p{
   color: #666 !important;
   margin: -10px -40px 0 -40px !important;
 }
-//memos页发布唠叨
+
+// ============================================
+// Memos 编辑器与发布区
+// ============================================
 .load-memos-editor{
   cursor: pointer;
   display: inline-block;
@@ -392,25 +440,64 @@ blockquote p{
   margin-left: auto;
 }
 
-//本地图片上传样式
-.memos-image-list{
-  cursor: pointer;
+// ============================================
+// 本地上传预览列表 (圆角同步优化)
+// ============================================
+.memos-image-list {
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  color: var(--sanji-color);
   margin-bottom: 15px;
-}
-.memos-image-list .memos-up-image{
-  background-size:cover;
-  background-repeat:no-repeat;
-  width:4rem;
-  height:4rem;
-  border-radius:4px;
-  transition: opacity .3s ease-in-out;
-}
-.memos-image-list .memos-up-image:hover{
-  opacity: 0.6;
-}
+  cursor: pointer;
+  color: var(--sanji-color); 
 
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+  }
+
+  .imagelist-item {
+    position: relative;
+    border-radius: 16px; // 圆角 16px
+    overflow: hidden; 
+  }
+
+  .memos-up-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 16px; 
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .imagelist-item:hover .memos-up-image {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  .imagelist-item::after {
+    content: "×";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom-left-radius: 8px; 
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .imagelist-item:hover::after {
+    opacity: 1;
+  }
+}
 
 .memos-img-edit{
   background: #f5f5f5;
@@ -501,17 +588,15 @@ blockquote p{
 .bb-list-li{
   border-radius:16px;
   background: var(--element-background-color);
-  //box-shadow: var(--touy-color);
   padding: 15px;
 }
-// 页面宽度小于700样式
+
+// ============================================
+// 响应式与深色模式适配
+// ============================================
+
+// 页面宽度小于900px样式 (手机端)
 @media (max-width:900px){
-  .resimg{
-    width: 100% !important;
-  }
-  .resimg figure{
-    margin-bottom: -8px;
-  }
   .memos_diaoyong{
     display: none;
   }
@@ -527,145 +612,148 @@ blockquote p{
     }
   }
 }
-// 页面宽度大于700样式
-//首页图片样式
-@media (min-width:900px){
-  .memos_diaoyong .resimg{
-    width: 100% !important;
-    grid-template-columns: repeat(5, 1fr); 
+
+// 首页图片样式 (大屏适配 > medium)
+@include breakpoint('medium') {
+  // 自动生成 grid-3 到 grid-9 在大屏下的样式 (5列)
+  @for $i from 3 through 9 {
+    .memos_diaoyong .grid-#{$i} {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
-  .memos_diaoyong .grid-3,.memos_diaoyong .grid-5,.memos_diaoyong .grid-6,.memos_diaoyong .grid-7,.memos_diaoyong grid-8,.memos_diaoyong .grid-9{
-    grid-template-columns: repeat(5, 1fr); 
-  }
-  .bb-list-ul{
+  // 列表布局
+  .bb-list-ul {
     display: grid;
-    grid-row-gap: 20px; /* 可选项，设置列之间的间隔 */
+    grid-row-gap: 20px;
   }
-  }
-// 夜间模式页面样式
+}
+
+// 全局深色模式颜色定义
 @media (prefers-color-scheme: dark) {
-.memos-editor-body {
-    background: var(--background-dark-color);
-}
-.submit-memos-btn, .edit-memos-btn {
+  .memos-editor-body {
+      background: var(--background-dark-color);
+  }
+  .submit-memos-btn, .edit-memos-btn {
+      color: var(--text-highlight-dark-color);
+  }
+  .talks_comments a svg:hover{
     color: var(--text-highlight-dark-color);
-}
-.talks_comments a svg:hover{
-  color: var(--text-highlight-dark-color);
-}
-.bb-load button{
-  color: var(--text-highlight-dark-color);
-  border: 0.5px solid var(--text-highlight-dark-color);
-}
-.bb-list-li{
-  background: var(--background-dark-color);
-}
-.memos-xiala{
-  background-color: #282527;
-}
-.memos-xiala .switchUser-btn,.memos-xiala .private-btn,.memos-xiala .oneday-btn,.image-btn,.code-btn{
-  color: var(--sanji-color);
-}
-.memos-more-ico svg{
-  color: var(--erji-color);
-}
-.memos-editor-textarea::placeholder{
-  color: var(--erji-color);
-}
-.memos-tag-all{
-  background: #332E2F;
-}
-.memos-tag-sc-2{
-  color: var(--erji-color);
-}
-.memos-tag-dg{
-  color: var(--erji-color);
-}
-.memos-tag-sc{
-  color: #999 !important;
-  background: #332E2F !important;
-}
-.memos_diaoyong_from a{
-  color: var(--sanji-color);
-}
-.memos_diaoyong_time, .memos_diaoyong_laiz a,.memos_diaoyong_more a,.memos_diaoyong_from{
-  color: var(--erji-color);
-}
-.memos_diaoyong_info p, .memos_diaoyong_info a {
-  color: var(--text-content-dark-color) !important;
-}
-.talks_comments svg {
-  color: var(--erji-color);
-}
-.talks_comments svg:hover{
-  color: var(--text-highlight-color);
-}
-.datacont pre,blockquote p{
-  background: #2c2829;
-}
-.datacont pre code{
-  color: var(--sanji-color);
-}
-.datacont code{
-  background: var(--background-dark-body-color);
-  border: 1px solid var(--background-dark-body-color);
-  color: var(--text-highlight-dark-color);
-}
-blockquote p{
-  border-left: 4px solid #5f5f5f;
-  color: #888 !important;
-}
-.memos_diaoyong_info blockquote p{
-  color: #888 !important;
+  }
+  .bb-load button{
+    color: var(--text-highlight-dark-color);
+    border: 0.5px solid var(--text-highlight-dark-color);
+  }
+  .bb-list-li{
+    background: var(--background-dark-color);
+  }
+  .memos-xiala{
+    background-color: #282527;
+  }
+  .memos-xiala .switchUser-btn,.memos-xiala .private-btn,.memos-xiala .oneday-btn,.image-btn,.code-btn{
+    color: var(--sanji-color);
+  }
+  .memos-more-ico svg{
+    color: var(--erji-color);
+  }
+  .memos-editor-textarea::placeholder{
+    color: var(--erji-color);
+  }
+  .memos-tag-all{
+    background: #332E2F;
+  }
+  .memos-tag-sc-2{
+    color: var(--erji-color);
+  }
+  .memos-tag-dg{
+    color: var(--erji-color);
+  }
+  .memos-tag-sc{
+    color: #999 !important;
+    background: #332E2F !important;
+  }
+  .memos_diaoyong_from a{
+    color: var(--sanji-color);
+  }
+  .memos_diaoyong_time, .memos_diaoyong_laiz a,.memos_diaoyong_more a,.memos_diaoyong_from{
+    color: var(--erji-color);
+  }
+  .memos_diaoyong_info p, .memos_diaoyong_info a {
+    color: var(--text-content-dark-color) !important;
+  }
+  .talks_comments svg {
+    color: var(--erji-color);
+  }
+  .talks_comments svg:hover{
+    color: var(--text-highlight-color);
+  }
+  .datacont pre,blockquote p{
+    background: #2c2829;
+  }
+  .datacont pre code{
+    color: var(--sanji-color);
+  }
+  .datacont code{
+    background: var(--background-dark-body-color);
+    border: 1px solid var(--background-dark-body-color);
+    color: var(--text-highlight-dark-color);
+  }
+  blockquote p{
+    border-left: 4px solid #5f5f5f;
+    color: #888 !important;
+  }
+  .memos_diaoyong_info blockquote p{
+    color: #888 !important;
+  }
+
+  //memos页发布唠叨
+  .outline svg{
+    color: var(--erji-color);
+  }
+  .outline svg:hover{
+    color: var(--sanji-color);
+  }
+  .memos-path-input,.memos-token-input{
+    color: var(--text-content-dark-color) !important;
+  }
+  .editor-selector select {
+    color: var(--erji-color) !important;
+  }
+  .editor-selector::after {
+    border-color: var(--erji-color) transparent transparent transparent; 
+  }
+
+  .memos-editor-content .memos-editor-textarea{
+    color: var(--text-content-dark-color);
+  }
+  .memos-open-api-submit{
+    background: var(--background-dark-color) !important;
+    color: var(--text-highlight-dark-color) !important;
+  }
+  .edit-btn,.archive-btn,.delete-btn,.cancel-edit-btn{
+    color: var(--erji-color);
+  }
+  .memos-menu-d,.memos-img-edit{
+    background-color: #282527;
+  }
+  .cancel-edit-btn{
+    border: 0.5px solid transparent;
+  }
+
+  // 标签自动补全
+  #memos-tag-menu {
+    background-color: #282527 !important;
+    box-shadow: 2px 4px 1rem rgba(0,0,0,.3) !important;
+    color: #888 !important;
+  }
+  .tag-option.selected {
+    background-color: #3e3e3e !important;
+    color: #bdbdbd !important;
+  }
 }
 
-//memos页发布唠叨
-.outline svg{
-  color: var(--erji-color);
-}
-.outline svg:hover{
-  color: var(--sanji-color);
-}
-.memos-path-input,.memos-token-input{
-  color: var(--text-content-dark-color) !important;
-}
-.editor-selector select {
-  color: var(--erji-color) !important;
-}
-.editor-selector::after {
-  border-color: var(--erji-color) transparent transparent transparent; /* 控制箭头的颜色 */
-}
-
-.memos-editor-content .memos-editor-textarea{
-  color: var(--text-content-dark-color);
-}
-.memos-open-api-submit{
-  background: var(--background-dark-color) !important;
-  color: var(--text-highlight-dark-color) !important;
-}
-.edit-btn,.archive-btn,.delete-btn,.cancel-edit-btn,.memos-image-list{
-  color: var(--erji-color);
-}
-.memos-menu-d,.memos-img-edit{
-  background-color: #282527;
-}
-.cancel-edit-btn{
-  border: 0.5px solid #201d1e;
-}
-
-// 标签自动补全
-#memos-tag-menu {
-  background-color: #282527 !important;
-  box-shadow: 2px 4px 1rem rgba(0,0,0,.3) !important;
-  color: #888 !important;
-}
-.tag-option.selected {
-  background-color: #3e3e3e !important;
-  color: #bdbdbd !important;
-}
-}
-
-//表情
+// ============================================
+// 表情与自动补全浮窗
+// ============================================
 .emoji-selector{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
@@ -682,9 +770,6 @@ blockquote p{
 .emoji-item:hover{
   opacity: 0.6;
 }
-
-
-// 标签自动补全
 
 #memos-tag-menu {
   position: absolute;
