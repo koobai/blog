@@ -48,3 +48,34 @@ function animateSummaries() {
 }
 
 animateSummaries();
+
+// 全局时间调用显示
+document.addEventListener("DOMContentLoaded", function() {
+  const dateElements = document.querySelectorAll('.twitter-time');
+
+  dateElements.forEach(el => {
+    let rawTime = el.getAttribute('data-time');
+    if (!rawTime) return;
+
+    let finalTime;
+
+    // 1. 如果是日期字符串 (包含 "-" 或 "/") -> 转为秒
+    if (rawTime.includes('-') || rawTime.includes('/')) {
+        const dateObj = new Date(rawTime);
+        if (!isNaN(dateObj.getTime())) {
+            // 【关键修改】getTime() 是毫秒，必须除以 1000 变成秒
+            // 这样传入 formatDate 时，让它自己去决定是否要 * 1000
+            finalTime = Math.floor(dateObj.getTime() / 1000); 
+        }
+    } 
+    // 2. 否则按纯数字处理 (通常 CSV 里是秒)
+    else {
+        finalTime = parseInt(rawTime);
+    }
+
+    // 调用全局格式化函数
+    if (finalTime && typeof window.formatDate === 'function') {
+      el.innerText = window.formatDate(finalTime);
+    }
+  });
+});
