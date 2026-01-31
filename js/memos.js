@@ -55,7 +55,6 @@ async function memoFetch(url, method = 'GET', body = null) {
 
 if(bbDom){
 getFirstList() //首次加载数据
-meNums() //加载总数
 var btn = document.querySelector("button.button-load");
 btn.addEventListener("click", function () {
   btn.textContent= '加载中……';
@@ -112,19 +111,6 @@ function getNextList(){
         return;
       }
     });
-}
-
-//加载总 Memos 数
-function meNums() {
-  var bbLoad = document.querySelector('.bb-load');
-  var bbUrl = memos + "api/v1/memo/stats?creatorId=" + bbMemo.creatorId;
-  memoFetch(bbUrl).then(resdata => {
-    if (Array.isArray(resdata)) {
-      // 保持原有逻辑（虽然被注释掉了）
-      // var allnums = ' ( 目前共唠叨了 ' + resdata.length + ' 条 )';
-      // bbLoad.insertAdjacentHTML('afterend', allnums);
-    }
-  });
 }
 
 // 插入 html 
@@ -738,23 +724,17 @@ function getEditIcon() {
     }
   }
 
-  async function updateAvatarUrl(e) {
+async function updateAvatarUrl(e) {
     try {
-      let response = await fetch(`${memosPath}/api/v1/user/me`,{
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${memosOpenId}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      if (response.ok) {
-        let resdata = await response.json();
+      // 使用 memoFetch 自动处理 headers 和认证
+      let resdata = await memoFetch(`${memosPath}/api/v1/user/me`);
+      
+      // 更新头像数据
+      if (resdata) {
         e.forEach(item => {
           item.avatarUrl = resdata.avatarUrl;
         });
         updateRadom(e);
-      } else {
-        cocoMessage.error('出错了，再检查一下吧!');
       }
     } catch (error) {
       cocoMessage.error('出错了，再检查一下吧!');
