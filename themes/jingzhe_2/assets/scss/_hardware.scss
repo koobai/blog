@@ -110,6 +110,7 @@
 .hardware-star {
     grid-column: span 2; 
     display: flex;
+	background: transparent; 
     flex-direction: column; /* 让内容垂直排列 */
     position: relative;     /* 必须加这个，图片才能以此为背景基准 */
     min-height: 320px;      /* 给大图卡片一个合适的高度 */
@@ -126,6 +127,7 @@
     height: 100%;
     z-index: 1;             /* 置于底层 */
 	overflow: hidden;
+	border-radius: 16px;
 	&::after {
         content: "";
         position: absolute;

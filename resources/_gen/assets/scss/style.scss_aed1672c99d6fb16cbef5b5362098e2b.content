@@ -1159,8 +1159,7 @@ img[atk-emoticon] {
   padding: 30px 25px;
   justify-content: flex-start;
   /* 顶部对齐标题 */
-  background: #000;
-  /* 背景兜底色 */
+  background: transparent;
   align-items: flex-start;
   overflow: hidden; }
   .app-star .app-title-all, .app-star .appzhuangtai-right {
@@ -2541,6 +2540,7 @@ blockquote p {
 .hardware-star {
   grid-column: span 2;
   display: flex;
+  background: transparent;
   flex-direction: column;
   /* 让内容垂直排列 */
   position: relative;
@@ -2561,7 +2561,8 @@ blockquote p {
   height: 100%;
   z-index: 1;
   /* 置于底层 */
-  overflow: hidden; }
+  overflow: hidden;
+  border-radius: 16px; }
   .hardware-star-img::after {
     content: "";
     position: absolute;
