@@ -1,4 +1,6 @@
-//博客列表页
+// 博客列表页
+
+// 1. 文章列表容器
 .posts-new {
   display: grid;
   gap: 30px;
@@ -6,14 +8,17 @@
     gap: 40px;
   }
 }
-.posts-background {
-    position: relative;
-    overflow: hidden;
-    @include breakpoint('medium') {
 
-    }
+.posts-background {
+  position: relative;
+  overflow: hidden;
+  @include breakpoint('medium') {
+    // 预留位置
+  }
 }
-.posts-title a{
+
+// 2. 标题
+.posts-title a {
   font-family: var(--font-family-title);
   font-size: 1.4rem;
   line-height: 1.5;
@@ -22,6 +27,8 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
+
+// 3. 描述 (整合了夜间模式)
 .posts-description {
   line-height: 1.7;
   font-size: 1.1rem;
@@ -32,35 +39,54 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
+  // 夜间模式内聚
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-content-dark-color);
+  }
 }
-.posts_list{
+
+// 4. 下半部列表容器
+.posts_list {
   display: grid;
   gap: 15px;
   margin-top: 30px;
   @include breakpoint('medium') {
-    grid-template-columns: repeat(2, 1fr); 
-    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
+    // flex-wrap: wrap; // Grid 布局不需要 flex-wrap，已移除以净化代码
+  }
 }
-}
-.posts_list_index{
+
+// 首页可能用到的列表 (保留)
+.posts_list_index {
   display: grid;
   gap: 12px;
   margin-bottom: 25px;
   @include breakpoint('medium') {
-    grid-template-columns: repeat(2, 1fr); 
-    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
+    // flex-wrap: wrap; 
     gap: 15px;
+  }
 }
-}
-.posts_list_article{
-  border-radius:16px;
+
+// 文章卡片样式 (整合夜间模式)
+.posts_list_article {
+  border-radius: 16px;
   background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px;
+
   @include breakpoint('medium') {
     padding: 12px;
+  }
+
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+  }
 }
-}
+
+// 首页带角标的文章卡片
 .posts_list_article-index {
   position: relative; // 必须：作为角标定位的基准
   border-radius: 16px;
@@ -69,10 +95,18 @@
   padding: 15px;
   overflow: hidden; // 确保三角形角标不溢出圆角
   margin-bottom: 15px;
-    @include breakpoint('medium') {
+
+  @include breakpoint('medium') {
     margin-bottom: 0;
+  }
+
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+  }
 }
-}
+
+// 角标
 .post-badge {
   position: absolute;
   font-size: 0.85rem;
@@ -86,20 +120,29 @@
   color: var(--element-background-color);
   border-bottom-left-radius: 10px; // 左下角加个圆角更精致
   z-index: 1;
+
   svg {
     width: 18px;
     height: 18px;
   }
+
   @include breakpoint('medium') {
-    display:none;
+    display: none;
+  }
+
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    background: var(--text-highlight-dark-color);
   }
 }
-.post-biaoji{
+
+.post-biaoji {
   display: flex;
   gap: 8px;
   align-items: center;
 }
-.post-biaoji-xinxi{
+
+.post-biaoji-xinxi {
   display: none;
   @include breakpoint('medium') {
     font-size: 0.8rem;
@@ -115,106 +158,120 @@
       height: 18px;
     }
   }
+
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    @include breakpoint('medium') {
+      background: var(--text-highlight-dark-color);
+      color: #fff;
+    }
+  }
 }
-.posts-img{
- margin:10px 0;
- overflow: hidden;
- aspect-ratio: 5.3 / 3;
+
+// 5. 图片区域 (重点优化：防抖动 + 手机端防误触)
+.posts-img {
+  margin: 10px 0;
+  overflow: hidden;
+  aspect-ratio: 5.3 / 3;
+  // 建议加上 border-radius 防止子元素溢出时圆角失效
+  border-radius: 16px; 
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: 16px;
+
+    // 优化：仅在支持鼠标悬停的设备上启用放大
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+  }
 }
-.posts-img img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-  border-radius: 16px;
-}
-.posts-img img:hover{
-  transform: scale(1.03);
-}
-.posts-time-new{
+
+.posts-time-new {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-//详情页博文推荐
-.archives_nrong{
+// 6. 详情页博文推荐
+.archives_nrong {
   margin: 30px 0;
   display: grid;
-  grid-gap: 15px; /* 中间空10px间距 */
+  grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	@include breakpoint('small') {
-		grid-gap: 20px; /* 中间空10px间距 */
-	  }	
+
+  @include breakpoint('small') {
+    grid-gap: 20px;
+  }
 }
-.archives_one{
+
+.archives_one {
   display: flex;
   align-items: center;
   background: var(--element-background-color);
   box-shadow: var(--touy-color);
-  border-radius:16px;
+  border-radius: 16px;
   padding: 15px;
+
   @include breakpoint('small') {
-		grid-gap: 20px; /* 中间空10px间距 */
-	  }	
+    grid-gap: 20px;
+  }
+
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+  }
+  
+  // 优化：嵌套 Hover 逻辑，且仅限鼠标设备
+  @media (hover: hover) {
+    &:hover .archive-img img {
+      transform: scale(1.05);
+    }
+  }
 }
-.archive-title{
+
+.archive-title {
   font-family: var(--font-family-title);
   font-size: 1.1em;
   line-height: 1.6;
 }
-.archive-title-index{
+
+.archive-title-index {
   font-family: var(--font-family-title);
   font-size: 1.3rem;
   line-height: 1.6;
   @include breakpoint('medium') {
     font-size: 1.2rem;
+  }
 }
-}
-.archive-time-index{
-  font-size: 0.75rem;
+
+// 时间样式 (复用逻辑)
+.archive-time,
+.archive-time-index {
+  font-size: 0.85rem;
   color: var(--sanji-color);
-  margin-bottom: 5px;
   font-family: var(--font-family-code);
+  
+  // 夜间模式
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+  }
 }
-.archive-time{
-    font-size: 0.85rem;
-    color: var(--sanji-color);
-    font-family: var(--font-family-code);
-  }
+
 .archive-img {
-    margin-left: auto;
-  }
-.archive-img img{
+  margin-left: auto;
+
+  img {
     width: 120px;
     aspect-ratio: 4.5 / 3;
     object-fit: cover;
-    border-radius:6px;
-    transition: transform 0.3s ease; 
+    border-radius: 6px;
+    transition: transform 0.3s ease;
     margin-left: 10px;
   }
-.archives_one:hover .archive-img img{
-	  transform: scale(1.05);
-  }
-
-  // 夜间模式页面样式
-  @media (prefers-color-scheme: dark) {
-  .archive-time,.archive-time-index{
-        color: var(--erji-color);
-      }
-  .posts_list_article,.archives_one,.posts_list_article-index{
-    background: var(--background-dark-color);
-  }
-  .posts-description{
-    color: var(--text-content-dark-color);
-  }
-  .post-badge {
-    background: var(--text-highlight-dark-color);
 }
-.post-biaoji-xinxi{
-  @include breakpoint('medium') {
-    background: var(--text-highlight-dark-color);
-    color: #fff;
-  }
-}
-    }

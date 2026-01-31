@@ -11,13 +11,25 @@
 <script>
   const params = new URLSearchParams(window.location.search);
   const encodedTarget = params.get('target');
-  const target = atob(encodedTarget); // 使用 atob 进行 Base64 解码
-  
-  if (target) {
-    document.getElementById('direct-link').href = target;
-    document.getElementById('tiaozhuan-link').textContent = '' + target; // 直接显示目标地址    
+
+  if (encodedTarget) {
+    try {
+        // 🛑 关键修改：先 atob 解 Base64，再 decodeURIComponent 解中文编码
+        // 这与 single.js 中的 btoa(encodeURIComponent(...)) 是成对的
+        const target = decodeURIComponent(atob(encodedTarget));
+        
+        // 赋值链接和文本
+        document.getElementById('direct-link').href = target;
+        // 使用 textContent 防止 XSS 攻击（只显示文本，不渲染 HTML）
+        document.getElementById('tiaozhuan-link').textContent = target; 
+    } catch (e) {
+        console.error('链接解析失败:', e);
+        document.getElementById('tiaozhuan-link').textContent = "无效的链接参数";
+        document.querySelector('.tiaozhuan-button').style.display = 'none'; // 隐藏按钮
+    }
   } else {
-    console.error('未指定重定向目标。');
+    document.getElementById('tiaozhuan-link').textContent = "未指定目标地址";
+    document.querySelector('.tiaozhuan-button').style.display = 'none';
   }
 </script>
 {{ end }}

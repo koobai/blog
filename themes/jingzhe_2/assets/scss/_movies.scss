@@ -223,9 +223,8 @@
 }
 
 .movies_loadMore:hover {
-  background: var(--text-highlight-color);
-  color: #fff; // 悬停变实心色
-  opacity: 1;
+  opacity: 0.8;
+  transition: opacity .3s ease-in-out;
 }
 
 // ==========================================
@@ -241,9 +240,5 @@
   .movies_loadMore {
     color: var(--text-highlight-dark-color);
     border-color: var(--text-highlight-dark-color);
-  }
-  .movies_loadMore:hover {
-    background: var(--text-highlight-dark-color);
-    color: var(--background-dark-color);
   }
 }

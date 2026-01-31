@@ -1,85 +1,88 @@
 {{ define "body_classes" }}page-blog-single{{ end }}
 {{ define "main" }} 
 <div class="single-nrong">
-<div class="single-zw">
-    <div class="article_details">
-      <div class="article_details_title">{{ .Title }}{{ if .Site.Params.addDot }}{{ end }}</div>
+  <div class="single-zw">
+    
+    <article class="article_details">
+      <h1 class="article_details_title">{{ .Title }}</h1>
       {{ if .Params.image }}
-      <img src="{{ .Params.image | relURL }}" class="top-img img-hide" />
+      <img src="{{ .Params.image | relURL }}" class="top-img img-hide" alt="{{ .Title }}" />
       {{ end }}
-    </div>
+    </article>
+
     <div class="content_zhengwen">
-    <div class="content">
-      {{ .Content }}
+      <div class="content">
+        {{ .Content }}
+      </div>
+      
+      <div class="single-biaoq">
+        <div class="page-time twitter-time" data-time="{{ .Date.Unix }}"></div>
+        <div class="single-tag">
+           {{ with .GetTerms "tags" }}
+                {{ range . }}
+           <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+                {{ end }}
+           {{ end }}
+        </div>
+      </div> 
     </div>
-    <div class="single-biaoq">
-  <div class="page-time twitter-time" data-time="{{ .Date.Unix }}"></div>
- <div class="single-tag">
-     {{ with .GetTerms "tags" }}
-          {{ range . }}
-     <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
-          {{ end }}
-          {{ end }}
- </div>
-  </div> 
- </div>
- <!-- 上一篇下一篇文章 -->
- <div class="archives_nrong" >
-  {{ with .PrevInSection }}
-    <div class="archives_one">
-      <div>
-        <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-        <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
+
+   <div class="archives_nrong" >
+    {{ with .PrevInSection }}
+      <div class="archives_one">
+        <div>
+          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+          <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
         <div class="archive-img">
-        <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
+          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
         </div>
-    </div>
-  {{ end }}
-  {{ with .NextInSection }}
-    <div class="archives_one">
-      <div>
-        <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
-        <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
-        </div>
-        <div class="archive-img">
-        <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
-        </div>
-    </div>
-  {{ else }}
-    <!-- 如果没有下一篇文章，则从所有文章中随机选择一篇作为推荐 -->
-    {{ $pages := where site.RegularPages "Type" "posts" }}
-    {{ $randomPage := index $pages (add (mod (now.Unix) (len $pages)) 1) }}
-    <div class="archives_one">
-      <div>
-        <div class="archive-title"><a href="{{ $randomPage.RelPermalink }}">{{ $randomPage.Title }}</a></div>
-        <div class="archive-time twitter-time" data-time="{{ $randomPage.Date.Unix }}"></div> 
+      </div>
+    {{ end }}
+    
+    {{ with .NextInSection }}
+      <div class="archives_one">
+        <div>
+          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+          <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
         <div class="archive-img">
-        <a href="{{ $randomPage.RelPermalink }}"><img loading="lazy" decoding="async" src="{{ $randomPage.Params.image | relURL }}" /></a>          
+          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
         </div>
-    </div>
-  {{ end }}
-  <!--返回上一级-->
-  <div href="javascript:void(0)" 
-   onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" class="fanhui" title="哪来回哪去" data-umami-event="Fanhui">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
-  </svg>
+      </div>
+    {{ else }}
+      {{ $pages := where site.RegularPages "Type" "posts" }}
+      {{ $randomPage := index $pages (add (mod (now.Unix) (len $pages)) 1) }}
+      <div class="archives_one">
+        <div>
+          <div class="archive-title"><a href="{{ $randomPage.RelPermalink }}">{{ $randomPage.Title }}</a></div>
+          <div class="archive-time twitter-time" data-time="{{ $randomPage.Date.Unix }}"></div> 
+        </div>
+        <div class="archive-img">
+          <a href="{{ $randomPage.RelPermalink }}"><img loading="lazy" decoding="async" src="{{ $randomPage.Params.image | relURL }}" alt="{{ $randomPage.Title }}" /></a>          
+        </div>
+      </div>
+    {{ end }}
+
+    <button type="button" 
+     onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" 
+     class="fanhui" title="哪来回哪去" aria-label="返回上一页" data-umami-event="Fanhui">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
+      </svg>
+    </button>
   </div>
 
-</div>
-      <!----评论加载-->
-      <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
-      <div class="article-comments" id="articlecomments" style="display: none;">
-        {{- partial "artalk" . -}}
-      </div> 
-</div>
-<div>
-    <div class="paragraph-dh">
-     {{ .TableOfContents }}
-    </div>
-</div>
+  <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
+  <div class="article-comments" id="articlecomments" style="display: none;">
+    {{- partial "artalk" . -}}
+  </div> 
+
+  </div> <div>
+      <div class="paragraph-dh">
+       {{ .TableOfContents }}
+      </div>
+  </div>
 
 </div>
 <script src="/js/single.js"></script>    
