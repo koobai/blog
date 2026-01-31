@@ -1183,7 +1183,9 @@ img[atk-emoticon] {
     color: var(--erji-color);
     border-color: var(--erji-color); }
   .pagetitle {
-    color: var(--erji-color); } }
+    color: var(--erji-color); }
+  .app-star {
+    background: transparent !important; } }
 
 /*归档页标签*/
 .archives_tags {
@@ -1298,7 +1300,7 @@ img[atk-emoticon] {
   width: 100%;
   border-radius: 16px;
   aspect-ratio: 3 / 4.4;
-  background: #f0f0f0; }
+  background: transparent; }
 
 .movies_bankuai img {
   width: 100%;
@@ -2608,6 +2610,8 @@ blockquote p {
 @media (prefers-color-scheme: dark) {
   .bankuai {
     background: var(--background-dark-color); }
+  .hardware-star {
+    background: transparent !important; }
   .hardware-text {
     color: var(--erji-color); }
   .hardware-title a, .note {

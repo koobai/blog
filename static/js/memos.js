@@ -17,14 +17,6 @@ if(typeof(bbMemos) !=="undefined"){
     }
   }
 }
-function loadCssCode(code){
-var style = document.createElement('style');
-style.type = 'text/css';
-style.rel = 'stylesheet';
-style.appendChild(document.createTextNode(code));
-var head = document.getElementsByTagName('head')[0];
-head.appendChild(style);
-}
 
 var limit = bbMemo.limit
 var memos = bbMemo.memos
@@ -38,6 +30,28 @@ var getEditor = window.localStorage && window.localStorage.getItem("memos-editor
 var memoChangeDate = 0;
 var getSelectedValue = window.localStorage && window.localStorage.getItem("memos-visibility-select") || "PUBLIC";
 
+// 封装的通用请求函数
+async function memoFetch(url, method = 'GET', body = null) {
+  const token = window.localStorage && window.localStorage.getItem("memos-access-token");
+  const headers = {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache'
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  const options = { method, headers };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error('请求失败: ' + response.status);
+  }
+  return response.json(); 
+}
 
 if(bbDom){
 getFirstList() //首次加载数据
@@ -54,85 +68,73 @@ btn.addEventListener("click", function () {
 });
 }
 function getFirstList(){
-bbDom.insertAdjacentHTML('afterend', load);
-let tagHtml = `<div id="tag-list"></div>` // TAG筛选 memos搜索
-bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
-var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
-let memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
-let oneDay = window.localStorage && window.localStorage.getItem("memos-oneday");
-if(memosOpenId && memosOpenId != null){
-  fetch(bbUrl,{
-    headers:{
-      'Authorization': `Bearer ${memosOpenId}`,
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
-    },
-    cache: 'no-store',
-  }).then(res => res.json()).then( resdata =>{
-    updateHTMl(resdata);
-    var nowLength = resdata.length;
-    if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
-      document.querySelector("button.button-load").remove()
-      return
-    }
-    mePage++
-    offset = limit*(mePage-1)
-    getNextList()
-  });
-  if(oneDay == "open"){
+  bbDom.insertAdjacentHTML('afterend', load);
+  let tagHtml = `<div id="tag-list"></div>`; // TAG筛选 memos搜索
+  bbDom.insertAdjacentHTML('beforebegin', tagHtml); // TAG筛选
+  
+  var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
+
+  // 统一使用 memoFetch，它会自动判断是否需要带 Token
+  memoFetch(bbUrl)
+    .then(resdata => {
+      updateHTMl(resdata);
+      var nowLength = resdata.length;
+      if(nowLength < limit){ 
+        if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove();
+        return;
+      }
+      mePage++;
+      offset = limit*(mePage-1);
+      getNextList();
+    })
+    .catch(err => {
+      console.error("加载列表失败", err);
+    });
+
+  // 保留原有的“那年今日”逻辑：只有登录且开启时才加载
+  let memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+  let oneDay = window.localStorage && window.localStorage.getItem("memos-oneday");
+  if(memosOpenId && oneDay == "open"){
     reloadList("ONEDAY");
   }
-}else{
-  fetch(bbUrl).then(res => res.json()).then( resdata =>{
-    updateHTMl(resdata);
-    var nowLength = resdata.length;
-    if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
-      document.querySelector("button.button-load").remove()
-      return
-    }
-    mePage++
-    offset = limit*(mePage-1)
-    getNextList()
-  });
-}
 }
 //预加载下一页数据
 function getNextList(){
-var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit+"&offset="+offset;
-fetch(bbUrl).then(res => res.json()).then( resdata =>{
-  nextDom = resdata;
-  nextLength = nextDom.length
-  mePage++
-  offset = limit*(mePage-1)
-  if(nextLength < 1){ //返回数据条数为 0 ，隐藏
-    document.querySelector("button.button-load").remove()
-    return
-  }
-})
+  var bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit+"&offset="+offset;
+  memoFetch(bbUrl)
+    .then(resdata => {
+      nextDom = resdata;
+      nextLength = nextDom.length;
+      mePage++;
+      offset = limit*(mePage-1);
+      if(nextLength < 1){ 
+        if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove();
+        return;
+      }
+    });
 }
 
 //加载总 Memos 数
 function meNums() {
   var bbLoad = document.querySelector('.bb-load');
   var bbUrl = memos + "api/v1/memo/stats?creatorId=" + bbMemo.creatorId;
-  fetch(bbUrl).then(res => res.json()).then(resdata => {
+  memoFetch(bbUrl).then(resdata => {
     if (Array.isArray(resdata)) {
-     // var allnums = ' ( 目前共唠叨了 ' + resdata.length + ' 条 )';
-      //bbLoad.insertAdjacentHTML('afterend', allnums);
+      // 保持原有逻辑（虽然被注释掉了）
+      // var allnums = ' ( 目前共唠叨了 ' + resdata.length + ' 条 )';
+      // bbLoad.insertAdjacentHTML('afterend', allnums);
     }
   });
 }
 
 // 插入 html 
-function updateHTMl(data,mode){
-  var result="",resultAll="";
-  //登录显示编辑归档按钮
-  if(memosOpenId && getEditor == "show"){ 
-    hasLogin = 1
-  } 
-  const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g
-  , IMG_REG = /\!\[(.*?)\]\((.*?)\)/g //content 内 md 格式图片
-  , LINK_REG = /\[(.*?)\]\((.*?)\)/g //链接新窗口打开
+// 将正则和配置移到函数外，避免重复计算 ---
+const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g;
+const IMG_REG = /\!\[(.*?)\]\((.*?)\)/g; // content 内 md 格式图片
+const LINK_REG = /\[(.*?)\]\((.*?)\)/g; // 链接新窗口打开
+
+// 检查 marked 是否存在，只需配置一次
+if (typeof marked !== 'undefined') {
   marked.setOptions({
     breaks: false,
     smartypants: false,
@@ -140,6 +142,15 @@ function updateHTMl(data,mode){
     headerIds: false,
     mangle: false
   });
+}
+// ----------------------------------------------------
+function updateHTMl(data,mode){
+  var result="",resultAll="";
+  //登录显示编辑归档按钮
+  if(memosOpenId && getEditor == "show"){ 
+    hasLogin = 1
+  } 
+
   for(var i=0;i < data.length;i++){
       var memoString = JSON.stringify(data[i]).replace(/"/g, '&quot;');
       var memo_id = data[i].id; //评论调用
@@ -319,11 +330,12 @@ function getTagNow(e){
   let tagHtmlNow = `<div class='memos-tag-sc-2' onclick='javascript:location.reload();'><div class='memos-tag-sc-1' >标签筛选:</div><div class='memos-tag-sc' >${e.innerHTML}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></div></div>`
   document.querySelector('#tag-list').innerHTML = tagHtmlNow
   let bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&tag="+tagName+"&limit=20";
-  fetch(bbUrl).then(res => res.json()).then( resdata =>{
-    document.querySelector(bbMemo.domId).innerHTML = ""
-    if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove()
-    updateHTMl(resdata)
-  })
+  memoFetch(bbUrl)
+    .then(resdata => {
+      document.querySelector(bbMemo.domId).innerHTML = "";
+      if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove();
+      updateHTMl(resdata);
+    });
 }
 
 //增加memos评论
@@ -385,83 +397,7 @@ handleDarkModeChange(darkModeMatcher);
 // memos-editor唠叨编辑开始 
 var memosDom = document.querySelector(memosData.dom);
 var editIcon = "<div class='load-memos-editor'>唠叨</div>";
-var memosEditorCont = `
-<div class="memos-editor animate__animated animate__fadeIn d-none col-12">
-  <div class="memos-editor-body">
-    <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
-      <div class="memos-editor-content">
-        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
-      </div>
-      <div id="memos-tag-menu"></div>
-      <div class="memos-image-list d-flex flex-fill line-xl"></div>
-      <div class="memos-tag-list d-none animate__animated animate__fadeIn"></div>
-      <div class="memos-editor-footer border-t">
-        <div class="d-flex">
-          <div class="button outline action-btn code-single">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-highlighter">
-              <path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>
-            </svg>
-          </div>
-          <div class="button outline action-btn link-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/>
-            </svg>
-          </div>
-          <div class="button outline action-btn link-img">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/>
-            </svg>
-          </div>
-          <div class="button outline action-btn biao-qing">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smile">
-              <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>
-            </svg>
-          </div>
-          <div class="memos-more-ico">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-              <g fill="none">
-                <path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/>
-                <path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/>
-              </g>
-            </svg>
-            <div class="memos-xiala">
-              <div class="code-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m24 12l-5.657 5.657l-1.414-1.414L21.172 12l-4.243-4.243l1.414-1.414zM2.828 12l4.243 4.243l-1.414 1.414L0 12l5.657-5.657L7.07 7.757zm6.96 9H7.66l6.552-18h2.128z"/></svg>代码</div>
-              <div class="image-btn" onclick="this.lastElementChild.click()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>图片
-                <input class="memos-upload-image-input d-none" type="file" accept="image/*">
-              </div>
-              <div class="switchUser-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-cog"><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="10" cy="8" r="5"/><circle cx="18" cy="18" r="3"/><path d="m19.5 14.3-.4.9"/><path d="m16.9 20.8-.4.9"/><path d="m21.7 19.5-.9-.4"/><path d="m15.2 16.9-.9-.4"/><path d="m21.7 16.5-.9.4"/><path d="m15.2 19.1-.9.4"/><path d="m19.5 21.7-.4-.9"/><path d="m16.9 15.2-.4-.9"/></svg>帐户</div>
-              <div class="private-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m9.343 18.782l-1.932-.518l.787-2.939a10.99 10.99 0 0 1-3.237-1.872l-2.153 2.154l-1.414-1.414l2.153-2.154a10.957 10.957 0 0 1-2.371-5.07l1.968-.359a9.002 9.002 0 0 0 17.713 0l1.968.358a10.958 10.958 0 0 1-2.372 5.071l2.154 2.154l-1.414 1.414l-2.154-2.154a10.991 10.991 0 0 1-3.237 1.872l.788 2.94l-1.932.517l-.788-2.94a11.068 11.068 0 0 1-3.74 0z"/></svg>私有</div>
-              <div class="oneday-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M17 2a4 4 0 0 1 4 4v9a4.002 4.002 0 0 1-3.127 3.904L19.6 20.2a1 1 0 0 1-1.2 1.6L14.667 19H9.333L5.6 21.8a1 1 0 1 1-1.2-1.6l1.727-1.296A4.001 4.001 0 0 1 3 15V6a4 4 0 0 1 4-4zm2 10H5v3a2 2 0 0 0 1.85 1.995L7 17h10a2 2 0 0 0 1.995-1.85L19 15zm-7 1a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3m7-5H5v2h14zm-2-4H7a2 2 0 0 0-1.995 1.85L5 6h14a2 2 0 0 0-1.85-1.995z"/></g></svg>回忆</div>
-            </div>
-          </div>
-        </div>
-        <div class="editor-submit d-flex flex-fill justify-content-end">
-          <div class="editor-selector select outline">
-            <select class="select-memos-value">
-              <option value="PUBLIC">公开</option>
-              <!--<option value="PROTECTED">仅登录可见</option>-->
-              <option value="PRIVATE">私有</option>
-            </select>
-          </div>
-          <div class="edit-memos d-none">
-            <div class="primary cancel-edit-btn">取消</div>
-            <div class="primary edit-memos-btn">修改完成</div>
-          </div>
-          <div class="primary submit-memos-btn">唠叨一下</div>
-        </div>
-      </div>
-    </div>
-    <div class="memos-editor-option animate__animated animate__fadeIn d-none">
-      <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" value="" placeholder="Memos 地址">
-      <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" value="" placeholder="Token">
-      <div class="memos-open-api-submit">
-        <div class="primary submit-openapi-btn">保存</div>
-      </div>
-    </div>
-  </div>
-  <div class="memos-random d-none"></div>
-</div>
-`;
+var memosEditorCont = getEditorHtml();
 const element = document.querySelector('.index-laodao-titile'); // 选择器是你想要操作的元素的选择器
 element.insertAdjacentHTML('afterend', editIcon);
 memosDom.insertAdjacentHTML('afterbegin',memosEditorCont);
@@ -705,47 +641,28 @@ function getEditIcon() {
     if (memosOpenId && hasContent) {
       let memoUrl = `${memosPath}/api/v1/memo`;
       let memoBody = {content:memosContent,relationList:memosRelation,resourceIdList:memosResource,visibility:memosVisibility}
-      fetch(memoUrl, {
-        method: 'POST',
-        body: JSON.stringify(memoBody),
-        headers: {
-          'Authorization': `Bearer ${memosOpenId}`,
-          'Content-Type': 'application/json'
-        }
-      }).then(function (res) {
-        if (res.status == 200) {
+      memoFetch(memoUrl, 'POST', memoBody)
+        .then(res => {
+          // 发布标签
           if (memosTag !== null) {
             let memoTagUrl = `${memosPath}/api/v1/tag`;
-            (async () => {
-              for await (const i of memosTag) {
-                const response = await fetch(memoTagUrl, {
-                  method: 'POST',
-                  headers: {
-                    'Authorization': `Bearer ${memosOpenId}`,
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    name: i
-                  })
-                });
-              }
-            })();
+            memosTag.forEach(tag => {
+              memoFetch(memoTagUrl, 'POST', { name: tag }).catch(() => {}); 
+            });
           }
-          cocoMessage.success(
-            '唠叨成功',
-            () => {
-              document.querySelector(".memos-image-list").innerHTML = '';
-              window.localStorage && window.localStorage.removeItem("memos-resource-list");
-              window.localStorage && window.localStorage.removeItem("memos-relation-list");
-              memosTextarea.value = '';
-              memosTextarea.style.height = 'inherit';
-              let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
-              mePage = 1; 
-              offset = 0;
-              reloadList(memosMode)
-            })
-        }
-      });
+          cocoMessage.success('唠叨成功', () => {
+            document.querySelector(".memos-image-list").innerHTML = '';
+            window.localStorage && window.localStorage.removeItem("memos-resource-list");
+            window.localStorage && window.localStorage.removeItem("memos-relation-list");
+            memosTextarea.value = '';
+            memosTextarea.style.height = 'inherit';
+            let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
+            mePage = 1; 
+            offset = 0;
+            reloadList(memosMode);
+          });
+        })
+        .catch(err => cocoMessage.error('发布失败'));
       
     }else if(!hasContent){
       cocoMessage.info('内容不能为空');
@@ -766,28 +683,22 @@ function getEditIcon() {
       cocoMessage.info('请设置 Access Tokens');
     }else{
       const tagUrl = `${memosPath}/api/v1/tag`;
-      const response = fetch(tagUrl,{
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${memosOpenId}`,
-          'Content-Type': 'application/json'
-        } 
-      }).then(response => response.json()).then(resdata => {
-        return resdata
-      }).then(response => {
-        let taglist = "";
-        response.map((t)=>{
-          taglist += `<div class="memos-tag d-flex text-xs mt-2 mr-2"><a class="d-flex px-2 justify-content-center" onclick="setMemoTag(this)">#${t}</a></div>`;
+      // memoFetch 自动处理 headers 和 json转换
+      memoFetch(tagUrl)
+        .then(response => { // 这里的 response 直接就是 json 数据(tag列表)
+          let taglist = "";
+          response.map((t)=>{
+            taglist += `<div class="memos-tag d-flex text-xs mt-2 mr-2"><a class="d-flex px-2 justify-content-center" onclick="setMemoTag(this)">#${t}</a></div>`;
+          })
+          document.querySelector(".memos-tag-list").innerHTML = taglist;
+          memosEditorInner.classList.remove("d-none");
+          memosEditorOption.classList.add("d-none"); 
+          memosRadomCont.classList.remove("d-none");
         })
-        document.querySelector(".memos-tag-list").innerHTML = taglist;
-        // cocoMessage.success('准备就绪');
-        memosEditorInner.classList.remove("d-none");
-        memosEditorOption.classList.add("d-none"); 
-        memosRadomCont.classList.remove("d-none");
-      }).catch(err => {
-        memosEditorOption.classList.remove("d-none");
-        cocoMessage.error('Access Tokens 有误，请重新输入!');
-      });
+        .catch(err => {
+          memosEditorOption.classList.remove("d-none");
+          cocoMessage.error('Access Tokens 有误，请重新输入!');
+        });
     }
   }
 
@@ -1136,35 +1047,26 @@ editMemoBtn.addEventListener("click", function () {
   if (hasContent) {
     let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
     let memoBody = {content:memoContent,id:memoId,createdTs:memocreatedTs,relationList:memoRelationList,resourceIdList:memoResourceList,visibility:memoVisibility}
-    fetch(memoUrl, {
-      method: 'PATCH',
-      body: JSON.stringify(memoBody),
-      headers: {
-        'Authorization': `Bearer ${memosOpenId}`,
-        'Content-Type': 'application/json'
-      }
-    }).then(function(res) {
-      if (res.ok) {
-        cocoMessage.success(
-        '修改成功',
-        ()=>{
-            memoChangeDate = 0;
-            memosVisibilitySelect.value = memosOldSelect;
-            submitMemoBtn.classList.remove("d-none");
-            editMemoDom.classList.add("d-none");
-            document.querySelector(".memos-image-list").innerHTML = '';
-            window.localStorage && window.localStorage.removeItem("memos-resource-list");
-            window.localStorage && window.localStorage.removeItem("memos-relation-list");
-            memosTextarea.value = '';
-            memosTextarea.style.height = 'inherit';
-            mePage = 1; 
-            offset = 0;
-            window.localStorage && window.localStorage.removeItem("memos-editor-dataform");
-            let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
-            reloadList(memosMode)
-        })
-      }
-    })
+    memoFetch(memoUrl, 'PATCH', memoBody)
+      .then(res => {
+        cocoMessage.success('修改成功', () => {
+          memoChangeDate = 0;
+          memosVisibilitySelect.value = memosOldSelect;
+          submitMemoBtn.classList.remove("d-none");
+          editMemoDom.classList.add("d-none");
+          document.querySelector(".memos-image-list").innerHTML = '';
+          window.localStorage && window.localStorage.removeItem("memos-resource-list");
+          window.localStorage && window.localStorage.removeItem("memos-relation-list");
+          memosTextarea.value = '';
+          memosTextarea.style.height = 'inherit';
+          mePage = 1; 
+          offset = 0;
+          window.localStorage && window.localStorage.removeItem("memos-editor-dataform");
+          let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
+          reloadList(memosMode);
+        });
+      })
+      .catch(err => cocoMessage.error('修改失败'));
   }
 })
 
@@ -1185,99 +1087,70 @@ cancelEditBtn.addEventListener("click", function () {
 
 //增加memos归档功能
 function archiveMemo(memoId) {
-  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
-  if(memosOpenId && memoId){
-    let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
-    let memoBody = {id:memoId,rowStatus:"ARCHIVED"};
-    fetch(memoUrl, {
-      method: 'PATCH',
-      body: JSON.stringify(memoBody),
-      headers: {
-        'Authorization': `Bearer ${memosOpenId}`,
-        'Content-Type': 'application/json'
-      }
-    }).then(function(res) {
-      if (res.ok) {
-        cocoMessage.success(
-        '归档成功',
-        ()=>{
-          let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
-          reloadList(memosMode)
-        })
-      }
+  if(!memoId) return;
+  let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
+  let memoBody = {id:memoId,rowStatus:"ARCHIVED"};
+
+  memoFetch(memoUrl, 'PATCH', memoBody)
+    .then(res => {
+      cocoMessage.success('归档成功', () => { reloadList() });
     })
-  }
+    .catch(err => cocoMessage.error('操作失败'));
 }
 
 //增加memo删除功能
 function deleteMemo(memoId) {
   let isOk = confirm("确定要删除此条唠叨吗？");
-  if(isOk){
-  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
-  if(memosOpenId && memoId){
+  if (isOk && memoId) {
     let memoUrl = `${memosPath}/api/v1/memo/${memoId}`;
-    fetch(memoUrl, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${memosOpenId}`,
-        'Content-Type': 'application/json'
-      }
-    }).then(function(res) {
-      if (res.ok) {
-        cocoMessage.success(
-        '删除成功',
-        ()=>{
+    memoFetch(memoUrl, 'DELETE')
+      .then(res => {
+        cocoMessage.success('删除成功', () => {
           let memosMode = window.localStorage && window.localStorage.getItem("memos-mode");
-          reloadList(memosMode)
-        })
-      }
-    }).catch(err => {
-      cocoMessage.error('出错了，再检查一下吧')
-    })
+          reloadList(memosMode);
+        });
+      })
+      .catch(err => cocoMessage.error('删除失败'));
   }
-}
 }
 
 //无刷新
 function reloadList(mode){
   var bberDom = document.querySelector("#bber");
   bberDom.innerHTML = '';
-  memosOpenId = window.localStorage && window.localStorage.getItem("memos-access-token");
+  // 移除重复的 memosOpenId 获取，memoFetch 会自动处理
   var bbUrl;
   if(mode == "NOPUBLIC"){
     bbUrl = memos+"api/v1/memo";
-  }if(mode == "ONEDAY"){
+  } else if(mode == "ONEDAY"){ // 修正原代码这里的逻辑小瑕疵，加个 else
     let memosCount = window.localStorage && window.localStorage.getItem("memos-response-count");
     let random = Math.floor(Math.random() * memosCount)
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset="+random;
   }else{
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
   }
-  fetch(bbUrl,{
-    headers: {
-      'Authorization': `Bearer ${memosOpenId}`,
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
-    },
-    cache: 'no-store',
-  }).then(res => res.json()).then( resdata =>{
-    if (mode == "NOPUBLIC") {
-      resdata = resdata.filter((item) => item.visibility !== "PUBLIC");
-    }
-    if(mode == "ONEDAY"){
-      updateHTMl(resdata,"ONEDAY");
-    }else{
-      updateHTMl(resdata);
-      var nowLength = resdata.length;
-      if(nowLength < limit){ //返回数据条数小于 limit 则直接移除“加载更多”按钮，中断预加载
-        document.querySelector("button.button-load").remove()
-        return
+
+  // 使用 memoFetch 替换 fetch
+  memoFetch(bbUrl)
+    .then(resdata => {
+      if (mode == "NOPUBLIC") {
+        resdata = resdata.filter((item) => item.visibility !== "PUBLIC");
       }
-      mePage++
-      offset = limit*(mePage-1)
-      getNextList(mode)
-    }
-  });
+      if(mode == "ONEDAY"){
+        updateHTMl(resdata,"ONEDAY");
+      }else{
+        updateHTMl(resdata);
+        var nowLength = resdata.length;
+        if(nowLength < limit){ 
+          if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove();
+          return;
+        }
+        mePage++;
+        offset = limit*(mePage-1);
+        getNextList(); // 原代码这里传了 mode 但 getNextList 其实不接收参数，这里保持原样或简化
+      }
+    })
+    .catch(err => console.error("加载列表失败", err));
 }
 
 //发布框中无内容时，唠叨一下按钮为透明度0.4
@@ -1295,8 +1168,89 @@ document.body.addEventListener('click', function(e) {
   let target = e.target.closest('.atk-comment-wrap a, .datacont a');
   if (target && !target.href.includes('koobai.com')) {
       e.preventDefault();
-      let encodedUrl = btoa(target.href);
+      let encodedUrl = btoa(encodeURIComponent(target.href));
       let url = '/tiaozhuan?target=' + encodedUrl;
       window.open(url, '_blank');
   }
 });
+
+//唠叨发布编辑 html
+
+function getEditorHtml() {
+  return `
+<div class="memos-editor animate__animated animate__fadeIn d-none col-12">
+  <div class="memos-editor-body">
+    <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
+      <div class="memos-editor-content">
+        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+      </div>
+      <div id="memos-tag-menu"></div>
+      <div class="memos-image-list d-flex flex-fill line-xl"></div>
+      <div class="memos-tag-list d-none animate__animated animate__fadeIn"></div>
+      <div class="memos-editor-footer border-t">
+        <div class="d-flex">
+          <div class="button outline action-btn code-single">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-highlighter">
+              <path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>
+            </svg>
+          </div>
+          <div class="button outline action-btn link-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/>
+            </svg>
+          </div>
+          <div class="button outline action-btn link-img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/>
+            </svg>
+          </div>
+          <div class="button outline action-btn biao-qing">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smile">
+              <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>
+            </svg>
+          </div>
+          <div class="memos-more-ico">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <g fill="none">
+                <path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/>
+                <path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/>
+              </g>
+            </svg>
+            <div class="memos-xiala">
+              <div class="code-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m24 12l-5.657 5.657l-1.414-1.414L21.172 12l-4.243-4.243l1.414-1.414zM2.828 12l4.243 4.243l-1.414 1.414L0 12l5.657-5.657L7.07 7.757zm6.96 9H7.66l6.552-18h2.128z"/></svg>代码</div>
+              <div class="image-btn" onclick="this.lastElementChild.click()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>图片
+                <input class="memos-upload-image-input d-none" type="file" accept="image/*">
+              </div>
+              <div class="switchUser-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-cog"><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="10" cy="8" r="5"/><circle cx="18" cy="18" r="3"/><path d="m19.5 14.3-.4.9"/><path d="m16.9 20.8-.4.9"/><path d="m21.7 19.5-.9-.4"/><path d="m15.2 16.9-.9-.4"/><path d="m21.7 16.5-.9.4"/><path d="m15.2 19.1-.9.4"/><path d="m19.5 21.7-.4-.9"/><path d="m16.9 15.2-.4-.9"/></svg>帐户</div>
+              <div class="private-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m9.343 18.782l-1.932-.518l.787-2.939a10.99 10.99 0 0 1-3.237-1.872l-2.153 2.154l-1.414-1.414l2.153-2.154a10.957 10.957 0 0 1-2.371-5.07l1.968-.359a9.002 9.002 0 0 0 17.713 0l1.968.358a10.958 10.958 0 0 1-2.372 5.071l2.154 2.154l-1.414 1.414l-2.154-2.154a10.991 10.991 0 0 1-3.237 1.872l.788 2.94l-1.932.517l-.788-2.94a11.068 11.068 0 0 1-3.74 0z"/></svg>私有</div>
+              <div class="oneday-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M17 2a4 4 0 0 1 4 4v9a4.002 4.002 0 0 1-3.127 3.904L19.6 20.2a1 1 0 0 1-1.2 1.6L14.667 19H9.333L5.6 21.8a1 1 0 1 1-1.2-1.6l1.727-1.296A4.001 4.001 0 0 1 3 15V6a4 4 0 0 1 4-4zm2 10H5v3a2 2 0 0 0 1.85 1.995L7 17h10a2 2 0 0 0 1.995-1.85L19 15zm-7 1a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3m7-5H5v2h14zm-2-4H7a2 2 0 0 0-1.995 1.85L5 6h14a2 2 0 0 0-1.85-1.995z"/></g></svg>回忆</div>
+            </div>
+          </div>
+        </div>
+        <div class="editor-submit d-flex flex-fill justify-content-end">
+          <div class="editor-selector select outline">
+            <select class="select-memos-value">
+              <option value="PUBLIC">公开</option>
+              <!--<option value="PROTECTED">仅登录可见</option>-->
+              <option value="PRIVATE">私有</option>
+            </select>
+          </div>
+          <div class="edit-memos d-none">
+            <div class="primary cancel-edit-btn">取消</div>
+            <div class="primary edit-memos-btn">修改完成</div>
+          </div>
+          <div class="primary submit-memos-btn">唠叨一下</div>
+        </div>
+      </div>
+    </div>
+    <div class="memos-editor-option animate__animated animate__fadeIn d-none">
+      <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" value="" placeholder="Memos 地址">
+      <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" value="" placeholder="Token">
+      <div class="memos-open-api-submit">
+        <div class="primary submit-openapi-btn">保存</div>
+      </div>
+    </div>
+  </div>
+  <div class="memos-random d-none"></div>
+</div>`;
+}
