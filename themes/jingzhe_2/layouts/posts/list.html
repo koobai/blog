@@ -11,25 +11,26 @@
 <div class="posts-background img-hide"> 
     <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
     <div class="posts-img img-hide">
-      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" /></a>          
-      </div>
-      <div class="posts-description">{{ .Params.description }}</div>
-      <div class="posts-time-new">
-          <div class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
-          {{ with .GetTerms "tags" }}
+      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
+    </div>
+    <div class="posts-description">{{ .Params.description }}</div>
+    <div class="posts-time-new">
+        <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
+        {{ with .GetTerms "tags" }}
           {{ range . }}
             <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
           {{ end }}
         {{ end }}
-      </div>
+    </div>
 </div>
 {{ end }}
 </div>
-<div class="posts_list" >
+
+<div class="posts_list">
 {{ range after 4 $pages }}
   <div class="posts_list_article img-hide"> 
       <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-      <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div> 
+      <time class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></time> 
   </div>
 {{ end }}
 </div>
