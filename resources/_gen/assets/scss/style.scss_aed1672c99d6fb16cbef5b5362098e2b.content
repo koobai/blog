@@ -1418,7 +1418,7 @@ img[atk-emoticon] {
 .movie-pfeng svg {
   width: 0.9rem;
   height: 0.9rem;
-  color: #ffc107; }
+  color: #ffd596; }
 
 .movie-info {
   line-height: 1.5;
