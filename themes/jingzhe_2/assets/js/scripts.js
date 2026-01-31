@@ -18,35 +18,47 @@ window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thu
 
 // 页面上滑加载动画
 function animateSummaries() {
-  const articles = document.querySelectorAll('.img-hide,.retu-hide'); // 包含新的类
-  const shuffledArticles = Array.from(articles).sort(() => Math.random() - 0.5);
+  // 1. 选取所有需要动画的元素
+  const articles = document.querySelectorAll('.img-hide, .retu-hide');
+  
+  // 如果没找到元素，直接退出，防止报错
+  if (articles.length === 0) return;
 
-  function animate(article, delay) {
-    setTimeout(() => {
-      article.classList.add('visible');
-    }, delay);
-  }
-
+  // 2. 观察器配置
   const options = {
-    rootMargin: '0px 0px -70px 0px',
+    // 关键：rootMargin 设为 '0px' 或者 '50px' 都可以
+    // 意思是在元素进入屏幕前一点点就开始准备，防止滑太快出现空白
+    rootMargin: '0px 0px 50px 0px', 
   };
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
+      // 只要元素进入视口（哪怕只有一丁点）
       if (entry.isIntersecting) {
-         // 类名 retu-hide 延迟 100 默认 img-hide 延迟 8，实现错落效果
-        const delay = entry.target.classList.contains('retu-hide') ? index * 100 : index * 8; 
-        animate(entry.target, delay);
-        observer.unobserve(entry.target);
+        const target = entry.target;
+        
+        // --- 核心：随机呼吸感 ---
+        // 生成一个 0 到 150 毫秒的随机延迟
+        // 这样每个元素出来的时机都不一样，就像你原来的那样自然
+        const randomDelay = Math.random() * 150; 
+        
+        setTimeout(() => {
+          // 添加类名，让 CSS 负责显示
+          target.classList.add('visible');
+        }, randomDelay);
+
+        // 动画只做一次，做完就解绑，节省性能
+        observer.unobserve(target);
       }
     });
   }, options);
 
-  shuffledArticles.forEach((article) => {
+  // 3. 开始观察所有元素
+  // 不需要这里打乱顺序，上面的 randomDelay 已经足够产生“乱序感”了
+  articles.forEach((article) => {
     observer.observe(article);
   });
 }
-
 animateSummaries();
 
 // 全局时间调用显示
