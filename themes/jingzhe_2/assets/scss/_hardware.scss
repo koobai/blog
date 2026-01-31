@@ -130,8 +130,8 @@
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, transparent 60%);
-        z-index: 2; 
+        background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 60%);
+        z-index: 1; 
     }
 }
 .hardware-star-img img {
@@ -152,7 +152,7 @@
 /* 2. 标题和价格：排在最上面 */
 .hardware-star .hardware-text {
     position: relative;     /* 必须加，确保 z-index 生效 */
-    z-index: 3;             /* 置于最顶层 */
+    z-index: 1;             /* 置于最顶层 */
     order: 1;               /* 逻辑顺序第一 */
     text-align: left;       /* 根据你 image_8e119e 的风格，通常靠左 */
 	color: #fff;
@@ -167,7 +167,7 @@
 .hardware-star .note {
 	display: block;
     position: relative;     /* 必须加 */
-    z-index: 2;             /* 置于图片之上，标题之下 */
+    z-index: 1;             /* 置于图片之上，标题之下 */
     order: 2;               /* 逻辑顺序第二 */
     opacity: 1;
     background: none;       /* 去掉背景色，直接透出底下的图片 */
@@ -176,6 +176,10 @@
 	backdrop-filter: none; 
 	-webkit-backdrop-filter: none;
 	color: #fff;
+	font-size: 1rem;
+	@include breakpoint('medium') {
+	font-size: 0.9rem;
+  }
 }
 .hardware-star .liing_2_right{
 	position: relative;     /* 必须加，确保 z-index 生效 */
