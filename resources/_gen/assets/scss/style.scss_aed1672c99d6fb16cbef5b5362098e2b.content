@@ -2133,10 +2133,21 @@ blockquote p {
     color: var(--erji-color); } }
 
 .about-img {
-  position: relative; }
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: transparent;
+  min-height: 250px;
+  display: flex; }
 
 .about-img img {
-  width: 100%; }
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+.about-img:hover img {
+  transform: scale(1.1); }
 
 .about-img-text {
   position: absolute;
@@ -2558,8 +2569,8 @@ blockquote p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
-    z-index: 2; }
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 60%);
+    z-index: 1; }
 
 .hardware-star-img img {
   width: 100%;
@@ -2579,7 +2590,7 @@ blockquote p {
 .hardware-star .hardware-text {
   position: relative;
   /* 必须加，确保 z-index 生效 */
-  z-index: 3;
+  z-index: 1;
   /* 置于最顶层 */
   order: 1;
   /* 逻辑顺序第一 */
@@ -2595,7 +2606,7 @@ blockquote p {
   display: block;
   position: relative;
   /* 必须加 */
-  z-index: 2;
+  z-index: 1;
   /* 置于图片之上，标题之下 */
   order: 2;
   /* 逻辑顺序第二 */
@@ -2607,8 +2618,11 @@ blockquote p {
   padding: 0;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  color: #fff; }
-
+  color: #fff;
+  font-size: 1rem; }
+  @media (min-width: 900px) {
+    .hardware-star .note {
+      font-size: 0.9rem; } }
 .hardware-star .liing_2_right {
   position: relative;
   /* 必须加，确保 z-index 生效 */
