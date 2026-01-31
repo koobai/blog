@@ -114,14 +114,21 @@ img {filter: brightness(0.8) contrast(1.2); }
 }
 
 // 页面上滑加载动画
-@media (min-width: 900px) {
-.img-hide,.retu-hide {
+.img-hide, .retu-hide {
   opacity: 0;
-  transform: translateY(6%);
-  transition: opacity 0.4s ease, transform 0.8s ease;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-.img-hide.visible,.retu-hide.visible {
+.img-hide.visible, .retu-hide.visible {
   opacity: 1;
   transform: translateY(0);
 }
+/* 当用户在系统设置里开启了“减弱动态效果”时 */
+@media (prefers-reduced-motion: reduce) {
+  .img-hide, .retu-hide {
+    /* 强制取消动画和隐藏，直接显示 */
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
