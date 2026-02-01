@@ -154,7 +154,7 @@ function updateHTMl(data,mode){
         if(IMG_ARR_Length !== 1){var IMG_ARR_Grid = " grid grid-"+IMG_ARR_Length}
         IMG_ARR.forEach(item => {
             let imgSrc = item.replace(/!\[.*?\]\((.*?)\)/g,'$1')
-            IMG_ARR_Url += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" loading="lazy" decoding="async" src="'+imgSrc+'"/></figure>'
+            IMG_ARR_Url += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" loading="lazy" decoding="async" src="'+imgSrc+'"/></figure>'
         });
         bbContREG += '<div class="resimg'+IMG_ARR_Grid+'">'+IMG_ARR_Url+'</div>';
       }
@@ -186,7 +186,7 @@ function updateHTMl(data,mode){
             resLink = memos+'o/r/'+resourceList[j].id //+'/'+fileId
           }
           if(restype == 'image'){
-            imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image" src="'+resLink+'"/></figure>'
+            imgUrl += '<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" src="'+resLink+'"/></figure>'
             resImgLength = resImgLength + 1 
           }
           if(restype !== 'image'){
