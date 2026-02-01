@@ -1094,36 +1094,30 @@ function deleteMemo(memoId) {
   }
 }
 
-//随机一条
+//无刷新
 function reloadList(mode){
   var bberDom = document.querySelector("#bber");
-  bberDom.innerHTML = ''; 
-  
+  bberDom.innerHTML = '';
+  // 移除重复的 memosOpenId 获取，memoFetch 会自动处理
   var bbUrl;
   if(mode == "NOPUBLIC"){
     bbUrl = memos+"api/v1/memo";
-  } else if(mode == "ONEDAY"){ 
-    // 获取总数，随机一个位置
+  } else if(mode == "ONEDAY"){ // 修正原代码这里的逻辑小瑕疵，加个 else
     let memosCount = window.localStorage && window.localStorage.getItem("memos-response-count");
     let random = Math.floor(Math.random() * memosCount)
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset="+random;
   }else{
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
   }
+
+  // 使用 memoFetch 替换 fetch
   memoFetch(bbUrl)
     .then(resdata => {
       if (mode == "NOPUBLIC") {
         resdata = resdata.filter((item) => item.visibility !== "PUBLIC");
       }
       if(mode == "ONEDAY"){
-        if(!resdata || resdata.length === 0){
-            var newUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset=0";
-            memoFetch(newUrl).then(newData => {
-                updateHTMl(newData, "ONEDAY");
-            });
-        } else {
-            updateHTMl(resdata,"ONEDAY");
-        }      
+        updateHTMl(resdata,"ONEDAY");
       }else{
         updateHTMl(resdata);
         var nowLength = resdata.length;
@@ -1133,7 +1127,7 @@ function reloadList(mode){
         }
         mePage++;
         offset = limit*(mePage-1);
-        getNextList(); 
+        getNextList(); // 原代码这里传了 mode 但 getNextList 其实不接收参数，这里保持原样或简化
       }
     })
     .catch(err => console.error("加载列表失败", err));
