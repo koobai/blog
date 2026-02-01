@@ -1699,7 +1699,8 @@ blockquote p {
   border-radius: 4px;
   display: none;
   font-size: 0.85rem;
-  right: -30px; }
+  right: -30px;
+  z-index: 100; }
 
 .memos-more-ico:hover .memos-xiala {
   display: block; }
