@@ -571,32 +571,33 @@ function bindEditorEvents() {
 
     document.querySelector(".cancel-edit-btn").addEventListener("click", resetEditorState);
 
-    // [修复] 保存按钮监听器
-    document.querySelector(".submit-openapi-btn").addEventListener("click", () => {
-        const pathInput = document.querySelector(".memos-path-input");
-        const tokenInput = document.querySelector(".memos-token-input");
-        let pathVal = pathInput.value;
-        let tokenVal = tokenInput.value;
+    // 验证
+    document.querySelector(".submit-openapi-btn").addEventListener("click", async (e) => {
+        e.preventDefault();
+        const path = document.querySelector(".memos-path-input").value.trim().replace(/\/$/, "");
+        const token = document.querySelector(".memos-token-input").value.trim();
 
-        if (pathVal && tokenVal) {
-            pathVal = pathVal.trim().replace(/\/$/, "");
-            if (!/^http/i.test(pathVal)) {
-                pathVal = "https://" + pathVal;
-            }
-            tokenVal = tokenVal.trim();
+        if (!path || !token) return cocoMessage.info('请填写完整信息');
+        const fullPath = /^http/i.test(path) ? path : `https://${path}`;
 
-            window.localStorage?.setItem("memos-access-path", pathVal);
-            window.localStorage?.setItem("memos-access-token", tokenVal);
-            
-            // 保存后立即更新计数
-            getTotalMemosCount().then(() => {
-                cocoMessage.success('保存成功，页面即将刷新');
-                setTimeout(() => {
-                    location.reload();
-                }, 800);
+        try {
+            const res = await fetch(`${fullPath}/api/v1/tag`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-        } else {
-            cocoMessage.info('请填写完整的 Memos 地址和 Token');
+
+            // 强校验：状态码 OK 且确保返回的是数组数据
+            if (res.ok && Array.isArray(await res.json())) {
+                window.localStorage.setItem("memos-access-path", fullPath);
+                window.localStorage.setItem("memos-access-token", token);
+                
+                cocoMessage.success('验证成功');
+                await getTotalMemosCount(); // 同步计数
+                location.reload();
+            } else {
+                cocoMessage.error('验证失败：Token 无效');
+            }
+        } catch (err) {
+            cocoMessage.error('错误，请检查');
         }
     });
 }
