@@ -53,19 +53,26 @@ async function memoFetch(url, method = 'GET', body = null) {
   return response.json(); 
 }
 
-if(bbDom){
-getFirstList() //首次加载数据
-var btn = document.querySelector("button.button-load");
-btn.addEventListener("click", function () {
-  btn.textContent= '加载中……';
-  updateHTMl(nextDom)
-  if(nextLength < limit){ //返回数据条数小于限制条数，隐藏
-    document.querySelector("button.button-load").remove()
-    return
+document.addEventListener("DOMContentLoaded", function () {
+  bbDom = document.querySelector(bbMemo.domId);
+  if (bbDom) {
+    getFirstList(); // 首次加载
+    var btn = document.querySelector("button.button-load");
+    if (btn) {
+      btn.addEventListener("click", function () {
+        btn.textContent = '加载中……';
+        updateHTMl(nextDom);
+        if (nextLength < limit) {
+          if(document.querySelector("button.button-load")) document.querySelector("button.button-load").remove();
+          return;
+        }
+        getNextList();
+      });
+    }
+  } else {
+    console.warn("未找到 Memos 容器");
   }
-  getNextList()
 });
-}
 function getFirstList(){
   bbDom.insertAdjacentHTML('afterend', load);
   let tagHtml = `<div id="tag-list"></div>`; // TAG筛选 memos搜索
@@ -1097,12 +1104,13 @@ function deleteMemo(memoId) {
 //无刷新
 function reloadList(mode){
   var bberDom = document.querySelector("#bber");
-  bberDom.innerHTML = '';
-  // 移除重复的 memosOpenId 获取，memoFetch 会自动处理
+  bberDom.innerHTML = ''; 
+  
   var bbUrl;
   if(mode == "NOPUBLIC"){
     bbUrl = memos+"api/v1/memo";
-  } else if(mode == "ONEDAY"){ // 修正原代码这里的逻辑小瑕疵，加个 else
+  } else if(mode == "ONEDAY"){ 
+    // 获取总数，随机一个位置
     let memosCount = window.localStorage && window.localStorage.getItem("memos-response-count");
     let random = Math.floor(Math.random() * memosCount)
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset="+random;
@@ -1110,14 +1118,27 @@ function reloadList(mode){
     bbUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&rowStatus=NORMAL&limit="+limit;
   }
 
-  // 使用 memoFetch 替换 fetch
   memoFetch(bbUrl)
     .then(resdata => {
       if (mode == "NOPUBLIC") {
         resdata = resdata.filter((item) => item.visibility !== "PUBLIC");
       }
+
+      // ▼▼▼▼▼▼ 只改了这里 ▼▼▼▼▼▼
       if(mode == "ONEDAY"){
-        updateHTMl(resdata,"ONEDAY");
+        // 如果随机到的是空的 (resdata没有内容)，说明那条被删了或归档了
+        if(!resdata || resdata.length === 0){
+            // 【补救措施】直接去拿最新的一条 (offset=0)
+            var newUrl = memos+"api/v1/memo?creatorId="+bbMemo.creatorId+"&limit=1&offset=0";
+            memoFetch(newUrl).then(newData => {
+                updateHTMl(newData, "ONEDAY");
+            });
+        } else {
+            // 正常显示
+            updateHTMl(resdata,"ONEDAY");
+        }
+      // ▲▲▲▲▲▲ 改动结束 ▲▲▲▲▲▲
+      
       }else{
         updateHTMl(resdata);
         var nowLength = resdata.length;
@@ -1127,7 +1148,7 @@ function reloadList(mode){
         }
         mePage++;
         offset = limit*(mePage-1);
-        getNextList(); // 原代码这里传了 mode 但 getNextList 其实不接收参数，这里保持原样或简化
+        getNextList(); 
       }
     })
     .catch(err => console.error("加载列表失败", err));
