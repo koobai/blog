@@ -88,47 +88,56 @@
 }
 
 // ============================================
-// ★ 新版图片九宫格系统 (整合优化版)
+// ★ 新版图片九宫格系统 (JS类名精准控制版)
 // ============================================
 
 .resimg {
+  // --- 1. 全局基础样式 (PC端基准) ---
   display: grid;
   gap: 6px; 
-  width: 60%; // PC端默认宽度 (可根据喜好调整为 70% 等)
-  grid-template-columns: repeat(2, 1fr); // 默认双列
   margin-top: 5px;
   margin-bottom: 10px;
-
-  // 1. 手机端适配：撑满宽度
-  @media (max-width: 900px) {
-    width: 100% !important; 
-    grid-template-columns: repeat(3, 1fr); 
+  width: 30%;       
+  grid-template-columns: 1fr;   
+  // 多张图片 
+  &.grid {
+    width: 65%;    
+    grid-template-columns: repeat(3, 1fr);
+  &.grid-2, &.grid-4{
+      width: 50%; 
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
-
-  // 2. 图片容器 (每一张图的框)
+  // --- 2. 手机端适配 (< 900px) ---
+  @media (max-width: 900px) {
+    // 单张图片
+    width: 70% !important;        // 宽度缩窄
+    grid-template-columns: 1fr;   // 强制单列显示
+    // 多张图片 
+    &.grid {
+      width: 100% !important;    
+      grid-template-columns: repeat(3, 1fr);
+      //两张图时显示两列
+      &.grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+  // --- 3. 图片容器通用样式 ---
   figure {
     margin: 0;
     position: relative;
-    border-radius: 16px; // 圆角 16px
+    border-radius: 16px; 
     overflow: hidden;
-    background-color: #f0f0f0; 
-    aspect-ratio: 1 / 1; // 强制正方形
-    
+    background-color: transparent; 
+    aspect-ratio: 1 / 1; 
     display: flex; 
     align-items: center;
     justify-content: center;
 
-    // 深色模式适配
     @media (prefers-color-scheme: dark) {
-      background-color: #333; 
+      background-color: transparent; 
     }
-  }
-}
-
-// 3. Grid 循环逻辑 (默认 3 列)
-@for $i from 3 through 9 {
-  .grid-#{$i} {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 
