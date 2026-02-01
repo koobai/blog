@@ -1,9 +1,9 @@
-/* Memos JS Platinum Plus - Verified 2026.02.01 */
+/* Memos JS Platinum - Final Stable Version - 2026.02.01 */
 
 (function() {
 
 // ============================================================
-// 1. 全局配置与状态管理
+// 1. 全局配置与变量
 // ============================================================
 const memosData = { dom: '#memos' };
 const bbMemo = {
@@ -51,7 +51,6 @@ async function memoFetch(url, method = 'GET', body = null) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error("MemoFetch Error:", error);
         throw error;
     }
 }
@@ -64,6 +63,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     cacheInsertedData();
     initEditorLogic();
+
+    // [关键] 页面加载时，优先获取总数，为随机功能做准备
+    await getTotalMemosCount();
 
     if (bbDom) {
         document.body.addEventListener('click', (e) => {
@@ -78,6 +80,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }
         });
+        
+        // 启动列表加载
         getFirstList();
     } else {
         console.warn("Memos Container #bber not found.");
@@ -99,15 +103,46 @@ function cacheInsertedData() {
     if (moviesEl) insertedDataCache.movies = moviesEl.innerHTML;
 }
 
+// [核心修复] 通过 stats 接口获取准确的总条数
+async function getTotalMemosCount() {
+    try {
+        const bbUrl = `${memos}api/v1/memo/stats?creatorId=${bbMemo.creatorId}`;
+        const resdata = await memoFetch(bbUrl);
+        
+        let count = 0;
+        
+        if (Array.isArray(resdata)) {
+            // 情况 1: 新版 Memos 返回 ["NORMAL", 123, "ARCHIVED", 5]
+            const normalIndex = resdata.indexOf("NORMAL");
+            if (normalIndex !== -1 && resdata[normalIndex + 1] !== undefined) {
+                count = resdata[normalIndex + 1];
+            } 
+            // 情况 2: 旧版 Memos 返回 [{id:1}, {id:2}...] 或 [timestamp1, timestamp2...]
+            else {
+                count = resdata.length;
+            }
+        }
+
+        if (count > 0) {
+            window.localStorage.setItem("memos-response-count", count);
+            return count;
+        }
+    } catch (e) {
+        console.warn("获取 Memos 总数失败，随机功能可能受限");
+    }
+    return parseInt(window.localStorage?.getItem("memos-response-count") || "0");
+}
+
 // ============================================================
 // 4. 列表加载逻辑
 // ============================================================
-function getFirstList() {
+async function getFirstList() {
     bbDom.insertAdjacentHTML('afterend', loadHtml);
     bbDom.insertAdjacentHTML('beforebegin', `<div id="tag-list"></div>`);
 
     mePage = 1; offset = 0;
 
+    // 1. 加载正常列表
     const bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=${limit}`;
     memoFetch(bbUrl).then(resdata => {
         updateHTMl(resdata);
@@ -120,20 +155,35 @@ function getFirstList() {
         }
     }).catch(err => console.error("List load failed:", err));
 
+    // 2. 随机回顾逻辑 (Oneday)
+    // [修复] 删除了这里“如果没有记录则强制开启”的代码
+    
     const oneDay = window.localStorage?.getItem("memos-oneday");
+    
+    // 只有当用户明确开启了 oneday (localStorage中有值) 才执行
     if (memosOpenId && oneDay == "open") {
-        const count = window.localStorage?.getItem("memos-response-count") || 0;
-        const random = count > 5 ? Math.floor(Math.random() * count) : 0;
-        const randomUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=${random}`;
+        let count = parseInt(window.localStorage?.getItem("memos-response-count") || "0");
+        
+        if (count === 0) {
+            count = await getTotalMemosCount();
+        }
 
-        memoFetch(randomUrl).then(resdata => {
-            if (!resdata || resdata.length === 0) {
-                return memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`);
-            }
-            return resdata;
-        }).then(finalData => {
-            if (finalData?.length > 0) updateHTMl(finalData, "ONEDAY");
-        }).catch(console.error);
+        if (count > 1) {
+            const random = Math.floor(Math.random() * count);
+            const randomUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=${random}`;
+
+            memoFetch(randomUrl).then(resdata => {
+                if (!resdata || resdata.length === 0) {
+                    return memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`);
+                }
+                return resdata;
+            }).then(finalData => {
+                if (finalData?.length > 0) updateHTMl(finalData, "ONEDAY");
+            }).catch(console.error);
+        } else {
+             memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`)
+                .then(d => updateHTMl(d, "ONEDAY"));
+        }
     }
 }
 
@@ -162,10 +212,12 @@ window.reloadList = function(mode) {
     bbDom.innerHTML = '';
 
     let bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=${limit}`;
+    
     if (mode == "NOPUBLIC") bbUrl = `${memos}api/v1/memo`;
     else if (mode == "ONEDAY") {
-        const count = window.localStorage?.getItem("memos-response-count") || 0;
-        const rnd = count > 5 ? Math.floor(Math.random() * count) : 0;
+        let count = parseInt(window.localStorage?.getItem("memos-response-count") || "0");
+        if (count === 0) count = 10; 
+        let rnd = Math.floor(Math.random() * count);
         bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=${rnd}`;
     }
 
@@ -219,7 +271,6 @@ function updateHTMl(data, mode) {
             .replace(LINK_REG, '<a href="$2" target="_blank">$1</a>');
         content = marked.parse(content);
 
-        // [修改 1] 图片解析 - 添加 onload 移除隐藏类
         const imgs = item.content.match(IMG_REG);
         let imgHtml = '';
         if (imgs) {
@@ -236,7 +287,6 @@ function updateHTMl(data, mode) {
             return `<div class="memos-tag-dg" onclick="getTagNow(this)">#${txt}</div>`;
         }).join('') : '<div class="memos-tag-dg">#日常</div>';
 
-        // [修改 2] 资源图片解析 - 添加 onload 移除隐藏类
         if (item.resourceList?.length > 0) {
             let resImgHtml = '', resLinkHtml = '', count = 0;
             item.resourceList.forEach(res => {
@@ -263,7 +313,7 @@ function updateHTMl(data, mode) {
             <div class="datacont" view-image>${content}</div>
             <div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>
             ${item.visibility === 'PUBLIC' ? 
-                `<div class="talks_comments"><a onclick="loadArtalk('${item.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01h-.01z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` : 
+                `<div class="talks_comments"><a onclick="loadArtalk('${item.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01h-.01z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` : 
                 `<div class="memos-hide" onclick="reloadList('NOPUBLIC')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></div>`
             }
             </div><div id="memo_${item.id}" class="artalk hidden"></div>
@@ -286,7 +336,6 @@ function updateHTMl(data, mode) {
 
     if (mode === "ONEDAY") {
         bbDom.insertAdjacentHTML('afterbegin', `<li class='memos-oneday'><ul class='bb-list-ul'>${result}</ul></li>`);
-        // 手动唤醒 ONEDAY 模式下的动画
         if (typeof animateSummaries === 'function') animateSummaries();
     } else {
         let timelineContainer = bbDom.querySelector('.bb-timeline');
@@ -298,7 +347,6 @@ function updateHTMl(data, mode) {
             if(listUl) listUl.insertAdjacentHTML('beforeend', result);
         }
         
-        // 唤醒列表动画
         if (typeof animateSummaries === 'function') animateSummaries();
         const loadBtn = document.querySelector('button.button-load');
         if (loadBtn) loadBtn.textContent = '看更多 ...';
@@ -474,6 +522,9 @@ function bindEditorEvents() {
             }
             
             cocoMessage.success('唠叨成功');
+            // 更新总数，确保随机准确
+            getTotalMemosCount();
+            
             textarea.value = '';
             textarea.style.height = 'inherit';
             domRefs.imageList.innerHTML = '';
@@ -519,6 +570,35 @@ function bindEditorEvents() {
     });
 
     document.querySelector(".cancel-edit-btn").addEventListener("click", resetEditorState);
+
+    // [修复] 保存按钮监听器
+    document.querySelector(".submit-openapi-btn").addEventListener("click", () => {
+        const pathInput = document.querySelector(".memos-path-input");
+        const tokenInput = document.querySelector(".memos-token-input");
+        let pathVal = pathInput.value;
+        let tokenVal = tokenInput.value;
+
+        if (pathVal && tokenVal) {
+            pathVal = pathVal.trim().replace(/\/$/, "");
+            if (!/^http/i.test(pathVal)) {
+                pathVal = "https://" + pathVal;
+            }
+            tokenVal = tokenVal.trim();
+
+            window.localStorage?.setItem("memos-access-path", pathVal);
+            window.localStorage?.setItem("memos-access-token", tokenVal);
+            
+            // 保存后立即更新计数
+            getTotalMemosCount().then(() => {
+                cocoMessage.success('保存成功，页面即将刷新');
+                setTimeout(() => {
+                    location.reload();
+                }, 800);
+            });
+        } else {
+            cocoMessage.info('请填写完整的 Memos 地址和 Token');
+        }
+    });
 }
 
 function handleTagAutocomplete() {
