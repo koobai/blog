@@ -546,14 +546,18 @@ blockquote p{
 }
 //随机memos
 .memos-oneday{
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   list-style: none;
   @include breakpoint('medium') {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
 .memos-oneday .memos_diaoyong_time{
   color: var(--text-highlight-color);
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-highlight-dark-color);
+  }
+
 }
 //唠叨编辑
 .memos-edit{
