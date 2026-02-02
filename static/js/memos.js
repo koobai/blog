@@ -1,5 +1,4 @@
-/* Memos JS 2026 Platinum Refactor - Final BugFix (Code Block) - 2026.02.02 */
-
+// 首页唠叨 / 用途：个人动态发布 / 展示 / 适配 MEMOS版本 V0.18.2 / 20260202
 (function() {
     'use strict';
 
