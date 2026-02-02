@@ -1715,9 +1715,6 @@ blockquote p {
   height: 18px;
   color: #ababab; }
 
-.memos-xiala .switchUser-btn {
-  margin-top: 20px !important; }
-
 .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .image-btn, .code-btn {
   margin: 12px 0;
   cursor: pointer;

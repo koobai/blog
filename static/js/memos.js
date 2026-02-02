@@ -465,6 +465,10 @@
 
     function bindEditorEvents() {
         const refs = STATE.domRefs;
+        
+        if (refs.submitBtn) {
+        refs.submitBtn.style.opacity = refs.textarea.value.trim() ? 1 : 0.4;
+    }
 
         document.querySelector(".load-memos-editor").onclick = () => {
             let editor = document.querySelector(".memos-editor");
@@ -533,8 +537,12 @@
             else if (t.classList.contains('link-img')) insertText("![]()", "!", 1);
             else if (t.classList.contains('biao-qing')) showEmoji(t);
             else if (t.classList.contains('switchUser-btn')) {
-                refs.optionPanel.classList.remove("d-none");
-                refs.innerPanel.classList.add("d-none");
+                window.localStorage.removeItem("memos-access-path");
+                window.localStorage.removeItem("memos-access-token");
+                window.localStorage.removeItem("memos-editor-display");  
+                window.localStorage.removeItem("memos-oneday");  
+                window.localStorage.removeItem("memos-resource-list");         
+                location.reload();
             }
             else if (t.classList.contains('private-btn')) {
                 const isP = t.classList.toggle("private");
@@ -639,6 +647,7 @@
     function resetEditor() {
         const refs = STATE.domRefs;
         refs.textarea.value = ''; 
+        if (refs.submitBtn) refs.submitBtn.style.opacity = 0.4;
         refs.imageList.innerHTML = '';
         refs.editDom.classList.add("d-none"); 
         refs.submitBtn.classList.remove("d-none"); 
@@ -731,9 +740,9 @@
                                 <div class="memos-xiala">
                                     <div class="code-btn">代码</div>
                                     <div class="image-btn">图片<input class="memos-upload-image-input d-none" type="file" accept="image/*"></div>
-                                    <div class="switchUser-btn">帐户</div>
                                     <div class="private-btn">私有</div>
                                     <div class="oneday-btn">回忆</div>
+                                    <div class="switchUser-btn">退出</div>
                                 </div>
                             </div>
                         </div>
