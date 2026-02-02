@@ -238,6 +238,9 @@
 .memos-hide{
   margin-left: auto;
   color: var(--text-highlight-color);
+    @media (prefers-color-scheme: dark) {
+        color: var(--text-highlight-dark-color);
+    }
 }
 .datacont pre{
   border-radius: 4px;
@@ -549,9 +552,15 @@ blockquote p{
 .memos-oneday{
   margin-bottom: 15px;
   list-style: none;
+  padding: 15px;
+  background: var(--element-background-color);
+  border-radius: 16px;
   @include breakpoint('medium') {
     margin-bottom: 20px;
   }
+  @media (prefers-color-scheme: dark) {
+        background: var(--background-dark-color);
+    }
 }
 .memos-oneday .memos_diaoyong_time{
   color: var(--text-highlight-color);
