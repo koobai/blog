@@ -69,6 +69,11 @@
     const bbDom = document.querySelector(CONFIG.domId);
     if (!bbDom) return;
 
+    const p = document.getElementById('temp-posts-data');
+    const m = document.getElementById('temp-movies-data');
+    if (p) STATE.cache.posts = p.innerHTML;
+    if (m) STATE.cache.movies = m.innerHTML;
+
     // [1] 先把“唠叨”按钮长出来，否则没人可以点
     const anchor = document.querySelector('.index-laodao-titile');
     if (anchor && !document.querySelector('.load-memos-editor')) {
