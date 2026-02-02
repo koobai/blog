@@ -518,12 +518,23 @@
         document.querySelector(".edit-memos-btn").addEventListener("click", async () => {
             const data = JSON.parse(window.localStorage?.getItem("memos-editor-dataform"));
             if (!data) return;
+
+            const refs = STATE.domRefs;
+            const currentVisibility = refs.visSelect.value;
+
             const body = {
                 id: data.id,
                 content: refs.textarea.value,
-                visibility: refs.visSelect.value,
+                visibility: currentVisibility,
                 resourceIdList: JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]")
             };
+
+            // 【核心逻辑】：如果从 PRIVATE 改为 PUBLIC，更新时间戳为现在
+            if (data.visibility === 'PRIVATE' && currentVisibility === 'PUBLIC') {
+                // Memos API 通常使用秒级时间戳
+                body.createdTs = Math.floor(Date.now() / 1000);
+            }
+
             await memoFetch(`api/v1/memo/${data.id}`, 'PATCH', body);
             cocoMessage.success('修改成功');
             resetEditor();
