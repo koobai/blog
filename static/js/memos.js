@@ -1,802 +1,700 @@
-/* Memos JS Platinum - Final Stable Version - 2026.02.01 */
+/* Memos JS 2026 Platinum Refactor - Final BugFix (Code Block) - 2026.02.02 */
 
 (function() {
+    'use strict';
 
-// ============================================================
-// 1. 全局配置与变量
-// ============================================================
-const memosData = { dom: '#memos' };
-const bbMemo = {
-    memos: 'https://memos.koobai.com/',
-    limit: '16',
-    creatorId: '1',
-    domId: '#bber',
-};
-
-if (typeof (window.bbMemos) !== "undefined") {
-    Object.assign(bbMemo, window.bbMemos);
-}
-
-const limit = bbMemo.limit;
-const memos = bbMemo.memos;
-let mePage = 1, offset = 0, nextLength = 0, nextDom = [];
-let bbDom = null;
-const loadHtml = '<div class="bb-load"><button class="load-btn button-load">加载中……</button></div>';
-
-const memosOpenId = window.localStorage?.getItem("memos-access-token");
-const memosPath = window.localStorage?.getItem("memos-access-path");
-const getEditor = window.localStorage?.getItem("memos-editor-display");
-const getSelectedValue = window.localStorage?.getItem("memos-visibility-select") || "PUBLIC";
-
-// 数据缓存池
-window.memosTags = [];
-let emojisData = [];
-const insertedDataCache = { posts: null, movies: null };
-
-// 编辑器 DOM 引用
-let domRefs = {};
-
-// ============================================================
-// 2. 通用网络请求
-// ============================================================
-async function memoFetch(url, method = 'GET', body = null) {
-    const headers = { 'Content-Type': 'application/json' };
-    if (memosOpenId) headers['Authorization'] = `Bearer ${memosOpenId}`;
+    // ============================================================
+    // 1. 核心配置与状态管理
+    // ============================================================
+    const lsPath = window.localStorage?.getItem("memos-access-path");
+    const lsToken = window.localStorage?.getItem("memos-access-token");
     
-    const options = { method, headers };
-    if (body) options.body = JSON.stringify(body);
+    const baseMemos = lsPath ? (lsPath.endsWith('/') ? lsPath : lsPath + '/') : 'https://memos.koobai.com/';
 
-    try {
-        const response = await fetch(url, options);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-}
-
-// ============================================================
-// 3. 程序入口
-// ============================================================
-document.addEventListener("DOMContentLoaded", async function () {
-    bbDom = document.querySelector(bbMemo.domId);
-
-    cacheInsertedData();
-    initEditorLogic();
-
-    // [关键] 页面加载时，优先获取总数，为随机功能做准备
-    await getTotalMemosCount();
-
-    if (bbDom) {
-        document.body.addEventListener('click', (e) => {
-            if (e.target && e.target.classList.contains('button-load')) {
-                const btn = e.target;
-                btn.textContent = '加载中……';
-                updateHTMl(nextDom);
-                if (nextLength < limit) {
-                    btn.remove();
-                } else {
-                    getNextList();
-                }
-            }
-        });
-        
-        // 启动列表加载
-        getFirstList();
-    } else {
-        console.warn("Memos Container #bber not found.");
-    }
-
-    try {
-        const response = await fetch('/suju/owo.json');
-        const data = await response.json();
-        emojisData = data.Emoji.container;
-    } catch (error) {
-        console.error('Failed to fetch emojis data');
-    }
-});
-
-function cacheInsertedData() {
-    const postsEl = document.getElementById('temp-posts-data');
-    const moviesEl = document.getElementById('temp-movies-data');
-    if (postsEl) insertedDataCache.posts = postsEl.innerHTML;
-    if (moviesEl) insertedDataCache.movies = moviesEl.innerHTML;
-}
-
-// [核心修复] 通过 stats 接口获取准确的总条数
-async function getTotalMemosCount() {
-    try {
-        const bbUrl = `${memos}api/v1/memo/stats?creatorId=${bbMemo.creatorId}`;
-        const resdata = await memoFetch(bbUrl);
-        
-        let count = 0;
-        
-        if (Array.isArray(resdata)) {
-            // 情况 1: 新版 Memos 返回 ["NORMAL", 123, "ARCHIVED", 5]
-            const normalIndex = resdata.indexOf("NORMAL");
-            if (normalIndex !== -1 && resdata[normalIndex + 1] !== undefined) {
-                count = resdata[normalIndex + 1];
-            } 
-            // 情况 2: 旧版 Memos 返回 [{id:1}, {id:2}...] 或 [timestamp1, timestamp2...]
-            else {
-                count = resdata.length;
-            }
-        }
-
-        if (count > 0) {
-            window.localStorage.setItem("memos-response-count", count);
-            return count;
-        }
-    } catch (e) {
-        console.warn("获取 Memos 总数失败，随机功能可能受限");
-    }
-    return parseInt(window.localStorage?.getItem("memos-response-count") || "0");
-}
-
-// ============================================================
-// 4. 列表加载逻辑
-// ============================================================
-async function getFirstList() {
-    bbDom.insertAdjacentHTML('afterend', loadHtml);
-    bbDom.insertAdjacentHTML('beforebegin', `<div id="tag-list"></div>`);
-
-    mePage = 1; offset = 0;
-
-    // 1. 加载正常列表
-    const bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=${limit}`;
-    memoFetch(bbUrl).then(resdata => {
-        updateHTMl(resdata);
-        if (resdata.length < limit) {
-            document.querySelector("button.button-load")?.remove();
-        } else {
-            mePage++;
-            offset = limit * (mePage - 1);
-            getNextList();
-        }
-    }).catch(err => console.error("List load failed:", err));
-
-    // 2. 随机回顾逻辑 (Oneday)
-    // [修复] 删除了这里“如果没有记录则强制开启”的代码
-    
-    const oneDay = window.localStorage?.getItem("memos-oneday");
-    
-    // 只有当用户明确开启了 oneday (localStorage中有值) 才执行
-    if (memosOpenId && oneDay == "open") {
-        let count = parseInt(window.localStorage?.getItem("memos-response-count") || "0");
-        
-        if (count === 0) {
-            count = await getTotalMemosCount();
-        }
-
-        if (count > 1) {
-            const random = Math.floor(Math.random() * count);
-            const randomUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=${random}`;
-
-            memoFetch(randomUrl).then(resdata => {
-                if (!resdata || resdata.length === 0) {
-                    return memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`);
-                }
-                return resdata;
-            }).then(finalData => {
-                if (finalData?.length > 0) updateHTMl(finalData, "ONEDAY");
-            }).catch(console.error);
-        } else {
-             memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`)
-                .then(d => updateHTMl(d, "ONEDAY"));
-        }
-    }
-}
-
-function getNextList() {
-    const bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=${limit}&offset=${offset}`;
-    memoFetch(bbUrl).then(resdata => {
-        nextDom = resdata;
-        nextLength = nextDom.length;
-        mePage++;
-        offset = limit * (mePage - 1);
-        if (nextLength < 1) {
-            document.querySelector("button.button-load")?.remove();
-        }
-    });
-}
-
-window.reloadList = function(mode) {
-    const existBtn = document.querySelector(".button-load");
-    if (existBtn) {
-        existBtn.textContent = '加载中……';
-    } else {
-        bbDom.insertAdjacentHTML('afterend', loadHtml);
-    }
-    
-    mePage = 1; offset = 0; nextLength = 0; nextDom = [];
-    bbDom.innerHTML = '';
-
-    let bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=${limit}`;
-    
-    if (mode == "NOPUBLIC") bbUrl = `${memos}api/v1/memo`;
-    else if (mode == "ONEDAY") {
-        let count = parseInt(window.localStorage?.getItem("memos-response-count") || "0");
-        if (count === 0) count = 10; 
-        let rnd = Math.floor(Math.random() * count);
-        bbUrl = `${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=${rnd}`;
-    }
-
-    memoFetch(bbUrl).then(resdata => {
-        if (mode == "NOPUBLIC") {
-            resdata = resdata.filter(item => item.visibility !== "PUBLIC");
-        }
-        
-        if (mode == "ONEDAY") {
-            if (!resdata || resdata.length === 0) {
-                memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&rowStatus=NORMAL&limit=1&offset=0`)
-                    .then(d => updateHTMl(d, "ONEDAY"));
-            } else {
-                updateHTMl(resdata, "ONEDAY");
-            }
-        } else {
-            updateHTMl(resdata);
-            if (resdata.length < limit) {
-                document.querySelector("button.button-load")?.remove();
-            } else {
-                mePage++;
-                offset = limit * (mePage - 1);
-                getNextList(); 
-            }
-        }
-    }).catch(err => {
-        console.error("Reload failed", err);
-        bbDom.innerHTML = '';
-    });
-};
-
-// ============================================================
-// 5. 渲染引擎
-// ============================================================
-const TAG_REG = /#([^#\s!.,;:?"'()]+)(?= )/g;
-const IMG_REG = /\!\[(.*?)\]\((.*?)\)/g;
-const LINK_REG = /\[(.*?)\]\((.*?)\)/g;
-
-if (typeof marked !== 'undefined') {
-    marked.setOptions({ breaks: false, smartypants: false, headerIds: false, mangle: false });
-}
-
-function updateHTMl(data, mode) {
-    let result = "";
-    const showEdit = (memosOpenId && getEditor == "show") ? 1 : 0;
-
-    data.forEach((item, i) => {
-        let content = item.content
-            .replace(TAG_REG, "")
-            .replace(IMG_REG, '')
-            .replace(LINK_REG, '<a href="$2" target="_blank">$1</a>');
-        content = marked.parse(content);
-
-        const imgs = item.content.match(IMG_REG);
-        let imgHtml = '';
-        if (imgs) {
-            imgs.forEach(img => {
-                const src = img.replace(/!\[.*?\]\((.*?)\)/g, '$1');
-                imgHtml += `<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" onload="this.classList.remove('img-hide')" src="${src}"/></figure>`;
-            });
-            content += `<div class="resimg${imgs.length > 1 ? ` grid grid-${imgs.length}` : ''}">${imgHtml}</div>`;
-        }
-
-        const tags = item.content.match(TAG_REG);
-        const tagHtml = tags ? tags.map(t => {
-            const txt = t.replace(/[#]/g, '');
-            return `<div class="memos-tag-dg" onclick="getTagNow(this)">#${txt}</div>`;
-        }).join('') : '<div class="memos-tag-dg">#日常</div>';
-
-        if (item.resourceList?.length > 0) {
-            let resImgHtml = '', resLinkHtml = '', count = 0;
-            item.resourceList.forEach(res => {
-                const link = res.externalLink || `${memos}o/r/${res.id}`;
-                if (res.type.startsWith('image')) {
-                    resImgHtml += `<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" onload="this.classList.remove('img-hide')" src="${link}"/></figure>`;
-                    count++;
-                } else {
-                    resLinkHtml += `<a target="_blank" href="${link}">${res.filename}</a>`;
-                }
-            });
-            if (resImgHtml) content += `<div class="resimg ${count > 1 ? `grid grid-${count}` : ''}">${resImgHtml}</div>`;
-            if (resLinkHtml) content += `<p class="datasource">${resLinkHtml}</p>`;
-        }
-
-        const memoString = JSON.stringify(item).replace(/"/g, '&quot;');
-        result += `<li class="bb-list-li img-hide" id="${item.id}">
-            <div class="memos-pl"><div class="memos_diaoyong_time">${moment(item.createdTs * 1000).twitterLong()}</div>
-            ${showEdit ? `<div class="memos-edit"><div class="memos-menu">...</div><div class="memos-menu-d">
-                <div class="edit-btn" data-form="${memoString}" onclick="editMemo(this)">修改</div>
-                <div class="archive-btn" onclick="archiveMemo('${item.id}')">归档</div>
-                <div class="delete-btn" onclick="deleteMemo('${item.id}')">删除</div></div></div>` : ''}
-            </div>
-            <div class="datacont" view-image>${content}</div>
-            <div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>
-            ${item.visibility === 'PUBLIC' ? 
-                `<div class="talks_comments"><a onclick="loadArtalk('${item.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01h-.01z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` : 
-                `<div class="memos-hide" onclick="reloadList('NOPUBLIC')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></div>`
-            }
-            </div><div id="memo_${item.id}" class="artalk hidden"></div>
-        </li>`;
-
-        if (!mode && typeof mePage !== 'undefined' && mePage <= 2) {
-            const postMapping = { 1: 0, 4: 1, 7: 2, 9: 3 };
-            if (postMapping[i] !== undefined && insertedDataCache.posts) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = insertedDataCache.posts;
-                const postItems = tempDiv.querySelectorAll('.one-post-item');
-                const postHTML = postItems[postMapping[i]]?.innerHTML;
-                if (postHTML) result += `<div class="inserted-post-section animated-fade-in">${postHTML}</div>`;
-            }
-            if (i == 1 && insertedDataCache.movies) {
-                result += `<div class="inserted-movies-section animated-fade-in"><div class="movies-grid-container">${insertedDataCache.movies}</div></div>`;
-            }
-        }
-    });
-
-    if (mode === "ONEDAY") {
-        bbDom.insertAdjacentHTML('afterbegin', `<li class='memos-oneday'><ul class='bb-list-ul'>${result}</ul></li>`);
-        if (typeof animateSummaries === 'function') animateSummaries();
-    } else {
-        let timelineContainer = bbDom.querySelector('.bb-timeline');
-        if (!timelineContainer) {
-            const wrap = `<section class='bb-timeline'><ul class='bb-list-ul'>${result}</ul></section>`;
-            bbDom.insertAdjacentHTML('beforeend', wrap);
-        } else {
-            let listUl = timelineContainer.querySelector('.bb-list-ul');
-            if(listUl) listUl.insertAdjacentHTML('beforeend', result);
-        }
-        
-        if (typeof animateSummaries === 'function') animateSummaries();
-        const loadBtn = document.querySelector('button.button-load');
-        if (loadBtn) loadBtn.textContent = '看更多 ...';
-    }
-}
-
-// 辅助函数
-window.getTagNow = function(e) {
-    const tagName = e.innerText.replace('#', '');
-    window.scrollTo({ top: document.getElementById("bber").offsetTop - 30, behavior: "smooth" });
-    document.querySelector('#tag-list').innerHTML = `<div class='memos-tag-sc-2' onclick='location.reload();'><div class='memos-tag-sc-1'>标签筛选:</div><div class='memos-tag-sc'>${e.innerText}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></div></div>`;
-    
-    memoFetch(`${memos}api/v1/memo?creatorId=${bbMemo.creatorId}&tag=${tagName}&limit=20`)
-        .then(res => {
-            bbDom.innerHTML = "";
-            updateHTMl(res); 
-            document.querySelector("button.button-load")?.remove();
-        });
-};
-
-window.loadArtalk = function(id) {
-    const target = document.getElementById('memo_' + id);
-    const all = document.querySelectorAll("[id^='memo_']");
-    const isHidden = target.classList.contains('hidden');
-    all.forEach(el => el.classList.add('hidden'));
-    if (isHidden) {
-        target.classList.remove('hidden');
-        if (typeof Artalk !== 'undefined') {
-            Artalk.init({ el: '#memo_' + id, pageKey: '/m/' + id, pageTitle: '', server: 'https://c.koobai.com/', site: '空白唠叨', darkMode: 'auto' });
-        }
-    }
-};
-
-window.editMemo = function(el) {
-    if (!domRefs.editMemoDom) return; 
-    const data = JSON.parse(el.getAttribute("data-form"));
-    
-    window.memosOldSelect = domRefs.visibilitySelect.value;
-    window.localStorage?.setItem("memos-editor-dataform", JSON.stringify(data));
-    
-    domRefs.visibilitySelect.value = data.visibility;
-    domRefs.textarea.value = data.content;
-    domRefs.textarea.style.height = 'inherit';
-    domRefs.textarea.style.height = domRefs.textarea.scrollHeight + 'px';
-    
-    domRefs.submitBtn.classList.add("d-none");
-    domRefs.editMemoDom.classList.remove("d-none");
-    
-    domRefs.imageList.innerHTML = '';
-    const resList = data.resourceList || [];
-    const resIds = resList.map(r => r.id);
-    window.localStorage?.setItem("memos-resource-list", JSON.stringify(resIds));
-    
-    let imgHtml = '';
-    resList.forEach(r => {
-        const link = r.externalLink || `${memosPath}/o/r/${r.id}`;
-        imgHtml += `<div data-id="${r.id}" class="imagelist-item d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex memos-up-image" style="background-image:url(${link})"></div></div>`;
-    });
-    domRefs.imageList.insertAdjacentHTML('afterbegin', imgHtml);
-    
-    const topPos = domRefs.editor.getBoundingClientRect().top + window.pageYOffset - 100;
-    window.scrollTo({ top: topPos, behavior: "smooth" });
-};
-
-window.archiveMemo = function(id) {
-    memoFetch(`${memosPath}/api/v1/memo/${id}`, 'PATCH', { id, rowStatus: "ARCHIVED" })
-        .then(() => { reloadList(); cocoMessage.success('归档成功'); })
-        .catch(() => cocoMessage.error('操作失败'));
-};
-
-window.deleteMemo = function(id) {
-    if (confirm("确定要删除此条唠叨吗？")) {
-        memoFetch(`${memosPath}/api/v1/memo/${id}`, 'DELETE')
-            .then(() => { reloadList(window.localStorage?.getItem("memos-mode")); cocoMessage.success('删除成功'); })
-            .catch(() => cocoMessage.error('删除失败'));
-    }
-};
-
-window.deleteImage = function(e) {
-    const id = Number(e.getAttribute("data-id"));
-    let list = JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]");
-    list = list.filter(item => item !== id);
-    window.localStorage?.setItem("memos-resource-list", JSON.stringify(list));
-    e.remove();
-};
-
-// ============================================================
-// 6. 编辑器逻辑核心 (Editor Logic)
-// ============================================================
-function initEditorLogic() {
-    const memosDom = document.querySelector(memosData.dom);
-    const titileEl = document.querySelector('.index-laodao-titile');
-    
-    if (!titileEl || !memosDom) return;
-
-    titileEl.insertAdjacentHTML('afterend', "<div class='load-memos-editor'>唠叨</div>");
-    memosDom.insertAdjacentHTML('afterbegin', getEditorHtml());
-
-    domRefs = {
-        editor: document.querySelector(".memos-editor"),
-        textarea: document.querySelector(".memos-editor-textarea"),
-        tagMenu: document.getElementById('memos-tag-menu'),
-        imageList: document.querySelector(".memos-image-list"),
-        visibilitySelect: document.querySelector(".select-memos-value"),
-        submitBtn: document.querySelector(".submit-memos-btn"),
-        editMemoDom: document.querySelector(".edit-memos"),
-        uploadInput: document.querySelector(".memos-upload-image-input"),
-        loadEditorBtn: document.querySelector(".load-memos-editor"),
-        optionPanel: document.querySelector(".memos-editor-option"),
-        innerPanel: document.querySelector(".memos-editor-inner")
+    const CONFIG = {
+        memos: baseMemos,
+        limit: 16, 
+        creatorId: '1', 
+        domId: '#bber', 
+        editorContainer: '#memos'
     };
 
-    bindEditorEvents();
-    
-    if (getEditor === "show") {
-        domRefs.editor.classList.remove("d-none");
-        checkToken();
-    }
-}
+    if (typeof window.bbMemos !== "undefined") Object.assign(CONFIG, window.bbMemos);
 
-function bindEditorEvents() {
-    const { textarea, tagMenu, loadEditorBtn, submitBtn, uploadInput, visibilitySelect } = domRefs;
+    const STATE = {
+        mePage: 1, offset: 0, nextLength: 0, nextDom: [],
+        memosOpenId: lsToken,
+        memosPath: baseMemos,
+        editorDisplay: window.localStorage?.getItem("memos-editor-display"),
+        cache: { posts: null, movies: null },
+        domRefs: {},
+        isAuthorized: !!lsToken, 
+        totalCount: 0,
+        viewMode: 'ALL', 
+        isRandomRender: false
+    };
 
-    loadEditorBtn.addEventListener("click", () => {
-        const isHidden = domRefs.editor.classList.toggle("d-none");
-        window.localStorage?.setItem("memos-editor-display", isHidden ? "hide" : "show");
-        if (!isHidden) checkToken();
-    });
+    let activeEmojiPicker = null;
 
-    textarea.addEventListener('input', () => {
-        textarea.style.height = 'inherit';
-        textarea.style.height = textarea.scrollHeight + 'px';
-        submitBtn.style.opacity = textarea.value.trim() ? 1 : 0.4;
-        handleTagAutocomplete();
-    });
-
-    let tagIdx = -1;
-    textarea.addEventListener('keydown', (e) => {
-        if (tagMenu.style.display === 'block') {
-            const options = tagMenu.querySelectorAll('.tag-option');
-            if (e.keyCode === 38 || e.keyCode === 40) { 
-                e.preventDefault();
-                tagIdx = (tagIdx + (e.keyCode === 38 ? -1 : 1) + options.length) % options.length;
-                options.forEach((o, i) => o.classList.toggle('selected', i === tagIdx));
-            } else if (e.keyCode === 13 && tagIdx > -1) { 
-                e.preventDefault();
-                insertTag(options[tagIdx].innerText.replace('#', ''));
-            }
-        }
-    });
-
-    tagMenu.addEventListener('click', (e) => {
-        if (e.target.classList.contains('tag-option')) {
-            insertTag(e.target.innerText.replace('#', ''));
-        }
-    });
-
-    submitBtn.addEventListener("click", async () => {
-        const content = textarea.value;
-        if (!content) return cocoMessage.info('内容不能为空');
+    // ============================================================
+    // 2. 网络请求封装
+    // ============================================================
+    async function memoFetch(url, method = 'GET', body = null) {
+        if (!url) return null;
         
-        const body = {
-            content,
-            visibility: visibilitySelect.value,
-            resourceIdList: JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]")
-        };
+        const headers = { 'Content-Type': 'application/json' };
+        if (STATE.memosOpenId) headers['Authorization'] = `Bearer ${STATE.memosOpenId}`;
+        
+        let fullUrl = url.startsWith('http') ? url : `${CONFIG.memos}${url.replace(/^\//, '')}`;
+
+        if (method === 'GET') {
+            const separator = fullUrl.includes('?') ? '&' : '?';
+            fullUrl += `${separator}t=${Date.now()}`;
+        }
 
         try {
-            await memoFetch(`${memosPath}/api/v1/memo`, 'POST', body);
-            const tags = content.match(TAG_REG);
-            if (tags) {
-                tags.forEach(t => memoFetch(`${memosPath}/api/v1/tag`, 'POST', { name: t.replace('#', '') }).catch(()=>{}));
-            }
-            
-            cocoMessage.success('唠叨成功');
-            // 更新总数，确保随机准确
-            getTotalMemosCount();
-            
-            textarea.value = '';
-            textarea.style.height = 'inherit';
-            domRefs.imageList.innerHTML = '';
-            window.localStorage?.removeItem("memos-resource-list");
-            reloadList(window.localStorage?.getItem("memos-mode"));
-        } catch (e) {
-            cocoMessage.error('发布失败');
-        }
+            const res = await fetch(fullUrl, { method, headers, body: body ? JSON.stringify(body) : null });
+            if (!res.ok) return null;
+            return await res.json();
+        } catch (e) { return null; }
+    }
+
+    // ============================================================
+    // 3. 初始化与事件委托
+    // ============================================================
+    document.addEventListener("DOMContentLoaded", async function () {
+        const bbDom = document.querySelector(CONFIG.domId);
+        if (!bbDom) return;
+
+        const p = document.getElementById('temp-posts-data'), m = document.getElementById('temp-movies-data');
+        if (p) STATE.cache.posts = p.innerHTML;
+        if (m) STATE.cache.movies = m.innerHTML;
+
+        getFirstList();
+        initEditorLogic();
+
+        document.body.addEventListener('click', handleGlobalClick);
+
+        try {
+            const res = await fetch('/suju/owo.json');
+            const data = await res.json();
+            window.emojisData = data.Emoji.container;
+        } catch (e) {}
     });
 
-    document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
-        const target = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn');
+    function handleGlobalClick(e) {
+        const target = e.target.closest('[data-action]');
         if (!target) return;
 
-        if (target.classList.contains('code-single')) insertText("``", "`", 1);
-        else if (target.classList.contains('code-btn')) insertText("```\n\n```", "", 4);
-        else if (target.classList.contains('link-btn')) insertText("[]()", "[", 1);
-        else if (target.classList.contains('link-img')) insertText("![]()", "!", 1);
-        else if (target.classList.contains('biao-qing')) showEmojiPicker(target);
-        else if (target.classList.contains('private-btn')) togglePrivateMode(target);
-        else if (target.classList.contains('oneday-btn')) toggleOneDay(target);
-        else if (target.classList.contains('switchUser-btn')) switchUser();
-    });
+        const action = target.dataset.action;
+        const id = target.dataset.id;
+        const val = target.dataset.val;
 
-    document.querySelector(".image-btn").addEventListener("click", () => uploadInput.click());
-    uploadInput.addEventListener("change", () => {
-        if (uploadInput.files.length > 0) uploadFile(uploadInput.files[0]);
-    });
-
-    document.querySelector(".edit-memos-btn").addEventListener("click", () => {
-        const data = JSON.parse(window.localStorage?.getItem("memos-editor-dataform"));
-        const body = {
-            id: data.id,
-            content: textarea.value,
-            visibility: visibilitySelect.value,
-            resourceIdList: JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]")
-        };
-        memoFetch(`${memosPath}/api/v1/memo/${data.id}`, 'PATCH', body).then(() => {
-            cocoMessage.success('修改成功');
-            resetEditorState();
-            reloadList(window.localStorage?.getItem("memos-mode"));
-        });
-    });
-
-    document.querySelector(".cancel-edit-btn").addEventListener("click", resetEditorState);
-
-    // 验证
-    document.querySelector(".submit-openapi-btn").addEventListener("click", async (e) => {
-        e.preventDefault();
-        const path = document.querySelector(".memos-path-input").value.trim().replace(/\/$/, "");
-        const token = document.querySelector(".memos-token-input").value.trim();
-
-        if (!path || !token) return cocoMessage.info('请填写完整信息');
-        const fullPath = /^http/i.test(path) ? path : `https://${path}`;
-
-        try {
-            const res = await fetch(`${fullPath}/api/v1/tag`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            // 强校验：状态码 OK 且确保返回的是数组数据
-            if (res.ok && Array.isArray(await res.json())) {
-                window.localStorage.setItem("memos-access-path", fullPath);
-                window.localStorage.setItem("memos-access-token", token);
-                
-                cocoMessage.success('验证成功');
-                await getTotalMemosCount(); // 同步计数
-                location.reload();
-            } else {
-                cocoMessage.error('验证失败：Token 无效');
-            }
-        } catch (err) {
-            cocoMessage.error('错误，请检查');
+        switch (action) {
+            case 'load-more':
+                handleLoadMore(target);
+                break;
+            case 'tag-filter':
+                handleTagFilter(val, target.innerText);
+                break;
+            case 'tag-reset': 
+                reloadList();
+                break;
+            case 'load-artalk':
+                handleLoadArtalk(id);
+                break;
+            case 'edit':
+                handleEditMemo(target);
+                break;
+            case 'archive':
+                handleArchiveMemo(id);
+                break;
+            case 'delete':
+                handleDeleteMemo(id);
+                break;
+            case 'delete-image': 
+                handleDeleteImage(target, id);
+                break;
+            case 'reload-private': 
+                STATE.viewMode = 'PRIVATE';
+                reloadList();
+                break;
         }
-    });
-}
+    }
 
-function handleTagAutocomplete() {
-    const val = domRefs.textarea.value;
-    const start = domRefs.textarea.selectionStart;
-    const lastWord = val.slice(0, start).split(/\s+/).pop();
-
-    if (lastWord && lastWord.startsWith('#')) {
-        const query = lastWord.slice(1).toLowerCase();
-        const matches = window.memosTags.filter(t => t.toLowerCase().includes(query));
+    // ============================================================
+    // 4. 业务逻辑处理
+    // ============================================================
+    
+    function handleLoadMore(btn) {
+        btn.textContent = '加载中……';
+        if (STATE.nextDom) updateHTMl(STATE.nextDom);
         
-        if (matches.length > 0) {
-            domRefs.tagMenu.innerHTML = matches.map(t => `<div class="tag-option">#${t}</div>`).join('');
-            domRefs.tagMenu.style.display = 'block';
+        if (STATE.nextLength < CONFIG.limit) {
+            btn.remove();
+        } else {
+            getNextPage();
+        }
+    }
+
+    function handleTagFilter(tagName, displayText) {
+        window.scrollTo({ top: document.querySelector(CONFIG.domId).offsetTop - 30, behavior: "smooth" });
+        document.querySelector('#tag-list').innerHTML = `
+            <div class='memos-tag-sc-2' data-action="tag-reset">
+                <div class='memos-tag-sc-1'>标签筛选:</div>
+                <div class='memos-tag-sc'>${displayText}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                </div>
+            </div>`;
+        
+        memoFetch(`api/v1/memo?creatorId=${CONFIG.creatorId}&tag=${tagName}&limit=20`)
+            .then(res => {
+                const bbDom = document.querySelector(CONFIG.domId);
+                bbDom.innerHTML = "";
+                updateHTMl(res);
+                document.querySelector("button.button-load")?.remove();
+            });
+    }
+
+    function handleLoadArtalk(id) {
+        const target = document.getElementById(`memo_${id}`);
+        document.querySelectorAll("[id^='memo_']").forEach(el => { 
+            if (el !== target) el.classList.add('hidden'); 
+        });
+        target.classList.toggle('hidden');
+        if (!target.classList.contains('hidden') && typeof Artalk !== 'undefined') {
+            Artalk.init({ 
+                el: `#memo_${id}`, 
+                pageKey: `/m/${id}`, 
+                server: 'https://c.koobai.com/', 
+                site: '空白唠叨', 
+                darkMode: 'auto' 
+            });
+        }
+    }
+
+    function handleEditMemo(el) {
+        if (!STATE.domRefs.editDom) return;
+        
+        const data = JSON.parse(decodeURIComponent(el.dataset.form));
+        window.localStorage?.setItem("memos-editor-dataform", JSON.stringify(data));
+        
+        const { visSelect, textarea, submitBtn, editDom, imageList, editor } = STATE.domRefs;
+        
+        if (visSelect) visSelect.value = data.visibility;
+        if (textarea) {
+            textarea.value = data.content;
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+        
+        if (submitBtn) submitBtn.classList.add("d-none");
+        if (editDom) editDom.classList.remove("d-none");
+        
+        if (imageList) {
+            imageList.innerHTML = '';
+            const resList = data.resourceList || [];
+            const resIds = resList.map(r => r.id);
+            window.localStorage?.setItem("memos-resource-list", JSON.stringify(resIds));
+            
+            let imgHtml = '';
+            resList.forEach(r => {
+                const link = r.externalLink || `${STATE.memosPath}o/r/${r.id}`;
+                imgHtml += `<div data-action="delete-image" data-id="${r.id}" class="imagelist-item d-flex text-xs mt-2 mr-2"><div class="d-flex memos-up-image" style="background-image:url(${link})"></div></div>`;
+            });
+            imageList.insertAdjacentHTML('afterbegin', imgHtml);
+        }
+        
+        if (editor) {
+            window.scrollTo({ top: editor.getBoundingClientRect().top + window.pageYOffset - 100, behavior: "smooth" });
+        }
+    }
+
+    function handleArchiveMemo(id) {
+        memoFetch(`api/v1/memo/${id}`, 'PATCH', { id, rowStatus: "ARCHIVED" })
+            .then(() => { reloadList(); cocoMessage.success('归档成功'); })
+            .catch(() => cocoMessage.error('操作失败'));
+    }
+
+    function handleDeleteMemo(id) {
+        if (confirm("确定要删除此条唠叨吗？")) {
+            memoFetch(`api/v1/memo/${id}`, 'DELETE')
+                .then(() => { reloadList(); cocoMessage.success('删除成功'); })
+                .catch(() => cocoMessage.error('删除失败'));
+        }
+    }
+
+    function handleDeleteImage(el, id) {
+        id = Number(id);
+        let list = JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]");
+        list = list.filter(item => item !== id);
+        window.localStorage?.setItem("memos-resource-list", JSON.stringify(list));
+        el.remove();
+    }
+
+    // ============================================================
+    // 5. 数据加载与渲染
+    // ============================================================
+    function getFirstList() {
+        const bbDom = document.querySelector(CONFIG.domId);
+        bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
+        STATE.mePage = 1; STATE.offset = 0;
+        
+        memoFetch(`api/v1/memo?creatorId=${CONFIG.creatorId}&rowStatus=NORMAL&limit=${CONFIG.limit}`).then(res => {
+            if (res) {
+                updateHTMl(res);
+                if (res.length >= CONFIG.limit) {
+                    bbDom.insertAdjacentHTML('afterend', '<div class="bb-load"><button class="load-btn button-load" data-action="load-more">看更多 ...</button></div>');
+                    STATE.mePage++; STATE.offset = CONFIG.limit * (STATE.mePage - 1);
+                    getNextPage();
+                }
+            }
+        });
+        loadRandomMemo();
+    }
+
+    function getNextPage() {
+        let url = `api/v1/memo?creatorId=${CONFIG.creatorId}&rowStatus=NORMAL&limit=${CONFIG.limit}&offset=${STATE.offset}`;
+        if (STATE.viewMode === 'PRIVATE') url += `&visibility=PRIVATE`;
+
+        memoFetch(url).then(res => {
+            if (!res) return;
+            const finalData = STATE.viewMode === 'PRIVATE' ? res.filter(item => item.visibility === 'PRIVATE') : res;
+            STATE.nextDom = finalData; 
+            STATE.nextLength = res.length;
+            STATE.mePage++; STATE.offset = CONFIG.limit * (STATE.mePage - 1);
+            if (STATE.nextLength < 1) document.querySelector("button.button-load")?.remove();
+        });
+    }
+
+    async function loadRandomMemo() {
+        const oneDay = window.localStorage?.getItem("memos-oneday");
+        if (oneDay == "open") {
+            if (STATE.totalCount === 0) {
+                const stats = await memoFetch(`api/v1/memo/stats?creatorId=${CONFIG.creatorId}`);
+                if (stats && Array.isArray(stats)) {
+                    const idx = stats.indexOf("NORMAL");
+                    STATE.totalCount = idx > -1 ? stats[idx + 1] : stats.length;
+                } else { STATE.totalCount = 10; }
+            }
+            const rnd = Math.floor(Math.random() * STATE.totalCount);
+            memoFetch(`api/v1/memo?creatorId=${CONFIG.creatorId}&rowStatus=NORMAL&limit=1&offset=${rnd}`).then(res => {
+                if (res && res.length > 0) {
+                    STATE.isRandomRender = true; updateHTMl(res, "ONEDAY"); STATE.isRandomRender = false;
+                }
+            });
+        }
+    }
+
+    function reloadList() {
+        const bbDom = document.querySelector(CONFIG.domId);
+        document.querySelector(".bb-load")?.remove();
+        document.querySelector("#tag-list").innerHTML = ""; 
+        
+        STATE.mePage = 1; STATE.offset = 0; bbDom.innerHTML = '';
+        
+        let url = `api/v1/memo?creatorId=${CONFIG.creatorId}&rowStatus=NORMAL&limit=${CONFIG.limit}`;
+        if (STATE.viewMode === 'PRIVATE') url += `&visibility=PRIVATE`;
+        
+        memoFetch(url).then(res => {
+            if (!res) return;
+            updateHTMl(res);
+            if (res.length >= CONFIG.limit) {
+                bbDom.insertAdjacentHTML('afterend', '<div class="bb-load"><button class="load-btn button-load" data-action="load-more">看更多 ...</button></div>');
+                STATE.mePage++; STATE.offset = CONFIG.limit * (STATE.mePage - 1);
+                getNextPage();
+            }
+            if (window.localStorage?.getItem("memos-oneday") == "open") loadRandomMemo();
+        });
+    }
+
+    // 渲染 HTML
+    const REG = { TAG: /#([^#\s!.,;:?"'()]+)(?= )/g, IMG: /\!\[(.*?)\]\((.*?)\)/g, LINK: /\[(.*?)\]\((.*?)\)/g };
+    if (typeof marked !== 'undefined') marked.setOptions({ breaks: false, smartypants: false, headerIds: false, mangle: false });
+
+    function updateHTMl(data, mode) {
+        if (!data || !Array.isArray(data)) return;
+        let result = "";
+        const bbDom = document.querySelector(CONFIG.domId);
+        const canEdit = STATE.isAuthorized && STATE.editorDisplay == "show";
+
+        data.forEach((item, i) => {
+            if (!STATE.isAuthorized && item.visibility !== 'PUBLIC') return;
+            if (STATE.viewMode === 'PRIVATE' && item.visibility !== 'PRIVATE') return;
+
+            let contentStr = item.content.replace(REG.TAG, "").replace(REG.IMG, "").replace(REG.LINK, '<a href="$2" target="_blank">$1</a>');
+            let content = marked.parse(contentStr);
+            
+            const allImages = [];
+            let match;
+            while ((match = REG.IMG.exec(item.content)) !== null) allImages.push(match[2]);
+            if (item.resourceList?.length > 0) {
+                item.resourceList.forEach(res => {
+                    if (res.type.startsWith('image')) allImages.push(res.externalLink || `${CONFIG.memos}o/r/${res.id}`);
+                });
+            }
+
+            let imgHtml = '';
+            if (allImages.length > 0) {
+                imgHtml = `<div class="resimg grid grid-${allImages.length}">${allImages.map(src => 
+                    `<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" onload="this.classList.remove('img-hide')" src="${src}" /></figure>`
+                ).join('')}</div>`;
+            }
+
+            const tagHtml = (item.content.match(REG.TAG) || []).map(t => {
+                const val = t.replace(/[#]/g, '');
+                return `<div class="memos-tag-dg" data-action="tag-filter" data-val="${val}">#${val}</div>`;
+            }).join('') || '<div class="memos-tag-dg">#日常</div>';
+
+            const memoString = encodeURIComponent(JSON.stringify(item));
+            const liClass = STATE.isRandomRender ? "memos-oneday-li img-hide" : "bb-list-li img-hide";
+
+            const footer = item.visibility === 'PUBLIC' 
+                ? `<div class="talks_comments"><a data-action="load-artalk" data-id="${item.id}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01h-.01z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` 
+                : `<div class="memos-hide" data-action="reload-private"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></div>`;
+
+            const editMenu = canEdit ? `<div class="memos-edit"><div class="memos-menu">...</div><div class="memos-menu-d">
+                <div class="edit-btn" data-action="edit" data-form="${memoString}">修改</div>
+                <div class="archive-btn" data-action="archive" data-id="${item.id}">归档</div>
+                <div class="delete-btn" data-action="delete" data-id="${item.id}">删除</div></div></div>` : '';
+
+            result += `<li class="${liClass}" id="${item.id}">
+                <div class="memos-pl"><div class="memos_diaoyong_time">${moment(item.createdTs * 1000).twitterLong()}</div>${editMenu}</div>
+                <div class="datacont" view-image>${content}${imgHtml}</div>
+                <div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${footer}</div>
+                <div id="memo_${item.id}" class="artalk hidden"></div>
+            </li>`;
+
+            if (!mode && STATE.mePage <= 2) {
+                const map = { 1: 0, 4: 1, 7: 2, 9: 3 };
+                if (map[i] !== undefined && STATE.cache.posts) {
+                    const tempDiv = document.createElement('div'); tempDiv.innerHTML = STATE.cache.posts;
+                    const html = tempDiv.querySelectorAll('.one-post-item')[map[i]]?.innerHTML;
+                    if (html) result += `<div class="inserted-post-section animated-fade-in">${html}</div>`;
+                }
+                if (i == 1 && STATE.cache.movies) result += `<div class="inserted-movies-section animated-fade-in"><div class="movies-grid-container">${STATE.cache.movies}</div></div>`;
+            }
+        });
+
+        if (mode === "ONEDAY") {
+            const old = bbDom.querySelector('.memos-oneday-layout'); if (old) old.remove();
+            bbDom.insertAdjacentHTML('afterbegin', `<div id='memos-oneday-wrapper' class='memos-oneday-layout'><li class='memos-oneday'><ul class='oneday-ul-fix'>${result}</ul></li></div>`);
+        } else {
+            let listUl = bbDom.querySelector('.bb-list-ul');
+            if (!listUl) bbDom.insertAdjacentHTML('beforeend', `<section class='bb-timeline'><ul class='bb-list-ul'>${result}</ul></section>`);
+            else listUl.insertAdjacentHTML('beforeend', result);
+            
+            const loadBtn = document.querySelector('button.button-load');
+            if (loadBtn) loadBtn.textContent = '看更多 ...';
+        }
+        
+        if (typeof window.animateSummaries === 'function') window.animateSummaries();
+        setTimeout(() => { document.querySelectorAll('.img-hide').forEach(img => { if(img.complete) img.classList.remove('img-hide'); }); }, 150);
+    }
+
+    // ============================================================
+    // 6. 编辑器逻辑
+    // ============================================================
+    function initEditorLogic() {
+        const container = document.querySelector(CONFIG.editorContainer), anchor = document.querySelector('.index-laodao-titile');
+        if (!container || !anchor) return;
+        
+        anchor.insertAdjacentHTML('afterend', "<div class='load-memos-editor'>唠叨</div>");
+        container.insertAdjacentHTML('afterbegin', getEditorHtml());
+
+        STATE.domRefs = {
+            editor: container.querySelector(".memos-editor"),
+            textarea: container.querySelector(".memos-editor-textarea"),
+            tagMenu: document.getElementById('memos-tag-menu'),
+            visSelect: container.querySelector(".select-memos-value"),
+            submitBtn: container.querySelector(".submit-memos-btn"),
+            editDom: container.querySelector(".edit-memos"),
+            pathInp: container.querySelector(".memos-path-input"),
+            tokenInp: container.querySelector(".memos-token-input"),
+            imageList: container.querySelector(".memos-image-list"),
+            innerPanel: container.querySelector(".memos-editor-inner"),
+            optionPanel: container.querySelector(".memos-editor-option")
+        };
+
+        bindEditorEvents();
+
+        if (STATE.editorDisplay === "show") {
+            STATE.domRefs.editor.classList.remove("d-none");
+            if (!STATE.isAuthorized) {
+                STATE.domRefs.optionPanel.classList.remove("d-none");
+                STATE.domRefs.innerPanel.classList.add("d-none");
+            } else {
+                STATE.domRefs.innerPanel.classList.remove("d-none");
+                STATE.domRefs.optionPanel.classList.add("d-none");
+                memoFetch('api/v1/tag').then(t => window.memosTags = t);
+            }
+        }
+    }
+
+    function bindEditorEvents() {
+        const refs = STATE.domRefs;
+
+        document.querySelector(".load-memos-editor").addEventListener("click", () => {
+            const h = refs.editor.classList.toggle("d-none");
+            window.localStorage?.setItem("memos-editor-display", h ? "hide" : "show");
+            if (!h && !STATE.isAuthorized) {
+                refs.optionPanel.classList.remove("d-none");
+                refs.innerPanel.classList.add("d-none");
+            }
+        });
+
+        refs.textarea.addEventListener('input', () => {
+            refs.textarea.style.height = 'auto';
+            refs.textarea.style.height = refs.textarea.scrollHeight + 'px';
+            refs.submitBtn.style.opacity = refs.textarea.value.trim() ? 1 : 0.4;
+            
+            const w = refs.textarea.value.slice(0, refs.textarea.selectionStart).split(/\s+/).pop();
+            if (w && w.startsWith('#') && window.memosTags) {
+                const match = window.memosTags.filter(t => t.toLowerCase().includes(w.slice(1).toLowerCase()));
+                if (match.length) {
+                    refs.tagMenu.innerHTML = match.map(t => `<div class="tag-option">#${t}</div>`).join('');
+                    refs.tagMenu.style.display = 'block';
+                    refs.tagMenu.onclick = (e) => {
+                        if (e.target.classList.contains('tag-option')) {
+                            insertText(e.target.innerText.replace('#', '') + ' ', '', 0, true); 
+                            refs.tagMenu.style.display = 'none';
+                        }
+                    };
+                    return;
+                }
+            }
+            refs.tagMenu.style.display = 'none';
+        });
+
+        document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
+            // [Fix]: Added .code-btn to delegation
+            const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-btn');
+            if (!t) return;
+
+            if (t.classList.contains('code-single')) insertText("``", "`", 1);
+            else if (t.classList.contains('code-btn')) insertText("```\n\n```", "", 4);
+            else if (t.classList.contains('link-btn')) insertText("[]()", "[", 1);
+            else if (t.classList.contains('link-img')) insertText("![]()", "!", 1);
+            else if (t.classList.contains('biao-qing')) showEmoji(t);
+            else if (t.classList.contains('switchUser-btn')) {
+                refs.optionPanel.classList.remove("d-none");
+                refs.innerPanel.classList.add("d-none");
+            }
+            else if (t.classList.contains('private-btn')) {
+                const isP = t.classList.toggle("private");
+                refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC";
+                STATE.viewMode = isP ? 'PRIVATE' : 'ALL';
+                cocoMessage.success(isP ? "只看私有" : "显示全部");
+                reloadList();
+            }
+            else if (t.classList.contains('oneday-btn')) {
+                const isO = window.localStorage?.getItem("memos-oneday");
+                if (!isO) {
+                    window.localStorage?.setItem("memos-oneday", "open");
+                    cocoMessage.success("已开启回忆，请刷新");
+                } else {
+                    window.localStorage?.removeItem("memos-oneday");
+                    cocoMessage.success("已退出回忆");
+                    reloadList();
+                }
+            }
+        });
+
+        refs.submitBtn.addEventListener("click", async () => {
+            if (!refs.textarea.value) return cocoMessage.info('内容不能为空');
+            const res = await memoFetch(`api/v1/memo`, 'POST', { 
+                content: refs.textarea.value, 
+                visibility: refs.visSelect.value,
+                resourceIdList: JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]")
+            });
+            if (res) { 
+                const tags = refs.textarea.value.match(REG.TAG);
+                if(tags) tags.forEach(t => memoFetch(`api/v1/tag`, 'POST', { name: t.replace('#', '') }));
+                cocoMessage.success('唠叨成功'); reloadList(); 
+                resetEditor();
+            }
+        });
+
+        document.querySelector(".edit-memos-btn").addEventListener("click", async () => {
+            const data = JSON.parse(window.localStorage?.getItem("memos-editor-dataform"));
+            if (!data) return;
+            const body = {
+                id: data.id,
+                content: refs.textarea.value,
+                visibility: refs.visSelect.value,
+                resourceIdList: JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]")
+            };
+            await memoFetch(`api/v1/memo/${data.id}`, 'PATCH', body);
+            cocoMessage.success('修改成功');
+            resetEditor();
+            reloadList();
+        });
+
+        document.querySelector(".cancel-edit-btn").addEventListener("click", resetEditor);
+
+        // 验证逻辑（极简修复版）
+        document.querySelector(".submit-openapi-btn").addEventListener("click", async () => {
+            const p = refs.pathInp.value.trim().replace(/\/$/, "");
+            const t = refs.tokenInp.value.trim();
+            if (!p || !t) return cocoMessage.info('请填写完整信息');
+            
+            const fullPath = /^http/i.test(p) ? p : `https://${p}`;
+            try {
+                const res = await fetch(`${fullPath}/api/v1/tag?t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${t}` } });
+                
+                // 【核心修复点】：强制解析 JSON。如果填的是博客首页返回了 HTML，这里会报错跳到 catch，避免假成功
+                const data = await res.json(); 
+
+                // 增加 Array.isArray(data) 判断，确保返回的是 API 数据
+                if (res.ok && Array.isArray(data)) {
+                    window.localStorage.setItem("memos-access-path", fullPath);
+                    window.localStorage.setItem("memos-access-token", t);
+                    cocoMessage.success('验证成功');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    cocoMessage.error('验证失败：Token 无效');
+                }
+            } catch { 
+                // 只要不是标准的 JSON 数据（比如 404 页面或普通网页），都会触发这里
+                cocoMessage.error('错误，请检查'); 
+            }
+        });
+
+        document.querySelector(".image-btn").addEventListener("click", () => document.querySelector(".memos-upload-image-input").click());
+        document.querySelector(".memos-upload-image-input").addEventListener("change", (e) => {
+            if (e.target.files.length > 0) uploadFile(e.target.files[0]);
+        });
+    }
+
+    // ------------------------------------------------------------
+    // 辅助工具函数
+    // ------------------------------------------------------------
+    function resetEditor() {
+        const refs = STATE.domRefs;
+        refs.textarea.value = ''; 
+        refs.imageList.innerHTML = '';
+        refs.editDom.classList.add("d-none"); 
+        refs.submitBtn.classList.remove("d-none"); 
+        window.localStorage?.removeItem("memos-resource-list");
+        window.localStorage?.removeItem("memos-editor-dataform");
+    }
+
+    function insertText(text, wrap, offset, isTag = false) {
+        const el = STATE.domRefs.textarea; el.focus();
+        const start = el.selectionStart;
+        if (isTag) {
+            const before = el.value.slice(0, start);
+            const hashIdx = before.lastIndexOf('#');
+            if (hashIdx !== -1) {
+                el.value = el.value.slice(0, hashIdx) + `#${text}` + el.value.slice(start);
+                return;
+            }
+        }
+        const end = el.selectionEnd;
+        const sel = el.value.substring(start, end);
+        let result = sel ? (wrap + sel + (wrap === '[' || wrap === '!' ? ']()' : wrap)) : text;
+        el.value = el.value.substring(0, start) + result + el.value.substring(end);
+        const pos = start + result.length - offset;
+        el.setSelectionRange(pos, pos);
+        el.dispatchEvent(new Event('input'));
+    }
+
+    async function uploadFile(file) {
+        const form = new FormData(); form.append('file', file);
+        try {
+            cocoMessage.info('图片上传中...');
+            const res = await fetch(`${STATE.memosPath}api/v1/resource/blob`, { method: 'POST', headers: { 'Authorization': `Bearer ${STATE.memosOpenId}` }, body: form }).then(r => r.json());
+            const list = JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]"); list.push(res.id);
+            window.localStorage?.setItem("memos-resource-list", JSON.stringify(list));
+            STATE.domRefs.imageList.insertAdjacentHTML('afterbegin', `<div data-action="delete-image" data-id="${res.id}" class="imagelist-item d-flex text-xs mt-2 mr-2"><div class="d-flex memos-up-image" style="background-image:url(${res.externalLink || STATE.memosPath+'o/r/'+res.id})"></div></div>`);
+            cocoMessage.success('上传成功');
+        } catch { cocoMessage.error('上传失败'); }
+    }
+
+    function showEmoji(btn) {
+        if (activeEmojiPicker) {
+            activeEmojiPicker.remove();
+            activeEmojiPicker = null;
             return;
         }
-    }
-    domRefs.tagMenu.style.display = 'none';
-}
-
-function insertTag(tagName) {
-    const val = domRefs.textarea.value;
-    const start = domRefs.textarea.selectionStart;
-    const before = val.slice(0, start);
-    const hashIdx = before.lastIndexOf('#');
-    
-    if (hashIdx !== -1) {
-        const newVal = val.slice(0, hashIdx) + `#${tagName} ` + val.slice(start);
-        domRefs.textarea.value = newVal;
-        const newPos = hashIdx + tagName.length + 2;
-        domRefs.textarea.setSelectionRange(newPos, newPos);
-        domRefs.textarea.focus();
-        domRefs.tagMenu.style.display = 'none';
-    }
-}
-
-function insertText(text, wrap, offset) {
-    const el = domRefs.textarea;
-    el.focus();
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const sel = el.value.substring(start, end);
-    let result = sel ? (wrap + sel + (wrap === '[' || wrap === '!' ? ']()' : wrap)) : text;
-    if (sel) offset = 0;
-    
-    el.value = el.value.substring(0, start) + result + el.value.substring(end);
-    const pos = start + result.length - offset;
-    el.setSelectionRange(pos, pos);
-    el.dispatchEvent(new Event('input'));
-}
-
-function checkToken() {
-    if (!memosOpenId) {
-        domRefs.optionPanel.classList.remove("d-none");
-        cocoMessage.info('请设置 Access Tokens');
-    } else {
-        memoFetch(`${memosPath}/api/v1/tag`).then(res => {
-            window.memosTags = res;
-            domRefs.innerPanel.classList.remove("d-none");
-            domRefs.optionPanel.classList.add("d-none");
-        }).catch(() => {
-            domRefs.optionPanel.classList.remove("d-none");
-            cocoMessage.error('Token 有误');
-        });
-    }
-}
-
-async function uploadFile(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    try {
-        cocoMessage.info('上传中...');
-        const res = await fetch(`${memosPath}/api/v1/resource/blob`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${memosOpenId}` },
-            body: formData
-        }).then(r => r.json());
         
-        const list = JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]");
-        list.push(res.id);
-        window.localStorage?.setItem("memos-resource-list", JSON.stringify(list));
+        const div = document.createElement('div'); 
+        div.className = 'emoji-selector';
+        div.innerHTML = window.emojisData.map(e => `<div class="emoji-item">${e.icon}</div>`).join('');
         
-        const link = res.externalLink || `${memosPath}/o/r/${res.id}`;
-        domRefs.imageList.insertAdjacentHTML('afterbegin', 
-            `<div data-id="${res.id}" class="imagelist-item d-flex text-xs mt-2 mr-2" onclick="deleteImage(this)"><div class="d-flex memos-up-image" style="background-image:url(${link})"></div></div>`
-        );
-        cocoMessage.success('上传成功');
-    } catch (e) {
-        cocoMessage.error('上传失败');
+        div.onclick = (e) => { 
+            if (e.target.classList.contains('emoji-item')) {
+                insertText(e.target.innerText, '', 0); 
+                // [Fix] Removed auto-close logic
+            }
+        };
+        
+        document.querySelector(".memos-editor-footer").after(div);
+        activeEmojiPicker = div;
     }
-}
 
-let emojiPicker;
-let emojiCloseHandler = null;
-function showEmojiPicker(btn) {
-    if (emojiPicker) {
-        emojiPicker.remove();
-        emojiPicker = null;
-        if (emojiCloseHandler) {
-            document.removeEventListener('click', emojiCloseHandler);
-            emojiCloseHandler = null;
-        }
-        return;
-    }
-    emojiPicker = document.createElement('div');
-    emojiPicker.className = 'emoji-selector';
-    emojiPicker.innerHTML = emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
-    
-    emojiPicker.addEventListener('click', (e) => {
-        if (e.target.classList.contains('emoji-item')) {
-            insertText(e.target.innerText, '', 0);
-        }
-    });
-    
-    document.querySelector(".memos-editor-footer").after(emojiPicker);
-    
-    emojiCloseHandler = (e) => {
-        if (btn.contains(e.target) || emojiPicker.contains(e.target)) return;
-        emojiPicker.remove();
-        emojiPicker = null;
-        document.removeEventListener('click', emojiCloseHandler);
-        emojiCloseHandler = null;
-    };
-    setTimeout(() => document.addEventListener('click', emojiCloseHandler), 0);
-}
+    function getEditorHtml() {
+        return `
+        <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
+            <div class="memos-editor-body">
+                <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
+                    <div class="memos-editor-content">
+                        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+                    </div>
+                    <div id="memos-tag-menu" style="display:none;"></div>
+                    <div class="memos-image-list d-flex flex-fill line-xl"></div>
+                    
+                    <div class="memos-editor-footer border-t">
+                        <div class="d-flex">
+                            <div class="button outline action-btn code-single" title="代码块">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+                            </div>
+                            <div class="button outline action-btn link-btn" title="链接">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg>
+                            </div>
+                            <div class="button outline action-btn link-img" title="图片链接">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/></svg>
+                            </div>
+                            <div class="button outline action-btn biao-qing" title="表情">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
+                            </div>
+                            
+                            <div class="memos-more-ico">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/></g></svg>
+                                <div class="memos-xiala">
+                                    <div class="code-btn">代码</div>
+                                    <div class="image-btn">图片<input class="memos-upload-image-input d-none" type="file" accept="image/*"></div>
+                                    <div class="switchUser-btn">帐户</div>
+                                    <div class="private-btn">私有</div>
+                                    <div class="oneday-btn">回忆</div>
+                                </div>
+                            </div>
+                        </div>
 
-function resetEditorState() {
-    domRefs.visibilitySelect.value = window.memosOldSelect;
-    domRefs.textarea.value = '';
-    domRefs.textarea.style.height = 'inherit';
-    domRefs.imageList.innerHTML = '';
-    domRefs.submitBtn.classList.remove("d-none");
-    domRefs.editMemoDom.classList.add("d-none");
-    window.localStorage?.removeItem("memos-resource-list");
-    window.localStorage?.removeItem("memos-editor-dataform");
-}
+                        <div class="editor-submit d-flex flex-fill justify-content-end">
+                            <div class="editor-selector select outline">
+                                <select class="select-memos-value">
+                                    <option value="PUBLIC">公开</option>
+                                    <option value="PRIVATE">私有</option>
+                                </select>
+                            </div>
+                            <div class="edit-memos d-none">
+                                <div class="primary cancel-edit-btn">取消</div>
+                                <div class="primary edit-memos-btn">修改完成</div>
+                            </div>
+                            <div class="primary submit-memos-btn">唠叨一下</div>
+                        </div>
+                    </div>
+                </div>
 
-function togglePrivateMode(btn) {
-    const isPrivate = btn.classList.toggle("private");
-    domRefs.visibilitySelect.value = isPrivate ? "PRIVATE" : "PUBLIC";
-    const mode = isPrivate ? "NOPUBLIC" : "";
-    window.localStorage?.setItem("memos-mode", mode);
-    reloadList(mode);
-    cocoMessage.success(isPrivate ? "已进入私有浏览" : "已退出私有浏览");
-}
-
-function toggleOneDay(btn) {
-    const isOneDay = window.localStorage?.getItem("memos-oneday");
-    if (!isOneDay) {
-        window.localStorage?.setItem("memos-oneday", "open");
-        cocoMessage.success("已开启回忆，请刷新");
-    } else {
-        window.localStorage?.removeItem("memos-oneday");
-        reloadList();
-        cocoMessage.success("已退出回忆");
-    }
-}
-
-function switchUser() {
-    domRefs.optionPanel.classList.remove("d-none");
-    domRefs.innerPanel.classList.add("d-none");
-    document.querySelector(".memos-token-input").value = '';
-}
-
-function getEditorHtml() {
-    return `
-<div class="memos-editor animate__animated animate__fadeIn d-none col-12">
-  <div class="memos-editor-body">
-    <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
-      <div class="memos-editor-content"><textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea></div>
-      <div id="memos-tag-menu" style="display:none;"></div>
-      <div class="memos-image-list d-flex flex-fill line-xl"></div>
-      <div class="memos-editor-footer border-t"><div class="d-flex">
-          <div class="button outline action-btn code-single"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg></div>
-          <div class="button outline action-btn link-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg></div>
-          <div class="button outline action-btn link-img"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/></svg></div>
-          <div class="button outline action-btn biao-qing"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></div>
-          <div class="memos-more-ico"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/></g></svg>
-            <div class="memos-xiala">
-              <div class="code-btn">代码</div><div class="image-btn">图片<input class="memos-upload-image-input d-none" type="file" accept="image/*"></div>
-              <div class="switchUser-btn">帐户</div><div class="private-btn">私有</div><div class="oneday-btn">回忆</div>
+                <div class="memos-editor-option animate__animated animate__fadeIn d-none">
+                    <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" placeholder="Memos 地址">
+                    <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" placeholder="Token">
+                    <div class="memos-open-api-submit">
+                        <div class="primary submit-openapi-btn">保存</div>
+                    </div>
+                </div>
             </div>
-          </div></div>
-        <div class="editor-submit d-flex flex-fill justify-content-end">
-          <div class="editor-selector select outline"><select class="select-memos-value"><option value="PUBLIC">公开</option><option value="PRIVATE">私有</option></select></div>
-          <div class="edit-memos d-none"><div class="primary cancel-edit-btn">取消</div><div class="primary edit-memos-btn">修改完成</div></div>
-          <div class="primary submit-memos-btn">唠叨一下</div>
-        </div>
-      </div>
-    </div>
-    <div class="memos-editor-option animate__animated animate__fadeIn d-none">
-      <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" placeholder="Memos 地址">
-      <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" placeholder="Token">
-      <div class="memos-open-api-submit"><div class="primary submit-openapi-btn">保存</div></div>
-    </div>
-  </div><div class="memos-random d-none"></div>
-</div>`;
-}
-
-})(); // End IIFE
+        </div>`;
+    }
+})();

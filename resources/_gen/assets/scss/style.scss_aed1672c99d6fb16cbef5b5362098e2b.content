@@ -1635,7 +1635,9 @@ img[atk-emoticon] {
 .memos-hide {
   margin-left: auto;
   color: var(--text-highlight-color); }
-
+  @media (prefers-color-scheme: dark) {
+    .memos-hide {
+      color: var(--text-highlight-dark-color); } }
 .datacont pre {
   border-radius: 4px;
   line-height: 1.8;
@@ -1923,10 +1925,16 @@ blockquote p {
 
 .memos-oneday {
   margin-bottom: 15px;
-  list-style: none; }
+  list-style: none;
+  padding: 15px;
+  background: var(--element-background-color);
+  border-radius: 16px; }
   @media (min-width: 900px) {
     .memos-oneday {
       margin-bottom: 20px; } }
+  @media (prefers-color-scheme: dark) {
+    .memos-oneday {
+      background: var(--background-dark-color); } }
 .memos-oneday .memos_diaoyong_time {
   color: var(--text-highlight-color); }
   @media (prefers-color-scheme: dark) {
