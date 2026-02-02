@@ -3,6 +3,9 @@
 (function() {
     'use strict';
 
+    // 页面footer 隐藏
+    document.head.insertAdjacentHTML('beforeend', '<style>.footer-background{display:none}</style>');
+
     // ============================================================
     // 1. 核心配置与状态管理
     // ============================================================
@@ -63,24 +66,40 @@
     // 3. 初始化与事件委托
     // ============================================================
     document.addEventListener("DOMContentLoaded", async function () {
-        const bbDom = document.querySelector(CONFIG.domId);
-        if (!bbDom) return;
+    const bbDom = document.querySelector(CONFIG.domId);
+    if (!bbDom) return;
 
-        const p = document.getElementById('temp-posts-data'), m = document.getElementById('temp-movies-data');
-        if (p) STATE.cache.posts = p.innerHTML;
-        if (m) STATE.cache.movies = m.innerHTML;
+    // [1] 先把“唠叨”按钮长出来，否则没人可以点
+    const anchor = document.querySelector('.index-laodao-titile');
+    if (anchor && !document.querySelector('.load-memos-editor')) {
+        anchor.insertAdjacentHTML('afterend', "<div class='load-memos-editor'>唠叨</div>");
+    }
 
-        getFirstList();
+    // [2] 绑定点击逻辑（懒加载）
+    const loadBtn = document.querySelector(".load-memos-editor");
+    if (loadBtn) {
+        loadBtn.onclick = () => {
+            let editor = document.querySelector(".memos-editor");
+            if (!editor) {
+                initEditorLogic(); // 只有点的时候才加载编辑器主体
+                editor = document.querySelector(".memos-editor");
+                editor.classList.remove("d-none");
+                window.localStorage?.setItem("memos-editor-display", "show");
+            } else {
+                const isHiddenNow = editor.classList.toggle("d-none");
+                window.localStorage?.setItem("memos-editor-display", isHiddenNow ? "hide" : "show");
+            }
+        };
+    }
+
+    // [3] 如果上次是打开状态，自动加载
+    if (window.localStorage?.getItem("memos-editor-display") === "show") {
         initEditorLogic();
+    }
 
-        document.body.addEventListener('click', handleGlobalClick);
-
-        try {
-            const res = await fetch('/suju/owo.json');
-            const data = await res.json();
-            window.emojisData = data.Emoji.container;
-        } catch (e) {}
-    });
+    getFirstList();
+    document.body.addEventListener('click', handleGlobalClick);
+});
 
     function handleGlobalClick(e) {
         const target = e.target.closest('[data-action]');
@@ -347,7 +366,7 @@
             }).join('') || '<div class="memos-tag-dg">#日常</div>';
 
             const memoString = encodeURIComponent(JSON.stringify(item));
-            const liClass = STATE.isRandomRender ? "memos-oneday-li img-hide" : "bb-list-li img-hide";
+            const liClass = STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide";
 
             const footer = item.visibility === 'PUBLIC' 
                 ? `<div class="talks_comments"><a data-action="load-artalk" data-id="${item.id}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01h-.01z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` 
@@ -378,7 +397,7 @@
 
         if (mode === "ONEDAY") {
             const old = bbDom.querySelector('.memos-oneday-layout'); if (old) old.remove();
-            bbDom.insertAdjacentHTML('afterbegin', `<div id='memos-oneday-wrapper' class='memos-oneday-layout'><li class='memos-oneday'><ul class='oneday-ul-fix'>${result}</ul></li></div>`);
+            bbDom.insertAdjacentHTML('afterbegin', `<div id='memos-oneday-wrapper' class='memos-oneday-layout'><li class='memos-oneday img-hide'><ul class='oneday-ul-fix'>${result}</ul></li></div>`);
         } else {
             let listUl = bbDom.querySelector('.bb-list-ul');
             if (!listUl) bbDom.insertAdjacentHTML('beforeend', `<section class='bb-timeline'><ul class='bb-list-ul'>${result}</ul></section>`);
@@ -389,6 +408,10 @@
         }
         
         if (typeof window.animateSummaries === 'function') window.animateSummaries();
+        // 页面footer 显示
+        const footer = document.querySelector('.footer-background');
+        if (footer) footer.style.display = 'block';
+        
         setTimeout(() => { document.querySelectorAll('.img-hide').forEach(img => { if(img.complete) img.classList.remove('img-hide'); }); }, 150);
     }
 
@@ -396,10 +419,10 @@
     // 6. 编辑器逻辑
     // ============================================================
     function initEditorLogic() {
+        if (document.querySelector(".memos-editor")) return;
         const container = document.querySelector(CONFIG.editorContainer), anchor = document.querySelector('.index-laodao-titile');
         if (!container || !anchor) return;
         
-        anchor.insertAdjacentHTML('afterend', "<div class='load-memos-editor'>唠叨</div>");
         container.insertAdjacentHTML('afterbegin', getEditorHtml());
 
         STATE.domRefs = {
@@ -418,30 +441,44 @@
 
         bindEditorEvents();
 
+        // 1. 先决定整个编辑器大框显不显示
         if (STATE.editorDisplay === "show") {
             STATE.domRefs.editor.classList.remove("d-none");
-            if (!STATE.isAuthorized) {
-                STATE.domRefs.optionPanel.classList.remove("d-none");
-                STATE.domRefs.innerPanel.classList.add("d-none");
-            } else {
-                STATE.domRefs.innerPanel.classList.remove("d-none");
-                STATE.domRefs.optionPanel.classList.add("d-none");
-                memoFetch('api/v1/tag').then(t => window.memosTags = t);
-            }
+        } else {
+            STATE.domRefs.editor.classList.add("d-none");
+        }
+
+        // 2. 再决定里面显示“输入框”还是“登录框”
+        if (!STATE.isAuthorized) {
+            STATE.domRefs.optionPanel.classList.remove("d-none");
+            STATE.domRefs.innerPanel.classList.add("d-none");
+        } else {
+            STATE.domRefs.innerPanel.classList.remove("d-none");
+            STATE.domRefs.optionPanel.classList.add("d-none");
+            memoFetch('api/v1/tag').then(t => window.memosTags = t);
         }
     }
 
     function bindEditorEvents() {
         const refs = STATE.domRefs;
 
-        document.querySelector(".load-memos-editor").addEventListener("click", () => {
-            const h = refs.editor.classList.toggle("d-none");
-            window.localStorage?.setItem("memos-editor-display", h ? "hide" : "show");
-            if (!h && !STATE.isAuthorized) {
-                refs.optionPanel.classList.remove("d-none");
-                refs.innerPanel.classList.add("d-none");
+        document.querySelector(".load-memos-editor").onclick = () => {
+            let editor = document.querySelector(".memos-editor");
+
+            // 1. 如果页面没编辑器，说明是访客第一次点，现在才加载
+            if (!editor) {
+                initEditorLogic(); 
+                editor = document.querySelector(".memos-editor");
+                // 强制让它显示（因为 initEditorLogic 默认可能是隐藏的）
+                editor.classList.remove("d-none");
+                window.localStorage?.setItem("memos-editor-display", "show");
+                cocoMessage.success("编辑器已按需加载");
+            } else {
+                // 2. 如果已经加载过了，就只是切换显隐
+                const isHiddenNow = editor.classList.toggle("d-none");
+                window.localStorage?.setItem("memos-editor-display", isHiddenNow ? "hide" : "show");
             }
-        });
+        };
 
         refs.textarea.addEventListener('input', () => {
             refs.textarea.style.height = 'auto';
