@@ -687,23 +687,15 @@
         } catch { cocoMessage.error('上传失败'); }
     }
 
-    function showEmoji(btn) {
-        if (activeEmojiPicker) {
-            activeEmojiPicker.remove();
-            activeEmojiPicker = null;
-            return;
-        }
-        
+    async function showEmoji(btn) {
+       
+        if (activeEmojiPicker) { activeEmojiPicker.remove(); activeEmojiPicker = null; return; }
+        if (!window.emojisData) window.emojisData = await fetch('suju/owo.json').then(r=>r.json()).then(d=>d.Emoji.container).catch(()=>[]);
         const div = document.createElement('div'); 
         div.className = 'emoji-selector';
-        div.innerHTML = window.emojisData.map(e => `<div class="emoji-item">${e.icon}</div>`).join('');
+        div.innerHTML = window.emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
         
-        div.onclick = (e) => { 
-            if (e.target.classList.contains('emoji-item')) {
-                insertText(e.target.innerText, '', 0); 
-                // [Fix] Removed auto-close logic
-            }
-        };
+        div.onclick = (e) => { if (e.target.classList.contains('emoji-item')) insertText(e.target.innerText, '', 0); };
         
         document.querySelector(".memos-editor-footer").after(div);
         activeEmojiPicker = div;
