@@ -484,28 +484,43 @@
                 window.localStorage?.setItem("memos-editor-display", isHiddenNow ? "hide" : "show");
             }
         };
-
+        //tag 键盘监听
+        let tagIdx = 0;
         refs.textarea.addEventListener('input', () => {
+            // 自动高度与按钮透明度
             refs.textarea.style.height = 'auto';
             refs.textarea.style.height = refs.textarea.scrollHeight + 'px';
             refs.submitBtn.style.opacity = refs.textarea.value.trim() ? 1 : 0.4;
             
             const w = refs.textarea.value.slice(0, refs.textarea.selectionStart).split(/\s+/).pop();
-            if (w && w.startsWith('#') && window.memosTags) {
-                const match = window.memosTags.filter(t => t.toLowerCase().includes(w.slice(1).toLowerCase()));
-                if (match.length) {
-                    refs.tagMenu.innerHTML = match.map(t => `<div class="tag-option">#${t}</div>`).join('');
-                    refs.tagMenu.style.display = 'block';
-                    refs.tagMenu.onclick = (e) => {
-                        if (e.target.classList.contains('tag-option')) {
-                            insertText(e.target.innerText.replace('#', '') + ' ', '', 0, true); 
-                            refs.tagMenu.style.display = 'none';
-                        }
-                    };
-                    return;
-                }
+            const matches = (w?.startsWith('#') && window.memosTags) ? window.memosTags.filter(t => t.toLowerCase().includes(w.slice(1).toLowerCase())) : [];
+            
+            if (matches.length) {
+                tagIdx = 0; 
+                // 渲染并默认选中第一项
+                refs.tagMenu.innerHTML = matches.map((t, i) => `<div class="tag-option${i === 0 ? ' selected' : ''}">#${t}</div>`).join('');
+                refs.tagMenu.style.display = 'block';
+                refs.tagMenu.onclick = (e) => e.target.classList.contains('tag-option') && (insertText(e.target.innerText.replace('#', '') + ' ', '', 0, true), refs.tagMenu.style.display = 'none');
+            } else {
+                refs.tagMenu.style.display = 'none';
             }
-            refs.tagMenu.style.display = 'none';
+        });
+
+        // 极简键盘监听：仅处理上下选择和回车
+        refs.textarea.addEventListener('keydown', (e) => {
+            if (refs.tagMenu.style.display !== 'block') return;
+            const options = refs.tagMenu.querySelectorAll('.tag-option');
+            
+            if (e.keyCode === 38 || e.keyCode === 40) { // 上(38)下(40)
+                e.preventDefault();
+                options[tagIdx].classList.remove('selected');
+                tagIdx = (tagIdx + (e.keyCode === 38 ? -1 : 1) + options.length) % options.length;
+                options[tagIdx].classList.add('selected');
+            } else if (e.keyCode === 13) { // 回车确认
+                e.preventDefault();
+                insertText(options[tagIdx].innerText.replace('#', '') + ' ', '', 0, true);
+                refs.tagMenu.style.display = 'none';
+            }
         });
 
         document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
