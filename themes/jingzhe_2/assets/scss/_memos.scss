@@ -107,6 +107,10 @@
       width: 50%; 
       grid-template-columns: repeat(2, 1fr);
     }
+  &.grid-1{
+      width: 30%; 
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
   // --- 2. 手机端适配 (< 900px) ---
   @media (max-width: 900px) {
@@ -120,6 +124,9 @@
       //两张图时显示两列
       &.grid-2 {
         grid-template-columns: repeat(2, 1fr);
+      }
+      &.grid-1 {
+        width: 50% !important;
       }
     }
   }
@@ -817,4 +824,68 @@ blockquote p{
   background-color: #f0f0f0;
   border-radius: 4px;
   color: var(--erji-color);
+}
+
+
+// 引用区域样式 
+.memo-relation-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.memo-relation-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;   
+    background: var(--background-color);
+    border-radius: 10px;  
+    text-decoration: none !important;
+    padding: 10px;
+    transition: all 0.2s;
+    @media (prefers-color-scheme: dark) {
+      background: var(--background-dark-body-color);
+    }
+}
+.memo-relation-item:hover {
+    opacity: 0.7;
+}
+.memo-relation-content {
+    flex: 1;
+    width: 0;
+    white-space: nowrap;
+    overflow: hidden;         
+    text-overflow: ellipsis; 
+    font-size: 0.9rem;
+}
+.memo-relation-label {
+    color: var(--sanji-color);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    @media (prefers-color-scheme: dark) {
+      color: var(--erji-color);
+    }
+}
+// 位置信息样式
+.memo-location-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--sanji-color);
+    max-width: 100%;
+    @media (prefers-color-scheme: dark) {
+      color: var(--erji-color);
+    }
+}
+.memo-location-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
 }
