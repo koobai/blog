@@ -19,7 +19,7 @@
     // ============================================================
     const lsPath = window.localStorage?.getItem("memos-access-path");
     const lsToken = window.localStorage?.getItem("memos-access-token");
-    const defaultMemos = 'http://memos.koobai.com/';
+    const defaultMemos = 'https://memos.koobai.com/';
 
     // 优化 3: normalizeUrl 内联
     const baseMemos = (lsPath || defaultMemos).replace(/\/?$/, '/');
