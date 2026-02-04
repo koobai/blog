@@ -255,7 +255,7 @@
         });
         target.classList.toggle('hidden');
         if (!target.classList.contains('hidden')) {
-            Artalk.init({ el: `#memo_${id}`, pageKey: `/m/${id}`, server: 'https://c.koobai.com/', site: '空白唠叨', darkMode: 'auto' });
+            Artalk.init({ el: `#memo_${id}`, pageKey: `/memos/${id}`, server: 'https://c.koobai.com/', site: '空白唠叨', darkMode: 'auto' });
         }
     }
 
