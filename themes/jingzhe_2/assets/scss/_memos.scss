@@ -892,3 +892,19 @@ blockquote p{
     height: 14px;
     flex-shrink: 0;
 }
+
+//置顶图标样式
+
+.pinned{
+    font-size: 0.8rem;
+    padding: 0 2px;
+    align-items: center;
+    color: var(--text-highlight-color);
+    @media (prefers-color-scheme: dark) {
+      color: var(--text-highlight-dark-color);
+    }
+}
+.pinned svg{
+  width: 14px;
+  height: 14px;
+}
