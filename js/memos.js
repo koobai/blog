@@ -1,4 +1,4 @@
-// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26+ (API v1) / 20260204 / koobai.com
+// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26+ (API v1) / 20260205 / koobai.com
 (function() {
     'use strict';
 
@@ -19,7 +19,7 @@
     // ============================================================
     const lsPath = window.localStorage?.getItem("memos-access-path");
     const lsToken = window.localStorage?.getItem("memos-access-token");
-    const defaultMemos = 'https://memos.koobai.com/';
+    const defaultMemos = 'https://memos.koobai.com';
 
     // 优化 3: normalizeUrl 内联
     const baseMemos = (lsPath || defaultMemos).replace(/\/?$/, '/');
@@ -369,10 +369,34 @@
     });
 }
 
-    function getFirstList() {
+    async function getFirstList() {
         const bbDom = document.querySelector(CONFIG.domId);
         if(!document.getElementById('tag-list')) bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
+        
         STATE.nextPageToken = "";
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetId = urlParams.get('memo'); 
+
+        if (targetId) {
+            console.log("正在加载单条动态 UID:", targetId);
+            const res = await memoFetch(`api/v1/memos/${targetId}`);
+            
+            if (res) {
+                updateHTMl([adaptMemo(res)]);
+                document.querySelector('.bb-load')?.remove();
+                
+                bbDom.insertAdjacentHTML('afterend', `
+                    <div class="bb-load">
+                        <button class="load-btn" onclick="location.href='${location.origin}${location.pathname}'"> ← 查看全部唠叨</button>
+                    </div>
+                `);
+                
+                bbDom.scrollIntoView({ behavior: 'smooth' });
+                return;
+            } else {
+                cocoMessage.error("未找到该条动态");
+            }
+        }
         fetchMemosAndRender(new URLSearchParams({ pageSize: CONFIG.limit, parent: `users/${CONFIG.creatorId}` }));
         loadRandomMemo();
     }
