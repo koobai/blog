@@ -314,27 +314,56 @@
     // ============================================================
     // 7. 数据加载与渲染
     // ============================================================
-    function fetchMemosAndRender(params, clearDom = false) {
-        const bbDom = document.querySelector(CONFIG.domId);
-        if (clearDom) {
-            bbDom.innerHTML = "";
-            document.querySelector("button.button-load")?.remove();
-        }
+   function fetchMemosAndRender(params, clearDom = false) {
+    const bbDom = document.querySelector(CONFIG.domId);
 
-        return memoFetch(`api/v1/memos?${params.toString()}`).then(res => {
-            if (res?.memos) {
-                const adaptedData = res.memos.map(adaptMemo);
-                updateHTMl(adaptedData);
-                if (res.nextPageToken) {
-                    STATE.nextPageToken = res.nextPageToken;
-                    if (!document.querySelector("button.button-load")) {
-                        bbDom.insertAdjacentHTML('afterend', '<div class="bb-load"><button class="load-btn button-load" data-action="load-more">看更多 ...</button></div>');
-                    }
-                    if(!clearDom) getNextPage();
-                }
-            }
-        });
+    if (clearDom) {
+        bbDom.innerHTML = "";
+        document.querySelector('.bb-load')?.remove();
     }
+
+    const isFirst = !params.get('pageToken');
+
+    const pinnedReq = isFirst
+        ? memoFetch(`api/v1/memos?${
+            (() => {
+                const p = new URLSearchParams(params);
+                const f = p.get('filter');
+                p.set('filter', f ? `${f}&&pinned==true` : 'pinned==true');
+                p.delete('pageToken');
+                return p;
+            })()
+        }`).catch(() => ({ memos: [] }))
+        : Promise.resolve({ memos: [] });
+
+    return Promise.all([
+        pinnedReq,
+        memoFetch(`api/v1/memos?${params}`)
+    ]).then(([pRes, nRes]) => {
+        const pinned = pRes?.memos || [];
+        const normal = nRes?.memos || [];
+
+        const pinnedNames = new Set(pinned.map(p => p.name));
+        const start = isFirst
+            ? [...pinned, ...normal.filter(n => !pinnedNames.has(n.name))]
+            : normal;
+
+        start.length && updateHTMl(start.map(adaptMemo));
+
+        document.querySelector('.bb-load')?.remove();
+
+        if (nRes?.nextPageToken) {
+            STATE.nextPageToken = nRes.nextPageToken;
+            bbDom.insertAdjacentHTML(
+                'afterend',
+                '<div class="bb-load"><button class="load-btn button-load" data-action="load-more">看更多 ...</button></div>'
+            );
+            !clearDom && getNextPage();
+        } else {
+            STATE.nextPageToken = null;
+        }
+    });
+}
 
     function getFirstList() {
         const bbDom = document.querySelector(CONFIG.domId);
@@ -416,8 +445,13 @@
             const footer = (['PUBLIC', 'PROTECTED'].includes(item.visibility)) ? `<div class="talks_comments"><a data-action="load-artalk" data-id="${item.id}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` : `<div class="memos-hide" data-action="reload-private"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></div>`;
             const editMenu = canEdit ? `<div class="memos-edit"><div class="memos-menu">...</div><div class="memos-menu-d"><div class="edit-btn" data-action="edit" data-form="${encodeURIComponent(JSON.stringify(item))}">修改</div><div class="archive-btn" data-action="archive" data-id="${item.id}">归档</div><div class="delete-btn" data-action="delete" data-id="${item.id}">删除</div></div></div>` : '';
             const timeStr = typeof moment !== 'undefined' ? moment(item.createdTs * 1000).twitterLong() : new Date(item.createdTs * 1000).toLocaleString();
+
+            let pinIcon = '';
+            if (item.pinned) {
+                pinIcon = `<span class="pinned"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; margin-right:5px; transform: rotate(45deg); vertical-align: -2px;"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path></svg>置顶</span>`;
+            }
             
-            result += `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
+            result += `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
 
             if (!mode && STATE.mePage === 1) {
                 if (STATE.cache.posts && [1, 4, 7, 9].includes(i)) {
