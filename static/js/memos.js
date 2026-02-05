@@ -33,8 +33,10 @@
         ...window.bbMemos
     };
 
+    const getResUrl = (resourceName, filename = '') => 
+        `${CONFIG.memos}file/${resourceName}${filename ? `/${filename}` : ''}`;
+
     const STATE = {
-        mePage: 1,
         nextPageToken: "",
         nextDom: [],
         memosOpenId: lsToken,
@@ -76,18 +78,16 @@
         const headers = { 'Content-Type': 'application/json' };
         if (STATE.memosOpenId) headers['Authorization'] = `Bearer ${STATE.memosOpenId}`;
 
-        let urlObj;
-        try {
-            urlObj = new URL(endpoint, CONFIG.memos);
-        } catch (e) {
-            console.error("Invalid URL", e);
-            return null;
-        }
+        const urlObj = new URL(endpoint, CONFIG.memos);
 
         if (method === 'GET') urlObj.searchParams.set('t', Date.now());
 
         try {
             const res = await fetch(urlObj.href, { method, headers, body: body ? JSON.stringify(body) : null });
+            if (res.status === 401) {
+                ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => window.localStorage.removeItem(k));
+                location.reload();
+            }
             if (!res.ok) throw new Error(res.status);
             if (method === 'DELETE') return true;
             return await res.json();
@@ -98,40 +98,45 @@
     }
 
     // ============================================================
-    // 4. 数据适配器 (优化 1: 一次正则扫描)
+    // 4. 数据适配器
     // ============================================================
     function adaptMemo(memo) {
         if (!memo) return null;
         const id = memo.name ? memo.name.split('/').pop() : memo.id;
 
-        // 优化 1: 扫描一次完成：去标签、提图片、去链接
         const allImages = [];
-        const memoTags = []; // ✅ 新增：用于存储当前 Memo 的标签
+        const memoTags = []; 
         
+        // 2. 扫描一次完成：去标签、提图片、去链接
         let contentStr = (memo.content || '').replace(REG.TAG, (match, tag) => {
-            STATE.tags.add(tag); // 全局收集（给编辑器用）
-            memoTags.push(tag);  // ✅ 本地收集（给显示用）
-            return ''; // 移除标签
+            STATE.tags.add(tag); 
+            memoTags.push(tag);  
+            return ''; 
         }).replace(REG.IMG, (match, alt, src) => {
-            if (src.startsWith('resources/')) src = `${CONFIG.memos}file/${src}`;
-            allImages.push(src); // 收集 Markdown 图片
-            return ''; // 移除图片文本
-        }).replace(REG.LINK, '<a href="$2" target="_blank">$1</a>'); // 转换链接
+            // 【优化点】这里也统一调用 getResUrl，保持逻辑一致
+            if (src.startsWith('resources/')) {
+                src = getResUrl(src); 
+            }
+            allImages.push(src); 
+            return ''; 
+        }).replace(REG.LINK, '<a href="$2" target="_blank">$1</a>');
 
-        // 处理资源列表图片
+        // 3. 处理资源列表
         const rawResources = memo.resources || memo.attachments || [];
         const resourceList = rawResources.map(r => {
             const rId = r.id || (r.name ? r.name.split('/').pop() : '');
             const rName = r.name || `resources/${rId}`;
-            const rFilename = r.filename || '';
+            const rFilename = r.filename || ''; // 获取文件名
             const type = r.type || r.mimeType || 'image/*';
-            const suffix = rFilename ? `/${rFilename}` : '';
-            const src = r.externalLink || `${CONFIG.memos}file/${rName}${suffix}`;
+            
+            // 核心：优先外链 -> 其次走统一生成器
+            const src = r.externalLink || getResUrl(rName, rFilename);
+            
             if (type.startsWith('image')) allImages.push(src);
             return { id: rId, name: rName, filename: rFilename, externalLink: r.externalLink, type, src };
         });
 
-        // 引用关系
+        // 4. 返回处理好的对象
         const relations = { inbound: [], outbound: [] };
         if (memo.relations) {
             memo.relations.forEach(rel => {
@@ -149,7 +154,7 @@
             contentRaw: memo.content, 
             resourceList,
             imageUrls: allImages,
-            tags: memoTags, // ✅ 明确返回处理后的标签数组，防止渲染时 undefined 报错
+            tags: memoTags, 
             relations,
             location: memo.location || memo.property?.location
         };
@@ -213,7 +218,6 @@
         }
 
         if (STATE.nextDom.length) {
-            STATE.mePage++;
             updateHTMl(STATE.nextDom);
             STATE.nextDom = [];
             // 预加载下一页
@@ -324,17 +328,17 @@
 
     const isFirst = !params.get('pageToken');
 
-    const pinnedReq = isFirst
-        ? memoFetch(`api/v1/memos?${
-            (() => {
-                const p = new URLSearchParams(params);
-                const f = p.get('filter');
-                p.set('filter', f ? `${f}&&pinned==true` : 'pinned==true');
-                p.delete('pageToken');
-                return p;
-            })()
-        }`).catch(() => ({ memos: [] }))
-        : Promise.resolve({ memos: [] });
+    let pinnedReq = Promise.resolve({ memos: [] });
+
+    if (isFirst) {
+        const p = new URLSearchParams(params);
+        p.delete('pageToken');
+
+        const oldFilter = p.get('filter');
+        p.set('filter', oldFilter ? `(${oldFilter}) && pinned==true` : 'pinned==true');
+        
+        pinnedReq = memoFetch(`api/v1/memos?${p}`).catch(() => ({ memos: [] }));
+    }
 
     return Promise.all([
         pinnedReq,
@@ -348,7 +352,7 @@
             ? [...pinned, ...normal.filter(n => !pinnedNames.has(n.name))]
             : normal;
 
-        start.length && updateHTMl(start.map(adaptMemo));
+        start.length && updateHTMl(start.map(adaptMemo), null, isFirst);
 
         document.querySelector('.bb-load')?.remove();
 
@@ -368,7 +372,7 @@
     function getFirstList() {
         const bbDom = document.querySelector(CONFIG.domId);
         if(!document.getElementById('tag-list')) bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
-        STATE.mePage = 1; STATE.nextPageToken = "";
+        STATE.nextPageToken = "";
         fetchMemosAndRender(new URLSearchParams({ pageSize: CONFIG.limit, parent: `users/${CONFIG.creatorId}` }));
         loadRandomMemo();
     }
@@ -386,7 +390,7 @@
     function reloadList() {
         document.querySelector(".bb-load")?.remove();
         document.querySelector("#tag-list").innerHTML = "";
-        STATE.mePage = 1; STATE.nextPageToken = "";
+        STATE.nextPageToken = "";
         fetchMemosAndRender(new URLSearchParams({ pageSize: CONFIG.limit, parent: `users/${CONFIG.creatorId}` }), true);
         if (window.localStorage?.getItem("memos-oneday") === "open") loadRandomMemo();
     }
@@ -421,7 +425,7 @@
         return true;
     }
 
-    function updateHTMl(data, mode) {
+    function updateHTMl(data, mode, isFirstPage = false) {
         if (!data?.length) return;
         const bbDom = document.querySelector(CONFIG.domId);
         const canEdit = STATE.isAuthorized && STATE.editorDisplay === "show";
@@ -453,7 +457,7 @@
             
             result += `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
 
-            if (!mode && STATE.mePage === 1) {
+            if (!mode && isFirstPage) {
                 if (STATE.cache.posts && [1, 4, 7, 9].includes(i)) {
                     const tmp = document.createElement('div'); tmp.innerHTML = STATE.cache.posts;
                     const html = tmp.querySelectorAll('.one-post-item')[[1, 4, 7, 9].indexOf(i)]?.innerHTML;
@@ -567,38 +571,39 @@
 
             // 优化 8: 使用 Object 查表替代 switch
             const EDIT_ACTIONS = {
-                'code-single': () => insertText("``", "`", 1),
-                'code-btn': () => insertText("```\n\n```", "", 4),
-                'link-btn': () => insertText("[]()", "[", 1),
-                'link-img': () => insertText("![]()", "!", 1),
-                'biao-qing': () => showEmoji(t),
-                'switchUser-btn': () => {
-                    ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => window.localStorage.removeItem(k));
-                    location.reload();
-                },
-                'private-btn': () => {
-                    const isP = t.classList.toggle("private");
-                    refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC";
-                    STATE.viewMode = isP ? 'PRIVATE' : 'ALL';
-                    cocoMessage.success(isP ? "只看私有" : "显示全部");
-                    reloadList();
-                },
-                'oneday-btn': () => {
-                    const key = "memos-oneday";
-                    if (!window.localStorage.getItem(key)) {
-                        window.localStorage.setItem(key, "open");
-                        cocoMessage.success("已开启回忆，请刷新");
-                    } else {
-                        window.localStorage.removeItem(key);
-                        cocoMessage.success("已退出回忆");
+                    'code-single': () => insertText("``", "`", 1),
+                    'code-btn': () => insertText("```\n\n```", "", 4),
+                    'link-btn': () => insertText("[]()", "[", 1),
+                    'link-img': () => insertText("![]()", "!", 1),
+                    'biao-qing': (t) => showEmoji(t), // 注意这里传 t
+                    'switchUser-btn': () => {
+                        ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => window.localStorage.removeItem(k));
+                        location.reload();
+                    },
+                    'private-btn': (t) => { // 注意这里传 t
+                        const refs = STATE.domRefs;
+                        const isP = t.classList.toggle("private");
+                        refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC";
+                        STATE.viewMode = isP ? 'PRIVATE' : 'ALL';
+                        cocoMessage.success(isP ? "只看私有" : "显示全部");
                         reloadList();
+                    },
+                    'oneday-btn': () => {
+                        const key = "memos-oneday";
+                        if (!window.localStorage.getItem(key)) {
+                            window.localStorage.setItem(key, "open");
+                            cocoMessage.success("已开启回忆，请刷新");
+                        } else {
+                            window.localStorage.removeItem(key);
+                            cocoMessage.success("已退出回忆");
+                            reloadList();
+                        }
                     }
-                }
-            };
+                };
             
             // 查找匹配的 class 并执行
             for (const cls in EDIT_ACTIONS) {
-                if (t.classList.contains(cls)) { EDIT_ACTIONS[cls](); break; }
+                if (t.classList.contains(cls)) { EDIT_ACTIONS[cls](t); break; }
             }
         });
 
