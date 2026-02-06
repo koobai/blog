@@ -1,81 +1,132 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on 空白Koobai</title><link>https://koobai.com/tags/hugo/</link><description>Recent content in Hugo on 空白Koobai</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 25 Jan 2026 16:43:00 +0800</lastBuildDate><atom:link href="https://koobai.com/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo 通过 Github 自动推送到宝塔 (2026 年版备忘)</title><link>https://koobai.com/hugo_action_github/</link><pubDate>Sun, 25 Jan 2026 16:43:00 +0800</pubDate><guid>https://koobai.com/hugo_action_github/</guid><description>&lt;p&gt;太久没折腾博客了，服务器失效了也没打算续费，昨天兴致来了，把费续上。既然网站正常了，就想着顺手折腾下。但太久没整了，完全忘光，之前的一篇日志还是手动传到 Github，然后手动把静态文件传到宝塔。为了方便，还是得把链路打通：本地通过 VC 上传，Github 自动构建 Hugo 静态文件，然后自动推送到宝塔。得益于 ai 的进步，本地到 Github 很快搞定，但原先的 WebHook 不知道为什么不启作用，来回跟 ai 聊也无效，记得以前 WebHook 也老是失效。干脆让 ai 换个思路不用 WebHook 了，于是有了这篇备忘～&lt;/p&gt;</description></item><item><title>HUGO 折腾随记之热力图 / 段落导航</title><link>https://koobai.com/hugo_suiji/</link><pubDate>Sat, 24 Feb 2024 16:49:41 +0800</pubDate><guid>https://koobai.com/hugo_suiji/</guid><description>&lt;p&gt;在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。&lt;/p&gt;
 &lt;h2 id="博文热力图"&gt;博文热力图&lt;/h2&gt;
-&lt;p&gt;&lt;img src="https://img.koobai.com/article/20240224_relitu.webp" alt="热力图" class="img-hide" loading="lazy" decoding="async" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://img.koobai.com/article/20240224_relitu.webp" 
+ alt="热力图" 
+ 
+ class="img-hide" 
+ loading="lazy" 
+ decoding="async" /&gt;&lt;/p&gt;
 &lt;p&gt;最开始看到好像是因为
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9pbW1tbW0uY29tLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 木木老师&lt;/a&gt;发了个memos，当时想着自己平常也不怎么更新博文，所以意义不大。这两天又在
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9ibG9nLmRvdWNoaS5zcGFjZS9odWdvLWJsb2ctaGVhdG1hcC8jZ3NjLnRhYj0w"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 椒盐豆豉&lt;/a&gt;中看到完整的教程，心想这次页面布局改成很窄的单栏之后，似乎很契合小而美的特性。一顿操作，跟原版的区别在于：&lt;/p&gt;</description></item><item><title>HUGO 外链跳转到中间页</title><link>https://koobai.com/zhongjiantiaozhuan/</link><pubDate>Thu, 01 Feb 2024 22:28:55 +0800</pubDate><guid>https://koobai.com/zhongjiantiaozhuan/</guid><description>&lt;p&gt;前天在老麦博客中看到&amp;quot;
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuaWFtbG0uY29tLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 给Twikoo添加链接跳转中间页&lt;/a&gt;&amp;ldquo;博文，因为外部链接你无法确定未来某一天可能就会变成不安全链接，从而影响到自己博客。同时又见到
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuZWFsbGlvbi5jb20v"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 大大的小蜗牛&lt;/a&gt;也是因为安全的原因，把博客评论换成了GitHub Discussions。网上也有不少的案例，因为某个链接的原因，而被请喝茶或电话让自己排查。今天在
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9sbXMucHViLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 不亦乐乎&lt;/a&gt;那见链接也是跳转到中间页，于是请教了下怎么实现的，感谢。之后经过与 AI 的博弈，搞定。这次使用 ChatGPT 跟 Claude 都不行，说了一堆，完全不懂，最后使用 coze 搞定基本框架，然后再来回沟通逐步完善功能。估计跟它使用的 ChatGPT 4.0 接口有关。想充值 ChatGPT，奈何月费太贵了。&lt;/p&gt;</description></item><item><title>利用 unicode-range 属性, 提高自定义字体加载速度</title><link>https://koobai.com/unicode_range/</link><pubDate>Wed, 01 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/unicode_range/</guid><description>&lt;p&gt;每天折腾一点，新鲜满足感就增强点。为了各个终端显示效果能保持一致性及自己的审美爱好，网站自定义了三种字体：标题(得意黑)、正文(鸿蒙)、代码(JetBrainsMono)。效果很满意，但带来的问题就是加载速度怎么保证，特别是中文字体。虽然使用.woff2 格式可以一定程度的降低容量，但动不动就 1M 以上的大小，对加载速度还是有一定的影响，包括 CDN 的流量损耗。&lt;/p&gt;</description></item><item><title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录</title><link>https://koobai.com/hugo_action_webhooks/</link><pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_action_webhooks/</guid><description>&lt;p&gt;(2024.01.19晚更新) 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。&lt;/p&gt;</description></item><item><title>Hugo主题实现自适应布局, 及自定义字体</title><link>https://koobai.com/hugo_responsive_font/</link><pubDate>Sat, 28 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_responsive_font/</guid><description>&lt;p&gt;做事情的三分钟热度继续中，完善了博客的
+
 &lt;a 
  
  href="https://koobai.com/archives"
  
+
  
 &gt;
 归档&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/tags"
  
+
  
 &gt;
 标签云&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/movies"
  
+
  
 &gt;
 平常观看的影视&lt;/a&gt;页面及文章页评论、标签等功能。由于当下移动设备为我们主要的浏览窗口，所以页面需考虑在对应的终端设备中实际的浏览体验。&lt;/p&gt;</description></item><item><title>Hugo主题添加暗黑(夜间)模式, 并自动切换</title><link>https://koobai.com/hugo_dark/</link><pubDate>Thu, 19 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_dark/</guid><description>&lt;p&gt;继续完善博客主题风格，折腾过程，备份记录留档。由于自己已习惯把终端设备外观设置成自动切换浅色或深色模式，为了夜间浏览体验，博客应该支持暗黑(夜间)模式。&lt;/p&gt;</description></item><item><title>Github自动构建Hugo, 并同步到腾讯COS, 同时刷新CDN缓存</title><link>https://koobai.com/hugo_action_tencentcos/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_action_tencentcos/</guid><description>&lt;p&gt;博客逐步搭建完善，更新了日常使用的
+
 &lt;a 
  
  href="https://koobai.com/apps/"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 App&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/hardware/"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 硬件&lt;/a&gt;页面。博客样式标题采用了&amp;quot;
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL2F0ZWxpZXItYW5jaG9yL3NtaWxleS1zYW5z"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 得意黑&lt;/a&gt;&amp;ldquo;开源字体。把二级域名改成一级，过程中发现 Cloudflare Pages 如果要绑定一级，须把域名的 DNS 服务器解析过去。解析之后，自己的 nas 访问变得不稳定，时不时的打不开，来来回回折腾了好几次，无解，只好改回去。 vercel 可以绑定一级，尝试之后，访问速度太慢，放弃。开始了解国内的云服务，学习到了对象储存、CDN，经过一番对比尝试，最终选择腾讯云的 COS 对象存储配合内容分发网络 CDN 搭建(主要它的 cosbrowser 界面是经过设计的 ᵔ◡ᵔ；客服也很负责，咨询问题会电话打过来详细教你如何操作)。&lt;/p&gt;</description></item></channel></rss>

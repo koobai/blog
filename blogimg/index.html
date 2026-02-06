@@ -1,103 +1,188 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link href=/index.xml title=空白Koobai type=application/rss+xml><link rel=canonical href=https://koobai.com/blogimg/><link rel=stylesheet href=/css/style.min.bc129af3f4a33ecb24289cd43508893d296c81c7e920460e67fa8116412234e7.css><meta name=description content="起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Githuab，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～"><meta property="og:title" content="图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/blogimg/"><meta property="og:image" content="https://img.koobai.com/article/syncimg.svg"><meta property="og:description" content="起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Githuab，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/hardware/>喜爱</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><div id=toggle-menu-main-mobile class=hamburger-trigger><button class=hamburger>Menu</button></div><div class=new-heard-menu><div class=header-menu><a href=/ data-umami-event=Home><span class=menu-icon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 008-8V7a4 4 0 00-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 003.84-10.61"/></svg>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link rel=alternate type=application/rss+xml href=https://koobai.com/index.xml title=空白Koobai><link rel=canonical href=https://koobai.com/blogimg/><link rel=stylesheet href=/css/style.min.0ba06141738242605d417bec6c058d108b4b80b2b02814152f9a00355aa2e376.css><meta name=description content="起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Githuab，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～"><meta property="og:title" content="图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/blogimg/"><meta property="og:image" content="https://img.koobai.com/article/syncimg.svg"><meta property="og:description" content="起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Githuab，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/hardware/>喜爱</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><div id=toggle-menu-main-mobile class=hamburger-trigger><button class=hamburger aria-label=Menu>Menu</button></div><div class=new-heard-menu><div class=header-menu><a href=/ data-umami-event=Home><span class=menu-icon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 008-8V7a4 4 0 00-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 003.84-10.61"/></svg>
 </span><span class=menu-name>唠叨</span></a></div><div class=header-menu><a href=/posts/ data-umami-event=Bowen><span class=menu-icon><svg width="20" height="20" viewBox="0 0 26 26"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>
 </span><span class=menu-name>博文</span></a></div><div class=header-menu><a href=/movies/ data-umami-event=Movies><span class=menu-icon><svg width="20" height="20" viewBox="0 -1 27 27"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 8a2 2 0 000-4 2 2 0 00-4 0 2 2 0 00-4 0A2 2 0 006 4a2 2 0 000 4m4 14L9 8m5 14 1-14"/><path d="M20 8c.5.0.9.4.8 1l-2.6 12c-.1.5-.7 1-1.2 1H7c-.6.0-1.1-.4-1.2-1L3.2 9c-.1-.6.3-1 .8-1z"/></g></svg>
 </span><span class=menu-name>观影</span></a></div><div class=header-menu><a href=/apps/ data-umami-event=Apps><span class=menu-icon><svg width="20" height="20" viewBox="30 38 206 206"><g fill="none"><path fill="#00A0E2" fill-rule="evenodd" d="M191.072 195.009c-3.27 5.387-6.54 9.426-10.484 13.176-4.424 3.944-5.674 7.406-15.87 8.754-7.213 1.347-13.465-1.348-15.87-2.405-7.214-3.367-10.966-4.424-15.293-4.424-4.232.0-7.791 1.058-14.909 4.328-2.212 1.153-8.175 3.751-15.485 2.405-7.502-1.347-11.35-4.232-14.139-6.637-5.771-5.097-10.1-9.907-14.043-15.485z" clip-rule="evenodd"/><path fill="#34BE2D" fill-rule="evenodd" d="M58.726 105.27c3.366-7.598 7.79-12.696 12.215-16.255 11.253-9.233 29.624-9.81 38.088-7.598 6.926 1.731 11.831 5.963 19.622 5.963 8.175.0 12.887-4.136 19.333-5.963 8.464-2.116 26.931-1.443 38.954 7.79 3.559 2.694 6.827 6.349 8.655 8.369-4.327 3.174-6.925 5.482-9.041 7.694z" clip-rule="evenodd"/><path fill="#FFB400" fill-rule="evenodd" d="M186.553 105.27c-2.02 2.212-3.462 4.329-5.098 7.31-1.922 3.463-4.232 8.176-4.809 15.293H53.051c.096-1.154.192-2.404.384-3.655 1.155-7.598 2.982-13.85 5.29-18.948z" clip-rule="evenodd"/><path fill="#FF7A00" fill-rule="evenodd" d="M176.646 127.873a74 74 0 000 6.541c.289 5.29 2.116 11.157 4.521 15.87l-125.712-.289c-1.731-7.598-2.693-15.389-2.404-22.122z" clip-rule="evenodd"/><path fill="#F41E34" fill-rule="evenodd" d="M181.166 150.284a33 33 0 003.558 5.771c8.272 10.58 11.831 10.58 18.275 13.851-.479 1.152-.864 2.212-1.346 3.174l-138.888-.289c-2.693-5.867-5.482-14.139-7.31-22.795z" clip-rule="evenodd"/><path fill="#A2359C" fill-rule="evenodd" d="M201.653 173.08c-4.039 9.426-7.31 16.349-10.581 21.929l-116.091-.288c-3.848-5.675-7.31-11.928-11.254-19.719-.288-.673-.673-1.443-.962-2.211z" clip-rule="evenodd"/><path fill="#34BE2D" fill-rule="evenodd" d="M161.352 52.658c-.674 4.81-3.078 10.965-6.925 14.908-4.138 4.425-10.581 9.234-14.429 11.639-2.116 1.346-7.599 1.538-12.118 2.02-.577-4.04-.673-7.503.577-11.254 1.635-4.424 3.753-10.772 7.118-15.197 4.135-5.482 8.848-9.233 11.445-10.58 3.464-1.731 9.235-4.328 14.236-5.194.193 4.424.867 9.426.096 13.658" clip-rule="evenodd"/></g></svg>
 </span><span class=menu-name>软件</span></a></div><div class=header-menu><a href=/hardware/ data-umami-event=Good><span class=menu-icon><svg width="20" height="20" viewBox="0 0 25 25"><g fill="none"><path fill="currentColor" d="m15 10-.986-.164A1 1 0 0015 11zM4 10V9a1 1 0 00-1 1zm16.522 2.392.98.196zM6 21h11.36v-2H6zM18.56 9H15v2h3.56zm-2.573 1.164.805-4.835L14.82 5l-.806 4.836zM14.82 3h-.214v2h.214zm-3.543 1.781L8.763 8.555l1.664 1.11 2.516-3.774zM7.93 9H4v2h3.93zM3 10v8h2v-8zm17.302 8.588 1.2-6-1.96-.392-1.2 6zM8.762 8.555A1 1 0 017.93 9v2a3 3 0 002.496-1.336zm8.03-3.226A2 2 0 0014.82 3v2zM18.56 11a1 1 0 01.981 1.196l1.961.392A3 3 0 0018.561 9zm-1.2 10a3 3 0 002.942-2.412l-1.96-.392A1 1 0 0117.36 19zM14.606 3a4 4 0 00-3.328 1.781l1.664 1.11A2 2 0 0114.606 5zM6 19a1 1 0 01-1-1H3a3 3 0 003 3z"/><path stroke="currentColor" stroke-width="1.2" d="M8 10v10"/></g></svg>
 </span><span class=menu-name>喜爱</span></a></div><div class=header-menu><a href=https://qiszy.taobao.com target=_blank data-umami-event=Taobao><span class=menu-icon><svg width="20" height="20" viewBox="1 0 24 24"><path fill="currentColor" d="M17.173 14H14.5v1.375q.824-.332 1.812-.81l-.082-.238zm.828-.287.12-.042c.641 1.851 1.034 3.012 1.185 3.5l-1.912.59q-.11-.36-.427-1.293c-6.081 2.884-8.671 2.054-9.008-1.908l1.993-.169c.1 1.165.344 1.621.897 1.752.393.093.94.063 1.652-.104v-2.04h-3.5v-2h.513l-1.167-1.39q1.563-1.312 2.449-2.863-.78.202-1.552.435A14 14 0 017.49 10.29l-1.4-1.428Q8 6.992 9.266 3.868l1.854.75q-.23.567-.48 1.1c3.702-.935 7.275-1.316 9.138-.68 1.223.419 1.919 1.392 2.188 2.585.17.756.313 2.689.313 5.123.0 2.807-.056 3.77-.34 4.622-.298.89-.697 1.418-1.408 1.984-.657.523-1.553.763-2.645.823a12.5 12.5.0 01-2.094-.08c-.12-.013-.235-.027-.355-.042l-.242-.033.264-1.982.237.032.319.038c.625.07 1.216.1 1.762.07.714-.04 1.245-.181 1.508-.39.426-.34.591-.558.756-1.054.186-.555.238-1.448.238-3.989.0-2.298-.134-4.101-.265-4.682-.13-.577-.41-.97-.883-1.132-1.207-.412-3.801-.194-6.652.416l.615.263q-.195.453-.43.89h5.337v2h-3.5V12h3.5zm-5.5-3.213h-1.208A14 14 0 019.799 12h2.702zm-10.038-.438L3.54 8.376c1.062.68 2.935 2.428 3.338 3.162 1.239 2.26.198 4.176-3.122 7.997l-1.51-1.311c2.687-3.094 3.5-4.59 2.878-5.725-.214-.39-1.857-1.923-2.661-2.437M5.14 7.583c-1.048.0-1.882-.762-1.886-1.693.0-.94.838-1.701 1.886-1.701 1.04.0 1.883.758 1.883 1.701.0.935-.843 1.693-1.883 1.693"/></svg>
 </span><span class=menu-name>店铺</span></a></div></div><div class=index-laodao><div class=index-laodao-titile></div></div><div class=heard-right><div class="about-koobai avatar-mobile"><a href=/about><img src=https://img.koobai.com/koobai.webp alt=koobai title=空白Koobai data-umami-event=Me></a></div><a href=https://github.com/koobai/blog title=Github target=_blank class=githuab data-umami-event=Github><svg aria-hidden="true" viewBox="0 0 16 16" data-view-component="true"><path d="M8 0c4.42.0 8 3.58 8 8a8.013 8.013.0 01-5.45 7.59c-.4.08-.55-.17-.55-.38.0-.27.01-1.13.01-2.2.0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95.0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12.0.0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27s-1.36.09-2 .27c-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15.0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94.0.67.01 1.3.01 1.49.0.21-.15.45-.55.38A7.995 7.995.0 010 8c0-4.42 3.58-8 8-8z"/></svg></a><div data-umami-event=Rss class=header-Rss><svg viewBox="0 1 23 23" fill="currentColor"><path d="M3 3c9.9411.0 18 8.0589 18 18H18C18 12.7157 11.2843 6 3 6V3zm0 7c6.07513.0 11 4.9249 11 11H11c0-4.4183-3.58172-8-8-8V10zm0 7c2.20914.0 4 1.7909 4 4H3V17z"/></svg><div class=rss-box><div class=footer-rss><a href=https://memos.koobai.com/u/koobai/rss.xml target=_blank>唠叨 RSS</a> /
-<a href=https://koobai.com/index.xml target=_blank>博文 RSS</a></div></div></div></div></div><script src="/js/moment.min.js?v=2.29.4"></script><script src=/js/moment.twitter.min.js></script><script>function formatDate(e){return typeof e=="number"&&(e=new Date(e*1e3).toISOString()),moment(Date.parse(e)).twitterLong().replace(/\s\d{2}:\d{2}/,"")}</script><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2</h1><img src=https://img.koobai.com/article/syncimg.svg class="top-img img-hide" alt="图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2"></article><div class=content_zhengwen><div class=content><p>起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Github，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～</p><p>找了一圈多吉云的 Actions 工作流，发现没有。
-<a href="/tiaozhuan?target=aHR0cHM6Ly9lYWxsaW9uLmNvbS8%3d" target=_blank>大大的小蜗牛</a>推荐了一个，试用了下，可能由于太久没更新或者自己不会使用，无效，找到原作者，沟通相对困难。决定放弃多吉云，转向腾讯云的 COS ，之前博文记录过
-<a href=/hugo_action_tencentcos/>Github自动构建Hugo, 并同步到腾讯COS, 同时刷新CDN缓存</a>，只需简单的修改下yml就行，其他具体设置参照之前的博文。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>name</span><span class=p>:</span> <span class=n>Sync</span> <span class=n>Tencent</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>on</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>  <span class=n>workflow_dispatch</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>  <span class=n>push</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=n>branches</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>master</span>
-</span></span><span class=line><span class=cl>    <span class=n>paths</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=s1>&#39;koobaiblog/**&#39;</span>  <span class=c1># 目录内容有变化执行工作流</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>jobs</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>  <span class=n>deploy</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=n>runs</span><span class=o>-</span><span class=n>on</span><span class=p>:</span> <span class=n>ubuntu</span><span class=o>-</span><span class=n>latest</span>
-</span></span><span class=line><span class=cl>    <span class=n>steps</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>uses</span><span class=p>:</span> <span class=n>actions</span><span class=o>/</span><span class=n>checkout</span><span class=err>@</span><span class=n>v3</span>
-</span></span><span class=line><span class=cl>        <span class=n>with</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>          <span class=n>submodules</span><span class=p>:</span> <span class=bp>true</span>
-</span></span><span class=line><span class=cl>          <span class=n>fetch</span><span class=o>-</span><span class=n>depth</span><span class=p>:</span> <span class=mi>0</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>name</span><span class=p>:</span> <span class=n>Setup</span> <span class=n>Python</span>
-</span></span><span class=line><span class=cl>        <span class=n>uses</span><span class=p>:</span> <span class=n>actions</span><span class=o>/</span><span class=n>setup</span><span class=o>-</span><span class=n>python</span><span class=err>@</span><span class=n>v4</span>
-</span></span><span class=line><span class=cl>        <span class=n>with</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>          <span class=n>python</span><span class=o>-</span><span class=n>version</span><span class=p>:</span> <span class=mf>3.9</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>name</span><span class=p>:</span> <span class=n>Setup</span> <span class=n>coscmd</span> <span class=ow>and</span> <span class=n>sdk</span>
-</span></span><span class=line><span class=cl>        <span class=n>run</span><span class=p>:</span> <span class=n>sudo</span> <span class=n>pip</span> <span class=n>install</span> <span class=n>coscmd</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>name</span><span class=p>:</span> <span class=n>Configure</span> <span class=n>coscmd</span>
-</span></span><span class=line><span class=cl>        <span class=n>env</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>          <span class=n>SECRET_ID</span><span class=p>:</span> <span class=o>$</span><span class=p>{{</span> <span class=n>secrets</span><span class=o>.</span><span class=n>SecretId</span> <span class=p>}}</span>
-</span></span><span class=line><span class=cl>          <span class=n>SECRET_KEY</span><span class=p>:</span> <span class=o>$</span><span class=p>{{</span> <span class=n>secrets</span><span class=o>.</span><span class=n>SecretKey</span> <span class=p>}}</span>
-</span></span><span class=line><span class=cl>          <span class=n>BUCKET</span><span class=p>:</span> <span class=o>$</span><span class=p>{{</span> <span class=n>secrets</span><span class=o>.</span><span class=n>Bucket</span> <span class=p>}}</span>
-</span></span><span class=line><span class=cl>          <span class=n>REGION</span><span class=p>:</span> <span class=o>$</span><span class=p>{{</span> <span class=n>secrets</span><span class=o>.</span><span class=n>Region</span> <span class=p>}}</span>
-</span></span><span class=line><span class=cl>        <span class=n>run</span><span class=p>:</span> <span class=n>coscmd</span> <span class=n>config</span> <span class=o>-</span><span class=n>a</span> <span class=o>$</span><span class=n>SECRET_ID</span> <span class=o>-</span><span class=n>s</span> <span class=o>$</span><span class=n>SECRET_KEY</span> <span class=o>-</span><span class=n>b</span> <span class=o>$</span><span class=n>BUCKET</span> <span class=o>-</span><span class=n>r</span> <span class=o>$</span><span class=n>REGION</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>      <span class=o>-</span> <span class=n>name</span><span class=p>:</span> <span class=n>Upload</span> <span class=n>to</span> <span class=n>COS</span>
-</span></span><span class=line><span class=cl>        <span class=n>run</span><span class=p>:</span> <span class=n>coscmd</span> <span class=n>upload</span> <span class=o>-</span><span class=n>rfs</span> <span class=o>--</span><span class=n>delete</span> <span class=n>koobaiblog</span><span class=o>/</span> <span class=o>/</span>    <span class=c1># 需同步的本地目录及COS目录</span>
-</span></span></code></pre></div><p>搞定腾讯云之后，开始寻找又拍云的 Actions 工作流，
-<a href="/tiaozhuan?target=aHR0cHM6Ly93d3cud2FuZ2R1LnNpdGUv" target=_blank>斌仔</a>博文里有详细的教程，但试用之后觉得不够完美，一是文件无法增量更新，另外一个是无法保持文件一致性，譬如删除了 Gtihub 下的文件，远端无法同步删除。经过一番搜索，发现
-<a href="/tiaozhuan?target=aHR0cHM6Ly9oZXItY2F0LmNvbS8%3d" target=_blank>她和她的猫</a>博文中有说到增量更新及一致性问题，但没给出具体的脚本，抱着试试看的态度跟作者联系了下，把我的强迫症给完美解决，非常感谢作者。以下是yml，其中 <code>UPYUN_BUCKET</code>、<code>OPERATOR</code>、<code>OPERATOR_PASSWORD</code> 分别是又拍云的服务名称、操作员、操作员密码。详细使用可参考作者的
-<a href="/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL21hcmtldHBsYWNlL2FjdGlvbnMvdXB5dW4tZGVwbG95ZXI%3d" target=_blank>Github</a>。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>name: Sync Upyun
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>on:
-</span></span><span class=line><span class=cl>  workflow_dispatch:
-</span></span><span class=line><span class=cl>  push:
-</span></span><span class=line><span class=cl>    branches:
-</span></span><span class=line><span class=cl>      - master
-</span></span><span class=line><span class=cl>    paths:
-</span></span><span class=line><span class=cl>      - &#39;koobaiblog/**&#39;  # 目录内容有变化执行工作流
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>jobs:
-</span></span><span class=line><span class=cl>  build:
-</span></span><span class=line><span class=cl>    runs-on: ubuntu-latest
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    steps:
-</span></span><span class=line><span class=cl>      - name: Checkout Repository master branch
-</span></span><span class=line><span class=cl>        uses: actions/checkout@master
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>      - name: Deploy
-</span></span><span class=line><span class=cl>        uses: her-cat/upyun-deployer@v1
-</span></span><span class=line><span class=cl>        with:
-</span></span><span class=line><span class=cl>          bucket: ${{ secrets.UPYUN_BUCKET }}
-</span></span><span class=line><span class=cl>          operator: ${{ secrets.OPERATOR }}
-</span></span><span class=line><span class=cl>          password: ${{ secrets.OPERATOR_PASSWORD }}
-</span></span><span class=line><span class=cl>          dir: koobaiblog  # 需同步的本地目录
-</span></span></code></pre></div><p>Backblaze B2 同步，<code>B2_APPKEY_ID</code> <code>B2_APPKEY</code>在
-<a href="/tiaozhuan?target=aHR0cHM6Ly9zZWN1cmUuYmFja2JsYXplLmNvbS9hcHBfa2V5cy5odG0%3d" target=_blank>Application Keys</a>菜单下生成就行。要特别注意的是<code>B2_BUCKET</code>写法，完整的写法是<code>b2://xxx</code>，其中xxx为存储桶名称。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>name: Sync B2
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>on:
-</span></span><span class=line><span class=cl>  workflow_dispatch:
-</span></span><span class=line><span class=cl>  push:
-</span></span><span class=line><span class=cl>    branches:
-</span></span><span class=line><span class=cl>      - master
-</span></span><span class=line><span class=cl>    paths:
-</span></span><span class=line><span class=cl>      - &#39;koobaiblog/**&#39;  # 目录内容有变化执行工作流
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>jobs:
-</span></span><span class=line><span class=cl>  deploy:
-</span></span><span class=line><span class=cl>    runs-on: ubuntu-latest
-</span></span><span class=line><span class=cl>    steps:
-</span></span><span class=line><span class=cl>    - uses: actions/checkout@master
-</span></span><span class=line><span class=cl>    - uses: jakejarvis/backblaze-b2-action@master
-</span></span><span class=line><span class=cl>      env:
-</span></span><span class=line><span class=cl>        SOURCE_DIR: &#39;./koobaiblog&#39;  # 需同步的本地目录
-</span></span><span class=line><span class=cl>        B2_BUCKET: ${{ secrets.B2_BUCKET }}
-</span></span><span class=line><span class=cl>        B2_APPKEY_ID: ${{ secrets.B2_APPKEY_ID }}
-</span></span><span class=line><span class=cl>        B2_APPKEY: ${{ secrets.B2_APPKEY }}
-</span></span></code></pre></div><p>找寻各个解决方案的过程中，试用了下
-<a href="/tiaozhuan?target=aHR0cHM6Ly9udW9lYS5jb20v" target=_blank>归臧</a>的方案<code>Lsky</code>图床，发现只能同步到一个存储策略，更适合作为图片管理使用。还搜索到<code>ZFile</code>存储程序，支持多吉云，试用了下，每次也只能同步到一个存储策略，在 Github 中向作者提了Issues建议，能不能增加一次上传，同步到多平台存储选项，明确答复未来不支持。还发现<code>Picsee</code>，图片管理工具，支持同步到各大平台存储桶，但自己已经有<code>Eagle</code>了。</p><p>为什么选择<code>uPic</code>收费软件而不用开源免费的<code>PicGo</code>？主要就是界面跟图标好看😂，另外一个是基于 Mac 原生开发。试用下来也非常好用，喜欢它通过设置快捷键快速上传。具体使用可参考各自的文档
-<a href="/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL2dlZTFrL3VQaWM%3d" target=_blank>uPic</a>、
-<a href="/tiaozhuan?target=aHR0cHM6Ly9waWNnby5naXRodWIuaW8vUGljR28tRG9jL3poL2d1aWRlLw%3d%3d" target=_blank>PicGO</a>。</p><p>为什么要同步到多平台？数据多重备份总归是好的，另外就是一旦有这个想法之后，你不搞定这个 Actions，心里很难受。<code>腾讯 COS</code>会不会很贵？本来一共也就十几兆，一个 G 的量也就几块钱，可忽略不计。<code>又拍云</code>可申请联盟，每月免费 10G 存储及 15G 的 CDN。<code>Backblaze B2</code>每月免费 10G 存储及每天 1G 的流量，如果套壳 Cloudflare，流量个人使用等于不要钱。折腾的乐趣，就在于不停的折腾～</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1690532285></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/information/>信息获取推荐及价值</a></div><div class="archive-time twitter-time" data-time=1687696430></div></div><div class=archive-img><a href=/information/><img loading=lazy decoding=async src=https://img.koobai.com/article/information.webp alt=信息获取推荐及价值></a></div></div><div class=archives_one><div><div class=archive-title><a href=/travel_shanghai/>每年一游之上海 (迪士尼/天文馆/朵云书院)</a></div><div class="archive-time twitter-time" data-time=1692973330></div></div><div class=archive-img><a href=/travel_shanghai/><img loading=lazy decoding=async src=https://img.koobai.com/article/lvyou-tianweng.jpg alt="每年一游之上海 (迪士尼/天文馆/朵云书院)"></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
+<a href=https://koobai.com/index.xml target=_blank>博文 RSS</a></div></div></div></div></div><script src="/js/moment.min.js?v=2.29.4" defer></script><script src=/js/moment.twitter.min.js defer></script><script>function formatDate(e){return typeof e=="number"&&(e=new Date(e*1e3).toISOString()),typeof moment!="undefined"?moment(Date.parse(e)).twitterLong().replace(/\s\d{2}:\d{2}/,""):e}</script><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2</h1><img src=https://img.koobai.com/article/syncimg.svg class="top-img img-hide" alt="图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2"></article><div class=content_zhengwen><div class=content><p>起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Github，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～</p><p>找了一圈多吉云的 Actions 工作流，发现没有。
+<a href="/tiaozhuan?target=aHR0cHM6Ly9lYWxsaW9uLmNvbS8%3d" target=_blank rel="noopener external nofollow noreferrer">大大的小蜗牛</a>推荐了一个，试用了下，可能由于太久没更新或者自己不会使用，无效，找到原作者，沟通相对困难。决定放弃多吉云，转向腾讯云的 COS ，之前博文记录过
+<a href=/hugo_action_tencentcos/>Github自动构建Hugo, 并同步到腾讯COS, 同时刷新CDN缓存</a>，只需简单的修改下yml就行，其他具体设置参照之前的博文。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>name: Sync Tencent
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>on:
+</span></span><span style=display:flex><span>  workflow_dispatch:
+</span></span><span style=display:flex><span>  push:
+</span></span><span style=display:flex><span>    branches:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> master
+</span></span><span style=display:flex><span>    paths:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> <span style=color:#e6db74>&#39;koobaiblog/**&#39;</span>  <span style=color:#75715e># 目录内容有变化执行工作流</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>jobs:
+</span></span><span style=display:flex><span>  deploy:
+</span></span><span style=display:flex><span>    runs<span style=color:#f92672>-</span>on: ubuntu<span style=color:#f92672>-</span>latest
+</span></span><span style=display:flex><span>    steps:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> uses: actions<span style=color:#f92672>/</span>checkout<span style=color:#960050;background-color:#1e0010>@</span>v3
+</span></span><span style=display:flex><span>        with:
+</span></span><span style=display:flex><span>          submodules: true
+</span></span><span style=display:flex><span>          fetch<span style=color:#f92672>-</span>depth: <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> name: Setup Python
+</span></span><span style=display:flex><span>        uses: actions<span style=color:#f92672>/</span>setup<span style=color:#f92672>-</span>python<span style=color:#960050;background-color:#1e0010>@</span>v4
+</span></span><span style=display:flex><span>        with:
+</span></span><span style=display:flex><span>          python<span style=color:#f92672>-</span>version: <span style=color:#ae81ff>3.9</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> name: Setup coscmd <span style=color:#f92672>and</span> sdk
+</span></span><span style=display:flex><span>        run: sudo pip install coscmd
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> name: Configure coscmd
+</span></span><span style=display:flex><span>        env:
+</span></span><span style=display:flex><span>          SECRET_ID: <span style=color:#f92672>$</span>{{ secrets<span style=color:#f92672>.</span>SecretId }}
+</span></span><span style=display:flex><span>          SECRET_KEY: <span style=color:#f92672>$</span>{{ secrets<span style=color:#f92672>.</span>SecretKey }}
+</span></span><span style=display:flex><span>          BUCKET: <span style=color:#f92672>$</span>{{ secrets<span style=color:#f92672>.</span>Bucket }}
+</span></span><span style=display:flex><span>          REGION: <span style=color:#f92672>$</span>{{ secrets<span style=color:#f92672>.</span>Region }}
+</span></span><span style=display:flex><span>        run: coscmd config <span style=color:#f92672>-</span>a <span style=color:#f92672>$</span>SECRET_ID <span style=color:#f92672>-</span>s <span style=color:#f92672>$</span>SECRET_KEY <span style=color:#f92672>-</span>b <span style=color:#f92672>$</span>BUCKET <span style=color:#f92672>-</span>r <span style=color:#f92672>$</span>REGION
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>-</span> name: Upload to COS
+</span></span><span style=display:flex><span>        run: coscmd upload <span style=color:#f92672>-</span>rfs <span style=color:#f92672>--</span>delete koobaiblog<span style=color:#f92672>/</span> <span style=color:#f92672>/</span>    <span style=color:#75715e># 需同步的本地目录及COS目录</span>
+</span></span></code></pre></td></tr></table></div></div><p>搞定腾讯云之后，开始寻找又拍云的 Actions 工作流，
+<a href="/tiaozhuan?target=aHR0cHM6Ly93d3cud2FuZ2R1LnNpdGUv" target=_blank rel="noopener external nofollow noreferrer">斌仔</a>博文里有详细的教程，但试用之后觉得不够完美，一是文件无法增量更新，另外一个是无法保持文件一致性，譬如删除了 Gtihub 下的文件，远端无法同步删除。经过一番搜索，发现
+<a href="/tiaozhuan?target=aHR0cHM6Ly9oZXItY2F0LmNvbS8%3d" target=_blank rel="noopener external nofollow noreferrer">她和她的猫</a>博文中有说到增量更新及一致性问题，但没给出具体的脚本，抱着试试看的态度跟作者联系了下，把我的强迫症给完美解决，非常感谢作者。以下是yml，其中 <code>UPYUN_BUCKET</code>、<code>OPERATOR</code>、<code>OPERATOR_PASSWORD</code> 分别是又拍云的服务名称、操作员、操作员密码。详细使用可参考作者的
+<a href="/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL21hcmtldHBsYWNlL2FjdGlvbnMvdXB5dW4tZGVwbG95ZXI%3d" target=_blank rel="noopener external nofollow noreferrer">Github</a>。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span>name: Sync Upyun
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>on:
+</span></span><span style=display:flex><span>  workflow_dispatch:
+</span></span><span style=display:flex><span>  push:
+</span></span><span style=display:flex><span>    branches:
+</span></span><span style=display:flex><span>      - master
+</span></span><span style=display:flex><span>    paths:
+</span></span><span style=display:flex><span>      - &#39;koobaiblog/**&#39;  # 目录内容有变化执行工作流
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>jobs:
+</span></span><span style=display:flex><span>  build:
+</span></span><span style=display:flex><span>    runs-on: ubuntu-latest
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    steps:
+</span></span><span style=display:flex><span>      - name: Checkout Repository master branch
+</span></span><span style=display:flex><span>        uses: actions/checkout@master
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - name: Deploy
+</span></span><span style=display:flex><span>        uses: her-cat/upyun-deployer@v1
+</span></span><span style=display:flex><span>        with:
+</span></span><span style=display:flex><span>          bucket: ${{ secrets.UPYUN_BUCKET }}
+</span></span><span style=display:flex><span>          operator: ${{ secrets.OPERATOR }}
+</span></span><span style=display:flex><span>          password: ${{ secrets.OPERATOR_PASSWORD }}
+</span></span><span style=display:flex><span>          dir: koobaiblog  # 需同步的本地目录
+</span></span></code></pre></td></tr></table></div></div><p>Backblaze B2 同步，<code>B2_APPKEY_ID</code> <code>B2_APPKEY</code>在
+<a href="/tiaozhuan?target=aHR0cHM6Ly9zZWN1cmUuYmFja2JsYXplLmNvbS9hcHBfa2V5cy5odG0%3d" target=_blank rel="noopener external nofollow noreferrer">Application Keys</a>菜单下生成就行。要特别注意的是<code>B2_BUCKET</code>写法，完整的写法是<code>b2://xxx</code>，其中xxx为存储桶名称。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span>name: Sync B2
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>on:
+</span></span><span style=display:flex><span>  workflow_dispatch:
+</span></span><span style=display:flex><span>  push:
+</span></span><span style=display:flex><span>    branches:
+</span></span><span style=display:flex><span>      - master
+</span></span><span style=display:flex><span>    paths:
+</span></span><span style=display:flex><span>      - &#39;koobaiblog/**&#39;  # 目录内容有变化执行工作流
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>jobs:
+</span></span><span style=display:flex><span>  deploy:
+</span></span><span style=display:flex><span>    runs-on: ubuntu-latest
+</span></span><span style=display:flex><span>    steps:
+</span></span><span style=display:flex><span>    - uses: actions/checkout@master
+</span></span><span style=display:flex><span>    - uses: jakejarvis/backblaze-b2-action@master
+</span></span><span style=display:flex><span>      env:
+</span></span><span style=display:flex><span>        SOURCE_DIR: &#39;./koobaiblog&#39;  # 需同步的本地目录
+</span></span><span style=display:flex><span>        B2_BUCKET: ${{ secrets.B2_BUCKET }}
+</span></span><span style=display:flex><span>        B2_APPKEY_ID: ${{ secrets.B2_APPKEY_ID }}
+</span></span><span style=display:flex><span>        B2_APPKEY: ${{ secrets.B2_APPKEY }}
+</span></span></code></pre></td></tr></table></div></div><p>找寻各个解决方案的过程中，试用了下
+<a href="/tiaozhuan?target=aHR0cHM6Ly9udW9lYS5jb20v" target=_blank rel="noopener external nofollow noreferrer">归臧</a>的方案<code>Lsky</code>图床，发现只能同步到一个存储策略，更适合作为图片管理使用。还搜索到<code>ZFile</code>存储程序，支持多吉云，试用了下，每次也只能同步到一个存储策略，在 Github 中向作者提了Issues建议，能不能增加一次上传，同步到多平台存储选项，明确答复未来不支持。还发现<code>Picsee</code>，图片管理工具，支持同步到各大平台存储桶，但自己已经有<code>Eagle</code>了。</p><p>为什么选择<code>uPic</code>收费软件而不用开源免费的<code>PicGo</code>？主要就是界面跟图标好看😂，另外一个是基于 Mac 原生开发。试用下来也非常好用，喜欢它通过设置快捷键快速上传。具体使用可参考各自的文档
+<a href="/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL2dlZTFrL3VQaWM%3d" target=_blank rel="noopener external nofollow noreferrer">uPic</a>、
+<a href="/tiaozhuan?target=aHR0cHM6Ly9waWNnby5naXRodWIuaW8vUGljR28tRG9jL3poL2d1aWRlLw%3d%3d" target=_blank rel="noopener external nofollow noreferrer">PicGO</a>。</p><p>为什么要同步到多平台？数据多重备份总归是好的，另外就是一旦有这个想法之后，你不搞定这个 Actions，心里很难受。<code>腾讯 COS</code>会不会很贵？本来一共也就十几兆，一个 G 的量也就几块钱，可忽略不计。<code>又拍云</code>可申请联盟，每月免费 10G 存储及 15G 的 CDN。<code>Backblaze B2</code>每月免费 10G 存储及每天 1G 的流量，如果套壳 Cloudflare，流量个人使用等于不要钱。折腾的乐趣，就在于不停的折腾～</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1690532285></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/information/>信息获取推荐及价值</a></div><div class="archive-time twitter-time" data-time=1687696430></div></div><div class=archive-img><a href=/information/><img loading=lazy decoding=async src=https://img.koobai.com/article/information.webp alt=信息获取推荐及价值></a></div></div><div class=archives_one><div><div class=archive-title><a href=/travel_shanghai/>每年一游之上海 (迪士尼/天文馆/朵云书院)</a></div><div class="archive-time twitter-time" data-time=1692973330></div></div><div class=archive-img><a href=/travel_shanghai/><img loading=lazy decoding=async src=https://img.koobai.com/article/lvyou-tianweng.jpg alt="每年一游之上海 (迪士尼/天文馆/朵云书院)"></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2.614 5.426A1.5 1.5.0 014 4.5h10a7.5 7.5.0 110 15H5a1.5 1.5.0 010-3h9a4.5 4.5.0 100-9H7.621l.94.94a1.5 1.5.0 01-2.122 2.12l-3.5-3.5a1.5 1.5.0 01-.325-1.634z" fill="currentColor"/></svg></button></div><div id=MoreComments onclick=loadComments()>评论一下 ...</div><div class=article-comments id=articlecomments style=display:none><link href=https://img.koobai.com/Artalk.css rel=stylesheet><script src=https://img.koobai.com/Artalk.js></script><div id=Comments></div><script>Artalk.init({el:"#Comments",pageKey:"https://koobai.com/blogimg/",pageTitle:"图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2",server:"https://c.koobai.com",site:"Koobai 空白生活"})</script></div></div><div><div class=paragraph-dh><nav id=TableOfContents></nav></div></div></div><script src=/js/single.js></script></div><div class=footer-background><div class=footer><div class=footer-info>&copy; 2026 <a href=/>空白Koobai</a>.
-由 <a href=https://gohugo.io/ target=_blank>Hugo </a>提供强力驱动,<span class=youpaiyun><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target=_blank>又拍云</a>提供图片存储/加速</span>.
-<a href=https://beian.miit.gov.cn/ target=_blank>浙ICP备16011784号-1</a> <a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343">浙公网安备 33011302000343 号</a></div></div></div><script src=/js/view-image.min.js></script><script defer src=https://u.koobai.com/mwyaie data-website-id=b1219610-e6ba-4bfd-87aa-5dc38ec49911 data-domains=koobai.com></script><div class=gotop_hide><div class=gotop onclick=smoothScrollTop() id=gotop><svg viewBox="0 0 2048 2048"><path d="m1875 1037-787-787v1798H960V250l-787 787-90-90L1024 6l941 941z"/></svg></div></div><script type=text/javascript src=/js/bundle.min.504274a518ef06c3174bd9e0bf50199c27935c8e5a7349ed5e2505ebb3473352.js></script></body></html>
+由 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo </a>提供强力驱动,
+<a href=https://github.com/usememos/memos target=_blank rel=noopener>Memos </a>提供唠叨呈现,
+<span class=youpaiyun><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target=_blank rel=noopener>又拍云</a>提供图片存储/加速</span>.</div><div class=footer-info><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>浙ICP备16011784号-1</a>
+<a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343" rel=noopener>浙公网安备 33011302000343 号</a></div></div></div><script src=/js/view-image.min.js></script><script defer src=https://u.koobai.com/mwyaie data-website-id=b1219610-e6ba-4bfd-87aa-5dc38ec49911 data-domains=koobai.com></script><div class=gotop_hide><div class=gotop onclick=smoothScrollTop() id=gotop role=button aria-label=回到顶部 tabindex=0><svg viewBox="0 0 2048 2048"><path d="m1875 1037-787-787v1798H960V250l-787 787-90-90L1024 6l941 941z"/></svg></div></div><script src=/js/bundle.min.504274a518ef06c3174bd9e0bf50199c27935c8e5a7349ed5e2505ebb3473352.js></script></body></html>

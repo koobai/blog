@@ -1,106 +1,166 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>博文 on 空白Koobai</title><link>https://koobai.com/posts/</link><description>Recent content in 博文 on 空白Koobai</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 25 Jan 2026 16:43:00 +0800</lastBuildDate><atom:link href="https://koobai.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo 通过 Github 自动推送到宝塔 (2026 年版备忘)</title><link>https://koobai.com/hugo_action_github/</link><pubDate>Sun, 25 Jan 2026 16:43:00 +0800</pubDate><guid>https://koobai.com/hugo_action_github/</guid><description>&lt;p&gt;太久没折腾博客了，服务器失效了也没打算续费，昨天兴致来了，把费续上。既然网站正常了，就想着顺手折腾下。但太久没整了，完全忘光，之前的一篇日志还是手动传到 Github，然后手动把静态文件传到宝塔。为了方便，还是得把链路打通：本地通过 VC 上传，Github 自动构建 Hugo 静态文件，然后自动推送到宝塔。得益于 ai 的进步，本地到 Github 很快搞定，但原先的 WebHook 不知道为什么不启作用，来回跟 ai 聊也无效，记得以前 WebHook 也老是失效。干脆让 ai 换个思路不用 WebHook 了，于是有了这篇备忘～&lt;/p&gt;</description></item><item><title>2025 关键词</title><link>https://koobai.com/2025/</link><pubDate>Tue, 30 Dec 2025 19:43:00 +0800</pubDate><guid>https://koobai.com/2025/</guid><description>&lt;p&gt;这里应该有句开场白，但没想好怎么写，所以直接进入正题～&lt;/p&gt;
 &lt;h3 id="病"&gt;病&lt;/h3&gt;
 &lt;p&gt;身体在某个时间段，坐着腿麻手也不舒服，站着也不是，八月份去医院一顿检查，最后确诊二型糖尿病。加上身体本身就有高血压，现在忘了当时心理活动是怎么样的，应该是慌跟紧张。首要任务就是减肥，2023 年还特意发了篇日志《
+
 &lt;a 
  
  href="https://koobai.com/body"
  
+
  
 &gt;
 聊聊肥胖说说状态&lt;/a&gt;》，但两年多过去，体重还是一直维持在一百七十多斤，最重的时候差一斤就一百八十斤了，这下没有任何理由说减不下来了。&lt;/p&gt;</description></item><item><title>罢免小区业委会</title><link>https://koobai.com/yeweihui/</link><pubDate>Wed, 08 Jan 2025 14:05:14 +0800</pubDate><guid>https://koobai.com/yeweihui/</guid><description>&lt;p&gt;自己小区业委会成立时间是 2020 年，到今年 2025 年 9 月份这届到期。过往几年大家似乎也不关注这些，整体把小区品质搞上去就行。但从周六开始，业主就开始集结起来，要求罢免业委会，警察来了一次又一次，以防发生不愉快事件。&lt;/p&gt;</description></item><item><title>从 iOS 更换到 Android 会有不适吗？</title><link>https://koobai.com/iosandroid/</link><pubDate>Thu, 19 Sep 2024 21:15:36 +0800</pubDate><guid>https://koobai.com/iosandroid/</guid><description>&lt;p&gt;还有几个小时就是 iPhone 16 系列正式发售的日子，看评测说提升最大的是拍摄视频又拉开 Android 机一个台阶。既然自己不买，那就来聊聊自己从 iOS 更换到 Android 的体验。以自己日常使用场景，先说结论：98% 没什么不适的，剩余的 1% 在于通知的延迟、1% 裸机下容易边缘误触。&lt;/p&gt;</description></item><item><title>五一假期之登高望远</title><link>https://koobai.com/pashan/</link><pubDate>Thu, 02 May 2024 19:21:28 +0800</pubDate><guid>https://koobai.com/pashan/</guid><description>&lt;p&gt;上次爬山还是 2021 年初，即使家门口就有个临平山公园，开发得也非常好，但一直也没想着要去再爬一次。也许跟小时候就是在山沟沟里长大有关，砍柴要上山、放牛要上山、干一些农活也要上山，所以对山已经免疫了，提不起什么兴趣。如果是说去看海，那分分钟钟立马得去。&lt;/p&gt;</description></item><item><title>以后如果小米做汽车了，也可以买小米汽车</title><link>https://koobai.com/car/</link><pubDate>Sat, 30 Mar 2024 17:15:16 +0800</pubDate><guid>https://koobai.com/car/</guid><description>&lt;p&gt;28 号晚，本来计划在屏幕前看看小米汽车发布会，但忘记了，想起来的时候已经是 20:30 分左右，算了，不如继续骑车来得爽。几小时后，刷微博见铺天盖地的小米汽车新闻跟售价，想起来 2019 年说的一句话：“以后如果小米做汽车了，也可以买小米汽车”。&lt;/p&gt;</description></item><item><title>自行车给自己带来了什么情绪价值爽点</title><link>https://koobai.com/af105/</link><pubDate>Sun, 17 Mar 2024 17:18:54 +0800</pubDate><guid>https://koobai.com/af105/</guid><description>&lt;p&gt;自行车的记忆还是停留在大学里的那辆折叠自行车，没记错的话，应该还是深蓝色的。毕业之后还把它从学校一起带到了杭州，每天上下班骑着。某天锁在出租房楼下，被人剪开锁偷走了。从那之后一直到去年 10 月份就再也没拥有过自行车。&lt;/p&gt;</description></item><item><title>HUGO 折腾随记之热力图 / 段落导航</title><link>https://koobai.com/hugo_suiji/</link><pubDate>Sat, 24 Feb 2024 16:49:41 +0800</pubDate><guid>https://koobai.com/hugo_suiji/</guid><description>&lt;p&gt;在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。&lt;/p&gt;
 &lt;h2 id="博文热力图"&gt;博文热力图&lt;/h2&gt;
-&lt;p&gt;&lt;img src="https://img.koobai.com/article/20240224_relitu.webp" alt="热力图" class="img-hide" loading="lazy" decoding="async" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://img.koobai.com/article/20240224_relitu.webp" 
+ alt="热力图" 
+ 
+ class="img-hide" 
+ loading="lazy" 
+ decoding="async" /&gt;&lt;/p&gt;
 &lt;p&gt;最开始看到好像是因为
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9pbW1tbW0uY29tLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 木木老师&lt;/a&gt;发了个memos，当时想着自己平常也不怎么更新博文，所以意义不大。这两天又在
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9ibG9nLmRvdWNoaS5zcGFjZS9odWdvLWJsb2ctaGVhdG1hcC8jZ3NjLnRhYj0w"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 椒盐豆豉&lt;/a&gt;中看到完整的教程，心想这次页面布局改成很窄的单栏之后，似乎很契合小而美的特性。一顿操作，跟原版的区别在于：&lt;/p&gt;</description></item><item><title>这个春节有什么不一样</title><link>https://koobai.com/chunjie/</link><pubDate>Sat, 17 Feb 2024 16:22:46 +0800</pubDate><guid>https://koobai.com/chunjie/</guid><description>&lt;h3 id="提早回家"&gt;提早回家&lt;/h3&gt;
 &lt;p&gt;大年二十六回家，这应该是十几年来第一次这么早回去过春节。往年如果回去，一般都到年二十八二十九了。一是因为姐姐今年也回家过年，自从 2018 年因为奶奶过世见过一面，之后都没见着面，一晃 6 年多时间没见了，甚是想念。二是因为天气，如果晚两天要么天气不好，怕下雪开车不安全，要么就只能等到大年二十九了。三是因为哥哥这两年都说，早点回家，在家多呆呆。由于家族特殊原因，其实每年都不大愿意回去，这可能就是因为妈妈不在的原因，少了一股绳，把大家拴在一起。虽然老爸可以作为这股绳，但情感的细腻肯定比妈妈会弱很多。&lt;/p&gt;</description></item><item><title>HUGO 外链跳转到中间页</title><link>https://koobai.com/zhongjiantiaozhuan/</link><pubDate>Thu, 01 Feb 2024 22:28:55 +0800</pubDate><guid>https://koobai.com/zhongjiantiaozhuan/</guid><description>&lt;p&gt;前天在老麦博客中看到&amp;quot;
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuaWFtbG0uY29tLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 给Twikoo添加链接跳转中间页&lt;/a&gt;&amp;ldquo;博文，因为外部链接你无法确定未来某一天可能就会变成不安全链接，从而影响到自己博客。同时又见到
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly93d3cuZWFsbGlvbi5jb20v"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 大大的小蜗牛&lt;/a&gt;也是因为安全的原因，把博客评论换成了GitHub Discussions。网上也有不少的案例，因为某个链接的原因，而被请喝茶或电话让自己排查。今天在
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9sbXMucHViLw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 不亦乐乎&lt;/a&gt;那见链接也是跳转到中间页，于是请教了下怎么实现的，感谢。之后经过与 AI 的博弈，搞定。这次使用 ChatGPT 跟 Claude 都不行，说了一堆，完全不懂，最后使用 coze 搞定基本框架，然后再来回沟通逐步完善功能。估计跟它使用的 ChatGPT 4.0 接口有关。想充值 ChatGPT，奈何月费太贵了。&lt;/p&gt;</description></item><item><title>折腾博客更像是自己的精神鸦片</title><link>https://koobai.com/tossblog/</link><pubDate>Tue, 30 Jan 2024 15:40:49 +0800</pubDate><guid>https://koobai.com/tossblog/</guid><description>&lt;p&gt;前两天看到说折腾博客实质上是新型电子游戏，博客服务器从 1 月初转入阿里云以后，自己就一直陆陆续续的在折腾页面布局。状态来说，自己折腾博客更像是精神鸦片，过程很嗨，一旦停下来就空虚无所事事。需找寻另外的事情来填补这逃避而空虚的心灵。&lt;/p&gt;</description></item><item><title>二零二三有什么不一样</title><link>https://koobai.com/2023/</link><pubDate>Wed, 03 Jan 2024 12:41:48 +0800</pubDate><guid>https://koobai.com/2023/</guid><description>&lt;p&gt;&lt;strong&gt;闺女&lt;/strong&gt;，正式踏入人生的第一个十年，身高已经到我鼻子以上。有时候仰面走过来，感叹姑娘真长大了。感觉昨天还在医院里学习怎么抱刚刚出生的她，一晃十年过去了。希望下一个十年来得慢点。。。&lt;/p&gt;</description></item><item><title>每年一游之上海 (迪士尼/天文馆/朵云书院)</title><link>https://koobai.com/travel_shanghai/</link><pubDate>Fri, 25 Aug 2023 22:22:10 +0800</pubDate><guid>https://koobai.com/travel_shanghai/</guid><description>&lt;p&gt;忘记从哪年开始，两个人决定说趁闺女还小，每年尽量带她去个地方游玩下。这些年到现在不完全统计应该游了厦门、三亚、扬州、台湾、千岛湖、广州、珠海、北京等地。上海其实去了很多次，每次差不多都要到迪士尼，不过疫情之后这三年就没再去迪士尼了。有天对着自己的狗狗玩具说：“狗狗，都没带你去迪士尼玩”。这。。。明摆着的暗示，一合计，走吧。。。&lt;/p&gt;</description></item><item><title>图片通过 uPic 上传到 Github，然后自动同步到腾讯 COS / 又拍云 / B2</title><link>https://koobai.com/blogimg/</link><pubDate>Fri, 28 Jul 2023 16:18:05 +0800</pubDate><guid>https://koobai.com/blogimg/</guid><description>&lt;p&gt;起因，自从把博客图片转移到又拍云之后，就通过 PicGo 直接上传，顺手也会再传一份到原先的多吉云，当是备份。本身这个流程没什么问题，但当看到斌仔说，他的方案是上传到 Github，再自动同步到各大存储桶。瞬间眼前一亮，我干嘛不这样呢，一次上传就行。目前博客样式或内容更新也是直接推送到Github，然后通过 Actions 自动构建及同步到各服务商，真是换了个场景就不知道了。折腾之路开始，记录留作备忘～&lt;/p&gt;</description></item><item><title>信息获取推荐及价值</title><link>https://koobai.com/information/</link><pubDate>Sun, 25 Jun 2023 20:33:50 +0800</pubDate><guid>https://koobai.com/information/</guid><description>&lt;p&gt;进入移动互联网时代之后，每天被动或主动获取的各类信息非常多而杂。并且各大平台为了流量，绝大部分都是标题党，而且毫无价值可言，垃圾信息。为了让你沉浸其中，在平台多逗留一分钟，每家都是大数据算法，最终把你圈住。自己是一个自制力非常差的人，所以会把设备从系统层面完全隔绝各类推送，屏蔽非必要 APP 通知、不装短视频、新闻相关的 APP。&lt;/p&gt;</description></item><item><title>博客折腾随记及 CSS Grid 属性</title><link>https://koobai.com/grid/</link><pubDate>Mon, 12 Jun 2023 15:43:33 +0800</pubDate><guid>https://koobai.com/grid/</guid><description>&lt;p&gt;最近一直在不断的折腾博客，就跟唠叨里说的一样：对博客的折腾真是越折腾越来劲，一旦停下来，瞬间心里觉得空落落的。几乎把各个页面都重新梳理优化了下，特别是首页，各模块的信息流都给聚合起来了。因为更新博文的频率实在是不高，也许降低博文信息展示权重，让其首页更丰富起来，可读性更高点。&lt;/p&gt;</description></item><item><title>信息流整合到 RSS 阅读软件 REEDER</title><link>https://koobai.com/reeder/</link><pubDate>Fri, 12 May 2023 23:42:30 +0800</pubDate><guid>https://koobai.com/reeder/</guid><description>&lt;p&gt;重新搭建博客以来，就喜欢没事的时候去博友的站点逛逛，看看各自的生活百态。成为习惯之后，发现访问路径比较麻烦，要么从互访的评论中进入，要么就从博客集合平台进入，每次访问的时候点来点去的，其实常逛的也就那么些站点。于是想着搭建个友链页面，集中在一个地方，样式也写好了，但总觉得还是不够方便。包括日常获取当下信息的方式也是通过浏览器书签或各类 App 点来点去的。有天忽然间就想起了 RSS 服务，一劳永逸的都集中起来，方便又快捷。&lt;/p&gt;</description></item><item><title>体验了一次群晖 NAS 的重要性</title><link>https://koobai.com/synologydrive/</link><pubDate>Fri, 05 May 2023 20:53:55 +0800</pubDate><guid>https://koobai.com/synologydrive/</guid><description>&lt;p&gt;早上正准备打开昨天的项目文件继续完善，目录里找了一圈发现没有，完了，难不成自己误删了？睁大眼睛又找了几圈，呃。。。猝。转念一想，这个工作目录是实时单向同步到群晖 NAS 的，而且套件也设置了控制版本数量，心情平复很多。打开 Synology Drive，心态崩了，没发现历史版本，因为没启用回收站功能，版本控制需基于文件来，但没文件呀。。。&lt;/p&gt;</description></item><item><title>旧 Macbook 装双系统 Windows 11</title><link>https://koobai.com/windows11/</link><pubDate>Thu, 27 Apr 2023 22:21:25 +0800</pubDate><guid>https://koobai.com/windows11/</guid><description>&lt;p&gt;这些年来一直使用 Mac 电脑，从 iMac 到 2014 款 15 寸 Macbook Pro 再到 2019 款 16 寸 Macbook Pro。不记得从什么时候开始不再使用 Windows 电脑，只记得那会使用 xp、win 7 系统。不过现实中总有那么些事情需要用到 Windows，如：企业网银、某些硬件更新。之前装个 Win 7 虚拟机临时使用下，但从微软发布 Win 11 以后，看到更现代的界面，一直想尝试看看。&lt;/p&gt;</description></item><item><title>搭建个人锻炼轨迹页面</title><link>https://koobai.com/sports/</link><pubDate>Mon, 10 Apr 2023 16:47:30 +0800</pubDate><guid>https://koobai.com/sports/</guid><description>&lt;p&gt;“
+
 &lt;a 
  
  href="https://koobai.com/body"
  
+
  
 &gt;
 聊聊肥胖说说状态&lt;/a&gt;”的日志已过去十几天，基本上做到了动起来：1.每天早起跑步。2.学习游泳。3.晚上空腹。&lt;/p&gt;
 &lt;p&gt;慢跑，以半个小时为基准，跑了几天之后发现除了腿酸疼之外，脚腕也不舒服。通过 
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9jb25nZS5saXZpbmd3aXRoZmNzLm9yZw%3d%3d"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 conge&lt;/a&gt; 经验分享：初跑者的目的，一是养成习惯，二是控制野心不受伤。现在每天以15-20分钟为基准，跑不是目的，先培养习惯，让身体逐步适应锻炼。不过这几天脚腕疼得好像更厉害点，写这篇日志时脚腕在胀疼，可能跟最近走的路太多有关系，再适应适应。&lt;/p&gt;</description></item><item><title>聊聊肥胖说说状态</title><link>https://koobai.com/body/</link><pubDate>Tue, 28 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/body/</guid><description>&lt;p&gt;自己的体重导致双脚变得沉重越来越扛不住它，曾经的那个追风少年早已不在，紧随而来的是中年肥胖油腻大叔。这几年的身体体检数据也一年比一年难看，脂肪肝、甘油三酯都不用说，连血糖数据都在高位徘徊。再加上自己本身有原发性高血压，身体早已把早年间所打下的基础透支完。&lt;/p&gt;</description></item><item><title>使用 ChatGPT 优雅的折腾博客</title><link>https://koobai.com/chatgpt/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/chatgpt/</guid><description>&lt;p&gt;ChatGPT 现在铺天盖地的报道及使用，好像你不参与讨论或使用就跟不上时代一样，科技发展是真快。自己第一次使用 ChatGPT 还是去年刚推出，花了几块钱买了个虚拟手机号注册体验的，当时最大的感受就是它能结合上下文的意思来回答你，感觉很牛逼，之后就没怎么体验。今年在国内大面积出圈，也一直只是看看报道，自身并没有真正去体验使用。&lt;/p&gt;</description></item><item><title>工作台之桌面搭配</title><link>https://koobai.com/workbench/</link><pubDate>Thu, 09 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/workbench/</guid><description>&lt;p&gt;2020 疫情开始从公司辞职后，一部分时间变成了在家做些项目。一开始在餐桌上对付下，时间久了，腰不行，之后就在休闲区给自己整了个工作台。到现在也 3 年时间了，感觉已形成自己一个空间，非常满意，中间还把桌子换成了升降桌，桌面整体保持着简洁干净，只是适当加点小装饰～&lt;/p&gt;</description></item><item><title>利用 unicode-range 属性, 提高自定义字体加载速度</title><link>https://koobai.com/unicode_range/</link><pubDate>Wed, 01 Mar 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/unicode_range/</guid><description>&lt;p&gt;每天折腾一点，新鲜满足感就增强点。为了各个终端显示效果能保持一致性及自己的审美爱好，网站自定义了三种字体：标题(得意黑)、正文(鸿蒙)、代码(JetBrainsMono)。效果很满意，但带来的问题就是加载速度怎么保证，特别是中文字体。虽然使用.woff2 格式可以一定程度的降低容量，但动不动就 1M 以上的大小，对加载速度还是有一定的影响，包括 CDN 的流量损耗。&lt;/p&gt;</description></item><item><title>智能家居使用主观感受</title><link>https://koobai.com/smart_home_xiaomi/</link><pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/smart_home_xiaomi/</guid><description>&lt;p&gt;2018 年装修房子选灯具的时候，了解到智能家居。想着要不尝试看看，经过性价比、产品丰富度、入门简易度几个维度筛选下来，小米生态链的品牌最适合。到现在差不多四年多时间，米家里显示的设备 88 个，基本覆盖了日常使用设备，如：门锁、灯具、猫眼、摄像机、窗帘、扫地机、净水器、各类传感器等。&lt;/p&gt;</description></item><item><title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录</title><link>https://koobai.com/hugo_action_webhooks/</link><pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_action_webhooks/</guid><description>&lt;p&gt;(2024.01.19晚更新) 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。&lt;/p&gt;</description></item><item><title>Apple TV 4K (第二代) 使用体验</title><link>https://koobai.com/apple_tv/</link><pubDate>Fri, 10 Feb 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/apple_tv/</guid><description>&lt;p&gt;自己喜欢观影，为了方便直接使用奈飞 (Netflix)，在 2020 年时购入了 Google TV，一直使用得不错。直到买了群晖，在折腾影视串流的过程中，发现大家都推荐 Infuse 这款软件。一番了解，确实很不错，支持市面上所有的视频、音频格式，年订阅 9.9 美元，最主要的是串流的海报墙太美了～～。唯一的缺陷就是只支持 Apple 生态，其他都好说，本身电脑手机 Pad 都是 Apple，但最主要的电视观影工具 Google TV 使不上呀。纠结很久，实在受不了 Infuse 的诱惑，于是淘宝了一台 Apple TV 4k (第 2 代)。&lt;/p&gt;</description></item><item><title>Synology 群晖 DS920+ 使用之旅</title><link>https://koobai.com/synology_ds920/</link><pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/synology_ds920/</guid><description>&lt;p&gt;记不清是从什么时候开始了解 NAS 的，2021 年 4 月买过一台群晖 DS220+，使用几天发现折腾起来非常麻烦，直接给退了。时间来到 2021 年末，了解到极空间 Z4，于是买回来试试，发现系统极其易用，非常喜欢。但没用几天，品牌宣布发布新款。。。，于是退了老款，等新款发售。上架之后，第一时间下单，不知为何拷贝外接硬盘内容会断连，联系品牌工程师，一番测试也无法解决，只能选择退货。京东填写退货理由是质量问题，品牌售后联系说只能选七天无理由退货，如果选择质量问题，必须退回厂里先检测，无问题就原路返回有问题就给退换。。。。京东使用了这么多年，第一次遇到品牌这种操作，一下子对极空间的好感度降至零点，退了之后就不考虑了。&lt;/p&gt;</description></item><item><title>Hugo主题实现自适应布局, 及自定义字体</title><link>https://koobai.com/hugo_responsive_font/</link><pubDate>Sat, 28 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_responsive_font/</guid><description>&lt;p&gt;做事情的三分钟热度继续中，完善了博客的
+
 &lt;a 
  
  href="https://koobai.com/archives"
  
+
  
 &gt;
 归档&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/tags"
  
+
  
 &gt;
 标签云&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/movies"
  
+
  
 &gt;
 平常观看的影视&lt;/a&gt;页面及文章页评论、标签等功能。由于当下移动设备为我们主要的浏览窗口，所以页面需考虑在对应的终端设备中实际的浏览体验。&lt;/p&gt;</description></item><item><title>Hugo主题添加暗黑(夜间)模式, 并自动切换</title><link>https://koobai.com/hugo_dark/</link><pubDate>Thu, 19 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_dark/</guid><description>&lt;p&gt;继续完善博客主题风格，折腾过程，备份记录留档。由于自己已习惯把终端设备外观设置成自动切换浅色或深色模式，为了夜间浏览体验，博客应该支持暗黑(夜间)模式。&lt;/p&gt;</description></item><item><title>Github自动构建Hugo, 并同步到腾讯COS, 同时刷新CDN缓存</title><link>https://koobai.com/hugo_action_tencentcos/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/hugo_action_tencentcos/</guid><description>&lt;p&gt;博客逐步搭建完善，更新了日常使用的
+
 &lt;a 
  
  href="https://koobai.com/apps/"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 App&lt;/a&gt;、
+
 &lt;a 
  
  href="https://koobai.com/hardware/"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 硬件&lt;/a&gt;页面。博客样式标题采用了&amp;quot;
+
 &lt;a 
  
  href="https://koobai.com/tiaozhuan?target=aHR0cHM6Ly9naXRodWIuY29tL2F0ZWxpZXItYW5jaG9yL3NtaWxleS1zYW5z"
  
- target="_blank"
+
+ 
+ target="_blank" 
+ rel="noopener external nofollow noreferrer"
+ 
 &gt;
 得意黑&lt;/a&gt;&amp;ldquo;开源字体。把二级域名改成一级，过程中发现 Cloudflare Pages 如果要绑定一级，须把域名的 DNS 服务器解析过去。解析之后，自己的 nas 访问变得不稳定，时不时的打不开，来来回回折腾了好几次，无解，只好改回去。 vercel 可以绑定一级，尝试之后，访问速度太慢，放弃。开始了解国内的云服务，学习到了对象储存、CDN，经过一番对比尝试，最终选择腾讯云的 COS 对象存储配合内容分发网络 CDN 搭建(主要它的 cosbrowser 界面是经过设计的 ᵔ◡ᵔ；客服也很负责，咨询问题会电话打过来详细教你如何操作)。&lt;/p&gt;</description></item><item><title>十年弹指一挥间</title><link>https://koobai.com/time/</link><pubDate>Sat, 07 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/time/</guid><description>&lt;p&gt;最近脑子一直在想，是不是该搭个个人站，以展示日常工作项目，方便让潜在的公司了解，从而快速建立沟通。想着想着就往博客路线走了，离上次 2012 年搭建博客，时间过去了 10 年。细想这 10 年少了博客的日常记录，是少了点什么。虽然当下，能记录的平台、工具多不胜数，但博客始终是记录的动力。&lt;/p&gt;</description></item><item><title>入手机械键盘路程 &amp; VIA改键注释备忘</title><link>https://koobai.com/mechanical_keyboard/</link><pubDate>Fri, 06 Jan 2023 00:00:00 +0000</pubDate><guid>https://koobai.com/mechanical_keyboard/</guid><description>&lt;p&gt;2021 年 03 月在京东购买了京造 K2（Keychron K2），这是第一把机械键盘。同年 12 月购买了 sspai × Keychron 联名的 K3，买它就单纯觉得白色好看。到此，客制化三个字也没听过，时间到了 22 年 06 月，sspai × Keychron 联名出了 Q1，觉得配色也蛮好看，看介绍，才知道客制化概念，蛮有意思，于是买了这把 Q1 回来。&lt;/p&gt;</description></item></channel></rss>

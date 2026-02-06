@@ -1,245 +1,477 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>HUGO 折腾随记之热力图 / 段落导航 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link href=/index.xml title=空白Koobai type=application/rss+xml><link rel=canonical href=https://koobai.com/hugo_suiji/><link rel=stylesheet href=/css/style.min.bc129af3f4a33ecb24289cd43508893d296c81c7e920460e67fa8116412234e7.css><meta name=description content="在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。"><meta property="og:title" content="HUGO 折腾随记之热力图 / 段落导航"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/hugo_suiji/"><meta property="og:image" content="https://img.koobai.com/article/20240224_hugo.webp"><meta property="og:description" content="在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/hardware/>喜爱</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><div id=toggle-menu-main-mobile class=hamburger-trigger><button class=hamburger>Menu</button></div><div class=new-heard-menu><div class=header-menu><a href=/ data-umami-event=Home><span class=menu-icon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 008-8V7a4 4 0 00-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 003.84-10.61"/></svg>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>HUGO 折腾随记之热力图 / 段落导航 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link rel=alternate type=application/rss+xml href=https://koobai.com/index.xml title=空白Koobai><link rel=canonical href=https://koobai.com/hugo_suiji/><link rel=stylesheet href=/css/style.min.0ba06141738242605d417bec6c058d108b4b80b2b02814152f9a00355aa2e376.css><meta name=description content="在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。"><meta property="og:title" content="HUGO 折腾随记之热力图 / 段落导航"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/hugo_suiji/"><meta property="og:image" content="https://img.koobai.com/article/20240224_hugo.webp"><meta property="og:description" content="在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/hardware/>喜爱</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><div id=toggle-menu-main-mobile class=hamburger-trigger><button class=hamburger aria-label=Menu>Menu</button></div><div class=new-heard-menu><div class=header-menu><a href=/ data-umami-event=Home><span class=menu-icon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 008-8V7a4 4 0 00-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 003.84-10.61"/></svg>
 </span><span class=menu-name>唠叨</span></a></div><div class=header-menu><a href=/posts/ data-umami-event=Bowen><span class=menu-icon><svg width="20" height="20" viewBox="0 0 26 26"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>
 </span><span class=menu-name>博文</span></a></div><div class=header-menu><a href=/movies/ data-umami-event=Movies><span class=menu-icon><svg width="20" height="20" viewBox="0 -1 27 27"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 8a2 2 0 000-4 2 2 0 00-4 0 2 2 0 00-4 0A2 2 0 006 4a2 2 0 000 4m4 14L9 8m5 14 1-14"/><path d="M20 8c.5.0.9.4.8 1l-2.6 12c-.1.5-.7 1-1.2 1H7c-.6.0-1.1-.4-1.2-1L3.2 9c-.1-.6.3-1 .8-1z"/></g></svg>
 </span><span class=menu-name>观影</span></a></div><div class=header-menu><a href=/apps/ data-umami-event=Apps><span class=menu-icon><svg width="20" height="20" viewBox="30 38 206 206"><g fill="none"><path fill="#00A0E2" fill-rule="evenodd" d="M191.072 195.009c-3.27 5.387-6.54 9.426-10.484 13.176-4.424 3.944-5.674 7.406-15.87 8.754-7.213 1.347-13.465-1.348-15.87-2.405-7.214-3.367-10.966-4.424-15.293-4.424-4.232.0-7.791 1.058-14.909 4.328-2.212 1.153-8.175 3.751-15.485 2.405-7.502-1.347-11.35-4.232-14.139-6.637-5.771-5.097-10.1-9.907-14.043-15.485z" clip-rule="evenodd"/><path fill="#34BE2D" fill-rule="evenodd" d="M58.726 105.27c3.366-7.598 7.79-12.696 12.215-16.255 11.253-9.233 29.624-9.81 38.088-7.598 6.926 1.731 11.831 5.963 19.622 5.963 8.175.0 12.887-4.136 19.333-5.963 8.464-2.116 26.931-1.443 38.954 7.79 3.559 2.694 6.827 6.349 8.655 8.369-4.327 3.174-6.925 5.482-9.041 7.694z" clip-rule="evenodd"/><path fill="#FFB400" fill-rule="evenodd" d="M186.553 105.27c-2.02 2.212-3.462 4.329-5.098 7.31-1.922 3.463-4.232 8.176-4.809 15.293H53.051c.096-1.154.192-2.404.384-3.655 1.155-7.598 2.982-13.85 5.29-18.948z" clip-rule="evenodd"/><path fill="#FF7A00" fill-rule="evenodd" d="M176.646 127.873a74 74 0 000 6.541c.289 5.29 2.116 11.157 4.521 15.87l-125.712-.289c-1.731-7.598-2.693-15.389-2.404-22.122z" clip-rule="evenodd"/><path fill="#F41E34" fill-rule="evenodd" d="M181.166 150.284a33 33 0 003.558 5.771c8.272 10.58 11.831 10.58 18.275 13.851-.479 1.152-.864 2.212-1.346 3.174l-138.888-.289c-2.693-5.867-5.482-14.139-7.31-22.795z" clip-rule="evenodd"/><path fill="#A2359C" fill-rule="evenodd" d="M201.653 173.08c-4.039 9.426-7.31 16.349-10.581 21.929l-116.091-.288c-3.848-5.675-7.31-11.928-11.254-19.719-.288-.673-.673-1.443-.962-2.211z" clip-rule="evenodd"/><path fill="#34BE2D" fill-rule="evenodd" d="M161.352 52.658c-.674 4.81-3.078 10.965-6.925 14.908-4.138 4.425-10.581 9.234-14.429 11.639-2.116 1.346-7.599 1.538-12.118 2.02-.577-4.04-.673-7.503.577-11.254 1.635-4.424 3.753-10.772 7.118-15.197 4.135-5.482 8.848-9.233 11.445-10.58 3.464-1.731 9.235-4.328 14.236-5.194.193 4.424.867 9.426.096 13.658" clip-rule="evenodd"/></g></svg>
 </span><span class=menu-name>软件</span></a></div><div class=header-menu><a href=/hardware/ data-umami-event=Good><span class=menu-icon><svg width="20" height="20" viewBox="0 0 25 25"><g fill="none"><path fill="currentColor" d="m15 10-.986-.164A1 1 0 0015 11zM4 10V9a1 1 0 00-1 1zm16.522 2.392.98.196zM6 21h11.36v-2H6zM18.56 9H15v2h3.56zm-2.573 1.164.805-4.835L14.82 5l-.806 4.836zM14.82 3h-.214v2h.214zm-3.543 1.781L8.763 8.555l1.664 1.11 2.516-3.774zM7.93 9H4v2h3.93zM3 10v8h2v-8zm17.302 8.588 1.2-6-1.96-.392-1.2 6zM8.762 8.555A1 1 0 017.93 9v2a3 3 0 002.496-1.336zm8.03-3.226A2 2 0 0014.82 3v2zM18.56 11a1 1 0 01.981 1.196l1.961.392A3 3 0 0018.561 9zm-1.2 10a3 3 0 002.942-2.412l-1.96-.392A1 1 0 0117.36 19zM14.606 3a4 4 0 00-3.328 1.781l1.664 1.11A2 2 0 0114.606 5zM6 19a1 1 0 01-1-1H3a3 3 0 003 3z"/><path stroke="currentColor" stroke-width="1.2" d="M8 10v10"/></g></svg>
 </span><span class=menu-name>喜爱</span></a></div><div class=header-menu><a href=https://qiszy.taobao.com target=_blank data-umami-event=Taobao><span class=menu-icon><svg width="20" height="20" viewBox="1 0 24 24"><path fill="currentColor" d="M17.173 14H14.5v1.375q.824-.332 1.812-.81l-.082-.238zm.828-.287.12-.042c.641 1.851 1.034 3.012 1.185 3.5l-1.912.59q-.11-.36-.427-1.293c-6.081 2.884-8.671 2.054-9.008-1.908l1.993-.169c.1 1.165.344 1.621.897 1.752.393.093.94.063 1.652-.104v-2.04h-3.5v-2h.513l-1.167-1.39q1.563-1.312 2.449-2.863-.78.202-1.552.435A14 14 0 017.49 10.29l-1.4-1.428Q8 6.992 9.266 3.868l1.854.75q-.23.567-.48 1.1c3.702-.935 7.275-1.316 9.138-.68 1.223.419 1.919 1.392 2.188 2.585.17.756.313 2.689.313 5.123.0 2.807-.056 3.77-.34 4.622-.298.89-.697 1.418-1.408 1.984-.657.523-1.553.763-2.645.823a12.5 12.5.0 01-2.094-.08c-.12-.013-.235-.027-.355-.042l-.242-.033.264-1.982.237.032.319.038c.625.07 1.216.1 1.762.07.714-.04 1.245-.181 1.508-.39.426-.34.591-.558.756-1.054.186-.555.238-1.448.238-3.989.0-2.298-.134-4.101-.265-4.682-.13-.577-.41-.97-.883-1.132-1.207-.412-3.801-.194-6.652.416l.615.263q-.195.453-.43.89h5.337v2h-3.5V12h3.5zm-5.5-3.213h-1.208A14 14 0 019.799 12h2.702zm-10.038-.438L3.54 8.376c1.062.68 2.935 2.428 3.338 3.162 1.239 2.26.198 4.176-3.122 7.997l-1.51-1.311c2.687-3.094 3.5-4.59 2.878-5.725-.214-.39-1.857-1.923-2.661-2.437M5.14 7.583c-1.048.0-1.882-.762-1.886-1.693.0-.94.838-1.701 1.886-1.701 1.04.0 1.883.758 1.883 1.701.0.935-.843 1.693-1.883 1.693"/></svg>
 </span><span class=menu-name>店铺</span></a></div></div><div class=index-laodao><div class=index-laodao-titile></div></div><div class=heard-right><div class="about-koobai avatar-mobile"><a href=/about><img src=https://img.koobai.com/koobai.webp alt=koobai title=空白Koobai data-umami-event=Me></a></div><a href=https://github.com/koobai/blog title=Github target=_blank class=githuab data-umami-event=Github><svg aria-hidden="true" viewBox="0 0 16 16" data-view-component="true"><path d="M8 0c4.42.0 8 3.58 8 8a8.013 8.013.0 01-5.45 7.59c-.4.08-.55-.17-.55-.38.0-.27.01-1.13.01-2.2.0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95.0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12.0.0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27s-1.36.09-2 .27c-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15.0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94.0.67.01 1.3.01 1.49.0.21-.15.45-.55.38A7.995 7.995.0 010 8c0-4.42 3.58-8 8-8z"/></svg></a><div data-umami-event=Rss class=header-Rss><svg viewBox="0 1 23 23" fill="currentColor"><path d="M3 3c9.9411.0 18 8.0589 18 18H18C18 12.7157 11.2843 6 3 6V3zm0 7c6.07513.0 11 4.9249 11 11H11c0-4.4183-3.58172-8-8-8V10zm0 7c2.20914.0 4 1.7909 4 4H3V17z"/></svg><div class=rss-box><div class=footer-rss><a href=https://memos.koobai.com/u/koobai/rss.xml target=_blank>唠叨 RSS</a> /
-<a href=https://koobai.com/index.xml target=_blank>博文 RSS</a></div></div></div></div></div><script src="/js/moment.min.js?v=2.29.4"></script><script src=/js/moment.twitter.min.js></script><script>function formatDate(e){return typeof e=="number"&&(e=new Date(e*1e3).toISOString()),moment(Date.parse(e)).twitterLong().replace(/\s\d{2}:\d{2}/,"")}</script><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>HUGO 折腾随记之热力图 / 段落导航</h1><img src=https://img.koobai.com/article/20240224_hugo.webp class="top-img img-hide" alt="HUGO 折腾随记之热力图 / 段落导航"></article><div class=content_zhengwen><div class=content><p>在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。</p><h2 id=博文热力图>博文热力图</h2><p><img src=https://img.koobai.com/article/20240224_relitu.webp alt=热力图 class=img-hide loading=lazy decoding=async></p><p>最开始看到好像是因为
-<a href="/tiaozhuan?target=aHR0cHM6Ly9pbW1tbW0uY29tLw%3d%3d" target=_blank>木木老师</a>发了个memos，当时想着自己平常也不怎么更新博文，所以意义不大。这两天又在
-<a href="/tiaozhuan?target=aHR0cHM6Ly9ibG9nLmRvdWNoaS5zcGFjZS9odWdvLWJsb2ctaGVhdG1hcC8jZ3NjLnRhYj0w" target=_blank>椒盐豆豉</a>中看到完整的教程，心想这次页面布局改成很窄的单栏之后，似乎很契合小而美的特性。一顿操作，跟原版的区别在于：</p><ol><li>增加了支持暗黑模式。</li><li>删除了字数统计，及根据字数多少显示色块的深浅。</li><li>简化星期及月份的显示。</li><li>一周的开始，从周日改成周一。</li><li>在 Echarts 官网重新定制了 JS 功能，不然原版的有 1M 多。</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>div</span> <span class=nx>id</span><span class=o>=</span><span class=s2>&#34;heatmap&#34;</span> <span class=nx>style</span><span class=o>=</span><span class=s2>&#34;max-width: 700px;height: 110px;margin-bottom: 40px;&#34;</span><span class=o>&gt;&lt;</span><span class=err>/div&gt;</span>
-</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>script</span> <span class=nx>src</span><span class=o>=</span><span class=s2>&#34;https://img.koobai.com/echarts.min.js&#34;</span><span class=o>&gt;&lt;</span><span class=err>/script&gt;</span>
-</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>script</span> <span class=nx>type</span><span class=o>=</span><span class=s2>&#34;text/javascript&#34;</span><span class=o>&gt;</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>chartDom</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;heatmap&#39;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>myChart</span> <span class=o>=</span> <span class=nx>echarts</span><span class=p>.</span><span class=nx>init</span><span class=p>(</span><span class=nx>chartDom</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=nb>window</span><span class=p>.</span><span class=nx>onresize</span> <span class=o>=</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=nx>myChart</span><span class=p>.</span><span class=nx>resize</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>option</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>dataMap</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Map</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>  <span class=p>{{</span> <span class=nx>range</span> <span class=p>((</span><span class=nx>where</span> <span class=p>.</span><span class=nx>Site</span><span class=p>.</span><span class=nx>RegularPages</span> <span class=s2>&#34;Type&#34;</span> <span class=s2>&#34;posts&#34;</span><span class=p>))</span> <span class=p>}}</span>
-</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>key</span> <span class=o>=</span> <span class=p>{{</span> <span class=p>.</span><span class=nb>Date</span><span class=p>.</span><span class=nx>Format</span> <span class=s2>&#34;2006-01-02&#34;</span> <span class=p>}};</span>
-</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>value</span> <span class=o>=</span> <span class=nx>dataMap</span><span class=p>.</span><span class=nx>get</span><span class=p>(</span><span class=nx>key</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>link</span> <span class=o>=</span> <span class=p>{{</span> <span class=p>.</span><span class=nx>RelPermalink</span><span class=p>}};</span>
-</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>title</span> <span class=o>=</span> <span class=p>{{</span> <span class=p>.</span><span class=nx>Title</span> <span class=p>}};</span>
-</span></span><span class=line><span class=cl>    
-</span></span><span class=line><span class=cl>    <span class=c1>// multiple posts in same day
-</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>value</span> <span class=o>==</span> <span class=kc>null</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=nx>dataMap</span><span class=p>.</span><span class=nx>set</span><span class=p>(</span><span class=nx>key</span><span class=p>,</span> <span class=p>[{</span><span class=nx>link</span><span class=p>,</span> <span class=nx>title</span><span class=p>}]);</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=nx>value</span><span class=p>.</span><span class=nx>push</span><span class=p>({</span><span class=nx>link</span><span class=p>,</span> <span class=nx>title</span><span class=p>});</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>  <span class=p>{{</span><span class=o>-</span> <span class=nx>end</span> <span class=o>-</span><span class=p>}}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>data</span> <span class=o>=</span> <span class=p>[];</span>
-</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=p>(</span><span class=kr>const</span> <span class=p>[</span><span class=nx>key</span><span class=p>,</span> <span class=nx>value</span><span class=p>]</span> <span class=k>of</span> <span class=nx>dataMap</span><span class=p>.</span><span class=nx>entries</span><span class=p>())</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=nx>data</span><span class=p>.</span><span class=nx>push</span><span class=p>([</span><span class=nx>key</span><span class=p>,</span> <span class=nx>value</span><span class=p>.</span><span class=nx>length</span><span class=p>]);</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>startDate</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>Date</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>year_Mill</span> <span class=o>=</span> <span class=nx>startDate</span><span class=p>.</span><span class=nx>setFullYear</span><span class=p>((</span><span class=nx>startDate</span><span class=p>.</span><span class=nx>getFullYear</span><span class=p>()</span> <span class=o>-</span> <span class=mi>1</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>startDate</span> <span class=o>=</span> <span class=o>+</span><span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=nx>year_Mill</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>endDate</span> <span class=o>=</span> <span class=o>+</span><span class=k>new</span> <span class=nb>Date</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=nx>startDate</span> <span class=o>=</span> <span class=nx>echarts</span><span class=p>.</span><span class=nx>format</span><span class=p>.</span><span class=nx>formatTime</span><span class=p>(</span><span class=s1>&#39;yyyy-MM-dd&#39;</span><span class=p>,</span> <span class=nx>startDate</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=nx>endDate</span> <span class=o>=</span> <span class=nx>echarts</span><span class=p>.</span><span class=nx>format</span><span class=p>.</span><span class=nx>formatTime</span><span class=p>(</span><span class=s1>&#39;yyyy-MM-dd&#39;</span><span class=p>,</span> <span class=nx>endDate</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  
-</span></span><span class=line><span class=cl>  <span class=c1>// 检测浏览器主题模式并选择颜色方案
-</span></span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>prefersDarkMode</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>matchMedia</span> <span class=o>&amp;&amp;</span> <span class=nb>window</span><span class=p>.</span><span class=nx>matchMedia</span><span class=p>(</span><span class=s1>&#39;(prefers-color-scheme: dark)&#39;</span><span class=p>).</span><span class=nx>matches</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=c1>// 定义明亮模式下的颜色方案
-</span></span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>lightTheme</span> <span class=o>=</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=nx>backgroundColor</span><span class=o>:</span> <span class=s1>&#39;#FFFFFF&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>fangkuaicolor</span><span class=o>:</span><span class=s1>&#39;#F4F4F4&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>gaoliangcolor</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;#ffd0b6&#39;</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>      <span class=nx>riqiColor</span><span class=o>:</span> <span class=s1>&#39;#999&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>textbrcolor</span><span class=o>:</span> <span class=s1>&#39;#FFF&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>xiankuangcolor</span><span class=o>:</span><span class=s1>&#39;rgba(0, 0, 0, 0.0)&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=c1>// 定义暗黑模式下的颜色方案
-</span></span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>darkTheme</span> <span class=o>=</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=nx>backgroundColor</span><span class=o>:</span> <span class=s1>&#39;#1A1718&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>fangkuaicolor</span><span class=o>:</span><span class=s1>&#39;#282325&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>gaoliangcolor</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;#b25f2f&#39;</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>      <span class=nx>riqiColor</span><span class=o>:</span> <span class=s1>&#39;#666&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>textbrcolor</span><span class=o>:</span> <span class=s1>&#39;#332D2F&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>      <span class=nx>xiankuangcolor</span><span class=o>:</span><span class=s1>&#39;rgba(0, 0, 0, 0.0)&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=c1>// 根据浏览器主题模式选择当前主题
-</span></span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>currentTheme</span> <span class=o>=</span> <span class=nx>prefersDarkMode</span> <span class=o>?</span> <span class=nx>darkTheme</span> <span class=o>:</span> <span class=nx>lightTheme</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=nx>option</span> <span class=o>=</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=nx>tooltip</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=nx>hideDelay</span><span class=o>:</span> <span class=mi>1000</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nx>enterable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nx>backgroundColor</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>textbrcolor</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nx>borderWidth</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span> <span class=c1>// 边框宽度为0
-</span></span></span><span class=line><span class=cl>    <span class=nx>formatter</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>p</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>date</span> <span class=o>=</span> <span class=nx>p</span><span class=p>.</span><span class=nx>data</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
-</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>posts</span> <span class=o>=</span> <span class=nx>dataMap</span><span class=p>.</span><span class=nx>get</span><span class=p>(</span><span class=nx>date</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>content</span> <span class=o>=</span> <span class=sb>`&lt;span style=&#34;font-size: 0.75rem;font-family: var(--font-family-code);&#34;&gt;</span><span class=si>${</span><span class=nx>date</span><span class=si>}</span><span class=sb>&lt;/span&gt;`</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kr>const</span> <span class=p>[</span><span class=nx>i</span><span class=p>,</span> <span class=nx>post</span><span class=p>]</span> <span class=k>of</span> <span class=nx>posts</span><span class=p>.</span><span class=nx>entries</span><span class=p>())</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nx>content</span> <span class=o>+=</span> <span class=s2>&#34;&lt;br&gt;&#34;</span><span class=p>;</span>          
-</span></span><span class=line><span class=cl>            <span class=kd>var</span> <span class=nx>link</span> <span class=o>=</span> <span class=nx>post</span><span class=p>.</span><span class=nx>link</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>            <span class=kd>var</span> <span class=nx>title</span> <span class=o>=</span> <span class=nx>post</span><span class=p>.</span><span class=nx>title</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>            <span class=nx>content</span> <span class=o>+=</span> <span class=sb>`&lt;a href=&#34;</span><span class=si>${</span><span class=nx>link</span><span class=si>}</span><span class=sb>&#34; target=&#34;_blank&#34;&gt;</span><span class=si>${</span><span class=nx>title</span><span class=si>}</span><span class=sb>&lt;/a&gt;`</span> <span class=o>+</span> <span class=s1>&#39;&lt;br&gt;&#39;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>content</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nx>visualMap</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nx>show</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>inRange</span><span class=o>:</span> <span class=p>{</span>   
-</span></span><span class=line><span class=cl>          <span class=nx>color</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>gaoliangcolor</span>
-</span></span><span class=line><span class=cl>        <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nx>calendar</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nx>left</span><span class=o>:</span> <span class=mi>20</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>top</span><span class=o>:</span><span class=mi>20</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>bottom</span><span class=o>:</span><span class=mi>0</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>right</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>cellSize</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;auto&#39;</span><span class=p>,</span> <span class=mi>13</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nx>range</span><span class=o>:</span> <span class=p>[</span><span class=nx>startDate</span><span class=p>,</span> <span class=nx>endDate</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nx>itemStyle</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nx>color</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>fangkuaicolor</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=nx>borderWidth</span><span class=o>:</span> <span class=mf>3.5</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=nx>borderColor</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>backgroundColor</span><span class=p>,</span> 
-</span></span><span class=line><span class=cl>        <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nx>yearLabel</span><span class=o>:</span> <span class=p>{</span> <span class=nx>show</span><span class=o>:</span> <span class=kc>false</span> <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nx>monthLabel</span><span class=o>:</span> <span class=p>{</span> 
-</span></span><span class=line><span class=cl>        <span class=nx>nameMap</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;01&#39;</span><span class=p>,</span> <span class=s1>&#39;02&#39;</span><span class=p>,</span> <span class=s1>&#39;03&#39;</span><span class=p>,</span> <span class=s1>&#39;04&#39;</span><span class=p>,</span> <span class=s1>&#39;05&#39;</span><span class=p>,</span> <span class=s1>&#39;06&#39;</span><span class=p>,</span> <span class=s1>&#39;07&#39;</span><span class=p>,</span> <span class=s1>&#39;08&#39;</span><span class=p>,</span> <span class=s1>&#39;09&#39;</span><span class=p>,</span> <span class=s1>&#39;10&#39;</span><span class=p>,</span> <span class=s1>&#39;11&#39;</span><span class=p>,</span> <span class=s1>&#39;12&#39;</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nx>textStyle</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nx>color</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>riqiColor</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nx>dayLabel</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nx>firstDay</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=nx>nameMap</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;日&#39;</span><span class=p>,</span> <span class=s1>&#39;一&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>,</span> <span class=s1>&#39;三&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>,</span> <span class=s1>&#39;五&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>],</span>
-</span></span><span class=line><span class=cl>            <span class=nx>textStyle</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nx>color</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>riqiColor</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nx>splitLine</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nx>lineStyle</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nx>color</span><span class=o>:</span> <span class=nx>currentTheme</span><span class=p>.</span><span class=nx>xiankuangcolor</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nx>series</span><span class=o>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;heatmap&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>coordinateSystem</span><span class=o>:</span> <span class=s1>&#39;calendar&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nx>data</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>  
-</span></span><span class=line><span class=cl>  <span class=nx>myChart</span><span class=p>.</span><span class=nx>setOption</span><span class=p>(</span><span class=nx>option</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=nx>myChart</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;click&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>params</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>params</span><span class=p>.</span><span class=nx>componentType</span> <span class=o>===</span> <span class=s1>&#39;series&#39;</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=c1>// open the first post on the day
-</span></span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>post</span> <span class=o>=</span> <span class=nx>dataMap</span><span class=p>.</span><span class=nx>get</span><span class=p>(</span><span class=nx>params</span><span class=p>.</span><span class=nx>data</span><span class=p>[</span><span class=mi>0</span><span class=p>])[</span><span class=mi>0</span><span class=p>];</span>
-</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>link</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>location</span><span class=p>.</span><span class=nx>origin</span> <span class=o>+</span> <span class=nx>post</span><span class=p>.</span><span class=nx>link</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=nx>link</span><span class=p>,</span> <span class=s1>&#39;_blank&#39;</span><span class=p>).</span><span class=nx>focus</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>});</span>
-</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=err>/script&gt;</span>
-</span></span></code></pre></div><h2 id=详情页段落目录导航>详情页段落目录导航</h2><p><img src=https://img.koobai.com/article/20240224_duanldh.webp alt=段落导航 class=img-hide loading=lazy decoding=async></p><p>这个功能早在去年重新折腾博客的时候就想增加，但当时因为不大会，搞得都不完美，所以也就不了了之。这几天在
-<a href="/tiaozhuan?target=aHR0cHM6Ly9hdHB4LmNvbS9ibG9nL3R5cGVjaG8tdG8taHVnby8%3d" target=_blank>atpX</a>中，看到文章目录滚动高亮教程，于是又试着折腾了下。经过跟 AI 的配合，完美显示，不过过程还是碰到问题：</p><h3 id=1-显示位置>1. 显示位置</h3><p>如果直接使用 <code>position: fixed;</code> 特性，目录位置只会根据浏览器窗口的大小来改变。这就会导致，浏览器窗口很大，主内容跟目录就会分得很开；浏览器窗口小，主内容跟目录有可能就会重叠。尝试了各种解决方法之后，决定在最上层的父元素中使用<code>display: flex;</code>。然后在目录的上一级再加入一个父元素div，完美解决。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;single-nrong&#34;</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;single-zw&#34;</span><span class=p>&gt;</span>主内容<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;paragraph-dh&#34;</span><span class=p>&gt;</span>文章段落目录导航<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>style</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>single-nrong</span> <span class=p>{</span><span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>single-zw</span> <span class=p>{</span><span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=p>{</span><span class=k>position</span><span class=p>:</span> <span class=kc>fixed</span><span class=p>;}</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
-</span></span></code></pre></div><h3 id=2-无目录导航>2. 无目录导航</h3><p> 文章页如果没有目录导航，也会显示内容标题，这就看着很奇怪了。解决方法：
- </p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>  {{ $toc := .TableOfContents }}
-</span></span><span class=line><span class=cl>  <span class=c>&lt;!--判断&lt;li&gt;标签中有没有内容，如果有内容就显示，无内容就隐藏--&gt;</span>
-</span></span><span class=line><span class=cl>  {{ if findRE &#34;<span class=p>&lt;</span><span class=nt>li</span><span class=p>&gt;</span>&#34; $toc 1 }} 
-</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;paragraph-dh&#34;</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;sidebar-biaot&#34;</span><span class=p>&gt;</span>文章段落导航<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>      {{ $toc }}
-</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>  {{ end }}
-</span></span></code></pre></div><h3 id=3-完整方案>3. 完整方案</h3><p>特性：1. 默认隐藏，滑动到一定距离显示。2. 滑动到页面上方 1/4 处高亮显示当前目录。3. 点击目录导航平滑滚动到对应的标题。4. 无目录导航的文章页不显示。</p><ol><li>新建 js 文件，如 single.js。</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nb>document</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s2>&#34;DOMContentLoaded&#34;</span><span class=p>,</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>postTOC</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;.paragraph-dh&#39;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>headingObserver</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>IntersectionObserver</span><span class=p>(</span><span class=nx>headings</span> <span class=p>=&gt;</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nx>headings</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(({</span> <span class=nx>target</span><span class=p>,</span> <span class=nx>isIntersecting</span> <span class=p>})</span> <span class=p>=&gt;</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>link</span> <span class=o>=</span> <span class=nx>postTOC</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=sb>`a[href=&#34;#</span><span class=si>${</span><span class=nx>target</span><span class=p>.</span><span class=nx>id</span><span class=si>}</span><span class=sb>&#34;]`</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>isIntersecting</span> <span class=o>&amp;&amp;</span> <span class=nx>link</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nx>postTOC</span><span class=p>.</span><span class=nx>querySelectorAll</span><span class=p>(</span><span class=s1>&#39;a&#39;</span><span class=p>).</span><span class=nx>forEach</span><span class=p>(</span><span class=nx>a</span> <span class=p>=&gt;</span> <span class=nx>a</span><span class=p>.</span><span class=nx>classList</span><span class=p>.</span><span class=nx>remove</span><span class=p>(</span><span class=s1>&#39;active&#39;</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>                <span class=nx>link</span><span class=p>.</span><span class=nx>classList</span><span class=p>.</span><span class=nx>add</span><span class=p>(</span><span class=s1>&#39;active&#39;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>});</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span> <span class=p>{</span> <span class=nx>rootMargin</span><span class=o>:</span> <span class=s1>&#39;0px 0px -75%&#39;</span> <span class=p>});</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nb>document</span><span class=p>.</span><span class=nx>querySelectorAll</span><span class=p>(</span><span class=s1>&#39;.content h2[id], .content h3[id]&#39;</span><span class=p>).</span><span class=nx>forEach</span><span class=p>(</span><span class=nx>heading</span> <span class=p>=&gt;</span> <span class=nx>headingObserver</span><span class=p>.</span><span class=nx>observe</span><span class=p>(</span><span class=nx>heading</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nb>window</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;scroll&#39;</span><span class=p>,</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=nx>postTOC</span><span class=p>.</span><span class=nx>style</span><span class=p>.</span><span class=nx>opacity</span> <span class=o>=</span> <span class=p>(</span><span class=nb>window</span><span class=p>.</span><span class=nx>pageYOffset</span> <span class=o>&gt;</span> <span class=mi>400</span><span class=p>)</span> <span class=o>?</span> <span class=mi>1</span> <span class=o>:</span> <span class=mi>0</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nx>postTOC</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;click&#39;</span><span class=p>,</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nx>e</span><span class=p>.</span><span class=nx>preventDefault</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>targetElement</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>target</span><span class=p>.</span><span class=nx>getAttribute</span><span class=p>(</span><span class=s1>&#39;href&#39;</span><span class=p>).</span><span class=nx>substring</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>targetElement</span><span class=p>)</span> <span class=nx>targetElement</span><span class=p>.</span><span class=nx>scrollIntoView</span><span class=p>({</span> <span class=nx>behavior</span><span class=o>:</span> <span class=s1>&#39;smooth&#39;</span> <span class=p>});</span>
-</span></span><span class=line><span class=cl>    <span class=p>});</span>
-</span></span><span class=line><span class=cl><span class=p>});</span>
-</span></span></code></pre></div><ol start=2><li>在 single.html 文件合适的位置中添加：</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;single-nrong&#34;</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;single-zw&#34;</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>   文章内容
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>  {{ $toc := .TableOfContents }}
-</span></span><span class=line><span class=cl>  {{ if findRE &#34;<span class=p>&lt;</span><span class=nt>li</span><span class=p>&gt;</span>&#34; $toc 1 }}
-</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;paragraph-dh&#34;</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;sidebar-biaot&#34;</span><span class=p>&gt;</span>文章段落导航<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>      {{ $toc }}
-</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl>  {{ end }}
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
-</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/js/single.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
-</span></span></code></pre></div><ol start=3><li>在 css 文件中添加：</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=p>.</span><span class=nc>single-nrong</span><span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>single-zw</span><span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>   <span class=k>display</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=err>@include</span> <span class=err>breakpoint(&#39;large&#39;)</span> <span class=err>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>display</span><span class=p>:</span> <span class=kc>block</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>position</span><span class=p>:</span> <span class=kc>fixed</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>opacity</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>top</span><span class=p>:</span> <span class=mi>70</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>margin-left</span><span class=p>:</span> <span class=mi>40</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>transition</span><span class=p>:</span> <span class=k>opacity</span> <span class=mf>0.5</span><span class=kt>s</span> <span class=kc>ease</span><span class=p>;</span> 
-</span></span><span class=line><span class=cl>    <span class=k>border-left</span><span class=p>:</span> <span class=mi>4</span><span class=kt>px</span> <span class=kc>solid</span> <span class=mh>#f0f0f0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span> <span class=mi>15</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=k>max-width</span><span class=p>:</span> <span class=mi>300</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=err>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=nt>a</span><span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>line-height</span><span class=p>:</span> <span class=mf>1.4</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#666</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=nt>ul</span><span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>gap</span><span class=p>:</span> <span class=mi>15</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=k>grid</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=nt>ul</span> <span class=nt>ul</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>padding-inline-start</span><span class=p>:</span> <span class=mi>1</span><span class=kt>rem</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=k>margin-top</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>paragraph-dh</span> <span class=nt>a</span><span class=p>.</span><span class=nc>active</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=nf>var</span><span class=p>(</span><span class=o>--</span><span class=kc>text</span><span class=o>-</span><span class=n>highlight</span><span class=o>-</span><span class=kc>color</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=k>transition</span><span class=p>:</span> <span class=kc>all</span> <span class=mf>.25</span><span class=kt>s</span> <span class=kc>ease-in-out</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><h2 id=结语>结语</h2><p>现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。这几次折腾的时候发现 coze 非常好用，基本上一次就能给出正确答案。看来 ChatGPT 4.0 就是牛逼。</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1708764581></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/hugo/>Hugo</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/chunjie/>这个春节有什么不一样</a></div><div class="archive-time twitter-time" data-time=1708158166></div></div><div class=archive-img><a href=/chunjie/><img loading=lazy decoding=async src=https://img.koobai.com/article/20240217_IMG_1443.webp alt=这个春节有什么不一样></a></div></div><div class=archives_one><div><div class=archive-title><a href=/af105/>自行车给自己带来了什么情绪价值爽点</a></div><div class="archive-time twitter-time" data-time=1710667134></div></div><div class=archive-img><a href=/af105/><img loading=lazy decoding=async src=https://img.koobai.com/article/20240317_IMG_1891.webp alt=自行车给自己带来了什么情绪价值爽点></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
+<a href=https://koobai.com/index.xml target=_blank>博文 RSS</a></div></div></div></div></div><script src="/js/moment.min.js?v=2.29.4" defer></script><script src=/js/moment.twitter.min.js defer></script><script>function formatDate(e){return typeof e=="number"&&(e=new Date(e*1e3).toISOString()),typeof moment!="undefined"?moment(Date.parse(e)).twitterLong().replace(/\s\d{2}:\d{2}/,""):e}</script><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>HUGO 折腾随记之热力图 / 段落导航</h1><img src=https://img.koobai.com/article/20240224_hugo.webp class="top-img img-hide" alt="HUGO 折腾随记之热力图 / 段落导航"></article><div class=content_zhengwen><div class=content><p>在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。</p><h2 id=博文热力图>博文热力图</h2><p><img src=https://img.koobai.com/article/20240224_relitu.webp alt=热力图 class=img-hide loading=lazy decoding=async></p><p>最开始看到好像是因为
+<a href="/tiaozhuan?target=aHR0cHM6Ly9pbW1tbW0uY29tLw%3d%3d" target=_blank rel="noopener external nofollow noreferrer">木木老师</a>发了个memos，当时想着自己平常也不怎么更新博文，所以意义不大。这两天又在
+<a href="/tiaozhuan?target=aHR0cHM6Ly9ibG9nLmRvdWNoaS5zcGFjZS9odWdvLWJsb2ctaGVhdG1hcC8jZ3NjLnRhYj0w" target=_blank rel="noopener external nofollow noreferrer">椒盐豆豉</a>中看到完整的教程，心想这次页面布局改成很窄的单栏之后，似乎很契合小而美的特性。一顿操作，跟原版的区别在于：</p><ol><li>增加了支持暗黑模式。</li><li>删除了字数统计，及根据字数多少显示色块的深浅。</li><li>简化星期及月份的显示。</li><li>一周的开始，从周日改成周一。</li><li>在 Echarts 官网重新定制了 JS 功能，不然原版的有 1M 多。</li></ol><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">100
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">101
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">102
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">103
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">104
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">105
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">106
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">107
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">108
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">109
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">110
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">111
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">112
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">113
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">114
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">115
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">116
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">117
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">118
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">119
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">120
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">121
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">122
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">123
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">124
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">125
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">126
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">127
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">128
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">129
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">130
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">131
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">132
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">133
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">134
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">135
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">136
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">137
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#f92672>&lt;</span><span style=color:#a6e22e>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;heatmap&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;max-width: 700px;height: 110px;margin-bottom: 40px;&#34;</span><span style=color:#f92672>&gt;&lt;</span><span style=color:#960050;background-color:#1e0010>/div&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span><span style=color:#a6e22e>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://img.koobai.com/echarts.min.js&#34;</span><span style=color:#f92672>&gt;&lt;</span><span style=color:#960050;background-color:#1e0010>/script&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span><span style=color:#a6e22e>script</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text/javascript&#34;</span><span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>chartDom</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#39;heatmap&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>myChart</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>echarts</span>.<span style=color:#a6e22e>init</span>(<span style=color:#a6e22e>chartDom</span>);
+</span></span><span style=display:flex><span>  window.<span style=color:#a6e22e>onresize</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span>() {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>myChart</span>.<span style=color:#a6e22e>resize</span>();
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>option</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>dataMap</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Map</span>();
+</span></span><span style=display:flex><span>  {{ <span style=color:#a6e22e>range</span> ((<span style=color:#a6e22e>where</span> .<span style=color:#a6e22e>Site</span>.<span style=color:#a6e22e>RegularPages</span> <span style=color:#e6db74>&#34;Type&#34;</span> <span style=color:#e6db74>&#34;posts&#34;</span>)) }}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>key</span> <span style=color:#f92672>=</span> {{ .Date.<span style=color:#a6e22e>Format</span> <span style=color:#e6db74>&#34;2006-01-02&#34;</span> }};
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>value</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>dataMap</span>.<span style=color:#a6e22e>get</span>(<span style=color:#a6e22e>key</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>link</span> <span style=color:#f92672>=</span> {{ .<span style=color:#a6e22e>RelPermalink</span>}};
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>title</span> <span style=color:#f92672>=</span> {{ .<span style=color:#a6e22e>Title</span> }};
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// multiple posts in same day
+</span></span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>value</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>dataMap</span>.<span style=color:#a6e22e>set</span>(<span style=color:#a6e22e>key</span>, [{<span style=color:#a6e22e>link</span>, <span style=color:#a6e22e>title</span>}]);
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>value</span>.<span style=color:#a6e22e>push</span>({<span style=color:#a6e22e>link</span>, <span style=color:#a6e22e>title</span>});
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  {{<span style=color:#f92672>-</span> <span style=color:#a6e22e>end</span> <span style=color:#f92672>-</span>}}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>data</span> <span style=color:#f92672>=</span> [];
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> [<span style=color:#a6e22e>key</span>, <span style=color:#a6e22e>value</span>] <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>dataMap</span>.<span style=color:#a6e22e>entries</span>()) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>push</span>([<span style=color:#a6e22e>key</span>, <span style=color:#a6e22e>value</span>.<span style=color:#a6e22e>length</span>]);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>startDate</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Date();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>year_Mill</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>startDate</span>.<span style=color:#a6e22e>setFullYear</span>((<span style=color:#a6e22e>startDate</span>.<span style=color:#a6e22e>getFullYear</span>() <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>));
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>startDate</span> <span style=color:#f92672>=</span> <span style=color:#f92672>+</span><span style=color:#66d9ef>new</span> Date(<span style=color:#a6e22e>year_Mill</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>endDate</span> <span style=color:#f92672>=</span> <span style=color:#f92672>+</span><span style=color:#66d9ef>new</span> Date();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>startDate</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>echarts</span>.<span style=color:#a6e22e>format</span>.<span style=color:#a6e22e>formatTime</span>(<span style=color:#e6db74>&#39;yyyy-MM-dd&#39;</span>, <span style=color:#a6e22e>startDate</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>endDate</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>echarts</span>.<span style=color:#a6e22e>format</span>.<span style=color:#a6e22e>formatTime</span>(<span style=color:#e6db74>&#39;yyyy-MM-dd&#39;</span>, <span style=color:#a6e22e>endDate</span>);
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 检测浏览器主题模式并选择颜色方案
+</span></span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>prefersDarkMode</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>matchMedia</span> <span style=color:#f92672>&amp;&amp;</span> window.<span style=color:#a6e22e>matchMedia</span>(<span style=color:#e6db74>&#39;(prefers-color-scheme: dark)&#39;</span>).<span style=color:#a6e22e>matches</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 定义明亮模式下的颜色方案
+</span></span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>lightTheme</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>backgroundColor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#FFFFFF&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fangkuaicolor</span><span style=color:#f92672>:</span><span style=color:#e6db74>&#39;#F4F4F4&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>gaoliangcolor</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;#ffd0b6&#39;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>riqiColor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#999&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>textbrcolor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#FFF&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>xiankuangcolor</span><span style=color:#f92672>:</span><span style=color:#e6db74>&#39;rgba(0, 0, 0, 0.0)&#39;</span>,
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 定义暗黑模式下的颜色方案
+</span></span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>darkTheme</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>backgroundColor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#1A1718&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fangkuaicolor</span><span style=color:#f92672>:</span><span style=color:#e6db74>&#39;#282325&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>gaoliangcolor</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;#b25f2f&#39;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>riqiColor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#666&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>textbrcolor</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#332D2F&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>xiankuangcolor</span><span style=color:#f92672>:</span><span style=color:#e6db74>&#39;rgba(0, 0, 0, 0.0)&#39;</span>,
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 根据浏览器主题模式选择当前主题
+</span></span></span><span style=display:flex><span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>currentTheme</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>prefersDarkMode</span> <span style=color:#f92672>?</span> <span style=color:#a6e22e>darkTheme</span> <span style=color:#f92672>:</span> <span style=color:#a6e22e>lightTheme</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>option</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>tooltip</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>hideDelay</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1000</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>enterable</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>backgroundColor</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>textbrcolor</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>borderWidth</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>0</span>, <span style=color:#75715e>// 边框宽度为0
+</span></span></span><span style=display:flex><span>    <span style=color:#a6e22e>formatter</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>p</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>date</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>data</span>[<span style=color:#ae81ff>0</span>];
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>posts</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>dataMap</span>.<span style=color:#a6e22e>get</span>(<span style=color:#a6e22e>date</span>);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>content</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>`&lt;span style=&#34;font-size: 0.75rem;font-family: var(--font-family-code);&#34;&gt;</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>date</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&lt;/span&gt;`</span>;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> [<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>post</span>] <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>posts</span>.<span style=color:#a6e22e>entries</span>()) {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>content</span> <span style=color:#f92672>+=</span> <span style=color:#e6db74>&#34;&lt;br&gt;&#34;</span>;          
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>link</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>post</span>.<span style=color:#a6e22e>link</span>;
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>title</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>post</span>.<span style=color:#a6e22e>title</span>;
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>content</span> <span style=color:#f92672>+=</span> <span style=color:#e6db74>`&lt;a href=&#34;</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>link</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&#34; target=&#34;_blank&#34;&gt;</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>title</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&lt;/a&gt;`</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;&lt;br&gt;&#39;</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>content</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>visualMap</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>show</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>false</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>inRange</span><span style=color:#f92672>:</span> {   
+</span></span><span style=display:flex><span>          <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>gaoliangcolor</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>calendar</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>left</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>20</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>top</span><span style=color:#f92672>:</span><span style=color:#ae81ff>20</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>bottom</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>right</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>cellSize</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;auto&#39;</span>, <span style=color:#ae81ff>13</span>],
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>range</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>startDate</span>, <span style=color:#a6e22e>endDate</span>],
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>itemStyle</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>fangkuaicolor</span>,
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>borderWidth</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>3.5</span>,
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>borderColor</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>backgroundColor</span>, 
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>yearLabel</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>show</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>false</span> },
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>monthLabel</span><span style=color:#f92672>:</span> { 
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>nameMap</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;01&#39;</span>, <span style=color:#e6db74>&#39;02&#39;</span>, <span style=color:#e6db74>&#39;03&#39;</span>, <span style=color:#e6db74>&#39;04&#39;</span>, <span style=color:#e6db74>&#39;05&#39;</span>, <span style=color:#e6db74>&#39;06&#39;</span>, <span style=color:#e6db74>&#39;07&#39;</span>, <span style=color:#e6db74>&#39;08&#39;</span>, <span style=color:#e6db74>&#39;09&#39;</span>, <span style=color:#e6db74>&#39;10&#39;</span>, <span style=color:#e6db74>&#39;11&#39;</span>, <span style=color:#e6db74>&#39;12&#39;</span>],
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>textStyle</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>riqiColor</span>,
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>dayLabel</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>firstDay</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>,
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>nameMap</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;日&#39;</span>, <span style=color:#e6db74>&#39;一&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>, <span style=color:#e6db74>&#39;三&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>, <span style=color:#e6db74>&#39;五&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>],
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>textStyle</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>riqiColor</span>
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>splitLine</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>lineStyle</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>currentTheme</span>.<span style=color:#a6e22e>xiankuangcolor</span>,
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>series</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>type</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;heatmap&#39;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>coordinateSystem</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;calendar&#39;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>data</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>data</span>,
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>myChart</span>.<span style=color:#a6e22e>setOption</span>(<span style=color:#a6e22e>option</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>myChart</span>.<span style=color:#a6e22e>on</span>(<span style=color:#e6db74>&#39;click&#39;</span>, <span style=color:#66d9ef>function</span>(<span style=color:#a6e22e>params</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>params</span>.<span style=color:#a6e22e>componentType</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;series&#39;</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#75715e>// open the first post on the day
+</span></span></span><span style=display:flex><span>      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>post</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>dataMap</span>.<span style=color:#a6e22e>get</span>(<span style=color:#a6e22e>params</span>.<span style=color:#a6e22e>data</span>[<span style=color:#ae81ff>0</span>])[<span style=color:#ae81ff>0</span>];
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>link</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>location</span>.<span style=color:#a6e22e>origin</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>post</span>.<span style=color:#a6e22e>link</span>;
+</span></span><span style=display:flex><span>      window.<span style=color:#a6e22e>open</span>(<span style=color:#a6e22e>link</span>, <span style=color:#e6db74>&#39;_blank&#39;</span>).<span style=color:#a6e22e>focus</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/script&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=详情页段落目录导航>详情页段落目录导航</h2><p><img src=https://img.koobai.com/article/20240224_duanldh.webp alt=段落导航 class=img-hide loading=lazy decoding=async></p><p>这个功能早在去年重新折腾博客的时候就想增加，但当时因为不大会，搞得都不完美，所以也就不了了之。这几天在
+<a href="/tiaozhuan?target=aHR0cHM6Ly9hdHB4LmNvbS9ibG9nL3R5cGVjaG8tdG8taHVnby8%3d" target=_blank rel="noopener external nofollow noreferrer">atpX</a>中，看到文章目录滚动高亮教程，于是又试着折腾了下。经过跟 AI 的配合，完美显示，不过过程还是碰到问题：</p><h3 id=1-显示位置>1. 显示位置</h3><p>如果直接使用 <code>position: fixed;</code> 特性，目录位置只会根据浏览器窗口的大小来改变。这就会导致，浏览器窗口很大，主内容跟目录就会分得很开；浏览器窗口小，主内容跟目录有可能就会重叠。尝试了各种解决方法之后，决定在最上层的父元素中使用<code>display: flex;</code>。然后在目录的上一级再加入一个父元素div，完美解决。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;single-nrong&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;single-zw&#34;</span>&gt;主内容&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;paragraph-dh&#34;</span>&gt;文章段落目录导航&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>style</span>&gt;
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>single-nrong</span> {<span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>single-zw</span> {<span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>100</span><span style=color:#66d9ef>%</span>;}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> {<span style=color:#66d9ef>position</span>: <span style=color:#66d9ef>fixed</span>;}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>style</span>&gt;
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-无目录导航>2. 无目录导航</h3><p> 文章页如果没有目录导航，也会显示内容标题，这就看着很奇怪了。解决方法：
+ </p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>  {{ $toc := .TableOfContents }}
+</span></span><span style=display:flex><span>  <span style=color:#75715e>&lt;!--判断&lt;li&gt;标签中有没有内容，如果有内容就显示，无内容就隐藏--&gt;</span>
+</span></span><span style=display:flex><span>  {{ if findRE &#34;&lt;<span style=color:#f92672>li</span>&gt;&#34; $toc 1 }} 
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;paragraph-dh&#34;</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;sidebar-biaot&#34;</span>&gt;文章段落导航&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>      {{ $toc }}
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  {{ end }}
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-完整方案>3. 完整方案</h3><p>特性：1. 默认隐藏，滑动到一定距离显示。2. 滑动到页面上方 1/4 处高亮显示当前目录。3. 点击目录导航平滑滚动到对应的标题。4. 无目录导航的文章页不显示。</p><ol><li>新建 js 文件，如 single.js。</li></ol><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>document.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#34;DOMContentLoaded&#34;</span>, () =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>postTOC</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>querySelector</span>(<span style=color:#e6db74>&#39;.paragraph-dh&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>headingObserver</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>IntersectionObserver</span>(<span style=color:#a6e22e>headings</span> =&gt; {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>headings</span>.<span style=color:#a6e22e>forEach</span>(({ <span style=color:#a6e22e>target</span>, <span style=color:#a6e22e>isIntersecting</span> }) =&gt; {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>link</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>postTOC</span>.<span style=color:#a6e22e>querySelector</span>(<span style=color:#e6db74>`a[href=&#34;#</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>target</span>.<span style=color:#a6e22e>id</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;]`</span>);
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isIntersecting</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>link</span>) {
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>postTOC</span>.<span style=color:#a6e22e>querySelectorAll</span>(<span style=color:#e6db74>&#39;a&#39;</span>).<span style=color:#a6e22e>forEach</span>(<span style=color:#a6e22e>a</span> =&gt; <span style=color:#a6e22e>a</span>.<span style=color:#a6e22e>classList</span>.<span style=color:#a6e22e>remove</span>(<span style=color:#e6db74>&#39;active&#39;</span>));
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>link</span>.<span style=color:#a6e22e>classList</span>.<span style=color:#a6e22e>add</span>(<span style=color:#e6db74>&#39;active&#39;</span>);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        });
+</span></span><span style=display:flex><span>    }, { <span style=color:#a6e22e>rootMargin</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;0px 0px -75%&#39;</span> });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    document.<span style=color:#a6e22e>querySelectorAll</span>(<span style=color:#e6db74>&#39;.content h2[id], .content h3[id]&#39;</span>).<span style=color:#a6e22e>forEach</span>(<span style=color:#a6e22e>heading</span> =&gt; <span style=color:#a6e22e>headingObserver</span>.<span style=color:#a6e22e>observe</span>(<span style=color:#a6e22e>heading</span>));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    window.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#39;scroll&#39;</span>, () =&gt; <span style=color:#a6e22e>postTOC</span>.<span style=color:#a6e22e>style</span>.<span style=color:#a6e22e>opacity</span> <span style=color:#f92672>=</span> (window.<span style=color:#a6e22e>pageYOffset</span> <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>400</span>) <span style=color:#f92672>?</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>postTOC</span>.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#39;click&#39;</span>, (<span style=color:#a6e22e>e</span>) =&gt; {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>e</span>.<span style=color:#a6e22e>preventDefault</span>();
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>targetElement</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#a6e22e>e</span>.<span style=color:#a6e22e>target</span>.<span style=color:#a6e22e>getAttribute</span>(<span style=color:#e6db74>&#39;href&#39;</span>).<span style=color:#a6e22e>substring</span>(<span style=color:#ae81ff>1</span>));
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>targetElement</span>) <span style=color:#a6e22e>targetElement</span>.<span style=color:#a6e22e>scrollIntoView</span>({ <span style=color:#a6e22e>behavior</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;smooth&#39;</span> });
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></td></tr></table></div></div><ol start=2><li>在 single.html 文件合适的位置中添加：</li></ol><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;single-nrong&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;single-zw&#34;</span>&gt;
+</span></span><span style=display:flex><span>   文章内容
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  {{ $toc := .TableOfContents }}
+</span></span><span style=display:flex><span>  {{ if findRE &#34;&lt;<span style=color:#f92672>li</span>&gt;&#34; $toc 1 }}
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;paragraph-dh&#34;</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;sidebar-biaot&#34;</span>&gt;文章段落导航&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>      {{ $toc }}
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  {{ end }}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/js/single.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>在 css 文件中添加：</li></ol><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>single-nrong</span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>single-zw</span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>100</span><span style=color:#66d9ef>%</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> {
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>none</span>;
+</span></span><span style=display:flex><span>  <span style=color:#960050;background-color:#1e0010>@include</span> <span style=color:#960050;background-color:#1e0010>breakpoint(&#39;large&#39;)</span> <span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>block</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>position</span>: <span style=color:#66d9ef>fixed</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>opacity</span>: <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>top</span>: <span style=color:#ae81ff>70</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin-left</span>: <span style=color:#ae81ff>40</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>transition</span>: <span style=color:#66d9ef>opacity</span> <span style=color:#ae81ff>0.5</span><span style=color:#66d9ef>s</span> <span style=color:#66d9ef>ease</span>; 
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-left</span>: <span style=color:#ae81ff>4</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#f0f0f0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding</span>: <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>15</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>max-width</span>: <span style=color:#ae81ff>300</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> <span style=color:#f92672>a</span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>line-height</span>: <span style=color:#ae81ff>1.4</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#666</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> <span style=color:#f92672>ul</span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>gap</span>: <span style=color:#ae81ff>15</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>grid</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> <span style=color:#f92672>ul</span> <span style=color:#f92672>ul</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>padding-inline-start</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>rem</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>margin-top</span>: <span style=color:#ae81ff>10</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>paragraph-dh</span> <span style=color:#f92672>a</span>.<span style=color:#a6e22e>active</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>color</span>: <span style=color:#a6e22e>var</span>(<span style=color:#f92672>--</span><span style=color:#66d9ef>text</span><span style=color:#f92672>-</span>highlight<span style=color:#f92672>-</span><span style=color:#66d9ef>color</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>transition</span>: <span style=color:#66d9ef>all</span> <span style=color:#ae81ff>.25</span><span style=color:#66d9ef>s</span> <span style=color:#66d9ef>ease-in-out</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><h2 id=结语>结语</h2><p>现在折腾博客是完全离不开各类 AI 协助了，让一个不懂技术的人也能瞎折腾。这几次折腾的时候发现 coze 非常好用，基本上一次就能给出正确答案。看来 ChatGPT 4.0 就是牛逼。</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1708764581></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/hugo/>Hugo</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/chunjie/>这个春节有什么不一样</a></div><div class="archive-time twitter-time" data-time=1708158166></div></div><div class=archive-img><a href=/chunjie/><img loading=lazy decoding=async src=https://img.koobai.com/article/20240217_IMG_1443.webp alt=这个春节有什么不一样></a></div></div><div class=archives_one><div><div class=archive-title><a href=/af105/>自行车给自己带来了什么情绪价值爽点</a></div><div class="archive-time twitter-time" data-time=1710667134></div></div><div class=archive-img><a href=/af105/><img loading=lazy decoding=async src=https://img.koobai.com/article/20240317_IMG_1891.webp alt=自行车给自己带来了什么情绪价值爽点></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2.614 5.426A1.5 1.5.0 014 4.5h10a7.5 7.5.0 110 15H5a1.5 1.5.0 010-3h9a4.5 4.5.0 100-9H7.621l.94.94a1.5 1.5.0 01-2.122 2.12l-3.5-3.5a1.5 1.5.0 01-.325-1.634z" fill="currentColor"/></svg></button></div><div id=MoreComments onclick=loadComments()>评论一下 ...</div><div class=article-comments id=articlecomments style=display:none><link href=https://img.koobai.com/Artalk.css rel=stylesheet><script src=https://img.koobai.com/Artalk.js></script><div id=Comments></div><script>Artalk.init({el:"#Comments",pageKey:"https://koobai.com/hugo_suiji/",pageTitle:"HUGO 折腾随记之热力图 / 段落导航",server:"https://c.koobai.com",site:"Koobai 空白生活"})</script></div></div><div><div class=paragraph-dh><nav id=TableOfContents><ul><li><a href=#博文热力图>博文热力图</a></li><li><a href=#详情页段落目录导航>详情页段落目录导航</a><ul><li><a href=#1-显示位置>1. 显示位置</a></li><li><a href=#2-无目录导航>2. 无目录导航</a></li><li><a href=#3-完整方案>3. 完整方案</a></li></ul></li><li><a href=#结语>结语</a></li></ul></nav></div></div></div><script src=/js/single.js></script></div><div class=footer-background><div class=footer><div class=footer-info>&copy; 2026 <a href=/>空白Koobai</a>.
-由 <a href=https://gohugo.io/ target=_blank>Hugo </a>提供强力驱动,<span class=youpaiyun><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target=_blank>又拍云</a>提供图片存储/加速</span>.
-<a href=https://beian.miit.gov.cn/ target=_blank>浙ICP备16011784号-1</a> <a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343">浙公网安备 33011302000343 号</a></div></div></div><script src=/js/view-image.min.js></script><script defer src=https://u.koobai.com/mwyaie data-website-id=b1219610-e6ba-4bfd-87aa-5dc38ec49911 data-domains=koobai.com></script><div class=gotop_hide><div class=gotop onclick=smoothScrollTop() id=gotop><svg viewBox="0 0 2048 2048"><path d="m1875 1037-787-787v1798H960V250l-787 787-90-90L1024 6l941 941z"/></svg></div></div><script type=text/javascript src=/js/bundle.min.504274a518ef06c3174bd9e0bf50199c27935c8e5a7349ed5e2505ebb3473352.js></script></body></html>
+由 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo </a>提供强力驱动,
+<a href=https://github.com/usememos/memos target=_blank rel=noopener>Memos </a>提供唠叨呈现,
+<span class=youpaiyun><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target=_blank rel=noopener>又拍云</a>提供图片存储/加速</span>.</div><div class=footer-info><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>浙ICP备16011784号-1</a>
+<a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011302000343" rel=noopener>浙公网安备 33011302000343 号</a></div></div></div><script src=/js/view-image.min.js></script><script defer src=https://u.koobai.com/mwyaie data-website-id=b1219610-e6ba-4bfd-87aa-5dc38ec49911 data-domains=koobai.com></script><div class=gotop_hide><div class=gotop onclick=smoothScrollTop() id=gotop role=button aria-label=回到顶部 tabindex=0><svg viewBox="0 0 2048 2048"><path d="m1875 1037-787-787v1798H960V250l-787 787-90-90L1024 6l941 941z"/></svg></div></div><script src=/js/bundle.min.504274a518ef06c3174bd9e0bf50199c27935c8e5a7349ed5e2505ebb3473352.js></script></body></html>
