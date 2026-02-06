@@ -520,7 +520,16 @@
             const loadBtn = document.querySelector('button.button-load');
             if (loadBtn) loadBtn.textContent = '看更多 ...';
         }
-        
+        //插入内容时间显示    
+        if (typeof window.formatDate === 'function') {
+            bbDom.querySelectorAll('.twitter-time').forEach(el => {
+                const t = el.dataset.time; 
+                if (!t || el.innerText.trim()) return;
+                const ts = /[-/]/.test(t) ? Math.floor(new Date(t) / 1000) : +t;
+                if (ts) el.innerText = window.formatDate(ts);
+            });
+        }
+
         if (typeof window.animateSummaries === 'function') window.animateSummaries();
         // 页面footer 显示
         const footerDiv = document.querySelector('.footer-background');

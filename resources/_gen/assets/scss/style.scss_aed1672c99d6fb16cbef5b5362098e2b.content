@@ -1300,8 +1300,10 @@ img[atk-emoticon] {
 .movie_index_time {
   font-size: 0.75rem;
   margin-top: 5px;
-  color: #999; }
-
+  color: var(--sanji-color); }
+  @media (prefers-color-scheme: dark) {
+    .movie_index_time {
+      color: var(--erji-color); } }
 #movies_page {
   display: grid;
   grid-gap: 10px;
@@ -2405,7 +2407,8 @@ blockquote p {
 .post-biaoji {
   display: flex;
   gap: 8px;
-  align-items: center; }
+  align-items: center;
+  margin-top: 4px; }
 
 .post-biaoji-xinxi {
   display: none; }
