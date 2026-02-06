@@ -31,18 +31,15 @@ $breakpoints: (
 @import 'intro';
 @import 'summary';
 @import 'main-menu-mobile';
-@import 'pygments/github';
 @import 'comment';
 @import 'app';
 @import 'tags';
 @import 'movies';
 @import 'memos';
-@import 'index';
 @import 'about';
 @import 'list';
 @import 'tiaozhuan';
 @import 'hardware';
-//@import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/medium.css');
 
 @font-face {
   font-family: JetBrainsMono;
@@ -60,10 +57,18 @@ body {
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
-  padding: 0 20px 0 20px;
+  padding: 0 20px;
   overflow-x: hidden;
+
+  // 响应式内嵌
   @include breakpoint('small') {
-    padding: 0 30px 0 30px;
+    padding: 0 30px;
+  }
+
+  // 暗黑模式内嵌
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-body-color);
+    color: var(--text-content-dark-color);
   }
 }
 
@@ -71,46 +76,55 @@ body {
   max-width: 760px;
   margin: 0 auto;
   margin-top: 20px;
-    @include breakpoint('medium') {
-  margin-top: 60px;
+  
+  @include breakpoint('medium') {
+    margin-top: 60px;
   }
 }
 
-.highlight{background-color: var(--bankuai-color);}
-//文本选择高亮颜色
-::selection {
-  background: #f7dcd0;
+.highlight {
+  background-color: var(--bankuai-color);
 }
 
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-body {
-    background: var(--background-dark-body-color);
-    color: var(--text-content-dark-color);
-}
-p {
-  color: var(--text-content-dark-color);
-}
-h1,
-h2{
-  color: #CCCCCC;
-}
-h3 {
-  color: #FFF;
-}
-a {
-  color: var(--text-content-dark-color);
-}
-.author{
-  color: #CCCCCC;
-}
-.summary-date{color: #AAAAAA;}
-.highlight{background-color: var(--background-dark-color);}
-img {filter: brightness(0.8) contrast(1.2); }
-.highlight pre { background: var(--background-dark-color) !important;}
+// 文本选择高亮颜色
 ::selection {
-  background: #6A635B;
+  background: #f7dcd0;
+  
+  @media (prefers-color-scheme: dark) {
+    background: #6A635B;
+  }
 }
+
+// --- 全局基础标签样式优化 (内聚模式) ---
+
+p {
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-content-dark-color);
+  }
+}
+
+h1, h2 {
+  @media (prefers-color-scheme: dark) {
+    color: #CCCCCC;
+  }
+}
+
+h3 {
+  @media (prefers-color-scheme: dark) {
+    color: #FFF;
+  }
+}
+
+a {
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-content-dark-color);
+  }
+}
+
+img {
+  @media (prefers-color-scheme: dark) {
+    filter: brightness(0.8) contrast(1.2);
+  }
 }
 
 // 页面上滑加载动画
@@ -118,15 +132,14 @@ img {filter: brightness(0.8) contrast(1.2); }
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-.img-hide.visible, .retu-hide.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-/* 当用户在系统设置里开启了“减弱动态效果”时 */
-@media (prefers-reduced-motion: reduce) {
-  .img-hide, .retu-hide {
-    /* 强制取消动画和隐藏，直接显示 */
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 减弱动态效果适配
+  @media (prefers-reduced-motion: reduce) {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

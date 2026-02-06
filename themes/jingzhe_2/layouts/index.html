@@ -1,22 +1,27 @@
 {{ define "body_classes" }}page-home{{ end }}
-{{ define "main" }}
-<title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
 
+{{ define "main" }}
 <div id="temp-posts-data" style="display:none;">
-  {{ $posts := first 4 (where .Site.RegularPages "Type" "in" "posts") }}
+  {{ $posts := first 4 (where site.RegularPages "Type" "posts") }}
+  
   {{ range $posts }} 
-    <div class="one-post-item"> <div class="posts_list_article-index img-hide"> 
-      <!--手机端显示-->
-    <div class="post-badge">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>博文
-     </div> <!--手机端显示-->
+    <div class="one-post-item"> 
+      <div class="posts_list_article-index img-hide">     
+        <!--手机端显示-->
+        <div class="post-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>博文
+        </div> <!--手机端显示结束-->
         <div class="archive-time-index twitter-time" data-time="{{ .Date.Unix }}"></div>             
+        
         <div class="post-biaoji">
-        <div class="archive-title-index">
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <div class="archive-title-index">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </div>
+          <div class="post-biaoji-xinxi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>博文
+          </div>
         </div>
-          <div class="post-biaoji-xinxi"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>博文</div>
-        </div>
+        
         <div class="posts-description">{{ .Params.description }}</div>
       </div>
     </div>
@@ -31,16 +36,15 @@
 <!--memos--> 
 <div id="memos"></div>
 <div id="bber"></div>
-<!-- 加载 Markdown 语法-->
-<script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js"></script>
 <!--memos 内容-->
-<script src="/js/memos.js?v=20260206d"></script>
-<script src="/js/coco-message.min.js"></script>
+<script src="/js/memos.js?v=20260206d" defer></script>
+<script src="/js/coco-message.min.js" defer></script>
+<!-- 加载 Markdown 语法-->
+<script src="https://fastly.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 <!--评论加载-->
 <link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
-<script src="https://img.koobai.com/Artalk.js"></script>
-<!--memos结束--> 
-
+<script src="https://img.koobai.com/Artalk.js" defer></script>
 {{ end }}
+
 {{ define "footer_js" }}
 {{ end }}

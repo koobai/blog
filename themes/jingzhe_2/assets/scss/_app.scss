@@ -1,4 +1,4 @@
-.pagetitle{
+.pagetitle {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
@@ -7,18 +7,23 @@
   padding-bottom: 20px;
   text-align: center;
   color: #666;
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+  }
 }
 
-.appdquanjudiv{
+.appdquanjudiv {
   display: grid;
   grid-gap: 10px;
+
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
-  }	
+  }
 }
 
-.appquanju{
+.appquanju {
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-gap: 10px;
@@ -29,25 +34,36 @@
   border-radius: 16px;
   position: relative; // 统一改为 relative 方便子元素定位
   z-index: 1;
+
+  // 悬浮显示简介
+  &:hover .appnote {
+    opacity: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+  }
 }
 
 // 普通图标样式
-.appimg img{
-  width:70px;
+.appimg img {
+  width: 70px;
   transition: transform 0.3s ease;
 }
 
-.apptitle{
-  font-size:1.1rem;
+.apptitle {
+  font-size: 1.1rem;
   margin-bottom: 4px;
+
   @include breakpoint('medium') {
-    font-size:0.85rem;
-  }	
+    font-size: 0.85rem;
+  }
 }
 
 // 普通模式下的说明文字悬浮效果
-.appnote{
+.appnote {
   display: none;
+
   @include breakpoint('medium') {
     display: grid;
     position: absolute;
@@ -62,37 +78,68 @@
     opacity: 0;
     text-align: justify;
     transition: opacity 0.3s ease;
-  }	
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+    color: var(--text-content-dark-color);
+  }
 }
 
-.appquanju:hover .appnote {
-  opacity: 1;
+.apptitle a {
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-content-dark-color);
+  }
 }
 
-.appzhuangtai{
+.appzhuangtai {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.macos{ 
+.macos {
   font-size: 0.75rem;
   font-family: var(--font-family-code);
   color: var(--sanji-color);
 }
 
-.kaiyuan,.shoufei,.free{
+.kaiyuan, .shoufei, .free {
   font-size: 0.9rem;
   padding: 5px 8px;
-  border-radius:20px;
+  border-radius: 20px;
+
   @include breakpoint('medium') {
     font-size: 0.75rem;
   }
 }
 
-.kaiyuan{ color: var(--text-highlight-color); border: 0.5px solid var(--text-highlight-color); }
-.shoufei{ color: #0774e0; border: 0.5px solid #0774e0; }
-.free{ color: #11a173; border: 0.5px solid #11a173; }
+.kaiyuan {
+  color: var(--text-highlight-color);
+  border: 0.5px solid var(--text-highlight-color);
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+    border-color: var(--erji-color);
+  }
+}
+
+.shoufei {
+  color: #0774e0;
+  border: 0.5px solid #0774e0;
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+    border-color: var(--erji-color);
+  }
+}
+
+.free {
+  color: #11a173;
+  border: 0.5px solid #11a173;
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
+    border-color: var(--erji-color);
+  }
+}
 
 // ==========================================
 // 核心：大图卡片样式 (精简优化版)
@@ -104,9 +151,14 @@
   aspect-ratio: 1;
   padding: 30px 25px;
   justify-content: flex-start; /* 顶部对齐标题 */
-  background: transparent;          
+  background: transparent;
   align-items: flex-start;
   overflow: hidden;
+
+  @media (prefers-color-scheme: dark) {
+    background: transparent !important;
+  }
+
   // 1. 内容层级提升
   .app-title-all, .appzhuangtai-right {
     position: relative;
@@ -140,10 +192,11 @@
     padding: 0;
     color: var(--element-background-color);
     line-height: 1.6;
-    font-size:1rem;
+    font-size: 1rem;
+    
     @include breakpoint('medium') {
-    font-size:0.9rem;
-  }	
+      font-size: 0.9rem;
+    }
   }
 
   // 6. 背景大图层
@@ -162,31 +215,22 @@
       background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 80%);
       z-index: 2;
     }
-  }
 
-  .star-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
   }
 
   &:hover .star-img img {
     transform: scale(1.08);
   }
 
-  // 统一大图下的文字颜色
+  // 统一大图下的文字颜色 (强制白色)
   .macos, .kaiyuan, .shoufei, .free {
     color: var(--element-background-color);
     border-color: rgba(255, 255, 255, 0.6) !important;
   }
-}
-
-// 夜间模式适配
-@media (prefers-color-scheme: dark) {
-  .appquanju, .appnote { background: var(--background-dark-color); }
-  .appnote, .apptitle a { color: var(--text-content-dark-color); }
-  .kaiyuan, .shoufei, .free { color: var(--erji-color); border-color: var(--erji-color); }
-  .pagetitle{color: var(--erji-color);}
-  .app-star{background: transparent !important;}
 }

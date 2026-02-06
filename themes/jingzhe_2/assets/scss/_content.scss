@@ -76,6 +76,9 @@ ol, ul {
 
   strong {
     color: var(--text-highlight-color);
+    @media (prefers-color-scheme: dark) {
+      color: var(--text-highlight-dark-color);
+    }
   }
 
   h2, h3 {
@@ -84,6 +87,10 @@ ol, ul {
     margin-bottom: 6px;
     letter-spacing: 0.5px;
     color: var(--text-highlight-color);
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--text-highlight-dark-color);
+    }
   }
 
   ul, ol {
@@ -153,18 +160,19 @@ ol, ul {
       p { margin: 0; }
     }
   }
-
   code, pre {
       font-family: var(--font-family-code);
-      line-height: 1.9;
+      line-height: 1.8;
   }
-
   .highlight pre {
       font-size: 0.9rem;
-      padding: 20px;
+      padding: 15px;
       overflow: auto;
+  }
+  .highlight {
       border-radius: 16px;
-      background: #24273A;
+      overflow: auto;
+      background: #272822;
   }
 }
 
@@ -180,7 +188,7 @@ ol, ul {
   width: 100%;
 }
 
-// 5. 侧边目录导航 (整理结构)
+// 5. 侧边目录导航
 .paragraph-dh {
   display: none;
   
@@ -200,7 +208,10 @@ ol, ul {
     
     ul {
       margin-top: 10px;
-      a { color: #999; }
+      a { 
+        color: #999;
+        @media (prefers-color-scheme: dark) { color: var(--erji-color); }
+      }
     }
   }
 
@@ -215,6 +226,10 @@ ol, ul {
     line-height: 1.4;
     color: #666;
     font-size: 0.85rem;
+
+    @media (prefers-color-scheme: dark) {
+      color: #999; 
+    }
     
     &.active {
       color: var(--text-highlight-color);
@@ -222,6 +237,11 @@ ol, ul {
       
       &:before {
         background-color: var(--text-highlight-color); 
+      }
+
+      @media (prefers-color-scheme: dark) {
+        color: var(--text-highlight-dark-color);
+        &:before { background-color: var(--text-highlight-dark-color); }
       }
     }
   }
@@ -235,10 +255,17 @@ ol, ul {
     background-color: #ddd;
     position: absolute;
     left: 0;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: #6b6063;
+    }
   }
   
   li li > a:before {
     width: 10px; 
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--erji-color);
+    }
   }
 
   // 悬停时显示全部文字
@@ -247,7 +274,7 @@ ol, ul {
   }
 }
 
-// 6. 返回按钮 (整理结构)
+// 6. 返回按钮
 .fanhui {
   display: none;
   
@@ -284,37 +311,9 @@ ol, ul {
         color: var(--text-highlight-color);
       }
     }
-  }
-}
 
-// 7. 夜间模式 (统一管理)
-@media (prefers-color-scheme: dark) {
-  // 目录夜间模式
-  .paragraph-dh {
-    a { color: #999; }
-    ul ul a { color: #7e7174; }
-    li > a:before { background-color: #6b6063; }
-    
-    a.active {
-      color: var(--text-highlight-dark-color);
-      &:before { background-color: var(--text-highlight-dark-color); }
-    }
-    
-    // 修正了之前代码中的重复定义
-    ul ul a { color: var(--erji-color); }
-    li > a:before { background-color: var(--erji-color); }
-  }
-
-  // 正文高亮
-  .content {
-    h2, h3, strong {
-      color: var(--text-highlight-dark-color);
-    }
-  }
-
-  // 返回按钮夜间模式
-  .fanhui {
-    @include breakpoint('medium') {
+    // 暗黑模式内聚
+    @media (prefers-color-scheme: dark) {
       background: rgba(85, 82, 78, 0.6);
       backdrop-filter: blur(25px) saturate(200%); 
       -webkit-backdrop-filter: blur(25px) saturate(200%);
