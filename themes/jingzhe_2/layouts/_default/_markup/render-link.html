@@ -1,10 +1,15 @@
 {{ $url := .Destination }}
+{{ $isInternal := or (strings.Contains $url "koobai.com") (strings.HasPrefix $url "/") (strings.HasPrefix $url "#") }}
 <a 
-    {{ if or (in $url "koobai.com") (strings.HasPrefix $url "/") }}
-        href="{{ $url }}"
+    {{ if $isInternal }}
+        href="{{ $url | safeURL }}"
     {{ else }}
         href="/tiaozhuan?target={{ $url | base64Encode }}"
     {{ end }}
-    {{ if strings.HasPrefix .Destination "http" }} target="_blank"{{ end }}
+
+    {{ if strings.HasPrefix $url "http" }} 
+        target="_blank" 
+        rel="noopener external nofollow noreferrer"
+    {{ end }}
 >
 {{ .Text | safeHTML }}</a>

@@ -4,10 +4,13 @@
   
 {{ partial "movies-list.html" nil }}
 
-{{ $movies := resources.Get "movie.csv" | transform.Unmarshal }}
-{{ if gt (len $movies) 28 }}
-  <div id="movies_loadMore" class="movies_loadMore">看更多...</div>
+{{ $csvResource := resources.Get "movie.csv" }}
+{{ with $csvResource }}
+  {{ $movies := . | transform.Unmarshal }}
+  {{ if gt (len $movies) 28 }}
+    <div id="movies_loadMore" class="movies_loadMore">看更多...</div>
+  {{ end }}
 {{ end }}
 
-<script src="/js/movies.js?v=201601312"></script>
+<script src="/js/movies.js?v=201601312" defer></script>
 {{ end }}

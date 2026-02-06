@@ -5,8 +5,8 @@
     
     <article class="article_details">
       <h1 class="article_details_title">{{ .Title }}</h1>
-      {{ if .Params.image }}
-      <img src="{{ .Params.image | relURL }}" class="top-img img-hide" alt="{{ .Title }}" />
+      {{ with .Params.image }}
+      <img src="{{ . | relURL }}" class="top-img img-hide" alt="{{ $.Title }}" />
       {{ end }}
     </article>
 
@@ -28,40 +28,53 @@
     </div>
 
    <div class="archives_nrong" >
+    {{/* 上一篇 */}}
     {{ with .PrevInSection }}
       <div class="archives_one">
         <div>
-          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+          <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
           <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
+        {{/* 2. 只有当上一篇有图片时，才渲染图片区域 */}}
+        {{ if .Params.image }}
         <div class="archive-img">
           <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
         </div>
+        {{ end }}
       </div>
     {{ end }}
     
+    {{/* 下一篇 或 随机推荐 */}}
     {{ with .NextInSection }}
       <div class="archives_one">
         <div>
-          <div class="archive-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></div>
+          <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
           <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
         </div>
+        {{ if .Params.image }}
         <div class="archive-img">
           <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
         </div>
+        {{ end }}
       </div>
     {{ else }}
       {{ $pages := where site.RegularPages "Type" "posts" }}
-      {{ $randomPage := index $pages (add (mod (now.Unix) (len $pages)) 1) }}
-      <div class="archives_one">
-        <div>
-          <div class="archive-title"><a href="{{ $randomPage.RelPermalink }}">{{ $randomPage.Title }}</a></div>
-          <div class="archive-time twitter-time" data-time="{{ $randomPage.Date.Unix }}"></div> 
+      {{ $pages = where $pages "Permalink" "ne" .Permalink }}
+      {{ with first 1 ($pages | shuffle) }}
+        {{ range . }}
+        <div class="archives_one">
+          <div>
+            <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+            <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div> 
+          </div>
+          {{ if .Params.image }}
+          <div class="archive-img">
+            <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
+          </div>
+          {{ end }}
         </div>
-        <div class="archive-img">
-          <a href="{{ $randomPage.RelPermalink }}"><img loading="lazy" decoding="async" src="{{ $randomPage.Params.image | relURL }}" alt="{{ $randomPage.Title }}" /></a>          
-        </div>
-      </div>
+        {{ end }}
+      {{ end }}
     {{ end }}
 
     <button type="button" 
@@ -78,10 +91,14 @@
     {{- partial "artalk" . -}}
   </div> 
 
-  </div> <div>
+  </div> 
+  
+  <div>
+      {{ if .TableOfContents }}
       <div class="paragraph-dh">
        {{ .TableOfContents }}
       </div>
+      {{ end }}
   </div>
 
 </div>

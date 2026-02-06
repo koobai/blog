@@ -1,72 +1,85 @@
-{{ $itemsRaw := resources.Get "movie.csv" | transform.Unmarshal }}
-{{ $items := after 1 $itemsRaw }}
+{{ $csvResource := resources.Get "movie.csv" }}
+{{ with $csvResource }}
+  {{ $itemsRaw := . | transform.Unmarshal }}
+  {{ $items := after 1 $itemsRaw }}
 
-{{ $limit := . }} 
-{{ $isIndex := false }}
+  {{ $limit := len $items }}
+  {{ $isIndex := false }}
 
-{{ if and . (eq (printf "%T" .) "int") }}
-  {{ $limit = . }}      {{ $isIndex = true }}  
-{{ else }}
-  {{ $limit = len $items }} 
-{{ end }}
-
-{{ if $isIndex }}
-<div class="movie-quanju">
-{{ else }}
-<div id="movies_page">
-{{ end }}
+  {{ $type := printf "%T" $ }}
+  {{ if or (eq $type "int") (eq $type "int64") }}
+    {{ $limit = $ }}
+    {{ $isIndex = true }}
+  {{ end }}
+  {{ if $isIndex }}
+    <div class="movie-quanju">
+  {{ else }}
+    <div id="movies_page">
+  {{ end }}
 
   {{ range $idx, $item := first $limit $items }}
-    
-    {{ $yingshiimg := printf "https://img.koobai.com/douban/%s.webp" (path.Base (strings.TrimSuffix ".jpg" (index $item 3))) }}
-    {{ $rating := index $item 8 }}
+    {{ $title := index $item 1 }}
+    {{ $imgRaw := index $item 3 }}
+    {{ $comment := index $item 4 }}
+    {{ $link := index $item 5 }}
+    {{ $ratingRaw := index $item 8 }}
+    {{ $tags := index $item 9 }}
+    {{ $date := index $item 11 }}
 
+    {{ $yingshiimg := "" }}
+    {{ with $imgRaw }}
+      {{ $fileName := path.Base . }}           
+      {{ $ext := path.Ext $fileName }}         
+      {{ $fileId := strings.TrimSuffix $ext $fileName }} 
+      {{ $yingshiimg = printf "https://img.koobai.com/douban/%s.webp" $fileId }}
+    {{ end }}
+    
+    {{ $rating := int $ratingRaw | default 0 }}
+
+    {{/* ================= 首页模式渲染 ================= */}}
     {{ if $isIndex }}
       <div class="movies_bankuai_index img-hide">
         <div class="movies_left">
-           <a rel="noopener noreferrer" href="{{ index $item 5 }}" target="_blank" data-umami-event="Movie-index" data-umami-event-type="image"> 
-              <img class="avatar img-hide" width="110" height="147" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $item 1 }}" title="{{ index $item 4 }}">
+           <a rel="noopener noreferrer" href="{{ $link }}" target="_blank" data-umami-event="Movie-index" data-umami-event-type="image"> 
+              <img class="avatar img-hide" width="110" height="147" src="{{ $yingshiimg }}" loading="lazy" alt="{{ $title }}" title="{{ $comment }}">
            </a>
         </div>        
         <div class="movies_right">
             <div class="movies_ingdex_title">
-                <a rel="noopener noreferrer" href="{{ index $item 5 }}" target="_blank" data-umami-event="Movie-index" data-umami-event-type="title">{{ index $item 1 }}</a>
+                <a rel="noopener noreferrer" href="{{ $link }}" target="_blank" data-umami-event="Movie-index" data-umami-event-type="title">{{ $title }}</a>
             </div>  
             <div class="movie-pfeng" aria-label="评分：{{ $rating }} 星">
-                {{ with $rating }}
-                  {{ $ratingCount := int . }}
-                  {{ range $i := seq $ratingCount }}
+                {{ range seq $rating }}
                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/></svg>
-                  {{ end }}
                 {{ end }}
             </div>
-            <div class="movies_index_info">{{ index $item 9 }}</div>
-            <div class="movie_index_time twitter-time" data-time="{{ index $item 11 }}"></div>
+            <div class="movies_index_info">{{ $tags }}</div>
+            <div class="movie_index_time twitter-time" data-time="{{ $date }}"></div>
         </div>
       </div>
 
+    {{/* ================= 列表页/归档页模式渲染 ================= */}}
     {{ else }}
       <div class="movies_bankuai img-hide">
-          <a href="{{index $item 5}}" target="_blank" rel="noopener noreferrer">
-              <img class="avatar img-hide" width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ index $item 1 }}">
+          <a href="{{ $link }}" target="_blank" rel="noopener noreferrer">
+              <img class="avatar img-hide" width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $yingshiimg }}" loading="lazy" alt="{{ $title }}">
           </a>
           <div class="movies-nrong">
             <div class="movie-title">
-                <a href="{{index $item 5}}" target="_blank" rel="noopener noreferrer">{{index $item 1}}</a>
+                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer">{{ $title }}</a>
             </div>
             <div class="movie-pfeng" aria-label="评分：{{ $rating }} 星">
-              {{ with $rating }}
-                {{ $ratingCount := int . }}
-                {{ range $i := seq $ratingCount }}
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/></svg>
+                {{ range seq $rating }}
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/></svg>
                 {{ end }}
-              {{ end }}
             </div>
-            <div class="movie-info">{{index $item 9}}</div>
-            <div class="movie-time twitter-time" data-time="{{ index $item 11 }}"></div>
+            <div class="movie-info">{{ $tags }}</div>
+            <div class="movie-time twitter-time" data-time="{{ $date }}"></div>
           </div>
       </div>
     {{ end }}
 
   {{ end }}
-</div>
+  </div>
+
+{{ end }}

@@ -1,45 +1,60 @@
 {{ define "body_classes" }}page-app{{ end }}
 {{ define "main" }}
-{{ $goods := resources.Get "app.json" | transform.Unmarshal }}
 
-<div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：<br />( 2026-01-25 更新 )</div>
-<div class="appdquanjudiv">
-  {{ range $index, $app := $goods.good }}
-    <div class="appquanju img-hide {{ if .image2 }}app-star{{ end }}">
-      
-      {{ if not .image2 }}
-      <div class="appimg">
-        <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">
-          <img loading="lazy" decoding="async" src="{{ $app.image }}">
-        </a>
-      </div>
-      {{ end }}
+{{ $appResource := resources.Get "app.json" }}
+{{ with $appResource }}
+  {{ $goods := . | transform.Unmarshal }}
 
-      <div class="app-title-all">
-        <div class="apptitle2"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title2 }}</a></div>
-        <div class="appnote"><div>{{ $app.info }}</div></div>
-        <div class="apptitle"><a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank">{{ $app.title }}</a></div>
-        <div class="appzhuangtai">
-          {{ with $app.macos }}<div class="macos">{{ . }}</div>{{ end }}
-          {{ with $app.ios }}<div class="macos">{{ . }}</div>{{ end }}
-          {{ with $app.tvos }}<div class="macos">{{ . }}</div>{{ end }}
-          {{ with $app.web }}<div class="macos">{{ . }}</div>{{ end }}
+  <div class="pagetitle">一款合适的软件，在工作中能成为很好的生产力工具，让工作事半功倍；在生活中能成为很好的消遣工具，让生活充满多姿多彩。以下为日常工作生活中所常用：<br />( 2026-01-25 更新 )</div>
+  
+  <div class="appdquanjudiv">
+    {{ range $index, $app := $goods.good }}
+      <div class="appquanju img-hide {{ if .image2 }}app-star{{ end }}">
+        
+        {{ if not .image2 }}
+        <div class="appimg">
+          <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer">
+            <img loading="lazy" decoding="async" src="{{ $app.image }}" alt="{{ $app.title }}">
+          </a>
         </div>
-      </div>
+        {{ end }}
 
-      <div class="appzhuangtai-right">
-        {{ with $app.kaiyuan }}<a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="kaiyuan">{{ . }}</div></a>{{ end }}
-        {{ with $app.shoufei }}<a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="shoufei">{{ . }}</div></a>{{ end }}
-        {{ with $app.free }}<a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank"><div class="free">{{ . }}</div></a>{{ end }}
-      </div>
+        <div class="app-title-all">
+          <div class="apptitle2">
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer">{{ $app.title2 }}</a>
+          </div>
+          <div class="appnote"><div>{{ $app.info }}</div></div>
+          <div class="apptitle">
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer">{{ $app.title }}</a>
+          </div>
+          <div class="appzhuangtai">
+            {{ with $app.macos }}<div class="macos">{{ . }}</div>{{ end }}
+            {{ with $app.ios }}<div class="macos">{{ . }}</div>{{ end }}
+            {{ with $app.tvos }}<div class="macos">{{ . }}</div>{{ end }}
+            {{ with $app.web }}<div class="macos">{{ . }}</div>{{ end }}
+          </div>
+        </div>
 
-      {{ with .image2 }}
-      <div class="star-img img-hide">
-        <img loading="lazy" decoding="async" src="{{ . }}">
+        <div class="appzhuangtai-right">
+          {{ with $app.kaiyuan }}
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="kaiyuan">{{ . }}</div></a>
+          {{ end }}
+          {{ with $app.shoufei }}
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="shoufei">{{ . }}</div></a>
+          {{ end }}
+          {{ with $app.free }}
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="free">{{ . }}</div></a>
+          {{ end }}
+        </div>
+
+        {{ with .image2 }}
+        <div class="star-img img-hide">
+          <img loading="lazy" decoding="async" src="{{ . }}" alt="{{ $app.title }} 推荐图">
+        </div>
+        {{ end }}
+        
       </div>
-      {{ end }}
-      
-    </div>
-  {{ end }}
-</div>
+    {{ end }}
+  </div>
+{{ end }}
 {{ end }}

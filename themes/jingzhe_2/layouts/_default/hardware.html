@@ -1,33 +1,43 @@
 {{ define "body_classes" }}page-hardware{{ end }}
 {{ define "main" }}
-{{ $goods := resources.Get "hardware.json" | transform.Unmarshal }}
 
-<div class="pagetitle">一件称心的产品，从收到包裹那一刻就开始心潮澎湃，到日积月累逐步成为靠谱的伙伴，时刻让你的工作生活充满期待。以下为正在使用中的产品：<br />( 2026-01-30 更新 )</div>
-<div class="quanju">
-  {{ range $index, $hardware := $goods.good }}
-  <div class="bankuai img-hide {{ if .image2 }}hardware-star{{ end }}">
-    <div class="note">{{ .note }}</div>
-    {{ with .image2 }}
-      <div class="hardware-star-img img-hide">
-        <img loading="lazy" decoding="async" src="{{ . }}">
+{{ $hardwareResource := resources.Get "hardware.json" }}
+{{ with $hardwareResource }}
+  {{ $goods := . | transform.Unmarshal }}
+
+  <div class="pagetitle">一件称心的产品，从收到包裹那一刻就开始心潮澎湃，到日积月累逐步成为靠谱的伙伴，时刻让你的工作生活充满期待。以下为正在使用中的产品：<br />( 2026-01-30 更新 )</div>
+  
+  <div class="quanju">
+    {{ range $index, $hardware := $goods.good }}
+    <div class="bankuai img-hide {{ if .image2 }}hardware-star{{ end }}">
+      <div class="note">{{ .note }}</div>
+      
+      {{ with .image2 }}
+        <div class="hardware-star-img img-hide">
+          <img loading="lazy" decoding="async" src="{{ . }}" alt="{{ $hardware.title }}">
+        </div>
+      {{ else }}
+        <div class="duiqi img-hide">
+          <img loading="lazy" decoding="async" src="{{ .image }}" alt="{{ $hardware.title }}">
+        </div>
+      {{ end }}
+
+      <div class="hardware-text">
+        <div class="hardware-title">
+          <a href="/tiaozhuan?target={{ .link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer">{{ .title }}</a>
+        </div>
+        <div class="hardware-jiage">{{ .jiage }}</div>
       </div>
-    {{ else }}
-      <div class="duiqi img-hide">
-        <img loading="lazy" decoding="async" src="{{ .image }}">
-      </div>
-    {{ end }}
-    <div class="hardware-text">
-      <div class="hardware-title"><a href="/tiaozhuan?target={{ .link | base64Encode }}" target="_blank">{{ .title }}</a></div>
-      <div class="hardware-jiage">{{ .jiage }}</div>
-    </div>
+      
       {{ if .tiyi }}
-  <div class="liing_2_right">
-    <a href="{{ .link_2 }}" target="_blank">
-      <div class="tiyi">{{ .tiyi }}</div>
-    </a>
-  </div> 
+      <div class="liing_2_right">
+        <a href="{{ .link_2 }}" target="_blank" rel="noopener external nofollow noreferrer">
+          <div class="tiyi">{{ .tiyi }}</div>
+        </a>
+      </div> 
+      {{ end }}
+    </div>
   {{ end }}
   </div>
 {{ end }}
-  </div>
 {{ end }}

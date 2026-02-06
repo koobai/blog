@@ -1,22 +1,24 @@
 .about-img {
-    position: relative;
-    overflow: hidden;       
-    border-radius: 16px;    
-    background: transparent;    
-    min-height: 250px;        
-    display: flex;
-}
-.about-img img {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: transparent;
+  min-height: 250px;
+  display: flex;
+
+  img {
     width: 100%;
     display: block;
     border-radius: 16px;
-    // 增加平滑缩放动画，不影响你原本的 img-hide 滑动
     transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.about-img:hover img {
+  }
+
+  &:hover img {
     transform: scale(1.1);
+  }
 }
-.about-img-text{
+
+.about-img-text {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -24,34 +26,34 @@
   color: #fff;
   font-family: var(--font-family-code);
   font-size: 1.8rem;
+
   @include breakpoint('small') {
     font-size: 55px;
   }
 }
+
 .about-text {
-    margin: 20px 0 20px 0;
-    line-height: 1.8;
-    font-size: 1.1rem;
-    text-align: justify;
+  margin: 20px 0 20px 0;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  text-align: justify;
+
+  a {
+    color: var(--text-highlight-color);
+    @media (prefers-color-scheme: dark) {
+      color: var(--text-highlight-dark-color);
+    }
+  }
 }
-.about-text a{
-  color: var(--text-highlight-color);
-}
-.about-img-intro{
+
+.about-img-intro {
   padding: 8px;
-  border-radius:2px;
+  border-radius: 2px;
   font-size: 0.75rem;
   background: rgba(0, 0, 0, 0.4);
-  position:absolute;
+  position: absolute;
   color: #FFF;
   bottom: 0;
   right: 0;
   margin-bottom: 4px;
-}
-
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-.about-text a {
-    color: var(--text-highlight-dark-color);
-}
 }

@@ -2,14 +2,17 @@
 
 {{ define "main" }}
 <div class="intro">
-  <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
-  {{ if .Params.image }}
-  <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" />
+  <h1>{{ .Title }}{{ if site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+  
+  {{ with .Params.image }}
+  <img loading="lazy" decoding="async" src="{{ . | relURL }}" alt="{{ $.Title }}" />
   {{ end }}
 </div>
+
 <div class="content">
   {{ .Content }}
 </div>
+
 <div class="article-comments">
   {{- partial "artalk" . -}}
 </div>

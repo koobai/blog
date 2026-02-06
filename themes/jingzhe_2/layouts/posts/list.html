@@ -1,38 +1,49 @@
 {{ define "body_classes" }}page-blog-list{{ end }}
+
 {{ define "main" }}
-{{ $contentTypeName := default "posts" $.Site.Params.contentTypeName }}
-{{ $PageContext := cond .IsHome .Site . }}
+{{ $contentTypeName := default "posts" site.Params.contentTypeName }}
 
-{{ with $PageContext.RegularPages }}
-{{ $pages := where . "Type" $contentTypeName }}
-
-<div class="posts-new">
-{{ range first 4 $pages }}
-<div class="posts-background img-hide"> 
-    <div class="posts-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></div>
-    <div class="posts-img img-hide">
-      <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
-    </div>
-    <div class="posts-description">{{ .Params.description }}</div>
-    <div class="posts-time-new">
-        <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
-        {{ with .GetTerms "tags" }}
-          {{ range . }}
-            <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
-          {{ end }}
-        {{ end }}
-    </div>
-</div>
+{{ $context := . }}
+{{ if .IsHome }}
+  {{ $context = site }}
 {{ end }}
-</div>
+{{ $pages := where $context.RegularPages "Type" $contentTypeName }}
 
+{{ with $pages }}
+<div class="posts-new">
+  {{ range first 4 . }}
+  {{ $p := . }} 
+  <div class="posts-background img-hide"> 
+      <div class="posts-title">
+        <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+      </div>     
+      {{ with .Params.image }}
+      <div class="posts-img img-hide">
+        <a href="{{ $p.RelPermalink }}">
+          <img loading="lazy" decoding="async" src="{{ . | relURL }}" alt="{{ $p.Title }}" />
+        </a>          
+      </div>
+      {{ end }}
+      <div class="posts-description">{{ .Params.description }}</div>    
+      <div class="posts-time-new">
+          <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
+          {{ with .GetTerms "tags" }}
+            {{ range . }}
+              <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+            {{ end }}
+          {{ end }}
+      </div>
+  </div>
+  {{ end }}
+</div>
 <div class="posts_list">
-{{ range after 4 $pages }}
+  {{ range after 4 . }}
   <div class="posts_list_article img-hide"> 
       <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
       <time class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></time> 
   </div>
-{{ end }}
+  {{ end }}
 </div>
 {{ end }}
+
 {{ end }}

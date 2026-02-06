@@ -12,33 +12,27 @@
   display: none;
   justify-content: center;
   flex-direction: column;
+
   &.open {
     opacity: 1;
     visibility: visible;
     height: 100%;
     z-index: 3;
     display: flex;
+
     li {
       animation: fadeInTop 0.5s ease forwards;
       animation-delay: 0.1s;
       margin-bottom: 6%;
-      &:nth-of-type(2) {
-        animation-delay: 0.15s;
-      }
-      &:nth-of-type(3) {
-        animation-delay: 0.20s;
-      }
-      &:nth-of-type(4) {
-        animation-delay: 0.25s;
-      }
-      &:nth-of-type(5) {
-        animation-delay: 0.30s;
-      }
-      &:nth-of-type(6) {
-        animation-delay: 0.35s;
-      }
+
+      &:nth-of-type(2) { animation-delay: 0.15s; }
+      &:nth-of-type(3) { animation-delay: 0.20s; }
+      &:nth-of-type(4) { animation-delay: 0.25s; }
+      &:nth-of-type(5) { animation-delay: 0.30s; }
+      &:nth-of-type(6) { animation-delay: 0.35s; }
     }
   }
+
   ul {
     font-size: 1.6rem;
     font-family: var(--font-family-title);
@@ -46,28 +40,28 @@
     list-style: none;
     margin: 0;
     flex: 0;
+
     li {
       display: block;
       position: relative;
       opacity: 0;
+
       a {
         display: block;
         position: relative;
         color: #FFF;
         text-decoration: none;
+
         &:hover {
           opacity: 0.7;
         }
       }
-      ul.sub-menu {
-        font-size: 1.2rem;
-        li {
-          a {
-
-          }
-        }
-      }
     }
+  }
+
+  // 暗黑模式内聚
+  @media (prefers-color-scheme: dark) {
+    background: var(--text-highlight-dark-color);
   }
 }
 
@@ -76,6 +70,7 @@
   display: flex;
   margin-right: 30px;
   align-items: center;
+
   @include breakpoint('medium') {
     display: none;
   }
@@ -95,6 +90,7 @@
   font-size: 0;
   transition: all 0.25s ease-in-out;
   color: var(--text-highlight-color);
+
   &:before,
   &:after {
     content: '';
@@ -108,22 +104,32 @@
     transform: translate(-50%, -50%);
     transition: transform 0.25s ease-in-out;
   }
+
   &:hover {
     opacity: 0.7;
   }
+
   &.is-active {
     border-color: transparent;
     z-index: 100;
     color: #fff;
+
     &:hover {
       opacity: 1;
     }
+
     &:before {
       transform: translate(-50%, -50%) rotate(45deg);
     }
+
     &:after {
       transform: translate(-50%, -50%) rotate(-45deg);
     }
+  }
+
+  // 暗黑模式内聚
+  @media (prefers-color-scheme: dark) {
+    color: var(--text-highlight-dark-color);
   }
 }
 
@@ -136,13 +142,4 @@
     opacity: 1;
     top: 0;
   }
-}
-//夜间模式
-@media (prefers-color-scheme: dark) {
-.hamburger {
-  color: var(--text-highlight-dark-color);
-}
-.menu-main-mobile {
-  background: var(--text-highlight-dark-color);
-}
 }

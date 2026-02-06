@@ -1,21 +1,39 @@
-.footer-background{
+.footer-background {
   margin-top: 40px;
   margin-bottom: 100px;
+
   @include breakpoint('medium') {
     display: block;
     margin-bottom: 160px;
   }
-}
-.footer {
-    padding-top: 10px; 
-    border-top: 0.5px solid #e7e1de;
-    text-align: center;
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-body-color);
+    border-top: solid var(--background-dark-color) 0.5px;
+    box-sizing: border-box;
   }
-.footer-info, .footer-info a{
+}
+
+.footer {
+  padding-top: 10px;
+  border-top: 0.5px solid #e7e1de;
+  text-align: center;
+
+  @media (prefers-color-scheme: dark) {
+    border-top: 0px solid #231e20;
+  }
+}
+
+.footer-info, .footer-info a {
   font-size: 0.75rem;
   line-height: 1.6em;
   color: #a7a7a7;
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--erji-color);
   }
+}
+
 #gotop {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -24,54 +42,47 @@
   z-index: 99; /* Make sure it does not overlap */
   cursor: pointer; /* Add a mouse pointer on hover */
 }
+
 .gotop {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-	background: #ffffff; 
+  background: #ffffff;
   position: relative; /* 设置相对定位 */
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--background-dark-color);
+  }
+
+  &:hover {
+    background: #ededed;
+    @media (prefers-color-scheme: dark) {
+      background: var(--text-highlight-color);
+    }
+  }
+
+  svg {
+    fill: var(--text-highlight-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+
+    @media (prefers-color-scheme: dark) {
+      fill: var(--text-content-dark-color);
+    }
+  }
 }
-.gotop:hover {
-	background: #ededed; 
-}
-.gotop svg{
-  fill: var(--text-highlight-color);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 16px;
-}
+
 .youpaiyun {
   margin: 0 4px 0 4px;
 }
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-.footer-info, .footer-info a{
-  color: var(--erji-color);
-}
-.footer {
-  border-top: 0px solid #231e20;
-}
-.gotop {
-    background: var(--background-dark-color);
-  }
-.gotop:hover {
-	background: var(--text-highlight-color); 
-}
-.gotop svg{
-  fill: var(--text-content-dark-color);
-}
-.footer-background{
-  background: var(--background-dark-body-color);
-  border-top:solid var(--background-dark-color) 0.5px;
-  box-sizing: border-box;
+
+// 隐藏回到顶部按钮 (小屏幕)
+.gotop_hide {
+  @media (max-width: 1200px) {
+    display: none;
   }
 }
-// 页面宽度小于1200px样式
-@media (max-width:1200px){
-  .gotop_hide{
-    display:none; 
-  }
-  }

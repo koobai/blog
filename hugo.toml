@@ -1,33 +1,45 @@
-baseURL = "https://koobai.com"
+baseURL = "https://koobai.com/" # 建议末尾带上斜杠，避免部分相对路径拼接问题
 languageCode = "zh-cn"
-theme = "jingzhe_2"
-themesDir = "themes"
 title = "空白Koobai"
-pygmentsCodeFences = true
-pygmentsCodefencesGuessSyntax = true
-pygmentsUseClasses = true
+theme = "jingzhe_2"
+
 enableRobotsTXT = true
 hasCJKLanguage = true
 
 [module]
   [module.hugoVersion]
     extended = true
-    min = "0.55.0"
+    min = "0.120.0"
 
 [permalinks]
   posts = '/:slug/'
 
-[params.artalk]
-    server="https://c.koobai.com"
-    site="Koobai 空白生活"
+# [自定义参数]
+[params]
+  # Artalk 评论系统配置
+  [params.artalk]
+    server = "https://c.koobai.com"
+    site = "Koobai 空白生活"
 
+# [内容渲染与处理] - 核心优化部分
 [markup]
+  # 语法高亮设置
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true    
+    lineNumbersInTable = true
+    noClasses = true      
+
+    style = "monokai"    
+  
   [markup.goldmark]
     [markup.goldmark.renderer]
       hardWraps = false
       unsafe = true
       xhtml = false
-
+      
+# [菜单配置]
 [menu]
   [[menu.main]]
     identifier = 'home'
@@ -35,6 +47,7 @@ hasCJKLanguage = true
     url = '/'
     weight = 1
     params = { umami_event = "Home" }
+  
   [[menu.main]]
     identifier = "Goods"
     name = "店铺"

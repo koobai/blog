@@ -1,12 +1,12 @@
 .header {
- /* 1. 基础定位 */
+  /* 1. 基础定位 */
   position: fixed;
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
 
-  width: 120px; 
+  width: 120px;
   height: 50px;
   max-width: 600px;
   padding: 5px 20px;
@@ -16,29 +16,47 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
+
   /* 视觉：液态玻璃质感 */
   background: rgba(242, 240, 235, 0.5);
   border-radius: 50px;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(20px) saturate(180%); 
+  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+
   @include breakpoint('medium') {
-  /* 强制固定宽度，不随窗口伸缩 */
-    width: 600px; 
+    /* 强制固定宽度，不随窗口伸缩 */
+    width: 600px;
     height: auto;
     padding: 20px 30px;
     bottom: 30px;
-  /* 仅在 PC 端渲染投影 */
+    /* 仅在 PC 端渲染投影 */
     box-shadow: 
-    0 0 1px rgba(0, 0, 0, 0.1),    /* 第一层：极细边框影，防止边缘锯齿 */
-    0 10px 30px rgba(0, 0, 0, 0.12); /* 第二层：主投影 */
-   /* 开启硬件加速 */
+      0 0 1px rgba(0, 0, 0, 0.1),    /* 第一层：极细边框影，防止边缘锯齿 */
+      0 10px 30px rgba(0, 0, 0, 0.12); /* 第二层：主投影 */
+    /* 开启硬件加速 */
     -webkit-transform: translateX(-50%) translateZ(0);
     transform: translateX(-50%) translateZ(0);
   }
+
+  // 暗黑模式内聚
+  @media (prefers-color-scheme: dark) {
+    background: rgba(85, 82, 78, 0.6);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+
+    @include breakpoint('medium') {
+      box-shadow: 
+        0 0 1px rgba(0, 0, 0, 0.5),    /* 边缘加固 */
+        0 12px 40px rgba(0, 0, 0, 0.3);
+      -webkit-transform: translateX(-50%) translateZ(0);
+      transform: translateX(-50%) translateZ(0);
+    }
+  }
 }
-.new-heard-menu{
+
+.new-heard-menu {
   display: none;
   @include breakpoint('medium') {
     display: flex;
@@ -47,39 +65,85 @@
     margin: 0;
   }
 }
+
 .menu-icon {
-    display: flex;
-    svg {
-     width: 28px;       /* 统一图标大小 */
-     height: 28px;
-    }
- }
-.header-menu a {
-  color: #444;
-  font-size: 0.8rem;
-  font-family: var(--font-family-paragraph);
   display: flex;
-  flex-direction: column; /* 核心：开启上下排列 */
-  align-items: center;    /* 居中对齐 */
-  gap: 4px;              /* 图标与文字的间距 */
- }
- .header-menu{
+  svg {
+    width: 28px; /* 统一图标大小 */
+    height: 28px;
+  }
+}
+
+.header-menu {
   display: flex;
   align-items: center;
- }
-.menu-current a{
-  color: var(--text-highlight-color);
-}
-.heard-right {
+
+  a {
+    color: #444;
+    font-size: 0.8rem;
+    font-family: var(--font-family-paragraph);
     display: flex;
-    grid-gap: 0; /* 中间空10px间距 */
-    align-items: center;
-    margin-left: auto;
-    @include breakpoint('medium') {
-      grid-gap: 20px; /* 中间空10px间距 */
+    flex-direction: column; /* 核心：开启上下排列 */
+    align-items: center; /* 居中对齐 */
+    gap: 4px; /* 图标与文字的间距 */
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--erji-color);
     }
- }
-.about-koobai img{
+  }
+}
+
+.menu-current {
+  .menu-icon svg {
+    transform: scale(1.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media (prefers-color-scheme: dark) {
+      /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+    }
+  }
+
+  a {
+    color: var(--text-highlight-color);
+    @media (prefers-color-scheme: dark) {
+      color: var(--text-highlight-dark-color);
+    }
+  }
+}
+
+.heard-right {
+  display: flex;
+  grid-gap: 0; /* 中间空10px间距 */
+  align-items: center;
+  margin-left: auto;
+  @include breakpoint('medium') {
+    grid-gap: 20px; /* 中间空10px间距 */
+  }
+
+  svg {
+    display: none;
+    @include breakpoint('medium') {
+      fill: var(--erji-color);
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    &:hover {
+      fill: var(--text-highlight-color);
+      @media (prefers-color-scheme: dark) {
+        fill: var(--text-highlight-dark-color);
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      fill: var(--erji-color);
+    }
+  }
+}
+
+.about-koobai img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -89,37 +153,22 @@
     height: 36px;
     display: block;
   }
-}
-.about-koobai img:hover{
-  opacity: 0.6;
-}
-.heard-right svg{
-  display: none;
-  @include breakpoint('medium') {
-    fill: var(--erji-color);
-    width: 20px;
-    height: 20px;
-    display: block;
-  }
- }
-.heard-right svg:hover{
-  fill: var(--text-highlight-color);
-}
-.menu-current{
-  .menu-icon svg {
-    transform: scale(1.1); 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    opacity: 0.6;
   }
 }
-//rss
+
+// rss
 .header-Rss {
   position: relative;
   display: inline-flex;
   cursor: pointer;
 }
+
 .rss-box {
   position: absolute;
-  bottom: 120%; 
+  bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 12px;
@@ -129,63 +178,41 @@
   background: rgba(85, 82, 78, 0.6);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 0.5px solid rgba(255,255,255,0.2);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
   transition: .2s ease-in-out;
   z-index: 100;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 100%; left: 0; width: 100%; height: 20px;
+  }
 }
-/* 填充间隙：高度随 bottom 调整即可 */
-.rss-box::before {
-  content: "";
-  position: absolute;
-  top: 100%; left: 0; width: 100%; height: 20px;
-}
+
 /* 悬停逻辑 */
 .header-Rss:hover .rss-box {
   opacity: 1;
   visibility: visible;
   bottom: 135%; /* 悬停时向上位移一点，代替之前的 translateY */
 }
+
 .footer-rss, .footer-rss a {
   font-size: 0.85rem;
   color: var(--element-background-color);
   text-decoration: none;
 }
+// 唠叨按钮
+.index-laodao {
+  font-size: 0.8rem;
+  @include breakpoint('medium') {
+    font-size: 1.2rem;
+    margin-left: 20px;
+  }
 
-// 夜间模式页面样式
-@media (prefers-color-scheme: dark) {
-.header {
-    background: rgba(85, 82, 78, 0.6);
-    backdrop-filter: blur(25px) saturate(200%); 
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 0.5px solid rgba(255, 255, 255, 0.2);
-    @include breakpoint('medium') {
-    box-shadow: 
-        0 0 1px rgba(0, 0, 0, 0.5),    /* 边缘加固 */
-        0 12px 40px rgba(0, 0, 0, 0.3);
-    /* 开启硬件加速 */
-    -webkit-transform: translateX(-50%) translateZ(0);
-    transform: translateX(-50%) translateZ(0);
-    }
-}
-  .header-menu a{
+  @media (prefers-color-scheme: dark) {
     color: var(--erji-color);
   }
-  .heard-right svg{
-    fill: var(--erji-color);
-  }
-  .heard-right svg:hover{
-    fill: var(--text-highlight-dark-color);
-  }
-  .menu-current a{
-    color: var(--text-highlight-dark-color);
-  }
-.menu-current{
-  .menu-icon svg {
-    /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
-  }
-}
 }

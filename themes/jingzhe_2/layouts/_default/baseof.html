@@ -4,22 +4,29 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>{{ block "title" . }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+  
+  <title>{{ block "title" . }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <link rel="manifest" href="/suju/ios.json">
   <link rel="icon" href="https://img.koobai.com/koobai.png">
-  <link href="/index.xml" title="{{ $.Site.Title }}" type="application/rss+xml">
+  
+  {{ with site.Home.OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+  {{ end }}
+  
   <link rel="canonical" href="{{ .Permalink }}" />
 
-  {{ if hugo.IsServer }}
-  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" true) }}
-  <link rel="stylesheet" href="{{ ($style).RelPermalink }}">
-  {{ else }}
-  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" false) }}
-  <link rel="stylesheet" href="{{ ($style | minify | fingerprint).RelPermalink }}">
+  {{ $options := dict "targetPath" "css/style.css" "enableSourceMap" hugo.IsServer }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS $options }}
+  {{ if not hugo.IsServer }}
+    {{ $style = $style | minify | fingerprint }}
   {{ end }}
+  
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
   {{ block "meta_tags" . }}
     {{ if .Params.description }}<meta name="description" content="{{ .Params.description }}"/>{{ end }}
@@ -34,22 +41,26 @@
 {{ $themeStyle := slice "" }}
 
 <body class='page{{ delimit $themeStyle " " }} {{ block "body_classes" . }}{{ end }}'>
+  
   {{ partial "menu-main-mobile.html" . }}
+  
   <div id="wrapper" class="wrapper">
     {{ partial "header.html" . }}
+    
     {{ block "main" . }}
     {{ end }}
   </div>
+  
   {{ partial "footer.html" . }}
+  
   {{ $scripts := resources.Get "js/scripts.js" }}
-
   {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
-
-  {{ if hugo.IsServer }}
-  <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
-  {{ else }}
-  <script type="text/javascript" src="{{ ($js | minify | fingerprint).RelPermalink }}"></script>
+  
+  {{ if not hugo.IsServer }}
+    {{ $js = $js | minify | fingerprint }}
   {{ end }}
+
+  <script src="{{ $js.RelPermalink }}"></script>
 
   {{ block "footer_js" . }}
   {{ end }} 

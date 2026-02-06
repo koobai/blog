@@ -4,6 +4,7 @@
 .posts-new {
   display: grid;
   gap: 30px;
+  
   @include breakpoint('medium') {
     gap: 40px;
   }
@@ -28,7 +29,7 @@
   -webkit-box-orient: vertical;
 }
 
-// 3. 描述 (整合了夜间模式)
+// 3. 描述
 .posts-description {
   line-height: 1.7;
   font-size: 1.1rem;
@@ -40,7 +41,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 
-  // 夜间模式内聚
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     color: var(--text-content-dark-color);
   }
@@ -51,25 +52,25 @@
   display: grid;
   gap: 15px;
   margin-top: 30px;
+  
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
-    // flex-wrap: wrap; // Grid 布局不需要 flex-wrap，已移除以净化代码
   }
 }
 
-// 首页可能用到的列表 (保留)
+// 首页可能用到的列表
 .posts_list_index {
   display: grid;
   gap: 12px;
   margin-bottom: 25px;
+  
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
-    // flex-wrap: wrap; 
     gap: 15px;
   }
 }
 
-// 文章卡片样式 (整合夜间模式)
+// 文章卡片样式
 .posts_list_article {
   border-radius: 16px;
   background: var(--element-background-color);
@@ -80,7 +81,7 @@
     padding: 12px;
   }
 
-  // 夜间模式
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     background: var(--background-dark-color);
   }
@@ -88,19 +89,19 @@
 
 // 首页带角标的文章卡片
 .posts_list_article-index {
-  position: relative; // 必须：作为角标定位的基准
+  position: relative;
   border-radius: 16px;
   background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px;
-  overflow: hidden; // 确保三角形角标不溢出圆角
+  overflow: hidden;
   margin-bottom: 15px;
 
   @include breakpoint('medium') {
     margin-bottom: 0;
   }
 
-  // 夜间模式
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     background: var(--background-dark-color);
   }
@@ -118,7 +119,7 @@
   padding: 4px 10px;
   background: var(--erji-color);
   color: var(--element-background-color);
-  border-bottom-left-radius: 10px; // 左下角加个圆角更精致
+  border-bottom-left-radius: 10px;
   z-index: 1;
 
   svg {
@@ -130,7 +131,7 @@
     display: none;
   }
 
-  // 夜间模式
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     background: var(--text-highlight-dark-color);
   }
@@ -145,6 +146,7 @@
 
 .post-biaoji-xinxi {
   display: none;
+  
   @include breakpoint('medium') {
     font-size: 0.8rem;
     background: var(--erji-color);
@@ -160,7 +162,7 @@
     }
   }
 
-  // 夜间模式
+  // 暗黑模式内聚 (需嵌套在 breakpoint 内部或外部均可，这里逻辑是 medium 下的颜色变化)
   @media (prefers-color-scheme: dark) {
     @include breakpoint('medium') {
       background: var(--text-highlight-dark-color);
@@ -169,13 +171,12 @@
   }
 }
 
-// 5. 图片区域 (重点优化：防抖动 + 手机端防误触)
+// 5. 图片区域
 .posts-img {
   margin: 10px 0;
   overflow: hidden;
   aspect-ratio: 5.3 / 3;
-  // 建议加上 border-radius 防止子元素溢出时圆角失效
-  border-radius: 16px; 
+  border-radius: 16px;
 
   img {
     width: 100%;
@@ -184,7 +185,6 @@
     transition: transform 0.3s ease;
     border-radius: 16px;
 
-    // 优化：仅在支持鼠标悬停的设备上启用放大
     @media (hover: hover) {
       &:hover {
         transform: scale(1.03);
@@ -223,12 +223,11 @@
     grid-gap: 20px;
   }
 
-  // 夜间模式
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     background: var(--background-dark-color);
   }
   
-  // 优化：嵌套 Hover 逻辑，且仅限鼠标设备
   @media (hover: hover) {
     &:hover .archive-img img {
       transform: scale(1.05);
@@ -251,14 +250,14 @@
   }
 }
 
-// 时间样式 (复用逻辑)
+// 时间样式
 .archive-time,
 .archive-time-index {
   font-size: 0.85rem;
   color: var(--sanji-color);
   font-family: var(--font-family-code);
   
-  // 夜间模式
+  // 暗黑模式内聚
   @media (prefers-color-scheme: dark) {
     color: var(--erji-color);
   }

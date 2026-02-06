@@ -2,10 +2,10 @@
 {{ define "main" }}
 <div class="tiaozhuan-all">
   <div class="tiaozhuan-nrong">
-    <div class="tiaozhuan-title">即将离开 {{ .Site.Title }}，跳转到以下外部链接</div>
+    <div class="tiaozhuan-title">即将离开 {{ site.Title }}，跳转到以下外部链接</div>
     <div id="tiaozhuan-link"></div> 
     <div class="tiaozhuan-info">请自行识别该链接是否安全，并保管好个人信息。</div>
-      <div class="tiaozhuan-button"><a href='' id='direct-link'>继续访问</a></div>
+      <div class="tiaozhuan-button"><a href='' id='direct-link' rel="noopener external nofollow noreferrer">继续访问</a></div>
   </div>
 </div>
 <script>
@@ -14,13 +14,12 @@
 
   if (encodedTarget) {
     try {
-        // 🛑 关键修改：先 atob 解 Base64，再 decodeURIComponent 解中文编码
-        // 这与 single.js 中的 btoa(encodeURIComponent(...)) 是成对的
+        // 先 atob 解 Base64，再 decodeURIComponent 解中文编码
         const target = decodeURIComponent(atob(encodedTarget));
         
         // 赋值链接和文本
         document.getElementById('direct-link').href = target;
-        // 使用 textContent 防止 XSS 攻击（只显示文本，不渲染 HTML）
+        // 使用 textContent 防止 XSS 攻击
         document.getElementById('tiaozhuan-link').textContent = target; 
     } catch (e) {
         console.error('链接解析失败:', e);
