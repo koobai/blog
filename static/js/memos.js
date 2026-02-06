@@ -446,7 +446,7 @@
         const items = rels.map(r => {
             const rId = (r.name || r.id || '').split('/').pop();
             const rContent = r.snippet || r.content || `Memo ${rId}`;
-            return `<a href="${CONFIG.memos}memos/${rId}" target="_blank" class="memo-relation-item"><span class="memo-relation-content text-sm">${rContent}</span></a>`;
+            return `<a href="?memo=${rId}" target="_blank" class="memo-relation-item"><span class="memo-relation-content text-sm">${rContent}</span></a>`;
         }).join('');
         return `<div class="memo-relation-wrapper"><div class="memo-relation-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>${label} (${rels.length})</div>${items}</div>`;
     }
