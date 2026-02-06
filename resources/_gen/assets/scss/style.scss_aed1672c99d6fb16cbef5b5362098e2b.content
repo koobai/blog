@@ -1967,13 +1967,13 @@ blockquote p {
 .memos-edit:hover .memos-menu-d {
   display: block; }
 
-.edit-btn, .archive-btn, .delete-btn {
+.edit-btn, .archive-btn, .delete-btn, .pinned-edit {
   cursor: pointer;
   line-height: 1.8;
   color: var(--sanji-color);
   font-size: 0.85rem; }
 
-.edit-btn:hover, .archive-btn:hover, .delete-btn:hover {
+.edit-btn:hover, .archive-btn:hover, .delete-btn:hover, .pinned-edit:hover {
   text-decoration: underline; }
 
 .delete-btn {
@@ -2086,7 +2086,7 @@ blockquote p {
   .memos-open-api-submit {
     background: var(--background-dark-color) !important;
     color: var(--text-highlight-dark-color) !important; }
-  .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn {
+  .edit-btn, .archive-btn, .delete-btn, .cancel-edit-btn, .pinned-edit {
     color: var(--erji-color); }
   .memos-menu-d, .memos-img-edit {
     background-color: #282527; }

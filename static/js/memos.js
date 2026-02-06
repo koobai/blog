@@ -1,4 +1,4 @@
-// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26+ (API v1) / 20260205 / koobai.com
+// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26+ (API v1) / 20260206 / koobai.com
 (function() {
     'use strict';
 
@@ -19,7 +19,7 @@
     // ============================================================
     const lsPath = window.localStorage?.getItem("memos-access-path");
     const lsToken = window.localStorage?.getItem("memos-access-token");
-    const defaultMemos = 'https://memos.koobai.com';
+    const defaultMemos = 'https://memos.koobai.com/';
 
     // 优化 3: normalizeUrl 内联
     const baseMemos = (lsPath || defaultMemos).replace(/\/?$/, '/');
@@ -64,6 +64,7 @@
         'tag-reset': () => reloadList(),
         'load-artalk': (t) => handleLoadArtalk(t.dataset.id),
         'edit': (t) => handleEditMemo(t),
+        'pin': (t) => handlePinMemo(t.dataset.id, t.dataset.pinned === 'true'),
         'archive': (t) => handleArchiveMemo(t.dataset.id),
         'delete': (t) => handleDeleteMemo(t.dataset.id),
         'delete-image': (t) => handleDeleteImage(t, t.dataset.id),
@@ -297,7 +298,16 @@
             cocoMessage.success(successMsg);
         }
     }
-
+    //置顶功能状态提示
+    function handlePinMemo(id, isPinned) {
+        const targetStatus = !isPinned;
+        performAction(
+            `api/v1/memos/${id}?updateMask=pinned`, 
+            'PATCH', 
+            { pinned: targetStatus }, 
+            targetStatus ? '置顶成功' : '已取消置顶'
+        );
+    }
     function handleArchiveMemo(id) {
         performAction(`api/v1/memos/${id}?updateMask=state`, 'PATCH', { state: "ARCHIVED" }, '归档成功');
     }
@@ -387,7 +397,7 @@
                 
                 bbDom.insertAdjacentHTML('afterend', `
                     <div class="bb-load">
-                        <button class="load-btn" onclick="location.href='${location.origin}${location.pathname}'"> ← 查看全部唠叨</button>
+                        <button class="load-btn" onclick="location.href='${location.origin}${location.pathname}'">看全部唠叨...</button>
                     </div>
                 `);
                 
@@ -471,7 +481,16 @@
             }
 
             const footer = (['PUBLIC', 'PROTECTED'].includes(item.visibility)) ? `<div class="talks_comments"><a data-action="load-artalk" data-id="${item.id}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"/><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"/></svg><span id="btn_memo_${item.id}"></span></a></div>` : `<div class="memos-hide" data-action="reload-private"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1.68 4.206C2.652 6.015 4.67 7.258 7 7.258c2.331 0 4.348-1.243 5.322-3.052M2.75 5.596L.5 7.481m4.916-.415L4.333 9.794m6.917-4.198l2.25 1.885m-4.92-.415l1.083 2.728"/></svg></div>`;
-            const editMenu = canEdit ? `<div class="memos-edit"><div class="memos-menu">...</div><div class="memos-menu-d"><div class="edit-btn" data-action="edit" data-form="${encodeURIComponent(JSON.stringify(item))}">修改</div><div class="archive-btn" data-action="archive" data-id="${item.id}">归档</div><div class="delete-btn" data-action="delete" data-id="${item.id}">删除</div></div></div>` : '';
+            const editMenu = canEdit ? `
+            <div class="memos-edit">
+                <div class="memos-menu">...</div>
+                <div class="memos-menu-d">
+                    <div class="pinned-edit" data-action="pin" data-id="${item.id}" data-pinned="${item.pinned}">${item.pinned ? '取消' : '置顶'}</div>
+                    <div class="edit-btn" data-action="edit" data-form="${encodeURIComponent(JSON.stringify(item))}">修改</div>
+                    <div class="archive-btn" data-action="archive" data-id="${item.id}">归档</div>
+                    <div class="delete-btn" data-action="delete" data-id="${item.id}">删除</div>
+                </div>
+            </div>` : '';
             const timeStr = typeof moment !== 'undefined' ? moment(item.createdTs * 1000).twitterLong() : new Date(item.createdTs * 1000).toLocaleString();
 
             let pinIcon = '';
