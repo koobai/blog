@@ -7,7 +7,7 @@
     margin-bottom: 160px;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-body-color);
     border-top: solid var(--background-dark-color) 0.5px;
     box-sizing: border-box;
@@ -19,7 +19,7 @@
   border-top: 0.5px solid #e7e1de;
   text-align: center;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     border-top: 0px solid #231e20;
   }
 }
@@ -29,7 +29,7 @@
   line-height: 1.6em;
   color: #a7a7a7;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }
@@ -50,13 +50,13 @@
   background: #ffffff;
   position: relative; /* 设置相对定位 */
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 
   &:hover {
     background: #ededed;
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background: var(--text-highlight-color);
     }
   }
@@ -70,7 +70,7 @@
     width: 16px;
     height: 16px;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       fill: var(--text-content-dark-color);
     }
   }

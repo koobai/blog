@@ -8,7 +8,7 @@
 
   width: 120px;
   height: 50px;
-  max-width: 600px;
+  max-width: 620px;
   padding: 5px 20px;
   align-items: center;
 
@@ -26,7 +26,7 @@
 
   @include breakpoint('medium') {
     /* 强制固定宽度，不随窗口伸缩 */
-    width: 600px;
+    width: 620px;
     height: auto;
     padding: 20px 30px;
     bottom: 30px;
@@ -40,7 +40,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: rgba(85, 82, 78, 0.6);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
@@ -87,7 +87,7 @@
     align-items: center; /* 居中对齐 */
     gap: 4px; /* 图标与文字的间距 */
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--erji-color);
     }
   }
@@ -98,7 +98,7 @@
     transform: scale(1.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
       filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
     }
@@ -106,7 +106,7 @@
 
   a {
     color: var(--text-highlight-color);
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-highlight-dark-color);
     }
   }
@@ -114,13 +114,12 @@
 
 .heard-right {
   display: flex;
-  grid-gap: 0; /* 中间空10px间距 */
+  grid-gap: 0; 
   align-items: center;
   margin-left: auto;
   @include breakpoint('medium') {
-    grid-gap: 20px; /* 中间空10px间距 */
+    grid-gap: 16px; 
   }
-
   svg {
     display: none;
     @include breakpoint('medium') {
@@ -129,20 +128,17 @@
       height: 20px;
       display: block;
     }
-
-    &:hover {
-      fill: var(--text-highlight-color);
-      @media (prefers-color-scheme: dark) {
-        fill: var(--text-highlight-dark-color);
-      }
-    }
-
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       fill: var(--erji-color);
     }
   }
 }
-
+.githuab{
+  transition: opacity .3s ease-in-out;
+    &:hover {
+    opacity: 0.6;
+  }
+}
 .about-koobai img {
   width: 32px;
   height: 32px;
@@ -168,35 +164,38 @@
 
 .rss-box {
   position: absolute;
-  bottom: 120%;
+  bottom: 120%; 
   left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 12px;
-  border-radius: 20px;
+  transform: translateX(-50%) translateY(10px);
+  padding: 8px;
+  border-radius: 12px;
   white-space: nowrap;
-  /* 核心视觉样式合并 */
-  background: rgba(85, 82, 78, 0.6);
+  background: rgba(85, 82, 78, 0.8);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 0.5px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
   opacity: 0;
   visibility: hidden;
-  transition: .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   z-index: 100;
-
+  pointer-events: none;
   &::before {
     content: "";
     position: absolute;
-    top: 100%; left: 0; width: 100%; height: 20px;
+    top: 100%; 
+    left: 0; 
+    width: 100%; 
+    height: 30px;
   }
 }
 
-/* 悬停逻辑 */
 .header-Rss:hover .rss-box {
   opacity: 1;
   visibility: visible;
-  bottom: 135%; /* 悬停时向上位移一点，代替之前的 translateY */
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 
 .footer-rss, .footer-rss a {
@@ -204,6 +203,25 @@
   color: var(--element-background-color);
   text-decoration: none;
 }
+
+// 主题切换
+.theme-toggle svg{
+  color: var(--erji-color);
+}
+.theme-item {
+  display: block; 
+  padding: 3px 6px;
+  transition: all 0.2s;
+  &:hover {
+    text-decoration: underline;
+  }
+  // 当前激活状态高亮
+  &.active {
+    color: var(--text-highlight-dark-color);
+    font-weight: bold; 
+  }
+}
+
 // 唠叨按钮
 .index-laodao {
   font-size: 0.8rem;
@@ -212,7 +230,7 @@
     margin-left: 20px;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }

@@ -8,7 +8,7 @@
   --at-color-meta: #999 !important;
   --at-color-border: #DDD !important;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     --at-color-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0), #242021) !important;
     --at-color-bg: var(--background-dark-color) !important;
     --at-color-border: #332D2F !important;
@@ -18,7 +18,7 @@
   }
 
   &.atk-dark-mode {
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       --at-color-grey: var(--erji-color) !important;
     }
   }
@@ -39,7 +39,7 @@
 .atk-list-read-more {
   padding-bottom: 0px !important;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     border-top: 1px dashed #67534c !important;
     .atk-list-read-more-inner {
       background: #67534c !important;
@@ -49,7 +49,7 @@
 }
 .atk-comment>.atk-main>.atk-header .atk-item{
   color: var(--sanji-color);
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color) !important;
     }
 }
@@ -61,7 +61,7 @@
 
     > .atk-header {
       margin-bottom: 0px !important;
-      @media (prefers-color-scheme: dark) {
+      @include dark {
         color: var(--text-content-dark-color) !important;
       }
     }
@@ -71,7 +71,7 @@
     }
 
     > .atk-footer .atk-actions > span {
-      @media (prefers-color-scheme: dark) {
+      @include dark {
         color: var(--erji-color) !important;
       }
       &:hover {
@@ -91,7 +91,7 @@
   p {
     font-size: 1rem !important;
     color: var(--text-content-color) !important;
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-content-dark-color) !important;
     }
   }
@@ -104,7 +104,7 @@
     margin-top: -4px !important;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color) !important;
   }
 }
@@ -132,7 +132,7 @@
   min-height: 70px !important;
   padding: 10px !important;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color) !important;
     font-size: 15px;
     background: transparent !important;
@@ -146,20 +146,20 @@
   color: var(--text-content-color) !important;
   font-weight: bold;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color) !important;
   }
 
   a {
     color: #999 !important;
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--erji-color) !important;
     }
   }
 }
 
 .atk-item.atk-reply-at > .atk-nick {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color) !important;
   }
 }
@@ -168,7 +168,7 @@
   color: #999 !important;
   background: var(--frame-color) !important;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: #666 !important;
     background: var(--background-dark-color) !important;
   }
@@ -180,7 +180,7 @@
 
 .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
   color: #999 !important;
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color) !important;
   }
 }
@@ -200,7 +200,7 @@
     opacity: 0.7;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     border: 0.5px solid var(--text-highlight-dark-color) !important;
     color: var(--text-highlight-dark-color) !important;
   }
@@ -228,7 +228,7 @@
 
 .atk-pinned-badge {
   background: #999 !important;
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color) !important;
     background: #666 !important;
   }
@@ -240,7 +240,7 @@
 
 .atk-reply-to {
   border-left: 3px solid #FFF !important;
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     border-left: 3px solid #242021 !important;
   }
 }
@@ -262,7 +262,7 @@ img[atk-emoticon] {
   border-radius: 16px !important;
   background: transparent !important;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: transparent !important;
     border: 1px solid #8C847E !important;
   }
@@ -272,7 +272,7 @@ img[atk-emoticon] {
     @media (max-width: 700px) {
       display: block !important;
     }
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       input::placeholder {
         color: var(--erji-color) !important;
       }
@@ -289,12 +289,12 @@ img[atk-emoticon] {
   }
 
   > .atk-bottom .atk-state-btn {
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background: var(--background-dark-color) !important;
     }
     .atk-text-wrap {
       color: #999;
-      @media (prefers-color-scheme: dark) {
+      @include dark {
         color: #666;
       }
     }
@@ -309,7 +309,7 @@ img[atk-emoticon] {
 }
 
 .pinglun {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
@@ -331,7 +331,7 @@ img[atk-emoticon] {
     transition: opacity .3s ease-in-out;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-highlight-dark-color) !important;
     border: 0.5px solid var(--text-highlight-dark-color) !important;
   }

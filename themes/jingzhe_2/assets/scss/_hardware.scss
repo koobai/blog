@@ -34,7 +34,7 @@
     text-decoration: none;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 }
@@ -44,7 +44,7 @@
   color: var(--sanji-color);
   margin-top: 20px;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }
@@ -63,7 +63,7 @@
     &:hover {
       text-decoration: underline;
     }
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-content-dark-color);
     }
   }
@@ -102,7 +102,7 @@
     display: none;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-highlight-dark-color);
     border: 0.5px solid var(--text-highlight-dark-color);
   }
@@ -126,7 +126,7 @@
     transition: opacity 0.4s ease;
     border-radius: 16px 16px 0 0;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-content-dark-color);
       background: rgba(125, 117, 108, 0.5);
       backdrop-filter: blur(25px) saturate(200%);
@@ -150,7 +150,7 @@
   overflow: hidden; /* 防止图片圆角溢出 */
   padding: 30px; /* 给文字留出呼吸空间 */
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: transparent !important;
   }
 
@@ -202,7 +202,7 @@
       color: #fff;
     }
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-content-dark-color);
       a {
         color: var(--text-content-dark-color);
@@ -228,7 +228,7 @@
       font-size: 0.9rem;
     }
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-content-dark-color);
     }
   }

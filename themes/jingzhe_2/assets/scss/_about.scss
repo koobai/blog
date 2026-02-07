@@ -40,7 +40,7 @@
 
   a {
     color: var(--text-highlight-color);
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-highlight-dark-color);
     }
   }

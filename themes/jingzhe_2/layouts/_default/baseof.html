@@ -26,6 +26,12 @@
     {{ $style = $style | minify | fingerprint }}
   {{ end }}
   
+  {{ $themeJs := resources.Get "js/theme.js" }}
+  {{ if not hugo.IsServer }}
+    {{ $themeJs = $themeJs | minify | fingerprint }}
+  {{ end }}
+  <script src="{{ $themeJs.RelPermalink }}"></script>
+
   <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
   {{ block "meta_tags" . }}
@@ -50,8 +56,7 @@
     {{ end }}
   </div>
   {{ partialCached "footer.html" . }}
-  {{ $scripts := resources.Get "js/scripts.js" }}
-  {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
+  {{ $js := resources.Get "js/scripts.js" }}
   
   {{ if not hugo.IsServer }}
     {{ $js = $js | minify | fingerprint }}

@@ -23,7 +23,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center / cover;
     color: #acacac;
   }
@@ -44,7 +44,7 @@
   line-height: 1.4;
   margin-bottom: 4px;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: #ddd;
   }
 }

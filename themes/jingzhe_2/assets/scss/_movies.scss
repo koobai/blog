@@ -19,7 +19,7 @@
   box-shadow: var(--touy-color);
   padding: 15px;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 
@@ -33,7 +33,7 @@
     line-height: 0;
     background: transparent;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background: transparent;
     }
   }
@@ -77,7 +77,7 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
@@ -87,7 +87,7 @@
   margin-top: 5px;
   color: var(--sanji-color);
   
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }
@@ -246,7 +246,7 @@
     opacity: 0.8;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-highlight-dark-color);
     border-color: var(--text-highlight-dark-color);
   }

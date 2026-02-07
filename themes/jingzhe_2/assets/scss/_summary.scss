@@ -15,7 +15,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 }
@@ -27,7 +27,7 @@
   margin-top: 6px;
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color) !important;
   }
 }
@@ -50,7 +50,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: #b7b7ab;
   }
 }
