@@ -145,3 +145,7 @@ img {
     transition: none !important;
   }
 }
+//首页默认隐藏footer
+.page-home .footer-background {
+    display: none;
+}
