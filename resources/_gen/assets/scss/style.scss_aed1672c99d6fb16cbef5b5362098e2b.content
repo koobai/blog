@@ -1503,41 +1503,41 @@ html[data-theme='dark'] .apptitle a {
     .movies_bankuai:hover img {
       transform: scale(1.05); } }
 .movies-nrong {
-  display: none; }
-  @media (min-width: 700px) {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: 15px;
+  color: #fff;
+  font-size: 0.85rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  opacity: 1;
+  backdrop-filter: none;
+  transition: all 0.3s ease;
+  will-change: opacity, transform; }
+  .movies-nrong .movie-info, .movies-nrong .movie-time {
+    display: none; }
+  .movies-nrong .movie-title, .movies-nrong .movie-pfeng {
+    margin: 2px 0; }
+  @media (hover: hover) {
     .movies-nrong {
-      display: flex;
-      flex-direction: column;
       justify-content: center;
-      padding: 20px;
-      color: #fff;
-      font-size: 0.85rem;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(2px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      will-change: opacity, transform; } }
-  @media (min-width: 700px) and (hover: hover) {
-    .movies_bankuai:hover .movies-nrong {
-      opacity: 1; }
-      .movies_bankuai:hover .movies-nrong > div {
-        transform: translateY(0); } }
-  @media (min-width: 700px) and (hover: none) {
-    .movies-nrong {
-      opacity: 1 !important;
-      justify-content: flex-end;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
-      backdrop-filter: none;
-      padding-bottom: 15px; }
+      opacity: 0; }
       .movies-nrong .movie-info, .movies-nrong .movie-time {
-        display: none !important; }
+        display: block; }
       .movies-nrong .movie-title, .movies-nrong .movie-pfeng {
-        margin: 2px 0; } }
+        margin: 6px 0; }
+      .movies_bankuai:hover .movies-nrong {
+        opacity: 1; }
+        .movies_bankuai:hover .movies-nrong > div {
+          transform: translateY(0); } }
 .movie-time {
   color: #ddd;
   margin-top: 7px;

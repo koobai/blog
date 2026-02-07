@@ -129,50 +129,45 @@
   }
 }
 
-// --- 遮罩层内容 (核心交互优化) ---
+// --- 遮罩层内容 (核心交互优化 - 全端适配版) ---
 .movies-nrong {
-  display: none;
-
-  @include breakpoint('small') {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    color: #fff;
-    font-size: 0.85rem;
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
-
-    opacity: 0;
-    transition: all 0.3s ease;
-    will-change: opacity, transform;
-
-    // 场景A：电脑端 (鼠标悬停显示)
-    @media (hover: hover) {
-      .movies_bankuai:hover & {
-        opacity: 1;
-        & > div { transform: translateY(0); }
-      }
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  justify-content: flex-end; 
+  padding: 20px;
+  padding-bottom: 15px;
+  color: #fff;
+  font-size: 0.85rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+  opacity: 1; 
+  backdrop-filter: none;
+  transition: all 0.3s ease;
+  will-change: opacity, transform;
+  // 手机/触屏端默认隐藏简介，只留标题评分，保持清爽
+  .movie-info, .movie-time {
+    display: none;
+  }
+  .movie-title, .movie-pfeng {
+    margin: 2px 0;
+  }
+  // 3. PC 端适配 (仅针对支持鼠标悬停的设备)
+  @media (hover: hover) {
+    justify-content: center; 
+    background: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(2px); 
+    opacity: 0; 
+    .movie-info, .movie-time {
+      display: block; 
     }
-
-    // 场景B：触屏端 (手机/平板) - 底部常驻
-    @media (hover: none) {
-      opacity: 1 !important;
-      justify-content: flex-end;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-      backdrop-filter: none;
-      padding-bottom: 15px;
-
-      // 手机端隐藏简介
-      .movie-info, .movie-time {
-        display: none !important;
-      }
-      .movie-title, .movie-pfeng {
-        margin: 2px 0;
-      }
+    .movie-title, .movie-pfeng {
+      margin: 6px 0;
+    }
+    // 悬停触发显示
+    .movies_bankuai:hover & {
+      opacity: 1;
+      & > div { transform: translateY(0); }
     }
   }
 }
