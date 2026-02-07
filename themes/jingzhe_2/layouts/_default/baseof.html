@@ -42,17 +42,14 @@
 
 <body class='page{{ delimit $themeStyle " " }} {{ block "body_classes" . }}{{ end }}'>
   
-  {{ partial "menu-main-mobile.html" . }}
+  {{ partialCached "menu-main-mobile.html" . }}
   
   <div id="wrapper" class="wrapper">
-    {{ partial "header.html" . }}
-    
+    {{ partial "header.html" . }}   
     {{ block "main" . }}
     {{ end }}
   </div>
-  
-  {{ partial "footer.html" . }}
-  
+  {{ partialCached "footer.html" . }}
   {{ $scripts := resources.Get "js/scripts.js" }}
   {{ $js := slice $scripts | resources.Concat "js/bundle.js" }}
   
