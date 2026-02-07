@@ -1,5 +1,5 @@
 {{ define "body_classes" }}page-home{{ end }}
-
+{{ define "title" }}{{ site.Title }}{{ end }}
 {{ define "main" }}
 <div id="temp-posts-data" style="display:none;">
   {{ $posts := first 4 (where site.RegularPages "Type" "posts") }}
