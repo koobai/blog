@@ -44,7 +44,7 @@
       </div>
     {{ end }}
     
-    {{/* 下一篇 或 随机推荐 */}}
+    {{/* 下一篇 或 智能推荐 */}}
     {{ with .NextInSection }}
       <div class="archives_one">
         <div>
@@ -58,10 +58,12 @@
         {{ end }}
       </div>
     {{ else }}
-      {{ $pages := where site.RegularPages "Type" "posts" }}
-      {{ $pages = where $pages "Permalink" "ne" .Permalink }}
-      {{ with first 1 ($pages | shuffle) }}
-        {{ range . }}
+      {{ $related := .Site.RegularPages.Related . | first 1 }}
+      {{ if eq (len $related) 0 }}
+         {{ $related = first 1 (where (where site.RegularPages "Type" "posts") "Permalink" "ne" .Permalink | shuffle) }}
+      {{ end }}
+
+      {{ range $related }}
         <div class="archives_one">
           <div>
             <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
@@ -73,7 +75,6 @@
           </div>
           {{ end }}
         </div>
-        {{ end }}
       {{ end }}
     {{ end }}
 
