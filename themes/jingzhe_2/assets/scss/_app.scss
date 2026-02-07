@@ -188,7 +188,7 @@
     position: static;
     display: block;
     opacity: 1;
-    background: transparent;
+    background: none !important;
     padding: 0;
     color: var(--element-background-color);
     line-height: 1.6;
