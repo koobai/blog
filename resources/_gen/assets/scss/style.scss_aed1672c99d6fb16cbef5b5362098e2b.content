@@ -331,9 +331,6 @@ ol, ul {
     html[data-theme='dark'] .gotop svg {
       fill: var(--text-content-dark-color); }
 
-.youpaiyun {
-  margin: 0 4px 0 4px; }
-
 @media (max-width: 1200px) {
   .gotop_hide {
     display: none; } }
