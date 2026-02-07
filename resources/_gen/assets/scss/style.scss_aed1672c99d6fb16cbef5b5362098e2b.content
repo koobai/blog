@@ -3174,5 +3174,7 @@ html[data-theme='dark'] img {
       opacity: 1 !important;
       transform: none !important;
       transition: none !important; } }
+.page-home .footer-background {
+  display: none; }
 
 /*# sourceMappingURL=style.css.map */
