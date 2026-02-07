@@ -4,6 +4,10 @@
     const key = 'theme';
 
     const apply = (mode, save = false) => {
+       const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+       const isDarkMode = mode === 'dark' || (mode === 'auto' && isSystemDark);
+       root.classList.toggle('dark', isDarkMode);
+
         mode === 'auto' ? root.removeAttribute('data-theme') : root.setAttribute('data-theme', mode);
 
         if (save) {
