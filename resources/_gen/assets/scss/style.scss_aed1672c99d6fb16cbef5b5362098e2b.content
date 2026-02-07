@@ -1686,7 +1686,10 @@ html[data-theme='dark'] .apptitle a {
 .memos_diaoyong_laiz,
 .memos_diaoyong_more {
   color: var(--sanji-color);
-  font-size: 0.85rem; }
+  font-size: 0.85rem;
+  display: flex;
+  gap: 2px;
+  align-items: center; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos_diaoyong_time, html:not([data-theme='light']) .memos_diaoyong_laiz, html:not([data-theme='light']) .memos_diaoyong_more {
       color: var(--erji-color); } }
@@ -2308,7 +2311,10 @@ blockquote p {
   html[data-theme='dark'] .memos-oneday {
     background: var(--background-dark-color); }
   .memos-oneday .memos_diaoyong_time {
-    color: var(--text-highlight-color); }
+    color: var(--text-highlight-color);
+    display: flex;
+    gap: 2px;
+    align-items: center; }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme='light']) .memos-oneday .memos_diaoyong_time {
         color: var(--text-highlight-dark-color); } }
@@ -2503,7 +2509,9 @@ blockquote p {
   font-size: 0.85rem;
   padding: 0 2px;
   align-items: center;
-  color: var(--text-highlight-color); }
+  color: var(--text-highlight-color);
+  display: inline-flex;
+  align-items: center; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .pinned {
       color: var(--text-highlight-dark-color); } }
@@ -2511,7 +2519,8 @@ blockquote p {
     color: var(--text-highlight-dark-color); }
   .pinned svg {
     width: 14px;
-    height: 14px; }
+    height: 14px;
+    margin-right: 1px; }
 
 .about-img {
   position: relative;

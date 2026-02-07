@@ -97,7 +97,9 @@
 .memos_diaoyong_more {
   color: var(--sanji-color);
   font-size: 0.85rem;
-
+  display: flex;
+  gap: 2px;
+  align-items: center;
   @include dark {
     color: var(--erji-color);
   }
@@ -810,6 +812,9 @@ blockquote p {
 
   .memos_diaoyong_time {
     color: var(--text-highlight-color);
+    display: flex;
+    gap: 2px;
+    align-items: center;
     @include dark {
       color: var(--text-highlight-dark-color);
     }
@@ -1035,6 +1040,8 @@ blockquote p {
   padding: 0 2px;
   align-items: center;
   color: var(--text-highlight-color);
+  display: inline-flex;
+  align-items: center;
 
   @include dark {
     color: var(--text-highlight-dark-color);
@@ -1043,5 +1050,6 @@ blockquote p {
   svg {
     width: 14px;
     height: 14px;
+    margin-right: 1px;
   }
 }
