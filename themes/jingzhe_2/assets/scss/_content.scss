@@ -76,7 +76,7 @@ ol, ul {
 
   strong {
     color: var(--text-highlight-color);
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-highlight-dark-color);
     }
   }
@@ -88,7 +88,7 @@ ol, ul {
     letter-spacing: 0.5px;
     color: var(--text-highlight-color);
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: var(--text-highlight-dark-color);
     }
   }
@@ -210,7 +210,7 @@ ol, ul {
       margin-top: 10px;
       a { 
         color: #999;
-        @media (prefers-color-scheme: dark) { color: var(--erji-color); }
+        @include dark { color: var(--erji-color); }
       }
     }
   }
@@ -227,7 +227,7 @@ ol, ul {
     color: #666;
     font-size: 0.85rem;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       color: #999; 
     }
     
@@ -239,7 +239,7 @@ ol, ul {
         background-color: var(--text-highlight-color); 
       }
 
-      @media (prefers-color-scheme: dark) {
+      @include dark {
         color: var(--text-highlight-dark-color);
         &:before { background-color: var(--text-highlight-dark-color); }
       }
@@ -256,14 +256,14 @@ ol, ul {
     position: absolute;
     left: 0;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background-color: #6b6063;
     }
   }
   
   li li > a:before {
     width: 10px; 
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background-color: var(--erji-color);
     }
   }
@@ -313,7 +313,7 @@ ol, ul {
     }
 
     // 暗黑模式内聚
-    @media (prefers-color-scheme: dark) {
+    @include dark {
       background: rgba(85, 82, 78, 0.6);
       backdrop-filter: blur(25px) saturate(200%); 
       -webkit-backdrop-filter: blur(25px) saturate(200%);

@@ -60,7 +60,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--text-highlight-dark-color);
   }
 }
@@ -128,7 +128,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-highlight-dark-color);
   }
 }

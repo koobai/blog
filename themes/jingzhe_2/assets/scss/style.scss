@@ -66,7 +66,7 @@ body {
   }
 
   // 暗黑模式内嵌
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-body-color);
     color: var(--text-content-dark-color);
   }
@@ -90,7 +90,7 @@ body {
 ::selection {
   background: #f7dcd0;
   
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: #6A635B;
   }
 }
@@ -98,31 +98,31 @@ body {
 // --- 全局基础标签样式优化 (内聚模式) ---
 
 p {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
 
 h1, h2 {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: #CCCCCC;
   }
 }
 
 h3 {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: #FFF;
   }
 }
 
 a {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
 
 img {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     filter: brightness(0.8) contrast(1.2);
   }
 }

@@ -8,7 +8,7 @@
   text-align: center;
   color: #666;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }
@@ -40,7 +40,7 @@
     opacity: 1;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 }
@@ -80,14 +80,14 @@
     transition: opacity 0.3s ease;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
     color: var(--text-content-dark-color);
   }
 }
 
 .apptitle a {
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
@@ -117,7 +117,7 @@
 .kaiyuan {
   color: var(--text-highlight-color);
   border: 0.5px solid var(--text-highlight-color);
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
     border-color: var(--erji-color);
   }
@@ -126,7 +126,7 @@
 .shoufei {
   color: #0774e0;
   border: 0.5px solid #0774e0;
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
     border-color: var(--erji-color);
   }
@@ -135,7 +135,7 @@
 .free {
   color: #11a173;
   border: 0.5px solid #11a173;
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
     border-color: var(--erji-color);
   }
@@ -155,7 +155,7 @@
   align-items: flex-start;
   overflow: hidden;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: transparent !important;
   }
 

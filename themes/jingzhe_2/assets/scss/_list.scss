@@ -42,7 +42,7 @@
   -webkit-box-orient: vertical;
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--text-content-dark-color);
   }
 }
@@ -82,7 +82,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 }
@@ -102,7 +102,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
 }
@@ -132,7 +132,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--text-highlight-dark-color);
   }
 }
@@ -163,7 +163,7 @@
   }
 
   // 暗黑模式内聚 (需嵌套在 breakpoint 内部或外部均可，这里逻辑是 medium 下的颜色变化)
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     @include breakpoint('medium') {
       background: var(--text-highlight-dark-color);
       color: #fff;
@@ -224,7 +224,7 @@
   }
 
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     background: var(--background-dark-color);
   }
   
@@ -258,7 +258,7 @@
   font-family: var(--font-family-code);
   
   // 暗黑模式内聚
-  @media (prefers-color-scheme: dark) {
+  @include dark {
     color: var(--erji-color);
   }
 }
