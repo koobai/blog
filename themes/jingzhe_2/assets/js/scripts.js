@@ -101,41 +101,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = document.getElementById('unified-search-list');
     if (!input || !list) return;
 
-    // 配置与状态
-    const MEMOS_API = `https://memos.koobai.com/api/v1/memos?parent=users/1&pageSize=1000`;
+    // 配置
+    const MEMOS_BASE_URL = `https://memos.koobai.com/api/v1/memos?parent=users/1`;
     let db = { blog: [], memos: [] }, loaded = false, timer;
 
-    // 通用清洗函数：去Markdown、去HTML、转纯文本
+    // 通用清洗函数
     const clean = (s) => (s || '').replace(/!\[.*?\]\(.*?\)/g, '[图片]').replace(/\[(.*?)\]\(.*?\)/g, '$1').replace(/[#*`]/g, '').replace(/<[^>]+>/g, '').trim();
     
     // 通用格式化时间
     const fmtDate = (ts) => typeof window.formatDate === 'function' ? window.formatDate(ts) : new Date(ts * 1000).toLocaleDateString();
 
+    // --- 新增：专门用于循环拉取所有 Memos 的函数 ---
+    const fetchAllMemos = async () => {
+        let allMemos = [];
+        let pageToken = '';
+        
+        // 循环直到没有下一页
+        do {
+            // 每次只取 200 条，更稳妥，不容易被后端截断
+            const url = `${MEMOS_BASE_URL}&pageSize=200${pageToken ? `&pageToken=${pageToken}` : ''}`;
+            const res = await fetch(url).then(r => r.json());
+            
+            if (res.memos) {
+                // 前端双重过滤：确保只收录 PUBLIC 状态的
+                const publicMemos = res.memos.filter(m => m.visibility === 'PUBLIC');
+                allMemos = allMemos.concat(publicMemos);
+            }
+            
+            pageToken = res.nextPageToken; // 获取下一页标记
+        } while (pageToken);
+
+        return allMemos;
+    };
+
     // 1. 核心：加载并标准化数据
     const load = async () => {
         if (loaded) return;
+        
         try {
+            // 并行加载：文章(一次性) + 动态(循环分页)
             const [bRes, mRes] = await Promise.allSettled([
                 fetch('/index.json').then(r => r.json()),
-                fetch(MEMOS_API).then(r => r.json())
+                fetchAllMemos() // 调用上面的新函数
             ]);
 
             // 标准化 Blog 数据
-            if (bRes.value) db.blog = bRes.value.map(x => ({
-                title: x.title,
-                link: x.permalink,
-                _txt: clean(x.title + x.content) 
-            }));
+            if (bRes.status === 'fulfilled' && bRes.value) {
+                db.blog = bRes.value.map(x => ({
+                    title: x.title,
+                    link: x.permalink,
+                    _txt: clean(x.title + x.content) 
+                }));
+            }
 
             // 标准化 Memos 数据
-            if (mRes.value?.memos) db.memos = mRes.value.memos.map(x => {
-                const ts = x.createTime ? Math.floor(new Date(x.createTime) / 1000) : Date.now() / 1000;
-                return {
-                    title: `${fmtDate(ts)}`,
-                    link: `/?memo=${x.name.split('/').pop()}`,
-                    _txt: clean(x.content)
-                };
-            });
+            if (mRes.status === 'fulfilled' && mRes.value) {
+                db.memos = mRes.value.map(x => {
+                    const ts = x.createTime ? Math.floor(new Date(x.createTime) / 1000) : Date.now() / 1000;
+                    return {
+                        title: `${fmtDate(ts)}`,
+                        link: `/?memo=${x.name.split('/').pop()}`,
+                        _txt: clean(x.content)
+                    };
+                });
+            }
 
             loaded = true;
         } catch (e) {
@@ -152,12 +181,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const low = item._txt.toLowerCase();
             if (!terms.every(t => low.includes(t))) continue;
 
-            // 智能截取
             const idx = low.indexOf(terms[0]);
             const start = Math.max(0, idx - 10);
             const snip = (start > 0 ? '...' : '') + item._txt.substring(start, start + 50) + '...';
             
-            // 高亮处理
             const ti = item.title.replace(reg, '<mark class="search-highlight">$1</mark>');
             const sn = snip.replace(reg, '<mark class="search-highlight">$1</mark>');
 

@@ -236,7 +236,7 @@ ol, ul {
 /* 1. 输入框基础样式 */
 #unified-search-input {
   width: 100px;
-  height: 32px;
+  height: 24px;
   border: none;
   background: none;
   color: var(--text-content-dark-color);
