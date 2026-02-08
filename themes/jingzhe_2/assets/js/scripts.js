@@ -114,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. 核心：加载并标准化数据
     const load = async () => {
         if (loaded) return;
-        input.placeholder = "正在建立索引...";
         try {
             const [bRes, mRes] = await Promise.allSettled([
                 fetch('/index.json').then(r => r.json()),
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (bRes.value) db.blog = bRes.value.map(x => ({
                 title: x.title,
                 link: x.permalink,
-                _txt: clean(x.title + x.content) // 搜索内容包含标题和正文
+                _txt: clean(x.title + x.content) 
             }));
 
             // 标准化 Memos 数据
@@ -139,8 +138,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             loaded = true;
-            input.placeholder = "搜唠叨 / 博文...";
-        } catch { input.placeholder = "索引加载失败"; }
+        } catch (e) {
+            console.error("索引加载失败", e);
+        }
     };
 
     // 2. 核心：通用搜索渲染器 (极简)
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="search-title">${ti}</span><span class="search-snippet">${sn}</span>
             </a></li>`;
             
-            if (++count >= limit) break; // 性能关键：够数即停
+            if (++count >= limit) break; 
         }
         return html ? `<li class="search-section-title">${label}</li>${html}` : '';
     };
@@ -177,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
         clearTimeout(timer);
         timer = setTimeout(() => {
             const val = input.value.trim().toLowerCase();
-            // 转义正则特殊字符，防止输入 '(' 报错
             const safeTerms = val.split(/\s+/).filter(t => t).map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
             
             if (!safeTerms.length) return list.style.display = 'none';
@@ -193,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             list.style.display = 'none';
-            input.blur(); // 让输入框失去焦点
+            input.blur(); 
         }
     });
 
