@@ -82,3 +82,16 @@
     display: none;
   }
 }
+
+.github{
+  margin-top: 4px;
+  transition: opacity .3s ease-in-out;
+  fill: var(--erji-color);
+    &:hover {
+    opacity: 0.6;
+  }
+}
+.github svg{
+  height: 22px;
+  width: 22px;
+}

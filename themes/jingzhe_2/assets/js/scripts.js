@@ -91,3 +91,113 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 });
+
+
+// ============================================================
+// 全站统一搜索
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById('unified-search-input');
+    const list = document.getElementById('unified-search-list');
+    if (!input || !list) return;
+
+    // 配置与状态
+    const MEMOS_API = `https://memos.koobai.com/api/v1/memos?parent=users/1&pageSize=1000`;
+    let db = { blog: [], memos: [] }, loaded = false, timer;
+
+    // 通用清洗函数：去Markdown、去HTML、转纯文本
+    const clean = (s) => (s || '').replace(/!\[.*?\]\(.*?\)/g, '[图片]').replace(/\[(.*?)\]\(.*?\)/g, '$1').replace(/[#*`]/g, '').replace(/<[^>]+>/g, '').trim();
+    
+    // 通用格式化时间
+    const fmtDate = (ts) => typeof window.formatDate === 'function' ? window.formatDate(ts) : new Date(ts * 1000).toLocaleDateString();
+
+    // 1. 核心：加载并标准化数据
+    const load = async () => {
+        if (loaded) return;
+        input.placeholder = "正在建立索引...";
+        try {
+            const [bRes, mRes] = await Promise.allSettled([
+                fetch('/index.json').then(r => r.json()),
+                fetch(MEMOS_API).then(r => r.json())
+            ]);
+
+            // 标准化 Blog 数据
+            if (bRes.value) db.blog = bRes.value.map(x => ({
+                title: x.title,
+                link: x.permalink,
+                _txt: clean(x.title + x.content) // 搜索内容包含标题和正文
+            }));
+
+            // 标准化 Memos 数据
+            if (mRes.value?.memos) db.memos = mRes.value.memos.map(x => {
+                const ts = x.createTime ? Math.floor(new Date(x.createTime) / 1000) : Date.now() / 1000;
+                return {
+                    title: `${fmtDate(ts)}`,
+                    link: `/?memo=${x.name.split('/').pop()}`,
+                    _txt: clean(x.content)
+                };
+            });
+
+            loaded = true;
+            input.placeholder = "搜唠叨 / 博文...";
+        } catch { input.placeholder = "索引加载失败"; }
+    };
+
+    // 2. 核心：通用搜索渲染器 (极简)
+    const scan = (arr, terms, limit, label) => {
+        if (!arr.length) return '';
+        let html = '', count = 0, reg = new RegExp(`(${terms.join('|')})`, 'gi');
+
+        for (const item of arr) {
+            const low = item._txt.toLowerCase();
+            if (!terms.every(t => low.includes(t))) continue;
+
+            // 智能截取
+            const idx = low.indexOf(terms[0]);
+            const start = Math.max(0, idx - 10);
+            const snip = (start > 0 ? '...' : '') + item._txt.substring(start, start + 50) + '...';
+            
+            // 高亮处理
+            const ti = item.title.replace(reg, '<mark class="search-highlight">$1</mark>');
+            const sn = snip.replace(reg, '<mark class="search-highlight">$1</mark>');
+
+            html += `<li><a href="${item.link}" target="_blank">
+                <span class="search-title">${ti}</span><span class="search-snippet">${sn}</span>
+            </a></li>`;
+            
+            if (++count >= limit) break; // 性能关键：够数即停
+        }
+        return html ? `<li class="search-section-title">${label}</li>${html}` : '';
+    };
+
+    // 3. 事件监听
+    input.addEventListener('focus', load);
+    
+    input.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            const val = input.value.trim().toLowerCase();
+            // 转义正则特殊字符，防止输入 '(' 报错
+            const safeTerms = val.split(/\s+/).filter(t => t).map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            
+            if (!safeTerms.length) return list.style.display = 'none';
+
+            const h1 = scan(db.blog, safeTerms, 999, '博文');
+            const h2 = scan(db.memos, safeTerms, 20, '唠叨');
+
+            list.innerHTML = (h1 + h2) || '<li class="search-none">无结果，没写过</li>';
+            list.style.display = 'block';
+        }, 300);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            list.style.display = 'none';
+            input.blur(); // 让输入框失去焦点
+        }
+    });
+
+    document.addEventListener('click', e => {
+        if (e.target !== input && !list.contains(e.target)) list.style.display = 'none';
+    });
+});
