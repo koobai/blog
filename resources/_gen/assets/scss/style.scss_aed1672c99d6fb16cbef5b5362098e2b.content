@@ -1254,11 +1254,11 @@ html[data-theme='dark'] .pinglun {
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius: 16px;
-  padding: 10px 30px;
+  border-radius: 99px;
+  padding: 10px 40px;
   font-family: var(--font-family-title);
-  font-size: 0.85rem;
-  border: 0.5px solid var(--text-highlight-color);
+  font-size: 0.9rem;
+  border: 1px solid var(--text-highlight-color);
   display: inline-block; }
   #MoreComments:hover {
     opacity: 0.8;
@@ -1266,10 +1266,10 @@ html[data-theme='dark'] .pinglun {
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) #MoreComments {
       color: var(--text-highlight-dark-color) !important;
-      border: 0.5px solid var(--text-highlight-dark-color) !important; } }
+      border: 1px solid var(--text-highlight-dark-color) !important; } }
   html[data-theme='dark'] #MoreComments {
     color: var(--text-highlight-dark-color) !important;
-    border: 0.5px solid var(--text-highlight-dark-color) !important; }
+    border: 1px solid var(--text-highlight-dark-color) !important; }
 
 .pagetitle {
   font-size: 1.1rem;
@@ -2096,7 +2096,7 @@ blockquote p {
   border-radius: 99px;
   padding: 10px 40px;
   font-family: var(--font-family-title);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border: 1px solid var(--text-highlight-color); }
   .bb-load button:hover {
     opacity: 0.6;

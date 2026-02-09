@@ -319,11 +319,11 @@ img[atk-emoticon] {
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius: 16px;
-  padding: 10px 30px;
+  border-radius: 99px;
+  padding: 10px 40px;
   font-family: var(--font-family-title);
-  font-size: 0.85rem;
-  border: 0.5px solid var(--text-highlight-color);
+  font-size: 0.9rem;
+  border: 1px solid var(--text-highlight-color);
   display: inline-block;
 
   &:hover {
@@ -333,6 +333,6 @@ img[atk-emoticon] {
 
   @include dark {
     color: var(--text-highlight-dark-color) !important;
-    border: 0.5px solid var(--text-highlight-dark-color) !important;
+    border: 1px solid var(--text-highlight-dark-color) !important;
   }
 }
