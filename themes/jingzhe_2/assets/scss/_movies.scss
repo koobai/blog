@@ -233,12 +233,10 @@
   margin-bottom: 20px;
   display: block;
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
   transition: all 0.3s ease;
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   @include dark {
