@@ -6,7 +6,7 @@
   --font-family-code: var(--font-stack-system);
   --bankuai-color: #f6f6f6;
   --background-color: #F2F0EB;
-  --background-dark-color: #7F7771;
+  --background-dark-color: #7C7671;
   --background-dark-body-color: #6E6B66;
   --text-content-color:#222;
   --text-content-dark-color:#E5E3E1;
