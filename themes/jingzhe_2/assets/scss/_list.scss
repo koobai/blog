@@ -31,7 +31,7 @@
 
 // 3. 描述
 .posts-description {
-  line-height: 1.7;
+  line-height: 1.55;
   font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
@@ -40,6 +40,9 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  @include breakpoint('medium') {
+    line-height: 1.65; 
+  }
 
   // 暗黑模式内聚
   @include dark {
