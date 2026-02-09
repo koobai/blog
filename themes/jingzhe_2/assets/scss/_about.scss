@@ -34,7 +34,7 @@
 
 .about-text {
   margin: 20px 0 20px 0;
-  line-height: 1.8;
+  line-height: 1.6;
   font-size: 1.1rem;
   text-align: justify;
 
@@ -43,6 +43,9 @@
     @include dark {
       color: var(--text-highlight-dark-color);
     }
+  }
+  @include breakpoint('medium') {
+    line-height: 1.75; 
   }
 }
 

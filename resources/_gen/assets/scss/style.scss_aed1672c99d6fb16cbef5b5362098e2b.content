@@ -520,10 +520,13 @@ ol, ul {
   font-size: 1.1rem; }
   .content p {
     font-size: 1.1rem;
-    line-height: 1.8;
+    line-height: 1.6;
     margin: 0 0 15px 0;
     text-align: justify;
     text-align-last: left; }
+    @media (min-width: 900px) {
+      .content p {
+        line-height: 1.75; } }
   .content strong {
     color: var(--text-highlight-color); }
     @media (prefers-color-scheme: dark) {
@@ -1269,7 +1272,7 @@ html[data-theme='dark'] .pinglun {
 
 .pagetitle {
   font-size: 1.1rem;
-  line-height: 1.8;
+  line-height: 1.6;
   margin-bottom: 20px;
   max-width: 640px;
   margin: auto;
@@ -1588,7 +1591,7 @@ html[data-theme='dark'] .apptitle a {
 .movies_index_info {
   font-size: 0.85rem;
   color: #666;
-  line-height: 1.6;
+  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -1871,10 +1874,12 @@ html[data-theme='dark'] .memos_diaoyong_info a {
       margin-bottom: 20px; } }
 .datacont p {
   font-size: 1.1rem;
-  line-height: 1.7;
+  line-height: 1.55;
   margin: 0;
   text-align: justify; }
-
+  @media (min-width: 900px) {
+    .datacont p {
+      line-height: 1.65; } }
 .datacont a {
   text-decoration: underline;
   margin: 0 2px;
@@ -2681,7 +2686,7 @@ blockquote p {
       font-size: 55px; } }
 .about-text {
   margin: 20px 0 20px 0;
-  line-height: 1.8;
+  line-height: 1.6;
   font-size: 1.1rem;
   text-align: justify; }
   .about-text a {
@@ -2691,7 +2696,9 @@ blockquote p {
         color: var(--text-highlight-dark-color); } }
     html[data-theme='dark'] .about-text a {
       color: var(--text-highlight-dark-color); }
-
+  @media (min-width: 900px) {
+    .about-text {
+      line-height: 1.75; } }
 .about-img-intro {
   padding: 8px;
   border-radius: 2px;
@@ -2723,7 +2730,7 @@ blockquote p {
   -webkit-box-orient: vertical; }
 
 .posts-description {
-  line-height: 1.7;
+  line-height: 1.55;
   font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
@@ -2732,6 +2739,9 @@ blockquote p {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
+  @media (min-width: 900px) {
+    .posts-description {
+      line-height: 1.65; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .posts-description {
       color: var(--text-content-dark-color); } }
@@ -3090,7 +3100,7 @@ blockquote p {
       top: 0;
       color: var(--erji-color);
       font-size: 0.9rem;
-      line-height: 1.6;
+      line-height: 1.5;
       opacity: 0;
       background: rgba(242, 240, 235, 0.5);
       backdrop-filter: blur(20px) saturate(180%);
