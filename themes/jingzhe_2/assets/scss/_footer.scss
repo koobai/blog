@@ -16,11 +16,11 @@
 
 .footer {
   padding-top: 10px;
-  border-top: 0.5px solid #e7e1de;
+  border-top: 1px solid #eee7e4;
   text-align: center;
-
+  max-width: 100%;
   @include dark {
-    border-top: 0px solid #231e20;
+    border-top: 1px solid #706d67;
   }
 }
 
