@@ -1721,11 +1721,9 @@ html[data-theme='dark'] .apptitle a {
   margin-bottom: 20px;
   display: block;
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
   transition: all 0.3s ease; }
   .movies_loadMore:hover {
-    opacity: 0.8; }
+    opacity: 0.6; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .movies_loadMore {
       color: var(--text-highlight-dark-color);
@@ -2094,13 +2092,13 @@ blockquote p {
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius: 12px;
-  padding: 10px 30px;
+  border-radius: 99px;
+  padding: 10px 40px;
   font-family: var(--font-family-title);
   font-size: 0.85rem;
-  border: 0.5px solid var(--text-highlight-color); }
+  border: 1px solid var(--text-highlight-color); }
   .bb-load button:hover {
-    opacity: 0.8;
+    opacity: 0.6;
     transition: opacity .3s ease-in-out; }
   @media (max-width: 900px) {
     .bb-load button {
