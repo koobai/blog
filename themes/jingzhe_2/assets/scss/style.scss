@@ -1,7 +1,8 @@
 :root {
-  --font-family-paragraph: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
-  --font-family-title: 'JetBrainsMono',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
-  --font-family-code: 'JetBrainsMono', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Helvetica,"PingFangSC-Regular","Hiragino Sans GB","Lantinghei SC","Microsoft Yahei","Source Han Sans CN","WenQuanYi Micro Hei",SimSun,sans-serif;
+  --font-stack-system: 'JetBrainsMono', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-family-paragraph: var(--font-stack-system);
+  --font-family-title: var(--font-stack-system);
+  --font-family-code: var(--font-stack-system);
   --bankuai-color: #f6f6f6;
   --background-color: #F2F0EB;
   --background-dark-color: #7F7771;
@@ -42,10 +43,13 @@ $breakpoints: (
 @import 'hardware';
 
 @font-face {
-  font-family: JetBrainsMono;
+  font-family: 'JetBrainsMono';
   font-display: swap;
-  src: url('https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-  unicode-range: U+61-7a,U+41-5a,U+30-39;
+  font-weight: 400;
+  src: local('JetBrains Mono'), 
+       local('JetBrainsMono'), 
+       url('https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  unicode-range: U+0021-00FF; 
 }
 
 html, body {
