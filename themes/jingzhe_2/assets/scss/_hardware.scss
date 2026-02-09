@@ -82,29 +82,30 @@
 .liing_2_right {
   justify-content: center; /* 水平居中对齐 */
   display: flex;
+  margin-top: 6px;
 }
 
 .tiyi {
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center;
+  line-height: 1;       
+  font-size: 0.9rem;
+  padding: 10px 14px;     
+  border-radius: 99px;  
+  text-decoration: none !important; 
+  border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
-  font-size: 1rem;
-  border: 0.5px solid var(--text-highlight-color);
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin-top: 6px;
+  transition: opacity 0.2s ease;
   @include breakpoint('medium') {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
-
   &:hover {
-    text-decoration: underline;
+    opacity: 0.6;
   }
-  &:empty, .details:empty {
-    display: none;
-  }
-
   @include dark {
     color: var(--text-highlight-dark-color);
-    border: 0.5px solid var(--text-highlight-dark-color);
+    border-color: var(--text-highlight-dark-color);
   }
 }
 
@@ -236,11 +237,11 @@
     position: relative; /* 必须加，确保 z-index 生效 */
     order: 3;
     z-index: 2;
-    justify-content: left; /* 水平居中对齐 */
+    justify-content: flex-start;
   }
 
   .tiyi {
     color: var(--element-background-color);
-    border: 0.5px solid var(--element-background-color);
+    border: 1px solid var(--element-background-color);
   }
 }

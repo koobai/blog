@@ -37,13 +37,13 @@
 
         <div class="appzhuangtai-right">
           {{ with $app.kaiyuan }}
-            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="kaiyuan">{{ . }}</div></a>
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer" class="kaiyuan">{{ . }}</a>
           {{ end }}
           {{ with $app.shoufei }}
-            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="shoufei">{{ . }}</div></a>
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer" class="shoufei">{{ . }}</a>
           {{ end }}
           {{ with $app.free }}
-            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer"><div class="free">{{ . }}</div></a>
+            <a href="/tiaozhuan?target={{ $app.link | base64Encode }}" target="_blank" rel="noopener external nofollow noreferrer" class="free">{{ . }}</a>
           {{ end }}
         </div>
 

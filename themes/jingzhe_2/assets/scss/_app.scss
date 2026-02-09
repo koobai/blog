@@ -61,25 +61,28 @@
 }
 
 // 普通模式下的说明文字悬浮效果
+// 普通模式下的说明文字悬浮效果 (优化版：避开左侧图标)
 .appnote {
   display: none;
-
   @include breakpoint('medium') {
-    display: grid;
+    display: flex;
     position: absolute;
-    padding: 6px 15px 6px 0;
-    background: var(--element-background-color);
     top: 0;
     bottom: 0;
+    right: 0;
+    left: 80px; 
+    padding: 0 16px; 
+    background: var(--element-background-color);
     color: var(--text-content-color);
     font-size: 0.9rem;
-    line-height: 1.4;
-    align-items: center;
-    opacity: 0;
+    line-height: 1.5;
+    align-items: center; 
+    justify-content: flex-start; 
     text-align: justify;
-    transition: opacity 0.3s ease;
+    border-radius: 16px; 
+    opacity: 0;
+    z-index: 10;
   }
-
   @include dark {
     background: var(--background-dark-color);
     color: var(--text-content-dark-color);
@@ -105,37 +108,23 @@
 }
 
 .kaiyuan, .shoufei, .free {
-  font-size: 0.9rem;
-  padding: 5px 8px;
-  border-radius: 20px;
-
-  @include breakpoint('medium') {
-    font-size: 0.75rem;
+  font-size: 0.85rem; 
+  padding: 6px 10px; 
+  border-radius: 99px; 
+  display: inline-flex;
+  align-items: center;  
+  justify-content: center;
+  line-height: 1;     
+  text-decoration: none !important; 
+  border-width: 1px; 
+  border-style: solid;
+  transition: opacity 0.2s ease;
+  color: var(--sanji-color);
+  border-color: var(--sanji-color);
+  &:hover {
+    opacity: 0.6;
   }
-}
-
-.kaiyuan {
-  color: var(--text-highlight-color);
-  border: 0.5px solid var(--text-highlight-color);
-  @include dark {
-    color: var(--erji-color);
-    border-color: var(--erji-color);
-  }
-}
-
-.shoufei {
-  color: #0774e0;
-  border: 0.5px solid #0774e0;
-  @include dark {
-    color: var(--erji-color);
-    border-color: var(--erji-color);
-  }
-}
-
-.free {
-  color: #11a173;
-  border: 0.5px solid #11a173;
-  @include dark {
+    @include dark {
     color: var(--erji-color);
     border-color: var(--erji-color);
   }
@@ -160,7 +149,7 @@
   }
 
   // 1. 内容层级提升
-  .app-title-all, .appzhuangtai-right {
+  .app-title-all{
     position: relative;
     z-index: 5;
   }
@@ -170,10 +159,13 @@
     margin-top: 10px;
   }
 
-  .appzhuangtai-right {
+.appzhuangtai-right {
     display: flex;
-    justify-content: flex-start;
-  }
+    align-items: center; /* 垂直居中 */
+    justify-content: flex-end; /* 靠右对齐 */
+    gap: 8px; /* 按钮之间的间距 */
+    z-index: 5;
+}
 
   // 4. 重定义标题
   .apptitle2 {
@@ -230,7 +222,7 @@
 
   // 统一大图下的文字颜色 (强制白色)
   .macos, .kaiyuan, .shoufei, .free {
-    color: var(--element-background-color);
+    color: var(--element-background-color) !important;
     border-color: rgba(255, 255, 255, 0.6) !important;
   }
 }
