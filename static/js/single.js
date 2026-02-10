@@ -16,30 +16,7 @@ function loadComments() {
     });
 }
 
-// 2. 评论跳转中间页 (优化：修复中文链接报错问题)
-document.body.addEventListener('click', function(e) {
-    // 使用 closest 确保点到图标也能选中 a 标签
-    const target = e.target.closest('.atk-comment-wrap a');
-    
-    // 确保是站外链接
-    if (target && !target.href.includes('koobai.com')) {
-        e.preventDefault();
-        
-        try {
-            // 【关键修复】先 encodeURIComponent 处理中文，再 btoa，防止报错
-            // 注意：接收页面的解码逻辑也需要对应调整，通常浏览器地址栏会自动处理，
-            // 但如果你的 tiaozhuan 页面有 JS 解码逻辑，记得用 decodeURIComponent(atob(...))
-            const encodedUrl = btoa(encodeURIComponent(target.href));
-            const url = '/tiaozhuan?target=' + encodedUrl;
-            window.open(url, '_blank');
-        } catch (error) {
-            console.error("链接编码失败:", error);
-            window.open(target.href, '_blank'); // 降级处理：直接打开原链接
-        }
-    }
-});
-
-// 3. 段落目录导航 (优化：性能与点击健壮性)
+// 2. 段落目录导航 (优化：性能与点击健壮性)
 document.addEventListener("DOMContentLoaded", () => {
     const postTOC = document.querySelector('.paragraph-dh');
     

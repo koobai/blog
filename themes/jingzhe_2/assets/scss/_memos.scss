@@ -146,11 +146,7 @@
 
 // 唠叨页 Timeline
 .bb-timeline {
-  margin-bottom: 0;
-  
-  @include breakpoint('medium') {
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
 }
 
 .datacont {
@@ -423,11 +419,6 @@ blockquote p {
     opacity: 0.6;
     transition: opacity .3s ease-in-out;
   }
-
-  @media (max-width: 900px) {
-    margin-top: 10px;
-  }
-
   @include dark {
     color: var(--text-highlight-dark-color);
     border: 1px solid var(--text-highlight-dark-color);
@@ -541,15 +532,9 @@ blockquote p {
 
 .memos-editor-body {
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
-
-  @include breakpoint('medium') {
-    margin-bottom: 20px;
-  }
-  
   @include dark {
     background: var(--background-dark-color);
   }
@@ -559,7 +544,7 @@ blockquote p {
   border: transparent;
   border-radius: 4px;
   line-height: 1.6;
-  min-height: 90px;
+  min-height: 120px;
   overflow-x: hidden;
   overflow-y: clip;
   width: 100%;
@@ -786,7 +771,7 @@ blockquote p {
   background: var(--text-highlight-color);
   cursor: pointer;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 99px;
   width: 100px;
   display: flex;
   align-items: center;
@@ -878,25 +863,17 @@ blockquote p {
   display: flex;
   gap: 20px;
 }
-
+// 列表布局 (大屏适配)
+.bb-list-ul {
+    display: grid;
+    grid-row-gap: 15px;
+}
 .bb-list-li {
   border-radius: 16px;
   background: var(--element-background-color);
   padding: 15px;
-
-  @media (max-width: 900px) {
-    margin-bottom: 15px;
-  }
   @include dark {
     background: var(--background-dark-color);
-  }
-}
-
-// 列表布局 (大屏适配)
-.bb-list-ul {
-  @include breakpoint('medium') {
-    display: grid;
-    grid-row-gap: 20px;
   }
 }
 

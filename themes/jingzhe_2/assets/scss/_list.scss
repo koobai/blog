@@ -77,7 +77,6 @@
 .posts_list_article {
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px;
 
   @include breakpoint('medium') {
@@ -95,14 +94,8 @@
   position: relative;
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px;
   overflow: hidden;
-  margin-bottom: 15px;
-
-  @include breakpoint('medium') {
-    margin-bottom: 0;
-  }
 
   // 暗黑模式内聚
   @include dark {
@@ -218,7 +211,6 @@
   display: flex;
   align-items: center;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   border-radius: 16px;
   padding: 15px;
 

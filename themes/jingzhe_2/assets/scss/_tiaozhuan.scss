@@ -2,50 +2,26 @@
 .page-tiaozhuan .footer-background {
   display: none;
 }
-
+.page-tiaozhuan .wrapper {
+  margin-top: 0 !important;
+  min-height: 100vh;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
 .tiaozhuan-all {
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-  border-radius: 10px;
-  background: #fff url(https://img.koobai.com/tiaozhuanico.webp) no-repeat center center / cover;
-  color: #666;
-  word-break: break-all;
-  max-width: 700px;
-  height: 350px;
+  color: var(--sanji-color);
   text-align: center;
   font-size: 0.85rem;
-  overflow: hidden;
-  margin: 100px auto 0;
-
-  @include breakpoint('medium') {
-    aspect-ratio: 2 / 1;
-    height: auto;
-  }
-
-  // 暗黑模式内聚
-  @include dark {
-    background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center / cover;
-    color: #acacac;
-  }
 }
-
-.tiaozhuan-nrong {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 30px 20px;
-}
-
 .tiaozhuan-title {
   font-size: 1.3rem;
   font-family: var(--font-family-title);
-  color: #222;
+  color: var(--text-content-color);
   line-height: 1.4;
   margin-bottom: 4px;
-
   @include dark {
-    color: #ddd;
+    color: var(--text-content-dark-color);
   }
 }
 
@@ -55,14 +31,15 @@
 
 .tiaozhuan-button {
   margin-top: 20px;
-
   a {
     color: var(--text-highlight-color);
     border-radius: 99px;
     padding: 10px 30px;
-    font-family: var(--font-family-title);
     font-size: 0.9rem;
     border: 1px solid var(--text-highlight-color);
     display: inline-block;
+    @include dark {
+   border: 1px solid var(--text-highlight-dark-color);
+  }
   }
 }
