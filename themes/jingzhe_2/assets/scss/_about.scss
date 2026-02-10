@@ -27,7 +27,7 @@
   font-family: var(--font-family-code);
   font-size: 1.8rem;
 
-  @include breakpoint('small') {
+  @include breakpoint('medium') {
     font-size: 55px;
   }
 }
