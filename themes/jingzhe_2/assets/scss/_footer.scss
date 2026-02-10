@@ -15,10 +15,10 @@
 }
 
 .footer {
-  padding-top: 10px;
   border-top: 1px solid #eee7e4;
   text-align: center;
   max-width: 100%;
+  padding: 10px 20px 0 20px;
   @include dark {
     border-top: 1px solid #706d67;
   }
@@ -28,7 +28,6 @@
   font-size: 0.75rem;
   line-height: 1.6em;
   color: #a7a7a7;
-
   @include dark {
     color: var(--erji-color);
   }

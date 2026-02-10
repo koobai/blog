@@ -19,9 +19,8 @@
   --element-background-color:#FFFDFA;
 }
 $breakpoints: (
-  'small': 700px,
-  'medium': 900px,
-  'large': 1200px,
+  'medium': 768px,
+  'large': 1280px,
 );
 
 @import 'normalize';
@@ -61,15 +60,7 @@ body {
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
-  padding: 0 20px;
   overflow-x: hidden;
-
-  // 响应式内嵌
-  @include breakpoint('small') {
-    padding: 0 30px;
-  }
-
-  // 暗黑模式内嵌
   @include dark {
     background: var(--background-dark-body-color);
     color: var(--text-content-dark-color);
@@ -77,10 +68,11 @@ body {
 }
 
 .wrapper {
-  max-width: 760px;
+  box-sizing: border-box;/* 防止 padding 把盒子撑大 */
+  max-width: 840px;
   margin: 0 auto;
   margin-top: 20px;
-  
+  padding: 0 20px;
   @include breakpoint('medium') {
     margin-top: 60px;
   }

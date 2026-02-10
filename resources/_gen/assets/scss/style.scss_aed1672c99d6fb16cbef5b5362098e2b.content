@@ -39,7 +39,7 @@ ol, ul {
   z-index: 3;
   width: 120px;
   height: 50px;
-  max-width: 600px;
+  max-width: 620px;
   padding: 5px 20px;
   align-items: center;
   display: flex;
@@ -52,10 +52,10 @@ ol, ul {
   border: 1px solid rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%); }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .header {
       /* 强制固定宽度，不随窗口伸缩 */
-      width: 600px;
+      width: 620px;
       height: auto;
       padding: 20px 30px;
       bottom: 30px;
@@ -71,7 +71,7 @@ ol, ul {
       backdrop-filter: blur(25px) saturate(200%);
       -webkit-backdrop-filter: blur(25px) saturate(200%);
       border: 0.5px solid rgba(255, 255, 255, 0.2); } }
-  @media (prefers-color-scheme: dark) and (min-width: 900px) {
+  @media (prefers-color-scheme: dark) and (min-width: 768px) {
     html:not([data-theme='light']) .header {
       box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3);
       -webkit-transform: translateX(-50%) translateZ(0);
@@ -81,14 +81,14 @@ ol, ul {
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
     border: 0.5px solid rgba(255, 255, 255, 0.2); }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       html[data-theme='dark'] .header {
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3);
         -webkit-transform: translateX(-50%) translateZ(0);
         transform: translateX(-50%) translateZ(0); } }
 .new-heard-menu {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .new-heard-menu {
       display: flex;
       flex-direction: row;
@@ -146,12 +146,12 @@ ol, ul {
   grid-gap: 0;
   align-items: center;
   margin-left: auto; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .heard-right {
       grid-gap: 16px; } }
   .heard-right svg {
     display: none; }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       .heard-right svg {
         fill: var(--erji-color);
         width: 20px;
@@ -168,7 +168,7 @@ ol, ul {
   height: 32px;
   border-radius: 50%;
   transition: opacity .3s ease-in-out; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .about-koobai img {
       width: 36px;
       height: 36px;
@@ -363,7 +363,7 @@ ol, ul {
 
 .index-laodao {
   font-size: 0.8rem; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .index-laodao {
       font-size: 1.2rem;
       margin-left: 20px; } }
@@ -376,7 +376,7 @@ ol, ul {
 .footer-background {
   margin-top: 40px;
   margin-bottom: 100px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .footer-background {
       display: block;
       margin-bottom: 160px; } }
@@ -391,10 +391,10 @@ ol, ul {
     box-sizing: border-box; }
 
 .footer {
-  padding-top: 10px;
   border-top: 1px solid #eee7e4;
   text-align: center;
-  max-width: 100%; }
+  max-width: 100%;
+  padding: 10px 20px 0 20px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .footer {
       border-top: 1px solid #706d67; } }
@@ -483,7 +483,7 @@ ol, ul {
   font-family: var(--font-family-title);
   line-height: 1.3;
   margin-bottom: 15px; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .article_details_title {
       font-size: 1.8rem; } }
 a {
@@ -525,7 +525,7 @@ ol, ul {
     margin: 0 0 15px 0;
     text-align: justify;
     text-align-last: left; }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       .content p {
         line-height: 1.75; } }
   .content strong {
@@ -550,7 +550,7 @@ ol, ul {
     margin-left: 0;
     margin-top: 10px;
     margin-bottom: 20px; }
-    @media (min-width: 700px) {
+    @media (min-width: 768px) {
       .content ul, .content ol {
         margin-left: 20px; } }
     .content ul li, .content ol li {
@@ -558,7 +558,7 @@ ol, ul {
       line-height: 2;
       margin-bottom: 10px;
       margin-left: 20px; }
-      @media (min-width: 700px) {
+      @media (min-width: 768px) {
         .content ul li, .content ol li {
           margin-left: 0; } }
   .content ul li {
@@ -623,7 +623,7 @@ ol, ul {
 
 .paragraph-dh {
   display: none; }
-  @media (min-width: 1200px) {
+  @media (min-width: 1280px) {
     .paragraph-dh {
       display: block;
       position: fixed;
@@ -700,7 +700,7 @@ ol, ul {
 
 .fanhui {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .fanhui {
       cursor: pointer;
       position: fixed;
@@ -724,10 +724,10 @@ ol, ul {
         width: 20px;
         height: 20px;
         color: var(--text-content-color); } }
-  @media (min-width: 900px) and (hover: hover) {
+  @media (min-width: 768px) and (hover: hover) {
     .fanhui:hover svg {
       color: var(--text-highlight-color); } }
-  @media (min-width: 900px) and (prefers-color-scheme: dark) {
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .fanhui {
       background: rgba(85, 82, 78, 0.6);
       backdrop-filter: blur(25px) saturate(200%);
@@ -736,10 +736,10 @@ ol, ul {
       box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3); }
       html:not([data-theme='light']) .fanhui svg {
         color: var(--erji-color); } }
-  @media (min-width: 900px) and (prefers-color-scheme: dark) and (hover: hover) {
+  @media (min-width: 768px) and (prefers-color-scheme: dark) and (hover: hover) {
     html:not([data-theme='light']) .fanhui:hover svg {
       color: var(--text-highlight-dark-color); } }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
       html[data-theme='dark'] .fanhui {
         background: rgba(85, 82, 78, 0.6);
         backdrop-filter: blur(25px) saturate(200%);
@@ -748,7 +748,7 @@ ol, ul {
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3); }
         html[data-theme='dark'] .fanhui svg {
           color: var(--erji-color); } }
-    @media (min-width: 900px) and (hover: hover) {
+    @media (min-width: 768px) and (hover: hover) {
       html[data-theme='dark'] .fanhui:hover svg {
         color: var(--text-highlight-dark-color); } }
 .intro h1 {
@@ -758,13 +758,13 @@ ol, ul {
 .intro h2 {
   font-size: 50px;
   line-height: 56px; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .intro h2 {
       width: 80%; } }
 .intro p {
   font-size: 1.1rem;
   line-height: 1.8; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .intro p {
       width: 100%;
       font-size: 1.1rem;
@@ -779,7 +779,7 @@ ol, ul {
   font-size: 1.1rem;
   line-height: 26px;
   font-weight: bold; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .intro .read-more {
       font-size: 1.1rem;
       line-height: 32px; } }
@@ -797,7 +797,7 @@ ol, ul {
   background: #fff;
   box-shadow: var(--touy-color);
   padding: 15px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .summary-nrong {
       padding: 20px; } }
   @media (prefers-color-scheme: dark) {
@@ -902,7 +902,7 @@ ol, ul {
   display: flex;
   margin-right: 30px;
   align-items: center; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .hamburger-trigger {
       display: none; } }
 .hamburger {
@@ -1289,7 +1289,7 @@ html[data-theme='dark'] .pinglun {
 .appdquanjudiv {
   display: grid;
   grid-gap: 10px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .appdquanjudiv {
       grid-template-columns: repeat(2, 1fr);
       grid-gap: 15px; } }
@@ -1319,12 +1319,12 @@ html[data-theme='dark'] .pinglun {
 .apptitle {
   font-size: 1.1rem;
   margin-bottom: 4px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .apptitle {
       font-size: 0.85rem; } }
 .appnote {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .appnote {
       display: flex;
       position: absolute;
@@ -1439,7 +1439,7 @@ html[data-theme='dark'] .apptitle a {
     color: var(--element-background-color);
     line-height: 1.6;
     font-size: 1rem; }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       .app-star .appnote {
         font-size: 0.9rem; } }
   .app-star .star-img {
@@ -1538,7 +1538,7 @@ html[data-theme='dark'] .apptitle a {
 
 .movie-quanju {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .movie-quanju {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1618,7 +1618,7 @@ html[data-theme='dark'] .apptitle a {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(2, 1fr); }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     #movies_page {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
 .movies_bankuai {
@@ -1740,7 +1740,7 @@ html[data-theme='dark'] .apptitle a {
   @media (max-width: 900px) {
     .memos_diaoyong {
       display: none; } }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .memos_diaoyong .grid-3 {
       grid-template-columns: repeat(5, 1fr); }
     .memos_diaoyong .grid-4 {
@@ -1868,7 +1868,7 @@ html[data-theme='dark'] .memos_diaoyong_info a {
 
 .bb-timeline {
   margin-bottom: 0; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .bb-timeline {
       margin-bottom: 20px; } }
 .datacont p {
@@ -1876,7 +1876,7 @@ html[data-theme='dark'] .memos_diaoyong_info a {
   line-height: 1.55;
   margin: 0;
   text-align: justify; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .datacont p {
       line-height: 1.65; } }
 .datacont a {
@@ -1894,7 +1894,7 @@ html[data-theme='dark'] .memos_diaoyong_info a {
   white-space: pre-wrap;
   margin-top: 5px;
   margin-bottom: 10px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .datacont pre {
       background: #f6f6f6; } }
   @media (prefers-color-scheme: dark) {
@@ -2208,7 +2208,7 @@ blockquote p {
   border-radius: 16px;
   background: var(--element-background-color);
   box-shadow: var(--touy-color); }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .memos-editor-body {
       margin-bottom: 20px; } }
   @media (prefers-color-scheme: dark) {
@@ -2437,7 +2437,7 @@ blockquote p {
   padding: 15px;
   background: var(--element-background-color);
   border-radius: 16px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .memos-oneday {
       margin-bottom: 20px; } }
   @media (prefers-color-scheme: dark) {
@@ -2515,7 +2515,7 @@ blockquote p {
   html[data-theme='dark'] .bb-list-li {
     background: var(--background-dark-color); }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .bb-list-ul {
     display: grid;
     grid-row-gap: 20px; } }
@@ -2680,7 +2680,7 @@ blockquote p {
   color: #fff;
   font-family: var(--font-family-code);
   font-size: 1.8rem; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .about-img-text {
       font-size: 55px; } }
 .about-text {
@@ -2695,7 +2695,7 @@ blockquote p {
         color: var(--text-highlight-dark-color); } }
     html[data-theme='dark'] .about-text a {
       color: var(--text-highlight-dark-color); }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .about-text {
       line-height: 1.75; } }
 .about-img-intro {
@@ -2712,7 +2712,7 @@ blockquote p {
 .posts-new {
   display: grid;
   gap: 30px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts-new {
       gap: 40px; } }
 .posts-background {
@@ -2738,7 +2738,7 @@ blockquote p {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts-description {
       line-height: 1.65; } }
   @media (prefers-color-scheme: dark) {
@@ -2751,14 +2751,14 @@ blockquote p {
   display: grid;
   gap: 15px;
   margin-top: 30px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts_list {
       grid-template-columns: repeat(2, 1fr); } }
 .posts_list_index {
   display: grid;
   gap: 12px;
   margin-bottom: 25px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts_list_index {
       grid-template-columns: repeat(2, 1fr);
       gap: 15px; } }
@@ -2767,7 +2767,7 @@ blockquote p {
   background: var(--element-background-color);
   box-shadow: var(--touy-color);
   padding: 15px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts_list_article {
       padding: 12px; } }
   @media (prefers-color-scheme: dark) {
@@ -2784,7 +2784,7 @@ blockquote p {
   padding: 15px;
   overflow: hidden;
   margin-bottom: 15px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .posts_list_article-index {
       margin-bottom: 0; } }
   @media (prefers-color-scheme: dark) {
@@ -2809,7 +2809,7 @@ blockquote p {
   .post-badge svg {
     width: 18px;
     height: 18px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .post-badge {
       display: none; } }
   @media (prefers-color-scheme: dark) {
@@ -2826,7 +2826,7 @@ blockquote p {
 
 .post-biaoji-xinxi {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .post-biaoji-xinxi {
       font-size: 0.8rem;
       background: var(--erji-color);
@@ -2839,11 +2839,11 @@ blockquote p {
       .post-biaoji-xinxi svg {
         width: 18px;
         height: 18px; } }
-@media (prefers-color-scheme: dark) and (min-width: 900px) {
+@media (prefers-color-scheme: dark) and (min-width: 768px) {
   html:not([data-theme='light']) .post-biaoji-xinxi {
     background: var(--text-highlight-dark-color);
     color: #fff; } }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     html[data-theme='dark'] .post-biaoji-xinxi {
       background: var(--text-highlight-dark-color);
       color: #fff; } }
@@ -2871,7 +2871,7 @@ blockquote p {
   display: grid;
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .archives_nrong {
       grid-gap: 20px; } }
 .archives_one {
@@ -2881,7 +2881,7 @@ blockquote p {
   box-shadow: var(--touy-color);
   border-radius: 16px;
   padding: 15px; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .archives_one {
       grid-gap: 20px; } }
   @media (prefers-color-scheme: dark) {
@@ -2901,7 +2901,7 @@ blockquote p {
   font-family: var(--font-family-title);
   font-size: 1.3rem;
   line-height: 1.6; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .archive-title-index {
       font-size: 1.2rem; } }
 .archive-time,
@@ -2942,7 +2942,7 @@ blockquote p {
   font-size: 0.85rem;
   overflow: hidden;
   margin: 100px auto 0; }
-  @media (min-width: 700px) {
+  @media (min-width: 768px) {
     .tiaozhuan-all {
       aspect-ratio: 2 / 1;
       height: auto; } }
@@ -2992,7 +2992,7 @@ blockquote p {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
   /* 中间空10px间距 */ }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .quanju {
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 15px;
@@ -3005,7 +3005,7 @@ blockquote p {
     max-width: 70%;
     margin: 0;
     transition: transform 0.3s ease; }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       .duiqi img {
         max-width: 60%; } }
 .bankuai {
@@ -3035,7 +3035,7 @@ blockquote p {
   margin-bottom: 4px;
   font-size: 1.1rem;
   padding: 0 10px; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .hardware-title {
       padding: 0;
       font-size: 0.9rem; } }
@@ -3054,7 +3054,7 @@ blockquote p {
   font-size: 0.85rem;
   border-radius: 20px;
   font-family: var(--font-family-code); }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .hardware-jiage {
       font-size: 0.75rem; } }
 .liing_2_right {
@@ -3075,7 +3075,7 @@ blockquote p {
   border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
   transition: opacity 0.2s ease; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .tiyi {
       font-size: 0.8rem; } }
   .tiyi:hover {
@@ -3090,7 +3090,7 @@ blockquote p {
 
 .note {
   display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .note {
       display: block;
       position: absolute;
@@ -3106,13 +3106,13 @@ blockquote p {
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       transition: opacity 0.4s ease;
       border-radius: 16px 16px 0 0; } }
-  @media (min-width: 900px) and (prefers-color-scheme: dark) {
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .note {
       color: var(--text-content-dark-color);
       background: rgba(125, 117, 108, 0.5);
       backdrop-filter: blur(25px) saturate(200%);
       -webkit-backdrop-filter: blur(25px) saturate(200%); } }
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
       html[data-theme='dark'] .note {
         color: var(--text-content-dark-color);
         background: rgba(125, 117, 108, 0.5);
@@ -3213,7 +3213,7 @@ blockquote p {
     font-size: 1rem;
     z-index: 2;
     /* 置于图片之上，标题之下 */ }
-    @media (min-width: 900px) {
+    @media (min-width: 768px) {
       .hardware-star .note {
         font-size: 0.9rem; } }
     @media (prefers-color-scheme: dark) {
@@ -3246,11 +3246,7 @@ body {
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
-  padding: 0 20px;
   overflow-x: hidden; }
-  @media (min-width: 700px) {
-    body {
-      padding: 0 30px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) body {
       background: var(--background-dark-body-color);
@@ -3260,10 +3256,13 @@ body {
     color: var(--text-content-dark-color); }
 
 .wrapper {
-  max-width: 760px;
+  box-sizing: border-box;
+  /* 防止 padding 把盒子撑大 */
+  max-width: 840px;
   margin: 0 auto;
-  margin-top: 20px; }
-  @media (min-width: 900px) {
+  margin-top: 20px;
+  padding: 0 20px; }
+  @media (min-width: 768px) {
     .wrapper {
       margin-top: 60px; } }
 .highlight {

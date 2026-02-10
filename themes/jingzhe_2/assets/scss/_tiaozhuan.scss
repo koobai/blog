@@ -17,7 +17,7 @@
   overflow: hidden;
   margin: 100px auto 0;
 
-  @include breakpoint('small') {
+  @include breakpoint('medium') {
     aspect-ratio: 2 / 1;
     height: auto;
   }
