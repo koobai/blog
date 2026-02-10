@@ -227,3 +227,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target !== input && !list.contains(e.target)) list.style.display = 'none';
     });
 });
+
+
+// 评论跳转中间页
+document.body.addEventListener('click', function(e) {
+    const target = e.target.closest('.atk-comment-wrap a');
+    
+    // 确保是站外链接
+    if (target && !target.href.includes('koobai.com')) {
+        e.preventDefault();
+        
+        try {
+            const encodedUrl = btoa(encodeURIComponent(target.href));
+            const url = '/tiaozhuan?target=' + encodedUrl;
+            window.open(url, '_blank');
+        } catch (error) {
+            console.error("链接编码失败:", error);
+            window.open(target.href, '_blank');
+        }
+    }
+});

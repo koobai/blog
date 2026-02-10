@@ -793,9 +793,8 @@ ol, ul {
   grid-gap: 20px; }
 
 .summary-nrong {
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: var(--touy-color);
+  border-radius: 16px;
+  background: var(--element-background-color);
   padding: 15px; }
   @media (min-width: 768px) {
     .summary-nrong {
@@ -821,12 +820,13 @@ ol, ul {
   font-family: var(--font-family-title);
   font-size: 1.2rem;
   margin-top: 6px;
-  line-height: 1.6; }
+  line-height: 1.6;
+  font-weight: bold; }
 
 .summary-description {
   font-size: 1rem;
   line-height: 1.8;
-  color: #666;
+  color: var(--text-content-color);
   margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -835,9 +835,9 @@ ol, ul {
   -webkit-box-orient: vertical; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .summary-description {
-      color: #b7b7ab; } }
+      color: var(--text-content-dark-color); } }
   html[data-theme='dark'] .summary-description {
-    color: #b7b7ab; }
+    color: var(--text-content-dark-color); }
 
 .menu-main-mobile {
   position: fixed;
@@ -1299,7 +1299,6 @@ html[data-theme='dark'] .pinglun {
   grid-gap: 10px;
   align-items: center;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px;
   border-radius: 16px;
   position: relative;
@@ -1537,18 +1536,15 @@ html[data-theme='dark'] .apptitle a {
     color: var(--erji-color); }
 
 .movie-quanju {
-  display: none; }
-  @media (min-width: 768px) {
-    .movie-quanju {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 15px; } }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px; }
+
 .movies_bankuai_index {
   display: grid;
   grid-template-columns: auto 1fr;
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .movies_bankuai_index {
@@ -1556,19 +1552,23 @@ html[data-theme='dark'] .apptitle a {
   html[data-theme='dark'] .movies_bankuai_index {
     background: var(--background-dark-color); }
   .movies_bankuai_index .movies_left a {
-    display: block;
-    width: 110px;
-    border-radius: 14px;
-    overflow: hidden;
-    aspect-ratio: 3 / 4;
-    position: relative;
-    line-height: 0;
-    background: transparent; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme='light']) .movies_bankuai_index .movies_left a {
+    display: none; }
+    @media (min-width: 768px) {
+      .movies_bankuai_index .movies_left a {
+        display: block;
+        width: 110px;
+        border-radius: 14px;
+        overflow: hidden;
+        aspect-ratio: 3 / 4;
+        position: relative;
+        line-height: 0;
         background: transparent; } }
-    html[data-theme='dark'] .movies_bankuai_index .movies_left a {
-      background: transparent; }
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .movies_bankuai_index .movies_left a {
+      background: transparent; } }
+    @media (min-width: 768px) {
+        html[data-theme='dark'] .movies_bankuai_index .movies_left a {
+          background: transparent; } }
   .movies_bankuai_index img {
     width: 100%;
     height: 100%;
@@ -1587,8 +1587,10 @@ html[data-theme='dark'] .apptitle a {
   margin-top: 6px; }
 
 .movies_right {
-  margin-left: 10px; }
-
+  margin-left: 0px; }
+  @media (min-width: 768px) {
+    .movies_right {
+      margin-left: 10px; } }
 .movies_index_info {
   font-size: 0.85rem;
   color: #666;
@@ -1620,7 +1622,7 @@ html[data-theme='dark'] .apptitle a {
   grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 768px) {
     #movies_page {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+      grid-template-columns: repeat(3, 1fr); } }
 .movies_bankuai {
   position: relative;
   overflow: hidden;
@@ -1867,10 +1869,8 @@ html[data-theme='dark'] .memos_diaoyong_info a {
   margin-left: auto; }
 
 .bb-timeline {
-  margin-bottom: 0; }
-  @media (min-width: 768px) {
-    .bb-timeline {
-      margin-bottom: 20px; } }
+  margin-bottom: 20px; }
+
 .datacont p {
   font-size: 1.1rem;
   line-height: 1.55;
@@ -2101,9 +2101,6 @@ blockquote p {
   .bb-load button:hover {
     opacity: 0.6;
     transition: opacity .3s ease-in-out; }
-  @media (max-width: 900px) {
-    .bb-load button {
-      margin-top: 10px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .bb-load button {
       color: var(--text-highlight-dark-color);
@@ -2204,13 +2201,9 @@ blockquote p {
 
 .memos-editor-body {
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border-radius: 16px;
-  background: var(--element-background-color);
-  box-shadow: var(--touy-color); }
-  @media (min-width: 768px) {
-    .memos-editor-body {
-      margin-bottom: 20px; } }
+  background: var(--element-background-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-editor-body {
       background: var(--background-dark-color); } }
@@ -2221,7 +2214,7 @@ blockquote p {
   border: transparent;
   border-radius: 4px;
   line-height: 1.6;
-  min-height: 90px;
+  min-height: 120px;
   overflow-x: hidden;
   overflow-y: clip;
   width: 100%;
@@ -2418,7 +2411,7 @@ blockquote p {
   background: var(--text-highlight-color);
   cursor: pointer;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 99px;
   width: 100px;
   display: flex;
   align-items: center;
@@ -2502,23 +2495,19 @@ blockquote p {
   display: flex;
   gap: 20px; }
 
+.bb-list-ul {
+  display: grid;
+  grid-row-gap: 15px; }
+
 .bb-list-li {
   border-radius: 16px;
   background: var(--element-background-color);
   padding: 15px; }
-  @media (max-width: 900px) {
-    .bb-list-li {
-      margin-bottom: 15px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .bb-list-li {
       background: var(--background-dark-color); } }
   html[data-theme='dark'] .bb-list-li {
     background: var(--background-dark-color); }
-
-@media (min-width: 768px) {
-  .bb-list-ul {
-    display: grid;
-    grid-row-gap: 20px; } }
 
 .emoji-selector {
   display: grid;
@@ -2765,7 +2754,6 @@ blockquote p {
 .posts_list_article {
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px; }
   @media (min-width: 768px) {
     .posts_list_article {
@@ -2780,13 +2768,8 @@ blockquote p {
   position: relative;
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px;
-  overflow: hidden;
-  margin-bottom: 15px; }
-  @media (min-width: 768px) {
-    .posts_list_article-index {
-      margin-bottom: 0; } }
+  overflow: hidden; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .posts_list_article-index {
       background: var(--background-dark-color); } }
@@ -2878,7 +2861,6 @@ blockquote p {
   display: flex;
   align-items: center;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   border-radius: 16px;
   padding: 15px; }
   @media (min-width: 768px) {
@@ -2929,49 +2911,29 @@ blockquote p {
 .page-tiaozhuan .footer-background {
   display: none; }
 
-.tiaozhuan-all {
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-  border-radius: 10px;
-  background: #fff url(https://img.koobai.com/tiaozhuanico.webp) no-repeat center center/cover;
-  color: #666;
-  word-break: break-all;
-  max-width: 700px;
-  height: 350px;
-  text-align: center;
-  font-size: 0.85rem;
-  overflow: hidden;
-  margin: 100px auto 0; }
-  @media (min-width: 768px) {
-    .tiaozhuan-all {
-      aspect-ratio: 2 / 1;
-      height: auto; } }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .tiaozhuan-all {
-      background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center/cover;
-      color: #acacac; } }
-  html[data-theme='dark'] .tiaozhuan-all {
-    background: var(--background-dark-color) url(https://img.koobai.com/tiaozhuandark.webp) no-repeat center center/cover;
-    color: #acacac; }
+.page-tiaozhuan .wrapper {
+  margin-top: 0 !important;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
 
-.tiaozhuan-nrong {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 30px 20px; }
+.tiaozhuan-all {
+  color: var(--sanji-color);
+  text-align: center;
+  font-size: 0.85rem; }
 
 .tiaozhuan-title {
   font-size: 1.3rem;
   font-family: var(--font-family-title);
-  color: #222;
+  color: var(--text-content-color);
   line-height: 1.4;
   margin-bottom: 4px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .tiaozhuan-title {
-      color: #ddd; } }
+      color: var(--text-content-dark-color); } }
   html[data-theme='dark'] .tiaozhuan-title {
-    color: #ddd; }
+    color: var(--text-content-dark-color); }
 
 .tiaozhuan-info {
   margin-top: 6px; }
@@ -2982,10 +2944,14 @@ blockquote p {
     color: var(--text-highlight-color);
     border-radius: 99px;
     padding: 10px 30px;
-    font-family: var(--font-family-title);
     font-size: 0.9rem;
     border: 1px solid var(--text-highlight-color);
     display: inline-block; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .tiaozhuan-button a {
+        border: 1px solid var(--text-highlight-dark-color); } }
+    html[data-theme='dark'] .tiaozhuan-button a {
+      border: 1px solid var(--text-highlight-dark-color); }
 
 .quanju {
   display: grid;

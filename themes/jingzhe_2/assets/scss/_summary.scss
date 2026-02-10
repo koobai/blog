@@ -5,9 +5,8 @@
 }
 
 .summary-nrong {
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: var(--touy-color);
+  border-radius: 16px;
+  background: var(--element-background-color);
   padding: 15px;
 
   @include breakpoint('medium') {
@@ -37,12 +36,13 @@
   font-size: 1.2rem;
   margin-top: 6px;
   line-height: 1.6;
+  font-weight: bold;
 }
 
 .summary-description {
   font-size: 1rem;
   line-height: 1.8;
-  color: #666;
+  color: var(--text-content-color);
   margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -51,6 +51,6 @@
   -webkit-box-orient: vertical;
   
   @include dark {
-    color: #b7b7ab;
+    color: var(--text-content-dark-color);
   }
 }

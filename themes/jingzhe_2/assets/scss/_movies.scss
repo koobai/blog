@@ -2,13 +2,9 @@
 // 1. 首页调用 (Index Page)
 // ==========================================
 .movie-quanju {
-  display: none;
-  
-  @include breakpoint('medium') {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
-  }
 }
 
 .movies_bankuai_index {
@@ -16,7 +12,6 @@
   grid-template-columns: auto 1fr;
   border-radius: 16px;
   background: var(--element-background-color);
-  box-shadow: var(--touy-color);
   padding: 15px;
 
   @include dark {
@@ -24,6 +19,8 @@
   }
 
   .movies_left a {
+    display: none;
+  @include breakpoint('medium') {
     display: block;
     width: 110px;
     border-radius: 14px;
@@ -35,6 +32,7 @@
 
     @include dark {
       background: transparent;
+    }
     }
   }
 
@@ -64,7 +62,10 @@
 }
 
 .movies_right {
+  margin-left: 0px;
+  @include breakpoint('medium') {
   margin-left: 10px;
+  }
 }
 
 .movies_index_info {
@@ -102,7 +103,7 @@
   grid-template-columns: repeat(2, 1fr);
   
   @include breakpoint('medium') {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
