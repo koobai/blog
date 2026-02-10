@@ -3,24 +3,24 @@
 // ==========================================
 .movie-quanju {
     display: grid;
+    grid-gap: 15px;   
+  @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 15px;
+  }
 }
 
 .movies_bankuai_index {
-  display: grid;
+  display: flex;
   grid-template-columns: auto 1fr;
   border-radius: 16px;
   background: var(--element-background-color);
   padding: 15px;
-
+  gap: 10px;
   @include dark {
     background: var(--background-dark-color);
   }
 
   .movies_left a {
-    display: none;
-  @include breakpoint('medium') {
     display: block;
     width: 110px;
     border-radius: 14px;
@@ -29,10 +29,8 @@
     position: relative;
     line-height: 0;
     background: transparent;
-
     @include dark {
       background: transparent;
-    }
     }
   }
 
@@ -54,22 +52,13 @@
     }
   }
 }
-
 .movies_ingdex_title {
-  font-size: 1rem;
-  margin-bottom: 5px;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
   margin-top: 6px;
 }
-
-.movies_right {
-  margin-left: 0px;
-  @include breakpoint('medium') {
-  margin-left: 10px;
-  }
-}
-
 .movies_index_info {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #666;
   line-height: 1.5;
   overflow: hidden;
@@ -77,14 +66,16 @@
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-
+  @include breakpoint('medium') {
+     font-size: 0.9rem;
+  }
   @include dark {
     color: var(--text-content-dark-color);
   }
 }
 
 .movie_index_time {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   margin-top: 5px;
   color: var(--sanji-color);
   
@@ -133,14 +124,14 @@
 // --- 遮罩层内容 (核心交互优化 - 全端适配版) ---
 .movies-nrong {
   display: flex;
+  gap: 4px;
   flex-direction: column;
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   justify-content: flex-end; 
-  padding: 20px;
-  padding-bottom: 15px;
-  color: #fff;
-  font-size: 0.85rem;
+  padding: 15px;
+  color: var(--text-content-dark-color);
+  font-size: 1rem;
   background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
   opacity: 1; 
   backdrop-filter: none;
@@ -150,9 +141,6 @@
   .movie-info, .movie-time {
     display: none;
   }
-  .movie-title, .movie-pfeng {
-    margin: 2px 0;
-  }
   // 3. PC 端适配 (仅针对支持鼠标悬停的设备)
   @media (hover: hover) {
     justify-content: center; 
@@ -161,9 +149,6 @@
     opacity: 0; 
     .movie-info, .movie-time {
       display: block; 
-    }
-    .movie-title, .movie-pfeng {
-      margin: 6px 0;
     }
     // 悬停触发显示
     .movies_bankuai:hover & {
@@ -175,7 +160,7 @@
 
 // --- 内部文本样式 ---
 .movie-time {
-  color: #ddd;
+  color: var(--erji-color);
   margin-top: 7px;
   font-size: 0.75rem;
 }
@@ -184,18 +169,16 @@
   font-family: var(--font-family-title);
   font-weight: bold;
   font-size: 1.1rem;
-  margin: 6px 0;
   line-height: 1.3;
 
   a {
-    color: #FFF;
+    color: var(--text-content-dark-color);
     text-decoration: none;
   }
 }
 
 .movie-pfeng {
-  color: #ddd;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -209,7 +192,6 @@
 
 .movie-info {
   line-height: 1.5;
-  color: #eee;
   text-align: justify;
   overflow: hidden;
   text-overflow: ellipsis;
