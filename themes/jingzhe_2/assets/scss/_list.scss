@@ -103,70 +103,18 @@
   }
 }
 
-// 角标
-.post-badge {
-  position: absolute;
-  font-size: 0.85rem;
-  gap: 2px;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 4px 10px;
-  background: var(--erji-color);
-  color: var(--element-background-color);
-  border-bottom-left-radius: 10px;
-  z-index: 1;
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  @include breakpoint('medium') {
-    display: none;
-  }
-
-  // 暗黑模式内聚
-  @include dark {
-    background: var(--text-highlight-dark-color);
-  }
-}
-
 .post-biaoji {
   display: flex;
-  gap: 8px;
+  gap: 4px;
+  font-size: 0.9rem;
   align-items: center;
-  margin-top: 4px;
 }
-
 .post-biaoji-xinxi {
-  display: none;
-  
-  @include breakpoint('medium') {
-    font-size: 0.8rem;
-    background: var(--erji-color);
-    padding: 3px 6px;
-    color: var(--element-background-color);
-    border-radius: 10px;
-    align-items: center;
-    display: flex;
-    gap: 2px;
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  // 暗黑模式内聚 (需嵌套在 breakpoint 内部或外部均可，这里逻辑是 medium 下的颜色变化)
+   color: var(--text-highlight-color);
   @include dark {
-    @include breakpoint('medium') {
-      background: var(--text-highlight-dark-color);
-      color: #fff;
+      color: var(--text-highlight-dark-color);
     }
-  }
 }
-
 // 5. 图片区域
 .posts-img {
   margin: 10px 0;
@@ -248,7 +196,7 @@
 // 时间样式
 .archive-time,
 .archive-time-index {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--sanji-color);
   font-family: var(--font-family-code);
   

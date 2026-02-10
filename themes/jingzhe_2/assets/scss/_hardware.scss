@@ -55,7 +55,7 @@
   padding: 0 10px;
   @include breakpoint('medium') {
     padding: 0;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   a {
@@ -71,11 +71,11 @@
 
 .hardware-jiage {
   margin-left: auto;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border-radius: 20px;
   font-family: var(--font-family-code);
   @include breakpoint('medium') {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -97,9 +97,6 @@
   border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
   transition: opacity 0.2s ease;
-  @include breakpoint('medium') {
-    font-size: 0.8rem;
-  }
   &:hover {
     opacity: 0.6;
   }
@@ -114,17 +111,16 @@
   @include breakpoint('medium') {
     display: block;
     position: absolute;
-    padding: 15px;
+    padding: 20px;
     z-index: 10;
     top: 0;
-    color: var(--erji-color);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    color: var(--text-content-color);
+    font-size: 1rem;
     opacity: 0;
+    text-align: justify;
     background: rgba(242, 240, 235, 0.5);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    transition: opacity 0.4s ease;
     border-radius: 16px 16px 0 0;
 
     @include dark {
@@ -225,9 +221,6 @@
     color: #fff;
     font-size: 1rem;
     z-index: 2; /* 置于图片之上，标题之下 */
-    @include breakpoint('medium') {
-      font-size: 0.9rem;
-    }
     @include dark {
       color: var(--text-content-dark-color);
     }
@@ -243,5 +236,6 @@
   .tiyi {
     color: var(--element-background-color);
     border: 1px solid var(--element-background-color);
+    margin-top: 6px;
   }
 }

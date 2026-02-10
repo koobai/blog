@@ -1317,10 +1317,10 @@ html[data-theme='dark'] .pinglun {
 
 .apptitle {
   font-size: 1.1rem;
-  margin-bottom: 4px; }
+  margin-bottom: 2px; }
   @media (min-width: 768px) {
     .apptitle {
-      font-size: 0.85rem; } }
+      font-size: 1rem; } }
 .appnote {
   display: none; }
   @media (min-width: 768px) {
@@ -1334,11 +1334,10 @@ html[data-theme='dark'] .pinglun {
       padding: 0 16px;
       background: var(--element-background-color);
       color: var(--text-content-color);
-      font-size: 0.9rem;
+      font-size: 1rem;
       line-height: 1.5;
       align-items: center;
       justify-content: flex-start;
-      text-align: justify;
       border-radius: 16px;
       opacity: 0;
       z-index: 10; } }
@@ -1363,12 +1362,12 @@ html[data-theme='dark'] .apptitle a {
   flex-wrap: wrap; }
 
 .macos {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-family: var(--font-family-code);
   color: var(--sanji-color); }
 
 .kaiyuan, .shoufei, .free {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   padding: 6px 10px;
   border-radius: 99px;
   display: inline-flex;
@@ -1438,9 +1437,6 @@ html[data-theme='dark'] .apptitle a {
     color: var(--element-background-color);
     line-height: 1.6;
     font-size: 1rem; }
-    @media (min-width: 768px) {
-      .app-star .appnote {
-        font-size: 0.9rem; } }
   .app-star .star-img {
     position: absolute;
     top: 0;
@@ -1518,7 +1514,7 @@ html[data-theme='dark'] .apptitle a {
   align-items: center; }
 
 .page-time, .single-tag-c {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--sanji-color);
   display: inline-block; }
   @media (prefers-color-scheme: dark) {
@@ -1810,7 +1806,7 @@ html[data-theme='dark'] .apptitle a {
 .memos_diaoyong_laiz,
 .memos_diaoyong_more {
   color: var(--sanji-color);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   display: flex;
   gap: 2px;
   align-items: center; }
@@ -2001,7 +1997,7 @@ blockquote p {
   display: inline-block;
   padding: 4px 4px 4px 2px;
   color: var(--sanji-color);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border-radius: 4px;
   vertical-align: middle;
   cursor: pointer; }
@@ -2590,7 +2586,7 @@ blockquote p {
 
 .memo-relation-label {
   color: var(--sanji-color);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 4px; }
@@ -2604,7 +2600,7 @@ blockquote p {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--sanji-color);
   max-width: 100%; }
   @media (prefers-color-scheme: dark) {
@@ -2619,21 +2615,14 @@ blockquote p {
   flex-shrink: 0; }
 
 .pinned {
-  font-size: 0.85rem;
-  padding: 0 2px;
-  align-items: center;
-  color: var(--text-highlight-color);
-  display: inline-flex;
-  align-items: center; }
+  font-size: 0.9rem;
+  margin-left: 4px;
+  color: var(--text-highlight-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .pinned {
       color: var(--text-highlight-dark-color); } }
   html[data-theme='dark'] .pinned {
     color: var(--text-highlight-dark-color); }
-  .pinned svg {
-    width: 14px;
-    height: 14px;
-    margin-right: 1px; }
 
 .about-img {
   position: relative;
@@ -2765,60 +2754,20 @@ blockquote p {
   html[data-theme='dark'] .posts_list_article-index {
     background: var(--background-dark-color); }
 
-.post-badge {
-  position: absolute;
-  font-size: 0.85rem;
-  gap: 2px;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 4px 10px;
-  background: var(--erji-color);
-  color: var(--element-background-color);
-  border-bottom-left-radius: 10px;
-  z-index: 1; }
-  .post-badge svg {
-    width: 18px;
-    height: 18px; }
-  @media (min-width: 768px) {
-    .post-badge {
-      display: none; } }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .post-badge {
-      background: var(--text-highlight-dark-color); } }
-  html[data-theme='dark'] .post-badge {
-    background: var(--text-highlight-dark-color); }
-
 .post-biaoji {
   display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 4px; }
+  gap: 4px;
+  font-size: 0.9rem;
+  align-items: center; }
 
 .post-biaoji-xinxi {
-  display: none; }
-  @media (min-width: 768px) {
-    .post-biaoji-xinxi {
-      font-size: 0.8rem;
-      background: var(--erji-color);
-      padding: 3px 6px;
-      color: var(--element-background-color);
-      border-radius: 10px;
-      align-items: center;
-      display: flex;
-      gap: 2px; }
-      .post-biaoji-xinxi svg {
-        width: 18px;
-        height: 18px; } }
-@media (prefers-color-scheme: dark) and (min-width: 768px) {
-  html:not([data-theme='light']) .post-biaoji-xinxi {
-    background: var(--text-highlight-dark-color);
-    color: #fff; } }
-  @media (min-width: 768px) {
-    html[data-theme='dark'] .post-biaoji-xinxi {
-      background: var(--text-highlight-dark-color);
-      color: #fff; } }
+  color: var(--text-highlight-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .post-biaoji-xinxi {
+      color: var(--text-highlight-dark-color); } }
+  html[data-theme='dark'] .post-biaoji-xinxi {
+    color: var(--text-highlight-dark-color); }
+
 .posts-img {
   margin: 10px 0;
   overflow: hidden;
@@ -2877,7 +2826,7 @@ blockquote p {
       font-size: 1.2rem; } }
 .archive-time,
 .archive-time-index {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--sanji-color);
   font-family: var(--font-family-code); }
   @media (prefers-color-scheme: dark) {
@@ -2993,7 +2942,7 @@ blockquote p {
   @media (min-width: 768px) {
     .hardware-title {
       padding: 0;
-      font-size: 0.9rem; } }
+      font-size: 1rem; } }
   .hardware-title a {
     color: var(--text-content-color); }
     .hardware-title a:hover {
@@ -3006,12 +2955,12 @@ blockquote p {
 
 .hardware-jiage {
   margin-left: auto;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border-radius: 20px;
   font-family: var(--font-family-code); }
   @media (min-width: 768px) {
     .hardware-jiage {
-      font-size: 0.75rem; } }
+      font-size: 0.9rem; } }
 .liing_2_right {
   justify-content: center;
   /* 水平居中对齐 */
@@ -3030,9 +2979,6 @@ blockquote p {
   border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
   transition: opacity 0.2s ease; }
-  @media (min-width: 768px) {
-    .tiyi {
-      font-size: 0.8rem; } }
   .tiyi:hover {
     opacity: 0.6; }
   @media (prefers-color-scheme: dark) {
@@ -3049,17 +2995,16 @@ blockquote p {
     .note {
       display: block;
       position: absolute;
-      padding: 15px;
+      padding: 20px;
       z-index: 10;
       top: 0;
-      color: var(--erji-color);
-      font-size: 0.9rem;
-      line-height: 1.5;
+      color: var(--text-content-color);
+      font-size: 1rem;
       opacity: 0;
+      text-align: justify;
       background: rgba(242, 240, 235, 0.5);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
-      transition: opacity 0.4s ease;
       border-radius: 16px 16px 0 0; } }
   @media (min-width: 768px) and (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .note {
@@ -3168,9 +3113,6 @@ blockquote p {
     font-size: 1rem;
     z-index: 2;
     /* 置于图片之上，标题之下 */ }
-    @media (min-width: 768px) {
-      .hardware-star .note {
-        font-size: 0.9rem; } }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme='light']) .hardware-star .note {
         color: var(--text-content-dark-color); } }
@@ -3184,7 +3126,8 @@ blockquote p {
     justify-content: flex-start; }
   .hardware-star .tiyi {
     color: var(--element-background-color);
-    border: 1px solid var(--element-background-color); }
+    border: 1px solid var(--element-background-color);
+    margin-top: 6px; }
 
 @font-face {
   font-family: 'JetBrainsMono';
