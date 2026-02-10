@@ -96,7 +96,7 @@
 .memos_diaoyong_laiz,
 .memos_diaoyong_more {
   color: var(--sanji-color);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   display: flex;
   gap: 2px;
   align-items: center;
@@ -317,7 +317,7 @@ blockquote p {
   display: inline-block;
   padding: 4px 4px 4px 2px;
   color: var(--sanji-color);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border-radius: 4px;
   vertical-align: middle;
   cursor: pointer;
@@ -984,7 +984,7 @@ blockquote p {
 
 .memo-relation-label {
   color: var(--sanji-color);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -999,7 +999,7 @@ blockquote p {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--sanji-color);
   max-width: 100%;
 
@@ -1016,20 +1016,10 @@ blockquote p {
 
 // 置顶图标样式
 .pinned {
-  font-size: 0.85rem;
-  padding: 0 2px;
-  align-items: center;
+  font-size: 0.9rem;
+  margin-left: 4px;
   color: var(--text-highlight-color);
-  display: inline-flex;
-  align-items: center;
-
   @include dark {
     color: var(--text-highlight-dark-color);
-  }
-
-  svg {
-    width: 14px;
-    height: 14px;
-    margin-right: 1px;
   }
 }

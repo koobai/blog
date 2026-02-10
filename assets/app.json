@@ -13,6 +13,8 @@
             "title": "Gemini",
             "info": "现在主要使用的 ai 工具，每天必备。",
             "macos": "macOS",
+            "web": "Web",
+            "ios": "iOS",
             "shoufei": "付费",
             "link": "https://gemini.google.com/"
         },
@@ -21,6 +23,7 @@
             "title": "微博",
             "info": "每天必刷，算是了解社会的一个窗口。",
             "ios": "iOS",
+            "web": "Web",
             "free": "免费",
             "link": "https://www.weibo.com"
         },

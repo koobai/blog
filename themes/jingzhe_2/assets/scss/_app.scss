@@ -52,10 +52,9 @@
 
 .apptitle {
   font-size: 1.1rem;
-  margin-bottom: 4px;
-
+  margin-bottom: 2px;
   @include breakpoint('medium') {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 }
 
@@ -73,11 +72,10 @@
     padding: 0 16px; 
     background: var(--element-background-color);
     color: var(--text-content-color);
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.5;
     align-items: center; 
-    justify-content: flex-start; 
-    text-align: justify;
+    justify-content: flex-start;
     border-radius: 16px; 
     opacity: 0;
     z-index: 10;
@@ -101,13 +99,13 @@
 }
 
 .macos {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-family: var(--font-family-code);
   color: var(--sanji-color);
 }
 
 .kaiyuan, .shoufei, .free {
-  font-size: 0.85rem; 
+  font-size: 0.9rem; 
   padding: 6px 10px; 
   border-radius: 99px; 
   display: inline-flex;
@@ -184,10 +182,6 @@
     color: var(--element-background-color);
     line-height: 1.6;
     font-size: 1rem;
-    
-    @include breakpoint('medium') {
-      font-size: 0.9rem;
-    }
   }
 
   // 6. 背景大图层
