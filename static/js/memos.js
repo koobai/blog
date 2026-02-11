@@ -704,7 +704,6 @@
                         
                         STATE.editorLocation = { placeholder: name, latitude, longitude };
                         renderLocation();
-                        cocoMessage.success("定位成功");
                     } catch (e) {
                         console.error(e);
                         cocoMessage.error(typeof e === 'string' ? e : "定位失败");
