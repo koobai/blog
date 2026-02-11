@@ -231,11 +231,6 @@ ol, ul {
     color: var(--text-highlight-dark-color);
     font-weight: bold; }
 
-.github {
-  transition: opacity .3s ease-in-out; }
-  .github:hover {
-    opacity: 0.6; }
-
 .index-laodao {
   font-size: 0.8rem; }
   @media (min-width: 768px) {
