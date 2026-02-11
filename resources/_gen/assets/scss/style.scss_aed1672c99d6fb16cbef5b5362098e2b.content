@@ -39,7 +39,7 @@ ol, ul {
   z-index: 3;
   width: 120px;
   height: 50px;
-  max-width: 620px;
+  max-width: 580px;
   padding: 5px 20px;
   align-items: center;
   display: flex;
@@ -55,7 +55,7 @@ ol, ul {
   @media (min-width: 768px) {
     .header {
       /* 强制固定宽度，不随窗口伸缩 */
-      width: 620px;
+      width: 580px;
       height: auto;
       padding: 20px 30px;
       bottom: 30px;
@@ -705,7 +705,7 @@ ol, ul {
     .fanhui {
       cursor: pointer;
       position: fixed;
-      right: calc(50% - 420px);
+      right: calc(50% - 400px);
       z-index: 2;
       width: 40px;
       height: 40px;
