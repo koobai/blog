@@ -1,4 +1,4 @@
-// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26+ (API v1) / 20260206 / koobai.com
+// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26.1+ (API v1) / 20260211 / koobai.com
 (function() {
     'use strict';
 
@@ -16,7 +16,7 @@
     // ============================================================
     const lsPath = window.localStorage?.getItem("memos-access-path");
     const lsToken = window.localStorage?.getItem("memos-access-token");
-    const defaultMemos = 'https://memos.koobai.com';
+    const defaultMemos = 'http://192.168.31.21:5230/';
 
     // 优化 3: normalizeUrl 内联
     const baseMemos = (lsPath || defaultMemos).replace(/\/?$/, '/');
@@ -33,6 +33,22 @@
     const getResUrl = (resourceName, filename = '') => 
         `${CONFIG.memos}file/${resourceName}${filename ? `/${filename}` : ''}`;
 
+    // 地理位置
+    const GeoHelper = {
+        getPosition: () => new Promise((resolve, reject) => {
+            if (!navigator.geolocation) return reject("浏览器不支持定位");
+            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
+        }),
+        getAddress: async (lat, lon) => {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
+                headers: { 'Accept-Language': 'zh-CN' }
+            });
+            const data = await res.json();
+            const addr = data.address;
+            return addr.district || addr.county || addr.town || addr.city || addr.village || data.display_name.split(',')[0];
+        }
+    };
+
     const STATE = {
         nextPageToken: "",
         nextDom: [],
@@ -47,7 +63,8 @@
         isAuthorized: !!lsToken,
         viewMode: 'ALL',
         isRandomRender: false,
-        tags: new Set()
+        tags: new Set(),
+        editorLocation: null
     };
 
     let activeEmojiPicker = null;
@@ -270,7 +287,12 @@
         refs.visSelect.value = data.visibility;
         refs.textarea.value = data.contentRaw || data.content;
         autoHeight(refs.textarea);
-        
+        if (data.location && data.location.placeholder) {
+            STATE.editorLocation = data.location;
+        } else {
+            STATE.editorLocation = null;
+        }
+        if (refs.renderLocation) refs.renderLocation();
         refs.submitBtn.classList.add("d-none");
         refs.editDom.classList.remove("d-none");
         refs.imageList.innerHTML = '';
@@ -554,7 +576,8 @@
             tokenInp: container.querySelector(".memos-token-input"),
             imageList: container.querySelector(".memos-image-list"),
             innerPanel: container.querySelector(".memos-editor-inner"),
-            optionPanel: container.querySelector(".memos-editor-option")
+            optionPanel: container.querySelector(".memos-editor-option"),
+            locationDis: container.querySelector(".memos-location-display")
         };
 
         bindEditorEvents();
@@ -614,70 +637,165 @@
             }
         });
 
+        // ----------------------------------------------------
+        // 定位渲染与事件 (事件委托模式)
+        // ----------------------------------------------------
+        const renderLocation = () => {
+            const loc = STATE.editorLocation;
+            const el = refs.locationDis;
+            if (!loc) {
+                el.innerHTML = '';
+                el.classList.remove('show');
+                return;
+            }
+            el.classList.add('show');
+            el.innerHTML = `
+                <div class="location-chip animate__animated animate__fadeIn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span class="location-text" title="点击修改">${loc.placeholder}</span>
+                    <svg class="location-delete" title="移除" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </div>`;
+        };
+        refs.renderLocation = renderLocation;
+
+        refs.locationDis.addEventListener('click', (e) => {
+            const loc = STATE.editorLocation;
+            if (!loc) return;
+            
+            // 删除
+            if (e.target.closest('.location-delete')) {
+                STATE.editorLocation = null;
+                renderLocation();
+                return;
+            }
+            // 修改
+            const textSpan = e.target.closest('.location-text');
+            if (textSpan) {
+                const n = prompt('修改位置:', loc.placeholder);
+                if (n && n.trim()) {
+                    STATE.editorLocation.placeholder = n.trim();
+                    renderLocation();
+                }
+            }
+        });
+
+        // ----------------------------------------------------
+        // 按钮逻辑 (发布/修改/定位)
+        // ----------------------------------------------------
         document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
-            const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-btn');
+            const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-btn, .location-btn');
             if (!t) return;
 
-            // 优化 8: 使用 Object 查表替代 switch
             const EDIT_ACTIONS = {
-                    'code-single': () => insertText("``", "`", 1),
-                    'code-btn': () => insertText("```\n\n```", "", 4),
-                    'link-btn': () => insertText("[]()", "[", 1),
-                    'link-img': () => insertText("![]()", "!", 1),
-                    'biao-qing': (t) => showEmoji(t), // 注意这里传 t
-                    'switchUser-btn': () => {
-                        ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => window.localStorage.removeItem(k));
-                        location.reload();
-                    },
-                    'private-btn': (t) => { // 注意这里传 t
-                        const refs = STATE.domRefs;
-                        const isP = t.classList.toggle("private");
-                        refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC";
-                        STATE.viewMode = isP ? 'PRIVATE' : 'ALL';
-                        cocoMessage.success(isP ? "只看私有" : "显示全部");
-                        reloadList();
-                    },
-                    'oneday-btn': () => {
-                        const key = "memos-oneday";
-                        if (!window.localStorage.getItem(key)) {
-                            window.localStorage.setItem(key, "open");
-                            cocoMessage.success("已开启穿越，请刷新");
-                        } else {
-                            window.localStorage.removeItem(key);
-                            cocoMessage.success("已退出穿越");
-                            reloadList();
-                        }
+                'code-single': () => insertText("``", "`", 1),
+                'code-btn': () => insertText("```\n\n```", "", 4),
+                'link-btn': () => insertText("[]()", "[", 1),
+                'link-img': () => insertText("![]()", "!", 1),
+                'biao-qing': (t) => showEmoji(t),
+                
+                // 定位按钮
+                'location-btn': async (t) => {
+                    const icon = t.innerHTML;
+                    t.innerHTML = `<svg class="geo-loading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>`;
+                    
+                    try {
+                        const pos = await GeoHelper.getPosition();
+                        const { latitude, longitude } = pos.coords;
+                        const name = await GeoHelper.getAddress(latitude, longitude);
+                        
+                        STATE.editorLocation = { placeholder: name, latitude, longitude };
+                        renderLocation();
+                        cocoMessage.success("定位成功");
+                    } catch (e) {
+                        console.error(e);
+                        cocoMessage.error(typeof e === 'string' ? e : "定位失败");
+                    } finally {
+                        t.innerHTML = icon;
                     }
-                };
+                },
+
+                'switchUser-btn': () => {
+                    ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => window.localStorage.removeItem(k));
+                    location.reload();
+                },
+                'private-btn': (t) => {
+                    const isP = t.classList.toggle("private");
+                    refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC";
+                    STATE.viewMode = isP ? 'PRIVATE' : 'ALL';
+                    cocoMessage.success(isP ? "只看私有" : "显示全部");
+                    reloadList();
+                },
+                'oneday-btn': () => {
+                    const key = "memos-oneday";
+                    if (!window.localStorage.getItem(key)) {
+                        window.localStorage.setItem(key, "open");
+                        cocoMessage.success("已开启穿越，请刷新");
+                    } else {
+                        window.localStorage.removeItem(key);
+                        cocoMessage.success("已退出穿越");
+                        reloadList();
+                    }
+                }
+            };
             
-            // 查找匹配的 class 并执行
             for (const cls in EDIT_ACTIONS) {
                 if (t.classList.contains(cls)) { EDIT_ACTIONS[cls](t); break; }
             }
         });
 
+        // 发布逻辑
         refs.submitBtn.addEventListener("click", async () => {
             if (!refs.textarea.value.trim()) return cocoMessage.info('内容不能为空');
             const resIds = JSON.parse(window.localStorage?.getItem("memos-resource-list") || "[]");
+            
             const body = { 
                 content: refs.textarea.value, 
                 visibility: refs.visSelect.value,
                 resources: resIds.map(id => ({ name: `resources/${id}` }))
             };
+
+            if (STATE.editorLocation) {
+                body.location = {
+                    latitude: STATE.editorLocation.latitude,
+                    longitude: STATE.editorLocation.longitude,
+                    placeholder: STATE.editorLocation.placeholder
+                };
+            }
+
             const res = await memoFetch(`api/v1/memos`, 'POST', body);
             if (res) { cocoMessage.success('唠叨成功'); reloadList(); resetEditor(); }
         });
 
+        // 修改逻辑 (修复 400 错误的重点)
         document.querySelector(".edit-memos-btn").addEventListener("click", async () => {
             const data = JSON.parse(window.localStorage?.getItem("memos-editor-dataform"));
             if (!data) return;
             const currentVis = refs.visSelect.value;
+            
+            // 基础字段
             const updateMask = ["content", "visibility"];
-            const body = { content: refs.textarea.value, visibility: currentVis };
+            const body = { 
+                content: refs.textarea.value, 
+                visibility: currentVis
+            };
+            
+            if (STATE.editorLocation) {
+                updateMask.push("location");
+                body.location = {
+                    latitude: STATE.editorLocation.latitude,
+                    longitude: STATE.editorLocation.longitude,
+                    placeholder: STATE.editorLocation.placeholder
+                };
+            } else if (data.location) {
+                updateMask.push("location");
+                body.location = null; 
+            }
+            
             if (data.visibility === 'PRIVATE' && currentVis === 'PUBLIC') {
                 body.createTime = new Date().toISOString();
                 updateMask.push("create_time");
             }
+
             const res = await memoFetch(`api/v1/memos/${data.id}?updateMask=${updateMask.join(',')}`, 'PATCH', body);
             if (res) { cocoMessage.success('修改成功'); resetEditor(); reloadList(); }
             else { cocoMessage.error('修改失败'); }
@@ -710,6 +828,8 @@
         refs.textarea.style.height = 'auto';
         refs.submitBtn.style.opacity = 0.4;
         refs.imageList.innerHTML = '';
+        STATE.editorLocation = null;
+        if (refs.renderLocation) refs.renderLocation();
         refs.editDom.classList.add("d-none");
         refs.submitBtn.classList.remove("d-none");
         ['memos-resource-list', 'memos-editor-dataform'].forEach(k => window.localStorage.removeItem(k));
@@ -761,11 +881,13 @@
                     <div class="memos-editor-content"><textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea></div>
                     <div id="memos-tag-menu" style="display:none;"></div>
                     <div class="memos-image-list d-flex flex-fill line-xl"></div>
+                    <div class="memos-location-display"></div>
                     <div class="memos-editor-footer border-t">
                         <div class="d-flex">
                             <div class="button outline action-btn code-single" title="代码块"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg></div>
                             <div class="button outline action-btn link-btn" title="链接"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg></div>
                             <div class="button outline action-btn link-img" title="图片链接"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2m0 15.92c-.02.03-.06.06-.08.08H3V5.08L3.08 5h17.83c.03.02.06.06.08.08v13.84zm-10-3.41L8.5 12.5L5 17h14l-4.5-6z"/></svg></div>
+                            <div class="button outline action-btn location-btn" title="定位"><svg class="memo-location-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
                             <div class="button outline action-btn biao-qing" title="表情"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></div>
                             <div class="memos-more-ico"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M5 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4m7 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/></g></svg>
                                 <div class="memos-xiala"><div class="code-btn">代码</div><div class="private-btn">私有</div><div class="oneday-btn">穿越</div><div class="switchUser-btn">退出</div></div>

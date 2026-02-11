@@ -523,7 +523,7 @@ blockquote p {
 .d-flex {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .d-none {
@@ -1022,4 +1022,59 @@ blockquote p {
   @include dark {
     color: var(--text-highlight-dark-color);
   }
+}
+
+
+/* --- 定位组件样式 --- */
+@keyframes geo-spin { 100% { transform: rotate(360deg); } }
+.geo-loading { animation: geo-spin 1s linear infinite; }
+.memos-location-display {
+  display: none;
+  margin: 6px 0;
+  width: 100%;
+}
+.memos-location-display.show {
+  display: block;
+}
+
+/* 胶囊本体 */
+.location-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 99px;
+  background: var(--background-color);
+  color: var(--sanji-color);
+  font-size: 0.9rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  @include dark {
+    background: var(--background-dark-body-color);
+    color: var(--erji-color);
+  }
+}
+.location-chip svg {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  display: block;
+}
+
+/* 文字部分 */
+.location-text {
+  margin: 0 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  &:hover { opacity: 0.6; }
+}
+
+/* 删除按钮 */
+.location-delete {
+  cursor: pointer;
+  color: var(--erji-color);
+  margin-left: 6px;
+  &:hover { opacity: 0.6; }
 }
