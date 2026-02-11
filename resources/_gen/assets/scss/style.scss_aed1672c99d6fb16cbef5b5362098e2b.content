@@ -2158,7 +2158,7 @@ blockquote p {
     width: 18px;
     height: 18px;
     color: #ababab; }
-  .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .memos-xiala .image-btn, .memos-xiala .code-btn {
+  .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .memos-xiala .image-btn, .memos-xiala .code-btn, .memos-xiala .code-single {
     margin: 12px 0;
     cursor: pointer;
     color: var(--erji-color);
@@ -2166,12 +2166,12 @@ blockquote p {
     align-items: center;
     justify-content: center;
     gap: 8px; }
-    .memos-xiala .switchUser-btn:hover, .memos-xiala .private-btn:hover, .memos-xiala .oneday-btn:hover, .memos-xiala .image-btn:hover, .memos-xiala .code-btn:hover {
+    .memos-xiala .switchUser-btn:hover, .memos-xiala .private-btn:hover, .memos-xiala .oneday-btn:hover, .memos-xiala .image-btn:hover, .memos-xiala .code-btn:hover, .memos-xiala .code-single:hover {
       text-decoration: underline; }
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme='light']) .memos-xiala .switchUser-btn, html:not([data-theme='light']) .memos-xiala .private-btn, html:not([data-theme='light']) .memos-xiala .oneday-btn, html:not([data-theme='light']) .memos-xiala .image-btn, html:not([data-theme='light']) .memos-xiala .code-btn {
+      html:not([data-theme='light']) .memos-xiala .switchUser-btn, html:not([data-theme='light']) .memos-xiala .private-btn, html:not([data-theme='light']) .memos-xiala .oneday-btn, html:not([data-theme='light']) .memos-xiala .image-btn, html:not([data-theme='light']) .memos-xiala .code-btn, html:not([data-theme='light']) .memos-xiala .code-single {
         color: var(--sanji-color); } }
-    html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn {
+    html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn, html[data-theme='dark'] .memos-xiala .code-single {
       color: var(--sanji-color); }
 
 .memos-title {
