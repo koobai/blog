@@ -763,10 +763,6 @@ blockquote p {
   padding: 15px;
   background: var(--element-background-color);
   border-radius: 16px;
-
-  @include breakpoint('medium') {
-    margin-bottom: 20px;
-  }
   @include dark {
     background: var(--background-dark-color);
   }

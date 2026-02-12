@@ -2399,9 +2399,6 @@ blockquote p {
   padding: 15px;
   background: var(--element-background-color);
   border-radius: 16px; }
-  @media (min-width: 768px) {
-    .memos-oneday {
-      margin-bottom: 20px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-oneday {
       background: var(--background-dark-color); } }
