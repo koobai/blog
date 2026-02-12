@@ -11,11 +11,11 @@
         LINK: /\[(.*?)\]\((.*?)\)/g
     };
 
-    //图片链接替换
+    //上传图片链接替换
     function cleanImage(url) {
-    if (!url || !url.includes('upyun.com')) return url;
-    return url.replace(/https?:\/\/.*\.upyun\.com\/koobaiblogimg/, 'https://img.koobai.com').split('?')[0];
-
+        if (!url || !url.includes('upyun.com')) return url;
+        return url.replace(/https?:\/\/.*\.upyun\.com\/koobaiblogimg/, 'https://img.koobai.com').split('?')[0];
+    }
     // ============================================================
     // 1. 核心配置与状态管理
     // ============================================================
