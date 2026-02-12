@@ -617,9 +617,9 @@
                 let width = img.width;
                 let height = img.height;
                 
-                // 📐 尺寸限制：最大 1500px
-                const MAX_WIDTH = 1500; 
-                const MAX_HEIGHT = 1500;
+                // 📐 尺寸限制：最大 1200px
+                const MAX_WIDTH = 1200; 
+                const MAX_HEIGHT = 1200;
 
                 if (width > height) {
                     if (width > MAX_WIDTH) {
