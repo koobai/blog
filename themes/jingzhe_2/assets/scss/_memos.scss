@@ -497,7 +497,7 @@ blockquote p {
     color: #ababab;
   }
 
-  .switchUser-btn, .private-btn, .oneday-btn, .image-btn, .code-btn,.code-single{
+  .switchUser-btn, .private-btn, .oneday-btn, .image-btn, .code-btn,.code-single,.link-img{
     margin: 12px 0;
     cursor: pointer;
     color: var(--erji-color);
@@ -694,28 +694,6 @@ blockquote p {
     &:hover .memos-up-image {
       opacity: 0.9;
       transform: scale(1.05);
-    }
-
-    &::after {
-      content: "×";
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: rgba(0,0,0,0.5);
-      color: #fff;
-      width: 18px;
-      height: 18px;
-      line-height: 16px;
-      text-align: center;
-      font-size: 14px;
-      border-bottom-left-radius: 8px;
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
-    }
-
-    &:hover::after {
-      opacity: 1;
     }
   }
 
@@ -1077,4 +1055,71 @@ blockquote p {
   color: var(--erji-color);
   margin-left: 6px;
   &:hover { opacity: 0.6; }
+}
+
+
+
+
+// Memos 图片上传与排序样式
+
+/* 1. 图片列表容器 */
+.memos-image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; 
+  margin-bottom: 8px;
+}
+
+/* 2. 单个图片项 (容器) */
+.imagelist-item {
+  /* 基础布局 */
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0; /* 防止被挤压 */
+  overflow: hidden; /* 裁剪圆角 */
+  cursor: move;       /* 鼠标悬停显示抓手 */
+  touch-action: none; /* 关键：禁止手机端默认滚动，让位给拖拽 */
+  user-select: none;  /* 禁止选中图片 */
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+/* 3. 图片本体 */
+.memos-up-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 保持比例填满盒子 */
+  display: block;    /* 消除 img 底部默认空隙 */
+  pointer-events: none; /* 防止图片本身干扰拖拽事件 */
+}
+
+/* 4. 删除按钮遮罩 */
+.image-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* 整个遮罩 */
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* 鼠标悬停时显示 */
+.imagelist-item:hover .image-delete {
+  opacity: 1;
+}
+
+/* 5. 拖拽时的状态 (高亮显示) */
+.imagelist-item.dragging {
+  opacity: 0.6;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 20;
+  border: 1px dashed #999;
 }
