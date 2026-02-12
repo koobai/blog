@@ -11,6 +11,11 @@
         LINK: /\[(.*?)\]\((.*?)\)/g
     };
 
+    //图片链接替换
+    function cleanImage(url) {
+    if (!url || !url.includes('upyun.com')) return url;
+    return url.replace(/https?:\/\/.*\.upyun\.com\/koobaiblogimg/, 'https://img.koobai.com').split('?')[0];
+
     // ============================================================
     // 1. 核心配置与状态管理
     // ============================================================
@@ -145,7 +150,8 @@
             const type = r.type || r.mimeType || 'image/*';
             
             // 核心：优先外链 -> 其次走统一生成器
-            const src = r.externalLink || getResUrl(rName, rFilename);
+            //const src = r.externalLink || getResUrl(rName, rFilename);
+            const src = cleanImage(r.externalLink || getResUrl(rName, rFilename));
             
             if (type.startsWith('image')) allImages.push(src);
             return { id: rId, name: rName, filename: rFilename, externalLink: r.externalLink, type, src };
