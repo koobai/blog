@@ -2128,7 +2128,7 @@ blockquote p {
 .memos-more-ico {
   position: relative; }
   .memos-more-ico:hover .memos-xiala {
-    display: block; }
+    display: grid; }
   .memos-more-ico svg {
     color: var(--sanji-color); }
     @media (prefers-color-scheme: dark) {
@@ -2138,41 +2138,36 @@ blockquote p {
       color: var(--erji-color); }
 
 .memos-xiala {
-  width: 80px;
+  width: 50px;
   position: absolute;
   background-color: #fff;
-  padding: 6px 0;
+  padding: 12px;
   box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
-  border-radius: 4px;
-  display: none;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  font-size: 1rem;
   right: -30px;
-  z-index: 100; }
+  z-index: 100;
+  display: none;
+  gap: 10px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-xiala {
       background-color: #282527; } }
   html[data-theme='dark'] .memos-xiala {
     background-color: #282527; }
-  .memos-xiala svg {
-    width: 18px;
-    height: 18px;
-    color: #ababab; }
   .memos-xiala .switchUser-btn, .memos-xiala .private-btn, .memos-xiala .oneday-btn, .memos-xiala .image-btn, .memos-xiala .code-btn, .memos-xiala .code-single, .memos-xiala .link-img {
-    margin: 12px 0;
     cursor: pointer;
-    color: var(--erji-color);
+    color: var(--sanji-color);
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px; }
+    justify-content: center; }
     .memos-xiala .switchUser-btn:hover, .memos-xiala .private-btn:hover, .memos-xiala .oneday-btn:hover, .memos-xiala .image-btn:hover, .memos-xiala .code-btn:hover, .memos-xiala .code-single:hover, .memos-xiala .link-img:hover {
       text-decoration: underline; }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme='light']) .memos-xiala .switchUser-btn, html:not([data-theme='light']) .memos-xiala .private-btn, html:not([data-theme='light']) .memos-xiala .oneday-btn, html:not([data-theme='light']) .memos-xiala .image-btn, html:not([data-theme='light']) .memos-xiala .code-btn, html:not([data-theme='light']) .memos-xiala .code-single, html:not([data-theme='light']) .memos-xiala .link-img {
-        color: var(--sanji-color); } }
+        color: var(--erji-color); } }
     html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn, html[data-theme='dark'] .memos-xiala .code-single, html[data-theme='dark'] .memos-xiala .link-img {
-      color: var(--sanji-color); }
+      color: var(--erji-color); }
 
 .memos-title {
   display: none; }
@@ -2180,7 +2175,7 @@ blockquote p {
 .d-flex {
   display: flex;
   align-items: center;
-  gap: 20px; }
+  gap: 24px; }
 
 .d-none {
   display: none !important; }
@@ -2250,7 +2245,7 @@ blockquote p {
     background: transparent;
     color: var(--sanji-color);
     font-family: var(--font-family-paragraph);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     outline: 0.5px solid transparent; }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme='light']) .editor-selector select {
@@ -2419,23 +2414,25 @@ blockquote p {
 
 .memos-edit {
   margin-left: auto;
-  position: relative; }
-  .memos-edit:hover .memos-menu-d {
-    display: block; }
+  position: relative;
+  display: inline-flex;
+  z-index: 999; }
 
 .memos-menu {
-  margin-left: 40px;
-  color: transparent; }
+  color: transparent;
+  cursor: pointer; }
 
 .memos-menu-d {
-  width: 60px;
   position: absolute;
-  top: 8px;
+  width: 50px;
+  padding: 10px;
+  left: -40px;
   background-color: #fff;
-  padding: 8px 0 8px 0;
   box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
-  border-radius: 4px;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
   display: none; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-menu-d {
@@ -2443,11 +2440,14 @@ blockquote p {
   html[data-theme='dark'] .memos-menu-d {
     background-color: #282527; }
 
+.memos-menu:hover + .memos-menu-d,
+.memos-menu-d:hover {
+  display: grid; }
+
 .edit-btn, .archive-btn, .delete-btn, .pinned-edit {
   cursor: pointer;
-  line-height: 1.8;
   color: var(--sanji-color);
-  font-size: 0.85rem; }
+  font-size: 1rem; }
   .edit-btn:hover, .archive-btn:hover, .delete-btn:hover, .pinned-edit:hover {
     text-decoration: underline; }
   @media (prefers-color-scheme: dark) {
