@@ -16,7 +16,7 @@
     // ============================================================
     const lsPath = window.localStorage?.getItem("memos-access-path");
     const lsToken = window.localStorage?.getItem("memos-access-token");
-    const defaultMemos = 'https://memos.koobai.com';
+    const defaultMemos = 'https://memos.koobai.com/';
 
     // 优化 3: normalizeUrl 内联
     const baseMemos = (lsPath || defaultMemos).replace(/\/?$/, '/');
@@ -612,14 +612,14 @@
         reader.onload = (e) => {
             const img = new Image();
             img.src = e.target.result;
+            
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
                 
-                // 📐 尺寸限制：最大 1500px
-                const MAX_WIDTH = 1500; 
-                const MAX_HEIGHT = 1500;
+                const MAX_WIDTH = 1200; 
+                const MAX_HEIGHT = 1200;
 
                 if (width > height) {
                     if (width > MAX_WIDTH) {
@@ -637,11 +637,22 @@
                 canvas.height = height;
                 
                 const ctx = canvas.getContext('2d');
+                // JPEG 需要白色背景，防止透明图变黑
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, width, height);
                 ctx.drawImage(img, 0, 0, width, height);
 
-                const compressedDataUrl = canvas.toDataURL('image/webp', 0.7);
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                
+                // 防崩溃检测
+                if (compressedDataUrl.length < 100) {
+                    reject(new Error("Image compression failed"));
+                    return;
+                }
+
                 resolve(compressedDataUrl.split(',')[1]);
             };
+            
             img.onerror = (err) => reject(err);
         };
         reader.onerror = reject;
@@ -774,37 +785,46 @@
         });
 
         // =======================================================
-        // 📤 上传逻辑 (修复版：调用压缩函数)
+        // 📤 上传逻辑 (JPEG 版)
         // =======================================================
         refs.uploadInput.addEventListener('change', async (e) => {
             if (!e.target.files?.length) return;
             
             for (const file of e.target.files) {
                 try {
-                    // 1. 本地预览 (依然用原图做瞬时预览，体验更好)
                     const localUrl = URL.createObjectURL(file);
-                    
-                    // 2. 核心修复：调用上面定义的【WebP压缩函数】
-                    const content = await fileToBase64(file);
+                    let content = '';
+                    let finalFilename = file.name;
 
-                    // 3. 细节优化：把文件名后缀改为 .webp
-                    const newFilename = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+                    try {
+                        content = await fileToBase64(file);
+                        finalFilename = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                    } catch (err) {
+                        console.warn("压缩失败，降级原图:", err);
+                        content = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = () => resolve(reader.result.split(',')[1]);
+                            reader.onerror = reject;
+                        });
+                        finalFilename = file.name;
+                    }
 
+                    // 3. 上传
                     const uploadUrl = `${CONFIG.memos.replace(/\/$/, '')}/api/v1/attachments`;
-
                     const res = await fetch(uploadUrl, {
                         method: 'POST',
                         headers: { 
                             'Authorization': `Bearer ${STATE.memosOpenId}`,
                             'Content-Type': 'application/json' 
                         },
-                        body: JSON.stringify({ content, filename: newFilename })
+                        body: JSON.stringify({ content, filename: finalFilename })
                     });
                     
                     if (!res.ok) throw new Error('Upload Failed');
                     const data = await res.json();
                     
-                    // 4. 渲染 DOM (调用工具函数)
+                    // 4. 渲染 DOM
                     refs.imageList.insertAdjacentHTML('beforeend', getImageDom(data.name, localUrl));
                     
                 } catch (e) {
@@ -812,7 +832,6 @@
                     cocoMessage.error("上传失败");
                 }
             }
-            // 清空输入框，确保同名文件能再次触发 change 事件
             refs.uploadInput.value = '';
         });
 
