@@ -445,20 +445,22 @@ blockquote p {
 
 .outline svg {
   color: var(--sanji-color);
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   
   &:hover {
-    color: #444;
+    opacity: 0.6;
   }
   @include dark {
     color: var(--erji-color);
-    &:hover {
-       color: var(--sanji-color);
-    }
   }
 }
-
+.link-btn,.biao-qing{
+  display: none;
+   @include breakpoint('medium') {
+    display: block;
+  }
+}
 .memos-more-ico {
   position: relative;
   &:hover .memos-xiala {
@@ -502,6 +504,12 @@ blockquote p {
   }
   }
 }
+.link-img{
+  display: none !important;
+   @include breakpoint('medium') {
+    display: block !important;
+  }
+}
 
 .memos-title {
   display: none;
@@ -539,7 +547,7 @@ blockquote p {
   resize: none;
   background: transparent;
   font-family: var(--font-family-paragraph);
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 0;
 
   &::placeholder {
@@ -797,13 +805,16 @@ blockquote p {
   border-radius: 8px;
   display: grid;
   gap: 10px;
-  display: none;
+  display:none;
+  top: 40px;
   @include dark {
     background-color: #282527;
   }
+  @include breakpoint('medium') {
+     top: 0;
+  }
 }
-.memos-menu:hover + .memos-menu-d,
-.memos-menu-d:hover {
+.memos-edit:hover .memos-menu-d {
   display: grid;
 }
 
