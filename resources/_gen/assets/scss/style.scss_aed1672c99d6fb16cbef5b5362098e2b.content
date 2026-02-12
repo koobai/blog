@@ -2111,20 +2111,21 @@ blockquote p {
 
 .outline svg {
   color: var(--sanji-color);
-  width: 18px;
-  height: 18px; }
+  width: 20px;
+  height: 20px; }
   .outline svg:hover {
-    color: #444; }
+    opacity: 0.6; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .outline svg {
-      color: var(--erji-color); }
-      html:not([data-theme='light']) .outline svg:hover {
-        color: var(--sanji-color); } }
+      color: var(--erji-color); } }
   html[data-theme='dark'] .outline svg {
     color: var(--erji-color); }
-    html[data-theme='dark'] .outline svg:hover {
-      color: var(--sanji-color); }
 
+.link-btn, .biao-qing {
+  display: none; }
+  @media (min-width: 768px) {
+    .link-btn, .biao-qing {
+      display: block; } }
 .memos-more-ico {
   position: relative; }
   .memos-more-ico:hover .memos-xiala {
@@ -2169,6 +2170,11 @@ blockquote p {
     html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn, html[data-theme='dark'] .memos-xiala .code-single, html[data-theme='dark'] .memos-xiala .link-img {
       color: var(--erji-color); }
 
+.link-img {
+  display: none !important; }
+  @media (min-width: 768px) {
+    .link-img {
+      display: block !important; } }
 .memos-title {
   display: none; }
 
@@ -2203,7 +2209,7 @@ blockquote p {
   resize: none;
   background: transparent;
   font-family: var(--font-family-paragraph);
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 0; }
   .memos-editor-content .memos-editor-textarea::placeholder {
     color: #bbbbbb; }
@@ -2433,15 +2439,17 @@ blockquote p {
   border-radius: 8px;
   display: grid;
   gap: 10px;
-  display: none; }
+  display: none;
+  top: 40px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-menu-d {
       background-color: #282527; } }
   html[data-theme='dark'] .memos-menu-d {
     background-color: #282527; }
-
-.memos-menu:hover + .memos-menu-d,
-.memos-menu-d:hover {
+  @media (min-width: 768px) {
+    .memos-menu-d {
+      top: 0; } }
+.memos-edit:hover .memos-menu-d {
   display: grid; }
 
 .edit-btn, .archive-btn, .delete-btn, .pinned-edit {
