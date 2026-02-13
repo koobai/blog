@@ -739,17 +739,25 @@ blockquote p {
   margin-left: 40px;
   margin-right: 10px;
 }
+.memos-path-input::placeholder,
+.memos-token-input::placeholder {
+  color: var(--sanji-color); 
+  opacity: 1;  
+  @include dark {
+    color: var(--erji-color); 
+  }
+}
 
 .memos-open-api-submit {
-  background: var(--text-highlight-color);
+  background: transparent;
   cursor: pointer;
-  color: #fff;
+  color:  var(--text-highlight-color);
   border-radius: 99px;
   width: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  font-weight: bold;
   @include dark {
     background: var(--background-dark-color) !important;
     color: var(--text-highlight-dark-color) !important;
