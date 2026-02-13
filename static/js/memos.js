@@ -1020,8 +1020,8 @@
                 </div>
                 <div class="memos-editor-option animate__animated animate__fadeIn d-none">
                     <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" placeholder="Memos 地址">
-                    <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" placeholder="Token">
-                    <div class="memos-open-api-submit"><div class="primary submit-openapi-btn">保存</div></div>
+                    <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" placeholder="访问令牌">
+                    <div class="memos-open-api-submit"><div class="primary submit-openapi-btn">验证</div></div>
                 </div>
             </div>
             <input type="file" class="memos-upload-input" accept="image/*" multiple style="display:none;">
