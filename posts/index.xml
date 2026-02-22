@@ -11,12 +11,18 @@
 &gt;
 聊聊肥胖说说状态&lt;/a&gt;》，但两年多过去，体重还是一直维持在一百七十多斤，最重的时候差一斤就一百八十斤了，这下没有任何理由说减不下来了。&lt;/p&gt;</description></item><item><title>罢免小区业委会</title><link>https://koobai.com/yeweihui/</link><pubDate>Wed, 08 Jan 2025 14:05:14 +0800</pubDate><guid>https://koobai.com/yeweihui/</guid><description>&lt;p&gt;自己小区业委会成立时间是 2020 年，到今年 2025 年 9 月份这届到期。过往几年大家似乎也不关注这些，整体把小区品质搞上去就行。但从周六开始，业主就开始集结起来，要求罢免业委会，警察来了一次又一次，以防发生不愉快事件。&lt;/p&gt;</description></item><item><title>从 iOS 更换到 Android 会有不适吗？</title><link>https://koobai.com/iosandroid/</link><pubDate>Thu, 19 Sep 2024 21:15:36 +0800</pubDate><guid>https://koobai.com/iosandroid/</guid><description>&lt;p&gt;还有几个小时就是 iPhone 16 系列正式发售的日子，看评测说提升最大的是拍摄视频又拉开 Android 机一个台阶。既然自己不买，那就来聊聊自己从 iOS 更换到 Android 的体验。以自己日常使用场景，先说结论：98% 没什么不适的，剩余的 1% 在于通知的延迟、1% 裸机下容易边缘误触。&lt;/p&gt;</description></item><item><title>五一假期之登高望远</title><link>https://koobai.com/pashan/</link><pubDate>Thu, 02 May 2024 19:21:28 +0800</pubDate><guid>https://koobai.com/pashan/</guid><description>&lt;p&gt;上次爬山还是 2021 年初，即使家门口就有个临平山公园，开发得也非常好，但一直也没想着要去再爬一次。也许跟小时候就是在山沟沟里长大有关，砍柴要上山、放牛要上山、干一些农活也要上山，所以对山已经免疫了，提不起什么兴趣。如果是说去看海，那分分钟钟立马得去。&lt;/p&gt;</description></item><item><title>以后如果小米做汽车了，也可以买小米汽车</title><link>https://koobai.com/car/</link><pubDate>Sat, 30 Mar 2024 17:15:16 +0800</pubDate><guid>https://koobai.com/car/</guid><description>&lt;p&gt;28 号晚，本来计划在屏幕前看看小米汽车发布会，但忘记了，想起来的时候已经是 20:30 分左右，算了，不如继续骑车来得爽。几小时后，刷微博见铺天盖地的小米汽车新闻跟售价，想起来 2019 年说的一句话：“以后如果小米做汽车了，也可以买小米汽车”。&lt;/p&gt;</description></item><item><title>自行车给自己带来了什么情绪价值爽点</title><link>https://koobai.com/af105/</link><pubDate>Sun, 17 Mar 2024 17:18:54 +0800</pubDate><guid>https://koobai.com/af105/</guid><description>&lt;p&gt;自行车的记忆还是停留在大学里的那辆折叠自行车，没记错的话，应该还是深蓝色的。毕业之后还把它从学校一起带到了杭州，每天上下班骑着。某天锁在出租房楼下，被人剪开锁偷走了。从那之后一直到去年 10 月份就再也没拥有过自行车。&lt;/p&gt;</description></item><item><title>HUGO 折腾随记之热力图 / 段落导航</title><link>https://koobai.com/hugo_suiji/</link><pubDate>Sat, 24 Feb 2024 16:49:41 +0800</pubDate><guid>https://koobai.com/hugo_suiji/</guid><description>&lt;p&gt;在闲逛各博客的时候，发现有些功能蛮有意思的，于是趁现在还没忙碌起来，跟着抄了下作业，同时通过 AI 的帮忙，优化了下以适应自己页面的风格。&lt;/p&gt;
 &lt;h2 id="博文热力图"&gt;博文热力图&lt;/h2&gt;
-&lt;p&gt;&lt;img src="https://img.koobai.com/article/20240224_relitu.webp" 
+&lt;p&gt;&lt;figure class="post-figure"&gt;
+ &lt;img src="https://img.koobai.com/article/20240224_relitu.webp" 
  alt="热力图" 
  
  class="img-hide" 
  loading="lazy" 
- decoding="async" /&gt;&lt;/p&gt;
+ decoding="async" /&gt;
+ 
+ 
+ &lt;figcaption class="post-figcaption"&gt;热力图&lt;/figcaption&gt;
+ 
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;最开始看到好像是因为
 
 &lt;a 
