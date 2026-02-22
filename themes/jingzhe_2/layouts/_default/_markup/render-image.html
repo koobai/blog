@@ -1,6 +1,12 @@
-<img src="{{ .Destination | safeURL }}" 
-     alt="{{ .Text }}" 
-     {{ with .Title }}title="{{ . }}"{{ end }} 
-     class="img-hide" 
-     loading="lazy" 
-     decoding="async" />
+<figure class="post-figure">
+  <img src="{{ .Destination | safeURL }}" 
+       alt="{{ .Text }}" 
+       {{ with .Title }}title="{{ . }}"{{ end }} 
+       class="img-hide" 
+       loading="lazy" 
+       decoding="async" />
+  
+  {{ with .Text }}
+  <figcaption class="post-figcaption">{{ . }}</figcaption>
+  {{ end }}
+</figure>

@@ -150,14 +150,13 @@ ol, ul {
     max-width: 100%;
     height: auto;
     cursor: zoom-in;
-    border-radius: 8px; // 优化：统一加上圆角
+    border-radius: 16px; // 优化：统一加上圆角
   }
 
   figure {
-    margin: 2.6rem 0 1.18rem;
+    margin: 1rem 0 0.7rem;
     img { margin: 0; }
     figcaption {
-      margin-top: 10px;
       h4 { margin: 0; font-size: 1rem; font-weight: bold; }
       p { margin: 0; }
     }
@@ -334,5 +333,30 @@ ol, ul {
         }
       }
     }
+  }
+}
+
+//图片注释
+.post-figure {
+  text-align: center;
+  img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+  }
+}
+.post-figcaption {
+  margin-top: 4px; 
+  font-size: 0.9rem; 
+  color: var(--erji-color); 
+  line-height: 1.5;
+  
+  &::before {
+    content: '▲';           
+    font-size: 0.85rem;      
+    margin-right: 4px;      
+    vertical-align: middle; 
+    position: relative;
+    top: -1px;    
   }
 }
