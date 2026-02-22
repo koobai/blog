@@ -9,7 +9,7 @@
   --background-dark-color: #7C7671;
   --background-dark-body-color: #6E6B66;
   --text-content-color:#222;
-  --text-content-dark-color:#E5E3E1;
+  --text-content-dark-color:#D1CCC6;
   --text-highlight-color:#994D61;
   --text-highlight-dark-color:#C3AACC;
   --frame-dark-color: #332D2F;
