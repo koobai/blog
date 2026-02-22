@@ -588,19 +588,17 @@ ol, ul {
     max-width: 100%;
     height: auto;
     cursor: zoom-in;
-    border-radius: 8px; }
+    border-radius: 16px; }
   .content figure {
-    margin: 2.6rem 0 1.18rem; }
+    margin: 1rem 0 0.7rem; }
     .content figure img {
       margin: 0; }
-    .content figure figcaption {
-      margin-top: 10px; }
-      .content figure figcaption h4 {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: bold; }
-      .content figure figcaption p {
-        margin: 0; }
+    .content figure figcaption h4 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold; }
+    .content figure figcaption p {
+      margin: 0; }
   .content code, .content pre {
     font-family: var(--font-family-code);
     line-height: 1.8; }
@@ -752,6 +750,26 @@ ol, ul {
     @media (min-width: 768px) and (hover: hover) {
       html[data-theme='dark'] .fanhui:hover svg {
         color: var(--text-highlight-dark-color); } }
+.post-figure {
+  text-align: center; }
+  .post-figure img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block; }
+
+.post-figcaption {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--erji-color);
+  line-height: 1.5; }
+  .post-figcaption::before {
+    content: '▲';
+    font-size: 0.85rem;
+    margin-right: 4px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px; }
+
 .intro h1 {
   font-size: 40px;
   margin-bottom: 10px; }
