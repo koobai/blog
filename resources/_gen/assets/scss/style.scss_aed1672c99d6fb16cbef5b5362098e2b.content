@@ -809,7 +809,7 @@ ol, ul {
 .summary {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 20px; }
+  grid-gap: 10px; }
 
 .summary-nrong {
   border-radius: 16px;
@@ -1310,8 +1310,7 @@ html[data-theme='dark'] .pinglun {
   grid-gap: 10px; }
   @media (min-width: 768px) {
     .appdquanjudiv {
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 15px; } }
+      grid-template-columns: repeat(2, 1fr); } }
 .appquanju {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -1552,7 +1551,7 @@ html[data-theme='dark'] .apptitle a {
 
 .movie-quanju {
   display: grid;
-  grid-gap: 15px; }
+  grid-gap: 10px; }
   @media (min-width: 768px) {
     .movie-quanju {
       grid-template-columns: repeat(2, 1fr); } }
@@ -1724,8 +1723,8 @@ html[data-theme='dark'] .apptitle a {
   font-family: var(--font-family-title);
   font-size: .9rem;
   border: 1px solid var(--text-highlight-color);
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: block;
   width: fit-content;
   transition: all 0.3s ease; }
@@ -1882,7 +1881,7 @@ html[data-theme='dark'] .memos_diaoyong_info a {
   color: var(--text-content-dark-color) !important; }
 
 .bb-timeline {
-  margin-bottom: 20px; }
+  margin-bottom: 15px; }
 
 .datacont p {
   font-size: 1.1rem;
@@ -2203,7 +2202,7 @@ blockquote p {
 
 .bb-list-ul {
   display: grid;
-  grid-row-gap: 15px; }
+  grid-row-gap: 10px; }
 
 .bb-list-li {
   border-radius: 16px;
@@ -2271,7 +2270,7 @@ blockquote p {
       display: block; } }
 .memos-editor-body {
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-radius: 16px;
   background: var(--element-background-color); }
   @media (prefers-color-scheme: dark) {
@@ -2746,7 +2745,7 @@ blockquote p {
 
 .posts_list {
   display: grid;
-  gap: 15px;
+  gap: 10px;
   margin-top: 30px; }
   @media (min-width: 768px) {
     .posts_list {
@@ -2928,9 +2927,7 @@ blockquote p {
   /* 中间空10px间距 */ }
   @media (min-width: 768px) {
     .quanju {
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 15px;
-      /* 中间空10px间距 */ } }
+      grid-template-columns: repeat(3, 1fr); } }
 .duiqi {
   display: flex;
   justify-content: center;

@@ -53,9 +53,8 @@
 // 4. 下半部列表容器
 .posts_list {
   display: grid;
-  gap: 15px;
+  gap: 10px;
   margin-top: 30px;
-  
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
   }
