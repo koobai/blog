@@ -61,35 +61,75 @@ function animateSummaries() {
 }
 animateSummaries();
 
+// ==========================================
+// 极简原生时间格式化
+// ==========================================
+window.formatDate = function(time) {
+    if (!time) return '';
+    // 自动兼容秒级(10位)或毫秒级(13位)时间戳
+    let ts = parseInt(time);
+    if (ts < 1e12) ts *= 1000; 
+
+    const target = new Date(ts);
+    const now = new Date();
+    const diff = now.getTime() - target.getTime();
+
+    const minute = 60000;
+    const hour = 3600000;
+    const day = 86400000;
+    const week = 604800000;
+
+    // 1分钟内
+    if (diff < minute) {
+        const sec = Math.max(1, Math.floor(diff / 1000));
+        return sec + " 秒钟前";
+    }
+    // 1小时内
+    if (diff < hour) return Math.floor(diff / minute) + " 分钟前";
+    // 1天内
+    if (diff < day) return Math.floor(diff / hour) + " 小时前";
+    // 1周内
+    if (diff < week) return Math.floor(diff / day) + " 天前";
+
+    // 超过一周，退化为具体日期显示
+    const pad = (n) => n.toString().padStart(2, '0');
+    const Y = target.getFullYear();
+    const M = pad(target.getMonth() + 1);
+    const D = pad(target.getDate());
+    const H = pad(target.getHours());
+    const m = pad(target.getMinutes());
+
+    if (Y === now.getFullYear()) {
+        return `${M}月${D}日 ${H}:${m}`;
+    } else {
+        return `${Y}年${M}月${D}日 ${H}:${m}`;
+    }
+};
+
 // 全局时间调用显示
 document.addEventListener("DOMContentLoaded", function() {
-  const dateElements = document.querySelectorAll('.twitter-time');
+    const dateElements = document.querySelectorAll('.twitter-time');
 
-  dateElements.forEach(el => {
-    let rawTime = el.getAttribute('data-time');
-    if (!rawTime) return;
+    dateElements.forEach(el => {
+        let rawTime = el.getAttribute('data-time');
+        if (!rawTime) return;
 
-    let finalTime;
-
-    // 1. 如果是日期字符串 (包含 "-" 或 "/") -> 转为秒
-    if (rawTime.includes('-') || rawTime.includes('/')) {
-        const dateObj = new Date(rawTime);
-        if (!isNaN(dateObj.getTime())) {
-            // 【关键修改】getTime() 是毫秒，必须除以 1000 变成秒
-            // 这样传入 formatDate 时，让它自己去决定是否要 * 1000
-            finalTime = Math.floor(dateObj.getTime() / 1000); 
+        let finalTs;
+        // 如果是日期字符串 (包含 "-" 或 "/")
+        if (rawTime.includes('-') || rawTime.includes('/')) {
+            const dateObj = new Date(rawTime);
+            if (!isNaN(dateObj.getTime())) {
+                finalTs = dateObj.getTime(); // 直接取毫秒
+            }
+        } else {
+            finalTs = parseInt(rawTime);
         }
-    } 
-    // 2. 否则按纯数字处理 (通常 CSV 里是秒)
-    else {
-        finalTime = parseInt(rawTime);
-    }
 
-    // 调用全局格式化函数
-    if (finalTime && typeof window.formatDate === 'function') {
-      el.innerText = window.formatDate(finalTime);
-    }
-  });
+        // 调用全局格式化函数
+        if (finalTs) {
+            el.innerText = window.formatDate(finalTs);
+        }
+    });
 });
 
 
