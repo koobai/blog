@@ -1,4 +1,4 @@
-// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26.1+ (API v1) / 20260222 / koobai.com
+// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26.1+ (API v1) / 20260223 / koobai.com
 (function() {
     'use strict';
 
@@ -30,8 +30,7 @@
 
     const REG = {
         TAG: /(?<=^|\s)#([^#\s!.,;:?"'()]+)/g,
-        IMG: /\!\[(.*?)\]\((.*?)\)/g,
-        LINK: /\[(.*?)\]\((.*?)\)/g
+        IMG: /\!\[(.*?)\]\((.*?)\)/g
     };
 
     function cleanImage(url) {
@@ -148,7 +147,7 @@
             if (src.startsWith('resources/')) src = getResUrl(src); 
             allImages.push(src); 
             return ''; 
-        }).replace(REG.LINK, '<a href="$2" target="_blank">$1</a>');
+        });
 
         const rawResources = memo.resources || memo.attachments || [];
         const resourceList = rawResources.map(r => {
@@ -176,7 +175,7 @@
             id: id,
             state: memo.state || 'NORMAL',
             createdTs: memo.createTime ? Math.floor(new Date(memo.createTime).getTime() / 1000) : Date.now() / 1000,
-            contentHtml: typeof marked !== 'undefined' ? marked.parse(contentStr) : contentStr,
+            contentHtml: miniMarked(contentStr),
             contentRaw: memo.content, 
             resourceList,
             imageUrls: allImages,
@@ -211,9 +210,6 @@
             }
         });
         
-        if (typeof marked !== 'undefined') {
-            marked.setOptions({ breaks: false, smartypants: false, headerIds: false, mangle: false });
-        }
     });
 
     function toggleEditor() {
@@ -861,3 +857,33 @@
         </div>`;
     }
 })();
+
+// ============================================================
+// 原生微型 Markdown 解析器
+// ============================================================
+function miniMarked(text) {
+    if (!text) return '';
+    const codes = [];
+    let html = text
+        .replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]))
+        .replace(/```\w*\n([\s\S]*?)```/g, (_, code) => {
+            codes.push(code);
+            return `___CODE_${codes.length - 1}___`;
+        });
+    html = html
+        .replace(/^(?:&gt;\s+.+(?:\n|$))+/gm, m => `<blockquote><p>${m.replace(/^&gt;\s+/gm, '').trim().replace(/\n/g, '<br>')}</p></blockquote>`)
+        .replace(/^(?:[-*]\s+.+(?:\n|$))+/gm, m => `<ul>${m.replace(/^[-*]\s+(.*)$/gm, '<li>$1</li>').trim()}</ul>`)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => 
+            /^https?:\/\//i.test(src) ? `<img src="${src}" alt="${alt}">` : ''
+        )
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => 
+            /^https?:\/\//i.test(url) ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>` : text
+        );
+
+    html = html.trim().split(/\n{2,}/).map(block => 
+        /^(<blockquote|<ul|___CODE_)/.test(block) ? block : `<p>${block.replace(/\n/g, '<br>')}</p>`
+    ).join('');
+    return html.replace(/___CODE_(\d+)___/g, (_, i) => `<pre><code>${codes[i]}</code></pre>`);
+}
