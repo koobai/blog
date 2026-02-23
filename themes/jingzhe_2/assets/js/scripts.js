@@ -64,71 +64,37 @@ animateSummaries();
 // ==========================================
 // 极简原生时间格式化
 // ==========================================
-window.formatDate = function(time) {
+window.formatDate = (time, isExact = false) => {
     if (!time) return '';
-    // 自动兼容秒级(10位)或毫秒级(13位)时间戳
-    let ts = parseInt(time);
-    if (ts < 1e12) ts *= 1000; 
 
+    let ts = isNaN(time) ? new Date(time).getTime() : Number(time);
+    if (ts < 1e12) ts *= 1000;
+
+    const now = Date.now();
+    const diff = now - ts;
     const target = new Date(ts);
-    const now = new Date();
-    const diff = now.getTime() - target.getTime();
 
-    const minute = 60000;
-    const hour = 3600000;
-    const day = 86400000;
-    const week = 604800000;
+    if (diff < 60000) return `${Math.max(1, Math.floor(diff / 1000))} 秒前`;
+    if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`;
+    if (diff < 604800000) return `${Math.floor(diff / 86400000)} 天前`;
 
-    // 1分钟内
-    if (diff < minute) {
-        const sec = Math.max(1, Math.floor(diff / 1000));
-        return sec + " 秒钟前";
-    }
-    // 1小时内
-    if (diff < hour) return Math.floor(diff / minute) + " 分钟前";
-    // 1天内
-    if (diff < day) return Math.floor(diff / hour) + " 小时前";
-    // 1周内
-    if (diff < week) return Math.floor(diff / day) + " 天前";
+    const [Y, M, D, H, m] = [
+        target.getFullYear(),
+        target.getMonth() + 1,
+        target.getDate(),
+        target.getHours(),
+        target.getMinutes()
+    ].map(n => String(n).padStart(2, '0'));
 
-    // 超过一周，退化为具体日期显示
-    const pad = (n) => n.toString().padStart(2, '0');
-    const Y = target.getFullYear();
-    const M = pad(target.getMonth() + 1);
-    const D = pad(target.getDate());
-    const H = pad(target.getHours());
-    const m = pad(target.getMinutes());
-
-    if (Y === now.getFullYear()) {
-        return `${M}月${D}日 ${H}:${m}`;
-    } else {
-        return `${Y}年${M}月${D}日 ${H}:${m}`;
-    }
+    return `${Y == new Date().getFullYear() ? '' : Y + '年'}${M}月${D}日${isExact ? ` ${H}:${m}` : ''}`;
 };
 
-// 全局时间调用显示
-document.addEventListener("DOMContentLoaded", function() {
-    const dateElements = document.querySelectorAll('.twitter-time');
-
-    dateElements.forEach(el => {
-        let rawTime = el.getAttribute('data-time');
-        if (!rawTime) return;
-
-        let finalTs;
-        // 如果是日期字符串 (包含 "-" 或 "/")
-        if (rawTime.includes('-') || rawTime.includes('/')) {
-            const dateObj = new Date(rawTime);
-            if (!isNaN(dateObj.getTime())) {
-                finalTs = dateObj.getTime(); // 直接取毫秒
-            }
-        } else {
-            finalTs = parseInt(rawTime);
-        }
-
-        // 调用全局格式化函数
-        if (finalTs) {
-            el.innerText = window.formatDate(finalTs);
-        }
+// 全局时间调用显示 (Hugo 页面渲染)
+document.addEventListener("DOMContentLoaded", () => {
+    // 使用现代的 data-* API 与箭头函数精简遍历
+    document.querySelectorAll('.twitter-time').forEach(el => {
+        if (el.dataset.time) el.innerText = window.formatDate(el.dataset.time, false);
     });
 });
 
