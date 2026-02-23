@@ -459,7 +459,7 @@
                     </div>
                 </div>` : '';
             
-            const timeStr = typeof window.formatDate === 'function' ? window.formatDate(item.createdTs) : new Date(item.createdTs * 1000).toLocaleString();
+            const timeStr = typeof window.formatDate === 'function' ? window.formatDate(item.createdTs, true) : new Date(item.createdTs * 1000).toLocaleString();
             const pinIcon = item.pinned ? `<span class="pinned">置顶</span>` : '';
             
             let htmlStr = `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
@@ -491,7 +491,7 @@
                 const t = el.dataset.time; 
                 if (!t || el.innerText.trim()) return;
                 const ts = /[-/]/.test(t) ? Math.floor(new Date(t) / 1000) : +t;
-                if (ts) el.innerText = window.formatDate(ts);
+                if (ts) el.innerText = window.formatDate(ts, true);
             });
         }
 
