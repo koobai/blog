@@ -64,14 +64,3 @@
 </div>
   </div>
 </div>
-<script>
-function formatDate(param) {
-  if(typeof param === 'number') {
-     param = new Date(param * 1000).toISOString();
-  }
-  if (typeof moment !== 'undefined') {
-    return moment(Date.parse(param)).twitterLong().replace(/\s\d{2}:\d{2}/, '');
-  }
-  return param;
-}
-</script>
