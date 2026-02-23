@@ -561,7 +561,7 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     let width = img.width; let height = img.height;
-                    const MAX = 1200; 
+                    const MAX = 1500; 
                     if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } } 
                     else { if (height > MAX) { width *= MAX / height; height = MAX; } }
                     canvas.width = width; canvas.height = height;
