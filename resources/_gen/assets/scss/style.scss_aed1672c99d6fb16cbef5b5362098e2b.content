@@ -281,57 +281,6 @@ ol, ul {
   html[data-theme='dark'] .footer-info, html[data-theme='dark'] .footer-info a {
     color: var(--erji-color); }
 
-#gotop {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Fixed/sticky position */
-  bottom: 40px;
-  /* Place the button at the bottom of the page */
-  right: 40px;
-  /* Place the button 30px from the right */
-  z-index: 99;
-  /* Make sure it does not overlap */
-  cursor: pointer;
-  /* Add a mouse pointer on hover */ }
-
-.gotop {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #ffffff;
-  position: relative;
-  /* 设置相对定位 */ }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .gotop {
-      background: var(--background-dark-color); } }
-  html[data-theme='dark'] .gotop {
-    background: var(--background-dark-color); }
-  .gotop:hover {
-    background: #ededed; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme='light']) .gotop:hover {
-        background: var(--text-highlight-color); } }
-    html[data-theme='dark'] .gotop:hover {
-      background: var(--text-highlight-color); }
-  .gotop svg {
-    fill: var(--text-highlight-color);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme='light']) .gotop svg {
-        fill: var(--text-content-dark-color); } }
-    html[data-theme='dark'] .gotop svg {
-      fill: var(--text-content-dark-color); }
-
-@media (max-width: 1200px) {
-  .gotop_hide {
-    display: none; } }
-
 .article_details img {
   max-width: 100%;
   cursor: zoom-in;
