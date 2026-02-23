@@ -5,7 +5,6 @@
   grid-gap: 10px; /* 中间空10px间距 */
   @include breakpoint('medium') {
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 15px; /* 中间空10px间距 */
   }
 }
 

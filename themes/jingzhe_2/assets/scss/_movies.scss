@@ -3,7 +3,7 @@
 // ==========================================
 .movie-quanju {
     display: grid;
-    grid-gap: 15px;   
+    grid-gap: 10px;   
   @include breakpoint('medium') {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -212,8 +212,8 @@
   font-family: var(--font-family-title);
   font-size: .9rem;
   border: 1px solid var(--text-highlight-color);
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: block;
   width: fit-content;
   transition: all 0.3s ease;
