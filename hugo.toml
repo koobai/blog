@@ -50,7 +50,7 @@ hasCJKLanguage = true
 
   [[menu.main]]
   identifier = 'sports'
-  name = '骑行'
+  name = '动起来'
   url = 'https://sport.koobai.com'
   weight = 5
   params = { umami_event = "Sports" }
