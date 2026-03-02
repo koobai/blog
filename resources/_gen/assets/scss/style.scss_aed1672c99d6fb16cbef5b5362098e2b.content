@@ -665,6 +665,11 @@ ol, ul {
   html[data-theme='dark'] .summary-description {
     color: var(--text-content-dark-color); }
 
+body.lock-scroll {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none; }
+
 .menu-main-mobile {
   position: fixed;
   background: var(--text-highlight-color);
@@ -674,19 +679,18 @@ ol, ul {
   height: 100vh;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.35s, visibility 0.35s, height 0.35s;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   overflow: hidden;
-  display: none;
+  display: flex;
   justify-content: center;
-  flex-direction: column; }
+  flex-direction: column;
+  z-index: 3;
+  /* 把 z-index 提上来，防止被其他元素遮挡 */ }
   .menu-main-mobile.open {
     opacity: 1;
-    visibility: visible;
-    height: 100%;
-    z-index: 3;
-    display: flex; }
+    visibility: visible; }
     .menu-main-mobile.open li {
-      animation: fadeInTop 0.5s ease forwards;
+      animation: fadeInTop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       animation-delay: 0.1s;
       margin-bottom: 6%; }
       .menu-main-mobile.open li:nth-of-type(2) {
@@ -709,12 +713,15 @@ ol, ul {
     .menu-main-mobile ul li {
       display: block;
       position: relative;
-      opacity: 0; }
+      opacity: 0;
+      /* 初始透明，由动画接管 */ }
       .menu-main-mobile ul li a {
         display: block;
         position: relative;
         color: #FFF;
-        text-decoration: none; }
+        text-decoration: none;
+        transition: opacity 0.2s;
+        /* 点击或悬停的反馈 */ }
         .menu-main-mobile ul li a:hover {
           opacity: 0.7; }
   @media (prefers-color-scheme: dark) {
@@ -722,6 +729,16 @@ ol, ul {
       background: var(--text-highlight-dark-color); } }
   html[data-theme='dark'] .menu-main-mobile {
     background: var(--text-highlight-dark-color); }
+
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    /* 从下方 30px 处开始向上滑动 */ }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    /* 回到原本位置 */ } }
 
 .hamburger-trigger {
   height: 30px;
