@@ -1,7 +1,10 @@
 <div class="header">
-  <div id="toggle-menu-main-mobile" class="hamburger-trigger">
-    <button class="hamburger" aria-label="Menu">Menu</button>
-  </div>
+  
+  <input type="checkbox" id="mobile-menu-toggle" class="menu-checkbox" hidden>
+  <label for="mobile-menu-toggle" class="hamburger-trigger" aria-label="Menu">
+    <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+  <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z"/></svg>
+  </label>
 
   <div class="new-heard-menu">
     {{ $currentPage := . }}
