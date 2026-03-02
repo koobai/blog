@@ -1,26 +1,3 @@
-//手机端菜单导航
-var body = document.querySelector('body');
-var menuTrigger = document.querySelector('#toggle-menu-main-mobile');
-var menuContainer = document.querySelector('#menu-main-mobile');
-var hamburgerIcon = document.querySelector('.hamburger');
-var menuLinks = document.querySelectorAll('#menu-main-mobile .menu a');
-
-if (menuTrigger !== null) {
-  menuTrigger.addEventListener('click', function(e) {
-    menuContainer.classList.toggle('open');
-    hamburgerIcon.classList.toggle('is-active');
-    body.classList.toggle('lock-scroll');
-  });
-
-  menuLinks.forEach(function(link) {
-    link.addEventListener('click', function() {
-      menuContainer.classList.remove('open');
-      hamburgerIcon.classList.remove('is-active');
-      body.classList.remove('lock-scroll');
-    });
-  });
-}
-
 // 灯箱调用(首页顶部/Memos页面)
 window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a,.photo-moment a');
 
