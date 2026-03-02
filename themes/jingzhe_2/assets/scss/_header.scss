@@ -97,11 +97,6 @@
   .menu-icon svg {
     transform: scale(1.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    @include dark {
-      /* 核心修改：减小半径(4px)，让光更聚拢；稍微降低透明度(0.4) */
-      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
-    }
   }
 
   a {
