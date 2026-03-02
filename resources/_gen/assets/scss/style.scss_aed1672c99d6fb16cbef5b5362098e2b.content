@@ -677,51 +677,42 @@ body.lock-scroll {
   left: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  overflow: hidden;
+  /* 1. 背景层基础动画 (进退场都是 0.3s，平滑过渡) */
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  z-index: 3;
-  /* 把 z-index 提上来，防止被其他元素遮挡 */ }
+  z-index: 3; }
   .menu-main-mobile.open {
     opacity: 1;
     visibility: visible; }
-    .menu-main-mobile.open li {
-      animation: fadeInTop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.1s;
-      margin-bottom: 6%; }
-      .menu-main-mobile.open li:nth-of-type(2) {
-        animation-delay: 0.15s; }
-      .menu-main-mobile.open li:nth-of-type(3) {
-        animation-delay: 0.20s; }
-      .menu-main-mobile.open li:nth-of-type(4) {
-        animation-delay: 0.25s; }
-      .menu-main-mobile.open li:nth-of-type(5) {
-        animation-delay: 0.30s; }
-      .menu-main-mobile.open li:nth-of-type(6) {
-        animation-delay: 0.35s; }
+    .menu-main-mobile.open ul {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, opacity 0.4s ease 0.1s; }
   .menu-main-mobile ul {
     font-size: 1.6rem;
     font-family: var(--font-family-title);
     text-align: center;
     list-style: none;
     margin: 0;
-    flex: 0; }
+    flex: 0;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.2s ease; }
     .menu-main-mobile ul li {
       display: block;
       position: relative;
-      opacity: 0;
-      /* 初始透明，由动画接管 */ }
+      margin-bottom: 6%; }
       .menu-main-mobile ul li a {
         display: block;
         position: relative;
         color: #FFF;
         text-decoration: none;
-        transition: opacity 0.2s;
-        /* 点击或悬停的反馈 */ }
+        transition: opacity 0.2s; }
         .menu-main-mobile ul li a:hover {
           opacity: 0.7; }
   @media (prefers-color-scheme: dark) {
