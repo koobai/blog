@@ -274,7 +274,7 @@ ol, ul {
     color: var(--erji-color); }
 
 .page-blog-single .wrapper {
-  padding: 0 20px; }
+  padding: 0 15px; }
 
 .article_details img {
   max-width: 100%;
@@ -2423,7 +2423,7 @@ blockquote p {
       color: #bdbdbd !important; }
 
 .page-about .wrapper {
-  padding: 0 20px; }
+  padding: 0 15px; }
 
 .about-img {
   position: relative;
@@ -2478,7 +2478,7 @@ blockquote p {
   margin-bottom: 4px; }
 
 .page-blog-list .wrapper {
-  padding: 0 20px; }
+  padding: 0 15px; }
 
 .posts-new {
   display: grid;
