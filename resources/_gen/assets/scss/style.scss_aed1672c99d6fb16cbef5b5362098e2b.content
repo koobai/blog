@@ -2715,11 +2715,12 @@ body {
   /* 防止 padding 把盒子撑大 */
   max-width: 840px;
   margin: 0 auto;
-  margin-top: 20px;
-  padding: 0 20px; }
+  margin-top: 10px;
+  padding: 0 10px; }
   @media (min-width: 768px) {
     .wrapper {
-      margin-top: 60px; } }
+      margin-top: 60px;
+      padding: 0 20px; } }
 .highlight {
   background-color: var(--bankuai-color); }
 
