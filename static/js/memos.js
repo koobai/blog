@@ -1,4 +1,4 @@
-// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26.1+ (API v1) / 20260223 / koobai.com
+// 首页唠叨 / 用途：个人动态发布 / 适配 MEMOS v0.26.2+ (API v1) / 20260303 / koobai.com
 (function() {
     'use strict';
 
@@ -54,18 +54,31 @@
     const getResUrl = (resourceName, filename = '') => 
         `${CONFIG.memos}file/${resourceName}${filename ? `/${filename}` : ''}`;
 
+    // mapbox地图定位
+
+    const MAPBOX_TOKEN = 'pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw';
+
     const GeoHelper = {
         getPosition: () => new Promise((resolve, reject) => {
             if (!navigator.geolocation) return reject("浏览器不支持定位");
             navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
         }),
         getAddress: async (lat, lon) => {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
-                headers: { 'Accept-Language': 'zh-CN' }
-            });
+            const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${MAPBOX_TOKEN}&language=zh-CN`);
             const data = await res.json();
-            const addr = data.address;
-            return addr.district || addr.county || addr.town || addr.city || addr.village || data.display_name.split(',')[0];
+            
+            if (data.features && data.features.length > 0) {
+                const target = data.features.find(f => 
+                    f.place_type.includes('poi') || 
+                    f.place_type.includes('neighborhood') || 
+                    f.place_type.includes('locality') || 
+                    f.place_type.includes('place') || 
+                    f.place_type.includes('district')
+                ) || data.features[0];
+                
+                return target.text;
+            }
+            return "未知位置";
         }
     };
 
@@ -436,7 +449,9 @@
             let locationHtml = '';
             if (item.location && item.location.placeholder) {
                 const { latitude, longitude, placeholder } = item.location;
+                
                 const mapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
+                
                 locationHtml = `<a href="${mapUrl}" target="_blank" class="memo-location-wrapper cursor-pointer hover:opacity-80">${ICONS.location}<span class="memo-location-text">${placeholder}</span></a>`;
             }
 
