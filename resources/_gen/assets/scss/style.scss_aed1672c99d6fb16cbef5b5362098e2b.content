@@ -707,18 +707,17 @@ ol, ul {
     padding: 0;
     margin: 0;
     text-align: center;
-    width: 100%; }
-    .menu-main-mobile ul li {
-      margin-bottom: 24px; }
-      .menu-main-mobile ul li a {
-        display: inline-block;
-        font-size: 1.4rem;
-        color: var(--text-content-dark-color);
-        text-decoration: none;
-        padding: 10px 20px;
-        transition: opacity 0.2s; }
-        .menu-main-mobile ul li a:active {
-          opacity: 0.4; }
+    width: 100%;
+    display: grid;
+    gap: 36px; }
+    .menu-main-mobile ul li a {
+      display: inline-block;
+      font-size: 1.4rem;
+      color: var(--text-content-dark-color);
+      text-decoration: none;
+      transition: opacity 0.2s; }
+      .menu-main-mobile ul li a:active {
+        opacity: 0.4; }
 
 /* =========================================
    ✨ 核心魔法：当 Checkbox 被选中时的状态联动
