@@ -273,6 +273,9 @@ ol, ul {
   html[data-theme='dark'] .footer-info, html[data-theme='dark'] .footer-info a {
     color: var(--erji-color); }
 
+.page-blog-single .wrapper {
+  padding: 0 20px; }
+
 .article_details img {
   max-width: 100%;
   cursor: zoom-in;
@@ -2470,6 +2473,9 @@ blockquote p {
   bottom: 0;
   right: 0;
   margin-bottom: 4px; }
+
+.page-blog-list .wrapper {
+  padding: 0 20px; }
 
 .posts-new {
   display: grid;
