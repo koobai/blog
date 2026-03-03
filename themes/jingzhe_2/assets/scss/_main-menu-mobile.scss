@@ -52,16 +52,16 @@
     margin: 0;
     text-align: center;
     width: 100%;
+    display: grid;
+    gap: 36px;
 
     li {
-      margin-bottom: 24px;
 
       a {
         display: inline-block;
         font-size: 1.4rem;
         color: var(--text-content-dark-color);
         text-decoration: none;
-        padding: 10px 20px;
         transition: opacity 0.2s;
 
         &:active { opacity: 0.4; }
