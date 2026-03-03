@@ -70,10 +70,11 @@ body {
   box-sizing: border-box;/* 防止 padding 把盒子撑大 */
   max-width: 840px;
   margin: 0 auto;
-  margin-top: 20px;
-  padding: 0 20px;
+  margin-top: 10px;
+  padding: 0 10px;
   @include breakpoint('medium') {
     margin-top: 60px;
+    padding: 0 20px;
   }
 }
 
