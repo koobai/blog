@@ -1544,16 +1544,16 @@ html[data-theme='dark'] .apptitle a {
 .memos-xiala .image-btn,
 .memos-xiala .code-btn,
 .memos-xiala .code-single,
-.memos-xiala .link-img,
+.memos-xiala,
 .editor-selector select,
 .memos-image-list,
 .memos-path-input::placeholder,
 .memos-token-input::placeholder {
   color: var(--sanji-color); }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .talks_comments svg, html:not([data-theme='light']) .outline svg, html:not([data-theme='light']) .memos-more-ico svg, html:not([data-theme='light']) .memo-location-icon, html:not([data-theme='light']) .memos-tag-dg, html:not([data-theme='light']) .memos-tag-sc-2, html:not([data-theme='light']) .memos_diaoyong_time, html:not([data-theme='light']) .memos_diaoyong_laiz, html:not([data-theme='light']) .memos_diaoyong_more, html:not([data-theme='light']) .memos_diaoyong_from, html:not([data-theme='light']) .memo-relation-label, html:not([data-theme='light']) .memo-location-wrapper, html:not([data-theme='light']) .edit-btn, html:not([data-theme='light']) .archive-btn, html:not([data-theme='light']) .pinned-edit, html:not([data-theme='light']) .cancel-edit-btn, html:not([data-theme='light']) .memos-xiala .switchUser-btn, html:not([data-theme='light']) .memos-xiala .private-btn, html:not([data-theme='light']) .memos-xiala .oneday-btn, html:not([data-theme='light']) .memos-xiala .image-btn, html:not([data-theme='light']) .memos-xiala .code-btn, html:not([data-theme='light']) .memos-xiala .code-single, html:not([data-theme='light']) .memos-xiala .link-img, html:not([data-theme='light']) .editor-selector select, html:not([data-theme='light']) .memos-image-list, html:not([data-theme='light']) .memos-path-input::placeholder, html:not([data-theme='light']) .memos-token-input::placeholder {
+    html:not([data-theme='light']) .talks_comments svg, html:not([data-theme='light']) .outline svg, html:not([data-theme='light']) .memos-more-ico svg, html:not([data-theme='light']) .memo-location-icon, html:not([data-theme='light']) .memos-tag-dg, html:not([data-theme='light']) .memos-tag-sc-2, html:not([data-theme='light']) .memos_diaoyong_time, html:not([data-theme='light']) .memos_diaoyong_laiz, html:not([data-theme='light']) .memos_diaoyong_more, html:not([data-theme='light']) .memos_diaoyong_from, html:not([data-theme='light']) .memo-relation-label, html:not([data-theme='light']) .memo-location-wrapper, html:not([data-theme='light']) .edit-btn, html:not([data-theme='light']) .archive-btn, html:not([data-theme='light']) .pinned-edit, html:not([data-theme='light']) .cancel-edit-btn, html:not([data-theme='light']) .memos-xiala .switchUser-btn, html:not([data-theme='light']) .memos-xiala .private-btn, html:not([data-theme='light']) .memos-xiala .oneday-btn, html:not([data-theme='light']) .memos-xiala .image-btn, html:not([data-theme='light']) .memos-xiala .code-btn, html:not([data-theme='light']) .memos-xiala .code-single, html:not([data-theme='light']) .memos-xiala, html:not([data-theme='light']) .editor-selector select, html:not([data-theme='light']) .memos-image-list, html:not([data-theme='light']) .memos-path-input::placeholder, html:not([data-theme='light']) .memos-token-input::placeholder {
       color: var(--erji-color); } }
-  html[data-theme='dark'] .talks_comments svg, html[data-theme='dark'] .outline svg, html[data-theme='dark'] .memos-more-ico svg, html[data-theme='dark'] .memo-location-icon, html[data-theme='dark'] .memos-tag-dg, html[data-theme='dark'] .memos-tag-sc-2, html[data-theme='dark'] .memos_diaoyong_time, html[data-theme='dark'] .memos_diaoyong_laiz, html[data-theme='dark'] .memos_diaoyong_more, html[data-theme='dark'] .memos_diaoyong_from, html[data-theme='dark'] .memo-relation-label, html[data-theme='dark'] .memo-location-wrapper, html[data-theme='dark'] .edit-btn, html[data-theme='dark'] .archive-btn, html[data-theme='dark'] .pinned-edit, html[data-theme='dark'] .cancel-edit-btn, html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn, html[data-theme='dark'] .memos-xiala .code-single, html[data-theme='dark'] .memos-xiala .link-img, html[data-theme='dark'] .editor-selector select, html[data-theme='dark'] .memos-image-list, html[data-theme='dark'] .memos-path-input::placeholder, html[data-theme='dark'] .memos-token-input::placeholder {
+  html[data-theme='dark'] .talks_comments svg, html[data-theme='dark'] .outline svg, html[data-theme='dark'] .memos-more-ico svg, html[data-theme='dark'] .memo-location-icon, html[data-theme='dark'] .memos-tag-dg, html[data-theme='dark'] .memos-tag-sc-2, html[data-theme='dark'] .memos_diaoyong_time, html[data-theme='dark'] .memos_diaoyong_laiz, html[data-theme='dark'] .memos_diaoyong_more, html[data-theme='dark'] .memos_diaoyong_from, html[data-theme='dark'] .memo-relation-label, html[data-theme='dark'] .memo-location-wrapper, html[data-theme='dark'] .edit-btn, html[data-theme='dark'] .archive-btn, html[data-theme='dark'] .pinned-edit, html[data-theme='dark'] .cancel-edit-btn, html[data-theme='dark'] .memos-xiala .switchUser-btn, html[data-theme='dark'] .memos-xiala .private-btn, html[data-theme='dark'] .memos-xiala .oneday-btn, html[data-theme='dark'] .memos-xiala .image-btn, html[data-theme='dark'] .memos-xiala .code-btn, html[data-theme='dark'] .memos-xiala .code-single, html[data-theme='dark'] .memos-xiala, html[data-theme='dark'] .editor-selector select, html[data-theme='dark'] .memos-image-list, html[data-theme='dark'] .memos-path-input::placeholder, html[data-theme='dark'] .memos-token-input::placeholder {
     color: var(--erji-color); }
 
 .pinned,
@@ -2129,8 +2129,7 @@ blockquote p {
   .memos-xiala .oneday-btn,
   .memos-xiala .image-btn,
   .memos-xiala .code-btn,
-  .memos-xiala .code-single,
-  .memos-xiala .link-img {
+  .memos-xiala .code-single {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -2140,15 +2139,9 @@ blockquote p {
     .memos-xiala .oneday-btn:hover,
     .memos-xiala .image-btn:hover,
     .memos-xiala .code-btn:hover,
-    .memos-xiala .code-single:hover,
-    .memos-xiala .link-img:hover {
+    .memos-xiala .code-single:hover {
       text-decoration: underline; }
 
-.link-img {
-  display: none !important; }
-  @media (min-width: 768px) {
-    .link-img {
-      display: block !important; } }
 .memos-edit {
   margin-left: auto;
   position: relative;
