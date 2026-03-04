@@ -741,7 +741,7 @@
         document.querySelector(".edit-memos-btn").addEventListener("click", () => handleSave(true));
         
         document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
-            const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-single, .link-img, .location-btn, .upload-image-btn');
+            const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-single, .location-btn, .upload-image-btn');
             if (!t) return;
             
             const _ACT = {
@@ -762,7 +762,6 @@
                 'oneday-btn': () => { const k = "memos-oneday"; LS.set(k, LS.get(k) ? "" : "open"); reloadList(); },
                 'code-single': () => insertText("``", "`", 1),
                 'link-btn': () => insertText("[]()", "[", 1),
-                'link-img': () => insertText("![]()", "!", 1),
                 'biao-qing': () => showEmoji(t)
             };
             
@@ -853,7 +852,7 @@
                             <div class="button outline action-btn location-btn" title="定位">${ICONS.location}</div>
                             <div class="button outline action-btn biao-qing" title="表情">${ICONS.toolEmoji}</div>
                             <div class="memos-more-ico">${ICONS.toolMore}
-                                <div class="memos-xiala"><div class="link-img">引图</div><div class="code-single">高亮</div><div class="private-btn">私有</div><div class="oneday-btn">穿越</div><div class="switchUser-btn">退出</div></div>
+                                <div class="memos-xiala"><div class="code-single">高亮</div><div class="private-btn">私有</div><div class="oneday-btn">穿越</div><div class="switchUser-btn">退出</div></div>
                             </div>
                         </div>
                         <div class="editor-submit d-flex flex-fill justify-content-end">
