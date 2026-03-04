@@ -87,10 +87,11 @@
         nextDom: [],
         memosOpenId: lsToken,
         editorDisplay: LS.get("memos-editor-display"),
-        cache: {
+        /*cache: {
+            //插入文章电影
             posts: document.getElementById('temp-posts-data')?.innerHTML,
             movies: document.getElementById('temp-movies-data')?.innerHTML
-        },
+         },*/
         domRefs: {},
         isAuthorized: !!lsToken,
         viewMode: 'ALL',
@@ -474,15 +475,15 @@
             const pinIcon = item.pinned ? `<span class="pinned">置顶</span>` : '';
             
             let htmlStr = `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
-
-            if (!mode && isFirstPage) {
+            //插入文章电影
+            /*if (!mode && isFirstPage) {
                 if (STATE.cache.posts && [1, 4, 7, 9].includes(i)) {
                     const tmp = document.createElement('div'); tmp.innerHTML = STATE.cache.posts;
                     const html = tmp.querySelectorAll('.one-post-item')[[1, 4, 7, 9].indexOf(i)]?.innerHTML;
                     if (html) htmlStr += `<div class="inserted-post-section animated-fade-in">${html}</div>`;
                 }
                 if (i === 1 && STATE.cache.movies) htmlStr += `<div class="inserted-movies-section animated-fade-in"><div class="movies-grid-container">${STATE.cache.movies}</div></div>`;
-            }
+            }*/
             return htmlStr;
         }).join('');
 
