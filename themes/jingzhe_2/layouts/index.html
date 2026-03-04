@@ -1,39 +1,11 @@
 {{ define "body_classes" }}page-home{{ end }}
 {{ define "title" }}{{ site.Title }}{{ end }}
 {{ define "main" }}
-<div id="temp-posts-data" style="display:none;">
-  {{ $posts := first 4 (where site.RegularPages "Type" "posts") }}
-  
-  {{ range $posts }} 
-    <div class="one-post-item"> 
-      <div class="posts_list_article-index img-hide">     
-        <div class="post-biaoji">
-        <span class="archive-time-index twitter-time" data-time="{{ .Date.Unix }}"></span>             
-         <span class="post-biaoji-xinxi">博文</span>
-        </div>
-        
-          <div class="archive-title-index">
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          </div>
-         
-        
-        
-        <div class="posts-description">{{ .Params.description }}</div>
-      </div>
-    </div>
-  {{ end }}
-</div>
-
-<!--<div class="sidebar-biaot">最新观影</div>-->
-<div id="temp-movies-data" style="display:none;">
-    {{ partial "movies-list.html" 2 }}
-</div>
-
 <!--memos--> 
 <div id="memos"></div>
 <div id="bber"></div>
 <!--memos 内容-->
-<script src="/js/memos.js?v=20260303a" defer></script>
+<script src="/js/memos.js?v=20260304a" defer></script>
 <script src="/js/coco-message.min.js" defer></script>
 <!--评论加载-->
 <link href="https://img.koobai.com/Artalk.css" rel="stylesheet">
