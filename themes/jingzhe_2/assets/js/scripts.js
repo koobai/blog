@@ -33,30 +33,48 @@ animateSummaries();
 // ==========================================
 // 极简原生时间格式化
 // ==========================================
-window.formatDate = (time, isExact = false) => {
+window.formatDate = (time, isExact = true) => {
     if (!time) return '';
 
+    // 兼容处理：秒级/毫秒级时间戳、或者时间格式字符串
     let ts = isNaN(time) ? new Date(time).getTime() : Number(time);
-    if (ts < 1e12) ts *= 1000;
+    if (ts < 1e12) ts *= 1000; 
 
-    const now = Date.now();
-    const diff = now - ts;
+    const now = new Date();
     const target = new Date(ts);
+    const diff = now.getTime() - ts;
 
-    if (diff < 60000) return `${Math.max(1, Math.floor(diff / 1000))} 秒前`;
-    if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
-    if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`;
-    if (diff < 604800000) return `${Math.floor(diff / 86400000)} 天前`;
+    // 极简补零辅助函数
+    const pad = n => String(n).padStart(2, '0');
 
-    const [Y, M, D, H, m] = [
-        target.getFullYear(),
-        target.getMonth() + 1,
-        target.getDate(),
-        target.getHours(),
-        target.getMinutes()
-    ].map(n => String(n).padStart(2, '0'));
+    const Y = target.getFullYear();
+    const M = pad(target.getMonth() + 1);
+    const D = pad(target.getDate());
+    const H = pad(target.getHours());
+    const m = pad(target.getMinutes());
 
-    return `${Y == new Date().getFullYear() ? '' : Y + '年'}${M}月${D}日${isExact ? ` ${H}:${m}` : ''}`;
+    const timeSuffix = isExact ? ` ${H}:${m}` : '';
+
+    // 1. 判断“今天” (利用 toDateString 极简判断日历日)
+    if (now.toDateString() === target.toDateString()) {
+        if (diff < 60000) return `${Math.max(1, Math.floor(diff / 1000))} 秒前`;
+        if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
+        return `${Math.floor(diff / 3600000)} 小时前`;
+    }
+
+    // 2. 判断“昨天” (当前时间减去24小时后的日历对比)
+    const yesterday = new Date(now.getTime() - 86400000);
+    if (yesterday.toDateString() === target.toDateString()) {
+        return isExact ? `昨天 ${H}:${m}` : `昨天`; 
+    }
+
+    // 3. 判断“今年”
+    if (now.getFullYear() === target.getFullYear()) {
+        return `${M}月${D}日${timeSuffix}`;
+    }
+
+    // 4. 往年 (跨年)
+    return `${Y}年${M}月${D}日${timeSuffix}`;
 };
 
 // 全局时间调用显示 (Hugo 页面渲染)
