@@ -25,7 +25,10 @@
   backdrop-filter: blur(20px) saturate(200%) !important; 
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important; 
   border: 1px solid rgba(255, 255, 255, 0.08) !important; 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
+    @include breakpoint('medium') {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  }
 }
 
 .page-exercise .header-menu a {
@@ -178,60 +181,64 @@
 
 /* 地图内嵌详情面板 */
 .runDetailCard {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: max-content;
-  background: rgba(28, 28, 30, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 10;
-  animation: slideUpFade 0.4s forwards;
-
-  .detailName {
-    font-size: 0.75rem;
-    color: var(--exercise-text-info-color);
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-
-  .detailDate {
-    color: var(--exercise-text-info-color);
-  }
-
-  .detailStatsRow {
-    display: flex;
-    gap: 24px;
-  }
-
-  .detailStatBlock {
+  display: none;
+  @include breakpoint('medium') {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
+    background: rgba(28, 28, 30, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 12px;
+    z-index: 10;
+    animation: slideUpFade 0.4s forwards;
 
-    .statLabel {
+    .detailName {
+      font-size: 0.75rem;
       color: var(--exercise-text-info-color);
-      font-size: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
     }
 
-    .statVal {
-      font-size: 0.85rem;
-      color: var(--exercise-text-color);
+    .detailDate {
+      color: var(--exercise-text-info-color);
     }
 
-    small {
-      font-size: 0.65rem;
-      color: var(--exercise-text-info-color);
-      margin-left: 2px;
+    .detailStatsRow {
+      display: flex;
+      gap: 24px;
+    }
+
+    .detailStatBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .statLabel {
+        color: var(--exercise-text-info-color);
+        font-size: 0.65rem;
+      }
+
+      .statVal {
+        font-size: 0.85rem;
+        color: var(--exercise-text-color);
+      }
+
+      small {
+        font-size: 0.65rem;
+        color: var(--exercise-text-info-color);
+        margin-left: 2px;
+      }
     }
   }
 }
