@@ -592,7 +592,7 @@
           
           <div class="monthlyInsights">
             <div class="insightCard">
-              <div class="insightHeader"><span class="insightTitle">${insights.peakPersona}<span class="titleTag">时段</span></span></div>
+              <div class="insightHeader"><span class="insightTitle">${insights.peakPersona}</div>
               <div class="insightContent">
                 <div class="punchCard">${timeBlocksHtml}</div>
                 <div class="insightLabels timeLabels"><span>00:00</span><span>12:00</span><span>24:00</span></div>
@@ -600,7 +600,7 @@
             </div>
             
             <div class="insightCard">
-              <div class="insightHeader"><span class="insightTitle">${insights.hasActivities ? insights.hrMaxZone.title : '等待记录'}<span class="titleTag">心率</span></span></div>
+              <div class="insightHeader"><span class="insightTitle">${insights.hasActivities ? insights.hrMaxZone.title : '等待记录'}</span></div>
               <div class="insightContent">
                 <div class="zoneChart">${hrZonesHtml}</div>
                 <div class="insightLabels zoneLabels">${insights.hrZonesInfo.map(i => `<span>${i.name}</span>`).join('')}</div>
