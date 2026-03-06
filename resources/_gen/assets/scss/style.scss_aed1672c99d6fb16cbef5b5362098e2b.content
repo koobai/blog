@@ -2724,6 +2724,12 @@ blockquote p {
 .page-exercise .menu-current a {
   color: var(--exercise-text-highlight-color) !important; }
 
+.page-exercise .icon-menu, .icon-close {
+  color: var(--exercise-text-highlight-color) !important; }
+
+.page-exercise .menu-main-mobile {
+  background: #151516; }
+
 .exercise-title {
   color: var(--exercise-text-info-color);
   font-size: 1rem;
