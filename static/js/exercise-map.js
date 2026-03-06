@@ -365,18 +365,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const startEl = document.createElement('div'); 
         startEl.style.color = sportColor; 
         startEl.style.filter = 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))'; 
+        startEl.style.lineHeight = '0'; 
         startEl.innerHTML = FLAG_SVG;
         
         const endEl = document.createElement('div'); 
         endEl.style.color = sportColor; 
         endEl.style.filter = 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))'; 
+        endEl.style.lineHeight = '0'; 
         endEl.innerHTML = FLAG_SVG;
 
         currentMarkers.push(
-          new mapboxgl.Marker({ element: startEl, anchor: 'bottom-left' })
+          new mapboxgl.Marker({ 
+            element: startEl, 
+            anchor: 'bottom-left',
+            offset: [-5, 4] 
+          })
             .setLngLat(coords[0])
             .addTo(map),
-          new mapboxgl.Marker({ element: endEl, anchor: 'bottom-left' })
+            
+          new mapboxgl.Marker({ 
+            element: endEl, 
+            anchor: 'bottom-left',
+            offset: [-5, 4] 
+          })
             .setLngLat(coords[coords.length - 1])
             .addTo(map)
         );
