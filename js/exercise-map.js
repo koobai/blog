@@ -316,7 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
               }
           }
           
-          const displayTime = runData.start_date_local.replace('T', ' ').substring(5, 16);
+          const displayTime = typeof window.formatDate === 'function' 
+            ? window.formatDate(runData.start_date_local.replace(' ', 'T'), true, true) 
+            : runData.start_date_local.substring(5, 16);
 
           statsPanel.innerHTML = `
             <div class="detailName">
