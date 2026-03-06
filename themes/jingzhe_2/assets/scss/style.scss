@@ -17,6 +17,9 @@
   --sanji-color: #adaba6;
   --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
   --element-background-color:#FFFDFA;
+  --exercise-text-info-color:#8E8E93;
+  --exercise-text-color:#dfdfdf;
+  --exercise-text-highlight-color:#32D74B;
 }
 $breakpoints: (
   'medium': 768px,
@@ -39,6 +42,7 @@ $breakpoints: (
 @import 'about';
 @import 'list';
 @import 'tiaozhuan';
+@import 'exercise';
 
 @font-face {
   font-family: 'JetBrainsMono';
@@ -47,6 +51,17 @@ $breakpoints: (
   src: local('JetBrains Mono'), 
        local('JetBrainsMono'), 
        url('https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  unicode-range: U+0021-00FF; 
+}
+
+@font-face {
+  font-family: 'JetBrainsMono'; 
+  font-display: swap; 
+  font-weight: 800; 
+  font-style: italic;
+  src: local('JetBrains Mono ExtraBold Italic'), 
+       local('JetBrainsMono-ExtraBoldItalic'), 
+       url('https://img.koobai.com/fonts/JetBrainsMono-ExtraBoldItalic.woff2') format('woff2');
   unicode-range: U+0021-00FF; 
 }
 
