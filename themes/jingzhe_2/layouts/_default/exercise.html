@@ -212,9 +212,7 @@
                 </div>
               </div>
               <div class="rightInfo">
-                <div class="runDate" data-time="{{ .start_date_local }}" data-exact="true">
-                {{- replace (substr .start_date_local 5 11) "T" " " -}}
-              </div>
+                <div class="runDate twitter-time" data-time="{{ .start_date_local }}" data-exact="true"></div>
               </div>
             </div>
             
@@ -271,7 +269,7 @@
 </script>
 
 <script defer src="/js/exercise-ui.js?v=20260306d"></script>
-<script defer src="/js/exercise-map.js?v=20260306d"></script>
+<script defer src="/js/exercise-map.js?v=20260306e"></script>
 
 <script>
   // 地图吸顶控制：采用高性能的 RequestAnimationFrame 控制
