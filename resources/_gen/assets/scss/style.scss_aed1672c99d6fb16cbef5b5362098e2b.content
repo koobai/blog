@@ -2724,7 +2724,7 @@ blockquote p {
 .page-exercise .menu-current a {
   color: var(--exercise-text-highlight-color) !important; }
 
-.page-exercise .icon-menu, .icon-close {
+.page-exercise .icon-menu, .page-exercise .icon-close {
   color: var(--exercise-text-highlight-color) !important; }
 
 .page-exercise .menu-main-mobile {
