@@ -4168,5 +4168,20 @@
 "average_speed": 1.424,
 "source": "strava",
 "streak": 7
+},
+{
+"run_id": 17623363961,
+"name": "\u508d\u665a\u884c\u8d70",
+"distance": 3743.0,
+"moving_time": "0:40:29",
+"type": "Walk",
+"start_date": "2026-03-06 10:59:37+00:00",
+"start_date_local": "2026-03-06 18:59:37",
+"location_country": "\uff0800013210200021\uff09\u56de\u6536\u7bb1\u5230\u4e1c\u5357\u95e8, \u91d1\u90fd\u590f\u5bab, \u4e34\u5e73\u8857\u9053, \u4e34\u5e73\u533a, \u676d\u5dde\u5e02, \u6d59\u6c5f\u7701, \u4e2d\u56fd",
+"summary_polyline": "ajvxD}c_}UJjAB~@C^KPOHy@TqDz@c@To@h@IDW@OEGGIQ_@oA_@w@g@_AoByC]y@Ia@MgBUsAGoAW{AMeASeAo@yBOcA@_@JSVUh@YTGN?HB\\VNBJ?j@Mv@c@RSNSFg@?a@ESGKIEM?OBkAr@gAj@k@R_@^c@PWP?KFM^YjAq@zBiA`Am@tC_B`@[NQ@OAOYeANi@BC^Qr@Of@UhGqDrAq@x@g@d@SXGLBNJlA|A~BrFv@zAj@`BjDhI`BjE|BlFv@|BF`@ANGNONUPiHfEsEbCYXQFSAOQqA{CqA_C",
+"average_heartrate": 105.0,
+"average_speed": 1.541,
+"source": "strava",
+"streak": 8
 }
 ]
