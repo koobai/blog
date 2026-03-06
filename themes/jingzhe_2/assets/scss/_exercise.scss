@@ -115,6 +115,7 @@
   @include breakpoint('medium') {
     flex-direction: row; /* 💻 PC端：恢复横排 */
     align-items: stretch;
+    height: 550px;
   }
 }
 
@@ -126,8 +127,7 @@
   overflow: hidden;
   position: relative; 
   @include breakpoint('medium') {
-    min-height: 500px;
-    height: auto;
+    height: 100% !important;
   }
 }
 
@@ -139,9 +139,8 @@
   order: 2;
   @include breakpoint('medium') {
     flex: 1; 
-    height: auto; 
-    min-height: 500px;
-    order: 0; 
+    height: 100%; 
+    order: 0;
   }
 }
 
@@ -274,6 +273,7 @@
     flex-direction: column;
     gap: 10px;
     width: 320px;
+    height: 100%;
   }
 
   .boardContainer {
@@ -296,7 +296,11 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     padding: 16px;
   }
-
+  @include breakpoint('medium') {
+    .globalSection, .monthlyInsights {
+      flex-shrink: 0; 
+    }
+  }
 /* =========================================
    5. 年度数据总览 (Global Stats)
 ========================================= */
@@ -401,12 +405,15 @@
    6. 日历热力图面板 (Calendar Grid)
 ========================================= */
   .calendarSection {
-    order: 3; /* 📱 手机端：排在地图（序号2）的下方 */
+    order: 3;
     display: none !important;
     
     @include breakpoint('medium') {
-      order: 0; /* 💻 PC端：恢复默认 */
-      display: block !important;
+      order: 0; 
+      display: flex !important;
+      flex-direction: column;
+      flex: 1; 
+      min-height: 0; 
     }
   }
 
@@ -468,6 +475,12 @@
     text-align: center;
     margin-bottom: 6px;
     margin-top: 6px;
+    
+    @include breakpoint('medium') {
+      flex: 1;
+      min-height: 0; 
+      grid-auto-rows: minmax(0, 1fr);
+    }
   }
 
   .dayCell {
@@ -482,7 +495,10 @@
     justify-content: center;
     position: relative;
     font-size: 0.8rem;
-
+    @include breakpoint('medium') {
+      aspect-ratio: auto;
+      height: 100%;
+    }
     &.hasRun {
       cursor: pointer;
       
@@ -667,6 +683,7 @@
   overflow-x: auto;
   scrollbar-width: none;
   align-items: center;
+  min-height: 28px;
 
   &::-webkit-scrollbar {
     display: none;

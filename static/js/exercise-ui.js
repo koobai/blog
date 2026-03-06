@@ -68,17 +68,6 @@
   // 暴露给外部调用（如 Mapbox 详情气泡中格式化名称）
   window.KoobaiRun.getSmartName = getSmartName;
 
-  // 页面加载完成后统一转换名称
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.sys-name').forEach(el => {
-      el.innerHTML = getSmartName(
-        el.getAttribute('data-raw-name'), 
-        el.getAttribute('data-type'), 
-        el.getAttribute('data-time')
-      );
-    });
-  });
-
   /* =========================================
      3. 核心视图引擎 (UI Engine)
   ========================================= */
