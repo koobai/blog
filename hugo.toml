@@ -56,4 +56,4 @@ hasCJKLanguage = true
     params = { new_window = true, umami_event = "Taobao" }
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS"]
