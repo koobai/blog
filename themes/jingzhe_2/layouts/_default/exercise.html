@@ -90,7 +90,7 @@
 
   <div class="shuju-list">
     <div class="tableContainer" id="run-table-container">
-      <div class="controlsArea">
+      <div class="controlsArea img-hide">
         <div class="filterBar" id="month-filter-bar"></div>
       </div>
       
@@ -130,7 +130,7 @@
             {{ $ringClass = "silverRing" }}
           {{ end }}
 
-          <div class="runCard item-year-{{$y}} item-month-{{$m}}" 
+          <div class="runCard item-year-{{$y}} item-month-{{$m}} img-hide" 
                data-run-id="{{ .run_id }}" 
                onclick="window.KoobaiRun.map.flyTo('{{ .run_id }}')" 
                style="cursor: pointer; {{ if ne $y (index $years 0) }}display:none;{{ end }}">
