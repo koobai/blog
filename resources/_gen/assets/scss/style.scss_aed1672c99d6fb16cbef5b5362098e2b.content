@@ -3122,14 +3122,8 @@ blockquote p {
     padding: 12px 16px; }
   .bento-calendar-board .insightHeader {
     font-size: 0.75rem;
-    color: var(--exercise-text-color);
+    color: var(--exercise-text-info-color);
     margin-bottom: 10px; }
-    .bento-calendar-board .insightHeader .titleTag {
-      margin-left: 6px;
-      color: var(--exercise-text-info-color);
-      background: rgba(255, 255, 255, 0.08);
-      padding: 2px 6px;
-      border-radius: 4px; }
   .bento-calendar-board .punchCard {
     display: flex;
     gap: 4px;
