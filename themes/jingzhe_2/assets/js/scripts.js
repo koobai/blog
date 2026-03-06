@@ -33,10 +33,9 @@ animateSummaries();
 // ==========================================
 // 极简原生时间格式化
 // ==========================================
-window.formatDate = (time, isExact = true) => {
+window.formatDate = (time, isExact = true, forceShort = false) => {
     if (!time) return '';
 
-    // 兼容处理：秒级/毫秒级时间戳、或者时间格式字符串
     let ts = isNaN(time) ? new Date(time).getTime() : Number(time);
     if (ts < 1e12) ts *= 1000; 
 
@@ -44,7 +43,6 @@ window.formatDate = (time, isExact = true) => {
     const target = new Date(ts);
     const diff = now.getTime() - ts;
 
-    // 极简补零辅助函数
     const pad = n => String(n).padStart(2, '0');
 
     const Y = target.getFullYear();
@@ -55,33 +53,38 @@ window.formatDate = (time, isExact = true) => {
 
     const timeSuffix = isExact ? ` ${H}:${m}` : '';
 
-    // 1. 判断“今天” (利用 toDateString 极简判断日历日)
+    // 1. 判断“今天”
     if (now.toDateString() === target.toDateString()) {
         if (diff < 60000) return `${Math.max(1, Math.floor(diff / 1000))} 秒前`;
         if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
         return `${Math.floor(diff / 3600000)} 小时前`;
     }
 
-    // 2. 判断“昨天” (当前时间减去24小时后的日历对比)
+    // 2. 判断“昨天”
     const yesterday = new Date(now.getTime() - 86400000);
     if (yesterday.toDateString() === target.toDateString()) {
         return isExact ? `昨天 ${H}:${m}` : `昨天`; 
     }
 
-    // 3. 判断“今年”
-    if (now.getFullYear() === target.getFullYear()) {
-        return `${M}月${D}日${timeSuffix}`;
+    // 3. 🌟 核心修复：如果开启了 forceShort，无论哪一年都只返回 月-日
+    if (forceShort) {
+        return `${M}-${D}${timeSuffix}`;
     }
 
-    // 4. 往年 (跨年)
-    return `${Y}年${M}月${D}日${timeSuffix}`;
+    // 4. 原有的跨年逻辑 (针对推特流等其他地方)
+    if (now.getFullYear() === target.getFullYear()) {
+        return `${M}-${D}${timeSuffix}`;
+    }
+    return `${Y}-${M}-${D}${timeSuffix}`;
 };
 
 // 全局时间调用显示 (Hugo 页面渲染)
 document.addEventListener("DOMContentLoaded", () => {
-    // 使用现代的 data-* API 与箭头函数精简遍历
     document.querySelectorAll('.twitter-time').forEach(el => {
-        if (el.dataset.time) el.innerText = window.formatDate(el.dataset.time, false);
+        if (el.dataset.time) {
+            const isExact = el.dataset.exact === 'true';
+            el.innerText = window.formatDate(el.dataset.time, isExact, isExact);
+        }
     });
 });
 

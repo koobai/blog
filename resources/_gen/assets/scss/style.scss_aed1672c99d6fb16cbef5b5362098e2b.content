@@ -17,7 +17,10 @@
   --erji-color: #B8ABA2;
   --sanji-color: #adaba6;
   --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
-  --element-background-color:#FFFDFA; }
+  --element-background-color:#FFFDFA;
+  --exercise-text-info-color:#8E8E93;
+  --exercise-text-color:#dfdfdf;
+  --exercise-text-highlight-color:#32D74B; }
 
 body, html {
   margin: 0;
@@ -2688,11 +2691,826 @@ blockquote p {
     html[data-theme='dark'] .tiaozhuan-button a {
       border: 1px solid var(--text-highlight-dark-color); }
 
+/* =========================================
+   1. 页面基础样式 (Page Basics)
+========================================= */
+.page-exercise {
+  background-color: #151516 !important;
+  color: #fff; }
+
+.page-exercise .footer-background {
+  background-color: #151516 !important;
+  border-top: none !important; }
+
+.page-exercise .footer {
+  border-top: none !important; }
+
+.page-exercise .footer-info,
+.page-exercise .footer-info a {
+  color: #484848 !important; }
+
+.page-exercise .header {
+  background: rgba(28, 28, 30, 0.8) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important; }
+
+.page-exercise .header-menu a {
+  color: var(--exercise-text-info-color) !important; }
+
+.page-exercise .menu-current a {
+  color: var(--exercise-text-highlight-color) !important; }
+
+.exercise-title {
+  color: var(--exercise-text-info-color);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: auto;
+  padding-bottom: 15px;
+  text-align: center; }
+
+/* =========================================
+   2. 年份导航 (Year Navigation)
+========================================= */
+.buttons {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto 20px auto;
+  position: relative;
+  z-index: 50;
+  gap: 8px;
+  list-style: none;
+  padding: 4px;
+  background: rgba(30, 30, 32, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  /* 保持这些已有的滚动条控制 */
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none; }
+  .buttons::-webkit-scrollbar {
+    display: none; }
+  .buttons .button {
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--exercise-text-info-color);
+    padding: 10px 22px;
+    border-radius: 99px;
+    transition: all 0.2s ease; }
+    .buttons .button:hover {
+      color: var(--exercise-text-color); }
+    .buttons .button.selected {
+      background: var(--exercise-text-highlight-color);
+      color: #111 !important; }
+
+/* =========================================
+   3. Bento 核心布局与地图 (Bento & Map)
+========================================= */
+.bento-hero {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  /* 📱 手机端：默认竖排 */ }
+  @media (min-width: 768px) {
+    .bento-hero {
+      flex-direction: row;
+      /* 💻 PC端：恢复横排 */
+      align-items: stretch; } }
+#mapbox-container {
+  height: 260px;
+  background-color: #1c1c1e;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative; }
+  @media (min-width: 768px) {
+    #mapbox-container {
+      min-height: 500px;
+      height: auto; } }
+.bento-map-placeholder {
+  flex: none;
+  width: 100%;
+  height: 260px;
+  position: relative;
+  order: 2; }
+  @media (min-width: 768px) {
+    .bento-map-placeholder {
+      flex: 1;
+      height: auto;
+      min-height: 500px;
+      order: 0; } }
+.bento-card-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #111; }
+
+/* 吸顶地图 */
+.sticky-map {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 20px) !important;
+  max-width: 800px !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  z-index: 99;
+  border-radius: 16px;
+  border-top: none;
+  animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+  .sticky-map #mapbox-container {
+    height: 260px !important;
+    min-height: 260px !important; }
+
+@keyframes mapSlideDown {
+  0% {
+    transform: translate(-50%, -120%);
+    opacity: 0; }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1; } }
+
+/* 地图内嵌详情面板 */
+.runDetailCard {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  animation: slideUpFade 0.4s forwards; }
+  .runDetailCard .detailName {
+    font-size: 0.75rem;
+    color: var(--exercise-text-info-color);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; }
+  .runDetailCard .detailDate {
+    color: var(--exercise-text-info-color); }
+  .runDetailCard .detailStatsRow {
+    display: flex;
+    gap: 24px; }
+  .runDetailCard .detailStatBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; }
+    .runDetailCard .detailStatBlock .statLabel {
+      color: var(--exercise-text-info-color);
+      font-size: 0.65rem; }
+    .runDetailCard .detailStatBlock .statVal {
+      font-size: 0.85rem;
+      color: var(--exercise-text-color); }
+    .runDetailCard .detailStatBlock small {
+      font-size: 0.65rem;
+      color: var(--exercise-text-info-color);
+      margin-left: 2px; }
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px); }
+  to {
+    opacity: 1;
+    transform: translateY(0); } }
+
+/* =========================================
+   4. 右侧边栏包裹区 (Sidebar Container)
+========================================= */
+.bento-calendar-board {
+  flex-shrink: 0;
+  width: 100%;
+  display: contents;
+  /* 📱 手机端：释放包裹层，允许子元素跨级重排 */
+  /* 侧边栏通用卡片样式 */
+  /* =========================================
+   5. 年度数据总览 (Global Stats)
+========================================= */
+  /* =========================================
+   6. 日历热力图面板 (Calendar Grid)
+========================================= */
+  /* =========================================
+   7. 洞察图表 (Monthly Insights)
+========================================= */ }
+  @media (min-width: 768px) {
+    .bento-calendar-board {
+      display: flex;
+      /* 💻 PC端：恢复右侧侧边栏独立包裹 */
+      flex-direction: column;
+      gap: 10px;
+      width: 320px; } }
+  .bento-calendar-board .boardContainer {
+    display: contents;
+    /* 📱 手机端：释放内层包裹 */ }
+    @media (min-width: 768px) {
+      .bento-calendar-board .boardContainer {
+        display: flex;
+        /* 💻 PC端：恢复正常弹性布局 */
+        flex-direction: column;
+        gap: 10px;
+        height: 100%; } }
+  .bento-calendar-board .globalSection,
+  .bento-calendar-board .calendarSection,
+  .bento-calendar-board .insightCard {
+    background: #1C1C1E;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px; }
+  .bento-calendar-board .globalSection {
+    order: 1;
+    /* 📱 手机端：强制排在最上方 */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px; }
+    @media (min-width: 768px) {
+      .bento-calendar-board .globalSection {
+        order: 0;
+        /* 💻 PC端：恢复默认层级 */ } }
+    .bento-calendar-board .globalSection .globalTitle {
+      font-size: 0.75rem;
+      color: var(--exercise-text-info-color);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      z-index: 2; }
+    .bento-calendar-board .globalSection .globalMainStat {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 10px;
+      z-index: 2; }
+      .bento-calendar-board .globalSection .globalMainStat .val {
+        font-size: 3rem;
+        font-weight: 800;
+        font-style: italic;
+        color: var(--exercise-text-highlight-color);
+        line-height: 1; }
+      .bento-calendar-board .globalSection .globalMainStat .unit {
+        font-size: 0.85rem;
+        color: var(--exercise-text-info-color); }
+    .bento-calendar-board .globalSection .metricsRow {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      z-index: 2; }
+    .bento-calendar-board .globalSection .metricBlock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px; }
+      .bento-calendar-board .globalSection .metricBlock .metricLabel {
+        font-size: 0.65rem;
+        color: var(--exercise-text-info-color); }
+      .bento-calendar-board .globalSection .metricBlock .metricValue {
+        font-size: 1rem;
+        color: var(--exercise-text-color); }
+        .bento-calendar-board .globalSection .metricBlock .metricValue small {
+          font-size: 0.65rem;
+          color: var(--exercise-text-info-color);
+          margin-left: 3px; }
+    .bento-calendar-board .globalSection .sparkline {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      width: 100%;
+      height: 85px;
+      z-index: -1;
+      pointer-events: none; }
+    .bento-calendar-board .globalSection .sparklineFill {
+      transform-origin: bottom;
+      opacity: 0.7; }
+    .bento-calendar-board .globalSection .sparklineLine {
+      stroke: var(--exercise-text-highlight-color);
+      stroke-width: 0.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.1; }
+  .bento-calendar-board .calendarSection {
+    order: 3;
+    /* 📱 手机端：排在地图（序号2）的下方 */
+    display: none !important; }
+    @media (min-width: 768px) {
+      .bento-calendar-board .calendarSection {
+        order: 0;
+        /* 💻 PC端：恢复默认 */
+        display: block !important; } }
+  .bento-calendar-board .monthNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px; }
+    .bento-calendar-board .monthNav span {
+      font-size: 0.85rem;
+      color: var(--exercise-text-info-color);
+      min-width: 65px;
+      text-align: center; }
+    .bento-calendar-board .monthNav button {
+      background: transparent;
+      border: none;
+      padding: 4px 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--exercise-text-info-color);
+      cursor: pointer;
+      transition: color 0.2s ease; }
+      .bento-calendar-board .monthNav button svg {
+        width: 16px;
+        height: 16px; }
+      .bento-calendar-board .monthNav button:hover:not(:disabled) {
+        background: transparent;
+        color: var(--exercise-text-color); }
+      .bento-calendar-board .monthNav button:disabled {
+        opacity: 0.2;
+        cursor: default; }
+  .bento-calendar-board .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--exercise-text-info-color); }
+  .bento-calendar-board .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px 4px;
+    text-align: center;
+    margin-bottom: 6px;
+    margin-top: 6px; }
+  .bento-calendar-board .dayCell {
+    aspect-ratio: 1;
+    /* 恢复原本的正方形设定 */
+    width: 82%;
+    margin: 0 auto;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0.8rem; }
+    .bento-calendar-board .dayCell.hasRun {
+      cursor: pointer; }
+      .bento-calendar-board .dayCell.hasRun:hover {
+        background: rgba(255, 255, 255, 0.04) !important; }
+    .bento-calendar-board .dayCell.maxDay {
+      background: transparent !important; }
+    .bento-calendar-board .dayCell .dateNum {
+      z-index: 1; }
+    .bento-calendar-board .dayCell:hover .runTooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0); }
+  .bento-calendar-board .monthFooter {
+    font-size: 0.65rem;
+    color: var(--exercise-text-info-color);
+    text-align: center; }
+    .bento-calendar-board .monthFooter span {
+      color: var(--exercise-text-color);
+      font-weight: 800;
+      font-style: italic;
+      margin: 0 1px 0 1px; }
+    .bento-calendar-board .monthFooter .dot {
+      font-size: 0.5rem;
+      margin: 0 3px;
+      opacity: 0.3; }
+  .bento-calendar-board .monthlyInsights {
+    display: flex;
+    gap: 10px;
+    order: 4;
+    /* 📱 手机端：洞察排在最底端 */ }
+    @media (min-width: 768px) {
+      .bento-calendar-board .monthlyInsights {
+        order: 0;
+        /* 💻 PC端：恢复默认 */ } }
+  .bento-calendar-board .insightCard {
+    flex: 1;
+    padding: 12px 16px; }
+  .bento-calendar-board .insightHeader {
+    font-size: 0.75rem;
+    color: var(--exercise-text-color);
+    margin-bottom: 10px; }
+    .bento-calendar-board .insightHeader .titleTag {
+      margin-left: 6px;
+      color: var(--exercise-text-info-color);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px; }
+  .bento-calendar-board .punchCard {
+    display: flex;
+    gap: 4px;
+    height: 15px; }
+    .bento-calendar-board .punchCard .barWrapper {
+      flex: 1;
+      position: relative;
+      cursor: pointer; }
+      .bento-calendar-board .punchCard .barWrapper .punchHole {
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        transition: all 0.2s ease; }
+      .bento-calendar-board .punchCard .barWrapper:hover .punchHole {
+        filter: brightness(1.2); }
+      .bento-calendar-board .punchCard .barWrapper:hover .runTooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0); }
+  .bento-calendar-board .zoneChart {
+    display: flex;
+    gap: 10px;
+    height: 15px;
+    align-items: flex-end; }
+    .bento-calendar-board .zoneChart .zoneCol {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      height: 100%; }
+      .bento-calendar-board .zoneChart .zoneCol .zoneBar {
+        width: 100%;
+        border-radius: 2px;
+        min-height: 2px; }
+      .bento-calendar-board .zoneChart .zoneCol:hover .runTooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0); }
+  .bento-calendar-board .insightLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px; }
+    .bento-calendar-board .insightLabels span {
+      font-size: 0.55rem;
+      color: var(--exercise-text-info-color);
+      opacity: 0.6; }
+  .bento-calendar-board .timeLabels {
+    justify-content: space-between; }
+    .bento-calendar-board .timeLabels span:first-child {
+      text-align: left; }
+    .bento-calendar-board .timeLabels span:nth-child(2) {
+      text-align: center;
+      flex: 1; }
+    .bento-calendar-board .timeLabels span:last-child {
+      text-align: right; }
+  .bento-calendar-board .zoneLabels {
+    gap: 10px; }
+    .bento-calendar-board .zoneLabels span {
+      flex: 1;
+      text-align: center;
+      min-width: 0; }
+
+/* =========================================
+   8. 数据列表与过滤器 (Data List & Filter)
+========================================= */
+.tableContainer {
+  width: 100%; }
+
+.controlsArea {
+  background: #1C1C1E;
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  margin-bottom: 10px; }
+
+.filterBar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  align-items: center; }
+  .filterBar::-webkit-scrollbar {
+    display: none; }
+
+.filterPill {
+  padding: 4px 10px;
+  border-radius: 99px;
+  color: var(--exercise-text-info-color);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap; }
+  .filterPill.activePill, .filterPill:hover {
+    background: var(--exercise-text-info-color);
+    color: #000; }
+
+.monthLabel {
+  color: var(--exercise-text-info-color);
+  font-size: 0.75rem;
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px; }
+
+.cardList {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* 📱 手机端默认：单列布局 */
+  gap: 10px; }
+  @media (min-width: 768px) {
+    .cardList {
+      grid-template-columns: repeat(2, 1fr);
+      /* 💻 PC端：恢复双列布局 */ } }
+.runCard {
+  background: #1C1C1E;
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s ease; }
+  .runCard:hover {
+    background: #232326;
+    border-color: rgba(255, 255, 255, 0.08); }
+    .runCard:hover .runTooltip {
+      opacity: 1;
+      visibility: visible; }
+
+/* =========================================
+   9. 图标、勋章与浮层组件 (Components)
+========================================= */
+.iconRing,
+.calIconRing {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.iconRing {
+  width: 38px;
+  height: 38px;
+  margin-right: 14px;
+  background-color: rgba(255, 255, 255, 0.05); }
+  .iconRing svg {
+    width: 20px;
+    height: 20px; }
+
+.calIconRing {
+  width: 25px;
+  height: 25px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important; }
+  .calIconRing svg {
+    width: 18px;
+    height: 18px; }
+
+.goldRing {
+  background: linear-gradient(135deg, rgba(255, 212, 71, 0.18) 0%, rgba(217, 148, 20, 0.05) 100%);
+  color: #FFD447 !important;
+  border: 1px solid rgba(255, 212, 71, 0.2); }
+
+.silverRing {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(152, 152, 157, 0.05) 100%);
+  color: #E2E8F0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2); }
+
+.multiDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.5; }
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+
+.runName {
+  color: var(--exercise-text-info-color);
+  font-size: 0.85rem;
+  margin-bottom: 2px; }
+
+.runDistance {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-style: italic; }
+  .runDistance .distUnit {
+    font-size: 0.75rem;
+    margin-left: 3px;
+    font-style: normal;
+    font-weight: normal;
+    color: var(--exercise-text-info-color); }
+
+.runDate {
+  color: var(--exercise-text-info-color);
+  font-size: 0.85rem; }
+
+/* 气泡系统 */
+.runTooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background: rgba(28, 28, 30, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  cursor: default; }
+
+.runCard .runTooltip {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%); }
+
+.dayCell .runTooltip,
+.zoneCol .runTooltip {
+  left: 50%;
+  transform: translateX(-50%); }
+
+/* 边缘防溢出 */
+.grid > div:nth-child(7n + 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-10%) !important; }
+
+.grid > div:nth-child(7n + 2) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-30%) !important; }
+
+.grid > div:nth-child(7n - 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-70%) !important; }
+
+.grid > div:nth-child(7n) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-90%) !important; }
+
+.barWrapper:first-child .runTooltip,
+.zoneCol:first-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-15%) !important; }
+
+.barWrapper:last-child .runTooltip,
+.zoneCol:last-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-85%) !important; }
+
+/* 气泡内部排版 */
+.ttList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; }
+
+.ttItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px; }
+
+.punchCard .runTooltip .ttItem, .zoneChart .runTooltip .ttItem {
+  justify-content: center;
+  gap: 12px; }
+
+.punchCard .runTooltip .ttName, .zoneChart .runTooltip .ttName {
+  color: var(--exercise-text-info-color) !important;
+  font-size: 0.75rem; }
+
+.punchCard .runTooltip .ttNum, .zoneChart .runTooltip .ttNum {
+  text-align: left; }
+
+.ttNameWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px; }
+
+.ttName {
+  color: var(--exercise-text-info-color);
+  font-size: 0.8rem; }
+
+.ttUnitTag {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: var(--exercise-text-info-color);
+  font-size: 0.65rem; }
+
+.ttNum {
+  color: var(--exercise-text-color);
+  font-size: 0.85rem;
+  text-align: right; }
+
+.ttDayRunList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; }
+
+.ttAchievement {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px; }
+
+.ttAchieveRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #E5E5EA; }
+
+.titleTag {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-size: 0.65rem;
+  color: var(--exercise-text-info-color); }
+
+/* Mapbox 控件覆写 */
+.mapboxgl-ctrl-group {
+  background: rgba(28, 28, 30, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  margin-left: 10px !important; }
+
+.mapboxgl-ctrl-group button {
+  background-color: transparent !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
+
+.mapboxgl-ctrl-group button:last-child {
+  border-bottom: none !important; }
+
+.mapboxgl-ctrl-icon {
+  filter: invert(1) brightness(2) !important;
+  opacity: 0.5;
+  transform: scale(0.8) !important;
+  transition: opacity 0.2s ease; }
+
+.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
+  opacity: 1; }
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+  margin-right: 10px !important;
+  margin-bottom: 10px !important; }
+
+.mapboxgl-ctrl-logo {
+  opacity: 0.3 !important;
+  transform: scale(0.75) !important;
+  transform-origin: bottom right !important;
+  transition: opacity 0.2s ease !important; }
+
+.mapboxgl-ctrl-logo:hover {
+  opacity: 0.6 !important; }
+
 @font-face {
   font-family: 'JetBrainsMono';
   font-display: swap;
   font-weight: 400;
   src: local("JetBrains Mono"), local("JetBrainsMono"), url("https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  unicode-range: U+0021-00FF; }
+
+@font-face {
+  font-family: 'JetBrainsMono';
+  font-display: swap;
+  font-weight: 800;
+  font-style: italic;
+  src: local("JetBrains Mono ExtraBold Italic"), local("JetBrainsMono-ExtraBoldItalic"), url("https://img.koobai.com/fonts/JetBrainsMono-ExtraBoldItalic.woff2") format("woff2");
   unicode-range: U+0021-00FF; }
 
 html, body {
