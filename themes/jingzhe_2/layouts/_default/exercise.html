@@ -1,9 +1,48 @@
 {{ define "body_classes" }}page-exercise{{ end }}
-{{- define "main" }}
 
+{{- /* =========================================
+     1. 核心逻辑层：封装智能中文命名函数
+========================================= */ -}}
+{{- define "get-smart-name" -}}
+  {{- $rawName := .rawName -}}
+  {{- $type := .type -}}
+  {{- /* 🌟 核心防雷：切掉小时前的 "0" 防止被误认为八进制 */ -}}
+  {{- $hour := int (strings.TrimPrefix "0" (substr .time 11 2)) -}}
+
+  {{- $timePrefix := "晚上" -}}
+  {{- if or (ge $hour 23) (lt $hour 2) -}}{{- $timePrefix = "深夜" -}}
+  {{- else if and (ge $hour 2) (lt $hour 5) -}}{{- $timePrefix = "凌晨" -}}
+  {{- else if and (ge $hour 5) (lt $hour 7) -}}{{- $timePrefix = "清晨" -}}
+  {{- else if and (ge $hour 7) (lt $hour 11) -}}{{- $timePrefix = "上午" -}}
+  {{- else if and (ge $hour 11) (lt $hour 13) -}}{{- $timePrefix = "中午" -}}
+  {{- else if and (ge $hour 13) (lt $hour 18) -}}{{- $timePrefix = "下午" -}}
+  {{- else if and (ge $hour 18) (lt $hour 20) -}}{{- $timePrefix = "傍晚" -}}
+  {{- end -}}
+
+  {{- $typeStr := "运动" -}}
+  {{- if in (slice "Run" "TrailRun" "Treadmill" "VirtualRun" "Trail Run") $type -}}{{- $typeStr = "跑步" -}}
+  {{- else if in (slice "Ride" "VirtualRide" "EBikeRide") $type -}}{{- $typeStr = "骑行" -}}
+  {{- else if in (slice "Swim" "WaterSport") $type -}}{{- $typeStr = "游泳" -}}
+  {{- else if in (slice "Walk" "Hike") $type -}}{{- $typeStr = "步行" -}}
+  {{- end -}}
+
+  {{- $finalName := $rawName -}}
+  {{- $pattern := "^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch).*(跑步|骑行|行走|徒步|游泳|运动|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun)$" -}}
+  {{- if and (le (strings.RuneCount $rawName) 15) (or (findRE $pattern $rawName) (in (slice "Run" "Ride" "Walk") $rawName)) -}}
+    {{- $finalName = printf "%s%s" $timePrefix $typeStr -}}
+  {{- end -}}
+  
+  {{- /* 🌟 直接输出结果，不需要 return，原生 template 的最爱 */ -}}
+  {{- $finalName -}}
+{{- end -}}
+
+{{- define "main" }}
 <link rel="dns-prefetch" href="//api.mapbox.com">
 <link rel="dns-prefetch" href="//events.mapbox.com">
 
+{{- /* =========================================
+     2. 数据引擎层：预处理与统计聚合
+========================================= */ -}}
 {{ $activities := resources.Get "activities.json" | unmarshal }}
 {{ $sortedActivities := sort $activities "start_date_local" "desc" }}
 
@@ -11,7 +50,13 @@
 {{ $rwTypes := slice "Run" "TrailRun" "Treadmill" "VirtualRun" "Trail Run" "Walk" "Hike" }}
 
 {{ $years := slice }}
+{{ $lightweightRuns := slice }} 
 {{ $s := newScratch }}
+
+{{ $latestYear := "" }}
+{{ if gt (len $sortedActivities) 0 }}
+  {{ $latestYear = substr (index $sortedActivities 0).start_date_local 0 4 }}
+{{ end }}
 
 {{ range $sortedActivities }}
   {{ $y := substr .start_date_local 0 4 }}
@@ -19,6 +64,13 @@
   {{ $ym := printf "%s-%s" $y $m }}
   
   {{ $years = $years | append $y }}
+  
+  {{ if eq $y $latestYear }}
+    {{ $s.Add "latestMonths" (slice $m) }}
+  {{ end }}
+  
+  {{ $runData := dict "run_id" .run_id "name" .name "type" .type "distance" .distance "moving_time" .moving_time "average_speed" .average_speed "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
+  {{ $lightweightRuns = $lightweightRuns | append $runData }}
   
   {{ if in $rideTypes .type }}
     {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideY_%s" $y))) }}
@@ -43,6 +95,9 @@
 
 {{ $years = sort ($years | uniq) "value" "desc" }}
 
+{{- /* =========================================
+     3. 视觉配置层：SVG图标与颜色映射
+========================================= */ -}}
 {{ $iconRide := `<svg viewBox="0 -1 26 26" fill="currentColor"><path d="M5.5 21a4.5 4.5 0 1 1 0-9a4.5 4.5 0 0 1 0 9m0-2a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5m13 2a4.5 4.5 0 1 1 0-9a4.5 4.5 0 0 1 0 9m0-2a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5m-7.477-8.695L13 12v6h-2v-5l-2.719-2.266A2 2 0 0 1 8 7.671l2.828-2.828a2 2 0 0 1 2.829 0l1.414 1.414a6.97 6.97 0 0 0 3.917 1.975l-.01 2.015a8.96 8.96 0 0 1-5.321-2.575zM16 5a2 2 0 1 1 0-4a2 2 0 0 1 0 4"/></svg>` | safeHTML }}
 {{ $iconWalk := `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.61713 8.71233L10.8222 6.38373C11.174 6.12735 11.6087 5.98543 12.065 6.0008C13.1764 6.02813 14.1524 6.75668 14.4919 7.82036C14.6782 8.40431 14.8481 8.79836 15.0017 9.0025C15.914 10.2155 17.3655 11 19.0002 11V13C16.8255 13 14.8825 12.0083 13.5986 10.4526L12.901 14.4085L14.9621 16.138L17.1853 22.246L15.3059 22.93L13.266 17.3256L9.87576 14.4808C9.32821 14.0382 9.03139 13.3192 9.16231 12.5767L9.67091 9.6923L8.99407 10.1841L6.86706 13.1116L5.24902 11.9361L7.60016 8.7L7.61713 8.71233ZM13.5002 5.5C12.3956 5.5 11.5002 4.60457 11.5002 3.5C11.5002 2.39543 12.3956 1.5 13.5002 1.5C14.6047 1.5 15.5002 2.39543 15.5002 3.5C15.5002 4.60457 14.6047 5.5 13.5002 5.5ZM10.5286 18.6813L7.31465 22.5116L5.78257 21.226L8.75774 17.6803L9.50426 15.5L11.2954 17L10.5286 18.6813Z"></path></svg>` | safeHTML }}
 {{ $iconRun  := `<svg viewBox="0 0 640 640" fill="currentColor"><path d="M352.5 32c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56M219.6 240c-3.3 0-6.2 2-7.4 5l-22 54.9c-6.6 16.4-25.2 24.4-41.6 17.8s-24.4-25.2-17.8-41.6l21.9-54.9c11-27.3 37.4-45.2 66.9-45.2h97.3c28.5 0 54.8 15.1 69.1 39.7l32.8 56.3h61.6c17.7 0 32 14.3 32 32s-14.3 32-32 32h-61.6c-22.8 0-43.8-12.1-55.3-31.8l-10-17.1l-20.7 70.4l75.4 22.6c27.7 8.3 41.8 39 30.1 65.5L381.7 573c-7.2 16.2-26.1 23.4-42.2 16.2s-23.4-26.1-16.2-42.2l49.2-110.8l-95.9-28.8c-32.7-9.8-52-43.7-43.7-76.8l22.7-90.6h-35.9zm-8 181c13.3 14.9 30.7 26.3 51.2 32.4l4.7 1.4l-6.9 19.3c-5.8 16.3-16 30.8-29.3 41.8l-82.4 67.9c-13.6 11.2-33.8 9.3-45-4.3s-9.3-33.8 4.3-45l82.4-67.9c4.5-3.7 7.8-8.5 9.8-13.9z"/></svg>` | safeHTML }}
@@ -62,6 +117,9 @@
 }}
 {{ $defaultTheme := dict "color" "#00ED5E" "icon" $iconRide }}
 
+{{- /* =========================================
+     4. 视图渲染层：HTML 骨架与卡片
+========================================= */ -}}
 <div class="exercise-container">
   
   <div class="exercise-title">
@@ -90,8 +148,15 @@
 
   <div class="shuju-list">
     <div class="tableContainer" id="run-table-container">
-      <div class="controlsArea img-hide">
-        <div class="filterBar" id="month-filter-bar"></div>
+      <div class="controlsArea">
+        <div class="filterBar" id="month-filter-bar">
+          <div class="filterPill activePill" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>
+          {{ $defaultMonths := sort (default slice ($s.Get "latestMonths") | uniq) "value" "desc" }}          
+          {{ range $defaultMonths }}
+            <div class="filterPill" onclick="window.KoobaiRun.ui.setListMonth('{{ . }}')">{{ . }}</div>
+          {{ end }}        
+          <div class="monthLabel">月</div>
+        </div>
       </div>
       
       <div class="cardList" id="run-list">
@@ -130,7 +195,7 @@
             {{ $ringClass = "silverRing" }}
           {{ end }}
 
-          <div class="runCard item-year-{{$y}} item-month-{{$m}} img-hide" 
+          <div class="runCard item-year-{{$y}} item-month-{{$m}}" 
                data-run-id="{{ .run_id }}" 
                onclick="window.KoobaiRun.map.flyTo('{{ .run_id }}')" 
                style="cursor: pointer; {{ if ne $y (index $years 0) }}display:none;{{ end }}">
@@ -139,18 +204,17 @@
             
             <div class="cardContent">
               <div class="leftInfo">
-                <div class="runName sys-name" 
-                     data-raw-name="{{ .name }}" 
-                     data-type="{{ .type }}" 
-                     data-time="{{ .start_date_local }}">
-                  {{ .name }}
+                <div class="runName">
+                  {{- template "get-smart-name" (dict "rawName" .name "type" .type "time" .start_date_local) -}}
                 </div>
                 <div class="runDistance" style="color: {{ $theme.color }}">
                   {{ printf "%.2f" (div .distance 1000.0) }}<span class="distUnit">km</span>
                 </div>
               </div>
               <div class="rightInfo">
-                <div class="runDate twitter-time" data-time="{{ .start_date_local }}" data-exact="true"></div>
+                <div class="runDate" data-time="{{ .start_date_local }}" data-exact="true">
+                {{- replace (substr .start_date_local 5 11) "T" " " -}}
+              </div>
               </div>
             </div>
             
@@ -198,23 +262,6 @@
 <script src="https://img.koobai.com/mapbox-gl.js"></script>
 
 <script>
-  // 🌟 核心修复：必须在这里遍历并生成精简数据集合，否则会导致 $lightweightRuns 变量未定义报错！
-  {{ $lightweightRuns := slice }}
-  {{ range $sortedActivities }}
-    {{ $runData := dict 
-      "run_id" .run_id 
-      "name" .name 
-      "type" .type 
-      "distance" .distance 
-      "moving_time" .moving_time 
-      "average_speed" .average_speed 
-      "average_heartrate" .average_heartrate 
-      "start_date_local" .start_date_local 
-      "summary_polyline" .summary_polyline 
-    }}
-    {{ $lightweightRuns = $lightweightRuns | append $runData }}
-  {{ end }}
-
   window.KoobaiRun = {
     data: {{ $lightweightRuns | jsonify | safeJS }},
     config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
@@ -223,11 +270,11 @@
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260306c"></script>
-<script defer src="/js/exercise-map.js?v=20260306c"></script>
+<script defer src="/js/exercise-ui.js?v=20260306d"></script>
+<script defer src="/js/exercise-map.js?v=20260306d"></script>
 
 <script>
-  // 地图吸顶控制：采用高性能的 RequestAnimationFrame 控制，规避滚动卡顿
+  // 地图吸顶控制：采用高性能的 RequestAnimationFrame 控制
   document.addEventListener('DOMContentLoaded', () => {
     const bentoHero = document.getElementById('bento-hero');
     const mapWrapper = document.getElementById('map-wrapper');
@@ -238,20 +285,7 @@
         if (!ticking) {
           window.requestAnimationFrame(() => {
             const isSticky = bentoHero.getBoundingClientRect().bottom < 80; 
-            const currentlySticky = mapWrapper.classList.contains('sticky-map');
-            
-            if (isSticky !== currentlySticky) {
-              if (isSticky) {
-                mapWrapper.classList.add('sticky-map');
-              } else {
-                mapWrapper.classList.remove('sticky-map');
-              }
-              
-              // 状态切换后立即重绘，配合 run-engine 校准居中
-              setTimeout(() => {
-                window.dispatchEvent(new Event('resizeMap'));
-              }, 50);
-            }
+            mapWrapper.classList.toggle('sticky-map', isSticky);
             ticking = false;
           });
           ticking = true;

@@ -2789,7 +2789,8 @@ blockquote p {
     .bento-hero {
       flex-direction: row;
       /* 💻 PC端：恢复横排 */
-      align-items: stretch; } }
+      align-items: stretch;
+      height: 550px; } }
 #mapbox-container {
   height: 260px;
   background-color: #1c1c1e;
@@ -2798,8 +2799,7 @@ blockquote p {
   position: relative; }
   @media (min-width: 768px) {
     #mapbox-container {
-      min-height: 500px;
-      height: auto; } }
+      height: 100% !important; } }
 .bento-map-placeholder {
   flex: none;
   width: 100%;
@@ -2809,8 +2809,7 @@ blockquote p {
   @media (min-width: 768px) {
     .bento-map-placeholder {
       flex: 1;
-      height: auto;
-      min-height: 500px;
+      height: 100%;
       order: 0; } }
 .bento-card-map {
   width: 100%;
@@ -2927,7 +2926,8 @@ blockquote p {
       /* 💻 PC端：恢复右侧侧边栏独立包裹 */
       flex-direction: column;
       gap: 10px;
-      width: 320px; } }
+      width: 320px;
+      height: 100%; } }
   .bento-calendar-board .boardContainer {
     display: contents;
     /* 📱 手机端：释放内层包裹 */ }
@@ -2945,6 +2945,9 @@ blockquote p {
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     padding: 16px; }
+  @media (min-width: 768px) {
+    .bento-calendar-board .globalSection, .bento-calendar-board .monthlyInsights {
+      flex-shrink: 0; } }
   .bento-calendar-board .globalSection {
     order: 1;
     /* 📱 手机端：强制排在最上方 */
@@ -3019,13 +3022,14 @@ blockquote p {
       opacity: 0.1; }
   .bento-calendar-board .calendarSection {
     order: 3;
-    /* 📱 手机端：排在地图（序号2）的下方 */
     display: none !important; }
     @media (min-width: 768px) {
       .bento-calendar-board .calendarSection {
         order: 0;
-        /* 💻 PC端：恢复默认 */
-        display: block !important; } }
+        display: flex !important;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0; } }
   .bento-calendar-board .monthNav {
     display: flex;
     justify-content: center;
@@ -3070,6 +3074,11 @@ blockquote p {
     text-align: center;
     margin-bottom: 6px;
     margin-top: 6px; }
+    @media (min-width: 768px) {
+      .bento-calendar-board .grid {
+        flex: 1;
+        min-height: 0;
+        grid-auto-rows: minmax(0, 1fr); } }
   .bento-calendar-board .dayCell {
     aspect-ratio: 1;
     /* 恢复原本的正方形设定 */
@@ -3083,6 +3092,10 @@ blockquote p {
     justify-content: center;
     position: relative;
     font-size: 0.8rem; }
+    @media (min-width: 768px) {
+      .bento-calendar-board .dayCell {
+        aspect-ratio: auto;
+        height: 100%; } }
     .bento-calendar-board .dayCell.hasRun {
       cursor: pointer; }
       .bento-calendar-board .dayCell.hasRun:hover {
@@ -3205,7 +3218,8 @@ blockquote p {
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  align-items: center; }
+  align-items: center;
+  min-height: 28px; }
   .filterBar::-webkit-scrollbar {
     display: none; }
 

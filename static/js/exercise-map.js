@@ -37,25 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }).observe(mapWrapper);
   }
 
-  window.addEventListener('resizeMap', () => {
-    if (map) {
-      map.resize();
-
-      if (activeRunId) {
-        const runData = window.runData.find(r => Number(r.run_id) === activeRunId);
-        if (runData) {
-          const coords = decodePolyline(runData.summary_polyline);
-          const bounds = new mapboxgl.LngLatBounds();
-          coords.forEach(p => bounds.extend(p));
-          map.easeTo({
-            ...map.cameraForBounds(bounds, { padding: 40 }),
-            duration: 300 
-          });
-        }
-      }
-    }
-  });
-
   /* =========================================
      3. 核心工具函数与算法
   ========================================= */
@@ -335,9 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
           }
           
-          const displayTime = typeof window.formatDate === 'function' 
-            ? window.formatDate(runData.start_date_local.replace(' ', 'T'), true, true) 
-            : runData.start_date_local.substring(5, 16);
+          const displayTime = runData.start_date_local.replace('T', ' ').substring(5, 16);
 
           statsPanel.innerHTML = `
             <div class="detailName">
