@@ -7,21 +7,23 @@
   }
 
   /* =========================================
-     1. 类型定义与样式配置
+     1. 类型定义与全局色彩配置 (单点维护)
   ========================================= */
+  window.KoobaiRun.SPORT_COLORS = {
+    'Run': '#E0ED5E', 'TrailRun': '#E0ED5E', 'Treadmill': '#E0ED5E',
+    'Ride': '#00ED5E', 'EBikeRide': '#00ED5E',
+    'VirtualRide': '#696AAD', 'VirtualRun': '#696AAD',
+    'Walk': '#ED55DB', 'Hike': '#ED55DB',
+    'Swim': '#00C7FF', 'WaterSport': '#00C7FF'
+  };
+
   const RIDE_TYPES = new Set(['Ride', 'VirtualRide', 'EBikeRide']);
   const WALK_TYPES = new Set(['Walk', 'Hike']);
   const RUN_TYPES = new Set(['Run', 'TrailRun', 'Treadmill', 'VirtualRun', 'Trail Run']);
   const RUN_WALK_TYPES = new Set([...RUN_TYPES, ...WALK_TYPES]);
 
-  const colorFromType = (type) => {
-    const colors = { 
-      'Run': '#E0ED5E', 'Ride': '#00ED5E', 'VirtualRide': '#696AAD', 
-      'Hike': '#ED55DB', 'Walk': '#ED55DB', 'Swim': '#00C7FF', 
-      'TrailRun': '#E0ED5E', 'Treadmill': '#E0ED5E' 
-    };
-    return colors[type] || '#00ED5E'; 
-  };
+  // 极简读取全局颜色
+  const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#00ED5E'; 
 
   const getActivityIcon = (type) => {
     if (RIDE_TYPES.has(type)) {
@@ -65,7 +67,7 @@
     return name;
   };
 
-  // 暴露给外部调用（如 Mapbox 详情气泡中格式化名称）
+  // 暴露给外部调用
   window.KoobaiRun.getSmartName = getSmartName;
 
   /* =========================================
@@ -77,6 +79,10 @@
       const firstYearBtn = document.querySelector('#year-nav .button');
       this.currentYear = firstYearBtn ? firstYearBtn.getAttribute('data-year') : new Date().getFullYear().toString();
       this.listMonth = 'All';
+      
+      // 🌟 性能优化：页面加载时缓存所有卡片节点，避免后续高频查 DOM
+      this.cachedRunCards = document.querySelectorAll('.runCard'); 
+      
       this.setSmartMonth(); 
     }
 
@@ -90,7 +96,8 @@
     }
 
     triggerListFilter() {
-      document.querySelectorAll('.runCard').forEach(card => {
+      // 🌟 性能优化：直接使用缓存的节点列表
+      this.cachedRunCards.forEach(card => {
         const isYearMatch = card.classList.contains(`item-year-${this.currentYear}`);
         const isMonthMatch = this.listMonth === 'All' || card.classList.contains(`item-month-${this.listMonth}`);
         card.style.display = (isYearMatch && isMonthMatch) ? 'flex' : 'none';
@@ -147,8 +154,8 @@
         }
       }
 
-      // 控制底部数据列表
-      document.querySelectorAll('.runCard').forEach(card => {
+      // 🌟 性能优化：直接遍历缓存节点
+      this.cachedRunCards.forEach(card => {
         const cardId = normalizeId(card.getAttribute('data-run-id'));
         if (targetId && cardId === targetId) {
           card.style.background = activeBg; 
@@ -602,13 +609,12 @@
     }
   }
 
-  // 挂载引擎到全局命名空间
-  const initEngine = setInterval(() => {
+  // 🌟 性能优化：使用事件监听，告别低效定时器
+  document.addEventListener('DOMContentLoaded', () => {
     if (window.KoobaiRun && window.KoobaiRun.data) {
-      clearInterval(initEngine);
       window.KoobaiRun.ui = new UIEngine(window.KoobaiRun.data);
       window.KoobaiRun.ui.renderAll();
     }
-  }, 100);
+  });
 
 })();
