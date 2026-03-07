@@ -40,15 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =========================================
      3. 核心工具函数与算法
   ========================================= */
-  const TYPE_COLORS = {
-    'Run': 'rgb(224,237,94)', 'Ride': 'rgb(0,237,94)', 'EBikeRide': 'rgb(0,237,94)',
-    'VirtualRide': 'rgb(105,106,173)', 'Hike': 'rgb(237,85,219)', 'Walk': 'rgb(237,85,219)',
-    'Swim': 'rgb(0, 199, 255)', 'WaterSport': 'rgb(0, 199, 255)', 'Rowing': 'rgb(112,243,255)',
-    'TrailRun': 'rgb(224,237,94)', 'Trail Run': 'rgb(224,237,94)', 'VirtualRun': 'rgb(105,106,173)',
-    'Treadmill': 'rgb(224,237,94)'
-  };
-  
-  const FALLBACK_COLOR = 'rgb(0,237,94)'; 
+  // 🌟 性能与维护优化：直接复用 UI 层的全局颜色配置
+  const TYPE_COLORS = window.KoobaiRun.SPORT_COLORS || {};
+  const FALLBACK_COLOR = '#00ED5E'; 
   const getColor = (type) => TYPE_COLORS[type] || FALLBACK_COLOR;
 
   // 组装 Mapbox 的条件渲染表达式
@@ -145,15 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       if (!map.getSource('mapbox-dem')) {
         map.addSource('mapbox-dem', { 'type': 'raster-dem', 'url': 'mapbox://mapbox.mapbox-terrain-dem-v1', 'tileSize': 512, 'maxzoom': 14 });
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.8 }); 
+        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 3 }); 
       }
       if (!map.getLayer('3d-buildings')) {
         map.addLayer({
           'id': '3d-buildings', 'source': 'composite', 'source-layer': 'building', 'filter': ['==', 'extrude', 'true'], 'type': 'fill-extrusion', 'minzoom': 14,
           'paint': { 
             'fill-extrusion-color': '#1C1C1E', 
-            'fill-extrusion-height': ['*', ['get', 'height'], 1.8], 
-            'fill-extrusion-base': ['*', ['get', 'min_height'], 1.8], 
+            'fill-extrusion-height': ['*', ['get', 'height'], 4], 
+            'fill-extrusion-base': ['*', ['get', 'min_height'], 4], 
             'fill-extrusion-opacity': 0.8 
           }
         }); 
@@ -193,7 +187,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.KoobaiRun.data.forEach(run => {
         if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
-        const coords = decodePolyline(run.summary_polyline);
+        
+        // 🌟 性能优化：缓存解算后的坐标，极大地节省 CPU
+        if (!run._decodedCoords) {
+          run._decodedCoords = decodePolyline(run.summary_polyline);
+        }
+        const coords = run._decodedCoords;
+
         if (coords.length === 0) return;
         
         allCoordsForBounds.push(...coords);
@@ -209,43 +209,43 @@ document.addEventListener('DOMContentLoaded', () => {
       map.setPaintProperty('runs-core', 'line-opacity', 0.8);
 
       // =========================================
-    // 🌟 自适应相机视角 (直接平铺逻辑，不封装)
-    // =========================================
-    if (allCoordsForBounds.length > 0) {
-      const validCoords = filterCityBoundingBox(allCoordsForBounds);
-      const bounds = new mapboxgl.LngLatBounds();
-      validCoords.forEach(c => bounds.extend(c));
-      
-      const cam = map.cameraForBounds(bounds, { padding: 50 });
-      
-      if (cam) {
-        if (isFirstLoad) {
-          // 首次加载：先跳转后微调
-          map.jumpTo({ ...cam, zoom: cam.zoom - 0.2, pitch: 0, bearing: 0 });
-          
-          setTimeout(() => { 
+      // 🌟 自适应相机视角
+      // =========================================
+      if (allCoordsForBounds.length > 0) {
+        const validCoords = filterCityBoundingBox(allCoordsForBounds);
+        const bounds = new mapboxgl.LngLatBounds();
+        validCoords.forEach(c => bounds.extend(c));
+        
+        const cam = map.cameraForBounds(bounds, { padding: 50 });
+        
+        if (cam) {
+          if (isFirstLoad) {
+            // 首次加载：先跳转后微调
+            map.jumpTo({ ...cam, zoom: cam.zoom - 0.2, pitch: 0, bearing: 0 });
+            
+            setTimeout(() => { 
+              map.easeTo({ 
+                ...cam, 
+                pitch: 0, 
+                bearing: 0, 
+                duration: 1000, 
+                easing: (t) => t * (2 - t) 
+              }); 
+            }, 50);
+            
+            isFirstLoad = false;
+          } else {
+            // 切换年份：直接平滑移动
             map.easeTo({ 
               ...cam, 
               pitch: 0, 
               bearing: 0, 
-              duration: 1000, 
-              easing: (t) => t * (2 - t) 
-            }); 
-          }, 50);
-          
-          isFirstLoad = false;
-        } else {
-          // 切换年份：直接平滑移动
-          map.easeTo({ 
-            ...cam, 
-            pitch: 0, 
-            bearing: 0, 
-            duration: 1000 
-          });
+              duration: 1000 
+            });
+          }
         }
       }
-    }
-  }; 
+    }; 
 
     // 初始渲染
     renderDataByYear(currentYear);
@@ -335,8 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
           statsPanel.style.display = 'flex';
         }
 
-        // 解析当前飞行路线坐标
-        const coords = decodePolyline(runData.summary_polyline);
+        // 🌟 性能优化：直接读取已缓存的坐标进行动画播放
+        const coords = runData._decodedCoords || decodePolyline(runData.summary_polyline);
         const totalPoints = coords.length;
         if (totalPoints < 2) return;
 
