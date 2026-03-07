@@ -2,12 +2,12 @@
    1. 页面基础样式 (Page Basics)
 ========================================= */
 .page-exercise {
-  background-color: #151516 !important;
+  background-color: var(--exercise-background-color) !important;
   color: #fff;
 }
 
 .page-exercise .footer-background {
-  background-color: #151516 !important;
+  background-color: var(--exercise-background-color) !important;
   border-top: none !important;
 }
 
@@ -17,10 +17,12 @@
 
 .page-exercise .footer-info, 
 .page-exercise .footer-info a {
-  color: #484848 !important;
+  @include dark {
+     color: #484848 !important;
+  }
 }
 
-.page-exercise .header {
+/*.page-exercise .header {
   background: rgba(28, 28, 30, 0.8) !important; 
   backdrop-filter: blur(20px) saturate(200%) !important; 
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important; 
@@ -36,14 +38,18 @@
 }
 
 .page-exercise .menu-current a {
-  color: var(--exercise-text-highlight-color) !important; 
+   @include dark {
+     color: var(--exercise-text-highlight-color) !important; 
+  }
 }
 
 .page-exercise .icon-menu, .page-exercise .icon-close {
   color: var(--exercise-text-highlight-color) !important;
-}
+}*/
 .page-exercise .menu-main-mobile{
-  background: #151516;
+  @include dark {
+  background: var(--exercise-background-color);
+  }
 }
 
 .exercise-title {
@@ -70,8 +76,8 @@
   gap: 8px;
   list-style: none;
   padding: 4px;
-  background: rgba(30, 30, 32, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--exercise-card-color);
+  border: 1px solid var(--exercise-card-border-color);
   border-radius: 99px;
   
   /* 保持这些已有的滚动条控制 */
@@ -122,7 +128,7 @@
 
 #mapbox-container {
   height: 260px;
-  background-color: #1c1c1e;
+  background-color: var(--exercise-card-color);
   border-radius: 12px;
   overflow: hidden;
   position: relative; 
@@ -150,8 +156,8 @@
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: #111;
+  border: 1px solid var(--exercise-card-border-color);
+  background: var(--exercise-card-color);
 }
 
 /* 吸顶地图 */
@@ -196,10 +202,9 @@
     right: 0;
     margin: 0 auto;
     width: max-content;
-    background: rgba(28, 28, 30, 0.85);
+    background: var(--exercise-card-color);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     padding: 12px;
     display: flex;
@@ -291,9 +296,9 @@
   .globalSection,
   .calendarSection,
   .insightCard {
-    background: #1C1C1E;
+    background: var(--exercise-card-color);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--exercise-card-border-color);
     padding: 16px;
   }
   @include breakpoint('medium') {
@@ -495,6 +500,7 @@
     justify-content: center;
     position: relative;
     font-size: 0.8rem;
+    color: var(--exercise-text-info-color);
     @include breakpoint('medium') {
       aspect-ratio: auto;
       height: 100%;
@@ -670,10 +676,10 @@
 }
 
 .controlsArea {
-  background: #1C1C1E;
+  background: var(--exercise-card-color);
   border-radius: 16px;
   padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--exercise-card-border-color);
   margin-bottom: 10px;
 }
 
@@ -691,8 +697,7 @@
 }
 
 .filterPill {
-  padding: 4px 10px;
-  border-radius: 99px;
+  padding: 4px 8px;
   color: var(--exercise-text-info-color);
   font-size: 0.85rem;
   cursor: pointer;
@@ -701,8 +706,8 @@
 
   &.activePill,
   &:hover {
-    background: var(--exercise-text-info-color);
-    color: #000;
+    color: var(--exercise-text-color);
+    opacity: 0.9;
   }
 }
 
@@ -710,9 +715,6 @@
   color: var(--exercise-text-info-color);
   font-size: 0.75rem;
   margin-left: auto;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 2px 6px;
-  border-radius: 4px;
 }
 
 .cardList {
@@ -726,18 +728,22 @@
 }
 
 .runCard {
-  background: #1C1C1E;
+  background: var(--exercise-card-color);
   border-radius: 16px;
   padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--exercise-card-border-color);
   display: flex;
   align-items: center;
   position: relative;
   transition: all 0.2s ease;
 
   &:hover {
-    background: #232326;
-    border-color: rgba(255, 255, 255, 0.08);
+    background: #fff;
+    border-color: #fff;
+      @include dark {
+      background: #232326;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
 
     .runTooltip {
       opacity: 1;
@@ -761,7 +767,10 @@
   width: 38px;
   height: 38px;
   margin-right: 14px;
-  background-color: rgba(255, 255, 255, 0.05); 
+  background-color: #f0f0f0; 
+  @include dark {
+    background-color: #282829; 
+  }
   
   svg {
     width: 20px;
@@ -783,15 +792,25 @@
 }
 
 .goldRing {
-  background: linear-gradient(135deg, rgba(255, 212, 71, 0.18) 0%, rgba(217, 148, 20, 0.05) 100%); 
-  color: #FFD447 !important;
-  border: 1px solid rgba(255, 212, 71, 0.2);
+  background: linear-gradient(135deg, rgba(247, 183, 29, 0.25) 0%, rgba(247, 183, 29, 0.08) 100%);
+  color: #c89b2a !important;
+  border: 1px solid rgba(150, 110, 20, 0.12);
+    @include dark {
+      background: linear-gradient(135deg, rgba(255, 212, 71, 0.18) 0%, rgba(217, 148, 20, 0.05) 100%); 
+      color: #FFD447 !important;
+      border: 1px solid rgba(255, 212, 71, 0.2);
+  }
 }
 
 .silverRing {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(152, 152, 157, 0.05) 100%);
-  color: #E2E8F0 !important; 
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.25) 0%, rgba(148, 163, 184, 0.08) 100%);
+  color: #506480 !important; 
+  border: 1px solid rgba(71, 85, 105, 0.12);
+    @include dark {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(152, 152, 157, 0.05) 100%);
+      color: #E2E8F0 !important; 
+      border: 1px solid rgba(255, 255, 255, 0.2);
+  }
 }
 
 .multiDot {
@@ -841,10 +860,10 @@
 .runTooltip {
   position: absolute;
   bottom: calc(100% + 10px); 
-  background: rgba(28, 28, 30, 0.95);
+  background: #ffffff;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #eeebe6;
   border-radius: 12px;
   padding: 12px 16px;
   z-index: 100;
@@ -852,6 +871,10 @@
   visibility: hidden;
   white-space: nowrap;
   cursor: default;
+  @include dark {
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }
 
 .runCard .runTooltip {
@@ -933,10 +956,13 @@
 
 .ttUnitTag {
   padding: 2px 6px;
-  background: rgba(255, 255, 255, 0.08);
+  background:#f0eee9;
   border-radius: 4px;
   color: var(--exercise-text-info-color);
   font-size: 0.65rem;
+    @include dark {
+     background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .ttNum {
@@ -953,11 +979,14 @@
 
 .ttAchievement {
   padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #f6f3ed;
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 8px;
+    @include dark {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
 }
 
 .ttAchieveRow {
@@ -965,24 +994,26 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  color: #E5E5EA;
+  color: var(--exercise-text-color);
 }
 
 .titleTag {
   padding: 2px 6px;
-  background: rgba(255, 255, 255, 0.08);
+  background:#f0eee9;
   border-radius: 4px;
   font-size: 0.65rem;
   color: var(--exercise-text-info-color);
+    @include dark {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 /* Mapbox 控件覆写 */
 .mapboxgl-ctrl-group {
-  background: rgba(28, 28, 30, 0.85) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: var(--exercise-card-color) !important;
   border-radius: 8px !important;
+  border: none !important; 
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
   margin-left: 10px !important; 
 }
@@ -994,7 +1025,6 @@
   border-top: none !important;
   border-left: none !important;
   border-right: none !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .mapboxgl-ctrl-group button:last-child {
@@ -1002,10 +1032,13 @@
 }
 
 .mapboxgl-ctrl-icon {
-  filter: invert(1) brightness(2) !important;
+  filter: invert(0) opacity(0.6) !important;
   opacity: 0.5; 
   transform: scale(0.8) !important; 
   transition: opacity 0.2s ease;
+  @include dark {
+    filter: invert(1) brightness(1) !important;
+  }
 }
 
 .mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
