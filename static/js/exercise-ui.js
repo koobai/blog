@@ -7,14 +7,14 @@
   }
 
   /* =========================================
-     1. 类型定义与全局色彩配置 (单点维护)
+     1. 类型定义与全局色彩配置 (万能适配调色板)
   ========================================= */
   window.KoobaiRun.SPORT_COLORS = {
-    'Run': '#E0ED5E', 'TrailRun': '#E0ED5E', 'Treadmill': '#E0ED5E',
-    'Ride': '#00ED5E', 'EBikeRide': '#00ED5E',
-    'VirtualRide': '#696AAD', 'VirtualRun': '#696AAD',
-    'Walk': '#ED55DB', 'Hike': '#ED55DB',
-    'Swim': '#00C7FF', 'WaterSport': '#00C7FF'
+    'Run': '#F58200', 'TrailRun': '#F58200', 'Treadmill': '#F58200',
+    'Ride': '#32D74B', 'EBikeRide': '#32D74B',
+    'VirtualRide': '#32D74B', 'VirtualRun': '#F58200',
+    'Walk': '#DF40C4', 'Hike': '#DF40C4',
+    'Swim': '#0BAEE6', 'WaterSport': '#0BAEE6'
   };
 
   const RIDE_TYPES = new Set(['Ride', 'VirtualRide', 'EBikeRide']);
@@ -23,7 +23,7 @@
   const RUN_WALK_TYPES = new Set([...RUN_TYPES, ...WALK_TYPES]);
 
   // 极简读取全局颜色
-  const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#00ED5E'; 
+  const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#14C759';
 
   const getActivityIcon = (type) => {
     if (RIDE_TYPES.has(type)) {
@@ -311,11 +311,11 @@
       ];
       
       const hrZonesInfo = [ 
-        { color: '#99FF00', title: '舒缓有氧', name: 'Z1', range: '<115' }, 
-        { color: '#FFFF00', title: '稳态燃脂', name: 'Z2', range: '115-129' }, 
-        { color: '#FF9900', title: '有氧强化', name: 'Z3', range: '130-144' }, 
-        { color: '#FF3300', title: '乳酸阈值', name: 'Z4', range: '145-159' }, 
-        { color: '#FF0000', title: '无氧极限', name: 'Z5', range: '≥160' } 
+        { color: '#32D74B', title: '舒缓有氧', name: 'Z1', range: '<115' }, 
+        { color: '#FFCC00', title: '稳态燃脂', name: 'Z2', range: '115-129' }, 
+        { color: '#FF9500', title: '有氧强化', name: 'Z3', range: '130-144' }, 
+        { color: '#FF5E3A', title: '乳酸阈值', name: 'Z4', range: '145-159' }, 
+        { color: '#FF3B30', title: '无氧极限', name: 'Z5', range: '≥160' } 
       ];
 
       return {
@@ -497,7 +497,7 @@
         }
 
         const runColor = primaryRun ? colorFromType(primaryRun.type) : '#32D74B';
-        const dateStyle = hasRun ? `color: ${runColor}; opacity: 1; font-weight: 800;` : 'color: inherit; opacity: 0.3; font-weight: 500;';
+        const dateStyle = hasRun ? `color: ${runColor}; opacity: 1;` : 'color: inherit; opacity: 0.6;';
         
         return `
           <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" 
@@ -515,13 +515,17 @@
       
       const timeBlocksHtml = insights.timeBlocks.map((count, i) => {
         const heightRatio = insights.maxTimeBlockCount > 0 ? (count / insights.maxTimeBlockCount) : 0;
-        const bgColor = count > 0 ? `rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})` : 'rgba(255,255,255,0.04)';
+        
+        const bgColor = count > 0 
+          ? `rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})` 
+          : 'color-mix(in srgb, var(--exercise-text-info-color), transparent 80%)';
+          
         return `
           <div class="barWrapper">
             <div class="punchHole" style="background-color: ${bgColor}"></div>
             <div class="runTooltip">
               <div class="ttItem">
-                <span class="ttName" style="color: #dfdfdf; font-family: monospace;">${insights.personas[i].time}</span>
+                <span class="ttName" style="color: var(--exercise-text-info-color);">${insights.personas[i].time}</span>
                 <span class="ttNum">${count} <small>趟</small></span>
               </div>
             </div>
@@ -532,7 +536,9 @@
       const hrZonesHtml = insights.hrCounts.map((count, i) => {
         const info = insights.hrZonesInfo[i];
         const percent = insights.validHrRuns > 0 ? Math.max(12, (count / insights.validHrRuns) * 100) : 12;
-        const bgColor = count > 0 ? info.color : 'rgba(255,255,255,0.05)';
+        
+        const bgColor = count > 0 ? info.color : 'color-mix(in srgb, var(--exercise-text-info-color), transparent 80%)';
+        
         return `
           <div class="zoneCol">
             <div class="zoneBar" style="height: ${percent}%; background-color: ${bgColor}"></div>

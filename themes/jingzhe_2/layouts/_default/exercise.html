@@ -104,18 +104,18 @@
 {{ $iconSwim := `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 13c.5.5 2.13-.112 3.262-.5c1.46-.5 3.238 0 2.738-.5l-2-2s-4.5 2.5-4 3m-9 7c2 0 3-1 5-1s3 1 5 1s3-1 5-1s3 1 5 1M2 16c2 0 3-1 5-1s3 1 5 1s3-1 5-1s3 1 5 1M17.5 4l-5.278 3l3.278 3.5L12 12m7.222-2a1 1 0 1 0 0-2a1 1 0 0 0 0 2"/></svg>` | safeHTML }}
 
 {{ $themeMap := dict
-  "Ride"        (dict "color" "#00ED5E" "icon" $iconRide)
-  "VirtualRide" (dict "color" "#696AAD" "icon" $iconRide)
-  "EBikeRide"   (dict "color" "#00ED5E" "icon" $iconRide)
-  "Run"         (dict "color" "#E0ED5E" "icon" $iconRun)
-  "TrailRun"    (dict "color" "#E0ED5E" "icon" $iconRun)
-  "Treadmill"   (dict "color" "#E0ED5E" "icon" $iconRun)
-  "Walk"        (dict "color" "#ED55DB" "icon" $iconWalk)
-  "Hike"        (dict "color" "#ED55DB" "icon" $iconWalk)
-  "Swim"        (dict "color" "#00C7FF" "icon" $iconSwim)
-  "WaterSport"  (dict "color" "#00C7FF" "icon" $iconSwim)
+  "Ride"        (dict "color" "#32D74B" "icon" $iconRide) 
+  "VirtualRide" (dict "color" "#32D74B" "icon" $iconRide)
+  "EBikeRide"   (dict "color" "#32D74B" "icon" $iconRide)
+  "Run"         (dict "color" "#F58200" "icon" $iconRun)
+  "TrailRun"    (dict "color" "#F58200" "icon" $iconRun)
+  "Treadmill"   (dict "color" "#F58200" "icon" $iconRun)
+  "Walk"        (dict "color" "#DF40C4" "icon" $iconWalk)
+  "Hike"        (dict "color" "#DF40C4" "icon" $iconWalk)
+  "Swim"        (dict "color" "#0BAEE6" "icon" $iconSwim)
+  "WaterSport"  (dict "color" "#0BAEE6" "icon" $iconSwim)
 }}
-{{ $defaultTheme := dict "color" "#00ED5E" "icon" $iconRide }}
+{{ $defaultTheme := dict "color" "#32D74B" "icon" $iconRide }}
 
 {{- /* =========================================
      4. 视图渲染层：HTML 骨架与卡片
@@ -268,8 +268,8 @@
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260307a"></script>
-<script defer src="/js/exercise-map.js?v=20260307a"></script>
+<script defer src="/js/exercise-ui.js?v=20260307b"></script>
+<script defer src="/js/exercise-map.js?v=20260307b"></script>
 
 <script>
   // 地图吸顶控制：采用高性能的 RequestAnimationFrame 控制

@@ -17,10 +17,24 @@
   --sanji-color: #adaba6;
   --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
   --element-background-color:#FFFDFA;
+
+  --exercise-background-color:#F2F0EB;
+  --exercise-card-color:#FFFDFA;
+  --exercise-card-border-color:#FFFDFA;
+  --exercise-text-info-color:#adaba6;
+  --exercise-text-color:#222;
+  --exercise-text-highlight-color:#32D74B;
+}
+
+html.dark {
+  --exercise-background-color:#151516;
+  --exercise-card-color:#1C1C1E;
+  --exercise-card-border-color:rgba(255, 255, 255, 0.03);
   --exercise-text-info-color:#8E8E93;
   --exercise-text-color:#dfdfdf;
   --exercise-text-highlight-color:#32D74B;
 }
+
 $breakpoints: (
   'medium': 768px,
   'large': 1280px,
