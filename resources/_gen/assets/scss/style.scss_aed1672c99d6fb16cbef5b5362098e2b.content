@@ -45,7 +45,7 @@ ol, ul {
     list-style: none; }
 
 .header {
-  /* 1. 基础定位 */
+  /* 基础定位保持不变 */
   position: fixed;
   bottom: 12px;
   left: 50%;
@@ -55,49 +55,54 @@ ol, ul {
   height: 50px;
   max-width: 580px;
   padding: 5px 20px;
-  align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  /* 视觉：液态玻璃质感 */
-  background: rgba(242, 240, 235, 0.5);
   border-radius: 50px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%); }
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 10px rgba(0, 0, 0, 0.06); }
   @media (min-width: 768px) {
     .header {
-      /* 强制固定宽度，不随窗口伸缩 */
       width: 580px;
       height: auto;
       padding: 20px 30px;
       bottom: 30px;
-      /* 仅在 PC 端渲染投影 */
-      box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.12);
-      /* 第二层：主投影 */
-      /* 开启硬件加速 */
+      /* 3. PC端核心修改（聚融的投影）：
+       - 把原本散漫的 30px 模糊，收紧到了 20px。
+       - 把阴影深度从 0.06 加重到了 0.1。
+       - 配合一层 8px 的超紧凑贴地阴影，导航栏瞬间就有了实体的“重量感”！ */
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 30px rgba(0, 0, 0, 0.06);
+      /* 稍微深一点的悬浮影 */
+      will-change: transform, backdrop-filter;
       -webkit-transform: translateX(-50%) translateZ(0);
       transform: translateX(-50%) translateZ(0); } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .header {
-      background: rgba(85, 82, 78, 0.6);
+      background: rgba(124, 118, 113, 0.65);
       backdrop-filter: blur(25px) saturate(200%);
       -webkit-backdrop-filter: blur(25px) saturate(200%);
-      border: 0.5px solid rgba(255, 255, 255, 0.2); } }
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: none; } }
   @media (prefers-color-scheme: dark) and (min-width: 768px) {
     html:not([data-theme='light']) .header {
-      box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(45, 43, 40, 0.35);
+      will-change: transform, backdrop-filter;
       -webkit-transform: translateX(-50%) translateZ(0);
       transform: translateX(-50%) translateZ(0); } }
   html[data-theme='dark'] .header {
-    background: rgba(85, 82, 78, 0.6);
+    background: rgba(124, 118, 113, 0.65);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 0.5px solid rgba(255, 255, 255, 0.2); }
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none; }
     @media (min-width: 768px) {
       html[data-theme='dark'] .header {
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 12px 30px rgba(45, 43, 40, 0.35);
+        will-change: transform, backdrop-filter;
         -webkit-transform: translateX(-50%) translateZ(0);
         transform: translateX(-50%) translateZ(0); } }
 .new-heard-menu {
@@ -120,7 +125,7 @@ ol, ul {
   display: flex;
   align-items: center; }
   .header-menu a {
-    color: #444;
+    color: #333;
     font-size: 0.8rem;
     font-family: var(--font-family-paragraph);
     display: flex;
@@ -132,9 +137,9 @@ ol, ul {
     /* 图标与文字的间距 */ }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme='light']) .header-menu a {
-        color: var(--erji-color); } }
+        color: #c7bab0; } }
     html[data-theme='dark'] .header-menu a {
-      color: var(--erji-color); }
+      color: #c7bab0; }
 
 .menu-current .menu-icon svg {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -2722,30 +2727,48 @@ blockquote p {
 html[data-theme='dark'] .page-exercise .footer-info, html[data-theme='dark'] .page-exercise .footer-info a {
   color: #484848 !important; }
 
-/*.page-exercise .header {
-  background: rgba(28, 28, 30, 0.8) !important; 
-  backdrop-filter: blur(20px) saturate(200%) !important; 
-  -webkit-backdrop-filter: blur(20px) saturate(200%) !important; 
-  border: 1px solid rgba(255, 255, 255, 0.08) !important; 
-  box-shadow: none !important;
-    @include breakpoint('medium') {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-  }
-}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .page-exercise .header {
+    background: rgba(28, 28, 30, 0.6) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08) !important; } }
+  @media (prefers-color-scheme: dark) and (min-width: 768px) {
+    html:not([data-theme='light']) .page-exercise .header {
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4) !important; } }
+html[data-theme='dark'] .page-exercise .header {
+  background: rgba(28, 28, 30, 0.6) !important;
+  backdrop-filter: blur(30px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08) !important; }
+  @media (min-width: 768px) {
+    html[data-theme='dark'] .page-exercise .header {
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4) !important; } }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .page-exercise .header-menu a, html:not([data-theme='light']) .page-exercise .heard-right svg {
+    color: var(--exercise-text-info-color) !important;
+    fill: var(--exercise-text-info-color) !important; } }
 
-.page-exercise .header-menu a {
-  color: var(--exercise-text-info-color) !important; 
-}
+html[data-theme='dark'] .page-exercise .header-menu a, html[data-theme='dark'] .page-exercise .heard-right svg {
+  color: var(--exercise-text-info-color) !important;
+  fill: var(--exercise-text-info-color) !important; }
 
-.page-exercise .menu-current a {
-   @include dark {
-     color: var(--exercise-text-highlight-color) !important; 
-  }
-}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .page-exercise .menu-current a {
+    color: var(--exercise-text-highlight-color) !important; } }
 
-.page-exercise .icon-menu, .page-exercise .icon-close {
-  color: var(--exercise-text-highlight-color) !important;
-}*/
+html[data-theme='dark'] .page-exercise .menu-current a {
+  color: var(--exercise-text-highlight-color) !important; }
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .page-exercise .icon-menu, html:not([data-theme='light']) .page-exercise .icon-close {
+    color: var(--exercise-text-highlight-color) !important; } }
+
+html[data-theme='dark'] .page-exercise .icon-menu, html[data-theme='dark'] .page-exercise .icon-close {
+  color: var(--exercise-text-highlight-color) !important; }
+
 @media (prefers-color-scheme: dark) {
   html:not([data-theme='light']) .page-exercise .menu-main-mobile {
     background: var(--exercise-background-color); } }

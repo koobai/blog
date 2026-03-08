@@ -319,8 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!runData) return;
 
       if (statsPanel) {
-        // 🌟 净化：纯数据读取，0 计算！
-        const distance = parseFloat(runData.distance || 0).toFixed(2);
+        const distance = (runData.distance || 0).toFixed(2);
         const runTime = runData.moving_time || '--';
         const heartRate = runData.average_heartrate || '--';
         const paceNum = runData.pace_num || '--';
