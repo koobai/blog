@@ -1,13 +1,12 @@
 (function() {
   'use strict';
 
-  // 确保全局命名空间存在
   if (!window.KoobaiRun) {
     window.KoobaiRun = {};
   }
 
   /* =========================================
-     1. 类型定义与全局色彩配置 (万能适配调色板)
+     1. 类型定义与全局色彩配置
   ========================================= */
   window.KoobaiRun.SPORT_COLORS = {
     'Run': '#F58200', 'TrailRun': '#F58200', 'Treadmill': '#F58200',
@@ -22,7 +21,6 @@
   const RUN_TYPES = new Set(['Run', 'TrailRun', 'Treadmill', 'VirtualRun', 'Trail Run']);
   const RUN_WALK_TYPES = new Set([...RUN_TYPES, ...WALK_TYPES]);
 
-  // 极简读取全局颜色
   const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#14C759';
 
   const getActivityIcon = (type) => {
@@ -40,7 +38,7 @@
   ========================================= */
   const getSmartName = (name, type, startTime) => {
     if (!startTime) return name;
-    const hour = new Date(startTime.replace(' ', 'T')).getHours();
+    const hour = new Date(startTime).getHours();
     
     let timePrefix = '晚上';
     if (hour >= 23 || hour < 2) timePrefix = '深夜'; 
@@ -66,8 +64,6 @@
     }
     return name;
   };
-
-  // 暴露给外部调用
   window.KoobaiRun.getSmartName = getSmartName;
 
   /* =========================================
@@ -80,9 +76,7 @@
       this.currentYear = firstYearBtn ? firstYearBtn.getAttribute('data-year') : new Date().getFullYear().toString();
       this.listMonth = 'All';
       
-      // 🌟 性能优化：页面加载时缓存所有卡片节点，避免后续高频查 DOM
       this.cachedRunCards = document.querySelectorAll('.runCard'); 
-      
       this.setSmartMonth(); 
     }
 
@@ -96,7 +90,6 @@
     }
 
     triggerListFilter() {
-      // 🌟 性能优化：直接使用缓存的节点列表
       this.cachedRunCards.forEach(card => {
         const isYearMatch = card.classList.contains(`item-year-${this.currentYear}`);
         const isMonthMatch = this.listMonth === 'All' || card.classList.contains(`item-month-${this.listMonth}`);
@@ -125,15 +118,15 @@
       this.triggerListFilter(); 
     }
 
-    // 处理卡片及日历的联动高亮
     highlightRunInUI(runId) {
+      // 🌟 强转恢复：将所有传进来的 ID（不管有无逗号/科学计数法）统一洗干净成标准数字字符串
       const normalizeId = (id) => {
         if (!id || id === 'undefined' || id === 'null') return null;
         return String(Number(String(id).replace(/,/g, '')));
       };
       
       const targetId = normalizeId(runId);
-
+      
       let activeColor = '#32D74B'; 
       let activeBg = 'rgba(50, 215, 75, 0.08)'; 
       let activeBorder = 'rgba(50, 215, 75, 0.3)'; 
@@ -142,7 +135,6 @@
         const targetRun = this.allRuns.find(r => normalizeId(r.run_id) === targetId);
         if (targetRun) {
           activeColor = colorFromType(targetRun.type);
-          
           let r = 50, g = 215, b = 75;
           if (activeColor.startsWith('#') && activeColor.length === 7) {
             r = parseInt(activeColor.slice(1, 3), 16);
@@ -154,7 +146,6 @@
         }
       }
 
-      // 🌟 性能优化：直接遍历缓存节点
       this.cachedRunCards.forEach(card => {
         const cardId = normalizeId(card.getAttribute('data-run-id'));
         if (targetId && cardId === targetId) {
@@ -166,7 +157,6 @@
         }
       });
       
-      // 控制日历热力图方块
       document.querySelectorAll('.dayCell.hasRun').forEach(cell => {
         const cellId = normalizeId(cell.getAttribute('data-run-id'));
         if (targetId && cellId === targetId) {
@@ -179,9 +169,9 @@
       });
     }
 
-  /* =========================================
-     4. 数据计算层 (日历聚类、趋势、分布)
-  ========================================= */
+    /* =========================================
+       4. 数据计算层 (日历聚类、趋势、分布)
+    ========================================= */
     computeEngineData() {
       const displayYear = Number(this.currentYear);
       const filteredRuns = this.allRuns.filter(r => r.start_date_local?.startsWith(this.currentYear));
@@ -202,35 +192,28 @@
         const month = Number(dateStr.slice(5, 7)) - 1;
         const utcDayTimestamp = new Date(`${dateStr}T00:00:00Z`).getTime();
         
-        r.hour = new Date(r.start_date_local.replace(' ', 'T')).getHours();
+        r.hour = new Date(r.start_date_local).getHours();
         r.dateStr = dateStr;
+        const distNum = r.distance || 0;
 
-        if (!monthMap.has(month)) {
-          monthMap.set(month, { runs: [], runsByDate: new Map() });
-        }
+        if (!monthMap.has(month)) monthMap.set(month, { runs: [], runsByDate: new Map() });
         const mData = monthMap.get(month);
         mData.runs.push(r);
         
-        if (!mData.runsByDate.has(dateStr)) {
-          mData.runsByDate.set(dateStr, []);
-        }
+        if (!mData.runsByDate.has(dateStr)) mData.runsByDate.set(dateStr, []);
         mData.runsByDate.get(dateStr).push(r);
 
-        totalDist += r.distance;
+        totalDist += distNum;
         datesSet.add(utcDayTimestamp);
         
         const currentWeek = Math.max(0, Math.min(totalWeeks - 1, Math.floor((utcDayTimestamp - firstDayUTC) / 86400000 / 7)));
-        weekData[currentWeek] += r.distance;
+        weekData[currentWeek] += distNum;
 
-        if (!dateStats.has(dateStr)) {
-          dateStats.set(dateStr, { rideDist: 0, rwDist: 0, month });
-        }
+        if (!dateStats.has(dateStr)) dateStats.set(dateStr, { rideDist: 0, rwDist: 0, month });
         if (RIDE_TYPES.has(r.type)) { 
-          rideDist += r.distance; 
-          dateStats.get(dateStr).rideDist += r.distance; 
+          rideDist += distNum; dateStats.get(dateStr).rideDist += distNum; 
         } else if (RUN_WALK_TYPES.has(r.type)) { 
-          runDist += r.distance; 
-          dateStats.get(dateStr).rwDist += r.distance; 
+          runDist += distNum; dateStats.get(dateStr).rwDist += distNum; 
         }
       });
 
@@ -240,36 +223,20 @@
       const calRwMDate = new Map(), calRwMMax = new Map();
 
       dateStats.forEach((stats, date) => {
-        if (stats.rideDist > calRideYMax) { 
-          calRideYMax = stats.rideDist; 
-          calRideYDate = date; 
-        }
-        if (stats.rideDist > (calRideMMax.get(stats.month) || 0)) { 
-          calRideMMax.set(stats.month, stats.rideDist); 
-          calRideMDate.set(stats.month, date); 
-        }
-        if (stats.rwDist > calRwYMax) { 
-          calRwYMax = stats.rwDist; 
-          calRwYDate = date; 
-        }
-        if (stats.rwDist > (calRwMMax.get(stats.month) || 0)) { 
-          calRwMMax.set(stats.month, stats.rwDist); 
-          calRwMDate.set(stats.month, date); 
-        }
+        if (stats.rideDist > calRideYMax) { calRideYMax = stats.rideDist; calRideYDate = date; }
+        if (stats.rideDist > (calRideMMax.get(stats.month) || 0)) { calRideMMax.set(stats.month, stats.rideDist); calRideMDate.set(stats.month, date); }
+        if (stats.rwDist > calRwYMax) { calRwYMax = stats.rwDist; calRwYDate = date; }
+        if (stats.rwDist > (calRwMMax.get(stats.month) || 0)) { calRwMMax.set(stats.month, stats.rwDist); calRwMDate.set(stats.month, date); }
       });
 
       let maxStreak = 0;
       if (datesSet.size > 0) {
         const timestamps = Array.from(datesSet).sort((a, b) => a - b);
-        maxStreak = 1; 
-        let currStreak = 1;
+        maxStreak = 1; let currStreak = 1;
         for (let i = 1; i < timestamps.length; i++) {
           const diffDays = (timestamps[i] - timestamps[i - 1]) / 86400000;
-          if (diffDays === 1) {
-            maxStreak = Math.max(maxStreak, ++currStreak);
-          } else if (diffDays > 1) {
-            currStreak = 1;
-          }
+          if (diffDays === 1) maxStreak = Math.max(maxStreak, ++currStreak);
+          else if (diffDays > 1) currStreak = 1;
         }
       }
 
@@ -281,19 +248,17 @@
       
       const currentMonthData = monthMap.get(this.calMonthIndex) || { runs: [], runsByDate: new Map() };
       let mTotal = 0, mRide = 0, mRun = 0, maxTimeBlockCount = 0, validHrRuns = 0;
-      
       const timeBlocks = new Array(8).fill(0); 
       const hrCounts = new Array(5).fill(0);   
       
       currentMonthData.runs.forEach(r => {
-        mTotal += r.distance;
-        if (RIDE_TYPES.has(r.type)) mRide += r.distance; 
-        else if (RUN_WALK_TYPES.has(r.type)) mRun += r.distance;
+        const distNum = r.distance || 0;
+        mTotal += distNum;
+        if (RIDE_TYPES.has(r.type)) mRide += distNum; 
+        else if (RUN_WALK_TYPES.has(r.type)) mRun += distNum;
         
         const blockIdx = Math.floor(r.hour / 3);
-        if (++timeBlocks[blockIdx] > maxTimeBlockCount) {
-          maxTimeBlockCount = timeBlocks[blockIdx];
-        }
+        if (++timeBlocks[blockIdx] > maxTimeBlockCount) maxTimeBlockCount = timeBlocks[blockIdx];
         
         if (r.average_heartrate && r.average_heartrate > 0) {
           validHrRuns++;
@@ -322,45 +287,28 @@
         displayYear, 
         availableMonthsArr: Array.from(new Set(filteredRuns.map(r => r.start_date_local.slice(5, 7)))).sort().reverse(),
         globalData: { 
-          stats: { 
-            totalDist: totalDist / 1000, 
-            rideDist: rideDist / 1000, 
-            runDist: runDist / 1000, 
-            activeDays: datesSet.size, 
-            maxStreak 
-          }, 
-          sparklineData, 
-          sparklineMax: Math.max(...sparklineData, 1), 
-          calRideYDate, 
-          calRideMDates: new Set(calRideMDate.values()), 
-          calRwYDate, 
-          calRwMDates: new Set(calRwMDate.values()) 
+          stats: { totalDist, rideDist, runDist, activeDays: datesSet.size, maxStreak }, 
+          sparklineData, sparklineMax: Math.max(...sparklineData, 1), 
+          calRideYDate, calRideMDates: new Set(calRideMDate.values()), 
+          calRwYDate, calRwMDates: new Set(calRwMDate.values()) 
         },
         monthlyData: { 
           runsByDate: currentMonthData.runsByDate, 
-          monthDetailStats: { 
-            totalDist: mTotal / 1000, 
-            rideDist: mRide / 1000, 
-            runDist: mRun / 1000 
-          }, 
+          monthDetailStats: { totalDist: mTotal, rideDist: mRide, runDist: mRun }, 
           insights: { 
             hasActivities: currentMonthData.runs.length > 0, 
-            timeBlocks, 
-            maxTimeBlockCount: Math.max(maxTimeBlockCount, 1), 
+            timeBlocks, maxTimeBlockCount: Math.max(maxTimeBlockCount, 1), 
             peakPersona: maxTimeBlockCount > 0 ? personas[timeBlocks.indexOf(maxTimeBlockCount)].name : '等待记录', 
-            personas, 
-            validHrRuns, 
-            hrCounts, 
-            hrZonesInfo, 
+            personas, validHrRuns, hrCounts, hrZonesInfo, 
             hrMaxZone: hrZonesInfo[hrCounts.indexOf(Math.max(...hrCounts))] || hrZonesInfo[0] 
           } 
         }
       };
     }
 
-  /* =========================================
-     5. 视图 DOM 渲染层
-  ========================================= */
+    /* =========================================
+       5. 视图 DOM 渲染层
+    ========================================= */
     renderAll() {
       const engine = this.computeEngineData();
       this.renderMonthFilterUI(engine.availableMonthsArr);
@@ -371,198 +319,94 @@
     renderMonthFilterUI(monthsArr) {
       const filterContainer = document.getElementById('month-filter-bar');
       if (!filterContainer) return;
-      
       const arr = monthsArr || Array.from(new Set(this.allRuns.filter(r => r.start_date_local?.startsWith(this.currentYear)).map(r => r.start_date_local.slice(5, 7)))).sort().reverse();
-      
-      const pillsHtml = arr.map(m => `
-        <div class="filterPill ${this.listMonth === m ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('${m}')">${m}</div>
-      `).join('');
-      
-      filterContainer.innerHTML = `
-        <div class="filterPill ${this.listMonth === 'All' ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>
-        ${pillsHtml}
-        <div class="monthLabel">月</div>
-      `;
+      const pillsHtml = arr.map(m => `<div class="filterPill ${this.listMonth === m ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('${m}')">${m}</div>`).join('');
+      filterContainer.innerHTML = `<div class="filterPill ${this.listMonth === 'All' ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>${pillsHtml}<div class="monthLabel">月</div>`;
     }
 
     renderCalendar(engine) {
       const container = document.getElementById('calendar-board-container');
       if (!container) return;
 
-      // 5.1 生成 Sparkline 趋势图
       let sparklineSvg = '';
       if (engine.globalData.sparklineData.length > 0) {
-        const width = 200, height = 40, pad = 6;
-        const maxVal = engine.globalData.sparklineMax;
-        
-        const points = engine.globalData.sparklineData.map((val, i) => {
-          const x = (i / Math.max(engine.globalData.sparklineData.length - 1, 1)) * width;
-          const y = height - pad - (val / maxVal) * (height - 2 * pad);
-          return { x, y };
-        });
-        
+        const width = 200, height = 40, pad = 6, maxVal = engine.globalData.sparklineMax;
+        const points = engine.globalData.sparklineData.map((val, i) => ({ x: (i / Math.max(engine.globalData.sparklineData.length - 1, 1)) * width, y: height - pad - (val / maxVal) * (height - 2 * pad) }));
         let path = `M ${points[0].x},${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
-          const p0 = points[Math.max(0, i - 1)];
-          const p1 = points[i];
-          const p2 = points[i + 1];
-          const p3 = points[Math.min(points.length - 1, i + 2)];
-          
-          const cp1x = p1.x + (p2.x - p0.x) / 6;
-          const cp1y = Math.max(pad, Math.min(height - pad, p1.y + (p2.y - p0.y) / 6));
-          const cp2x = p2.x - (p3.x - p1.x) / 6;
-          const cp2y = Math.max(pad, Math.min(height - pad, p2.y - (p3.y - p1.y) / 6));
-          
+          const p0 = points[Math.max(0, i - 1)], p1 = points[i], p2 = points[i + 1], p3 = points[Math.min(points.length - 1, i + 2)];
+          const cp1x = p1.x + (p2.x - p0.x) / 6, cp1y = Math.max(pad, Math.min(height - pad, p1.y + (p2.y - p0.y) / 6));
+          const cp2x = p2.x - (p3.x - p1.x) / 6, cp2y = Math.max(pad, Math.min(height - pad, p2.y - (p3.y - p1.y) / 6));
           path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
         }
-        
-        sparklineSvg = `
-          <svg class="sparkline" viewBox="0 0 200 40" preserveAspectRatio="none" style="overflow: visible">
-            <defs>
-              <linearGradient id="sparklineGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#32D74B" stop-opacity="0.25" />
-                <stop offset="100%" stop-color="#32D74B" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <path d="${path} L 200,40 L 0,40 Z" fill="url(#sparklineGrad)" stroke="none" class="sparklineFill" />
-            <path d="${path}" fill="none" class="sparklineLine" />
-          </svg>`;
+        sparklineSvg = `<svg class="sparkline" viewBox="0 0 200 40" preserveAspectRatio="none" style="overflow: visible"><defs><linearGradient id="sparklineGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#32D74B" stop-opacity="0.25" /><stop offset="100%" stop-color="#32D74B" stop-opacity="0" /></linearGradient></defs><path d="${path} L 200,40 L 0,40 Z" fill="url(#sparklineGrad)" stroke="none" class="sparklineFill" /><path d="${path}" fill="none" class="sparklineLine" /></svg>`;
       }
 
-      // 5.2 生成日历网格
       const rawFirstDay = new Date(engine.displayYear, this.calMonthIndex, 1).getDay();
       const firstDayOfMonth = rawFirstDay === 0 ? 6 : rawFirstDay - 1; 
       const daysInMonth = new Date(engine.displayYear, this.calMonthIndex + 1, 0).getDate();
-      
-      const daysArr = Array.from({ length: firstDayOfMonth }, () => null)
-        .concat(Array.from({ length: daysInMonth }, (_, i) => i + 1));
+      const daysArr = Array.from({ length: firstDayOfMonth }, () => null).concat(Array.from({ length: daysInMonth }, (_, i) => i + 1));
 
       const gridHtml = daysArr.map(day => {
         if (!day) return `<div class="emptyDay"></div>`;
-        
         const dateStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayRuns = (engine.monthlyData.runsByDate.get(dateStr) || []).sort((a, b) => a.start_date_local.localeCompare(b.start_date_local));
 
         const hasRun = dayRuns.length > 0;
         const primaryRun = hasRun ? dayRuns[0] : null;
 
-        let hasAchieve = false;
-        let iconDom = '';
-        let tooltipHtml = '';
-        
+        let hasAchieve = false, iconDom = '', tooltipHtml = '';
         if (primaryRun) {
-          const runListHtml = dayRuns.map(r => `
-            <div class="ttItem">
-              <span class="ttName">${getSmartName(r.name, r.type, r.start_date_local)}</span>
-              <span class="ttNum" style="color: ${colorFromType(r.type)}">${(r.distance / 1000).toFixed(1)} <small style="color: #8E8E93; font-size: 0.7rem;">km</small></span>
-            </div>
-          `).join('');
+          const runListHtml = dayRuns.map(r => `<div class="ttItem"><span class="ttName">${getSmartName(r.name, r.type, r.start_date_local)}</span><span class="ttNum" style="color: ${colorFromType(r.type)}">${r.distance.toFixed(1)} <small style="color: #8E8E93; font-size: 0.7rem;">km</small></span></div>`).join('');
           
-          const isRideY = dateStr === engine.globalData.calRideYDate;
-          const isRwY = dateStr === engine.globalData.calRwYDate;
-          const isRideM = !isRideY && engine.globalData.calRideMDates.has(dateStr);
-          const isRwM = !isRwY && engine.globalData.calRwMDates.has(dateStr);
-          
+          const isRideY = dateStr === engine.globalData.calRideYDate, isRwY = dateStr === engine.globalData.calRwYDate;
+          const isRideM = !isRideY && engine.globalData.calRideMDates.has(dateStr), isRwM = !isRwY && engine.globalData.calRwMDates.has(dateStr);
           const isGold = isRideY || isRwY;
           hasAchieve = isGold || isRideM || isRwM;
 
           if (hasAchieve) {
             const ringClass = isGold ? 'goldRing' : 'silverRing';
             const iconColor = colorFromType(isRideY || isRideM ? 'Ride' : 'Run');
-            const iconSvg = getActivityIcon(isRideY || isRideM ? 'Ride' : 'Run');
-            iconDom = `<div class="calIconRing ${ringClass}" style="color: ${iconColor}">${iconSvg}</div>`;
+            iconDom = `<div class="calIconRing ${ringClass}" style="color: ${iconColor}">${getActivityIcon(isRideY || isRideM ? 'Ride' : 'Run')}</div>`;
           } else if (dayRuns.length > 1) {
             iconDom = `<span class="multiDot"></span>`;
           }
           
           let aHtml = '';
-          if (isRideY) {
-            aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">骑行</span></div>`;
-          } else if (isRideM) {
-            aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">骑行</span></div>`;
-          }
-          
-          if (isRwY) {
-            aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">跑走</span></div>`;
-          } else if (isRwM) {
-            aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">跑走</span></div>`;
-          }
+          if (isRideY) aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">骑行</span></div>`;
+          else if (isRideM) aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">骑行</span></div>`;
+          if (isRwY) aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">跑走</span></div>`;
+          else if (isRwM) aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">跑走</span></div>`;
 
-          tooltipHtml = `
-            <div class="runTooltip">
-              <div class="ttDayRunList">${runListHtml}</div>
-              ${aHtml ? `<div class="ttAchievement">${aHtml}</div>` : ''}
-            </div>
-          `;
+          tooltipHtml = `<div class="runTooltip"><div class="ttDayRunList">${runListHtml}</div>${aHtml ? `<div class="ttAchievement">${aHtml}</div>` : ''}</div>`;
         }
 
         const runColor = primaryRun ? colorFromType(primaryRun.type) : '#32D74B';
         const dateStyle = hasRun ? `color: ${runColor}; opacity: 1;` : 'color: inherit; opacity: 0.6;';
         
-        return `
-          <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" 
-               data-run-id="${hasRun ? primaryRun.run_id : ''}" 
-               ${hasRun ? `onclick="window.KoobaiRun.map.flyTo('${primaryRun.run_id}')" style="cursor: pointer;"` : ''}>
-            ${!hasAchieve ? `<span class="dateNum" style="${dateStyle}">${day}</span>` : ''}
-            ${iconDom}
-            ${tooltipHtml}
-          </div>
-        `;
+        return `<div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" data-run-id="${hasRun ? primaryRun.run_id : ''}" ${hasRun ? `onclick="window.KoobaiRun.map.flyTo('${primaryRun.run_id}')" style="cursor: pointer;"` : ''}>${!hasAchieve ? `<span class="dateNum" style="${dateStyle}">${day}</span>` : ''}${iconDom}${tooltipHtml}</div>`;
       }).join('');
 
-      // 5.3 生成洞察图表
       const insights = engine.monthlyData.insights;
-      
       const timeBlocksHtml = insights.timeBlocks.map((count, i) => {
         const heightRatio = insights.maxTimeBlockCount > 0 ? (count / insights.maxTimeBlockCount) : 0;
-        
-        const bgColor = count > 0 
-          ? `rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})` 
-          : 'color-mix(in srgb, var(--exercise-text-info-color), transparent 80%)';
-          
-        return `
-          <div class="barWrapper">
-            <div class="punchHole" style="background-color: ${bgColor}"></div>
-            <div class="runTooltip">
-              <div class="ttItem">
-                <span class="ttName" style="color: var(--exercise-text-info-color);">${insights.personas[i].time}</span>
-                <span class="ttNum">${count} <small>趟</small></span>
-              </div>
-            </div>
-          </div>
-        `;
+        const bgColor = count > 0 ? `rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})` : 'color-mix(in srgb, var(--exercise-text-info-color), transparent 80%)';
+        return `<div class="barWrapper"><div class="punchHole" style="background-color: ${bgColor}"></div><div class="runTooltip"><div class="ttItem"><span class="ttName" style="color: var(--exercise-text-info-color);">${insights.personas[i].time}</span><span class="ttNum">${count} <small>趟</small></span></div></div></div>`;
       }).join('');
 
       const hrZonesHtml = insights.hrCounts.map((count, i) => {
         const info = insights.hrZonesInfo[i];
         const percent = insights.validHrRuns > 0 ? Math.max(12, (count / insights.validHrRuns) * 100) : 12;
-        
         const bgColor = count > 0 ? info.color : 'color-mix(in srgb, var(--exercise-text-info-color), transparent 80%)';
-        
-        return `
-          <div class="zoneCol">
-            <div class="zoneBar" style="height: ${percent}%; background-color: ${bgColor}"></div>
-            <div class="runTooltip">
-              <div class="ttItem">
-                <span class="ttName" style="color: ${info.color};">${info.range} <small style="color: inherit">BPM</small></span>
-                <span class="ttNum">${count} <small>趟</small></span>
-              </div>
-            </div>
-          </div>
-        `;
+        return `<div class="zoneCol"><div class="zoneBar" style="height: ${percent}%; background-color: ${bgColor}"></div><div class="runTooltip"><div class="ttItem"><span class="ttName" style="color: ${info.color};">${info.range} <small style="color: inherit">BPM</small></span><span class="ttNum">${count} <small>趟</small></span></div></div></div>`;
       }).join('');
 
-      // 5.4 最终面板拼接
       container.innerHTML = `
         <div class="boardContainer">
-          
           <div class="globalSection">
             ${sparklineSvg}
             <div class="globalTitle">年度总里程</div>
-            <div class="globalMainStat">
-              <span class="val">${engine.globalData.stats.totalDist.toFixed(1)}</span>
-              <span class="unit">KM</span>
-            </div>
+            <div class="globalMainStat"><span class="val">${engine.globalData.stats.totalDist.toFixed(1)}</span><span class="unit">KM</span></div>
             <div class="metricsRow">
               <div class="metricBlock"><span class="metricLabel">骑行</span><span class="metricValue">${engine.globalData.stats.rideDist.toFixed(0)}<small>km</small></span></div>
               <div class="metricBlock"><span class="metricLabel">跑走</span><span class="metricValue">${engine.globalData.stats.runDist.toFixed(0)}<small>km</small></span></div>
@@ -574,22 +418,14 @@
           <div class="calendarSection">
             <div class="monthHeader">
               <div class="monthNav">
-                <button onclick="window.KoobaiRun.ui.setCalMonth(-1)" ${this.calMonthIndex === 0 ? 'disabled' : ''}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
-                </button>
+                <button onclick="window.KoobaiRun.ui.setCalMonth(-1)" ${this.calMonthIndex === 0 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg></button>
                 <span>${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}</span>
-                <button onclick="window.KoobaiRun.ui.setCalMonth(1)" ${this.calMonthIndex === 11 ? 'disabled' : ''}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
-                </button>
+                <button onclick="window.KoobaiRun.ui.setCalMonth(1)" ${this.calMonthIndex === 11 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg></button>
               </div>
             </div>
             <div class="weekdays"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div>
             <div class="grid">${gridHtml}</div>
-            <div class="monthFooter">
-              里程 <span>${engine.monthlyData.monthDetailStats.totalDist.toFixed(1)}</span> km <span class="dot">•</span> 
-              骑行 <span>${engine.monthlyData.monthDetailStats.rideDist.toFixed(1)}</span> km <span class="dot">•</span> 
-              跑走 <span>${engine.monthlyData.monthDetailStats.runDist.toFixed(1)}</span> km
-            </div>
+            <div class="monthFooter">里程 <span>${engine.monthlyData.monthDetailStats.totalDist.toFixed(1)}</span> km <span class="dot">•</span> 骑行 <span>${engine.monthlyData.monthDetailStats.rideDist.toFixed(1)}</span> km <span class="dot">•</span> 跑走 <span>${engine.monthlyData.monthDetailStats.runDist.toFixed(1)}</span> km</div>
           </div>
           
           <div class="monthlyInsights">
@@ -600,7 +436,6 @@
                 <div class="insightLabels timeLabels"><span>00:00</span><span>12:00</span><span>24:00</span></div>
               </div>
             </div>
-            
             <div class="insightCard">
               <div class="insightHeader"><span class="insightTitle">${insights.hasActivities ? insights.hrMaxZone.title : '等待记录'}</span></div>
               <div class="insightContent">
@@ -609,13 +444,11 @@
               </div>
             </div>
           </div>
-          
         </div>
       `;
     }
   }
 
-  // 🌟 性能优化：使用事件监听，告别低效定时器
   document.addEventListener('DOMContentLoaded', () => {
     if (window.KoobaiRun && window.KoobaiRun.data) {
       window.KoobaiRun.ui = new UIEngine(window.KoobaiRun.data);
