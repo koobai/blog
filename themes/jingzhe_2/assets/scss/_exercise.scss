@@ -3,7 +3,19 @@
 ========================================= */
 .page-exercise {
   background-color: var(--exercise-background-color) !important;
-  color: #fff;
+}
+
+/* 专门针对 iOS Safari 状态栏变色的局部修复 */
+.page-exercise::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: #{'max(env(safe-area-inset-top), 20px)'};
+  background-color: var(--exercise-background-color); 
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .page-exercise .footer-background {
