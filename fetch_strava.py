@@ -117,8 +117,7 @@ def process_and_merge(local_data, raw_new_data):
     formatted_new_data = []
     
     for item in raw_new_data:
-        if not item.get('map', {}).get('summary_polyline'):
-            continue
+        polyline = item.get('map', {}).get('summary_polyline') or ""
             
         safe_time = item['start_date_local'].replace('Z', '')
         avg_speed_ms = item.get('average_speed', 0)
@@ -138,7 +137,7 @@ def process_and_merge(local_data, raw_new_data):
             "pace_num": pace_num,                        
             "pace_unit": pace_unit,                      
             "total_elevation_gain": item.get('total_elevation_gain', 0),
-            "summary_polyline": item['map']['summary_polyline']
+            "summary_polyline": polyline  # 🎯 允许为空
         })
         
     if not formatted_new_data:
