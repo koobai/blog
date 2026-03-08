@@ -1,5 +1,5 @@
 .header {
-  /* 1. 基础定位 */
+  /* 基础定位保持不变 */
   position: fixed;
   bottom: 12px;
   left: 50%;
@@ -10,46 +10,53 @@
   height: 50px;
   max-width: 580px;
   padding: 5px 20px;
-  align-items: center;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  /* 视觉：液态玻璃质感 */
-  background: rgba(242, 240, 235, 0.5);
   border-radius: 50px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5); 
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  border: 1px solid rgba(0, 0, 0, 0.08); 
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 10px rgba(0, 0, 0, 0.06);
 
   @include breakpoint('medium') {
-    /* 强制固定宽度，不随窗口伸缩 */
     width: 580px;
     height: auto;
     padding: 20px 30px;
     bottom: 30px;
-    /* 仅在 PC 端渲染投影 */
+    
+    /* 3. PC端核心修改（聚融的投影）：
+       - 把原本散漫的 30px 模糊，收紧到了 20px。
+       - 把阴影深度从 0.06 加重到了 0.1。
+       - 配合一层 8px 的超紧凑贴地阴影，导航栏瞬间就有了实体的“重量感”！ */
     box-shadow: 
-      0 0 1px rgba(0, 0, 0, 0.1),    /* 第一层：极细边框影，防止边缘锯齿 */
-      0 10px 30px rgba(0, 0, 0, 0.12); /* 第二层：主投影 */
-    /* 开启硬件加速 */
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),  /* 顶部厚度反光 */
+      0 4px 8px rgba(0, 0, 0, 0.04),           /* 紧贴底部的聚拢实体影 */
+      0 8px 30px rgba(0, 0, 0, 0.06);           /* 稍微深一点的悬浮影 */
+      
+    will-change: transform, backdrop-filter;
     -webkit-transform: translateX(-50%) translateZ(0);
     transform: translateX(-50%) translateZ(0);
   }
 
-  // 暗黑模式内聚
   @include dark {
-    background: rgba(85, 82, 78, 0.6);
+    background: rgba(124, 118, 113, 0.65); 
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
 
     @include breakpoint('medium') {
-      box-shadow: 
-        0 0 1px rgba(0, 0, 0, 0.5),    /* 边缘加固 */
-        0 12px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(45, 43, 40, 0.35);   
+      will-change: transform, backdrop-filter;
       -webkit-transform: translateX(-50%) translateZ(0);
       transform: translateX(-50%) translateZ(0);
     }
@@ -79,7 +86,7 @@
   align-items: center;
 
   a {
-    color: #444;
+    color: #333;
     font-size: 0.8rem;
     font-family: var(--font-family-paragraph);
     display: flex;
@@ -88,7 +95,7 @@
     gap: 4px; /* 图标与文字的间距 */
 
     @include dark {
-      color: var(--erji-color);
+      color: #c7bab0;
     }
   }
 }
