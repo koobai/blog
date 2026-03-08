@@ -1,19 +1,5 @@
 [
   {
-    "run_id": 17635830455,
-    "name": "傍晚跑步",
-    "type": "Run",
-    "distance": 3.77,
-    "moving_time": "30:32",
-    "start_date_local": "2026-03-07T20:44:34",
-    "average_heartrate": 139,
-    "average_speed": 7.41,
-    "pace_num": "8'05''",
-    "pace_unit": "",
-    "total_elevation_gain": 37.4,
-    "summary_polyline": "gkvxDmj_}U?WEUIEYAmBj@YNk@h@SJYDUAKEg@Yk@a@_@a@o@{Ak@uBA}@Io@CcAIaAOkA_@uA@ORYx@k@`E}BXSPEf@DTNRVZv@L`@h@vEHpA^zDTfDAJSPo@XcBZYNSVu@b@GBKAOIWWo@eAm@eB]qAEa@MyAc@aEe@eB?OVa@h@a@`B}@|B{AXK`@@PH`@j@d@lAp@xF\\`EFbATvCANEF}@\\gB\\YPQRw@f@I@MCWUi@o@_@y@Y{@e@kBIgAi@iFSy@Ww@@INUv@o@r@]h@a@n@YzA_ATEV@PDNLl@rANl@\\~CRfCLt@NxANvCFn@E\\ILe@R_@LGFCN"
-  },
-  {
     "run_id": 17623363961,
     "name": "傍晚行走",
     "type": "Walk",
