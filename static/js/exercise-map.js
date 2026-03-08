@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const map = new mapboxgl.Map({
     container: 'mapbox-container', 
-    style: getMapStyleUrl(), // 🌟 初始化时应用当前主题
+    style: getMapStyleUrl(), 
     center: [120.1551, 30.2741], 
     zoom: 11, 
     pitch: 0, 
@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =========================================
      3. 核心工具函数与算法
   ========================================= */
-  // 🌟 性能与维护优化：直接复用 UI 层的全局颜色配置
   const TYPE_COLORS = window.KoobaiRun.SPORT_COLORS || {};
   const FALLBACK_COLOR = '#00ED5E'; 
   const getColor = (type) => TYPE_COLORS[type] || FALLBACK_COLOR;
@@ -142,11 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
     currentMarkers = [];
   };
 
-  // 🌟 新增封装：独立注入自定义图层（供初始化和主题切换时复用）
   const injectCustomLayers = () => {
     const isDark = document.documentElement.classList.contains('dark');
     
-    // 挂载 3D 建筑与地形
     try {
       if (!map.getSource('mapbox-dem')) {
         map.addSource('mapbox-dem', { 'type': 'raster-dem', 'url': 'mapbox://mapbox.mapbox-terrain-dem-v1', 'tileSize': 512, 'maxzoom': 14 });
@@ -154,9 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!map.getLayer('3d-buildings')) {
         map.addLayer({
-          'id': '3d-buildings', 'source': 'composite', 'source-layer': 'building', 'filter': ['==', 'extrude', 'true'], 'type': 'fill-extrusion', 'minzoom': 14,
+          'id': '3d-buildings', 
+          'source': 'composite', 
+          'source-layer': 'building', 
+          'filter': ['==', 'extrude', 'true'], 
+          'type': 'fill-extrusion', 
+          'minzoom': 14,
           'paint': { 
-            // 🌟 智能变色：暗黑用深灰，浅色用浅灰
             'fill-extrusion-color': isDark ? '#1C1C1E' : '#eaeaf1', 
             'fill-extrusion-height': ['*', ['get', 'height'], 4], 
             'fill-extrusion-base': ['*', ['get', 'min_height'], 4], 
@@ -168,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn("3D地形加载失败，降级为2D显示", e);
     }
 
-    // 核心轨迹图层
     if (!map.getSource('all-runs')) {
       map.addSource('all-runs', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, lineMetrics: true });
       map.addSource('highlight-run-source', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, lineMetrics: true });
@@ -191,13 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 基于年份渲染全景地图
   const renderDataByYear = (targetYear) => {
     activeRunId = null; 
     currentYear = targetYear; 
     resetState();
     
-    // 🌟 防御性跳过：如果换肤正在进行中，图层还没建好，直接 return
     if (!map.getSource('all-runs')) return;
     
     const features = []; 
@@ -206,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.KoobaiRun.data.forEach(run => {
       if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
       
-      // 🌟 性能优化：缓存解算后的坐标
       if (!run._decodedCoords) {
         run._decodedCoords = decodePolyline(run.summary_polyline);
       }
@@ -226,9 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
     map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
     map.setPaintProperty('runs-core', 'line-opacity', 0.8);
 
-    // =========================================
-    // 🌟 自适应相机视角
-    // =========================================
     if (allCoordsForBounds.length > 0) {
       const validCoords = filterCityBoundingBox(allCoordsForBounds);
       const bounds = new mapboxgl.LngLatBounds();
@@ -238,60 +232,40 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (cam) {
         if (isFirstLoad) {
-          // 首次加载：先跳转后微调
           map.jumpTo({ ...cam, zoom: cam.zoom - 0.2, pitch: 0, bearing: 0 });
-          
           setTimeout(() => { 
-            map.easeTo({ 
-              ...cam, 
-              pitch: 0, 
-              bearing: 0, 
-              duration: 1000, 
-              easing: (t) => t * (2 - t) 
-            }); 
+            map.easeTo({ ...cam, pitch: 0, bearing: 0, duration: 1000, easing: (t) => t * (2 - t) }); 
           }, 50);
-          
           isFirstLoad = false;
         } else {
-          // 切换年份：直接平滑移动
-          map.easeTo({ 
-            ...cam, 
-            pitch: 0, 
-            bearing: 0, 
-            duration: 1000 
-          });
+          map.easeTo({ ...cam, pitch: 0, bearing: 0, duration: 1000 });
         }
       }
     }
   }; 
 
-  // 🌟 监听系统主题切换，触发地图底图更换
   let currentMapStyle = getMapStyleUrl();
   const themeObserver = new MutationObserver(() => {
     const newStyle = getMapStyleUrl();
     if (newStyle !== currentMapStyle) {
       currentMapStyle = newStyle;
-      map.setStyle(newStyle); // Mapbox 换肤（会清空所有图层，随后触发 style.load）
+      map.setStyle(newStyle); 
     }
   });
-  // 观察 <html> 标签的属性变化
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
 
-  // 🌟 核心生命周期：使用 'style.load'，初次加载和每次换肤后都会执行
   map.on('style.load', () => {
-    injectCustomLayers(); // 把清空的建筑和轨迹源补回来
+    injectCustomLayers(); 
     
-    // 🌟 防御性重置：如果在看单条飞行路线时切主题，自动退回全景视角，防止动画错乱
     if (activeRunId && window.KoobaiRun.ui) {
       window.KoobaiRun.ui.highlightRunInUI(null);
       const statsPanel = document.getElementById('map-stats-panel');
       if (statsPanel) statsPanel.style.display = 'none';
     }
     
-    renderDataByYear(currentYear); // 把数据灌进去
+    renderDataByYear(currentYear); 
   });
 
-  // 监听导航年份点击事件（只绑一次，不会因换肤重复绑定）
   document.getElementById('year-nav')?.addEventListener('click', (e) => {
     const btn = e.target.closest('.button'); 
     if (btn) {
@@ -308,11 +282,15 @@ document.addEventListener('DOMContentLoaded', () => {
   ========================================= */
   window.KoobaiRun.map = {
     flyTo: (rawRunId) => {
-      const runId = Number(String(rawRunId).replace(/,/g, ''));
+      const normalizeId = (id) => {
+        if (!id || id === 'undefined' || id === 'null') return null;
+        return String(Number(String(id).replace(/,/g, '')));
+      };
+      
+      const runId = normalizeId(rawRunId);
       const statsPanel = document.getElementById('map-stats-panel'); 
 
-      // 如果点击的是当前已激活的路线，则取消高亮并恢复全景
-      if (activeRunId === runId) {
+      if (normalizeId(activeRunId) === runId) {
         renderDataByYear(currentYear);
         if (window.KoobaiRun.ui) {
           window.KoobaiRun.ui.highlightRunInUI(null); 
@@ -330,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.KoobaiRun.ui.highlightRunInUI(runId); 
       }
       
-      // 🌟 防御性检查：确保图层存在（防止换肤零点几秒内报错）
       if (map.getLayer('runs-core')) {
         map.setPaintProperty('runs-core', 'line-opacity', 0);
       }
@@ -338,33 +315,23 @@ document.addEventListener('DOMContentLoaded', () => {
         map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
       }
 
-      const runData = window.KoobaiRun.data.find(r => Number(r.run_id) === runId);
-      if (!runData) return; 
+      const runData = window.KoobaiRun.data.find(r => normalizeId(r.run_id) === runId);
+      if (!runData) return;
 
-      // 渲染内嵌数据面板
       if (statsPanel) {
-        const distance = (runData.distance / 1000).toFixed(2);
+        // 🌟 净化：纯数据读取，0 计算！
+        const distance = parseFloat(runData.distance || 0).toFixed(2);
         const runTime = runData.moving_time || '--';
-        const heartRate = runData.average_heartrate ? Math.round(runData.average_heartrate) : '--';
+        const heartRate = runData.average_heartrate || '--';
+        const paceNum = runData.pace_num || '--';
+        const paceUnit = runData.pace_unit || '';
+        
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const color = getColor(runData.type);
         
-        let paceNum = '--', paceUnit = '';
-        if (runData.average_speed) {
-            const speedKmH = runData.average_speed * 3.6;
-            if (isRide) { 
-              paceNum = speedKmH.toFixed(2); 
-              paceUnit = 'km/h'; 
-            } else { 
-              const paceMins = 60 / speedKmH; 
-              paceNum = `${Math.floor(paceMins)}'${Math.round((paceMins - Math.floor(paceMins)) * 60).toString().padStart(2, '0')}''`; 
-            }
-        }
-        
-        // 刻意保留：动态相对时间，增加交互温度
         const displayTime = typeof window.formatDate === 'function' 
-          ? window.formatDate(runData.start_date_local.replace(' ', 'T'), true, true) 
-          : runData.start_date_local.substring(5, 16);
+          ? window.formatDate(runData.start_date_local, true, true) 
+          : runData.start_date_local.substring(5, 16).replace('T', ' ');
 
         statsPanel.innerHTML = `
           <div class="detailName">
@@ -381,12 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
         statsPanel.style.display = 'flex';
       }
 
-      // 🌟 直接读取已缓存的坐标，CPU 0消耗
       const coords = runData._decodedCoords || decodePolyline(runData.summary_polyline);
       const totalPoints = coords.length;
       if (totalPoints < 2) return;
 
-      // 挂载起止点旗帜
       const sportColor = getColor(runData.type);
       
       const startEl = document.createElement('div'); 
@@ -417,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
           .addTo(map)
       );
 
-      // 预计算坐标点距离，用于平滑插值动画
       const cumulativeDistances = new Float32Array(totalPoints); 
       cumulativeDistances[0] = 0;
       for (let i = 1; i < totalPoints; i++) {
@@ -427,21 +391,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const totalGeoDistance = cumulativeDistances[totalPoints - 1];
 
-      // 镜头初始化跳跃
       let startTime = null;
       let currentBearing = calculateBearing(coords[0], coords[Math.min(5, totalPoints - 1)]);
       map.flyTo({ center: coords[0], bearing: currentBearing, pitch: 70, zoom: 16, duration: 2500, essential: true });
 
-      // 核心渲染循环函数
       const animate = (timestamp) => {
-        if (activeRunId !== runId) return; 
+        if (String(activeRunId) !== runId) return; 
         if (!startTime) startTime = timestamp;
         
-        // 动态计算完成进度
-        const progress = Math.min((timestamp - startTime) / Math.min(3500 + Math.sqrt((runData.distance || 5000) / 1000) * 800, 12000), 1);
+        // 🌟 修复：因为距离本身就是 km 了，所以无需除以 1000，否则动画计算错乱
+        const progress = Math.min((timestamp - startTime) / Math.min(3500 + Math.sqrt(runData.distance || 5) * 800, 12000), 1);
         const targetDist = progress * totalGeoDistance;
 
-        // 二分法查找到达的具体坐标分段
         let l = 0;
         let r = totalPoints - 1;
         let idx = 0;
@@ -456,7 +417,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (idx >= totalPoints - 1) idx = totalPoints - 2;
 
-        // 计算当前线段上的插值比例
         const remainder = (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) > 0 
           ? (targetDist - cumulativeDistances[idx]) / (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) 
           : 0;
@@ -471,7 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentLineCoords = coords.slice(0, idx + 1); 
             currentLineCoords.push(currentPos);
             
-            // 🌟 防御性更新源
             if (map.getSource('highlight-run-source')) {
               map.getSource('highlight-run-source').setData({ 
                 type: 'FeatureCollection', 
@@ -483,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
               });
             }
 
-            // 预见性平滑转向
             let lookAheadIdx = idx; 
             while (lookAheadIdx < totalPoints - 1 && cumulativeDistances[lookAheadIdx] < targetDist + totalGeoDistance * 0.05) {
               lookAheadIdx++;
@@ -494,7 +452,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           animationRef = requestAnimationFrame(animate);
         } else {
-          // 动画完毕，兜底渲染完整线段
           if (map.getSource('highlight-run-source')) {
             map.getSource('highlight-run-source').setData({ 
               type: 'FeatureCollection', 
@@ -506,7 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
           
-          // 镜头拉远展示全局概览
           flyToTimeout = setTimeout(() => {
             const endCam = map.cameraForBounds([
               [Math.min(...coords.map(p => p[0])), Math.min(...coords.map(p => p[1]))], 
@@ -520,7 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       };
       
-      // 等待飞跃动画落地后，启动轨迹描绘
       flyToTimeout = setTimeout(() => { 
         animationRef = requestAnimationFrame(animate); 
       }, 2600);
