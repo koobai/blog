@@ -2,6 +2,8 @@ name: Sync Strava Data
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [strava-sync]
 
 jobs:
   sync:
