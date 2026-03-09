@@ -2,9 +2,10 @@
 (function() {
     'use strict';
 
-    // ============================================================
-    // 0. 统一图标管理
-    // ============================================================
+    /* ========================================================================
+       板块 0：统一图标管理 (SVGs)
+       功能：集中管理所有 UI 图标，方便复用和统一修改
+    ======================================================================== */
     const ICONS = {
         location: `<svg class="memo-location-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
         geoLoading: `<svg class="geo-loading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>`,
@@ -19,9 +20,9 @@
         filter: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-auto ml-1 opacity-40"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>`
     };
 
-    // ============================================================
-    // 1. 全局常量、工具与状态管理
-    // ============================================================
+    /* ========================================================================
+       板块 1：全局常量、工具与状态管理
+    ======================================================================== */
     const LS = {
         get: (k) => window.localStorage?.getItem(k),
         set: (k, v) => window.localStorage?.setItem(k, v),
@@ -33,6 +34,7 @@
         IMG: /\!\[(.*?)\]\((.*?)\)/g
     };
 
+    // 图像链接清理与 CDN 替换
     function cleanImage(url) {
         if (!url || !url.includes('upyun.com')) return url;
         return url.replace(/https?:\/\/.*\.upyun\.com\/koobaiblogimg/, 'https://img.koobai.com').split('?')[0];
@@ -54,8 +56,7 @@
     const getResUrl = (resourceName, filename = '') => 
         `${CONFIG.memos}file/${resourceName}${filename ? `/${filename}` : ''}`;
 
-    // mapbox地图定位
-
+    // Mapbox 地图定位配置
     const MAPBOX_TOKEN = 'pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw';
 
     const GeoHelper = {
@@ -82,18 +83,15 @@
         }
     };
 
+    // 全局状态机
     const STATE = {
         nextPageToken: "",
         nextDom: [],
         memosOpenId: lsToken,
         editorDisplay: LS.get("memos-editor-display"),
         cache: {
-            //插入文章电影
             sports: null
-            /*
-            posts: document.getElementById('temp-posts-data')?.innerHTML,
-            movies: document.getElementById('temp-movies-data')?.innerHTML*/
-         },
+        },
         domRefs: {},
         isAuthorized: !!lsToken,
         viewMode: 'ALL',
@@ -104,9 +102,10 @@
 
     let activeEmojiPicker = null;
 
-    // ============================================================
-    // 2. 静态逻辑表 (事件委托映射)
-    // ============================================================
+    /* ========================================================================
+       板块 2：静态逻辑表 (事件委托映射)
+       功能：将页面上所有点击动作集中分发，避免绑定过多 Listener
+    ======================================================================== */
     const ACTIONS = {
         'load-more': (t) => handleLoadMore(t),
         'tag-filter': (t) => handleTagFilter(t.dataset.val, t.innerText),
@@ -119,19 +118,26 @@
         'reload-private': () => { STATE.viewMode = 'PRIVATE'; reloadList(); }
     };
 
-    // ============================================================
-    // 3. 网络请求封装
-    // ============================================================
+    /* ========================================================================
+       板块 3：网络请求封装 (Fetch)
+    ======================================================================== */
     async function memoFetch(endpoint, method = 'GET', body = null) {
         if (!endpoint) return null;
         const headers = { 'Content-Type': 'application/json' };
         if (STATE.memosOpenId) headers['Authorization'] = `Bearer ${STATE.memosOpenId}`;
 
         const urlObj = new URL(endpoint, CONFIG.memos);
+        // GET 请求添加时间戳防止缓存
         if (method === 'GET') urlObj.searchParams.set('t', Date.now());
 
         try {
-            const res = await fetch(urlObj.href, { method, headers, body: body ? JSON.stringify(body) : null });
+            const res = await fetch(urlObj.href, { 
+                method, 
+                headers, 
+                body: body ? JSON.stringify(body) : null 
+            });
+            
+            // 处理 Token 失效
             if (res.status === 401) {
                 ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday', 'memos-resource-list'].forEach(k => LS.rm(k));
                 location.reload();
@@ -145,9 +151,10 @@
         }
     }
 
-    // ============================================================
-    // 4. 数据适配器
-    // ============================================================
+    /* ========================================================================
+       板块 4：数据适配器 (Data Adapter)
+       功能：将后端原始数据清洗、解析标签、图片，转为前端所需的干净格式
+    ======================================================================== */
     function adaptMemo(memo) {
         if (!memo) return null;
         const id = memo.name ? memo.name.split('/').pop() : memo.id;
@@ -172,12 +179,12 @@
             const rFilename = r.filename || ''; 
             const type = r.type || r.mimeType || 'image/*';
             const src = cleanImage(r.externalLink || getResUrl(rName, rFilename));
-            //const src = r.externalLink || getResUrl(rName, rFilename);
             
             if (type.startsWith('image')) allImages.push(src);
             return { id: rId, name: rName, filename: rFilename, externalLink: r.externalLink, type, src };
         });
 
+        // 整理双向链接关系
         const relations = { inbound: [], outbound: [] };
         if (memo.relations) {
             memo.relations.forEach(rel => {
@@ -201,13 +208,14 @@
         };
     }
 
-    // ============================================================
-    // 5. 初始化与事件委托
-    // ============================================================
+    /* ========================================================================
+       板块 5：初始化与事件绑定
+    ======================================================================== */
     document.addEventListener("DOMContentLoaded", () => {
         const bbDom = document.querySelector(CONFIG.domId);
         if (!bbDom) return;
 
+        // 插入发布唠叨的触点按钮
         const anchor = document.querySelector('.index-laodao-titile');
         if (anchor && !document.querySelector('.load-memos-editor')) {
             anchor.insertAdjacentHTML('afterend', "<div class='load-memos-editor'>唠叨</div>");
@@ -218,6 +226,7 @@
 
         getFirstList();
 
+        // 委托全局点击事件
         document.body.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (target && ACTIONS[target.dataset.action]) {
@@ -225,7 +234,6 @@
                 ACTIONS[target.dataset.action](target);
             }
         });
-        
     });
 
     function toggleEditor() {
@@ -241,9 +249,11 @@
         }
     }
 
-    // ============================================================
-    // 6. 业务逻辑处理
-    // ============================================================
+    /* ========================================================================
+       板块 6：具体业务逻辑实现 (加载、过滤、修改、删除)
+    ======================================================================== */
+    
+    // 加载更多
     async function handleLoadMore(btn) {
         btn.textContent = '加载中……';
         if (!STATE.nextDom.length && STATE.nextPageToken) await getNextPage();
@@ -254,10 +264,15 @@
             if (STATE.nextPageToken) {
                 getNextPage();
                 btn.textContent = '看更多 ...';
-            } else btn.remove();
-        } else btn.remove();
+            } else {
+                btn.remove();
+            }
+        } else {
+            btn.remove();
+        }
     }
 
+    // 标签过滤
     function handleTagFilter(tagName, displayText) {
         const top = document.querySelector(CONFIG.domId).offsetTop - 30;
         window.scrollTo({ top, behavior: "smooth" });
@@ -275,6 +290,7 @@
         }), true);
     }
 
+    // 加载 Artalk 评论
     function handleLoadArtalk(id) {
         if (typeof Artalk === 'undefined') return;
         const target = document.getElementById(`memo_${id}`);
@@ -283,10 +299,17 @@
         });
         target.classList.toggle('hidden');
         if (!target.classList.contains('hidden')) {
-            Artalk.init({ el: `#memo_${id}`, pageKey: `/memos/${id}`, server: 'https://c.koobai.com/', site: '空白唠叨', darkMode: 'auto' });
+            Artalk.init({ 
+                el: `#memo_${id}`, 
+                pageKey: `/memos/${id}`, 
+                server: 'https://c.koobai.com/', 
+                site: '空白唠叨', 
+                darkMode: 'auto' 
+            });
         }
     }
 
+    // 进入编辑模式
     function handleEditMemo(el) {
         if (!STATE.domRefs.editDom) return;
         const data = JSON.parse(decodeURIComponent(el.dataset.form));
@@ -309,18 +332,23 @@
         
         if (data.resourceList?.length) {
             const imgHtml = data.resourceList.map(r => `
-            <div class="imagelist-item" draggable="true" data-name="${r.name || `attachments/${r.id}`}">
-                <img class="memos-up-image" src="${r.src}" />
-                <div class="image-delete">${ICONS.deleteImg}</div>
-            </div>`).join('');
+                <div class="imagelist-item" draggable="true" data-name="${r.name || `attachments/${r.id}`}">
+                    <img class="memos-up-image" src="${r.src}" />
+                    <div class="image-delete">${ICONS.deleteImg}</div>
+                </div>
+            `).join('');
             refs.imageList.insertAdjacentHTML('afterbegin', imgHtml);
         }
         refs.editor?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
+    // API 操作快捷函数
     async function performAction(url, method, body, successMsg) {
         const res = await memoFetch(url, method, body);
-        if (res !== null) { reloadList(); cocoMessage.success(successMsg); }
+        if (res !== null) { 
+            reloadList(); 
+            cocoMessage.success(successMsg); 
+        }
     }
 
     function handlePinMemo(id, isPinned) {
@@ -330,9 +358,10 @@
     function handleArchiveMemo(id) { performAction(`api/v1/memos/${id}?updateMask=state`, 'PATCH', { state: "ARCHIVED" }, '归档成功'); }
     function handleDeleteMemo(id) { if (confirm("确定要删除此条唠叨吗？")) performAction(`api/v1/memos/${id}`, 'DELETE', null, '删除成功'); }
 
-    // ============================================================
-    // 7. 数据加载与渲染 (核心优化区)
-    // ============================================================
+
+    /* ========================================================================
+       板块 7：数据流加载与 HTML 节点渲染 (DOM 构建层)
+    ======================================================================== */
     function fetchMemosAndRender(params, clearDom = false) {
         const bbDom = document.querySelector(CONFIG.domId);
         if (clearDom) {
@@ -355,32 +384,40 @@
             const pinned = pRes?.memos || [];
             const normal = nRes?.memos || [];
             const pinnedNames = new Set(pinned.map(p => p.name));
+            // 剔除 normal 列表里重复的 pinned 数据
             const start = isFirst ? [...pinned, ...normal.filter(n => !pinnedNames.has(n.name))] : normal;
 
-            start.length && updateHTMl(start.map(adaptMemo), null, isFirst);
+            if (start.length) {
+                updateHTMl(start.map(adaptMemo), null, isFirst);
+            }
             document.querySelector('.bb-load')?.remove();
 
             if (nRes?.nextPageToken) {
                 STATE.nextPageToken = nRes.nextPageToken;
                 bbDom.insertAdjacentHTML('afterend', '<div class="bb-load"><button class="load-btn button-load" data-action="load-more">看更多 ...</button></div>');
-                !clearDom && getNextPage();
-            } else STATE.nextPageToken = null;
+                if (!clearDom) getNextPage();
+            } else {
+                STATE.nextPageToken = null;
+            }
         });
     }
 
     async function getFirstList() {
         const bbDom = document.querySelector(CONFIG.domId);
-        if(!document.getElementById('tag-list')) bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
+        if(!document.getElementById('tag-list')) {
+            bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
+        }
         
         STATE.nextPageToken = "";
     
+        // 缓存外部传来的静态模板
         const sportsTemplate = document.getElementById('memos-exercise');
         if (sportsTemplate && !STATE.cache.sports) {
             STATE.cache.sports = sportsTemplate.innerHTML;
         }
 
+        // 单条路由解析
         const targetId = new URLSearchParams(window.location.search).get('memo'); 
-
         if (targetId) {
             const res = await memoFetch(`api/v1/memos/${targetId}`);
             if (res) {
@@ -389,15 +426,24 @@
                 bbDom.insertAdjacentHTML('afterend', `<div class="bb-load"><button class="load-btn" onclick="location.href='${location.origin}${location.pathname}'">看全部唠叨...</button></div>`);
                 bbDom.scrollIntoView({ behavior: 'smooth' });
                 return;
-            } else cocoMessage.error("未找到该条动态");
+            } else {
+                cocoMessage.error("未找到该条动态");
+            }
         }
+
         fetchMemosAndRender(new URLSearchParams({ pageSize: CONFIG.limit, parent: `users/${CONFIG.creatorId}` }));
         loadRandomMemo();
     }
 
     function getNextPage() {
         if (!STATE.nextPageToken) return Promise.resolve();
-        return memoFetch(`api/v1/memos?${new URLSearchParams({ pageSize: CONFIG.limit, pageToken: STATE.nextPageToken, parent: `users/${CONFIG.creatorId}` }).toString()}`).then(res => {
+        const queryParams = new URLSearchParams({ 
+            pageSize: CONFIG.limit, 
+            pageToken: STATE.nextPageToken, 
+            parent: `users/${CONFIG.creatorId}` 
+        }).toString();
+
+        return memoFetch(`api/v1/memos?${queryParams}`).then(res => {
             if (res?.memos) {
                 STATE.nextDom = res.memos.map(adaptMemo);
                 STATE.nextPageToken = res.nextPageToken || "";
@@ -413,6 +459,7 @@
         if (LS.get("memos-oneday") === "open") loadRandomMemo();
     }
 
+    // “那年今日” 随机回顾功能
     async function loadRandomMemo() {
         if (LS.get("memos-oneday") !== "open") return;
         const res = await memoFetch(`api/v1/memos?${new URLSearchParams({ pageSize: 50, parent: `users/${CONFIG.creatorId}` }).toString()}`);
@@ -424,6 +471,7 @@
         }
     }
 
+    // 渲染关联链接区域
     function renderRelations(rels, label) {
         if (!rels || rels.length === 0) return '';
         const items = rels.map(r => {
@@ -431,9 +479,15 @@
             const rContent = r.snippet || r.content || `Memo ${rId}`;
             return `<a href="?memo=${rId}" target="_blank" class="memo-relation-item"><span class="memo-relation-content text-sm">${rContent}</span></a>`;
         }).join('');
-        return `<div class="memo-relation-wrapper"><div class="memo-relation-label">${ICONS.relation}${label} (${rels.length})</div>${items}</div>`;
+        
+        return `
+            <div class="memo-relation-wrapper">
+                <div class="memo-relation-label">${ICONS.relation}${label} (${rels.length})</div>
+                ${items}
+            </div>`;
     }
 
+    // 校验单条数据是否允许被当前用户渲染
     function canRender(item) {
         if (item.state === 'ARCHIVED') return false;
         if (!STATE.isAuthorized && !['PUBLIC', 'PROTECTED'].includes(item.visibility)) return false;
@@ -441,35 +495,55 @@
         return true;
     }
 
+    // 核心渲染器 (将对象映射为 DOM 字符串)
     function updateHTMl(data, mode, isFirstPage = false) {
         if (!data?.length) return;
         const bbDom = document.querySelector(CONFIG.domId);
         const canEdit = STATE.isAuthorized && STATE.editorDisplay === "show";
         
-        // 核心渲染提速：使用 map 构建 HTML，摒弃 += 循环拼接
         const result = data.map((item, i) => {
             if (!canRender(item)) return '';
 
-            const imgHtml = item.imageUrls.length > 0 ? `<div class="resimg grid grid-${item.imageUrls.length}">${item.imageUrls.map(src => `<figure class="gallery-thumbnail"><img loading="lazy" decoding="async" class="img thumbnail-image img-hide" onload="this.classList.remove('img-hide')" src="${src}" /></figure>`).join('')}</div>` : '';
-            const tagHtml = item.tags.length > 0 ? Array.from(new Set(item.tags)).map(val => `<div class="memos-tag-dg" data-action="tag-filter" data-val="${val}">#${val}</div>`).join('') : `<div class="memos-tag-dg">#日常</div>`;
+            // 1. 组装图片画廊
+            const imgHtml = item.imageUrls.length > 0 
+                ? `<div class="resimg grid grid-${item.imageUrls.length}">
+                    ${item.imageUrls.map(src => `
+                        <figure class="gallery-thumbnail">
+                            <img loading="lazy" decoding="async" class="img thumbnail-image img-hide" onload="this.classList.remove('img-hide')" src="${src}" />
+                        </figure>
+                    `).join('')}
+                   </div>` 
+                : '';
+                
+            // 2. 组装标签
+            const tagHtml = item.tags.length > 0 
+                ? Array.from(new Set(item.tags)).map(val => `
+                    <div class="memos-tag-dg" data-action="tag-filter" data-val="${val}">#${val}</div>
+                  `).join('') 
+                : `<div class="memos-tag-dg">#日常</div>`;
+                
+            // 3. 组装引用和定位
             const outboundHtml = renderRelations(item.relations?.outbound, "引用");
             const inboundHtml = renderRelations(item.relations?.inbound, "被引用");
 
             let locationHtml = '';
             if (item.location && item.location.placeholder) {
                 const { latitude, longitude, placeholder } = item.location;
-                
                 const mapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
-                
-                locationHtml = `<a href="${mapUrl}" target="_blank" class="memo-location-wrapper cursor-pointer hover:opacity-80">${ICONS.location}<span class="memo-location-text">${placeholder}</span></a>`;
+                locationHtml = `
+                    <a href="${mapUrl}" target="_blank" class="memo-location-wrapper cursor-pointer hover:opacity-80">
+                        ${ICONS.location}
+                        <span class="memo-location-text">${placeholder}</span>
+                    </a>`;
             }
 
+            // 4. 组装底部交互区
             const footer = (['PUBLIC', 'PROTECTED'].includes(item.visibility)) 
                 ? `<div class="talks_comments"><a data-action="load-artalk" data-id="${item.id}">${ICONS.comment}<span id="btn_memo_${item.id}"></span></a></div>` 
                 : `<div class="memos-hide" data-action="reload-private">${ICONS.lock}</div>`;
             
-            const editMenu = canEdit ? `
-                <div class="memos-edit">
+            const editMenu = canEdit 
+                ? `<div class="memos-edit">
                     <div class="memos-menu">...</div>
                     <div class="memos-menu-d">
                         <div class="pinned-edit" data-action="pin" data-id="${item.id}" data-pinned="${item.pinned}">${item.pinned ? '取消' : '置顶'}</div>
@@ -477,13 +551,34 @@
                         <div class="archive-btn" data-action="archive" data-id="${item.id}">归档</div>
                         <div class="delete-btn" data-action="delete" data-id="${item.id}">删除</div>
                     </div>
-                </div>` : '';
+                   </div>` 
+                : '';
             
             const timeStr = typeof window.formatDate === 'function' ? window.formatDate(item.createdTs, true) : new Date(item.createdTs * 1000).toLocaleString();
             const pinIcon = item.pinned ? `<span class="pinned">置顶</span>` : '';
             
-            let htmlStr = `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
-            //插入锻炼
+            // 5. 拼装单条卡片
+            let htmlStr = `
+                <li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}">
+                    <div class="memos-pl">
+                        <div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>
+                        ${editMenu}
+                    </div>
+                    <div class="datacont" view-image>
+                        ${item.contentHtml}
+                        ${imgHtml}
+                        ${outboundHtml}
+                        ${inboundHtml}
+                    </div>
+                    <div class="memos_diaoyong_top">
+                        <div class="memos-tag-wz">${tagHtml}</div>
+                        ${locationHtml}
+                        ${footer}
+                    </div>
+                    <div id="memo_${item.id}" class="artalk hidden"></div>
+                </li>`;
+
+            // 6. 特殊卡片注入 (例如：锻炼数据块)
             if (!mode && isFirstPage && i === 1 && STATE.cache.sports) {
                 htmlStr += `
                 <li>
@@ -492,29 +587,34 @@
                     </div>
                 </li>`;
             }
-            //插入文章电影
-            /*if (!mode && isFirstPage) {
-                if (STATE.cache.posts && [1, 4, 7, 9].includes(i)) {
-                    const tmp = document.createElement('div'); tmp.innerHTML = STATE.cache.posts;
-                    const html = tmp.querySelectorAll('.one-post-item')[[1, 4, 7, 9].indexOf(i)]?.innerHTML;
-                    if (html) htmlStr += `<div class="inserted-post-section animated-fade-in">${html}</div>`;
-                }
-                if (i === 1 && STATE.cache.movies) htmlStr += `<div class="inserted-movies-section animated-fade-in"><div class="movies-grid-container">${STATE.cache.movies}</div></div>`;
-            }*/
+            
             return htmlStr;
         }).join('');
 
+        // 7. 插入真实的 DOM 树中
         if (mode === "ONEDAY") {
-            const old = bbDom.querySelector('.memos-oneday-layout'); if (old) old.remove();
-            bbDom.insertAdjacentHTML('afterbegin', `<div id='memos-oneday-wrapper' class='memos-oneday-layout'><li class='memos-oneday img-hide'><ul class='oneday-ul-fix'>${result}</ul></li></div>`);
+            const old = bbDom.querySelector('.memos-oneday-layout'); 
+            if (old) old.remove();
+            
+            bbDom.insertAdjacentHTML('afterbegin', `
+                <div id='memos-oneday-wrapper' class='memos-oneday-layout'>
+                    <li class='memos-oneday img-hide'>
+                        <ul class='oneday-ul-fix'>${result}</ul>
+                    </li>
+                </div>`);
         } else {
             let listUl = bbDom.querySelector('.bb-list-ul');
-            if (!listUl) bbDom.insertAdjacentHTML('beforeend', `<section class='bb-timeline'><ul class='bb-list-ul'>${result}</ul></section>`);
-            else listUl.insertAdjacentHTML('beforeend', result);
+            if (!listUl) {
+                bbDom.insertAdjacentHTML('beforeend', `<section class='bb-timeline'><ul class='bb-list-ul'>${result}</ul></section>`);
+            } else {
+                listUl.insertAdjacentHTML('beforeend', result);
+            }
+            
             const loadBtn = document.querySelector('button.button-load');
             if (loadBtn) loadBtn.textContent = '看更多 ...';
         }
 
+        // 8. 触发挂载后的脚本解析
         if (typeof window.formatDate === 'function') {
             bbDom.querySelectorAll('.twitter-time').forEach(el => {
                 const t = el.dataset.time; 
@@ -529,7 +629,7 @@
         const footerDiv = document.querySelector('.footer-background');
         if (footerDiv) footerDiv.style.display = 'block';
         
-        // 缩小图片检测范围，提升性能
+        // 延迟移除图片的骨架/隐藏态
         setTimeout(() => { 
             bbDom.querySelectorAll('.img-hide').forEach(img => { 
                 if(img.complete) img.classList.remove('img-hide'); 
@@ -537,15 +637,17 @@
         }, 150);
     }
 
-    // ============================================================
-    // 8. 编辑器逻辑
-    // ============================================================
+    /* ========================================================================
+       板块 8：前端编辑器交互逻辑 (Editor Engine)
+    ======================================================================== */
     function initEditorLogic() {
         const container = document.querySelector(CONFIG.editorContainer);
         if (!container || document.querySelector(".memos-editor")) return;
         
+        // 渲染编辑器骨架
         container.insertAdjacentHTML('afterbegin', getEditorHtml());
 
+        // 挂载 DOM 引用
         STATE.domRefs = {
             editor: container.querySelector(".memos-editor"),
             textarea: container.querySelector(".memos-editor-textarea"),
@@ -564,6 +666,7 @@
 
         bindEditorEvents();
 
+        // 权限视图切换
         const panelToShow = STATE.isAuthorized ? STATE.domRefs.innerPanel : STATE.domRefs.optionPanel;
         const panelToHide = STATE.isAuthorized ? STATE.domRefs.optionPanel : STATE.domRefs.innerPanel;
         panelToShow.classList.remove("d-none");
@@ -572,6 +675,7 @@
         if (STATE.editorDisplay === "show") STATE.domRefs.editor.classList.remove("d-none");
     }
 
+    // 文本框高度自适应
     function autoHeight(elem) {
         elem.style.height = 'auto';
         elem.style.height = elem.scrollHeight + 'px';
@@ -581,6 +685,7 @@
         const refs = STATE.domRefs;
         let tagIdx = 0;
 
+        // 图片转换 Base64 算法 (含压缩逻辑)
         const fileToBase64 = (file) => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -591,8 +696,13 @@
                     const canvas = document.createElement('canvas');
                     let width = img.width; let height = img.height;
                     const MAX = 1500; 
-                    if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } } 
-                    else { if (height > MAX) { width *= MAX / height; height = MAX; } }
+                    
+                    if (width > height) { 
+                        if (width > MAX) { height *= MAX / width; width = MAX; } 
+                    } else { 
+                        if (height > MAX) { width *= MAX / height; height = MAX; } 
+                    }
+                    
                     canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
@@ -612,15 +722,18 @@
         const getAttachmentsFromDOM = () => Array.from(refs.imageList.children).map(el => ({ name: el.dataset.name })).filter(item => item.name);
         const syncAttachments = async (memoName) => { await memoFetch(`api/v1/${memoName}/attachments`, 'PATCH', { attachments: getAttachmentsFromDOM() }); };
 
+        // 移除上传图片列表中的单项
         refs.imageList.addEventListener('click', (e) => {
             const deleteBtn = e.target.closest('.image-delete');
             if (deleteBtn) deleteBtn.closest('.imagelist-item').remove();
         });
 
+        // 拖拽排序功能
         const initDragSort = () => {
             const container = refs.imageList;
             let draggedItem = null;
 
+            // 桌面端拖拽
             container.addEventListener('dragstart', e => { draggedItem = e.target.closest('.imagelist-item'); draggedItem?.classList.add('dragging'); });
             container.addEventListener('dragend', () => { draggedItem?.classList.remove('dragging'); draggedItem = null; });
             container.addEventListener('dragover', e => {
@@ -633,12 +746,22 @@
                 }
             });
 
+            // 移动端触摸拖拽
             container.addEventListener('touchstart', e => {
                 const el = e.target.closest('.imagelist-item');
-                if (el) { draggedItem = el; el.classList.add('dragging'); document.body.style.overflow = 'hidden'; }
+                if (el) { 
+                    draggedItem = el; 
+                    el.classList.add('dragging'); 
+                    document.body.style.overflow = 'hidden'; 
+                }
             }, { passive: false });
             
-            container.addEventListener('touchend', () => { draggedItem?.classList.remove('dragging'); draggedItem = null; document.body.style.overflow = ''; });
+            container.addEventListener('touchend', () => { 
+                draggedItem?.classList.remove('dragging'); 
+                draggedItem = null; 
+                document.body.style.overflow = ''; 
+            });
+            
             container.addEventListener('touchmove', e => {
                 if (!draggedItem) return;
                 e.preventDefault();
@@ -652,15 +775,20 @@
         };
         initDragSort();
 
+        // 编辑器输入联想与状态检测
         refs.textarea.addEventListener('input', () => {
             autoHeight(refs.textarea);
             refs.submitBtn.style.opacity = refs.textarea.value.trim() ? 1 : 0.4;
             const w = refs.textarea.value.slice(0, refs.textarea.selectionStart).split(/\s+/).pop();
-            const matches = (w?.startsWith('#') && STATE.tags.size) ? Array.from(STATE.tags).filter(t => t.toLowerCase().includes(w.slice(1).toLowerCase())) : [];
+            const matches = (w?.startsWith('#') && STATE.tags.size) 
+                ? Array.from(STATE.tags).filter(t => t.toLowerCase().includes(w.slice(1).toLowerCase())) 
+                : [];
+                
             refs.tagMenu.innerHTML = matches.map((t, i) => `<div class="tag-option${i === 0 ? ' selected' : ''}">#${t}</div>`).join('');
             refs.tagMenu.style.display = matches.length ? 'block' : 'none';
         });
 
+        // 标签菜单点击插入
         refs.tagMenu.onclick = (e) => {
             if (e.target.classList.contains('tag-option')) {
                 insertText(e.target.innerText.replace('#', '') + ' ', '', 0, true);
@@ -668,9 +796,11 @@
             }
         };
         
+        // 键盘上下键控制标签选择
         refs.textarea.addEventListener('keydown', (e) => {
             if (refs.tagMenu.style.display !== 'block') return;
             const options = refs.tagMenu.querySelectorAll('.tag-option');
+            
             if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
                 e.preventDefault();
                 options[tagIdx].classList.remove('selected');
@@ -683,43 +813,73 @@
             }
         });
 
+        // 地理位置渲染器
         const renderLocation = () => {
             const loc = STATE.editorLocation;
             const el = refs.locationDis;
-            el.innerHTML = loc ? `<div class="location-chip animate__animated animate__fadeIn">${ICONS.location}<span class="location-text" title="点击修改">${loc.placeholder}</span><svg class="location-delete" title="移除" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>` : '';
+            el.innerHTML = loc 
+                ? `<div class="location-chip animate__animated animate__fadeIn">
+                    ${ICONS.location}
+                    <span class="location-text" title="点击修改">${loc.placeholder}</span>
+                    <svg class="location-delete" title="移除" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                   </div>` 
+                : '';
             el.classList.toggle('show', !!loc);
         };
         refs.renderLocation = renderLocation;
 
+        // 地理位置修改/移除监听
         refs.locationDis.addEventListener('click', (e) => {
-            if (e.target.closest('.location-delete')) { STATE.editorLocation = null; renderLocation(); return; }
+            if (e.target.closest('.location-delete')) { 
+                STATE.editorLocation = null; 
+                renderLocation(); 
+                return; 
+            }
             const textSpan = e.target.closest('.location-text');
             if (textSpan) {
                 const n = prompt('修改位置:', STATE.editorLocation.placeholder);
-                if (n?.trim()) { STATE.editorLocation.placeholder = n.trim(); renderLocation(); }
+                if (n?.trim()) { 
+                    STATE.editorLocation.placeholder = n.trim(); 
+                    renderLocation(); 
+                }
             }
         });
 
+        // 监听文件上传
         refs.uploadInput.addEventListener('change', async (e) => {
             if (!e.target.files?.length) return;
+            
             for (const file of e.target.files) {
                 try {
                     const localUrl = URL.createObjectURL(file);
                     const content = await fileToBase64(file);
                     const newFilename = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+                    
                     const res = await fetch(`${CONFIG.memos.replace(/\/$/, '')}/api/v1/attachments`, {
                         method: 'POST',
-                        headers: { 'Authorization': `Bearer ${STATE.memosOpenId}`, 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Authorization': `Bearer ${STATE.memosOpenId}`, 
+                            'Content-Type': 'application/json' 
+                        },
                         body: JSON.stringify({ content, filename: newFilename })
                     });
+                    
                     if (!res.ok) throw new Error('Upload Failed');
+                    
                     const data = await res.json();
                     refs.imageList.insertAdjacentHTML('beforeend', getImageDom(data.name, localUrl));
-                } catch (e) { console.error(e); cocoMessage.error("上传失败"); }
+                } catch (e) { 
+                    console.error(e); 
+                    cocoMessage.error("上传失败"); 
+                }
             }
             refs.uploadInput.value = '';
         });
 
+        // 保存请求 (发布/更新)
         const handleSave = async (isEdit = false) => {
             if (!refs.textarea.value.trim()) return cocoMessage.info('内容不能为空');
             
@@ -736,8 +896,14 @@
                     masks.push("create_time");
                     body.createTime = new Date().toISOString();
                 }
-                if (STATE.editorLocation) { masks.push("location"); body.location = STATE.editorLocation; } 
-                else if (editData.location) { masks.push("location"); body.location = null; }
+                
+                if (STATE.editorLocation) { 
+                    masks.push("location"); 
+                    body.location = STATE.editorLocation; 
+                } else if (editData.location) { 
+                    masks.push("location"); 
+                    body.location = null; 
+                }
 
                 url = `api/v1/memos/${editData.id}?updateMask=${masks.join(',')}`;
                 method = 'PATCH';
@@ -751,12 +917,16 @@
                     resetEditor();
                     reloadList();
                 }
-            } catch (e) { console.error(e); cocoMessage.error('操作失败'); }
+            } catch (e) { 
+                console.error(e); 
+                cocoMessage.error('操作失败'); 
+            }
         };
 
         refs.submitBtn.addEventListener("click", () => handleSave(false));
         document.querySelector(".edit-memos-btn").addEventListener("click", () => handleSave(true));
         
+        // 底部工具栏动作分发
         document.querySelector(".memos-editor-footer").addEventListener('click', (e) => {
             const t = e.target.closest('.action-btn, .private-btn, .oneday-btn, .switchUser-btn, .code-single, .location-btn, .upload-image-btn');
             if (!t) return;
@@ -771,39 +941,68 @@
                         const name = await GeoHelper.getAddress(latitude, longitude);
                         STATE.editorLocation = { placeholder: name, latitude, longitude };
                         renderLocation();
-                    } catch (e) { cocoMessage.error(typeof e === 'string' ? e : "定位失败"); } 
-                    finally { btn.innerHTML = ICONS.location; }
+                    } catch (e) { 
+                        cocoMessage.error(typeof e === 'string' ? e : "定位失败"); 
+                    } finally { 
+                        btn.innerHTML = ICONS.location; 
+                    }
                 },
-                'switchUser-btn': () => { ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday'].forEach(k => LS.rm(k)); location.reload(); },
-                'private-btn': () => { const isP = t.classList.toggle("private"); refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC"; STATE.viewMode = isP ? 'PRIVATE' : 'ALL'; reloadList(); },
-                'oneday-btn': () => { const k = "memos-oneday"; LS.set(k, LS.get(k) ? "" : "open"); reloadList(); },
+                'switchUser-btn': () => { 
+                    ['memos-access-path', 'memos-access-token', 'memos-editor-display', 'memos-oneday'].forEach(k => LS.rm(k)); 
+                    location.reload(); 
+                },
+                'private-btn': () => { 
+                    const isP = t.classList.toggle("private"); 
+                    refs.visSelect.value = isP ? "PRIVATE" : "PUBLIC"; 
+                    STATE.viewMode = isP ? 'PRIVATE' : 'ALL'; 
+                    reloadList(); 
+                },
+                'oneday-btn': () => { 
+                    const k = "memos-oneday"; 
+                    LS.set(k, LS.get(k) ? "" : "open"); 
+                    reloadList(); 
+                },
                 'code-single': () => insertText("``", "`", 1),
                 'link-btn': () => insertText("[]()", "[", 1),
                 'biao-qing': () => showEmoji(t)
             };
             
-            for (const k in _ACT) if (t.classList.contains(k)) _ACT[k](t);
+            for (const k in _ACT) {
+                if (t.classList.contains(k)) _ACT[k](t);
+            }
         });
 
         document.querySelector(".cancel-edit-btn").addEventListener("click", resetEditor);
 
+        // 鉴权配置录入
         document.querySelector(".submit-openapi-btn").addEventListener("click", async () => {
             let p = refs.pathInp.value.trim().replace(/\/$/, "");
             const t = refs.tokenInp.value.trim();
+            
             if (!p || !t) return cocoMessage.info('请填写完整信息');
             if (!/^http/i.test(p)) p = `https://${p}`;
+            
             try {
-                const res = await fetch(`${p}/api/v1/auth/me`, { method: 'GET', headers: { 'Authorization': `Bearer ${t}` } });
+                const res = await fetch(`${p}/api/v1/auth/me`, { 
+                    method: 'GET', 
+                    headers: { 'Authorization': `Bearer ${t}` } 
+                });
+                
                 if (res.ok) {
                     LS.set("memos-access-path", p);
                     LS.set("memos-access-token", t);
                     cocoMessage.success('验证成功');
                     setTimeout(() => location.reload(), 500);
-                } else cocoMessage.error('验证失败：Token 无效');
-            } catch { cocoMessage.error('请求出错，请检查网络'); }
+                } else {
+                    cocoMessage.error('验证失败：Token 无效');
+                }
+            } catch { 
+                cocoMessage.error('请求出错，请检查网络'); 
+            }
         });
     }
 
+    // 重置编辑器状态
     function resetEditor() {
         const refs = STATE.domRefs;
         refs.textarea.value = '';
@@ -811,15 +1010,21 @@
         refs.submitBtn.style.opacity = 0.4;
         refs.imageList.innerHTML = '';
         STATE.editorLocation = null;
+        
         if (refs.renderLocation) refs.renderLocation();
+        
         refs.editDom.classList.add("d-none");
         refs.submitBtn.classList.remove("d-none");
         ['memos-resource-list', 'memos-editor-dataform'].forEach(k => LS.rm(k));
     }
 
+    // 光标文本插入器
     function insertText(text, wrap, offset, isTag = false) {
-        const el = STATE.domRefs.textarea; el.focus();
+        const el = STATE.domRefs.textarea; 
+        el.focus();
         const start = el.selectionStart;
+        
+        // 自动完成 Tag
         if (isTag) {
             const before = el.value.slice(0, start);
             const hashIdx = before.lastIndexOf('#');
@@ -829,39 +1034,60 @@
                 return;
             }
         }
+        
+        // 常规包裹或插入
         const end = el.selectionEnd;
         const sel = el.value.substring(start, end);
         const result = sel ? `${wrap}${sel}${wrap === '[' || wrap === '!' ? ']()' : wrap}` : text;
+        
         el.setRangeText(result, start, end, 'end');
         el.setSelectionRange(start + result.length - offset, start + result.length - offset);
         el.dispatchEvent(new Event('input'));
     }
 
+    // 表情面板
     async function showEmoji(btn) {
-        if (activeEmojiPicker) { activeEmojiPicker.remove(); activeEmojiPicker = null; return; }
+        if (activeEmojiPicker) { 
+            activeEmojiPicker.remove(); 
+            activeEmojiPicker = null; 
+            return; 
+        }
+        
         if (!window.emojisData) {
             try {
                 const data = await fetch('/suju/owo.json').then(r => r.json());
                 window.emojisData = data.Emoji.container;
-            } catch { window.emojisData = []; }
+            } catch { 
+                window.emojisData = []; 
+            }
         }
+        
         const div = document.createElement('div');
         div.className = 'emoji-selector';
         div.innerHTML = window.emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
-        div.onclick = (e) => { if (e.target.classList.contains('emoji-item')) insertText(e.target.innerText, '', 0); };
+        
+        div.onclick = (e) => { 
+            if (e.target.classList.contains('emoji-item')) insertText(e.target.innerText, '', 0); 
+        };
+        
         document.querySelector(".memos-editor-footer")?.after(div);
         activeEmojiPicker = div;
     }
 
+    // 编辑器 DOM 生成
     function getEditorHtml() {
         return `
         <div class="memos-editor animate__animated animate__fadeIn d-none col-12">
             <div class="memos-editor-body">
+                
                 <div class="memos-editor-inner animate__animated animate__fadeIn d-none">
-                    <div class="memos-editor-content"><textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea></div>
+                    <div class="memos-editor-content">
+                        <textarea class="memos-editor-textarea text-sm" rows="1" placeholder="唠叨点什么..."></textarea>
+                    </div>
                     <div id="memos-tag-menu" style="display:none;"></div>
                     <div class="memos-image-list d-flex flex-fill line-xl"></div>
                     <div class="memos-location-display"></div>
+                    
                     <div class="memos-editor-footer border-t">
                         <div class="d-flex">
                             <div class="button outline action-btn link-btn" title="链接">${ICONS.toolLink}</div>
@@ -869,21 +1095,38 @@
                             <div class="button outline action-btn location-btn" title="定位">${ICONS.location}</div>
                             <div class="button outline action-btn biao-qing" title="表情">${ICONS.toolEmoji}</div>
                             <div class="memos-more-ico">${ICONS.toolMore}
-                                <div class="memos-xiala"><div class="code-single">高亮</div><div class="private-btn">私有</div><div class="oneday-btn">穿越</div><div class="switchUser-btn">退出</div></div>
+                                <div class="memos-xiala">
+                                    <div class="code-single">高亮</div>
+                                    <div class="private-btn">私有</div>
+                                    <div class="oneday-btn">穿越</div>
+                                    <div class="switchUser-btn">退出</div>
+                                </div>
                             </div>
                         </div>
                         <div class="editor-submit d-flex flex-fill justify-content-end">
-                            <div class="editor-selector select outline"><select class="select-memos-value"><option value="PUBLIC">公开</option><option value="PRIVATE">私有</option></select></div>
-                            <div class="edit-memos d-none"><div class="primary cancel-edit-btn">取消</div><div class="primary edit-memos-btn">修改完成</div></div>
+                            <div class="editor-selector select outline">
+                                <select class="select-memos-value">
+                                    <option value="PUBLIC">公开</option>
+                                    <option value="PRIVATE">私有</option>
+                                </select>
+                            </div>
+                            <div class="edit-memos d-none">
+                                <div class="primary cancel-edit-btn">取消</div>
+                                <div class="primary edit-memos-btn">修改完成</div>
+                            </div>
                             <div class="primary submit-memos-btn">唠叨一下</div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="memos-editor-option animate__animated animate__fadeIn d-none">
                     <input name="memos-path-url" class="memos-path-input input-text col-6" type="text" placeholder="Memos 地址">
                     <input name="memos-token-url" class="memos-token-input input-text col-6" type="text" placeholder="访问令牌">
-                    <div class="memos-open-api-submit"><div class="primary submit-openapi-btn">验证</div></div>
+                    <div class="memos-open-api-submit">
+                        <div class="primary submit-openapi-btn">验证</div>
+                    </div>
                 </div>
+                
             </div>
             <input type="file" class="memos-upload-input" accept="image/*" multiple style="display:none;">
         </div>`;

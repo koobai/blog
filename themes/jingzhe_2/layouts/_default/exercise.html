@@ -5,18 +5,21 @@
 <link rel="dns-prefetch" href="//events.mapbox.com">
 
 {{- /* ============================================================
-     板块 1：数据引擎接入 (共享缓存)
+     板块 1：底层数据引擎接入
+     功能：调用缓存的数据处理组件，获取全量清洗后的运动数据
 ============================================================ */ -}}
 {{ $dataEngine := partialCached "exercise-list-data.html" . "exerciseData" }}
 {{ $activities := $dataEngine.activities }}
 {{ $themeMap := $dataEngine.themeMap }}
 {{ $defaultTheme := $dataEngine.defaultTheme }}
 
-{{- /* ============================================================
-     板块 2：业务引擎运算层 (统计勋章与地图依赖)
-============================================================ */ -}}
-{{ $sortedActivities := sort $activities "start_date_local" "desc" }}
 
+{{- /* ============================================================
+     板块 2：业务逻辑运算层 (Hugo 编译期执行)
+     功能：按时间倒序排列、提取年份流、提炼 JS 轻量数据、计算极值勋章
+============================================================ */ -}}
+
+{{ $sortedActivities := sort $activities "start_date_local" "desc" }}
 {{ $rideTypes := slice "Ride" "VirtualRide" "EBikeRide" }}
 {{ $rwTypes := slice "Run" "TrailRun" "Treadmill" "VirtualRun" "Trail Run" "Walk" "Hike" }}
 
@@ -40,7 +43,6 @@
     {{ $s.Add "latestMonths" (slice $m) }}
   {{ end }}
   
-  {{- /* 抽取核心字段提供给前端 Mapbox 处理 */ -}}
   {{ $runData := dict 
       "run_id" .run_id 
       "name" .smart_name 
@@ -55,7 +57,6 @@
   }}
   {{ $lightweightRuns = $lightweightRuns | append $runData }}
   
-  {{- /* 勋章逻辑运算：抓取年度、月度极值记录 */ -}}
   {{ if in $rideTypes .type }}
     {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideY_%s" $y))) }}
       {{ $s.Set (printf "maxRideY_%s" $y) .distance }}
@@ -65,6 +66,7 @@
       {{ $s.Set (printf "maxRideM_%s" $ym) .distance }}
       {{ $s.Set (printf "maxRideM_id_%s" $ym) .run_id }}
     {{ end }}
+    
   {{ else if in $rwTypes .type }}
     {{ if gt .distance (default 0.0 ($s.Get (printf "maxRwY_%s" $y))) }}
       {{ $s.Set (printf "maxRwY_%s" $y) .distance }}
@@ -79,8 +81,9 @@
 
 {{ $years = sort ($years | uniq) "value" "desc" }}
 
+
 {{- /* ============================================================
-     板块 3：全景视图渲染
+     板块 3：全景视图渲染层 (HTML 骨架)
 ============================================================ */ -}}
 <div class="exercise-container">
   
@@ -145,17 +148,25 @@
             {{ $ringClass = "silverRing" }}
           {{ end }}
 
-          <div class="runCard item-year-{{$y}} item-month-{{$m}}" 
+          <div class="runCard item-year-{{ $y }} item-month-{{ $m }}" 
                data-run-id="{{ printf "%.0f" .run_id }}" 
                onclick="window.KoobaiRun.map.flyTo('{{ printf "%.0f" .run_id }}')" 
-               style="cursor: pointer; {{ if ne $y (index $years 0) }}display:none;{{ end }}">
+               style="cursor: pointer; {{ if ne $y (index $years 0) }}display: none;{{ end }}">
             
-            <div class="iconRing {{ $ringClass }}" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>
+            <div class="iconRing {{ $ringClass }}" style="color: {{ $theme.color }}">
+              {{ $theme.icon }}
+            </div>
             
-            {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme "isRideY" $isRideY "isRideM" $isRideM "isRwY" $isRwY "isRwM" $isRwM) }}
+            {{ partial "exercise-list-card.html" (dict 
+                "run" . 
+                "theme" $theme 
+                "isRideY" $isRideY 
+                "isRideM" $isRideM 
+                "isRwY" $isRwY 
+                "isRwM" $isRwM 
+            ) }}
             
           </div>
-
         {{ end }}
       </div>
 
@@ -163,9 +174,11 @@
   </div>
 </div>
 
+
 {{- /* ============================================================
-     板块 4：核心底层脚本部署
+     板块 4：客户端脚本配置与依赖注入
 ============================================================ */ -}}
+
 <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
 <link rel="preconnect" href="https://events.mapbox.com" crossorigin>
 <link rel="stylesheet" href="https://img.koobai.com/mapbox-gl.css">
@@ -174,14 +187,16 @@
 <script>
   window.KoobaiRun = {
     data: {{ $lightweightRuns | jsonify | safeJS }},
-    config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
+    config: { 
+      MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" 
+    },
     ui: null, 
     map: null
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260308c"></script>
-<script defer src="/js/exercise-map.js?v=20260308c"></script>
+<script defer src="/js/exercise-ui.js?v=20260309a"></script>
+<script defer src="/js/exercise-map.js?v=20260309a"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -193,6 +208,7 @@
       window.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
+            // 当滚动到距离顶部不足 80px 时，触发吸顶状态
             const isSticky = bentoHero.getBoundingClientRect().bottom < 80; 
             mapWrapper.classList.toggle('sticky-map', isSticky);
             ticking = false;
