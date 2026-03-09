@@ -1,11 +1,30 @@
 {{ define "body_classes" }}page-home{{ end }}
 {{ define "title" }}{{ site.Title }}{{ end }}
+
 {{ define "main" }}
+
+<!--锻炼--> 
+{{ $dataEngine := partialCached "exercise-list-data.html" . "exerciseData" }}
+{{ $activities := $dataEngine.activities }}
+{{ $themeMap := $dataEngine.themeMap }}
+{{ $defaultTheme := $dataEngine.defaultTheme }}
+<template id="memos-exercise">
+  <div class="cardList memos-exercise-list">
+    {{ range first 2 $activities }}
+      {{ $theme := default $defaultTheme (index $themeMap .type) }}    
+      <div class="runCard memos-exercise-card img-hide">      
+        <div class="iconRing" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>     
+        {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme) }}      
+      </div>
+    {{ end }}   
+  </div>
+</template>
+
 <!--memos--> 
 <div id="memos"></div>
 <div id="bber"></div>
 <!--memos 内容-->
-<script src="/js/memos.js?v=20260304b" defer></script>
+<script src="/js/memos.js?v=20260309a" defer></script>
 <script src="/js/coco-message.min.js" defer></script>
 <!--评论加载-->
 {{ partial "artalk.html" . }}

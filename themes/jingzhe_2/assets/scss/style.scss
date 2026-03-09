@@ -3,21 +3,17 @@
   --font-family-paragraph: var(--font-stack-system);
   --font-family-title: var(--font-stack-system);
   --font-family-code: var(--font-stack-system);
-  --bankuai-color: #f6f6f6;
-  --background-color: #F2F0EB;
-  --background-dark-color: #7C7671;
-  --background-dark-body-color: #6E6B66;
+  --background-body-color: #F2F0EB;
+  --background-dark-body-color: #151516;
+  --background-card-color:#FFFDFA;
+  --background-card-dark-color: #1C1C1E;
   --text-content-color:#222;
-  --text-content-dark-color:#D1CCC6;
+  --text-content-dark-color:#98989D;
   --text-highlight-color:#994D61;
   --text-highlight-dark-color:#C3AACC;
-  --frame-dark-color: #332D2F;
-  --frame-color: #eee;
-  --erji-color: #B8ABA2;
-  --sanji-color: #adaba6;
-  --touy-color: rgba(0, 0, 0, 0.05) 0px 6px 15px 0px;
-  --element-background-color:#FFFDFA;
-
+  --text-info-color: #adaba6;   
+  --text-info-dark-color: #5C5C62;
+  
   --exercise-background-color:#F2F0EB;
   --exercise-card-color:#FFFDFA;
   --exercise-card-border-color:#FFFDFA;
@@ -84,7 +80,7 @@ html, body {
 }
 
 body {
-  background: var(--background-color);
+  background: var(--background-body-color);
   font-family: var(--font-family-paragraph);
   color: var(--text-content-color);
   margin: 0;
@@ -116,7 +112,7 @@ body {
   background: #f7dcd0;
   
   @include dark {
-    background: #6A635B;
+    background: #000;
   }
 }
 

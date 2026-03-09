@@ -9,7 +9,7 @@
 
   @include dark {
     background: var(--background-dark-body-color);
-    border-top: solid var(--background-dark-color) 0.5px;
+    border-top: solid var(--background-card-dark-color) 0.5px;
     box-sizing: border-box;
   }
 }
@@ -20,15 +20,15 @@
   max-width: 100%;
   padding: 10px 20px 0 20px;
   @include dark {
-    border-top: 1px solid #706d67;
+    border-top: 1px solid #1d1d1e;
   }
 }
 
 .footer-info, .footer-info a {
   font-size: 0.75rem;
   line-height: 1.6em;
-  color: #a7a7a7;
+  color: var(--text-info-color);
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }

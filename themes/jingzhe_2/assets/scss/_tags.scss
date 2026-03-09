@@ -8,29 +8,24 @@
 .list-tags {
   border-radius: 20px;
   padding: 10px;
-  border: 1px solid var(--frame-color);
   font-size: 0.85rem;
 
   a {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
     
     // 暗黑模式
     @include dark {
-      color: var(--sanji-color);
+      color: var(--text-info-color);
     }
-  }
-  // 暗黑模式
-  @include dark {
-    border: 0.5px solid var(--frame-dark-color);
   }
 }
 
 .archives_tags_f {
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -52,18 +47,18 @@
 
 .page-time, .single-tag-c {
   font-size: 0.9rem;
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   display: inline-block;
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
 
 .single-tag-c a {
-  color: var(--sanji-color);
+  color: var(--text-info-color);
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }

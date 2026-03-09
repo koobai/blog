@@ -87,11 +87,13 @@
         nextDom: [],
         memosOpenId: lsToken,
         editorDisplay: LS.get("memos-editor-display"),
-        /*cache: {
+        cache: {
             //插入文章电影
+            sports: null
+            /*
             posts: document.getElementById('temp-posts-data')?.innerHTML,
-            movies: document.getElementById('temp-movies-data')?.innerHTML
-         },*/
+            movies: document.getElementById('temp-movies-data')?.innerHTML*/
+         },
         domRefs: {},
         isAuthorized: !!lsToken,
         viewMode: 'ALL',
@@ -371,6 +373,12 @@
         if(!document.getElementById('tag-list')) bbDom.insertAdjacentHTML('beforebegin', '<div id="tag-list"></div>');
         
         STATE.nextPageToken = "";
+    
+        const sportsTemplate = document.getElementById('memos-exercise');
+        if (sportsTemplate && !STATE.cache.sports) {
+            STATE.cache.sports = sportsTemplate.innerHTML;
+        }
+
         const targetId = new URLSearchParams(window.location.search).get('memo'); 
 
         if (targetId) {
@@ -475,6 +483,15 @@
             const pinIcon = item.pinned ? `<span class="pinned">置顶</span>` : '';
             
             let htmlStr = `<li class="${STATE.isRandomRender ? "memos-oneday-li" : "bb-list-li img-hide"}" id="${item.id}"><div class="memos-pl"><div class="memos_diaoyong_time">${timeStr} ${pinIcon}</div>${editMenu}</div><div class="datacont" view-image>${item.contentHtml}${imgHtml}${outboundHtml}${inboundHtml}</div><div class="memos_diaoyong_top"><div class="memos-tag-wz">${tagHtml}</div>${locationHtml}${footer}</div><div id="memo_${item.id}" class="artalk hidden"></div></li>`;
+            //插入锻炼
+            if (!mode && isFirstPage && i === 1 && STATE.cache.sports) {
+                htmlStr += `
+                <li>
+                    <div class="datacont">
+                        ${STATE.cache.sports}
+                    </div>
+                </li>`;
+            }
             //插入文章电影
             /*if (!mode && isFirstPage) {
                 if (STATE.cache.posts && [1, 4, 7, 9].includes(i)) {

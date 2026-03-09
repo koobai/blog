@@ -45,24 +45,16 @@
     -webkit-transform: translateX(-50%) translateZ(0);
     transform: translateX(-50%) translateZ(0);
   }
-
-  @include dark {
-    background: rgba(124, 118, 113, 0.65); 
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: none;
-
-    @include breakpoint('medium') {
-      box-shadow: 
-        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
-        0 12px 30px rgba(45, 43, 40, 0.3); 
-      will-change: transform, backdrop-filter;
-      -webkit-transform: translateX(-50%) translateZ(0);
-      transform: translateX(-50%) translateZ(0);
+    @include dark {
+      background: rgba(28, 28, 30, 0.6); 
+      backdrop-filter: blur(30px) saturate(200%); 
+      -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.08) ; 
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08) ;
+        @include breakpoint('medium') {
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4) ;
+      }
     }
-  }
 }
 
 .new-heard-menu {
@@ -97,7 +89,7 @@
     gap: 4px; /* 图标与文字的间距 */
 
     @include dark {
-      color: #c7bab0;
+      color: #7C7C82;
     }
   }
 }
@@ -126,13 +118,13 @@
   svg {
     display: none;
     @include breakpoint('medium') {
-      fill: var(--erji-color);
+      fill: var(--text-info-color);
       width: 20px;
       height: 20px;
       display: block;
     }
     @include dark {
-      fill: var(--erji-color);
+      fill: var(--text-info-dark-color);
     }
   }
 }
@@ -167,11 +159,11 @@
   padding: 8px;
   border-radius: 12px;
   white-space: nowrap;
-  background: rgba(85, 82, 78, 0.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 0.5px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6;
+  
   
   opacity: 0;
   visibility: hidden;
@@ -186,7 +178,12 @@
     width: 100%; 
     height: 30px;
   }
+    @include dark {
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }
+
 
 .header-Rss:hover .rss-box {
   opacity: 1;
@@ -197,13 +194,19 @@
 
 .footer-rss, .footer-rss a {
   font-size: 0.85rem;
-  color: var(--element-background-color);
+  color: var(--text-content-color);
   text-decoration: none;
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
 }
 
 // 主题切换
 .theme-toggle svg{
-  color: var(--erji-color);
+  color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 .theme-item {
   display: block; 
@@ -214,8 +217,10 @@
   }
   // 当前激活状态高亮
   &.active {
+    color: var(--text-highlight-color);
+    @include dark {
     color: var(--text-highlight-dark-color);
-    font-weight: bold; 
+  }
   }
 }
 
@@ -228,6 +233,6 @@
   }
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
