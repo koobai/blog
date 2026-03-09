@@ -515,7 +515,10 @@
       cursor: pointer;
       
       &:hover {
-        background: rgba(255, 255, 255, 0.04) !important;
+        background: rgba(0, 0, 0, 0.04) !important;
+         @include dark {
+            background: rgba(255, 255, 255, 0.05) !important;
+          } 
       }
     }
 
