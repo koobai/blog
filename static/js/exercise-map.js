@@ -6,14 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  /* =========================================
-     1. 基础配置与动态主题解析
-  ========================================= */
-  const FLAG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20"><path fill="currentColor" d="M4.5 3.25a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H6v2.75a.75.75 0 0 1-1.5 0zM6 13h3v-3h3v3h3v-3h-3V7h3V4h-3v3H9V4H6v3h3v3H6z"/></svg>`;
+  /* ========================================================================
+     板块 1：基础配置与 Mapbox 初始化
+  ======================================================================== */
+  
+  // 起终点的小旗子 SVG 图标
+  const FLAG_SVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20">
+      <path fill="currentColor" d="M4.5 3.25a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H6v2.75a.75.75 0 0 1-1.5 0zM6 13h3v-3h3v3h3v-3h-3V7h3V4h-3v3H9V4H6v3h3v3H6z"/>
+    </svg>`;
 
   mapboxgl.accessToken = window.KoobaiRun.config.MAPBOX_TOKEN;
 
-  // 🌟 动态获取当前主题样式 URL
+  // 动态获取当前主题样式 URL
   const getMapStyleUrl = () => {
     const isDark = document.documentElement.classList.contains('dark');
     return isDark 
@@ -21,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : 'mapbox://styles/koobai/cmma9983i00f101qwezj0f77f'; // 浅色版
   };
 
+  // 初始化地图实例
   const map = new mapboxgl.Map({
     container: 'mapbox-container', 
     style: getMapStyleUrl(), 
@@ -33,11 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     attributionControl: false     
   });
 
+  // 仅保留缩放控件，隐藏指南针
   map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-left');
 
-  /* =========================================
-     2. 容器缩放与重绘控制
-  ========================================= */
+  /* ========================================================================
+     板块 2：容器缩放与主题监听控制
+  ======================================================================== */
+  
+  // 监听外层容器大小变化，触发 Mapbox 重绘，防止画布拉伸变形
   const mapWrapper = document.getElementById('map-wrapper');
   if (mapWrapper && window.ResizeObserver) {
     new ResizeObserver(() => {
@@ -45,27 +54,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }).observe(mapWrapper);
   }
 
-  /* =========================================
-     3. 核心工具函数与算法
-  ========================================= */
+  // 监听全站的 Dark Mode 切换，实时替换 Mapbox 底图风格
+  let currentMapStyle = getMapStyleUrl();
+  const themeObserver = new MutationObserver(() => {
+    const newStyle = getMapStyleUrl();
+    if (newStyle !== currentMapStyle) {
+      currentMapStyle = newStyle;
+      map.setStyle(newStyle); 
+    }
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+
+
+  /* ========================================================================
+     板块 3：核心工具函数与 GIS 算法
+  ======================================================================== */
+  
+  // 1. 获取运动类型对应的颜色 (带回退机制)
   const TYPE_COLORS = window.KoobaiRun.SPORT_COLORS || {};
   const FALLBACK_COLOR = '#00ED5E'; 
   const getColor = (type) => TYPE_COLORS[type] || FALLBACK_COLOR;
 
-  // 组装 Mapbox 的条件渲染表达式
+  // 2. 组装 Mapbox 样式规范的条件渲染表达式 (match [get type])
   const colorRules = ['match', ['get', 'type']];
   for (const [type, color] of Object.entries(TYPE_COLORS)) { 
     colorRules.push(type, color); 
   }
   colorRules.push(FALLBACK_COLOR);
 
-  // 解析 Google Encoded Polyline
+  // 3. 解析 Google Encoded Polyline 字符串，还原为真实的经纬度坐标数组
   const decodePolyline = (str, precision = 5) => {
     let index = 0, lat = 0, lng = 0, coordinates = [], shift = 0, result = 0, byte = null;
     let factor = Math.pow(10, precision);
     
     while (index < str.length) {
       byte = null; shift = 0; result = 0;
+      // 解析纬度位
       do { 
         byte = str.charCodeAt(index++) - 63; 
         result |= (byte & 0x1f) << shift; 
@@ -74,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lat += ((result & 1) ? ~(result >> 1) : (result >> 1));
       
       shift = result = 0;
+      // 解析经度位
       do { 
         byte = str.charCodeAt(index++) - 63; 
         result |= (byte & 0x1f) << shift; 
@@ -86,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return coordinates;
   };
 
-  // 坐标聚类，防止异常点导致地图缩放失控
+  // 4. 坐标网格聚类算法：过滤掉极个别异常漂移的坐标点，确保地图居中缩放时视野正常
   const filterCityBoundingBox = (allCoordinates) => {
     if (allCoordinates.length === 0) return allCoordinates;
     const grid = {};
@@ -111,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  // 计算地图平滑转向的方位角
+  // 5. 计算两点之间的方位角 (用于飞行动画时的镜头朝向)
   const calculateBearing = (start, end) => {
     const PI = Math.PI;
     const lat1 = (start[1] * PI) / 180, lon1 = (start[0] * PI) / 180;
@@ -122,18 +147,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return ((Math.atan2(y, x) * 180) / PI + 360) % 360;
   };
 
-  /* =========================================
-     4. 全局状态与渲染核心
-  ========================================= */
+  /* ========================================================================
+     板块 4：全局状态与图层渲染核心
+  ======================================================================== */
+  
+  // 动画状态锁
   let activeRunId = null;
   let animationRef = null;
   let flyToTimeout = null;
   let currentMarkers = [];
   let isFirstLoad = true;
   
+  // 初始年份读取
   const firstYearBtn = document.querySelector('#year-nav .button');
   let currentYear = firstYearBtn ? firstYearBtn.getAttribute('data-year') : new Date().getFullYear().toString();
 
+  // 清理上一轮的动画和标记
   const resetState = () => {
     if (animationRef) cancelAnimationFrame(animationRef);
     if (flyToTimeout) clearTimeout(flyToTimeout);
@@ -141,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentMarkers = [];
   };
 
+  // 注入自定义地形与轨迹图层
   const injectCustomLayers = () => {
     const isDark = document.documentElement.classList.contains('dark');
     
@@ -169,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn("3D地形加载失败，降级为2D显示", e);
     }
 
+    // 核心轨迹线：背景浅色轨迹(all-runs) 与 前景高亮轨迹(highlight-run-source)
     if (!map.getSource('all-runs')) {
       map.addSource('all-runs', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, lineMetrics: true });
       map.addSource('highlight-run-source', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, lineMetrics: true });
@@ -191,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // 根据选中的年份，提取数据并重绘底图所有轨迹
   const renderDataByYear = (targetYear) => {
     activeRunId = null; 
     currentYear = targetYear; 
@@ -201,9 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const features = []; 
     let allCoordsForBounds = [];
 
+    // 遍历筛选属于当前年份的数据
     window.KoobaiRun.data.forEach(run => {
       if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
       
+      // 缓存解码后的坐标，避免重复消耗 CPU
       if (!run._decodedCoords) {
         run._decodedCoords = decodePolyline(run.summary_polyline);
       }
@@ -219,10 +253,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // 更新数据源
     map.getSource('all-runs').setData({ type: 'FeatureCollection', features });
     map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
     map.setPaintProperty('runs-core', 'line-opacity', 0.8);
 
+    // 将地图视角居中至这一年的全部轨迹范围
     if (allCoordsForBounds.length > 0) {
       const validCoords = filterCityBoundingBox(allCoordsForBounds);
       const bounds = new mapboxgl.LngLatBounds();
@@ -244,16 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }; 
 
-  let currentMapStyle = getMapStyleUrl();
-  const themeObserver = new MutationObserver(() => {
-    const newStyle = getMapStyleUrl();
-    if (newStyle !== currentMapStyle) {
-      currentMapStyle = newStyle;
-      map.setStyle(newStyle); 
-    }
-  });
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
-
+  // 地图加载完毕后初始化
   map.on('style.load', () => {
     injectCustomLayers(); 
     
@@ -266,6 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDataByYear(currentYear); 
   });
 
+  // 监听年份切换按钮点击
   document.getElementById('year-nav')?.addEventListener('click', (e) => {
     const btn = e.target.closest('.button'); 
     if (btn) {
@@ -277,11 +305,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* =========================================
-     5. 路线飞行动画 (挂载至全局空间)
-  ========================================= */
+
+  /* ========================================================================
+     板块 5：路线飞行动画 (挂载至全局空间供 UI 调用)
+  ======================================================================== */
   window.KoobaiRun.map = {
+    
     flyTo: (rawRunId) => {
+      
+      // 1. 数据洗白与防御
       const normalizeId = (id) => {
         if (!id || id === 'undefined' || id === 'null') return null;
         return String(Number(String(id).replace(/,/g, '')));
@@ -290,31 +322,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const runId = normalizeId(rawRunId);
       const statsPanel = document.getElementById('map-stats-panel'); 
 
+      // 再次点击同一条路线，相当于“取消选中”，恢复全览状态
       if (normalizeId(activeRunId) === runId) {
         renderDataByYear(currentYear);
-        if (window.KoobaiRun.ui) {
-          window.KoobaiRun.ui.highlightRunInUI(null); 
-        }
-        if (statsPanel) {
-          statsPanel.style.display = 'none'; 
-        }
+        if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
+        if (statsPanel) statsPanel.style.display = 'none'; 
         return;
       }
 
+      // 2. 环境清理
       activeRunId = runId; 
       resetState();
       
-      if (window.KoobaiRun.ui) {
-        window.KoobaiRun.ui.highlightRunInUI(runId); 
-      }
-      
-      if (map.getLayer('runs-core')) {
-        map.setPaintProperty('runs-core', 'line-opacity', 0);
-      }
+      if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(runId); 
+      if (map.getLayer('runs-core')) map.setPaintProperty('runs-core', 'line-opacity', 0); // 隐藏其他轨迹
       if (map.getSource('highlight-run-source')) {
         map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
       }
 
+      // 3. 寻找数据与渲染覆盖层 (Bento 面板)
       const runData = window.KoobaiRun.data.find(r => normalizeId(r.run_id) === runId);
       if (!runData) return;
 
@@ -324,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const heartRate = runData.average_heartrate || '--';
         const paceNum = runData.pace_num || '--';
         const paceUnit = runData.pace_unit || '';
-        
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const color = getColor(runData.type);
         
@@ -332,21 +357,35 @@ document.addEventListener('DOMContentLoaded', () => {
           ? window.formatDate(runData.start_date_local, true, true) 
           : runData.start_date_local.substring(5, 16).replace('T', ' ');
 
+        // 解构后的 HTML，告别挤成一团的面条代码
         statsPanel.innerHTML = `
           <div class="detailName">
             ${window.KoobaiRun.getSmartName(runData.name, runData.type, runData.start_date_local)} 
             <span class="detailDate">${displayTime}</span>
           </div>
           <div class="detailStatsRow">
-            <div class="detailStatBlock"><span class="statLabel">里程</span><span class="statVal" style="color: ${color}">${distance}<small>km</small></span></div>
-            <div class="detailStatBlock"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
-            <div class="detailStatBlock"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
-            <div class="detailStatBlock"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
+            <div class="detailStatBlock">
+              <span class="statLabel">里程</span>
+              <span class="statVal" style="color: ${color}">${distance}<small>km</small></span>
+            </div>
+            <div class="detailStatBlock">
+              <span class="statLabel">用时</span>
+              <span class="statVal">${runTime}</span>
+            </div>
+            <div class="detailStatBlock">
+              <span class="statLabel">${isRide ? '均速' : '配速'}</span>
+              <span class="statVal">${paceNum}<small>${paceUnit}</small></span>
+            </div>
+            <div class="detailStatBlock">
+              <span class="statLabel">心率</span>
+              <span class="statVal">${heartRate}</span>
+            </div>
           </div>
         `;
         statsPanel.style.display = 'flex';
       }
 
+      // 4. 坐标解析与标记物插入
       const coords = runData._decodedCoords || decodePolyline(runData.summary_polyline);
       const totalPoints = coords.length;
       if (totalPoints < 2) return;
@@ -364,23 +403,15 @@ document.addEventListener('DOMContentLoaded', () => {
       endEl.innerHTML = FLAG_SVG;
 
       currentMarkers.push(
-        new mapboxgl.Marker({ 
-          element: startEl, 
-          anchor: 'bottom-left',
-          offset: [-5, 4] 
-        })
+        new mapboxgl.Marker({ element: startEl, anchor: 'bottom-left', offset: [-5, 4] })
           .setLngLat(coords[0])
           .addTo(map),
-          
-        new mapboxgl.Marker({ 
-          element: endEl, 
-          anchor: 'bottom-left',
-          offset: [-5, 4] 
-        })
+        new mapboxgl.Marker({ element: endEl, anchor: 'bottom-left', offset: [-5, 4] })
           .setLngLat(coords[coords.length - 1])
           .addTo(map)
       );
 
+      // 5. 构建距离矩阵数组 (供动画二分查找进度使用)
       const cumulativeDistances = new Float32Array(totalPoints); 
       cumulativeDistances[0] = 0;
       for (let i = 1; i < totalPoints; i++) {
@@ -390,21 +421,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const totalGeoDistance = cumulativeDistances[totalPoints - 1];
 
+      // 6. 开始飞行：先跳跃至起点上空
       let startTime = null;
       let currentBearing = calculateBearing(coords[0], coords[Math.min(5, totalPoints - 1)]);
       map.flyTo({ center: coords[0], bearing: currentBearing, pitch: 70, zoom: 16, duration: 2500, essential: true });
 
+      // 7. 动画逐帧渲染核心 (requestAnimationFrame)
       const animate = (timestamp) => {
         if (String(activeRunId) !== runId) return; 
         if (!startTime) startTime = timestamp;
         
-        // 🌟 修复：因为距离本身就是 km 了，所以无需除以 1000，否则动画计算错乱
+        // 基于公里数动态计算动画耗时，路程越长飞得越久
         const progress = Math.min((timestamp - startTime) / Math.min(3500 + Math.sqrt(runData.distance || 5) * 800, 12000), 1);
         const targetDist = progress * totalGeoDistance;
 
-        let l = 0;
-        let r = totalPoints - 1;
-        let idx = 0;
+        // 二分法极速查找当前进度应在哪个坐标点
+        let l = 0, r = totalPoints - 1, idx = 0;
         while (l <= r) { 
           const mid = (l + r) >> 1; 
           if (cumulativeDistances[mid] <= targetDist) { 
@@ -416,17 +448,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (idx >= totalPoints - 1) idx = totalPoints - 2;
 
+        // 计算跨点间的微小平滑余量
         const remainder = (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) > 0 
           ? (targetDist - cumulativeDistances[idx]) / (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) 
           : 0;
 
         if (progress < 1) {
           if (coords[idx] && coords[idx + 1]) {
+            // 插值计算当前飞机的绝对位置
             const currentPos = [ 
               coords[idx][0] + (coords[idx + 1][0] - coords[idx][0]) * remainder, 
               coords[idx][1] + (coords[idx + 1][1] - coords[idx][1]) * remainder 
             ];
             
+            // 实时截断线段，渲染高亮轨迹
             const currentLineCoords = coords.slice(0, idx + 1); 
             currentLineCoords.push(currentPos);
             
@@ -441,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
               });
             }
 
+            // 预判前方的转向角，实现丝滑镜头摇摄
             let lookAheadIdx = idx; 
             while (lookAheadIdx < totalPoints - 1 && cumulativeDistances[lookAheadIdx] < targetDist + totalGeoDistance * 0.05) {
               lookAheadIdx++;
@@ -450,7 +486,9 @@ document.addEventListener('DOMContentLoaded', () => {
             map.easeTo({ center: currentPos, bearing: currentBearing, pitch: 70, zoom: 16.5, duration: 32, easing: (t) => t });
           }
           animationRef = requestAnimationFrame(animate);
+
         } else {
+          // 动画结束：完整渲染整条高亮线
           if (map.getSource('highlight-run-source')) {
             map.getSource('highlight-run-source').setData({ 
               type: 'FeatureCollection', 
@@ -462,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
           
+          // 延迟 1 秒后，拉起视角俯瞰全线
           flyToTimeout = setTimeout(() => {
             const endCam = map.cameraForBounds([
               [Math.min(...coords.map(p => p[0])), Math.min(...coords.map(p => p[1]))], 
@@ -475,9 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       };
       
+      // 给镜头降落预留 2.6 秒时间，再启动飞行动画
       flyToTimeout = setTimeout(() => { 
         animationRef = requestAnimationFrame(animate); 
       }, 2600);
+      
     }
   };
 });
