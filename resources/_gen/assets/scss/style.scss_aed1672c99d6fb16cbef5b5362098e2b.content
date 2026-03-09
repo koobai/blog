@@ -2927,7 +2927,13 @@ blockquote p {
             color: var(--text-info-dark-color); }
         .runDetailCard .detailStatBlock .statVal {
           font-size: 0.85rem;
-          color: var(--text-content-color); }
+          color: var(--text-content-color); } }
+      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .runDetailCard .detailStatBlock .statVal {
+          color: var(--text-content-dark-color); } }
+  @media (min-width: 768px) {
+          html[data-theme='dark'] .runDetailCard .detailStatBlock .statVal {
+            color: var(--text-content-dark-color); }
         .runDetailCard .detailStatBlock small {
           font-size: 0.65rem;
           color: var(--text-info-color);
@@ -3656,14 +3662,11 @@ blockquote p {
   font-size: 0.65rem; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .ttUnitTag {
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-info-dark-color); } }
   html[data-theme='dark'] .ttUnitTag {
+    background: rgba(255, 255, 255, 0.04);
     color: var(--text-info-dark-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .ttUnitTag {
-      background: rgba(255, 255, 255, 0.08); } }
-  html[data-theme='dark'] .ttUnitTag {
-    background: rgba(255, 255, 255, 0.08); }
 
 .ttNum {
   color: var(--text-content-color);
@@ -3713,10 +3716,10 @@ blockquote p {
   color: var(--text-info-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .titleTag {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-info-dark-color); } }
   html[data-theme='dark'] .titleTag {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
     color: var(--text-info-dark-color); }
 
 /* Mapbox 控件覆写 */
