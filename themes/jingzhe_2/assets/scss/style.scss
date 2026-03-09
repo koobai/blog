@@ -7,27 +7,16 @@
   --background-dark-body-color: #151516;
   --background-card-color:#FFFDFA;
   --background-card-dark-color: #1C1C1E;
+  --background-card-border-color:#FFFDFA;
+  --background-card-border-dark-color:rgba(255, 255, 255, 0.03);
+  
   --text-content-color:#222;
   --text-content-dark-color:#98989D;
   --text-highlight-color:#994D61;
   --text-highlight-dark-color:#C3AACC;
   --text-info-color: #adaba6;   
   --text-info-dark-color: #5C5C62;
-  
-  --exercise-background-color:#F2F0EB;
-  --exercise-card-color:#FFFDFA;
-  --exercise-card-border-color:#FFFDFA;
-  --exercise-text-info-color:#adaba6;
-  --exercise-text-color:#222;
-  --exercise-text-highlight-color:#32D74B;
-}
 
-html.dark {
-  --exercise-background-color:#151516;
-  --exercise-card-color:#1C1C1E;
-  --exercise-card-border-color:rgba(255, 255, 255, 0.03);
-  --exercise-text-info-color:#8E8E93;
-  --exercise-text-color:#dfdfdf;
   --exercise-text-highlight-color:#32D74B;
 }
 

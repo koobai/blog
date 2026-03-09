@@ -79,7 +79,7 @@
   border-radius: 16px;
   background: var(--background-card-color);
   padding: 15px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
 
   @include breakpoint('medium') {
     padding: 12px;
@@ -88,7 +88,7 @@
   // 暗黑模式内聚
   @include dark {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-dark-color);
   }
 }
 
@@ -164,7 +164,7 @@
   background: var(--background-card-color);
   border-radius: 16px;
   padding: 15px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
 
   @include breakpoint('medium') {
     grid-gap: 20px;
@@ -173,7 +173,7 @@
   // 暗黑模式内聚
   @include dark {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-dark-color);
   }
   
   @media (hover: hover) {

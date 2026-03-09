@@ -31,7 +31,7 @@
   border-radius: 16px;
   position: relative; // 统一改为 relative 方便子元素定位
   z-index: 1;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
 
   // 悬浮显示简介
   &:hover .appnote {
@@ -40,7 +40,7 @@
 
   @include dark {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-dark-color);
   }
 }
 

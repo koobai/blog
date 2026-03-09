@@ -8,25 +8,14 @@
   --background-dark-body-color: #151516;
   --background-card-color:#FFFDFA;
   --background-card-dark-color: #1C1C1E;
+  --background-card-border-color:#FFFDFA;
+  --background-card-border-dark-color:rgba(255, 255, 255, 0.03);
   --text-content-color:#222;
   --text-content-dark-color:#98989D;
   --text-highlight-color:#994D61;
   --text-highlight-dark-color:#C3AACC;
   --text-info-color: #adaba6;
   --text-info-dark-color: #5C5C62;
-  --exercise-background-color:#F2F0EB;
-  --exercise-card-color:#FFFDFA;
-  --exercise-card-border-color:#FFFDFA;
-  --exercise-text-info-color:#adaba6;
-  --exercise-text-color:#222;
-  --exercise-text-highlight-color:#32D74B; }
-
-html.dark {
-  --exercise-background-color:#151516;
-  --exercise-card-color:#1C1C1E;
-  --exercise-card-border-color:rgba(255, 255, 255, 0.03);
-  --exercise-text-info-color:#8E8E93;
-  --exercise-text-color:#dfdfdf;
   --exercise-text-highlight-color:#32D74B; }
 
 body, html {
@@ -1121,16 +1110,16 @@ html[data-theme='dark'] .pinglun {
   border-radius: 16px;
   position: relative;
   z-index: 1;
-  border: 1px solid var(--exercise-card-border-color); }
+  border: 1px solid var(--background-card-border-color); }
   .appquanju:hover .appnote {
     opacity: 1; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .appquanju {
       background: var(--background-card-dark-color);
-      border: 1px solid var(--exercise-card-border-color); } }
+      border: 1px solid var(--background-card-border-dark-color); } }
   html[data-theme='dark'] .appquanju {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color); }
+    border: 1px solid var(--background-card-border-dark-color); }
 
 .appimg img {
   width: 70px;
@@ -2008,15 +1997,15 @@ blockquote p {
 .bb-list-li {
   border-radius: 16px;
   background: var(--background-card-color);
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   padding: 15px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .bb-list-li {
       background: var(--background-card-dark-color);
-      border: 1px solid var(--exercise-card-border-color); } }
+      border: 1px solid var(--background-card-border-dark-color); } }
   html[data-theme='dark'] .bb-list-li {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color); }
+    border: 1px solid var(--background-card-border-dark-color); }
 
 .memos-oneday {
   margin-bottom: 15px;
@@ -2077,14 +2066,14 @@ blockquote p {
   margin-bottom: 10px;
   border-radius: 16px;
   background: var(--background-card-color);
-  border: 1px solid var(--exercise-card-border-color); }
+  border: 1px solid var(--background-card-border-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-editor-body {
       background: var(--background-card-dark-color);
-      border: 1px solid var(--exercise-card-border-color); } }
+      border: 1px solid var(--background-card-border-dark-color); } }
   html[data-theme='dark'] .memos-editor-body {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color); }
+    border: 1px solid var(--background-card-border-dark-color); }
 
 .memos-editor-content .memos-editor-textarea {
   border: transparent;
@@ -2147,21 +2136,25 @@ blockquote p {
 .memos-xiala {
   width: 50px;
   position: absolute;
-  background-color: #fff;
   padding: 12px;
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
   border-radius: 8px;
   font-size: 1rem;
   right: -30px;
   z-index: 100;
   display: none;
-  gap: 10px; }
+  gap: 10px;
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-xiala {
-      background-color: #282527; } }
+      background: rgba(28, 28, 30, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08); } }
   html[data-theme='dark'] .memos-xiala {
-    background-color: #282527; }
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08); }
   .memos-xiala .switchUser-btn,
   .memos-xiala .private-btn,
   .memos-xiala .oneday-btn,
@@ -2197,19 +2190,23 @@ blockquote p {
   width: 50px;
   padding: 10px;
   left: -40px;
-  background-color: #fff;
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
   border-radius: 8px;
   display: grid;
   gap: 10px;
   display: none;
-  top: 40px; }
+  top: 40px;
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .memos-menu-d {
-      background-color: #282527; } }
+      background: rgba(28, 28, 30, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08); } }
   html[data-theme='dark'] .memos-menu-d {
-    background-color: #282527; }
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08); }
   @media (min-width: 768px) {
     .memos-menu-d {
       top: 0; } }
@@ -2568,17 +2565,17 @@ blockquote p {
   border-radius: 16px;
   background: var(--background-card-color);
   padding: 15px;
-  border: 1px solid var(--exercise-card-border-color); }
+  border: 1px solid var(--background-card-border-color); }
   @media (min-width: 768px) {
     .posts_list_article {
       padding: 12px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .posts_list_article {
       background: var(--background-card-dark-color);
-      border: 1px solid var(--exercise-card-border-color); } }
+      border: 1px solid var(--background-card-border-dark-color); } }
   html[data-theme='dark'] .posts_list_article {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color); }
+    border: 1px solid var(--background-card-border-dark-color); }
 
 .posts_list_article-index {
   position: relative;
@@ -2639,17 +2636,17 @@ blockquote p {
   background: var(--background-card-color);
   border-radius: 16px;
   padding: 15px;
-  border: 1px solid var(--exercise-card-border-color); }
+  border: 1px solid var(--background-card-border-color); }
   @media (min-width: 768px) {
     .archives_one {
       grid-gap: 20px; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .archives_one {
       background: var(--background-card-dark-color);
-      border: 1px solid var(--exercise-card-border-color); } }
+      border: 1px solid var(--background-card-border-dark-color); } }
   html[data-theme='dark'] .archives_one {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color); }
+    border: 1px solid var(--background-card-border-dark-color); }
   @media (hover: hover) {
     .archives_one:hover .archive-img img {
       transform: scale(1.05); } }
@@ -2746,25 +2743,37 @@ blockquote p {
   gap: 8px;
   list-style: none;
   padding: 4px;
-  background: var(--exercise-card-color);
-  border: 1px solid var(--exercise-card-border-color);
+  background: var(--background-card-color);
+  border: 1px solid var(--background-card-border-color);
   border-radius: 99px;
   /* 保持这些已有的滚动条控制 */
   overflow-x: auto;
   white-space: nowrap;
   -ms-overflow-style: none;
   scrollbar-width: none; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .buttons {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); } }
+  html[data-theme='dark'] .buttons {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color); }
   .buttons::-webkit-scrollbar {
     display: none; }
   .buttons .button {
     font-size: 0.85rem;
     cursor: pointer;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     padding: 10px 22px;
     border-radius: 99px;
     transition: all 0.2s ease; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .buttons .button {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .buttons .button {
+      color: var(--text-info-dark-color); }
     .buttons .button:hover {
-      color: var(--exercise-text-color); }
+      color: var(--text-content-color); }
     .buttons .button.selected {
       background: var(--exercise-text-highlight-color);
       color: #111 !important; }
@@ -2786,13 +2795,19 @@ blockquote p {
       height: 550px; } }
 #mapbox-container {
   height: 260px;
-  background-color: var(--exercise-card-color);
+  background-color: var(--background-card-color);
   border-radius: 12px;
   overflow: hidden;
   position: relative; }
   @media (min-width: 768px) {
     #mapbox-container {
       height: 100% !important; } }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) #mapbox-container {
+      background: var(--background-card-dark-color); } }
+  html[data-theme='dark'] #mapbox-container {
+    background: var(--background-card-dark-color); }
+
 .bento-map-placeholder {
   flex: none;
   width: 100%;
@@ -2810,8 +2825,15 @@ blockquote p {
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--exercise-card-border-color);
-  background: var(--exercise-card-color); }
+  border: 1px solid var(--background-card-border-color);
+  background: var(--background-card-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .bento-card-map {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); } }
+  html[data-theme='dark'] .bento-card-map {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color); }
 
 /* 吸顶地图 */
 .sticky-map {
@@ -2851,7 +2873,7 @@ blockquote p {
       right: 0;
       margin: 0 auto;
       width: max-content;
-      background: var(--exercise-card-color);
+      background: var(--background-card-color);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 12px;
@@ -2860,15 +2882,33 @@ blockquote p {
       flex-direction: column;
       gap: 12px;
       z-index: 10;
-      animation: slideUpFade 0.4s forwards; }
+      animation: slideUpFade 0.4s forwards; } }
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .runDetailCard {
+      background: var(--background-card-dark-color); } }
+  @media (min-width: 768px) {
+      html[data-theme='dark'] .runDetailCard {
+        background: var(--background-card-dark-color); }
       .runDetailCard .detailName {
         font-size: 0.75rem;
-        color: var(--exercise-text-info-color);
+        color: var(--text-info-color);
         display: flex;
         justify-content: space-between;
-        gap: 20px; }
+        gap: 20px; } }
+    @media (min-width: 768px) and (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .runDetailCard .detailName {
+        color: var(--text-info-dark-color); } }
+  @media (min-width: 768px) {
+        html[data-theme='dark'] .runDetailCard .detailName {
+          color: var(--text-info-dark-color); }
       .runDetailCard .detailDate {
-        color: var(--exercise-text-info-color); }
+        color: var(--text-info-color); } }
+    @media (min-width: 768px) and (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .runDetailCard .detailDate {
+        color: var(--text-info-dark-color); } }
+  @media (min-width: 768px) {
+        html[data-theme='dark'] .runDetailCard .detailDate {
+          color: var(--text-info-dark-color); }
       .runDetailCard .detailStatsRow {
         display: flex;
         gap: 24px; }
@@ -2877,15 +2917,27 @@ blockquote p {
         flex-direction: column;
         gap: 2px; }
         .runDetailCard .detailStatBlock .statLabel {
-          color: var(--exercise-text-info-color);
-          font-size: 0.65rem; }
+          color: var(--text-info-color);
+          font-size: 0.65rem; } }
+      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .runDetailCard .detailStatBlock .statLabel {
+          color: var(--text-info-dark-color); } }
+  @media (min-width: 768px) {
+          html[data-theme='dark'] .runDetailCard .detailStatBlock .statLabel {
+            color: var(--text-info-dark-color); }
         .runDetailCard .detailStatBlock .statVal {
           font-size: 0.85rem;
-          color: var(--exercise-text-color); }
+          color: var(--text-content-color); }
         .runDetailCard .detailStatBlock small {
           font-size: 0.65rem;
-          color: var(--exercise-text-info-color);
+          color: var(--text-info-color);
           margin-left: 2px; } }
+      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .runDetailCard .detailStatBlock small {
+          color: var(--text-info-dark-color); } }
+  @media (min-width: 768px) {
+          html[data-theme='dark'] .runDetailCard .detailStatBlock small {
+            color: var(--text-info-dark-color); } }
 @keyframes slideUpFade {
   from {
     opacity: 0;
@@ -2933,10 +2985,17 @@ blockquote p {
   .bento-calendar-board .globalSection,
   .bento-calendar-board .calendarSection,
   .bento-calendar-board .insightCard {
-    background: var(--exercise-card-color);
+    background: var(--background-card-color);
     border-radius: 16px;
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-color);
     padding: 16px; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .bento-calendar-board .globalSection, html:not([data-theme='light']) .bento-calendar-board .calendarSection, html:not([data-theme='light']) .bento-calendar-board .insightCard {
+        background: var(--background-card-dark-color);
+        border: 1px solid var(--background-card-border-dark-color); } }
+    html[data-theme='dark'] .bento-calendar-board .globalSection, html[data-theme='dark'] .bento-calendar-board .calendarSection, html[data-theme='dark'] .bento-calendar-board .insightCard {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); }
   @media (min-width: 768px) {
     .bento-calendar-board .globalSection, .bento-calendar-board .monthlyInsights {
       flex-shrink: 0; } }
@@ -2956,10 +3015,15 @@ blockquote p {
         /* 💻 PC端：恢复默认层级 */ } }
     .bento-calendar-board .globalSection .globalTitle {
       font-size: 0.75rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       letter-spacing: 2px;
       margin-bottom: 8px;
       z-index: 2; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .bento-calendar-board .globalSection .globalTitle {
+          color: var(--text-info-dark-color); } }
+      html[data-theme='dark'] .bento-calendar-board .globalSection .globalTitle {
+        color: var(--text-info-dark-color); }
     .bento-calendar-board .globalSection .globalMainStat {
       display: flex;
       align-items: baseline;
@@ -2974,7 +3038,12 @@ blockquote p {
         line-height: 1; }
       .bento-calendar-board .globalSection .globalMainStat .unit {
         font-size: 0.85rem;
-        color: var(--exercise-text-info-color); }
+        color: var(--text-info-color); }
+        @media (prefers-color-scheme: dark) {
+          html:not([data-theme='light']) .bento-calendar-board .globalSection .globalMainStat .unit {
+            color: var(--text-info-dark-color); } }
+        html[data-theme='dark'] .bento-calendar-board .globalSection .globalMainStat .unit {
+          color: var(--text-info-dark-color); }
     .bento-calendar-board .globalSection .metricsRow {
       display: flex;
       justify-content: space-between;
@@ -2987,14 +3056,29 @@ blockquote p {
       gap: 2px; }
       .bento-calendar-board .globalSection .metricBlock .metricLabel {
         font-size: 0.65rem;
-        color: var(--exercise-text-info-color); }
+        color: var(--text-info-color); }
+        @media (prefers-color-scheme: dark) {
+          html:not([data-theme='light']) .bento-calendar-board .globalSection .metricBlock .metricLabel {
+            color: var(--text-info-dark-color); } }
+        html[data-theme='dark'] .bento-calendar-board .globalSection .metricBlock .metricLabel {
+          color: var(--text-info-dark-color); }
       .bento-calendar-board .globalSection .metricBlock .metricValue {
         font-size: 1rem;
-        color: var(--exercise-text-color); }
+        color: var(--text-content-color); }
+        @media (prefers-color-scheme: dark) {
+          html:not([data-theme='light']) .bento-calendar-board .globalSection .metricBlock .metricValue {
+            color: var(--text-content-dark-color); } }
+        html[data-theme='dark'] .bento-calendar-board .globalSection .metricBlock .metricValue {
+          color: var(--text-content-dark-color); }
         .bento-calendar-board .globalSection .metricBlock .metricValue small {
           font-size: 0.65rem;
-          color: var(--exercise-text-info-color);
+          color: var(--text-info-color);
           margin-left: 3px; }
+          @media (prefers-color-scheme: dark) {
+            html:not([data-theme='light']) .bento-calendar-board .globalSection .metricBlock .metricValue small {
+              color: var(--text-info-dark-color); } }
+          html[data-theme='dark'] .bento-calendar-board .globalSection .metricBlock .metricValue small {
+            color: var(--text-info-dark-color); }
     .bento-calendar-board .globalSection .sparkline {
       position: absolute;
       top: 12px;
@@ -3030,9 +3114,14 @@ blockquote p {
     margin-bottom: 12px; }
     .bento-calendar-board .monthNav span {
       font-size: 0.85rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       min-width: 65px;
       text-align: center; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .bento-calendar-board .monthNav span {
+          color: var(--text-info-dark-color); } }
+      html[data-theme='dark'] .bento-calendar-board .monthNav span {
+        color: var(--text-info-dark-color); }
     .bento-calendar-board .monthNav button {
       background: transparent;
       border: none;
@@ -3040,15 +3129,25 @@ blockquote p {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       cursor: pointer;
       transition: color 0.2s ease; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .bento-calendar-board .monthNav button {
+          color: var(--text-info-dark-color); } }
+      html[data-theme='dark'] .bento-calendar-board .monthNav button {
+        color: var(--text-info-dark-color); }
       .bento-calendar-board .monthNav button svg {
         width: 16px;
         height: 16px; }
       .bento-calendar-board .monthNav button:hover:not(:disabled) {
         background: transparent;
-        color: var(--exercise-text-color); }
+        color: var(--text-content-color); }
+        @media (prefers-color-scheme: dark) {
+          html:not([data-theme='light']) .bento-calendar-board .monthNav button:hover:not(:disabled) {
+            color: var(--text-content-dark-color); } }
+        html[data-theme='dark'] .bento-calendar-board .monthNav button:hover:not(:disabled) {
+          color: var(--text-content-dark-color); }
       .bento-calendar-board .monthNav button:disabled {
         opacity: 0.2;
         cursor: default; }
@@ -3058,7 +3157,12 @@ blockquote p {
     gap: 4px;
     text-align: center;
     font-size: 0.65rem;
-    color: var(--exercise-text-info-color); }
+    color: var(--text-info-color); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .bento-calendar-board .weekdays {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .bento-calendar-board .weekdays {
+      color: var(--text-info-dark-color); }
   .bento-calendar-board .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -3084,7 +3188,12 @@ blockquote p {
     justify-content: center;
     position: relative;
     font-size: 0.8rem;
-    color: var(--exercise-text-info-color); }
+    color: var(--text-info-color); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .bento-calendar-board .dayCell {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .bento-calendar-board .dayCell {
+      color: var(--text-info-dark-color); }
     @media (min-width: 768px) {
       .bento-calendar-board .dayCell {
         aspect-ratio: auto;
@@ -3108,13 +3217,23 @@ blockquote p {
       transform: translateX(-50%) translateY(0); }
   .bento-calendar-board .monthFooter {
     font-size: 0.65rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     text-align: center; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .bento-calendar-board .monthFooter {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .bento-calendar-board .monthFooter {
+      color: var(--text-info-dark-color); }
     .bento-calendar-board .monthFooter span {
-      color: var(--exercise-text-color);
       font-weight: 800;
       font-style: italic;
+      color: var(--text-content-color);
       margin: 0 1px 0 1px; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .bento-calendar-board .monthFooter span {
+          color: var(--text-content-dark-color); } }
+      html[data-theme='dark'] .bento-calendar-board .monthFooter span {
+        color: var(--text-content-dark-color); }
     .bento-calendar-board .monthFooter .dot {
       font-size: 0.5rem;
       margin: 0 3px;
@@ -3133,8 +3252,13 @@ blockquote p {
     padding: 12px 16px; }
   .bento-calendar-board .insightHeader {
     font-size: 0.75rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     margin-bottom: 10px; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .bento-calendar-board .insightHeader {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .bento-calendar-board .insightHeader {
+      color: var(--text-info-dark-color); }
   .bento-calendar-board .punchCard {
     display: flex;
     gap: 4px;
@@ -3180,8 +3304,13 @@ blockquote p {
     margin-top: 4px; }
     .bento-calendar-board .insightLabels span {
       font-size: 0.55rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       opacity: 0.6; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']) .bento-calendar-board .insightLabels span {
+          color: var(--text-info-dark-color); } }
+      html[data-theme='dark'] .bento-calendar-board .insightLabels span {
+        color: var(--text-info-dark-color); }
   .bento-calendar-board .timeLabels {
     justify-content: space-between; }
     .bento-calendar-board .timeLabels span:first-child {
@@ -3205,11 +3334,18 @@ blockquote p {
   width: 100%; }
 
 .controlsArea {
-  background: var(--exercise-card-color);
+  background: var(--background-card-color);
   border-radius: 16px;
   padding: 12px 16px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   margin-bottom: 10px; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .controlsArea {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); } }
+  html[data-theme='dark'] .controlsArea {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color); }
 
 .filterBar {
   display: flex;
@@ -3223,19 +3359,34 @@ blockquote p {
 
 .filterPill {
   padding: 4px 8px;
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .filterPill {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .filterPill {
+    color: var(--text-info-dark-color); }
   .filterPill.activePill, .filterPill:hover {
-    color: var(--exercise-text-color);
+    color: var(--text-content-color);
     opacity: 0.9; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .filterPill.activePill, html:not([data-theme='light']) .filterPill:hover {
+        color: var(--text-content-dark-color); } }
+    html[data-theme='dark'] .filterPill.activePill, html[data-theme='dark'] .filterPill:hover {
+      color: var(--text-content-dark-color); }
 
 .monthLabel {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.75rem;
   margin-left: auto; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .monthLabel {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .monthLabel {
+    color: var(--text-info-dark-color); }
 
 .cardList {
   display: grid;
@@ -3247,14 +3398,21 @@ blockquote p {
       grid-template-columns: repeat(2, 1fr);
       /* 💻 PC端：恢复双列布局 */ } }
 .runCard {
-  background: var(--exercise-card-color);
+  background: var(--background-card-color);
   border-radius: 16px;
   padding: 14px 16px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   display: flex;
   align-items: center;
   position: relative;
   transition: all 0.2s ease; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .runCard {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); } }
+  html[data-theme='dark'] .runCard {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color); }
   .runCard:hover {
     background: #fff;
     border-color: #fff; }
@@ -3348,9 +3506,14 @@ blockquote p {
   align-items: center; }
 
 .runName {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
   margin-bottom: 2px; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .runName {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .runName {
+    color: var(--text-info-dark-color); }
 
 .runDistance {
   font-size: 1.4rem;
@@ -3361,11 +3524,21 @@ blockquote p {
     margin-left: 3px;
     font-style: normal;
     font-weight: normal;
-    color: var(--exercise-text-info-color); }
+    color: var(--text-info-color); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .runDistance .distUnit {
+        color: var(--text-info-dark-color); } }
+    html[data-theme='dark'] .runDistance .distUnit {
+      color: var(--text-info-dark-color); }
 
 .runDate {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .runDate {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .runDate {
+    color: var(--text-info-dark-color); }
 
 /* 气泡系统 */
 .runTooltip {
@@ -3450,8 +3623,13 @@ blockquote p {
   gap: 12px; }
 
 .punchCard .runTooltip .ttName, .zoneChart .runTooltip .ttName {
-  color: var(--exercise-text-info-color) !important;
+  color: var(--text-info-color) !important;
   font-size: 0.75rem; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .punchCard .runTooltip .ttName, html:not([data-theme='light']) .zoneChart .runTooltip .ttName {
+      color: var(--text-info-dark-color) !important; } }
+  html[data-theme='dark'] .punchCard .runTooltip .ttName, html[data-theme='dark'] .zoneChart .runTooltip .ttName {
+    color: var(--text-info-dark-color) !important; }
 
 .punchCard .runTooltip .ttNum, .zoneChart .runTooltip .ttNum {
   text-align: left; }
@@ -3462,15 +3640,25 @@ blockquote p {
   gap: 6px; }
 
 .ttName {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.8rem; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .ttName {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .ttName {
+    color: var(--text-info-dark-color); }
 
 .ttUnitTag {
   padding: 2px 6px;
   background: #f0eee9;
   border-radius: 4px;
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.65rem; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .ttUnitTag {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .ttUnitTag {
+    color: var(--text-info-dark-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .ttUnitTag {
       background: rgba(255, 255, 255, 0.08); } }
@@ -3478,9 +3666,14 @@ blockquote p {
     background: rgba(255, 255, 255, 0.08); }
 
 .ttNum {
-  color: var(--exercise-text-color);
+  color: var(--text-content-color);
   font-size: 0.85rem;
   text-align: right; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .ttNum {
+      color: var(--text-content-dark-color); } }
+  html[data-theme='dark'] .ttNum {
+    color: var(--text-content-dark-color); }
 
 .ttDayRunList {
   display: flex;
@@ -3505,28 +3698,40 @@ blockquote p {
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  color: var(--exercise-text-color); }
+  color: var(--text-content-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .ttAchieveRow {
+      color: var(--text-content-dark-color); } }
+  html[data-theme='dark'] .ttAchieveRow {
+    color: var(--text-content-dark-color); }
 
 .titleTag {
   padding: 2px 6px;
   background: #f0eee9;
   border-radius: 4px;
   font-size: 0.65rem;
-  color: var(--exercise-text-info-color); }
+  color: var(--text-info-color); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .titleTag {
-      background: rgba(255, 255, 255, 0.08); } }
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-info-dark-color); } }
   html[data-theme='dark'] .titleTag {
-    background: rgba(255, 255, 255, 0.08); }
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-info-dark-color); }
 
 /* Mapbox 控件覆写 */
 .mapboxgl-ctrl-group {
-  background: var(--exercise-card-color) !important;
+  background: var(--background-card-color) !important;
   border-radius: 8px !important;
   border: none !important;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
   margin-left: 10px !important; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .mapboxgl-ctrl-group {
+      background: var(--background-card-dark-color) !important; } }
+  html[data-theme='dark'] .mapboxgl-ctrl-group {
+    background: var(--background-card-dark-color) !important; }
 
 .mapboxgl-ctrl-group button {
   background-color: transparent !important;
