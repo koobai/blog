@@ -21,7 +21,7 @@
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   
-  border: 1px solid rgba(0, 0, 0, 0.08); 
+  border: 1px solid rgba(0, 0, 0, 0.09); 
   box-shadow: 
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     0 4px 10px rgba(0, 0, 0, 0.06);
@@ -55,7 +55,9 @@
     box-shadow: none;
 
     @include breakpoint('medium') {
-      box-shadow: 0 12px 30px rgba(45, 43, 40, 0.35);   
+      box-shadow: 
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 12px 30px rgba(45, 43, 40, 0.3); 
       will-change: transform, backdrop-filter;
       -webkit-transform: translateX(-50%) translateZ(0);
       transform: translateX(-50%) translateZ(0);
