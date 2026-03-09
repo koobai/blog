@@ -3145,7 +3145,12 @@ html[data-theme='dark'] .page-exercise .menu-main-mobile {
     .bento-calendar-board .dayCell.hasRun {
       cursor: pointer; }
       .bento-calendar-board .dayCell.hasRun:hover {
-        background: rgba(255, 255, 255, 0.04) !important; }
+        background: rgba(0, 0, 0, 0.04) !important; }
+        @media (prefers-color-scheme: dark) {
+          html:not([data-theme='light']) .bento-calendar-board .dayCell.hasRun:hover {
+            background: rgba(255, 255, 255, 0.05) !important; } }
+        html[data-theme='dark'] .bento-calendar-board .dayCell.hasRun:hover {
+          background: rgba(255, 255, 255, 0.05) !important; }
     .bento-calendar-board .dayCell.maxDay {
       background: transparent !important; }
     .bento-calendar-board .dayCell .dateNum {
