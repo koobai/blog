@@ -6,7 +6,7 @@
 
 .summary-nrong {
   border-radius: 16px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   padding: 15px;
 
   @include breakpoint('medium') {
@@ -15,19 +15,19 @@
 
   // 暗黑模式内聚
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
   }
 }
 
 .summary-date {
   font-size: 0.85rem;
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   font-family: var(--font-family-code);
   margin-top: 6px;
 
   // 暗黑模式内聚
   @include dark {
-    color: var(--erji-color) !important;
+    color: var(--text-info-dark-color) !important;
   }
 }
 

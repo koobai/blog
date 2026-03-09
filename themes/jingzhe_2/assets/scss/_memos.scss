@@ -49,10 +49,10 @@
 .memos-image-list,
 .memos-path-input::placeholder,
 .memos-token-input::placeholder {
-  color: var(--sanji-color);
+  color: var(--text-info-color);
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -104,10 +104,10 @@
 
   a {
     font-family: var(--font-family-code);
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
 
     @include dark {
-      color: var(--sanji-color);
+      color: var(--text-info-color);
     }
   }
 }
@@ -130,7 +130,7 @@
     cursor: pointer;
 
     &:hover {
-      color: var(--erji-color);
+      color: var(--text-info-dark-color);
 
       @include dark {
         color: var(--text-highlight-dark-color);
@@ -214,16 +214,16 @@
       padding: 0;
       border: none;
       margin: 0;
-      color: var(--erji-color);
+      color: var(--text-info-dark-color);
 
       @include dark {
-        color: var(--sanji-color);
+        color: var(--text-info-color);
       }
     }
   }
 
   code {
-    background: var(--background-color);
+    background: var(--background-body-color);
     border: 1px solid #e9e2de;
     border-radius: 4px;
     font-size: 1rem;
@@ -240,7 +240,7 @@
 }
 
 blockquote p {
-  background: var(--background-color);
+  background: var(--background-body-color);
   border-radius: 0 4px 4px 0;
   padding: 10px;
   font-size: 1rem !important;
@@ -437,7 +437,7 @@ blockquote p {
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  background: var(--background-color);
+  background: var(--background-body-color);
   border-radius: 10px;
   text-decoration: none !important;
   padding: 10px;
@@ -513,7 +513,7 @@ blockquote p {
   align-items: center;
   padding: 6px 8px;
   border-radius: 99px;
-  background: var(--background-color);
+  background: var(--background-body-color);
   font-size: 0.9rem;
   max-width: 100%;
   box-sizing: border-box;
@@ -562,11 +562,13 @@ blockquote p {
 
 .bb-list-li {
   border-radius: 16px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
+  border: 1px solid var(--exercise-card-border-color);
   padding: 15px;
 
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--exercise-card-border-color);
   }
 }
 
@@ -574,11 +576,11 @@ blockquote p {
   margin-bottom: 15px;
   list-style: none;
   padding: 15px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   border-radius: 16px;
 
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
   }
 
   .memos_diaoyong_time {
@@ -642,10 +644,12 @@ blockquote p {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 16px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
+  border: 1px solid var(--exercise-card-border-color);
 
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--exercise-card-border-color);
   }
 }
 
@@ -668,7 +672,7 @@ blockquote p {
     color: #bbbbbb;
 
     @include dark {
-      color: var(--erji-color);
+      color: var(--text-info-dark-color);
     }
   }
 
@@ -851,7 +855,7 @@ blockquote p {
     transform: translateY(-50%);
 
     @include dark {
-      border-color: var(--erji-color) transparent transparent transparent;
+      border-color: var(--text-info-dark-color) transparent transparent transparent;
     }
   }
 }
@@ -993,11 +997,11 @@ blockquote p {
 
 .memos-path-input::placeholder,
 .memos-token-input::placeholder {
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   opacity: 1;
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -1012,7 +1016,7 @@ blockquote p {
   font-weight: bold;
 
   @include dark {
-    background: var(--background-dark-color) !important;
+    background: var(--background-card-dark-color) !important;
   }
 }
 

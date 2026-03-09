@@ -10,7 +10,7 @@
 
   @include dark {
     --at-color-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0), #242021) !important;
-    --at-color-bg: var(--background-dark-color) !important;
+    --at-color-bg: var(--background-card-dark-color) !important;
     --at-color-border: #332D2F !important;
     --at-color-meta: #666 !important;
     --at-color-font: #BBB !important;
@@ -19,7 +19,7 @@
 
   &.atk-dark-mode {
     @include dark {
-      --at-color-grey: var(--erji-color) !important;
+      --at-color-grey: var(--text-info-dark-color) !important;
     }
   }
 
@@ -40,17 +40,17 @@
   padding-bottom: 0px !important;
 
   @include dark {
-    border-top: 1px dashed #67534c !important;
+    border-top: 1px dashed #28282b !important;
     .atk-list-read-more-inner {
-      background: #67534c !important;
+      background: #28282b !important;
       border-color: transparent !important;
     }
   }
 }
 .atk-comment>.atk-main>.atk-header .atk-item{
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   @include dark {
-    color: var(--erji-color) !important;
+    color: var(--text-info-dark-color) !important;
     }
 }
 .atk-comment {
@@ -72,7 +72,7 @@
 
     > .atk-footer .atk-actions > span {
       @include dark {
-        color: var(--erji-color) !important;
+        color: var(--text-info-dark-color) !important;
       }
       &:hover {
         color: #999 !important;
@@ -137,7 +137,7 @@
     font-size: 15px;
     background: transparent !important;
     &::placeholder {
-      color: var(--erji-color) !important;
+      color: var(--text-info-dark-color) !important;
     }
   }
 }
@@ -153,14 +153,14 @@
   a {
     color: #999 !important;
     @include dark {
-      color: var(--erji-color) !important;
+      color: var(--text-info-dark-color) !important;
     }
   }
 }
 
 .atk-item.atk-reply-at > .atk-nick {
   @include dark {
-    color: var(--erji-color) !important;
+    color: var(--text-info-dark-color) !important;
   }
 }
 
@@ -170,7 +170,7 @@
 
   @include dark {
     color: #666 !important;
-    background: var(--background-dark-color) !important;
+    background: var(--background-card-dark-color) !important;
   }
 }
 
@@ -181,7 +181,7 @@
 .atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
   color: #999 !important;
   @include dark {
-    color: var(--erji-color) !important;
+    color: var(--text-info-dark-color) !important;
   }
 }
 
@@ -264,7 +264,7 @@ img[atk-emoticon] {
 
   @include dark {
     background: transparent !important;
-    border: 1px solid #8C847E !important;
+    border: 1px solid #28282b !important;
   }
 
   > .atk-header {
@@ -274,7 +274,7 @@ img[atk-emoticon] {
     }
     @include dark {
       input::placeholder {
-        color: var(--erji-color) !important;
+        color: var(--text-info-dark-color) !important;
       }
     }
   }
@@ -290,7 +290,7 @@ img[atk-emoticon] {
 
   > .atk-bottom .atk-state-btn {
     @include dark {
-      background: var(--background-dark-color) !important;
+      background: var(--background-card-dark-color) !important;
     }
     .atk-text-wrap {
       color: #999;

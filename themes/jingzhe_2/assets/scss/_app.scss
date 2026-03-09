@@ -6,10 +6,10 @@
   margin: auto;
   padding-bottom: 20px;
   text-align: center;
-  color: #666;
+  color: var(--text-info-dark-color);
 
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-content-dark-color);
   }
 }
 
@@ -26,11 +26,12 @@
   grid-template-columns: auto 1fr auto;
   grid-gap: 10px;
   align-items: center;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   padding: 15px;
   border-radius: 16px;
   position: relative; // 统一改为 relative 方便子元素定位
   z-index: 1;
+  border: 1px solid var(--exercise-card-border-color);
 
   // 悬浮显示简介
   &:hover .appnote {
@@ -38,7 +39,8 @@
   }
 
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--exercise-card-border-color);
   }
 }
 
@@ -68,7 +70,7 @@
     right: 0;
     left: 80px; 
     padding: 0 16px; 
-    background: var(--element-background-color);
+    background: var(--background-card-color);
     color: var(--text-content-color);
     font-size: 1rem;
     line-height: 1.5;
@@ -79,7 +81,7 @@
     z-index: 10;
   }
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
     color: var(--text-content-dark-color);
   }
 }
@@ -94,12 +96,14 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .macos {
   font-size: 0.9rem;
-  font-family: var(--font-family-code);
-  color: var(--sanji-color);
 }
 
 .kaiyuan, .shoufei, .free {
@@ -114,14 +118,14 @@
   border-width: 1px; 
   border-style: solid;
   transition: opacity 0.2s ease;
-  color: var(--sanji-color);
-  border-color: var(--sanji-color);
+  color: var(--text-info-color);
+  border-color: var(--text-info-color);
   &:hover {
     opacity: 0.6;
   }
     @include dark {
-    color: var(--erji-color);
-    border-color: var(--erji-color);
+    color: var(--text-info-dark-color);
+    border-color: var(--text-info-dark-color);
   }
 }
 
@@ -167,7 +171,7 @@
     font-size: 1.6rem;
     margin-bottom: 8px;
     margin-top: 8px;
-    a { color: var(--element-background-color); }
+    a { color: var(--background-card-color); }
   }
 
   // 5. 大图模式下的简介
@@ -177,7 +181,7 @@
     opacity: 1;
     background: none !important;
     padding: 0;
-    color: var(--element-background-color);
+    color: var(--background-card-color);
     line-height: 1.6;
     font-size: 1rem;
   }
@@ -213,7 +217,7 @@
 
   // 统一大图下的文字颜色 (强制白色)
   .macos, .kaiyuan, .shoufei, .free {
-    color: var(--element-background-color) !important;
+    color: var(--background-card-color) !important;
     border-color: rgba(255, 255, 255, 0.6) !important;
   }
 }

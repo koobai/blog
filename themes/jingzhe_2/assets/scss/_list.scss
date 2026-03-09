@@ -77,8 +77,9 @@
 // 文章卡片样式
 .posts_list_article {
   border-radius: 16px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   padding: 15px;
+  border: 1px solid var(--exercise-card-border-color);
 
   @include breakpoint('medium') {
     padding: 12px;
@@ -86,7 +87,8 @@
 
   // 暗黑模式内聚
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--exercise-card-border-color);
   }
 }
 
@@ -94,13 +96,13 @@
 .posts_list_article-index {
   position: relative;
   border-radius: 16px;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   padding: 15px;
   overflow: hidden;
 
   // 暗黑模式内聚
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
   }
 }
 
@@ -159,9 +161,10 @@
 .archives_one {
   display: flex;
   align-items: center;
-  background: var(--element-background-color);
+  background: var(--background-card-color);
   border-radius: 16px;
   padding: 15px;
+  border: 1px solid var(--exercise-card-border-color);
 
   @include breakpoint('medium') {
     grid-gap: 20px;
@@ -169,7 +172,8 @@
 
   // 暗黑模式内聚
   @include dark {
-    background: var(--background-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--exercise-card-border-color);
   }
   
   @media (hover: hover) {
@@ -198,12 +202,12 @@
 .archive-time,
 .archive-time-index {
   font-size: 0.9rem;
-  color: var(--sanji-color);
+  color: var(--text-info-color);
   font-family: var(--font-family-code);
   
   // 暗黑模式内聚
   @include dark {
-    color: var(--erji-color);
+    color: var(--text-info-dark-color);
   }
 }
 
