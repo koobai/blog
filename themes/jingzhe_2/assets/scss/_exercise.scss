@@ -205,6 +205,9 @@
       .statVal {
         font-size: 0.85rem;
         color: var(--text-content-color);
+        @include dark {
+        color: var(--text-content-dark-color);
+      }
       }
 
       small {
@@ -1005,12 +1008,10 @@
   background:#f0eee9;
   border-radius: 4px;
   color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
   font-size: 0.65rem;
     @include dark {
-     background: rgba(255, 255, 255, 0.08);
+     background: rgba(255, 255, 255, 0.04);
+     color: var( --text-info-dark-color);
   }
 }
 
@@ -1059,7 +1060,7 @@
   font-size: 0.65rem;
   color: var(--text-info-color);
     @include dark {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
     color: var( --text-info-dark-color);
   }
 }
