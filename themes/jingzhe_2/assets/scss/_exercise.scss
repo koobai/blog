@@ -12,9 +12,13 @@
   gap: 8px;
   list-style: none;
   padding: 4px;
-  background: var(--exercise-card-color);
-  border: 1px solid var(--exercise-card-border-color);
+  background: var(--background-card-color);
+  border: 1px solid var(--background-card-border-color);
   border-radius: 99px;
+   @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
   
   /* 保持这些已有的滚动条控制 */
   overflow-x: auto;
@@ -29,13 +33,16 @@
   .button {
     font-size: 0.85rem;
     cursor: pointer;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     padding: 10px 22px;
     border-radius: 99px;
     transition: all 0.2s ease;
+     @include dark {
+      color: var( --text-info-dark-color);
+    }
 
     &:hover {
-      color: var(--exercise-text-color);
+      color: var(--text-content-color);
     }
 
     &.selected {
@@ -64,12 +71,15 @@
 
 #mapbox-container {
   height: 260px;
-  background-color: var(--exercise-card-color);
+  background-color: var(--background-card-color);
   border-radius: 12px;
   overflow: hidden;
   position: relative; 
   @include breakpoint('medium') {
     height: 100% !important;
+  }
+  @include dark {
+    background: var(--background-card-dark-color);
   }
 }
 
@@ -92,8 +102,12 @@
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--exercise-card-border-color);
-  background: var(--exercise-card-color);
+  border: 1px solid var(--background-card-border-color);
+  background: var(--background-card-color);
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
 }
 
 /* 吸顶地图 */
@@ -138,7 +152,7 @@
     right: 0;
     margin: 0 auto;
     width: max-content;
-    background: var(--exercise-card-color);
+    background: var(--background-card-color);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 12px;
@@ -148,17 +162,26 @@
     gap: 12px;
     z-index: 10;
     animation: slideUpFade 0.4s forwards;
+    @include dark {
+      background: var(--background-card-dark-color);
+  }
 
     .detailName {
       font-size: 0.75rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       display: flex;
       justify-content: space-between;
       gap: 20px;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     }
 
     .detailDate {
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     }
 
     .detailStatsRow {
@@ -172,19 +195,25 @@
       gap: 2px;
 
       .statLabel {
-        color: var(--exercise-text-info-color);
+        color: var(--text-info-color);
         font-size: 0.65rem;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
       }
 
       .statVal {
         font-size: 0.85rem;
-        color: var(--exercise-text-color);
+        color: var(--text-content-color);
       }
 
       small {
         font-size: 0.65rem;
-        color: var(--exercise-text-info-color);
+        color: var(--text-info-color);
         margin-left: 2px;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
       }
     }
   }
@@ -232,10 +261,14 @@
   .globalSection,
   .calendarSection,
   .insightCard {
-    background: var(--exercise-card-color);
+    background: var(--background-card-color);
     border-radius: 16px;
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-color);
     padding: 16px;
+      @include dark {
+        background: var(--background-card-dark-color);
+        border: 1px solid var(--background-card-border-dark-color);
+  }
   }
   @include breakpoint('medium') {
     .globalSection, .monthlyInsights {
@@ -261,10 +294,13 @@
 
     .globalTitle {
       font-size: 0.75rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       letter-spacing: 2px;
       margin-bottom: 8px;
       z-index: 2;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     }
 
     .globalMainStat {
@@ -284,7 +320,10 @@
 
       .unit {
         font-size: 0.85rem;
-        color: var(--exercise-text-info-color);
+        color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
       }
     }
 
@@ -303,17 +342,26 @@
 
       .metricLabel {
         font-size: 0.65rem;
-        color: var(--exercise-text-info-color);
+        color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
       }
 
       .metricValue {
         font-size: 1rem;
-        color: var(--exercise-text-color);
+        color: var(--text-content-color);
+         @include dark {
+          color: var( --text-content-dark-color);
+        }
         
         small {
           font-size: 0.65rem; 
-          color: var(--exercise-text-info-color);  
+          color: var(--text-info-color);  
           margin-left: 3px; 
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
         }
       }
     }
@@ -367,9 +415,12 @@
 
     span {
       font-size: 0.85rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       min-width: 65px;
       text-align: center;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     }
 
     button {
@@ -379,9 +430,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       cursor: pointer;
       transition: color 0.2s ease;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 
       svg {
         width: 16px;
@@ -390,7 +444,10 @@
 
       &:hover:not(:disabled) {
         background: transparent;
-        color: var(--exercise-text-color);
+        color: var(--text-content-color);
+         @include dark {
+          color: var( --text-content-dark-color);
+        }
       }
 
       &:disabled {
@@ -406,7 +463,10 @@
     gap: 4px;
     text-align: center;
     font-size: 0.65rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
   }
 
   .grid {
@@ -436,7 +496,10 @@
     justify-content: center;
     position: relative;
     font-size: 0.8rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     @include breakpoint('medium') {
       aspect-ratio: auto;
       height: 100%;
@@ -469,14 +532,20 @@
 
   .monthFooter {
     font-size: 0.65rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     text-align: center;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 
     span {
-      color: var(--exercise-text-color);
       font-weight: 800; 
       font-style: italic;
+      color: var(--text-content-color);
       margin: 0 1px 0 1px;
+         @include dark {
+          color: var( --text-content-dark-color);
+        }
     }
 
     .dot {
@@ -506,8 +575,11 @@
 
   .insightHeader {
     font-size: 0.75rem;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
     margin-bottom: 10px;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
   }
 
   .punchCard {
@@ -574,8 +646,11 @@
     
     span {
       font-size: 0.55rem;
-      color: var(--exercise-text-info-color);
+      color: var(--text-info-color);
       opacity: 0.6;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
     }
   }
   
@@ -615,11 +690,15 @@
 }
 
 .controlsArea {
-  background: var(--exercise-card-color);
+  background: var(--background-card-color);
   border-radius: 16px;
   padding: 12px 16px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   margin-bottom: 10px;
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
 }
 
 .filterBar {
@@ -637,23 +716,32 @@
 
 .filterPill {
   padding: 4px 8px;
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 
   &.activePill,
   &:hover {
-    color: var(--exercise-text-color);
+    color: var(--text-content-color);
     opacity: 0.9;
+         @include dark {
+          color: var( --text-content-dark-color);
+        }
   }
 }
 
 .monthLabel {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.75rem;
   margin-left: auto;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 }
 
 .cardList {
@@ -667,14 +755,18 @@
 }
 
 .runCard {
-  background: var(--exercise-card-color);
+  background: var(--background-card-color);
   border-radius: 16px;
   padding: 14px 16px;
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   display: flex;
   align-items: center;
   position: relative;
   transition: all 0.2s ease;
+    @include dark {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color);
+    }
 
   &:hover {
     background: #fff;
@@ -771,9 +863,12 @@
 }
 
 .runName {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
   margin-bottom: 2px;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 }
 
 .runDistance {
@@ -786,13 +881,19 @@
     margin-left: 3px;
     font-style: normal;
     font-weight: normal;
-    color: var(--exercise-text-info-color);
+    color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
   }
 }
 
 .runDate {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.85rem;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 }
 
 /* 气泡系统 */
@@ -873,8 +974,11 @@
       gap: 12px;
     }
     .ttName {
-      color: var(--exercise-text-info-color) !important; 
+      color: var(--text-info-color) !important; 
       font-size: 0.75rem;
+       @include dark {
+        color: var( --text-info-dark-color) !important;
+      }
     }
     .ttNum {
       text-align: left; 
@@ -889,15 +993,21 @@
 }
 
 .ttName {
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
   font-size: 0.8rem;
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
 }
 
 .ttUnitTag {
   padding: 2px 6px;
   background:#f0eee9;
   border-radius: 4px;
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
+       @include dark {
+        color: var( --text-info-dark-color);
+      }
   font-size: 0.65rem;
     @include dark {
      background: rgba(255, 255, 255, 0.08);
@@ -905,9 +1015,12 @@
 }
 
 .ttNum {
-  color: var(--exercise-text-color);
+  color: var(--text-content-color);
   font-size: 0.85rem;
   text-align: right;
+    @include dark {
+    color: var( --text-content-dark-color);
+  }
 }
 
 .ttDayRunList {
@@ -933,7 +1046,10 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  color: var(--exercise-text-color);
+  color: var(--text-content-color);
+    @include dark {
+    color: var( --text-content-dark-color);
+  }
 }
 
 .titleTag {
@@ -941,20 +1057,24 @@
   background:#f0eee9;
   border-radius: 4px;
   font-size: 0.65rem;
-  color: var(--exercise-text-info-color);
+  color: var(--text-info-color);
     @include dark {
     background: rgba(255, 255, 255, 0.08);
+    color: var( --text-info-dark-color);
   }
 }
 
 /* Mapbox 控件覆写 */
 .mapboxgl-ctrl-group {
-  background: var(--exercise-card-color) !important;
+  background: var(--background-card-color) !important;
   border-radius: 8px !important;
   border: none !important; 
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
   margin-left: 10px !important; 
+  @include dark {
+    background: var(--background-card-dark-color) !important;
+  }
 }
 
 .mapboxgl-ctrl-group button {

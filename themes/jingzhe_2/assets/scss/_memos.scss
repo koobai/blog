@@ -563,12 +563,12 @@ blockquote p {
 .bb-list-li {
   border-radius: 16px;
   background: var(--background-card-color);
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
   padding: 15px;
 
   @include dark {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-dark-color);
   }
 }
 
@@ -645,11 +645,11 @@ blockquote p {
   margin-bottom: 10px;
   border-radius: 16px;
   background: var(--background-card-color);
-  border: 1px solid var(--exercise-card-border-color);
+  border: 1px solid var(--background-card-border-color);
 
   @include dark {
     background: var(--background-card-dark-color);
-    border: 1px solid var(--exercise-card-border-color);
+    border: 1px solid var(--background-card-border-dark-color);
   }
 }
 
@@ -731,9 +731,7 @@ blockquote p {
 .memos-xiala {
   width: 50px;
   position: absolute;
-  background-color: #fff;
   padding: 12px;
-  box-shadow: 2px 4px 1rem rgba(0, 0, 0, 0.15);
   text-align: center;
   border-radius: 8px;
   font-size: 1rem;
@@ -741,9 +739,14 @@ blockquote p {
   z-index: 100;
   display: none;
   gap: 10px;
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6;
 
   @include dark {
-    background-color: #282527;
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .switchUser-btn,
@@ -784,17 +787,20 @@ blockquote p {
   width: 50px;
   padding: 10px;
   left: -40px;
-  background-color: #fff;
-  box-shadow: 2px 4px 1rem rgba(0,0,0,.15);
   text-align: center;
   border-radius: 8px;
   display: grid;
   gap: 10px;
   display: none;
   top: 40px;
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6;
 
   @include dark {
-    background-color: #282527;
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   @include breakpoint('medium') {
