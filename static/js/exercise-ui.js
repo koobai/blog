@@ -49,40 +49,33 @@
   };
 
 
-  /* ========================================================================
+ /* ========================================================================
      板块 2：数据格式化引擎
-     功能：根据时间和运动类型，智能生成如“清晨跑步”、“傍晚骑行”的名称
   ======================================================================== */
-  const getSmartName = (name, type, startTime) => {
-    if (!startTime) return name;
-    const hour = new Date(startTime).getHours();
-    
-    // 判定时间段
-    let timePrefix = '晚上';
-    if (hour >= 23 || hour < 2) timePrefix = '深夜'; 
-    else if (hour >= 2 && hour < 5) timePrefix = '凌晨'; 
-    else if (hour >= 5 && hour < 7) timePrefix = '清晨'; 
-    else if (hour >= 7 && hour < 11) timePrefix = '上午'; 
-    else if (hour >= 11 && hour < 13) timePrefix = '中午'; 
-    else if (hour >= 13 && hour < 18) timePrefix = '下午'; 
-    else if (hour >= 18 && hour < 20) timePrefix = '傍晚'; 
-
-    // 判定运动类型
-    let typeStr = '运动';
-    if (RUN_TYPES.has(type)) typeStr = '跑步';
-    else if (RIDE_TYPES.has(type)) typeStr = '骑行';
-    else if (['Swim', 'WaterSport'].includes(type)) typeStr = '游泳';
-    else if (WALK_TYPES.has(type)) typeStr = '步行';
-
-    // 仅针对原生默认名称进行替换，如果用户自定义了名字则不覆盖
-    const isDefaultPattern = /^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch)/.test(name) && 
-                             /(跑步|骑行|行走|徒步|游泳|运动|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun)$/.test(name) && 
-                             name.length <= 15;
-                             
-    if (isDefaultPattern || ['Run', 'Ride', 'Walk'].includes(name)) {
-      return `${timePrefix}${typeStr}`;
+  const getSmartName = (name, type, polyline) => {
+    // 1. 正则拦截
+    const isDefaultPattern = /^(Morning|Afternoon|Evening|Night|Lunch|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper|晨间|上午|午间|下午|傍晚|晚间|夜间|凌晨|清晨|跑步|骑行|行走|爬楼梯)/i.test(name);
+    if (!isDefaultPattern && name.length > 0 && name.length <= 20) {
+      return name;
     }
-    return name;
+
+    // 2. 运动类型中文映射表（增加 StairStepper）
+    const typeMap = {
+      'Run': '跑步', 'TrailRun': '越野跑', 'Treadmill': '室内跑步', 'VirtualRun': '虚拟跑步',
+      'Ride': '骑行', 'EBikeRide': '电助力骑行', 'VirtualRide': '室内骑行',
+      'Walk': '步行', 'Hike': '徒步',
+      'Swim': '游泳', 'WaterSport': '水上运动',
+      'StairStepper': '爬楼梯'
+    };
+
+    let finalName = typeMap[type] || '运动';
+
+    // 3. 终极纠错：无轨迹的普通跑骑标为室内
+    if ((type === 'Run' || type === 'Ride') && !polyline) {
+      finalName = '室内' + finalName;
+    }
+
+    return finalName;
   };
   window.KoobaiRun.getSmartName = getSmartName;
 
@@ -444,14 +437,19 @@
 
         if (primaryRun) {
           // 组装 Tooltip 内部的条目列表
-          const runListHtml = dayRuns.map(r => `
-            <div class="ttItem">
-              <span class="ttName">${getSmartName(r.name, r.type, r.start_date_local)}</span>
-              <span class="ttNum" style="color: ${colorFromType(r.type)}">
-                ${r.distance.toFixed(1)} <small style="color: #8E8E93; font-size: 0.7rem;">km</small>
-              </span>
-            </div>
-          `).join('');
+          const runListHtml = dayRuns.map(r => {
+            // ✨ 如果有距离就显示公里，没距离就显示运动时长
+            const numDisplay = r.distance > 0 
+              ? `${r.distance.toFixed(1)} <small class="ttUnit">km</small>`
+              : `${r.moving_time} <small class="ttUnit">用时</small>`;
+              
+            return `
+              <div class="ttItem">
+                <span class="ttName">${getSmartName(r.name, r.type, r.summary_polyline)}</span>
+                <span class="ttNum" style="color: ${colorFromType(r.type)}">${numDisplay}</span>
+              </div>
+            `;
+          }).join('');
           
           // 成就判定
           const isRideY = dateStr === engine.globalData.calRideYDate;

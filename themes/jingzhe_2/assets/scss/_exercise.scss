@@ -851,11 +851,14 @@
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 3px;
-  height: 3px;
-  background: #fff;
+  width: 4px;
+  height: 4px;
+  background: var(--text-info-color);
   border-radius: 50%;
   opacity: 0.5;
+   @include dark {
+      background: var(--text-info-dark-color);
+  }
 }
 
 .cardContent {
@@ -987,6 +990,13 @@
       text-align: left; 
     }
   }
+}
+
+.ttItem .ttNum .ttUnit {
+  color: var(--text-info-color); 
+      @include dark {
+      color: var( --text-info-dark-color);
+    }
 }
 
 .ttNameWrap {

@@ -359,11 +359,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!runData) return;
 
       if (statsPanel) {
-        const distance = (runData.distance || 0).toFixed(2);
+        // ✨ 如果有距离显示数字，没有就直接给 '--'
+        const distanceNum = runData.distance > 0 ? runData.distance.toFixed(2) : '--';
+        const distanceUnit = runData.distance > 0 ? 'km' : ''; // 没有距离时，连单位也隐藏
+        
         const runTime = runData.moving_time || '--';
         const heartRate = runData.average_heartrate || '--';
-        const paceNum = runData.pace_num || '--';
-        const paceUnit = runData.pace_unit || '';
+        
+        // 配速同理：没距离肯定没配速
+        const paceNum = runData.distance > 0 ? (runData.pace_num || '--') : '--';
+        const paceUnit = runData.distance > 0 ? (runData.pace_unit || '') : '';
+        
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const color = getColor(runData.type);
         
@@ -371,16 +377,15 @@ document.addEventListener('DOMContentLoaded', () => {
           ? window.formatDate(runData.start_date_local, true, true) 
           : runData.start_date_local.substring(5, 16).replace('T', ' ');
 
-        // 解构后的 HTML，告别挤成一团的面条代码
         statsPanel.innerHTML = `
           <div class="detailName">
-            ${window.KoobaiRun.getSmartName(runData.name, runData.type, runData.start_date_local)} 
+            ${window.KoobaiRun.getSmartName(runData.name, runData.type, runData.summary_polyline)}
             <span class="detailDate">${displayTime}</span>
           </div>
           <div class="detailStatsRow">
             <div class="detailStatBlock">
               <span class="statLabel">里程</span>
-              <span class="statVal" style="color: ${color}">${distance}<small>km</small></span>
+              <span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span>
             </div>
             <div class="detailStatBlock">
               <span class="statLabel">用时</span>

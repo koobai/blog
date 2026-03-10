@@ -20,7 +20,11 @@
   <div class="leftInfo">
     <div class="runName">{{ $run.smart_name }}</div>
     <div class="runDistance" style="color: {{ $theme.color }}">
-      {{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>
+      {{- if gt $run.distance 0 -}}
+        {{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>
+      {{- else -}}
+        {{ $run.moving_time }}<span class="distUnit"></span>
+      {{- end -}}
     </div>
   </div>
   
