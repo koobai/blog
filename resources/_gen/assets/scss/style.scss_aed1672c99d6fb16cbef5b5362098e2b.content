@@ -3499,11 +3499,16 @@ blockquote p {
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 3px;
-  height: 3px;
-  background: #fff;
+  width: 4px;
+  height: 4px;
+  background: var(--text-info-color);
   border-radius: 50%;
   opacity: 0.5; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .multiDot {
+      background: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .multiDot {
+    background: var(--text-info-dark-color); }
 
 .cardContent {
   flex: 1;
@@ -3639,6 +3644,14 @@ blockquote p {
 
 .punchCard .runTooltip .ttNum, .zoneChart .runTooltip .ttNum {
   text-align: left; }
+
+.ttItem .ttNum .ttUnit {
+  color: var(--text-info-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .ttItem .ttNum .ttUnit {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .ttItem .ttNum .ttUnit {
+    color: var(--text-info-dark-color); }
 
 .ttNameWrap {
   display: flex;
