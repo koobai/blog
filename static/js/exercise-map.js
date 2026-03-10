@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 动态获取当前主题样式 URL
   const getMapStyleUrl = () => {
-    const isDark = document.documentElement.classList.contains('dark');
+    const isHtmlDark = document.documentElement.classList.contains('dark');
+    const isSysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const isDark = isHtmlDark || isSysDark;
+
     return isDark 
       ? 'mapbox://styles/koobai/cmma8mwce001v01sge7e0dx1w' // 暗黑版
       : 'mapbox://styles/koobai/cmma9983i00f101qwezj0f77f'; // 浅色版
@@ -64,6 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      const newStyle = getMapStyleUrl();
+      if (newStyle !== currentMapStyle) {
+        currentMapStyle = newStyle;
+        map.setStyle(newStyle); 
+      }
+    });
+  }
 
 
   /* ========================================================================
