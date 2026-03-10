@@ -600,6 +600,10 @@
         height: 100%;
         border-radius: 2px;
         transition: all 0.2s ease;
+        background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
+        @include dark {
+        background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
+      }
       }
       
       &:hover .punchHole {
@@ -632,6 +636,10 @@
         width: 100%;
         border-radius: 2px;
         min-height: 2px; 
+        background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
+         @include dark {
+          background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
+        }
       }
 
       &:hover .runTooltip {
