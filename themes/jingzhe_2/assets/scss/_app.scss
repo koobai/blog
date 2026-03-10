@@ -59,7 +59,6 @@
 }
 
 // 普通模式下的说明文字悬浮效果
-// 普通模式下的说明文字悬浮效果 (优化版：避开左侧图标)
 .appnote {
   display: none;
   @include breakpoint('medium') {
@@ -103,7 +102,7 @@
 }
 
 .macos {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }
 
 .kaiyuan, .shoufei, .free {
@@ -120,9 +119,7 @@
   transition: opacity 0.2s ease;
   color: var(--text-info-color);
   border-color: var(--text-info-color);
-  &:hover {
-    opacity: 0.6;
-  }
+  opacity: 0.7;
     @include dark {
     color: var(--text-info-dark-color);
     border-color: var(--text-info-dark-color);
@@ -184,6 +181,10 @@
     color: var(--background-card-color);
     line-height: 1.6;
     font-size: 1rem;
+    @include dark {
+     color: var(--background-card-color);
+     opacity: 0.8;
+  }
   }
 
   // 6. 背景大图层
@@ -218,6 +219,7 @@
   // 统一大图下的文字颜色 (强制白色)
   .macos, .kaiyuan, .shoufei, .free {
     color: var(--background-card-color) !important;
-    border-color: rgba(255, 255, 255, 0.6) !important;
+    border-color: var(--background-card-color) !important;
+    opacity: 0.6;
   }
 }

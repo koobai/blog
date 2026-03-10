@@ -1178,7 +1178,7 @@ html[data-theme='dark'] .apptitle a {
     color: var(--text-info-dark-color); }
 
 .macos {
-  font-size: 0.9rem; }
+  font-size: 0.75rem; }
 
 .kaiyuan, .shoufei, .free {
   font-size: 0.9rem;
@@ -1193,9 +1193,8 @@ html[data-theme='dark'] .apptitle a {
   border-style: solid;
   transition: opacity 0.2s ease;
   color: var(--text-info-color);
-  border-color: var(--text-info-color); }
-  .kaiyuan:hover, .shoufei:hover, .free:hover {
-    opacity: 0.6; }
+  border-color: var(--text-info-color);
+  opacity: 0.7; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .kaiyuan, html:not([data-theme='light']) .shoufei, html:not([data-theme='light']) .free {
       color: var(--text-info-dark-color);
@@ -1251,6 +1250,13 @@ html[data-theme='dark'] .apptitle a {
     color: var(--background-card-color);
     line-height: 1.6;
     font-size: 1rem; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .app-star .appnote {
+        color: var(--background-card-color);
+        opacity: 0.8; } }
+    html[data-theme='dark'] .app-star .appnote {
+      color: var(--background-card-color);
+      opacity: 0.8; }
   .app-star .star-img {
     position: absolute;
     top: 0;
@@ -1278,7 +1284,8 @@ html[data-theme='dark'] .apptitle a {
     transform: scale(1.08); }
   .app-star .macos, .app-star .kaiyuan, .app-star .shoufei, .app-star .free {
     color: var(--background-card-color) !important;
-    border-color: rgba(255, 255, 255, 0.6) !important; }
+    border-color: var(--background-card-color) !important;
+    opacity: 0.6; }
 
 /* 归档页标签 */
 .archives_tags {
