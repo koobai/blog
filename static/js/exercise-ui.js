@@ -16,7 +16,8 @@
     'Run': '#F58200', 'TrailRun': '#F58200', 'Treadmill': '#F58200', 'VirtualRun': '#F58200',
     'Ride': '#32D74B', 'EBikeRide': '#32D74B', 'VirtualRide': '#32D74B', 
     'Walk': '#DF40C4', 'Hike': '#DF40C4',
-    'Swim': '#0BAEE6', 'WaterSport': '#0BAEE6'
+    'Swim': '#0BAEE6', 'WaterSport': '#0BAEE6',
+    'StairStepper': '#AF52DE'
   };
 
   // 2. 运动类型大类集合 (用于极值计算和图标匹配)
@@ -61,13 +62,13 @@
 
     // 2. 运动类型中文映射表（增加 StairStepper）
     const typeMap = {
-      'Run': '跑步', 'TrailRun': '越野跑', 'Treadmill': '室内跑步', 'VirtualRun': '虚拟跑步',
-      'Ride': '骑行', 'EBikeRide': '电助力骑行', 'VirtualRide': '室内骑行',
-      'Walk': '步行', 'Hike': '徒步',
-      'Swim': '游泳', 'WaterSport': '水上运动',
-      'StairStepper': '爬楼梯'
+      'Run': '跑起来', 'TrailRun': '山野跑起', 'Treadmill': '跑马机跑起', 'VirtualRun': '线上跑起',
+      'Ride': '骑起来', 'EBikeRide': '带电骑起', 'VirtualRide': '台子踩起',
+      'Walk': '走起来', 'Hike': '徒步走起',
+      'Swim': '游起来', 'WaterSport': '水上浪起',
+      'StairStepper': '楼梯爬起'
     };
-
+      
     let finalName = typeMap[type] || '运动';
 
     // 3. 终极纠错：无轨迹的普通跑骑标为室内

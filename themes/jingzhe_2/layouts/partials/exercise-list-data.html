@@ -19,7 +19,7 @@
   {{- $hour := $date.Hour -}}
 
      {{- /* 1.1 极简运动类型判定与中文化 (字典里加上 StairStepper) */ -}}
-  {{- $typeMap := dict "Run" "跑步" "TrailRun" "越野跑" "Treadmill" "室内跑步" "VirtualRun" "虚拟跑步" "Ride" "骑行" "EBikeRide" "电助力骑行" "VirtualRide" "室内骑行" "Walk" "步行" "Hike" "徒步" "Swim" "游泳" "StairStepper" "爬楼梯" -}}
+  {{- $typeMap := dict "Run" "跑起来" "TrailRun" "山野跑起" "Treadmill" "跑马机跑起" "VirtualRun" "线上跑起" "Ride" "骑起来" "EBikeRide" "带电骑起" "VirtualRide" "台子踩起" "Walk" "走起来" "Hike" "徒步走起" "Swim" "游起来" "WaterSport" "水上浪起" "StairStepper" "楼梯爬起" -}}
   
   {{- $typeStr := default "运动" (index $typeMap $type) -}}
 
@@ -53,16 +53,17 @@
 {{- $iconStair := `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 21H3V11a9 9 0 1 1 18 0Z"/><path d="M20.77 9H12v4m-4 4v-4h13M3 17h18"/></g></svg>` | safeHTML -}}
 
 {{- $themeMap := dict
-  "Ride"        (dict "color" "#32D74B" "icon" $iconRide) 
-  "VirtualRide" (dict "color" "#32D74B" "icon" $iconRide)
-  "EBikeRide"   (dict "color" "#32D74B" "icon" $iconRide)
-  "Run"         (dict "color" "#F58200" "icon" $iconRun)
-  "TrailRun"    (dict "color" "#F58200" "icon" $iconRun)
-  "Treadmill"   (dict "color" "#F58200" "icon" $iconRun)
-  "Walk"        (dict "color" "#DF40C4" "icon" $iconWalk)
-  "Hike"        (dict "color" "#DF40C4" "icon" $iconWalk)
-  "Swim"        (dict "color" "#0BAEE6" "icon" $iconSwim)
-  "WaterSport"  (dict "color" "#0BAEE6" "icon" $iconSwim)
+  "Ride"         (dict "color" "#32D74B" "icon" $iconRide) 
+  "VirtualRide"  (dict "color" "#32D74B" "icon" $iconRide)
+  "EBikeRide"    (dict "color" "#32D74B" "icon" $iconRide)
+  "Run"          (dict "color" "#F58200" "icon" $iconRun)
+  "TrailRun"     (dict "color" "#F58200" "icon" $iconRun)
+  "Treadmill"    (dict "color" "#F58200" "icon" $iconRun)
+  "VirtualRun"   (dict "color" "#F58200" "icon" $iconRun)  
+  "Walk"         (dict "color" "#DF40C4" "icon" $iconWalk)
+  "Hike"         (dict "color" "#DF40C4" "icon" $iconWalk)
+  "Swim"         (dict "color" "#0BAEE6" "icon" $iconSwim)
+  "WaterSport"   (dict "color" "#0BAEE6" "icon" $iconSwim)
   "StairStepper" (dict "color" "#AF52DE" "icon" $iconStair)
 -}}
 {{- $defaultTheme := dict "color" "#32D74B" "icon" $iconRide -}}
