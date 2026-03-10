@@ -488,7 +488,7 @@
         }
 
         const runColor = primaryRun ? colorFromType(primaryRun.type) : '#32D74B';
-        const dateStyle = hasRun ? `color: ${runColor}; opacity: 1;` : 'color: inherit; opacity: 0.6;';
+        const dateStyle = hasRun ? `color: ${runColor}; opacity: 1;` : 'opacity: 0.6;';
         
         return `
           <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" 
@@ -504,14 +504,14 @@
       const insights = engine.monthlyData.insights;
       const timeBlocksHtml = insights.timeBlocks.map((count, i) => {
         const heightRatio = insights.maxTimeBlockCount > 0 ? (count / insights.maxTimeBlockCount) : 0;
-        const bgColor = count > 0 ? `rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})` : 'color-mix(in srgb, var(--text-info-color), transparent 80%)';
+        const bgStyle = count > 0 ? `style="background-color: rgba(50, 215, 75, ${0.3 + 0.7 * heightRatio})"` : '';
         
         return `
           <div class="barWrapper">
-            <div class="punchHole" style="background-color: ${bgColor}"></div>
+            <div class="punchHole" ${bgStyle}></div>
             <div class="runTooltip">
               <div class="ttItem">
-                <span class="ttName" style="color: var(--text-info-color);">${insights.personas[i].time}</span>
+                <span class="ttName">${insights.personas[i].time}</span>
                 <span class="ttNum">${count} <small>趟</small></span>
               </div>
             </div>
@@ -522,15 +522,16 @@
       const hrZonesHtml = insights.hrCounts.map((count, i) => {
         const info = insights.hrZonesInfo[i];
         const percent = insights.validHrRuns > 0 ? Math.max(12, (count / insights.validHrRuns) * 100) : 12;
-        const bgColor = count > 0 ? info.color : 'color-mix(in srgb, var(--text-info-color), transparent 80%)';
+        
+        const bgStyle = count > 0 ? `background-color: ${info.color}` : '';
         
         return `
           <div class="zoneCol">
-            <div class="zoneBar" style="height: ${percent}%; background-color: ${bgColor}"></div>
+            <div class="zoneBar" style="height: ${percent}%; ${bgStyle}"></div>
             <div class="runTooltip">
               <div class="ttItem">
                 <span class="ttName" style="color: ${info.color};">
-                  ${info.range} <small style="color: inherit">BPM</small>
+                  ${info.range} <small>BPM</small>
                 </span>
                 <span class="ttNum">${count} <small>趟</small></span>
               </div>
