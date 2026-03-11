@@ -35,7 +35,7 @@ hasCJKLanguage = true
   
   [markup.goldmark]
     [markup.goldmark.renderer]
-      hardWraps = true
+      hardWraps = false
       unsafe = true
       xhtml = false
 
