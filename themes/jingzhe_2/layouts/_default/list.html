@@ -1,17 +1,41 @@
 {{ define "body_classes" }}page-blog-tag{{ end }}
 
 {{ define "main" }}
-<div class="summary">
-  {{ .Content }}
+<div id="index-card-timeline" class="index-card tag-list">
+   {{ $paginator := .Paginate .Pages 26 }}
+    {{ range .Paginator.Pages }}
+      
+      {{/* ---------------- 【A. 长篇日志】 ---------------- */}}
 
-  {{ range .Paginator.Pages }}
-  <div class="summary-nrong img-hide">
-    <div class="summary-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-    <div class="summary-description">{{ .Params.description }}</div>
-    <div class="summary-date twitter-time" data-time="{{ .Date.Unix }}"></div>  
-  </div>
-  {{ end }}
+    {{/* 博文 */}}
+    {{ if eq .Type "posts" }}
+      <div class="card-timeline index-post img-hide">
+          <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
+        <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div> 
+          {{ with .GetTerms "tags" }}
+            <div class="post-tags-list"> {{ range . }}
+                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+              {{ end }}
+            </div>
+          {{ end }}
+      </div>
 
-  {{/* {{ partial "pagination.html" . }} */}}
+      {{/* ---------------- 【B. 唠叨动态】 ---------------- */}}
+      {{ else if eq .Type "laodao" }}
+        {{/* 🌟 统一调用组件，享受“改一处变全站”的快乐 */}}
+        {{ partial "laodao-card.html" . }}
+      {{ end }}
+
+    {{ end }}
 </div>
+
+{{/* 翻页逻辑 */}}
+{{ if .Paginator.HasNext }}
+  <div class="laodao-more">
+    <button id="laoda-more-btn" data-next-url="{{ .Paginator.Next.URL }}" class="laodao-more-b">看更多 ...</button>
+  </div>
+{{ end }}
+
+<script src="/js/laodao.js?v=20260311a" defer></script>
+{{ partial "artalk.html" . }}
 {{ end }}

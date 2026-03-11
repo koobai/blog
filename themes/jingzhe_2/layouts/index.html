@@ -3,32 +3,59 @@
 
 {{ define "main" }}
 
-<!--锻炼--> 
 {{ $dataEngine := partialCached "exercise-list-data.html" . "exerciseData" }}
 {{ $activities := $dataEngine.activities }}
 {{ $themeMap := $dataEngine.themeMap }}
 {{ $defaultTheme := $dataEngine.defaultTheme }}
-<template id="memos-exercise">
-  <div class="cardList memos-exercise-list">
-    {{ range first 2 $activities }}
-      {{ $theme := default $defaultTheme (index $themeMap .type) }}    
-      <div class="runCard memos-exercise-card img-hide">      
-        <div class="iconRing" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>     
-        {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme) }}      
-      </div>
-    {{ end }}   
-  </div>
-</template>
+ {{/* 分页，默认 25 条一页 */}}
+<div id="index-card-timeline" class="index-card">
+  {{ $stream := where site.RegularPages "Type" "in" (slice "posts" "laodao") }}
+  {{ $paginator := .Paginate $stream.ByDate.Reverse 25 }}
 
-<!--memos--> 
-<div id="memos"></div>
-<div id="bber"></div>
-<!--memos 内容-->
-<script src="/js/memos.js?v=20260309b" defer></script>
-<script src="/js/coco-message.min.js" defer></script>
-<!--评论加载-->
-{{ partial "artalk.html" . }}
+  {{ range $index, $page := $paginator.Pages }}
+    {{/* 博文 */}}
+    {{ if eq .Type "posts" }}
+      <div class="card-timeline index-post img-hide">
+          <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
+        <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+         <div class="posts-description">{{ .Params.description }}</div>   
+          {{ with .GetTerms "tags" }}
+            <div class="post-tags-list"> {{ range . }}
+                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+              {{ end }}
+            </div>
+          {{ end }}
+      </div>
+      
+    {{ else if eq .Type "laodao" }}
+      
+      {{ partial "laodao-card.html" . }}
+      
+    {{ end }}
+
+    {{/* 锻炼，仅在第一页的第二条数据下方插入 */}}
+    {{ if and (eq $paginator.PageNumber 1) (eq $index 1) }}
+      <div class="cardList memos-exercise-list card-timeline">
+        {{ range first 2 $activities }}
+          {{ $theme := default $defaultTheme (index $themeMap .type) }}    
+          <div class="runCard memos-exercise-card img-hide">      
+            <div class="iconRing" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>     
+            {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme) }}      
+          </div>
+        {{ end }}   
+      </div>
+    {{ end }}
+
+  {{ end }}
+</div>
+
+{{ if $paginator.HasNext }}
+  <div class="laodao-more">
+    <button id="laoda-more-btn" data-next-url="{{ $paginator.Next.URL }}" class="laodao-more-b">看更多 ...</button>
+  </div>
 {{ end }}
 
-{{ define "footer_js" }}
+<script src="/js/laodao.js?v=20260311a" defer></script>
+{{ partial "artalk.html" . }}
+
 {{ end }}

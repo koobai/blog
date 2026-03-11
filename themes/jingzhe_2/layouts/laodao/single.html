@@ -1,0 +1,14 @@
+{{ define "body_classes" }}page-laodao-single{{ end }}
+{{ define "title" }}唠叨 - {{ .Date.Format "2006-01-02 15:04" }}{{ end }}
+
+{{ define "main" }}
+<div class="index-card">
+  {{ partial "laodao-card.html" . }}
+</div>
+
+<div class="laodao-more img-hide">
+    <a href="/" class="laodao-more-b">看全部唠叨 ...</a>
+  </div>
+
+{{ partial "artalk.html" . }}
+{{ end }}

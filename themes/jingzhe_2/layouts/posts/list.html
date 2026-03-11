@@ -28,9 +28,10 @@
       <div class="posts-time-new">
           <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
           {{ with .GetTerms "tags" }}
-            {{ range . }}
-              <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
-            {{ end }}
+            <div class="post-tags-list"> {{ range . }}
+                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+              {{ end }}
+            </div>
           {{ end }}
       </div>
   </div>

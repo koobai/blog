@@ -1,5 +1,5 @@
 // 灯箱调用(首页顶部/Memos页面)
-window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a,.photo-moment a');
+window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a,.photo-moment a,.laodao-photo');
 
 // 页面上滑加载动画
 function animateSummaries() {
@@ -82,8 +82,12 @@ window.formatDate = (time, isExact = true, forceShort = false) => {
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.twitter-time').forEach(el => {
         if (el.dataset.time) {
-            const isExact = el.dataset.exact === 'true';
-            el.innerText = window.formatDate(el.dataset.time, isExact, isExact);
+            // 分别独立获取两个开关的状态
+            const isExact = el.dataset.exact === 'true'; // 控制：是否显示 小时:分钟
+            const forceShort = el.dataset.short === 'true'; // 控制：是否强行不显示 年份
+
+            // 互不干扰地传给 formatDate 函数
+            el.innerText = window.formatDate(el.dataset.time, isExact, forceShort);
         }
     });
 });
