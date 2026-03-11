@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>空白Koobai</title><link>https://koobai.com/</link><description/><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 11 Mar 2026 19:25:02 +0800</lastBuildDate><atom:link href="https://koobai.com/index.xml" rel="self" type="application/rss+xml"/><item><title>💬 唠叨：2026-03-11 19:25</title><link>https://koobai.com/laodao/2026/03/20260311-192502/</link><pubDate>Wed, 11 Mar 2026 19:25:02 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260311-192502/</guid><description><![CDATA[<p>折腾无止境，继续整合～。把 Memos 彻底干掉，利用 Hugo直接以.md 方式唠叨一下。静态页最大的弊端就是发布比较麻烦，直接让 ai 手搓了一个单页：打开&amp;ndash;输入&amp;ndash;提交/修 …</p>]]></description><content:encoded><![CDATA[<p>折腾无止境，继续整合～。把 Memos 彻底干掉，利用 Hugo直接以.md 方式唠叨一下。静态页最大的弊端就是发布比较麻烦，直接让 ai 手搓了一个单页：打开&ndash;输入&ndash;提交/修改完成。系统默默的完成图片上传、.md 生成、构建、推送。完美，散花🎉 #折腾 #blog<br>
 PS:就是 Artalk 评论数据又没了😂</p>
-]]></content:encoded></item><item><title>💬 唠叨：2026-03-07 20:21</title><link>https://koobai.com/laodao/2026/03/20260307-202125/</link><pubDate>Sat, 07 Mar 2026 20:21:25 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260307-202125/</guid><description>&lt;p>继续折腾，把 动起来页面整合进 Hugo，原项目只负责数据同步，Hugo 拿到 json 数据之后，承担起页面渲染呈现及交互，且配合全站新增浅色/深色模式。自己真是太厉害了😄，这也能整，牛逼的 …&lt;/p></description><content:encoded>&lt;p>继续折腾，把
+]]></content:encoded></item><item><title>💬 唠叨：2026-03-07 20:21</title><link>https://koobai.com/laodao/2026/03/20260307-202125/</link><pubDate>Sat, 07 Mar 2026 20:21:25 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260307-202125/</guid><description>&lt;p>继续折腾，把 动起来页面整合进 Hugo，原项目只负责数据同步，Hugo 拿到 json 数据之后，承担起页面渲染呈现及交互，且配合全站新增浅色/深色模式。自己真是太厉害了😄，这也能整，牛逼的 …&lt;/p></description><content:encoded><![CDATA[<p>继续折腾，把
 
-&lt;a 
+<a 
     
         href="https://koobai.com/exercise"
     
@@ -12,9 +12,9 @@ PS:就是 Artalk 评论数据又没了😂</p>
         rel="noopener external nofollow noreferrer"
     
 >
-动起来&lt;/a>页面整合进 Hugo，原项目只负责数据同步，Hugo 拿到 json 数据之后，承担起页面渲染呈现及交互，且配合全站新增浅色/深色模式。自己真是太厉害了😄，这也能整，牛逼的 ai～。 为了这折腾的成果，必须去跑一圈～.
-更新：彻底摆脱原项目，让 ai 写了个 Python 脚本直接同步 Strava 数据 🎉 #折腾 #Blog&lt;/p>
-</content:encoded></item><item><title>💬 唠叨：2026-03-04 13:45</title><link>https://koobai.com/laodao/2026/03/20260304-134530/</link><pubDate>Wed, 04 Mar 2026 13:45:30 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260304-134530/</guid><description>&lt;img src="https://img.koobai.com/memos/1772602850_2025%E5%B9%B4%E5%BA%A6%E4%BA%94%E6%98%9F%E5%BA%97%E9%93%BA.webp" alt="taobao" class="laodao-photo img-hide" loading="lazy" decoding="async" />&lt;p>今天才发现自己店铺 骑时这样获得了2025 淘宝年度五星店铺，不错不错🎉。虽然没卵用，但也是一种肯定。现在订单量太少了，年已过，2026 年加油~ #日常
+动起来</a>页面整合进 Hugo，原项目只负责数据同步，Hugo 拿到 json 数据之后，承担起页面渲染呈现及交互，且配合全站新增浅色/深色模式。自己真是太厉害了😄，这也能整，牛逼的 ai～。 为了这折腾的成果，必须去跑一圈～.<br>
+更新：彻底摆脱原项目，让 ai 写了个 Python 脚本直接同步 Strava 数据 🎉 #折腾 #Blog</p>
+]]></content:encoded></item><item><title>💬 唠叨：2026-03-04 13:45</title><link>https://koobai.com/laodao/2026/03/20260304-134530/</link><pubDate>Wed, 04 Mar 2026 13:45:30 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260304-134530/</guid><description>&lt;img src="https://img.koobai.com/memos/1772602850_2025%E5%B9%B4%E5%BA%A6%E4%BA%94%E6%98%9F%E5%BA%97%E9%93%BA.webp" alt="taobao" class="laodao-photo img-hide" loading="lazy" decoding="async" />&lt;p>今天才发现自己店铺 骑时这样获得了2025 淘宝年度五星店铺，不错不错🎉。虽然没卵用，但也是一种肯定。现在订单量太少了，年已过，2026 年加油~ #日常
 &lt;/p></description><content:encoded><![CDATA[<p>今天才发现自己店铺
 
 <a 
