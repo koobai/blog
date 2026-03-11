@@ -4,7 +4,6 @@
 {{ if eq .Type "posts" }}
 <div id="Comments"></div>
 <script>
-
   document.addEventListener('DOMContentLoaded', function() {
     Artalk.init({
       el:        '#Comments',
@@ -12,8 +11,47 @@
       pageTitle: '{{ .Title }}',
       server:    '{{ $.Site.Params.artalk.server }}',
       site:      '{{ $.Site.Params.artalk.site }}',
-      // ...你的其他配置
+      darkMode:  'auto'
     });
   });
+</script>
+
+{{ else }}
+<script>
+  function toggleArtalk(id, permalink) {
+    // 增加一个容错：防止网速太慢 Artalk.js 还没下载完用户就点了按钮
+    if (typeof Artalk === 'undefined') {
+        alert('评论组件还在加载中，请稍等一秒~');
+        return;
+    }
+
+    const targetContainer = document.getElementById('artalk-' + id);
+    if (!targetContainer) return;
+    
+    // 手风琴逻辑：先把页面上其他打开的唠叨评论框统统关掉、清空
+    document.querySelectorAll('.laodao-artalk-container').forEach(el => {
+        if (el !== targetContainer) {
+            el.style.display = 'none';
+            el.innerHTML = ''; 
+        }
+    });
+
+    // 切换当前点击的这个评论框
+    if (targetContainer.style.display === 'none' || targetContainer.style.display === '') {
+        targetContainer.style.display = 'block';
+        // 瞬间初始化！
+        Artalk.init({
+            el:        '#artalk-' + id,
+            pageKey:   permalink,        // 使用这条唠叨的永久链接作为精准匹配的 Key
+            pageTitle: '唠叨 ' + id,     // 唠叨没有标题，用它的发布时间名代替
+            server:    '{{ $.Site.Params.artalk.server }}',
+            site:      '{{ $.Site.Params.artalk.site }}',
+            darkMode:  'auto'
+        });
+    } else {
+        targetContainer.style.display = 'none';
+        targetContainer.innerHTML = ''; // 收起时清空内存，保证页面极致流畅
+    }
+  }
 </script>
 {{ end }}

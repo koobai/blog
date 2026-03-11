@@ -31,7 +31,6 @@ $breakpoints: (
 @import 'footer';
 @import 'content';
 @import 'intro';
-@import 'summary';
 @import 'main-menu-mobile';
 @import 'comment';
 @import 'app';
@@ -42,6 +41,7 @@ $breakpoints: (
 @import 'list';
 @import 'tiaozhuan';
 @import 'exercise';
+@import 'laodao';
 
 @font-face {
   font-family: 'JetBrainsMono';
@@ -154,8 +154,4 @@ img {
     transform: none !important;
     transition: none !important;
   }
-}
-//首页默认隐藏footer
-.page-home .footer-background {
-    display: none;
 }

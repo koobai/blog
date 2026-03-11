@@ -1,0 +1,40 @@
+<div class="card-timeline laodao-card img-hide">
+  
+  <div class="laodao-time">
+    <span class="twitter-time" data-time="{{ .Date.Unix }}" data-exact="true">{{ .Date.Format "01-02 15:04" }}</span>
+  </div>
+  
+  {{ $rawContent := .Content }}
+  {{ $images := findRE "<img[^>]*class=\"[^\"]*laodao-photo[^\"]*\"[^>]*>" $rawContent }}
+  {{ $cleanContent := $rawContent 
+      | replaceRE "<img[^>]*class=\"[^\"]*laodao-photo[^\"]*\"[^>]*>" "" 
+      | replaceRE "<p>\\s*(?:<br\\s*/?>)?\\s*</p>" "" 
+      | replaceRE "(^|[\\s>])#([^\\s<.,!?'\"，。！？]+)" "" 
+      | safeHTML 
+  }}
+
+  <div class="laodao-content datacont">
+    {{ $cleanContent }}
+    {{ if $images }}
+      <div class="laodao-gallery">
+        {{ range $images }}{{ . | safeHTML }}{{ end }}
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="laodao-footer">
+    <div class="laodao-tags">
+      {{ range (.GetTerms "laodaotags") }}
+        <a href="{{ .RelPermalink }}" class="laodao-tag">#{{ .LinkTitle }}</a>
+      {{ end }}
+    </div>
+    
+    <div class="laodao-comment">
+      <span onclick="toggleArtalk('{{ .File.TranslationBaseName }}', '{{ .RelPermalink }}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"></path><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"></path></svg>
+      </span>
+    </div>
+  </div>
+  
+  <div id="artalk-{{ .File.TranslationBaseName }}" class="laodao-artalk-container" style="display: none;"></div>
+</div>

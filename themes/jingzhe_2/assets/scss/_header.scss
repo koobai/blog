@@ -225,14 +225,11 @@
 }
 
 // 唠叨按钮
-.index-laodao {
+.index-laodao a{
   font-size: 0.8rem;
+  color: transparent !important;
   @include breakpoint('medium') {
     font-size: 1.2rem;
     margin-left: 20px;
-  }
-
-  @include dark {
-    color: var(--text-info-dark-color);
   }
 }

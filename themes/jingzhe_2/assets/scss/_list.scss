@@ -62,18 +62,6 @@
   }
 }
 
-// 首页可能用到的列表
-.posts_list_index {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 25px;
-  
-  @include breakpoint('medium') {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-}
-
 // 文章卡片样式
 .posts_list_article {
   border-radius: 16px;
@@ -222,4 +210,24 @@
     transition: transform 0.3s ease;
     margin-left: 10px;
   }
+}
+
+//tag列表
+.tag-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px; 
+  .index-post-title{
+    font-size: 1.1rem;
+  }
+    @include breakpoint('medium') {
+      grid-template-columns: repeat(2, 1fr);
+        .index-post {
+          grid-column: span 1;
+        }
+        .laodao-card {
+          grid-column: 1 / -1; 
+        }
+      }
+  
 }

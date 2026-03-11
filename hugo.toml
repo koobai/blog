@@ -38,7 +38,13 @@ hasCJKLanguage = true
       hardWraps = false
       unsafe = true
       xhtml = false
-      
+
+# [tag]
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  laodaotag = "laodaotags"  # 专属标签领地
+
 # [菜单配置]
 [menu]
   [[menu.main]]

@@ -1,24 +1,21 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 {{- $pages := .Pages -}}
 {{- if .IsHome -}}
-  {{/* 获取主分区的常规页面 (排除 _index.md 等) */}}
-  {{- $pages = where site.RegularPages "Section" "in" site.Params.mainSections -}}
+  {{/* 🚀 明确指定只抓取 posts(长文) 和 laodao(唠叨) 两个分区 */}}
+  {{- $pages = where site.RegularPages "Section" "in" (slice "posts" "laodao") -}}
 {{- end -}}
 {{- $pages = where $pages "Params.hidden" "!=" true -}}
 
-{{/* 限制 RSS 输出数量，防止文件过大 */}}
 {{- $limit := site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 -}}
   {{- $pages = $pages | first $limit -}}
 {{- end -}}
-
-{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>{{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
     <description>{{ site.Params.description }}</description>
     
-    {{/* 图标设置 */}}
     {{- with site.Params.logo }}
     <image>
       <url>{{ .icon | absURL }}</url>
@@ -29,7 +26,6 @@
     <generator>Hugo -- gohugo.io</generator>
     {{- with site.LanguageCode }}<language>{{.}}</language>{{end}}
     
-    {{/* 作者信息：适配 hugo.toml 中的 [params.author] */}}
     {{- with site.Params.author.email }}
     <managingEditor>{{.}}{{ with site.Params.author.name }} ({{.}}){{end}}</managingEditor>
     <webMaster>{{.}}{{ with site.Params.author.name }} ({{.}}){{end}}</webMaster>
@@ -45,31 +41,47 @@
     {{ range $pages }}
       {{- if and (ne .Layout `search`) (ne .Layout `archives`) }}
       <item>
-        <title>{{ .Title }}</title>
+        {{- $isLaodao := eq .Section "laodao" -}}
+
+        <title>{{ if $isLaodao }}💬 唠叨：{{ .Date.Format "2006-01-02 15:04" }}{{ else }}{{ .Title }}{{ end }}</title>
         <link>{{ .Permalink }}</link>
         <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-        
-        {{/* 单篇文章作者 */}}
         {{- with site.Params.author.email }}<author>{{.}}{{ with site.Params.author.name }} ({{.}}){{end}}</author>{{end}}
-        
         <guid>{{ .Permalink }}</guid>
-        <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}}</description>
+        
+        {{/* 1. 智能提取首图 */}}
+        {{- $coverImage := "" -}}
+        {{- if .Params.image -}}
+          {{- $coverImage = printf `<img src="%s" alt="%s" style="max-width:100%%;" />` (.Params.image | absURL) .Title -}}
+        {{- else if $isLaodao -}}
+          {{- $imgs := findRE "<img[^>]+>" .Content 1 -}}
+          {{- if len $imgs -}}
+            {{- $coverImage = index $imgs 0 -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{/* 2. 强力摘要 */}}
+        {{- $descText := "" -}}
+        {{- if $isLaodao -}}
+          {{- $descText = .Plain | truncate 100 -}}
+        {{- else -}}
+          {{- $descText = .Description | default .Summary -}}
+        {{- end -}}
+        
+        <description>{{ printf "<![CDATA[%s<p>%s</p>]]>" $coverImage $descText | safeHTML }}</description>
         
         {{- if not site.Params.RSSNoContent}}
-          {{/* 🔥 关键修复：图片必须使用 absURL (绝对路径)，否则 RSS 阅读器无法加载图片 */}}
-          {{- $image := "" -}}
-          {{- if .Params.image -}}
-            {{- $image = printf `<img src="%s" alt="%s" style="max-width:100%%;" />` (.Params.image | absURL) .Title -}}
+          {{/* 3. 渲染正文 */}}
+          {{- $contentImage := "" -}}
+          {{- if and (not $isLaodao) .Params.image -}}
+            {{- $contentImage = $coverImage -}}
           {{- end -}}
-          
-          {{/* 将封面图注入到正文顶部 */}}
-          <content:encoded>{{ (printf "<![CDATA[%s%s]]>" $image .Content) | safeHTML }}</content:encoded>
+          <content:encoded>{{ (printf "<![CDATA[%s%s]]>" $contentImage .Content) | safeHTML }}</content:encoded>
         {{- end }}
       </item>
       {{- end }}
     {{ end }}
 
-    {{/* 🔥 结构修复：验证标签必须放在 channel 底部，且只出现一次 */}}
     <follow_challenge>
       <feedId>52982633250295857</feedId>
       <userId>58707550957768704</userId>
