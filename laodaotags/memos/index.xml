@@ -22,7 +22,7 @@
  rel="noopener external nofollow noreferrer"
  
 &gt;
-木木&lt;/a&gt;老师手把手的帮助，完美搞定。这下从发布到浏览一条龙的体验都可以在博客里完成了，相当的巴适~😎 #折腾 #Memos&lt;br&gt;
+木木&lt;/a&gt;老师手把手的帮助，完美搞定。这下从发布到浏览一条龙的体验都可以在博客里完成了，相当的巴适~😎 #折腾 #Memos
 
  &lt;img src="https://img.koobai.com/memos/memos-tag.webp" alt="memos-tag" class="laodao-photo img-hide" loading="lazy" decoding="async" /&gt;
 &lt;/p&gt;</description></item><item><title/><link>https://koobai.com/laodao/2023/08/20230807-132237/</link><pubDate>Mon, 07 Aug 2023 13:22:37 +0800</pubDate><guid>https://koobai.com/laodao/2023/08/20230807-132237/</guid><description>&lt;p&gt;更新了
@@ -97,10 +97,10 @@ Emoji Reaction&lt;/a&gt;项目，类似于点赞。顺手集成到了
  rel="noopener external nofollow noreferrer"
  
 &gt;
-唠叨&lt;/a&gt;页面，还蛮有意思，互动起来更方便了。#折腾 #Memos&lt;br&gt;
+唠叨&lt;/a&gt;页面，还蛮有意思，互动起来更方便了。#折腾 #Memos
 
  &lt;img src="https://img.koobai.com/memos/memoslike.webp" alt="memoslike" class="laodao-photo img-hide" loading="lazy" decoding="async" /&gt;
-&lt;/p&gt;</description></item><item><title/><link>https://koobai.com/laodao/2023/07/20230723-131200/</link><pubDate>Sun, 23 Jul 2023 13:12:00 +0800</pubDate><guid>https://koobai.com/laodao/2023/07/20230723-131200/</guid><description>&lt;p&gt;通过 AI 给唠叨增加了表情选择🎉，&lt;code&gt;已更改为Emoji表情&lt;/code&gt;不过也有些问题：一个是memos源站无法识别img标签，一个是数据多了两个逻辑（调用表情json文件、表情文字转换img），还有就是发布以后无法给表情单独设置div（正则表达式提取出来，再插入回去搞不清）。但想想也无所谓，达到自己想要的效果就行😎 #折腾 #Memos&lt;br&gt;
+&lt;/p&gt;</description></item><item><title/><link>https://koobai.com/laodao/2023/07/20230723-131200/</link><pubDate>Sun, 23 Jul 2023 13:12:00 +0800</pubDate><guid>https://koobai.com/laodao/2023/07/20230723-131200/</guid><description>&lt;p&gt;通过 AI 给唠叨增加了表情选择🎉，&lt;code&gt;已更改为Emoji表情&lt;/code&gt;不过也有些问题：一个是memos源站无法识别img标签，一个是数据多了两个逻辑（调用表情json文件、表情文字转换img），还有就是发布以后无法给表情单独设置div（正则表达式提取出来，再插入回去搞不清）。但想想也无所谓，达到自己想要的效果就行😎 #折腾 #Memos
 
  &lt;img src="https://img.koobai.com/memos/emojixinz.webp" alt="" class="laodao-photo img-hide" loading="lazy" decoding="async" /&gt;
 &lt;/p&gt;</description></item><item><title/><link>https://koobai.com/laodao/2023/07/20230720-101028/</link><pubDate>Thu, 20 Jul 2023 10:10:28 +0800</pubDate><guid>https://koobai.com/laodao/2023/07/20230720-101028/</guid><description>&lt;p&gt;自从给
