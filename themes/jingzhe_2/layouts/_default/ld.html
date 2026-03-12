@@ -12,13 +12,13 @@
     
     <div class="admin-publish-card">
         <div class="laodao-content datacont">
-            <textarea id="content" class="admin-textarea" placeholder="写点什么..."></textarea>
+            <textarea id="content" class="admin-textarea" placeholder=" " autofocus></textarea>
         </div>
 
         <div class="laodao-footer admin-publish-footer">
             
             <div class="admin-toolbar">
-                <div class="admin-icon-btn" title="插入链接" onclick="insertLink()">
+                <div class="admin-icon-btn admin-icon-link" title="插入链接" onclick="insertLink()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg>
                 </div>
 
@@ -27,16 +27,12 @@
                     <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
                 </label>
 
-                <div class="admin-icon-btn" title="插入表情" onclick="showEmoji(this)">
+                <div class="admin-icon-btn admin-icon-emoji" title="插入表情" onclick="showEmoji(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
                 </div>
 
                 <div class="admin-icon-btn" title="最近唠叨" onclick="toggleRecentList()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 7c0 2.21-4.03 4-9 4S3 9.21 3 7m18 0c0-2.21-4.03-4-9-4S3 4.79 3 7m18 0v5M3 7v5m18 0c0 2.21-4.03 4-9 4s-9-1.79-9-4m18 0v5c0 2.21-4.03 4-9 4s-9-1.79-9-4v-5"/></svg>
-                </div>
-
-                <div class="admin-icon-btn" title="退出" onclick="logout()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m22 12l-4-4v3h-8v2h8v3m2 2a10 10 0 1 1 0-12h-2.73a8 8 0 1 0 0 12Z"/></svg>
                 </div>
             </div>
             
@@ -93,16 +89,24 @@
         return res;
     }
 
+    // 2. 找到 initApp，加上获取焦点的代码
     function initApp() {
         if (getAdminToken()) {
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
+            
+            // 🚀 一进来，光标直接锁定输入框闪烁！
+            setTimeout(() => $('content').focus(), 100); 
         } else {
             $('loginOverlay').style.display = 'flex';
             $('adminPanel').style.display = 'none';
+            
+            // 如果是输入密钥界面，光标锁定在密钥框
+            setTimeout(() => $('adminTokenInput').focus(), 100);
         }
     }
 
+    // 3. 找到 verifyToken，在成功的地方也加上
     async function verifyToken() {
         const token = $('adminTokenInput').value.trim();
         if (!token) return cocoMessage.warning("请输入密钥");
@@ -116,6 +120,9 @@
             $('adminPanel').style.display = 'block';
             
             cocoMessage.success("验证成功");
+            
+            // 🚀 验证通过后，光标直接锁定输入框闪烁！
+            $('content').focus();
         } catch (e) {
             logout(false);
             cocoMessage.error("密钥错误，请重新输入");

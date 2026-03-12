@@ -239,14 +239,25 @@
 .admin-immersive-wrapper {
     max-width: 600px;      
     width: 100%;  
-    margin: 20px auto 20px; 
+    margin: 20px auto 40px;
+    padding: 20px;
+    box-sizing: border-box;
     @include breakpoint('medium') {
         margin: 15vh auto 5vh; 
+        padding: 0;
+        box-sizing: border-box;
     }
 }
 
 /* 3. 发布框通用组件 */
 .admin-publish-card {
+    @include breakpoint('medium') {
+        &:hover .admin-publish-footer,
+        &:has(.admin-textarea:not(:placeholder-shown)) .admin-publish-footer {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
     &:has(.admin-textarea:placeholder-shown) #submitBtn {
         opacity: 0.2;
         cursor: not-allowed;
@@ -255,7 +266,7 @@
 
 .admin-textarea {
     width: 100%;
-    min-height: 300px;
+    min-height: 300px; 
     border: none;
     outline: none;
     background: transparent;
@@ -265,12 +276,6 @@
     resize: none !important;      
     overflow-y: hidden;  
     padding: 0;
-    &::placeholder {
-        opacity: 0.3; 
-        @include dark {
-        opacity: 0.5; 
-    }
-    }
 }
 
 .admin-publish-footer {
@@ -280,6 +285,13 @@
     gap: 10px;
     justify-content: space-between;
     align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease; 
+    opacity: 1;
+    visibility: visible;
+    @include breakpoint('medium') {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 /* 4. 左侧 SVG 工具栏组 */
@@ -287,6 +299,13 @@
     display: flex;
     gap: 20px;
     align-items: center;
+}
+
+.admin-toolbar .admin-icon-link,.admin-toolbar .admin-icon-emoji{
+  display: none;
+    @include breakpoint('medium') {
+          display: flex;
+      }
 }
 
 .admin-icon-btn {
