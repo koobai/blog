@@ -3048,11 +3048,20 @@ html[data-theme='dark'] .apptitle a {
 .admin-immersive-wrapper {
   max-width: 600px;
   width: 100%;
-  margin: 20px auto 20px; }
+  margin: 20px auto 40px;
+  padding: 20px;
+  box-sizing: border-box; }
   @media (min-width: 768px) {
     .admin-immersive-wrapper {
-      margin: 15vh auto 5vh; } }
+      margin: 15vh auto 5vh;
+      padding: 0;
+      box-sizing: border-box; } }
 /* 3. 发布框通用组件 */
+@media (min-width: 768px) {
+  .admin-publish-card:hover .admin-publish-footer, .admin-publish-card:has(.admin-textarea:not(:placeholder-shown)) .admin-publish-footer {
+    opacity: 1;
+    visibility: visible; } }
+
 .admin-publish-card:has(.admin-textarea:placeholder-shown) #submitBtn {
   opacity: 0.2;
   cursor: not-allowed; }
@@ -3069,13 +3078,6 @@ html[data-theme='dark'] .apptitle a {
   resize: none !important;
   overflow-y: hidden;
   padding: 0; }
-  .admin-textarea::placeholder {
-    opacity: 0.3; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme='light']) .admin-textarea::placeholder {
-        opacity: 0.5; } }
-    html[data-theme='dark'] .admin-textarea::placeholder {
-      opacity: 0.5; }
 
 .admin-publish-footer {
   padding-top: 15px;
@@ -3083,14 +3085,25 @@ html[data-theme='dark'] .apptitle a {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
-  align-items: center; }
-
+  align-items: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  opacity: 1;
+  visibility: visible; }
+  @media (min-width: 768px) {
+    .admin-publish-footer {
+      opacity: 0;
+      visibility: hidden; } }
 /* 4. 左侧 SVG 工具栏组 */
 .admin-toolbar {
   display: flex;
   gap: 20px;
   align-items: center; }
 
+.admin-toolbar .admin-icon-link, .admin-toolbar .admin-icon-emoji {
+  display: none; }
+  @media (min-width: 768px) {
+    .admin-toolbar .admin-icon-link, .admin-toolbar .admin-icon-emoji {
+      display: flex; } }
 .admin-icon-btn {
   cursor: pointer;
   display: flex;
