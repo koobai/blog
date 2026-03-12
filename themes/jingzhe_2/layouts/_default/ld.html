@@ -1,58 +1,58 @@
 {{ define "body_classes" }}page-laodao-admin{{ end }}
 {{ define "main" }}
 
+<script src="/js/coco-message.min.js" defer></script>
+
 <div id="loginOverlay" style="display: none;">
     <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
     <button class="admin-login-btn" onclick="verifyToken()">验证</button>
-    <div id="loginError" style="color: #ff3b30; font-size: 0.85em; margin-top: 10px; display: none;">密钥错误，请重新输入</div>
 </div>
 
-<div id="adminPanel" style="display: none;">
-    <div class="card-timeline laodao-card admin-publish-card">
-        
+<div id="adminPanel" style="display: none;" class="admin-immersive-wrapper">
+    
+    <div class="admin-publish-card">
         <div class="laodao-content datacont">
-            <textarea id="content" class="admin-textarea" placeholder="唠叨一下"></textarea>
+            <textarea id="content" class="admin-textarea" placeholder="写点什么..."></textarea>
         </div>
 
-        <div class="laodao-footer admin-publish-footer" style="position: relative;">
+        <div class="laodao-footer admin-publish-footer">
             
-            <div style="display: flex; gap: 15px; align-items: center;">
-                
-                <div class="admin-link-wrapper" title="插入链接" onclick="insertLink()" style="cursor: pointer; display: flex; align-items: center; color: #666; transition: color 0.2s;" onmouseover="this.style.color='var(--text, #000)'" onmouseout="this.style.color='#666'">
+            <div class="admin-toolbar">
+                <div class="admin-icon-btn" title="插入链接" onclick="insertLink()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg>
                 </div>
 
-                <div class="admin-upload-wrapper" title="上传图片" style="display: flex; align-items: center; color: #666; transition: color 0.2s;" onmouseover="this.style.color='var(--text, #000)'" onmouseout="this.style.color='#666'">
+               <label class="admin-icon-btn" title="上传图片" style="margin: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/><path d="m3 16l5-5c.928-.893 2.072-.893 3 0l5 5"/><path d="m14 14l1-1c.928-.893 2.072-.893 3 0l3 3"/></g></svg>
-                    <input type="file" id="imageInput" accept="image/*" multiple>
-                </div>
+                    <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                </label>
 
-                <div class="admin-emoji-wrapper" title="插入表情" onclick="showEmoji(this)" style="cursor: pointer; display: flex; align-items: center; color: #666; transition: color 0.2s;" onmouseover="this.style.color='var(--text, #000)'" onmouseout="this.style.color='#666'">
+                <div class="admin-icon-btn" title="插入表情" onclick="showEmoji(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
                 </div>
 
-                 <span class="admin-logout" onclick="logout()">退出</span>
-                
+                <div class="admin-icon-btn" title="最近唠叨" onclick="toggleRecentList()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 7c0 2.21-4.03 4-9 4S3 9.21 3 7m18 0c0-2.21-4.03-4-9-4S3 4.79 3 7m18 0v5M3 7v5m18 0c0 2.21-4.03 4-9 4s-9-1.79-9-4m18 0v5c0 2.21-4.03 4-9 4s-9-1.79-9-4v-5"/></svg>
+                </div>
+
+                <div class="admin-icon-btn" title="退出" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m22 12l-4-4v3h-8v2h8v3m2 2a10 10 0 1 1 0-12h-2.73a8 8 0 1 0 0 12Z"/></svg>
+                </div>
             </div>
             
             <div class="admin-actions">
-                <label id="updateTimeWrap" class="admin-time-sync">
-                    <input type="checkbox" id="updateTimeCb">更新时间
-                </label>
-                <button id="cancelBtn" class="admin-btn admin-btn-cancel" onclick="cancelEdit()">取消</button>
+                <button id="cancelBtn" class="admin-btn admin-btn-cancel" onclick="cancelEdit()" style="display: none;">取消</button>
                 <button id="submitBtn" class="admin-btn" onclick="publishPost()">唠叨一下</button>
             </div>
-
         </div>
-        <div id="status" class="admin-status"></div>
     </div>
-    <div id="recentList"></div>
+    
+    <div id="recentListWrap" class="admin-laodao-list">
+        <div id="recentList"></div>
+    </div>
 </div>
 
 <script>
-    // ----------------------------------------
-    // 核心配置与工具层
-    // ----------------------------------------
     const CONFIG = {
         workerUrl: "https://koobai-laodao.mekoobai.workers.dev",
         owner: "koobai", repo: "blog", branch: "main",
@@ -60,13 +60,22 @@
     };
 
     const STATE = { sha: null, path: null, date: null, emoji: null };
+    let hasFetchedRecent = false; 
 
     const $ = id => document.getElementById(id);
-    const setStatus = msg => $('status').innerText = msg;
     const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
     
-    function utf8_to_b64(str) { return window.btoa(unescape(encodeURIComponent(str))); }
-    function b64_to_utf8(str) { return decodeURIComponent(escape(window.atob(str))); }
+    const utf8_to_b64 = str => {
+        const bytes = new TextEncoder().encode(str);
+        const binString = Array.from(bytes, byte => String.fromCodePoint(byte)).join('');
+        return btoa(binString);
+    };
+
+    const b64_to_utf8 = str => {
+        const binString = atob(str);
+        const bytes = Uint8Array.from(binString, m => m.codePointAt(0));
+        return new TextDecoder().decode(bytes);
+    };
 
     function getFormattedTime() {
         const d = new Date(new Date().getTime() + 8 * 3600 * 1000);
@@ -84,22 +93,11 @@
         return res;
     }
 
-    // ----------------------------------------
-    // 鉴权生命周期 (🚀 闪烁彻底解决区)
-    // ----------------------------------------
     function initApp() {
         if (getAdminToken()) {
-            // 💡 本地有暗号，0秒同步展现面板，绝不闪烁！
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
-            
-            // 然后在后台静默验证拉取数据
-            fetchRecent().catch(e => {
-                // 万一发现暗号被改了或失效了，再强制踢回登录页
-                if (e.message === "401") logout(false);
-            });
         } else {
-            // 没有暗号，直接显示登录框
             $('loginOverlay').style.display = 'flex';
             $('adminPanel').style.display = 'none';
         }
@@ -107,37 +105,33 @@
 
     async function verifyToken() {
         const token = $('adminTokenInput').value.trim();
-        if (!token) return;
+        if (!token) return cocoMessage.warning("请输入密钥");
         
         localStorage.setItem("koobai_admin_token", token);
-        $('loginError').style.display = 'none';
-        
-        const btn = document.querySelector('.admin-login-btn');
-        const oldText = btn.innerText; btn.innerText = "验证中...";
 
         try {
-            await fetchRecent(); 
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
+            
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
+            
+            cocoMessage.success("验证成功");
         } catch (e) {
             logout(false);
-            $('loginError').style.display = 'block';
+            cocoMessage.error("密钥错误，请重新输入");
         }
-        btn.innerText = oldText;
     }
 
     function logout(reload = true) {
         localStorage.removeItem("koobai_admin_token");
-        if(reload) location.reload();
-        else {
+        if(reload) {
+            location.reload();
+        } else {
             $('loginOverlay').style.display = 'flex';
             $('adminPanel').style.display = 'none';
         }
     }
 
-    // ----------------------------------------
-    // 编辑器交互层 (插入 / 表情 / 上传)
-    // ----------------------------------------
     function insertText(text, wrap = '', offset = 0) {
         const el = $('content'); el.focus();
         const { selectionStart: start, selectionEnd: end } = el;
@@ -156,7 +150,7 @@
         
         if (!window.emojisData) {
             try { window.emojisData = (await fetch('/suju/owo.json').then(r => r.json())).Emoji.container; } 
-            catch { return setStatus("获取表情失败"); }
+            catch { return cocoMessage.error("获取表情失败"); }
         }
         
         const div = document.createElement('div');
@@ -189,7 +183,7 @@
 
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
-        setStatus(`🚀 正在处理并上传...`);
+        let uploadMsg = cocoMessage.info("正在压缩并上传...", 0); 
         
         for (let file of files) {
             try {
@@ -198,27 +192,31 @@
                 await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: webpBlob });
                 insertText(`\n![img](${CONFIG.upyunDomain}/${fileName})`);
             } catch (err) { 
-                if (err.message === "401") return logout(); 
-                setStatus("❌ 图片上传失败"); 
+                if (typeof uploadMsg === 'function') uploadMsg();
+                if (err.message === "401") {
+                    cocoMessage.error("登录状态失效，请重新登录");
+                    return logout(); 
+                }
+                return cocoMessage.error("图片上传失败"); 
             }
         }
-        setStatus("✅ 图片准备就绪！"); this.value = '';
+        if (typeof uploadMsg === 'function') uploadMsg();
+        cocoMessage.success("图片准备就绪！"); 
+        this.value = '';
     });
 
-    // ----------------------------------------
-    // GitHub 通信层 (发布与拉取)
-    // ----------------------------------------
     async function publishPost() {
         const contentVal = $('content').value.trim();
-        if (!contentVal) return setStatus("写点什么再发吧！");
+        if (!contentVal) return cocoMessage.warning("写点什么再发吧！");
         
-        $('submitBtn').disabled = true; setStatus("正在安全推送...");
+        $('submitBtn').disabled = true; 
+        let pubMsg = cocoMessage.info("正在安全推送至 GitHub...", 0);
 
         const tags = [...new Set(Array.from(contentVal.matchAll(/#([^\s<.,!?'"，。！？]+)/g), m => m[1]))];
         const tagStr = tags.length ? `\nlaodaotags:\n${tags.map(t => `  - ${t}`).join('\n')}` : "";
         const { year, month, day, hour, min, sec } = getFormattedTime();
         
-        const finalTime = (STATE.sha && !$('updateTimeCb').checked && STATE.date) ? STATE.date : `${year}-${month}-${day}T${hour}:${min}:${sec}+08:00`;
+        const finalTime = (STATE.sha && STATE.date) ? STATE.date : `${year}-${month}-${day}T${hour}:${min}:${sec}+08:00`;
         const finalMD = `---\ndate: ${finalTime}${tagStr}\n---\n\n${contentVal}\n`;
         const path = STATE.path || `content/laodao/${year}/${month}/${year}${month}${day}-${hour}${min}${sec}.md`;
         
@@ -230,42 +228,103 @@
                 method: 'PUT', headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            setStatus("✅ 搞定！"); cancelEdit(); fetchRecent();
+            if (typeof pubMsg === 'function') pubMsg();
+            cocoMessage.success("唠叨成功！搞定！"); 
+            cancelEdit(); 
+            if($('recentListWrap').style.display === 'block') fetchRecent();
         } catch (err) { 
-            if (err.message === "401") logout();
-            else setStatus("❌ 发布失败"); 
+            if (typeof pubMsg === 'function') pubMsg();
+            if (err.message === "401") {
+                cocoMessage.error("登录状态失效");
+                logout();
+            } else {
+                cocoMessage.error("唠叨失败"); 
+            }
         }
         $('submitBtn').disabled = false;
     }
 
+    // 🌟 优化：联动拉取状态，如果没有数据就不展开面板
+    async function toggleRecentList() {
+        const wrap = $('recentListWrap');
+        if (wrap.style.display === 'block') {
+            wrap.style.display = 'none';
+            return;
+        }
+        
+        if (!hasFetchedRecent) {
+            let loadMsg = cocoMessage.info("正在拉取近期记录...", 0);
+            const success = await fetchRecent(); // 等待拉取结果
+            if (typeof loadMsg === 'function') loadMsg();
+            
+            // 如果拉取失败或没数据，直接退出，不展开空白的面板
+            if (!success) return; 
+        }
+        wrap.style.display = 'block';
+    }
+
+    // 🌟 彻底清除 DOM 垃圾，100% 依赖 cocoMessage
     async function fetchRecent() {
         const { year, month } = getFormattedTime();
         const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/content/laodao/${year}/${month}?ref=${CONFIG.branch}`;
         
         try {
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
-            if (!res.ok) return $('recentList').innerHTML = "<div>本月暂无数据</div>";
             
-            const files = (await res.json()).filter(f => f.name.endsWith('.md')).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 5);
+            // 状况1：API 报错（比如该月文件夹压根还没创建）
+            if (!res.ok) {
+                cocoMessage.warning("本月暂无唠叨记录");
+                $('recentList').innerHTML = '';
+                return false; 
+            }
             
+            const files = (await res.json()).filter(f => f.name.endsWith('.md')).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 2);
+            
+            // 状况2：文件夹在，但里面没有 md 文件
+            if (files.length === 0) {
+                cocoMessage.warning("本月暂无唠叨记录");
+                $('recentList').innerHTML = '';
+                return false;
+            }
+
+            hasFetchedRecent = true; // 只有真实拿到数据，才标记为已拉取
+
             const results = await Promise.allSettled(files.map(async file => {
                 const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': file.url } });
                 const rawText = b64_to_utf8((await fRes.json()).content);
                 const body = rawText.replace(/---[\s\S]*?---/, '').trim();
                 
-                // 💡 没有任何多余的解析和排版，只显示前 60 个字的内容
                 return `
                 <div class="card-timeline laodao-card admin-recent-card" onclick="loadForEdit('${file.path}', '${file.sha}', \`${encodeURIComponent(rawText)}\`)">
                     <div class="laodao-content datacont admin-recent-content" style="margin: 0;">
-                        ${body.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 60)}${body.length > 60 ? '...' : ''}
+                        ${body.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 40)}${body.length > 40 ? '...' : ''}
                     </div>
                 </div>`;
             }));
             
-            $('recentList').innerHTML = results.filter(r => r.status === 'fulfilled').map(r => r.value).join('') || "<div>暂无有效数据</div>";
+            const validHtml = results.filter(r => r.status === 'fulfilled').map(r => r.value).join('');
+            
+            // 状况3：解析文件全部失败
+            if (!validHtml) {
+                cocoMessage.warning("获取到的数据无效");
+                $('recentList').innerHTML = '';
+                return false;
+            }
+            
+            // 完美拿到数据，渲染 DOM
+            $('recentList').innerHTML = validHtml;
+            return true;
+            
         } catch(err) { 
-            $('recentList').innerHTML = "<div>获取列表失败</div>"; 
-            if (err.message === "401") throw err; 
+            // 状况4：网络或其他异常
+            $('recentList').innerHTML = ''; 
+            if (err.message === "401") {
+                cocoMessage.error("密钥失效，请重新登录");
+                logout();
+            } else {
+                cocoMessage.error("网络异常，拉取列表失败");
+            }
+            return false;
         }
     }
 
@@ -277,31 +336,31 @@
 
         $('content').value = rawText.replace(/---[\s\S]*?---/, '').trim();
         $('submitBtn').innerText = "修改"; 
-        $('updateTimeWrap').style.display = $('cancelBtn').style.display = 'inline-block'; 
+        
+        $('cancelBtn').style.display = 'inline-block'; 
         
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
+        
+        $('content').dispatchEvent(new Event('input'));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function cancelEdit() {
         $('content').value = ''; 
+        $('content').style.height = 'auto'; 
         STATE.sha = STATE.path = STATE.date = null;
         $('submitBtn').innerText = "唠叨一下"; 
-        $('updateTimeWrap').style.display = $('cancelBtn').style.display = 'none';
-        $('updateTimeCb').checked = false;
+        
+        $('cancelBtn').style.display = 'none';
         
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
-        
-        setStatus(""); 
     }
    
-    // 💡 监听输入框打字，自动撑开高度
     $('content').addEventListener('input', function() {
-        this.style.height = 'auto'; // 先重置高度，让它能缩回去
-        this.style.height = this.scrollHeight + 'px'; // 再根据内部文字实际高度撑开
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
     });
     
-    // 🚀 入口：瞬间执行判定！
     initApp();
 </script>
 {{ end }}
