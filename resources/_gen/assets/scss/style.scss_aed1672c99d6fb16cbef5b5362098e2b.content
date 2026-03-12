@@ -2980,7 +2980,17 @@ html[data-theme='dark'] .apptitle a {
 .index-post-title {
   font-size: 1.2rem; }
 
-/* --- 1. 登录保护层 --- */
+.page-laodao-admin .footer-background {
+  display: none; }
+
+.page-laodao-admin .header {
+  opacity: 0.4; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .page-laodao-admin .header {
+      opacity: 0.6; } }
+  html[data-theme='dark'] .page-laodao-admin .header {
+    opacity: 0.6; }
+
 #loginOverlay {
   position: fixed;
   top: 0;
@@ -2988,7 +2998,7 @@ html[data-theme='dark'] .apptitle a {
   right: 0;
   bottom: 0;
   background: var(--background-body-color);
-  z-index: 1;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3010,10 +3020,12 @@ html[data-theme='dark'] .apptitle a {
   @media (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .admin-login-input {
       background: rgba(28, 28, 30, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.08); } }
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff; } }
   html[data-theme='dark'] .admin-login-input {
     background: rgba(28, 28, 30, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08); }
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff; }
 
 .admin-login-btn {
   padding: 10px 24px;
@@ -3024,142 +3036,148 @@ html[data-theme='dark'] .apptitle a {
   border-radius: 20px;
   font-weight: bold; }
 
-#loginError {
-  color: #ff3b30;
-  font-size: 0.85em;
-  margin-top: 10px;
-  display: none; }
-
-/* --- 2. 控制台通用组件 --- */
-.admin-btn {
-  background: transparent;
-  color: var(--text-highlight-color);
-  border: none;
-  font-size: 1.1em;
-  cursor: pointer; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .admin-btn {
-      color: var(--text-highlight-dark-color); } }
-  html[data-theme='dark'] .admin-btn {
-    color: var(--text-highlight-dark-color); }
-
-.admin-btn:disabled {
-  opacity: 0.5;
+/* 2. 沉浸式编辑区 (全居中，视觉聚焦) */
+.admin-immersive-wrapper {
+  max-width: 600px;
+  width: 100%;
+  margin: 20px auto 20px; }
+  @media (min-width: 768px) {
+    .admin-immersive-wrapper {
+      margin: 15vh auto 5vh; } }
+/* 3. 发布框通用组件 */
+.admin-publish-card:has(.admin-textarea:placeholder-shown) #submitBtn {
+  opacity: 0.2;
   cursor: not-allowed; }
-
-.admin-btn-cancel {
-  display: none;
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .admin-btn-cancel {
-      color: var(--text-info-dark-color); } }
-  html[data-theme='dark'] .admin-btn-cancel {
-    color: var(--text-info-dark-color); }
-
-/* --- 3. 发布区专属样式 --- */
-.admin-publish-card {
-  margin-bottom: 10px; }
 
 .admin-textarea {
   width: 100%;
-  min-height: 150px;
+  min-height: 300px;
   border: none;
   outline: none;
   background: transparent;
-  font-size: 1rem;
-  font-family: inherit;
+  font-size: 1.1rem;
+  line-height: 1.6;
   color: inherit;
-  resize: none;
+  resize: none !important;
   overflow-y: hidden;
   padding: 0; }
+  .admin-textarea::placeholder {
+    opacity: 0.3; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .admin-textarea::placeholder {
+        opacity: 0.5; } }
+    html[data-theme='dark'] .admin-textarea::placeholder {
+      opacity: 0.5; }
 
 .admin-publish-footer {
   padding-top: 15px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: space-between; }
+  justify-content: space-between;
+  align-items: center; }
 
-.admin-upload-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
+/* 4. 左侧 SVG 工具栏组 */
+.admin-toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: center; }
+
+.admin-icon-btn {
   cursor: pointer;
-  font-size: 0.9em;
-  color: #666; }
+  display: flex;
+  align-items: center;
+  color: var(--text-info-color);
+  transition: color 0.2s, opacity 0.2s;
+  opacity: 0.4; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .admin-icon-btn {
+      color: var(--text-info-dark-color);
+      opacity: 0.6; } }
+  html[data-theme='dark'] .admin-icon-btn {
+    color: var(--text-info-dark-color);
+    opacity: 0.6; }
+  .admin-icon-btn:hover {
+    color: var(--text-highlight-color);
+    opacity: 1; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) .admin-icon-btn:hover {
+        color: var(--text-highlight-dark-color);
+        opacity: 1; } }
+    html[data-theme='dark'] .admin-icon-btn:hover {
+      color: var(--text-highlight-dark-color);
+      opacity: 1; }
 
-.admin-upload-wrapper input[type=file] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  cursor: pointer;
-  height: 100%; }
-
+/* 5. 右侧发布与操作区 */
 .admin-actions {
   display: flex;
   align-items: center;
-  gap: 10px; }
+  gap: 12px;
+  font-size: 1.1rem; }
 
-.admin-textarea {
-  resize: none !important; }
-
-.admin-time-sync {
-  line-height: 1;
-  opacity: 0.4; }
-
-.admin-time-sync input[type="checkbox"] {
-  vertical-align: middle;
-  margin: 0 4px 0 0;
-  /* 右侧留点空隙，和文字隔开 */
-  position: relative;
-  top: -1px;
+.admin-btn {
+  background: transparent;
+  color: var(--text-highlight-color);
+  border: none;
+  font-size: 1.05em;
   cursor: pointer; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .admin-btn {
+      color: var(--text-highlight-dark-color); } }
+  html[data-theme='dark'] .admin-btn {
+    color: var(--text-highlight-dark-color); }
+  .admin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed; }
 
-.admin-status {
-  font-size: 0.85em;
-  color: #888;
-  margin-top: 10px;
-  text-align: right; }
+.admin-btn-cancel {
+  color: var(--text-info-color);
+  font-weight: normal; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .admin-btn-cancel {
+      color: var(--text-info-dark-color); } }
+  html[data-theme='dark'] .admin-btn-cancel {
+    color: var(--text-info-dark-color); }
 
-/* --- 4. 列表区专属样式 --- */
-.admin-list-title {
-  margin: 40px 0 20px 0;
-  font-size: 1rem;
-  color: #666; }
+/* 6. 列表区样式 */
+.admin-laodao-list {
+  display: none;
+  margin-top: 20px; }
+
+#recentList {
+  display: grid;
+  gap: 10px; }
 
 .admin-recent-card {
   cursor: pointer;
   transition: border-color 0.2s;
-  border: 1px solid transparent; }
-
-.admin-recent-card:hover {
-  border-color: var(--text, #000); }
-
-.admin-recent-time {
-  font-family: monospace; }
+  border: 1px solid transparent;
+  opacity: 0.6; }
+  .admin-recent-card:hover {
+    opacity: 1; }
 
 .admin-recent-content {
-  margin: 10px 0; }
+  margin: 10px 0;
+  font-size: 1rem;
+  opacity: 0.8; }
 
-.admin-recent-tag {
-  background: transparent;
-  border: 1px solid currentColor; }
-
+/* 7. 表情浮窗 */
 .emoji-selector {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   gap: 6px;
-  margin-top: 6px; }
+  margin-top: 10px; }
 
 .emoji-item {
   padding: 4px;
   font-size: 24px;
   line-height: 0.8;
   cursor: pointer;
-  text-align: center; }
+  text-align: center;
+  transition: transform 0.1s; }
   .emoji-item:hover {
-    opacity: 0.6; }
+    opacity: 0.8;
+    transform: scale(1.1); }
 
 @font-face {
   font-family: 'JetBrainsMono';
