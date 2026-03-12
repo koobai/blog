@@ -940,7 +940,7 @@
   {
     "run_id": 17666845599,
     "name": "傍晚骑行",
-    "type": "Walk",
+    "type": "Ride",
     "distance": 16.95,
     "moving_time": "51:29",
     "start_date_local": "2025-08-24T20:11:00",
