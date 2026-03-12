@@ -171,6 +171,17 @@
   font-size: 1.2rem;
 }
 
+//详情页
+.page-laodao-single .footer-background{
+  display: none;
+}
+.page-laodao-single .laodao-more{
+  margin-bottom: 100px;
+  @include breakpoint('medium') {
+  margin-bottom: 160px;
+  }
+}
+
 //发布后台
 
 .page-laodao-admin .footer-background{
