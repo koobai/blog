@@ -26,11 +26,9 @@
             </div>
           {{ end }}
       </div>
-      
+       {{/* 唠叨 */}}
     {{ else if eq .Type "laodao" }}
-      
       {{ partial "laodao-card.html" . }}
-      
     {{ end }}
 
     {{/* 锻炼，仅在第一页的第二条数据下方插入 */}}
