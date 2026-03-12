@@ -2980,6 +2980,14 @@ html[data-theme='dark'] .apptitle a {
 .index-post-title {
   font-size: 1.2rem; }
 
+.page-laodao-single .footer-background {
+  display: none; }
+
+.page-laodao-single .laodao-more {
+  margin-bottom: 100px; }
+  @media (min-width: 768px) {
+    .page-laodao-single .laodao-more {
+      margin-bottom: 160px; } }
 .page-laodao-admin .footer-background {
   display: none; }
 
