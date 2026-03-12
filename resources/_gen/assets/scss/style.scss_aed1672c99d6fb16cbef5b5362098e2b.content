@@ -2865,11 +2865,19 @@ html[data-theme='dark'] .apptitle a {
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
-  text-justify: inter-character;
-  word-break: break-all; }
+  overflow-wrap: break-word;
+  word-wrap: break-word; }
   @media (min-width: 768px) {
     .laodao-content p {
       line-height: 1.65; } }
+  .laodao-content p a {
+    margin: 0 2px;
+    padding: 0;
+    text-decoration: underline;
+    transition: opacity 0.2s ease; }
+    .laodao-content p a:hover {
+      opacity: 0.6; }
+
 .laodao-footer {
   display: flex;
   justify-content: space-between;

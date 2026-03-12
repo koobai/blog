@@ -12,6 +12,10 @@
       | replaceRE "<img[^>]*class=\"[^\"]*laodao-photo[^\"]*\"[^>]*>" "" 
       | replaceRE "<p>\\s*(?:<br\\s*/?>)?\\s*</p>" "" 
       | replaceRE "(^|[\\s>])#([^\\s<.,!?'\"，。！？]+)" "" 
+      | replaceRE "([\\p{Han}，。！？、》）])\\s+<a" "${1}<a"
+      | replaceRE "</a>\\s+([\\p{Han}，。！？、《（])" "</a>${1}"
+      | replaceRE "(<a[^>]*>)\\s+" "${1}"
+      | replaceRE "\\s+(</a>)" "${1}"
       | safeHTML 
   }}
 

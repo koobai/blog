@@ -27,10 +27,19 @@
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;         
-  text-justify: inter-character; 
-  word-break: break-all;
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
     @include breakpoint('medium') {
      line-height: 1.65;
+  }
+  a{
+    margin: 0 2px; 
+    padding: 0;
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+    &:hover{
+      opacity: 0.6;
+    }
   }
 }
 
