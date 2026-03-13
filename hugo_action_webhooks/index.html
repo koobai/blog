@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link rel=alternate type=application/rss+xml href=https://koobai.com/index.xml title=空白Koobai><link rel=canonical href=https://koobai.com/hugo_action_webhooks/><script src=/js/theme.min.68939f9afe1efaa60d8ec20e0ede26c37926a51c2e484a0a5ab004f5fca6ed7e.js></script><link rel=stylesheet href=/css/style.min.37b049e5489f884666e18c6a17135da93432b4ebb1894c04b44274a7c2080bcd.css><meta name=description content="折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。"><meta property="og:title" content="Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/hugo_action_webhooks/"><meta property="og:image" content="https://img.koobai.com/article/webhooks2.svg"><meta property="og:description" content="折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/exercise/>动起来</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><input type=checkbox id=mobile-menu-toggle class=menu-checkbox hidden>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录 - 空白Koobai</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><link rel=manifest href=/suju/ios.json><link rel=icon href=https://img.koobai.com/koobai.png><link rel=alternate type=application/rss+xml href=https://koobai.com/index.xml title=空白Koobai><link rel=canonical href=https://koobai.com/hugo_action_webhooks/><script src=/js/theme.min.68939f9afe1efaa60d8ec20e0ede26c37926a51c2e484a0a5ab004f5fca6ed7e.js></script><link rel=stylesheet href=/css/style.min.b8ad658e431639de0d1b6beae94c15ed465403d11407423af2b37fd4af57db7d.css><meta name=description content="折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。"><meta property="og:title" content="Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"><meta property="og:type" content="website"><meta property="og:url" content="https://koobai.com/hugo_action_webhooks/"><meta property="og:image" content="https://img.koobai.com/article/webhooks2.svg"><meta property="og:description" content="折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。"></head><body class='page page-blog-single'><div id=menu-main-mobile class=menu-main-mobile><ul class=menu><li><a href=https://koobai.com/>唠叨</a></li><li><a href=https://koobai.com/posts/>博文</a></li><li><a href=https://koobai.com/movies/>观影</a></li><li><a href=https://koobai.com/apps/>软件</a></li><li><a href=https://koobai.com/exercise/>动起来</a></li><li><a href=https://qiszy.taobao.com>店铺</a></li></ul></div><div id=wrapper class=wrapper><div class=header><input type=checkbox id=mobile-menu-toggle class=menu-checkbox hidden>
 <label for=mobile-menu-toggle class=hamburger-trigger aria-label=Menu><svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
 <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m12 13.4-4.9 4.9q-.275.275-.7.275t-.7-.275-.275-.7.275-.7l4.9-4.9-4.9-4.9q-.275-.275-.275-.7t.275-.7.7-.275.7.275l4.9 4.9 4.9-4.9q.275-.275.7-.275t.7.275.275.7-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7-.7.275-.7-.275z"/></svg></label><div class=new-heard-menu><div class=header-menu><a href=/ data-umami-event=Home><span class=menu-icon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bird"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 008-8V7a4 4 0 00-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 003.84-10.61"/></svg>
 </span><span class=menu-name>唠叨</span></a></div><div class=header-menu><a href=/posts/ data-umami-event=Bowen><span class=menu-icon><svg width="20" height="20" viewBox="0 0 26 26"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></svg>
@@ -8,253 +8,130 @@
 </span><span class=menu-name>动起来</span></a></div><div class=header-menu><a href=https://qiszy.taobao.com target=_blank data-umami-event=Taobao><span class=menu-icon><svg width="20" height="20" viewBox="1 0 24 24"><path fill="currentColor" d="M17.173 14H14.5v1.375q.824-.332 1.812-.81l-.082-.238zm.828-.287.12-.042c.641 1.851 1.034 3.012 1.185 3.5l-1.912.59q-.11-.36-.427-1.293c-6.081 2.884-8.671 2.054-9.008-1.908l1.993-.169c.1 1.165.344 1.621.897 1.752.393.093.94.063 1.652-.104v-2.04h-3.5v-2h.513l-1.167-1.39q1.563-1.312 2.449-2.863-.78.202-1.552.435A14 14 0 017.49 10.29l-1.4-1.428Q8 6.992 9.266 3.868l1.854.75q-.23.567-.48 1.1c3.702-.935 7.275-1.316 9.138-.68 1.223.419 1.919 1.392 2.188 2.585.17.756.313 2.689.313 5.123.0 2.807-.056 3.77-.34 4.622-.298.89-.697 1.418-1.408 1.984-.657.523-1.553.763-2.645.823a12.5 12.5.0 01-2.094-.08c-.12-.013-.235-.027-.355-.042l-.242-.033.264-1.982.237.032.319.038c.625.07 1.216.1 1.762.07.714-.04 1.245-.181 1.508-.39.426-.34.591-.558.756-1.054.186-.555.238-1.448.238-3.989.0-2.298-.134-4.101-.265-4.682-.13-.577-.41-.97-.883-1.132-1.207-.412-3.801-.194-6.652.416l.615.263q-.195.453-.43.89h5.337v2h-3.5V12h3.5zm-5.5-3.213h-1.208A14 14 0 019.799 12h2.702zm-10.038-.438L3.54 8.376c1.062.68 2.935 2.428 3.338 3.162 1.239 2.26.198 4.176-3.122 7.997l-1.51-1.311c2.687-3.094 3.5-4.59 2.878-5.725-.214-.39-1.857-1.923-2.661-2.437M5.14 7.583c-1.048.0-1.882-.762-1.886-1.693.0-.94.838-1.701 1.886-1.701 1.04.0 1.883.758 1.883 1.701.0.935-.843 1.693-1.883 1.693"/></svg>
 </span><span class=menu-name>店铺</span></a></div></div><div class=index-laodao><a href=/newlaodao>唠叨</a></div><div class=heard-right><div class="about-koobai avatar-mobile"><a href=/about><img src=https://img.koobai.com/koobai.webp alt=koobai title=空白Koobai data-umami-event=Me></a></div><div data-umami-event=Rss><a href=https://koobai.com/index.xml target=_blank><svg viewBox="0 1 23 23" fill="currentColor"><path d="M3 3c9.9411.0 18 8.0589 18 18H18C18 12.7157 11.2843 6 3 6V3zm0 7c6.07513.0 11 4.9249 11 11H11c0-4.4183-3.58172-8-8-8V10zm0 7c2.20914.0 4 1.7909 4 4H3V17z"/></svg></a><div class=rss-box></div></div><div class="header-Rss theme-toggle"><svg width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 17a4 4 0 01-8 0V5a2 2 0 012-2h4a2 2 0 012 2z"/><path d="M16.7 13H19a2 2 0 012 2v4a2 2 0 01-2 2H7m0-4h.01"/><path d="m11 8 2.3-2.3a2.4 2.4.0 013.404.004L18.6 7.6a2.4 2.4.0 01.026 3.434L9.9 19.8"/></g></svg><div class=rss-box><div class=footer-rss><span class=theme-item data-mode=light onclick='setTheme("light")'>浅色</span>
 <span class=theme-item data-mode=dark onclick='setTheme("dark")'>深色</span>
-<span class=theme-item data-mode=auto onclick='setTheme("auto")'>自动</span></div></div></div></div></div><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录</h1><img src=https://img.koobai.com/article/webhooks2.svg class="top-img img-hide" alt="Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"></article><div class=content_zhengwen><div class=content><p>(2024.01.19晚更新) 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。</p><p>部署步骤流程记录下：</p><p><strong>1.</strong> 在 Github 的 Hugo 源码仓库根目录，新建".github/workflows/xxx.yml 文件，复制以下代码。作用：借助 Github Action 实现自动构建，并同步到另外一个仓库。其中 &ldquo;PERSONAL_TOKEN&rdquo; 为另外仓库的访问密钥；&ldquo;external_repository&rdquo; 为另外仓库地址。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Githubblog</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>workflow_dispatch</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>deploy</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>submodules</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>fetch-depth</span>: <span style=color:#ae81ff>0</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Setup Hugo</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-hugo@v2</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>hugo-version</span>: <span style=color:#e6db74>&#39;latest&#39;</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>extended</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo --minify</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-gh-pages@v3</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>personal_token</span>: <span style=color:#ae81ff>${{ secrets.PERSONAL_TOKEN }}</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>external_repository</span>: <span style=color:#ae81ff>koobai/koobai.github.io</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>publish_dir</span>: <span style=color:#ae81ff>./public</span>
-</span></span></code></pre></td></tr></table></div></div><p><del><strong>2.</strong> 打开宝塔面板，终端生成 git 公钥</del></p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#75715e># 安装 Git</span>
-</span></span><span style=display:flex><span><span style=color:#ae81ff>yum -y install git</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Git全局配置和单个仓库的用户名邮箱配置</span>
-</span></span><span style=display:flex><span><span style=color:#ae81ff>git config --global user.name  &#34;username&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#ae81ff>git config --global user.email  &#34;your@email.com&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 生成git公钥用于自动拉取（一路回车）</span>
-</span></span><span style=display:flex><span><span style=color:#ae81ff>ssh-keygen -t rsa -C &#34;你的@email.com&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 查看git公钥</span>
-</span></span><span style=display:flex><span><span style=color:#ae81ff>cat ~/.ssh/id_rsa.pub</span>
-</span></span></code></pre></td></tr></table></div></div><p><del><strong>3.</strong> 添加公钥到到 Github：头像&ndash;Settings&ndash;SSH and GPG keys&ndash;New SSH key</del></p><p><strong>4.</strong> 打开宝塔面板商店，安装 WebHook 插件&ndash;添加执行脚本 (复制以下代码)。<del>其中"gitHttp 为需同步的 github 仓库地址"，&ldquo;gh-pages"为仓库分支名称。</del></p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span>cd 网站目录
-</span></span><span style=display:flex><span>git config pull.rebase true
-</span></span><span style=display:flex><span>git pull
-</span></span><span style=display:flex><span>echo Onion Site Updated! $(TZ=UTC-8 date +&#34;%Y-%m-%d&#34;&#34; &#34;&#34;%T&#34;)
-</span></span><span style=display:flex><span>echo ======================================================
-</span></span></code></pre></td></tr></table></div></div><p><strong>以下代码已过时，暂不使用。</strong></p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
-</span></span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#输出当前时间</span>
-</span></span><span style=display:flex><span>date --date<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;0 days ago&#39;</span> <span style=color:#e6db74>&#34;+%Y-%m-%d %H:%M:%S&#34;</span>
-</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;Start&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#git分支名称</span>
-</span></span><span style=display:flex><span>branch<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;gh-pages&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#git项目路径</span>
-</span></span><span style=display:flex><span>gitPath<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/www/wwwroot/</span>$1<span style=color:#e6db74>&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#git 仓库地址</span>
-</span></span><span style=display:flex><span>gitHttp<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;git@github.com:koobai/koobai.github.io.git&#34;</span>
-</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;Web站点路径：</span>$gitPath<span style=color:#e6db74>&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#判断项目路径是否存在</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> -d <span style=color:#e6db74>&#34;</span>$gitPath<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-</span></span><span style=display:flex><span>        cd $gitPath
-</span></span><span style=display:flex><span>        <span style=color:#75715e>#判断是否存在git目录</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> ! -d <span style=color:#e6db74>&#34;.git&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-</span></span><span style=display:flex><span>                echo <span style=color:#e6db74>&#34;在该目录下克隆 git&#34;</span>
-</span></span><span style=display:flex><span>                sudo git clone $gitHttp gittemp
-</span></span><span style=display:flex><span>                sudo mv gittemp/.git .
-</span></span><span style=display:flex><span>                sudo rm -rf gittemp
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>fi</span>
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;拉取最新的项目文件&#34;</span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e>#sudo git reset --hard origin/$branch</span>
-</span></span><span style=display:flex><span>        git remote add origin $gitHttp
-</span></span><span style=display:flex><span>        git branch --set-upstream-to<span style=color:#f92672>=</span>origin/$branch $branch
-</span></span><span style=display:flex><span>        sudo git reset --hard origin/$branch
-</span></span><span style=display:flex><span>        sudo git pull $gitHttp  2&gt;&amp;<span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;设置目录权限&#34;</span>
-</span></span><span style=display:flex><span>        sudo chown -R www:www $gitPath
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;End&#34;</span>
-</span></span><span style=display:flex><span>        exit
-</span></span><span style=display:flex><span><span style=color:#66d9ef>else</span>
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;该项目路径不存在&#34;</span>
-</span></span><span style=display:flex><span>                echo <span style=color:#e6db74>&#34;新建项目目录&#34;</span>
-</span></span><span style=display:flex><span>        mkdir $gitPath
-</span></span><span style=display:flex><span>        cd $gitPath
-</span></span><span style=display:flex><span>        <span style=color:#75715e>#判断是否存在git目录</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> ! -d <span style=color:#e6db74>&#34;.git&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-</span></span><span style=display:flex><span>                echo <span style=color:#e6db74>&#34;在该目录下克隆 git&#34;</span>
-</span></span><span style=display:flex><span>                sudo git clone $gitHttp gittemp
-</span></span><span style=display:flex><span>                sudo mv gittemp/.git .
-</span></span><span style=display:flex><span>                sudo rm -rf gittemp
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>fi</span>
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;拉取最新的项目文件&#34;</span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e>#sudo git reset --hard origin/$branch</span>
-</span></span><span style=display:flex><span>        sudo git pull gitHttp 2&gt;&amp;<span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;设置目录权限&#34;</span>
-</span></span><span style=display:flex><span>        sudo chown -R www:www $gitPath
-</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;End&#34;</span>
-</span></span><span style=display:flex><span>        exit
-</span></span><span style=display:flex><span><span style=color:#66d9ef>fi</span>
-</span></span></code></pre></td></tr></table></div></div><p><strong>5.</strong> 查看 WebHook 插件密钥，复制密钥地址。添加到 Github 需同步的仓库&ndash;Settings&ndash;Webhooks&ndash;Add webhook。其中 Content type 选择 application/json。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span>格式如：https://面板地址:面板端口/hook?access_key=密钥&amp;param=需同步到的目录名称
-</span></span></code></pre></td></tr></table></div></div><p><strong>6.</strong> 初始化宝塔网站目录</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-fallback data-lang=fallback><span style=display:flex><span>在宝塔终端执行：
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>cd 网站目录
-</span></span><span style=display:flex><span>git clone --depth 1 https://ghgo.top/https://github.com/koobai/koobai.github.io --single-branch .
-</span></span><span style=display:flex><span>或
-</span></span><span style=display:flex><span>git clone --depth 1 --branch main https://ghgo.top/https://github.com/koobai/koobai.github.io .
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>解释上面意思：--depth 1 只克隆最新的一次提交。mirror.ghproxy.com为github加速地址，koobai为github用户名，koobai.github.io为仓库名。最后 . 为当前目录。
-</span></span><span style=display:flex><span>--single-branch 克隆一个分支。或 --branch main 克隆 main 分支。
-</span></span></code></pre></td></tr></table></div></div><p><strong>以下代码已过时，暂不使用。</strong></p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sh data-lang=sh><span style=display:flex><span>cd 网站目录
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 初始化git 执行</span>
-</span></span><span style=display:flex><span>git init
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 连接远程仓库</span>
-</span></span><span style=display:flex><span>git remote add origin git@github.com:yourName/repositoryname.git
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 拉取想要的分支代码(gh-pages分支名称)</span>
-</span></span><span style=display:flex><span>git pull origin gh-pages
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 等待完成</span>
-</span></span></code></pre></td></tr></table></div></div><p>至此，步骤全部完成。当本地提交新文件到 Github hugo 源码 main 分支，就会自动触发（hugo 生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是 vercel 或 cloudflare 服务，当 hugo 源码更新的时候也会自动触发构建更新。</p><p><strong>题外</strong>: 由于使用了轻量服务器，原先备案过的域名也需要重新接入备案。整个流程下来发现，现在备案审核速度是相当的快，必须点个赞。周一提交服务商，周二服务商提交管理局，周三审核通过。周三上午提交公安网安，下午审核通过。</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1676851200></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/hugo/>Hugo</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/apple_tv/>Apple TV 4K (第二代) 使用体验</a></div><div class="archive-time twitter-time" data-time=1675987200></div></div><div class=archive-img><a href=/apple_tv/><img loading=lazy decoding=async src=https://img.koobai.com/article/appletv.webp alt="Apple TV 4K (第二代) 使用体验"></a></div></div><div class=archives_one><div><div class=archive-title><a href=/smart_home_xiaomi/>智能家居使用主观感受</a></div><div class="archive-time twitter-time" data-time=1677196800></div></div><div class=archive-img><a href=/smart_home_xiaomi/><img loading=lazy decoding=async src=https://img.koobai.com/article/home_xiaomi.webp alt=智能家居使用主观感受></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
+<span class=theme-item data-mode=auto onclick='setTheme("auto")'>自动</span></div></div></div></div></div><div class=single-nrong><div class=single-zw><article class=article_details><h1 class=article_details_title>Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录</h1><img src=https://img.koobai.com/article/webhooks2.svg class="top-img img-hide" alt="Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录"></article><div class=content_zhengwen><div class=content><p>(2024.01.19晚更新) 折腾博客的乐趣就是不停的折腾，一个评论插件就搞来搞去的，为此还特意买了轻量服务器，索性也把 Hugo 搬过去。只是原先自动同步到腾讯 COS 就不可用，而且域名还指定了境外访问路径，导致更新博客的流程变得非常复杂。最终通过 Google，总算解决：本地提交 hugo 源码到 Github，自动触发构建并同步到宝塔指定的网站目录。</p><p>部署步骤流程记录下：</p><p><strong>1.</strong> 在 Github 的 Hugo 源码仓库根目录，新建".github/workflows/xxx.yml 文件，复制以下代码。作用：借助 Github Action 实现自动构建，并同步到另外一个仓库。其中 &ldquo;PERSONAL_TOKEN&rdquo; 为另外仓库的访问密钥；&ldquo;external_repository&rdquo; 为另外仓库地址。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Githubblog</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>on</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>workflow_dispatch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>push</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>branches</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>main</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>jobs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>deploy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>runs-on</span><span class=p>:</span><span class=w> </span><span class=l>ubuntu-latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>actions/checkout@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>submodules</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>fetch-depth</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Setup Hugo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-hugo@v2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>hugo-version</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;latest&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>extended</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Build</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>hugo --minify</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Deploy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-gh-pages@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>personal_token</span><span class=p>:</span><span class=w> </span><span class=l>${{ secrets.PERSONAL_TOKEN }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>external_repository</span><span class=p>:</span><span class=w> </span><span class=l>koobai/koobai.github.io</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>publish_dir</span><span class=p>:</span><span class=w> </span><span class=l>./public</span><span class=w>
+</span></span></span></code></pre></div><p><del><strong>2.</strong> 打开宝塔面板，终端生成 git 公钥</del></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=c># 安装 Git</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=l>yum -y install git</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Git全局配置和单个仓库的用户名邮箱配置</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=l>git config --global user.name  &#34;username&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=l>git config --global user.email  &#34;your@email.com&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># 生成git公钥用于自动拉取（一路回车）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=l>ssh-keygen -t rsa -C &#34;你的@email.com&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># 查看git公钥</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=l>cat ~/.ssh/id_rsa.pub</span><span class=w>
+</span></span></span></code></pre></div><p><del><strong>3.</strong> 添加公钥到到 Github：头像&ndash;Settings&ndash;SSH and GPG keys&ndash;New SSH key</del></p><p><strong>4.</strong> 打开宝塔面板商店，安装 WebHook 插件&ndash;添加执行脚本 (复制以下代码)。<del>其中"gitHttp 为需同步的 github 仓库地址"，&ldquo;gh-pages"为仓库分支名称。</del></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>cd 网站目录
+</span></span><span class=line><span class=cl>git config pull.rebase true
+</span></span><span class=line><span class=cl>git pull
+</span></span><span class=line><span class=cl>echo Onion Site Updated! $(TZ=UTC-8 date +&#34;%Y-%m-%d&#34;&#34; &#34;&#34;%T&#34;)
+</span></span><span class=line><span class=cl>echo ======================================================
+</span></span></code></pre></div><p><strong>以下代码已过时，暂不使用。</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#输出当前时间</span>
+</span></span><span class=line><span class=cl>date --date<span class=o>=</span><span class=s1>&#39;0 days ago&#39;</span> <span class=s2>&#34;+%Y-%m-%d %H:%M:%S&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Start&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#git分支名称</span>
+</span></span><span class=line><span class=cl><span class=nv>branch</span><span class=o>=</span><span class=s2>&#34;gh-pages&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#git项目路径</span>
+</span></span><span class=line><span class=cl><span class=nv>gitPath</span><span class=o>=</span><span class=s2>&#34;/www/wwwroot/</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#git 仓库地址</span>
+</span></span><span class=line><span class=cl><span class=nv>gitHttp</span><span class=o>=</span><span class=s2>&#34;git@github.com:koobai/koobai.github.io.git&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Web站点路径：</span><span class=nv>$gitPath</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#判断项目路径是否存在</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -d <span class=s2>&#34;</span><span class=nv>$gitPath</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>        <span class=nb>cd</span> <span class=nv>$gitPath</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#判断是否存在git目录</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=o>[</span> ! -d <span class=s2>&#34;.git&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>                <span class=nb>echo</span> <span class=s2>&#34;在该目录下克隆 git&#34;</span>
+</span></span><span class=line><span class=cl>                sudo git clone <span class=nv>$gitHttp</span> gittemp
+</span></span><span class=line><span class=cl>                sudo mv gittemp/.git .
+</span></span><span class=line><span class=cl>                sudo rm -rf gittemp
+</span></span><span class=line><span class=cl>        <span class=k>fi</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;拉取最新的项目文件&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#sudo git reset --hard origin/$branch</span>
+</span></span><span class=line><span class=cl>        git remote add origin <span class=nv>$gitHttp</span>
+</span></span><span class=line><span class=cl>        git branch --set-upstream-to<span class=o>=</span>origin/<span class=nv>$branch</span> <span class=nv>$branch</span>
+</span></span><span class=line><span class=cl>        sudo git reset --hard origin/<span class=nv>$branch</span>
+</span></span><span class=line><span class=cl>        sudo git pull <span class=nv>$gitHttp</span>  2&gt;<span class=p>&amp;</span><span class=m>1</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;设置目录权限&#34;</span>
+</span></span><span class=line><span class=cl>        sudo chown -R www:www <span class=nv>$gitPath</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;End&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;该项目路径不存在&#34;</span>
+</span></span><span class=line><span class=cl>                <span class=nb>echo</span> <span class=s2>&#34;新建项目目录&#34;</span>
+</span></span><span class=line><span class=cl>        mkdir <span class=nv>$gitPath</span>
+</span></span><span class=line><span class=cl>        <span class=nb>cd</span> <span class=nv>$gitPath</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#判断是否存在git目录</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=o>[</span> ! -d <span class=s2>&#34;.git&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>                <span class=nb>echo</span> <span class=s2>&#34;在该目录下克隆 git&#34;</span>
+</span></span><span class=line><span class=cl>                sudo git clone <span class=nv>$gitHttp</span> gittemp
+</span></span><span class=line><span class=cl>                sudo mv gittemp/.git .
+</span></span><span class=line><span class=cl>                sudo rm -rf gittemp
+</span></span><span class=line><span class=cl>        <span class=k>fi</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;拉取最新的项目文件&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#sudo git reset --hard origin/$branch</span>
+</span></span><span class=line><span class=cl>        sudo git pull gitHttp 2&gt;<span class=p>&amp;</span><span class=m>1</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;设置目录权限&#34;</span>
+</span></span><span class=line><span class=cl>        sudo chown -R www:www <span class=nv>$gitPath</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;End&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></div><p><strong>5.</strong> 查看 WebHook 插件密钥，复制密钥地址。添加到 Github 需同步的仓库&ndash;Settings&ndash;Webhooks&ndash;Add webhook。其中 Content type 选择 application/json。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>格式如：https://面板地址:面板端口/hook?access_key=密钥&amp;param=需同步到的目录名称
+</span></span></code></pre></div><p><strong>6.</strong> 初始化宝塔网站目录</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>在宝塔终端执行：
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>cd 网站目录
+</span></span><span class=line><span class=cl>git clone --depth 1 https://ghgo.top/https://github.com/koobai/koobai.github.io --single-branch .
+</span></span><span class=line><span class=cl>或
+</span></span><span class=line><span class=cl>git clone --depth 1 --branch main https://ghgo.top/https://github.com/koobai/koobai.github.io .
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>解释上面意思：--depth 1 只克隆最新的一次提交。mirror.ghproxy.com为github加速地址，koobai为github用户名，koobai.github.io为仓库名。最后 . 为当前目录。
+</span></span><span class=line><span class=cl>--single-branch 克隆一个分支。或 --branch main 克隆 main 分支。
+</span></span></code></pre></div><p><strong>以下代码已过时，暂不使用。</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> 网站目录
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 初始化git 执行</span>
+</span></span><span class=line><span class=cl>git init
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 连接远程仓库</span>
+</span></span><span class=line><span class=cl>git remote add origin git@github.com:yourName/repositoryname.git
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 拉取想要的分支代码(gh-pages分支名称)</span>
+</span></span><span class=line><span class=cl>git pull origin gh-pages
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 等待完成</span>
+</span></span></code></pre></div><p>至此，步骤全部完成。当本地提交新文件到 Github hugo 源码 main 分支，就会自动触发（hugo 生成静态文件——同步到另一个仓库——同步到宝塔网站指定目录）。如果域名指定境外访问路径是 vercel 或 cloudflare 服务，当 hugo 源码更新的时候也会自动触发构建更新。</p><p><strong>题外</strong>: 由于使用了轻量服务器，原先备案过的域名也需要重新接入备案。整个流程下来发现，现在备案审核速度是相当的快，必须点个赞。周一提交服务商，周二服务商提交管理局，周三审核通过。周三上午提交公安网安，下午审核通过。</p></div><div class=single-biaoq><div class="page-time twitter-time" data-time=1676851200></div><div class=single-tag><div class=single-tag-c>#<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></div><div class=single-tag-c>#<a href=/tags/%E6%8A%98%E8%85%BE/>折腾</a></div><div class=single-tag-c>#<a href=/tags/hugo/>Hugo</a></div></div></div></div><div class=archives_nrong><div class=archives_one><div><div class=archive-title><a href=/apple_tv/>Apple TV 4K (第二代) 使用体验</a></div><div class="archive-time twitter-time" data-time=1675987200></div></div><div class=archive-img><a href=/apple_tv/><img loading=lazy decoding=async src=https://img.koobai.com/article/appletv.webp alt="Apple TV 4K (第二代) 使用体验"></a></div></div><div class=archives_one><div><div class=archive-title><a href=/smart_home_xiaomi/>智能家居使用主观感受</a></div><div class="archive-time twitter-time" data-time=1677196800></div></div><div class=archive-img><a href=/smart_home_xiaomi/><img loading=lazy decoding=async src=https://img.koobai.com/article/home_xiaomi.webp alt=智能家居使用主观感受></a></div></div><button type=button onclick='const r=document.referrer;r&&r.includes(window.location.host)?history.back():window.location.href="/"' class=fanhui title=哪来回哪去 aria-label=返回上一页 data-umami-event=Fanhui>
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2.614 5.426A1.5 1.5.0 014 4.5h10a7.5 7.5.0 110 15H5a1.5 1.5.0 010-3h9a4.5 4.5.0 100-9H7.621l.94.94a1.5 1.5.0 01-2.122 2.12l-3.5-3.5a1.5 1.5.0 01-.325-1.634z" fill="currentColor"/></svg></button></div><div id=MoreComments onclick=loadComments()>评论一下 ...</div><div class=article-comments id=articlecomments style=display:none><link href=https://img.koobai.com/Artalk.css rel=stylesheet><script src=https://img.koobai.com/Artalk.js defer></script><div id=Comments></div><script>document.addEventListener("DOMContentLoaded",function(){Artalk.init({el:"#Comments",pageKey:"https://koobai.com/hugo_action_webhooks/",pageTitle:"Github 自动构建 Hugo, 并通过 Webhook 同步到宝塔指定目录",server:"https://c.koobai.com",site:"Koobai 空白生活",darkMode:"auto"})})</script></div></div><div><div class=paragraph-dh><nav id=TableOfContents></nav></div></div></div><script src="/js/single.js?v=20260210a"></script></div><div class=footer-background><div class=footer><div class=footer-info>&copy; 2026 <a href=/>空白Koobai</a>.
 由 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo </a>提供强力驱动,
 <a href=https://gemini.google.com target=_blank rel=noopener>Gemini </a>疯狂手搓代码支持,
