@@ -18,7 +18,12 @@
                 <input type="text" id="postTitle" class="write-input write-title" placeholder="标题">
                 <input type="text" id="postFilename" class="write-input write-meta" placeholder="文件名.md">
                 <input type="text" id="postSlug" class="write-input write-meta" placeholder="路径">
-                <input type="text" id="postTags" class="write-input write-meta" placeholder="标签 空格或逗号分割">
+                
+                <div style="position: relative;">
+                    <input type="text" id="postTags" class="write-input write-meta" placeholder="#标签 空格分割">
+                    <div id="tagSelector" class="tag-selector-dropdown"></div>
+                </div>
+
                 <textarea id="postDesc" class="write-input write-meta write-textarea" placeholder="摘要"></textarea>
             </div>
         </div>
@@ -77,10 +82,26 @@
     let hasFetchedRecent = false;
     window.STATE = { sha: null, path: null, date: null };
 
+    // 标签选择器状态存储
+    let cachedTags = [];
+    let filteredTags = [];
+    let currentTagIndex = -1;
+
     const $ = id => document.getElementById(id);
     const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
     const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
     const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
+
+    // 🚀 终极优化 2：全局彻底缓存高频访问的 DOM 节点
+    const postTagsEl = $('postTags');
+    const tagSelector = $('tagSelector');
+    const postTitleEl = $('postTitle');
+    const postFilenameEl = $('postFilename');
+    const postSlugEl = $('postSlug');
+    const postDescEl = $('postDesc');
+    const postContentEl = $('postContent');
+    
+    tagSelector.style.display = 'none';
 
     function getFormattedTime() {
         const d = new Date();
@@ -95,6 +116,22 @@
         const res = await fetch(url, options);
         if (res.status === 401) throw new Error("401"); 
         return res;
+    }
+
+    // 抓取博文专属标签库
+    async function fetchAllTags() {
+        if (cachedTags.length > 0) return;
+        try {
+            const res = await fetch('/tags/index.xml?t=' + Date.now());
+            if (res.ok) {
+                const text = await res.text();
+                const xmlDoc = new DOMParser().parseFromString(text, "text/xml");
+                const titles = Array.from(xmlDoc.querySelectorAll("item title")).map(t => t.textContent);
+                cachedTags = [...new Set(titles)]; 
+            }
+        } catch(e) {
+            console.log("长文标签拉取失败", e);
+        }
     }
 
     window.addEventListener('scroll', () => {
@@ -112,7 +149,8 @@
         if (window.STATE.sha) return; 
         clearTimeout(draftTimer);
         draftTimer = setTimeout(() => {
-            const draft = { title: $('postTitle').value, filename: $('postFilename').value, slug: $('postSlug').value, tags: $('postTags').value, desc: $('postDesc').value, content: $('postContent').value };
+            // 直接读取缓存好的节点，快如闪电
+            const draft = { title: postTitleEl.value, filename: postFilenameEl.value, slug: postSlugEl.value, tags: postTagsEl.value, desc: postDescEl.value, content: postContentEl.value };
             localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
         }, 1000);
     }
@@ -123,77 +161,67 @@
         if (saved) {
             try {
                 const draft = JSON.parse(saved);
-                if (draft.title) $('postTitle').value = draft.title;
-                if (draft.filename) $('postFilename').value = draft.filename;
-                if (draft.slug) $('postSlug').value = draft.slug;
-                if (draft.tags) $('postTags').value = draft.tags;
-                if (draft.desc) { $('postDesc').value = draft.desc; $('postDesc').dispatchEvent(new Event('input')); }
-                if (draft.content) { $('postContent').value = draft.content; $('postContent').dispatchEvent(new Event('input')); }
+                if (draft.title) postTitleEl.value = draft.title;
+                if (draft.filename) postFilenameEl.value = draft.filename;
+                if (draft.slug) postSlugEl.value = draft.slug;
+                if (draft.tags) postTagsEl.value = draft.tags;
+                if (draft.desc) { postDescEl.value = draft.desc; postDescEl.dispatchEvent(new Event('input')); }
+                if (draft.content) { postContentEl.value = draft.content; postContentEl.dispatchEvent(new Event('input')); }
             } catch(e) {}
         }
     }
 
-    ['postTitle', 'postFilename', 'postSlug', 'postTags', 'postDesc', 'postContent'].forEach(id => { $(id).addEventListener('input', scheduleSaveDraft); });
+    [postTitleEl, postFilenameEl, postSlugEl, postTagsEl, postDescEl, postContentEl].forEach(el => { 
+        if(el) el.addEventListener('input', scheduleSaveDraft); 
+    });
 
-    // ==========================================
-    // 🚀 核心工具函数组
-    // ==========================================
     function wrapText(prefix, suffix, placeholder) {
         if(isPreviewMode) togglePreviewMode(); 
-        const el = $('postContent'); 
-        el.focus({ preventScroll: true });    
+        postContentEl.focus({ preventScroll: true });    
         
-        const start = el.selectionStart; const end = el.selectionEnd;
-        const sel = el.value.substring(start, end);
+        const start = postContentEl.selectionStart; const end = postContentEl.selectionEnd;
+        const sel = postContentEl.value.substring(start, end);
         if (sel) { 
-            el.setRangeText(`${prefix}${sel}${suffix}`, start, end, 'end'); 
+            postContentEl.setRangeText(`${prefix}${sel}${suffix}`, start, end, 'end'); 
         } else { 
-            el.setRangeText(`${prefix}${placeholder}${suffix}`, start, end, 'end'); 
-            el.setSelectionRange(start + prefix.length, start + prefix.length + placeholder.length); 
+            postContentEl.setRangeText(`${prefix}${placeholder}${suffix}`, start, end, 'end'); 
+            postContentEl.setSelectionRange(start + prefix.length, start + prefix.length + placeholder.length); 
         }
-        el.dispatchEvent(new Event('input')); 
+        postContentEl.dispatchEvent(new Event('input')); 
     }
 
-    // 🚀 完美的加粗逻辑（前后强制带空格）
     function insertBold() {
         if(isPreviewMode) togglePreviewMode();
-        const el = $('postContent');
-        el.focus({ preventScroll: true });
-        const start = el.selectionStart;
-        const end = el.selectionEnd;
-        const sel = el.value.substring(start, end);
+        postContentEl.focus({ preventScroll: true });
+        const start = postContentEl.selectionStart;
+        const end = postContentEl.selectionEnd;
+        const sel = postContentEl.value.substring(start, end);
 
         if (sel) {
-            el.setRangeText(` **${sel}** `, start, end, 'end');
+            postContentEl.setRangeText(` **${sel}** `, start, end, 'end');
         } else {
-            el.setRangeText(` **加粗文字** `, start, end, 'end');
-            // 精准选中"加粗文字"四个字，方便直接打字替换 (前面有两个空格和一个星号=3)
-            el.setSelectionRange(start + 3, start + 7); 
+            postContentEl.setRangeText(` **加粗文字** `, start, end, 'end');
+            postContentEl.setSelectionRange(start + 3, start + 7); 
         }
-        el.dispatchEvent(new Event('input'));
+        postContentEl.dispatchEvent(new Event('input'));
     }
 
-    // 🚀 完美的链接逻辑（同步唠叨页，光标定位到括号内）
     function insertLink() {
         if(isPreviewMode) togglePreviewMode();
-        const el = $('postContent');
-        el.focus({ preventScroll: true });
-        const start = el.selectionStart;
-        const end = el.selectionEnd;
-        const sel = el.value.substring(start, end);
+        postContentEl.focus({ preventScroll: true });
+        const start = postContentEl.selectionStart;
+        const end = postContentEl.selectionEnd;
+        const sel = postContentEl.value.substring(start, end);
 
         if (sel) {
-            el.setRangeText(`[${sel}]()`, start, end, 'end');
-            // 光标精准放到 () 里面
-            el.setSelectionRange(start + sel.length + 3, start + sel.length + 3);
+            postContentEl.setRangeText(`[${sel}]()`, start, end, 'end');
+            postContentEl.setSelectionRange(start + sel.length + 3, start + sel.length + 3);
         } else {
-            el.setRangeText(`[]()`, start, end, 'end');
-            // 光标精准放到 () 里面
-            el.setSelectionRange(start + 3, start + 3);
+            postContentEl.setRangeText(`[]()`, start, end, 'end');
+            postContentEl.setSelectionRange(start + 3, start + 3);
         }
-        el.dispatchEvent(new Event('input'));
+        postContentEl.dispatchEvent(new Event('input'));
     }
-    // ==========================================
     
     const renderer = {
         image({ href, title, text }) { 
@@ -204,13 +232,13 @@
     marked.use({ renderer, breaks: true, gfm: true });
 
     function togglePreviewMode() {
-        const contentArea = $('postContent'); const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
+        const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
         isPreviewMode = !isPreviewMode;
         if (isPreviewMode) {
-            contentArea.style.display = 'none'; previewArea.innerHTML = marked.parse(contentArea.value || '*空空如也*'); previewArea.style.display = 'block';
+            postContentEl.style.display = 'none'; previewArea.innerHTML = marked.parse(postContentEl.value || '*空空如也*'); previewArea.style.display = 'block';
             btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
         } else {
-            previewArea.style.display = 'none'; contentArea.style.display = 'block';
+            previewArea.style.display = 'none'; postContentEl.style.display = 'block';
             btn.style.color = ""; btn.style.opacity = "0.5";
         }
     }
@@ -238,9 +266,10 @@
         if(isPreviewMode) togglePreviewMode();
         let uploadMsg = cocoMessage.info("正在压缩并上传", 0); 
         for (let file of files) {
+            if (!file.type.startsWith('image/')) continue;
             try {
                 const webpBlob = await compressImage(file);
-                const fileName = `article/${Date.now()}_${Math.random().toString(36).substr(2, 6)}.webp`;
+                const fileName = `article/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.webp`;
                 await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: webpBlob });
                 wrapText('![', `](${CONFIG.upyunDomain}/${fileName})\n`, ''); 
             } catch (err) { 
@@ -274,9 +303,9 @@
         });
     }
 
-    $('postDesc').addEventListener('input', function() { autoResizeTextarea(this); });
-    $('postContent').addEventListener('input', function() { autoResizeTextarea(this); });
-    $('postContent').addEventListener('paste', async function(e) {
+    postDescEl.addEventListener('input', function() { autoResizeTextarea(this); });
+    postContentEl.addEventListener('input', function() { autoResizeTextarea(this); });
+    postContentEl.addEventListener('paste', async function(e) {
         if (e.clipboardData.files.length > 0) { e.preventDefault(); $('imageInput').files = e.clipboardData.files; $('imageInput').dispatchEvent(new Event('change')); }
     });
 
@@ -284,7 +313,7 @@
         const wrap = $('recentListWrap');
         if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
         if (!hasFetchedRecent) {
-            let loadMsg = cocoMessage.info("正在拉取最新提交", 0);
+            let loadMsg = cocoMessage.info("正在查询最新提交", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
@@ -338,7 +367,7 @@
     }
 
     async function fetchAndLoadForEdit(path, url) {
-        let loadMsg = cocoMessage.info("正在加载博文内容", 0);
+        let loadMsg = cocoMessage.info("正在加载文章内容", 0);
         try {
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
             const json = await fRes.json();
@@ -359,7 +388,8 @@
                 
                 const tagsBlock = fm.match(/(?:^|\n)tags:\s*([\s\S]*?)(?=\n[A-Za-z0-9_-]+:|$)/);
                 if (tagsBlock) {
-                    tagsStr = tagsBlock[1].replace(/[-[\]"'\n,，]/g, ' ').trim().split(/\s+/).filter(Boolean).join(' ');
+                    const rawTags = tagsBlock[1].replace(/[-[\]"'\n,，]/g, ' ').trim().split(/\s+/).filter(Boolean);
+                    tagsStr = rawTags.map(t => `#${t}`).join(' ');
                 }
                 bodyContent = rawText.replace(/^---\n[\s\S]*?\n---/, '').trimStart();
             }
@@ -370,25 +400,24 @@
 
             window.STATE = { path: path, sha: sha, date: date };
 
-            $('postTitle').value = title;
-            $('postFilename').value = filename; 
-            $('postSlug').value = slug;
-            $('postTags').value = tagsStr;
-            $('postDesc').value = desc;
-            $('postContent').value = bodyContent;
+            postTitleEl.value = title;
+            postFilenameEl.value = filename; 
+            postSlugEl.value = slug;
+            postTagsEl.value = tagsStr;
+            postDescEl.value = desc;
+            postContentEl.value = bodyContent;
             
-            const fileInput = $('postFilename');
-            fileInput.readOnly = true;
-            fileInput.style.opacity = '0.3';
-            fileInput.title = "文件名在发布后不可更改，以免引起仓库文件错乱";
+            postFilenameEl.readOnly = true;
+            postFilenameEl.style.opacity = '0.3';
+            postFilenameEl.title = "文件名在发布后不可更改，以免引起仓库文件错乱";
             
             $('submitBtn').innerText = "修改"; 
             $('cancelBtn').style.display = 'inline-block'; 
             
             if (isPreviewMode) togglePreviewMode(); 
             
-            $('postDesc').dispatchEvent(new Event('input'));
-            $('postContent').dispatchEvent(new Event('input')); 
+            postDescEl.dispatchEvent(new Event('input'));
+            postContentEl.dispatchEvent(new Event('input')); 
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             if (typeof loadMsg === 'function') loadMsg();
@@ -401,18 +430,17 @@
     }
 
     function cancelEdit(showMsg = true) {
-        $('postTitle').value = ''; $('postFilename').value = ''; $('postSlug').value = ''; $('postTags').value = ''; $('postDesc').value = ''; $('postContent').value = ''; 
-        $('postContent').style.height = '60vh'; $('postDesc').style.height = 'auto';
+        postTitleEl.value = ''; postFilenameEl.value = ''; postSlugEl.value = ''; postTagsEl.value = ''; postDescEl.value = ''; postContentEl.value = ''; 
+        postContentEl.style.height = '60vh'; postDescEl.style.height = 'auto';
         window.STATE = { sha: null, path: null, date: null };
         
-        const fileInput = $('postFilename');
-        fileInput.readOnly = false;
-        fileInput.style.opacity = '0.6'; 
-        fileInput.title = "";
+        postFilenameEl.readOnly = false;
+        postFilenameEl.style.opacity = '0.6'; 
+        postFilenameEl.title = "";
 
         $('submitBtn').innerText = "写好啦"; 
         $('cancelBtn').style.display = 'none';
-        $('postContent').dispatchEvent(new Event('input')); 
+        postContentEl.dispatchEvent(new Event('input')); 
         loadDraft(); 
         if (showMsg) cocoMessage.info("已取消修改");
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -421,7 +449,8 @@
     function initApp() {
         if (getAdminToken()) {
             $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
-            loadDraft(); setTimeout(() => $('postContent').focus(), 100); 
+            fetchAllTags(); 
+            loadDraft(); setTimeout(() => postContentEl.focus(), 100); 
         } else {
             $('loginOverlay').style.display = 'flex'; $('adminPanel').style.display = 'none';
             setTimeout(() => $('adminTokenInput').focus(), 100);
@@ -435,7 +464,9 @@
         try {
             await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
             $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
-            cocoMessage.success("验证成功"); loadDraft(); $('postContent').focus();
+            cocoMessage.success("验证成功"); 
+            fetchAllTags();
+            loadDraft(); postContentEl.focus();
         } catch (e) {
             logout(false); cocoMessage.error("密钥错误，请重新输入");
         }
@@ -447,12 +478,12 @@
     }
 
     async function publishPost() {
-        const title = $('postTitle').value.trim(); 
-        const filenameInput = $('postFilename').value.trim(); 
-        const slug = $('postSlug').value.trim(); 
-        const tagsVal = $('postTags').value.trim(); 
-        const desc = $('postDesc').value.trim(); 
-        let contentVal = $('postContent').value.trim(); 
+        const title = postTitleEl.value.trim(); 
+        const filenameInput = postFilenameEl.value.trim(); 
+        const slug = postSlugEl.value.trim(); 
+        const tagsVal = postTagsEl.value.trim(); 
+        const desc = postDescEl.value.trim(); 
+        let contentVal = postContentEl.value.trim(); 
         
         if (!title) return cocoMessage.warning("忘写标题啦！");
         if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
@@ -479,7 +510,7 @@
         if (desc) frontmatter += `description: "${desc}"\n`;
         
         if (tagsVal) {
-            const tagsArr = tagsVal.split(/[,，\s]+/).filter(t => t);
+            const tagsArr = tagsVal.split(/[,，\s]+/).map(t => t.replace(/^#/, '')).filter(t => t);
             if (tagsArr.length > 0) {
                 frontmatter += `tags:\n${tagsArr.map(t => `  - ${t}`).join('\n')}\n`;
             }
@@ -516,6 +547,111 @@
         }
         $('submitBtn').disabled = false;
     }
+
+    // ==========================================
+    // 🚀 长文专属：带 # 号触发的标签选择器逻辑
+    // ==========================================
+    function updateTagHighlight(items) {
+        items.forEach((item, i) => {
+            if (i === currentTagIndex) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function insertSelectedTag(tag, keywordLength, cursorStart) {
+        const before = postTagsEl.value.substring(0, cursorStart - keywordLength - 1);
+        const after = postTagsEl.value.substring(cursorStart);
+        const insertText = `#${tag} `; 
+        
+        // 🚀 终极优化 1：先 focus，再设定光标位置，彻底解决选完标签光标乱飞的问题
+        postTagsEl.focus(); 
+        
+        postTagsEl.value = before + insertText + after;
+        // 把光标精准定位到刚才插入的那个空格后面
+        postTagsEl.setSelectionRange(before.length + insertText.length, before.length + insertText.length);
+        
+        tagSelector.style.display = 'none';
+        postTagsEl.dispatchEvent(new Event('input')); 
+    }
+
+    tagSelector.addEventListener('mousedown', function(e) {
+        const item = e.target.closest('.tag-item');
+        if (!item) return;
+        e.preventDefault();
+        
+        const cursorPosition = postTagsEl.selectionStart;
+        const match = postTagsEl.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
+        
+        if (match) {
+            insertSelectedTag(filteredTags[item.dataset.index], match[1].length, cursorPosition);
+        }
+    });
+
+    function checkTagTrigger() {
+        const cursorPosition = postTagsEl.selectionStart;
+        const textBeforeCursor = postTagsEl.value.substring(0, cursorPosition);
+        const match = textBeforeCursor.match(/(?:^|\s)#([^\s]*)$/);
+
+        if (match) {
+            const keywordLower = match[1].toLowerCase();
+            filteredTags = cachedTags.filter(t => t.toLowerCase().includes(keywordLower));
+            
+            if (filteredTags.length > 0) {
+                tagSelector.innerHTML = filteredTags.map((t, i) => `<div class="tag-item" data-index="${i}"># ${t}</div>`).join('');
+                tagSelector.style.display = 'grid'; 
+                currentTagIndex = -1; 
+            } else {
+                tagSelector.style.display = 'none';
+            }
+        } else {
+            tagSelector.style.display = 'none';
+        }
+    }
+
+    postTagsEl.addEventListener('input', function() {
+        checkTagTrigger();
+    });
+
+    postTagsEl.addEventListener('keyup', function(e) {
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && tagSelector.style.display === 'none') {
+             checkTagTrigger(); 
+        }
+    });
+
+    postTagsEl.addEventListener('keydown', function(e) {
+        if (tagSelector.style.display === 'grid') {
+            const items = tagSelector.querySelectorAll('.tag-item');
+            const total = items.length;
+            const cols = 5;
+            
+            if (e.key === 'ArrowRight') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0);
+                updateTagHighlight(items);
+            } else if (e.key === 'Enter') {
+                if (currentTagIndex >= 0) {
+                    e.preventDefault(); 
+                    items[currentTagIndex].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+                } else {
+                    tagSelector.style.display = 'none';
+                }
+            } else if (e.key === ' ' || e.key === 'Escape' || e.key === ',' || e.key === '，') {
+                tagSelector.style.display = 'none';
+            }
+        }
+    });
 
     initApp();
 </script>

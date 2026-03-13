@@ -13,6 +13,7 @@
     <div class="admin-publish-card">
         <div class="laodao-content datacont">
             <textarea id="content" class="admin-textarea" placeholder=" " autofocus></textarea>
+            <div id="tagSelector" class="tag-selector-dropdown"></div>
         </div>
 
         <div class="laodao-footer admin-publish-footer">
@@ -62,6 +63,10 @@
     const STATE = { sha: null, path: null, date: null, emoji: null };
     let hasFetchedRecent = false; 
 
+    let cachedTags = [];
+    let filteredTags = [];
+    let currentTagIndex = -1;
+
     const $ = id => document.getElementById(id);
     const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
     
@@ -93,10 +98,27 @@
         return res;
     }
 
+    // 🚀 终极优化 1：强制无缓存拉取标签，保证每次都能拉到最新的
+    async function fetchAllTags() {
+        if (cachedTags.length > 0) return;
+        try {
+            const res = await fetch('/laodaotags/index.xml?t=' + Date.now());
+            if (res.ok) {
+                const text = await res.text();
+                const xmlDoc = new DOMParser().parseFromString(text, "text/xml");
+                const titles = Array.from(xmlDoc.querySelectorAll("item title")).map(t => t.textContent);
+                cachedTags = [...new Set(titles)]; 
+            }
+        } catch(e) {
+            console.log("标签拉取失败", e);
+        }
+    }
+
     function initApp() {
         if (getAdminToken()) {
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
+            fetchAllTags(); 
             setTimeout(() => $('content').focus(), 100); 
         } else {
             $('loginOverlay').style.display = 'flex';
@@ -118,6 +140,7 @@
             $('adminPanel').style.display = 'block';
             
             cocoMessage.success("验证成功");
+            fetchAllTags(); 
             $('content').focus();
         } catch (e) {
             logout(false);
@@ -148,22 +171,16 @@
 
     const insertLink = () => insertText("[]()", "[", 1);
 
-    // 🚀 新增：专属的加粗函数（前后带空格）
     function insertBold() {
         const el = $('content'); el.focus({ preventScroll: true });
         const start = el.selectionStart; 
         const end = el.selectionEnd;
         const sel = el.value.substring(start, end);
         
-        // 前后强制加入空格，解决中文边界渲染失败问题
         const result = sel ? ` **${sel}** ` : ` **加粗文字** `;
-        
         el.setRangeText(result, start, end, 'end');
         
-        // 智能定位光标：如果没选中文本，让光标停在“加粗文字”里面方便替换
-        if (!sel) {
-            el.setSelectionRange(start + 3, start + 3 + 4);
-        }
+        if (!sel) el.setSelectionRange(start + 3, start + 3 + 4);
         el.dispatchEvent(new Event('input'));
     }
 
@@ -208,6 +225,9 @@
         let uploadMsg = cocoMessage.info("正在压缩并上传", 0); 
         
         for (let file of files) {
+            // 🚀 终极优化 3：静默拦截非图片文件，防止底层报错
+            if (!file.type.startsWith('image/')) continue;
+            
             try {
                 const webpBlob = await compressImage(file);
                 const fileName = `memos/${Date.now()}_${Math.random().toString(36).substr(2, 6)}.webp`;
@@ -351,9 +371,7 @@
 
         $('content').value = rawText.replace(/---[\s\S]*?---/, '').trim();
         $('submitBtn').innerText = "修改"; 
-        
         $('cancelBtn').style.display = 'inline-block'; 
-        
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
         
         $('content').dispatchEvent(new Event('input'));
@@ -365,17 +383,122 @@
         $('content').style.height = 'auto'; 
         STATE.sha = STATE.path = STATE.date = null;
         $('submitBtn').innerText = "唠叨一下"; 
-        
         $('cancelBtn').style.display = 'none';
-        
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
     }
    
+    // ==========================================
+    // 🚀 核心标签选择器交互逻辑
+    // ==========================================
+    const tagSelector = $('tagSelector');
+    tagSelector.style.display = 'none';
+
+    function updateTagHighlight(items) {
+        items.forEach((item, i) => {
+            if (i === currentTagIndex) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function insertSelectedTag(tag, keywordLength, cursorStart) {
+        const el = $('content');
+        const before = el.value.substring(0, cursorStart - keywordLength - 1);
+        const after = el.value.substring(cursorStart);
+        const insertText = `#${tag} `;
+        
+        el.value = before + insertText + after;
+        el.setSelectionRange(before.length + insertText.length, before.length + insertText.length);
+        
+        tagSelector.style.display = 'none';
+        el.focus();
+        el.dispatchEvent(new Event('input'));
+    }
+
+    tagSelector.addEventListener('mousedown', function(e) {
+        const item = e.target.closest('.tag-item');
+        if (!item) return;
+        e.preventDefault();
+        
+        const el = $('content');
+        const cursorPosition = el.selectionStart;
+        const match = el.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
+        
+        if (match) {
+            insertSelectedTag(filteredTags[item.dataset.index], match[1].length, cursorPosition);
+        }
+    });
+
+    // 🚀 终极优化 2：把侦测逻辑提出来，让 input 和 keyup 都能调用，完美解决光标回退的幽灵菜单问题
+    function checkTagTrigger() {
+        const el = $('content');
+        const cursorPosition = el.selectionStart;
+        const textBeforeCursor = el.value.substring(0, cursorPosition);
+        const match = textBeforeCursor.match(/(?:^|\s)#([^\s]*)$/);
+
+        if (match) {
+            const keywordLower = match[1].toLowerCase();
+            filteredTags = cachedTags.filter(t => t.toLowerCase().includes(keywordLower));
+            
+            if (filteredTags.length > 0) {
+                tagSelector.innerHTML = filteredTags.map((t, i) => `<div class="tag-item" data-index="${i}"># ${t}</div>`).join('');
+                tagSelector.style.display = 'grid'; 
+                currentTagIndex = -1; 
+            } else {
+                tagSelector.style.display = 'none';
+            }
+        } else {
+            tagSelector.style.display = 'none';
+        }
+    }
+
     $('content').addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
+        checkTagTrigger(); // 打字时侦测
     });
-    
+
+    $('content').addEventListener('keyup', function(e) {
+        // 如果按了普通的左右键，且菜单没有弹出来，则尝试侦测是否遇到了标签
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && tagSelector.style.display === 'none') {
+             checkTagTrigger(); // 光标移动时侦测
+        }
+    });
+
+    $('content').addEventListener('keydown', function(e) {
+        if (tagSelector.style.display === 'grid') {
+            const items = tagSelector.querySelectorAll('.tag-item');
+            const total = items.length;
+            const cols = 4;
+            
+            if (e.key === 'ArrowRight') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1);
+                updateTagHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault(); 
+                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0);
+                updateTagHighlight(items);
+            } else if (e.key === 'Enter') {
+                if (currentTagIndex >= 0) {
+                    e.preventDefault(); 
+                    items[currentTagIndex].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+                } else {
+                    tagSelector.style.display = 'none';
+                }
+            } else if (e.key === ' ' || e.key === 'Escape') {
+                tagSelector.style.display = 'none';
+            }
+        }
+    });
+
     initApp();
 </script>
 {{ end }}

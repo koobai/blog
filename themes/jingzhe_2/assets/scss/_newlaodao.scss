@@ -232,3 +232,51 @@
         transform: scale(1.1);
     }
 }
+
+
+
+/* 标签补全 */
+.tag-selector-dropdown {
+    display: none; /* 默认隐藏，JS 触发时会强行改为 grid */
+    grid-template-columns: repeat(4, 1fr); /* 强制一行 4 列 */
+    gap: 4px; /* 标签的横纵间距 */
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 16px;
+    max-width: 420px;
+     background: var(--background-card-color);
+    border: 1px solid var(--background-card-border-color);
+    @include dark {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color);
+    }
+}
+
+/* 单个标签样式 */
+.tag-selector-dropdown .tag-item {
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-info-color);
+    text-align: left; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    transition: all 0.2s ease;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+}
+
+/* 鼠标悬浮和键盘选中状态的高亮 */
+.tag-selector-dropdown .tag-item:hover,
+.tag-selector-dropdown .tag-item.active {
+    background:var(--background-body-color);
+    border-radius: 8px;
+    color: var(--text-content-color) !important;
+    @include dark {
+        background:var(--background-dark-body-color);
+        color: var(--text-content-dark-color) !important;
+    }
+
+}
