@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>空白Koobai</title><link>https://koobai.com/</link><description/><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 13 Mar 2026 12:46:56 +0800</lastBuildDate><atom:link href="https://koobai.com/index.xml" rel="self" type="application/rss+xml"/><item><title>2026-03-13 12:46</title><link>https://koobai.com/laodao/2026/03/20260313-124656/</link><pubDate>Fri, 13 Mar 2026 12:46:56 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260313-124656/</guid><description>&lt;p>折腾可以告一段落了，从年前花了大量的时间调整 Memos 以适配新版本，并增加了各种功能。到现在完全抛弃 Memos，直接以 hugo .md 呈现及单页发布，同时新增适配长文发布😎。同样花了大量的时 …&lt;/p></description><content:encoded><![CDATA[<p>折腾可以告一段落了，从年前花了大量的时间调整 Memos 以适配新版本，并增加了各种功能。到现在完全抛弃 Memos，直接以 hugo .md 呈现及单页发布，同时新增适配长文发布😎。同样花了大量的时间🤷‍♂️，增加动起来原项目的交互逻辑及页面呈现，到现在完全抛弃原项目，直接同步 Strava 数据，在以 hugo 方式呈现。这过程来回折腾，似乎浪费了非常多的时间～<br>
-那你问这么折腾的意义是什么？我觉得没意义，硬要说，一个是算继续学习怎么跟 ai 对话，以达到你想要的结果。随着 ai 越来越强，似乎怎么跟它互动才是最核心的。二是之前写过的一篇博文
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>空白Koobai</title><link>https://koobai.com/</link><description/><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 13 Mar 2026 12:46:56 +0800</lastBuildDate><atom:link href="https://koobai.com/index.xml" rel="self" type="application/rss+xml"/><item><title>2026-03-13 12:46</title><link>https://koobai.com/laodao/2026/03/20260313-124656/</link><pubDate>Fri, 13 Mar 2026 12:46:56 +0800</pubDate><guid>https://koobai.com/laodao/2026/03/20260313-124656/</guid><description>&lt;p>折腾可以告一段落了，从年前花了大量的时间调整 Memos 适配新版本、增加各种功能；到现在完全抛弃 Memos，以 Hugo MD 格式呈现/单页发布（新增适配长文发布😎）。同样花了大量时间🤷‍♂️， …&lt;/p></description><content:encoded><![CDATA[<p>折腾可以告一段落了，从年前花了大量的时间调整 Memos 适配新版本、增加各种功能；到现在完全抛弃 Memos，以 Hugo MD 格式呈现/单页发布（新增适配长文发布😎）。同样花了大量时间🤷‍♂️，调整
+
+<a 
+    
+        href="/exercise"
+    
+
+    
+>
+动起来</a>原项目的功能/交互/页面呈现；到现在完全抛弃，以 Hugo 方式呈现。<br>
+这么折腾的意义是什么？我觉得没意义，只是浪费这么多时间😭。但硬要说，一是算继续学习怎么跟 Ai 对话，以达到你想要的结果。随着 Ai 越来越强，似乎怎么跟它互动才是最核心的。二是之前写过的一篇博文
 
 <a 
     
