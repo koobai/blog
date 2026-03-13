@@ -3185,6 +3185,13 @@ html[data-theme='dark'] .apptitle a {
   opacity: 0.6; }
   .admin-recent-card:hover {
     opacity: 1; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .admin-recent-card {
+      background-color: transparent;
+      border: 1px solid transparent; } }
+  html[data-theme='dark'] .admin-recent-card {
+    background-color: transparent;
+    border: 1px solid transparent; }
 
 .admin-recent-content {
   margin: 10px 0;
