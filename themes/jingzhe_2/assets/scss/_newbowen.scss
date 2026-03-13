@@ -85,3 +85,10 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
+/* 标签补全 */
+.page-bowen-admin .tag-selector-dropdown {
+    grid-template-columns: repeat(5, 1fr); 
+    max-width:500px;
+}
