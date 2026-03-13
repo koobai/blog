@@ -166,20 +166,6 @@ ol, ul {
       p { margin: 0; }
     }
   }
-  code, pre {
-      font-family: var(--font-family-code);
-      line-height: 1.8;
-  }
-  .highlight pre {
-      font-size: 0.9rem;
-      padding: 15px;
-      overflow: auto;
-  }
-  .highlight {
-      border-radius: 16px;
-      overflow: auto;
-      background: #272822;
-  }
 }
 
 .footnotes ol li {

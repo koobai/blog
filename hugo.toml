@@ -27,11 +27,9 @@ hasCJKLanguage = true
   [markup.highlight]
     codeFences = true
     guessSyntax = true
-    lineNos = true    
-    lineNumbersInTable = true
-    noClasses = true      
-
-    style = "monokai"    
+    lineNos = false
+    lineNumbersInTable = false
+    noClasses = false
   
   [markup.goldmark]
     [markup.goldmark.renderer]
