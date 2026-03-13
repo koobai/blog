@@ -1,0 +1,521 @@
+{{ define "body_classes" }}page-bowen-admin{{ end }}
+{{ define "main" }}
+
+<script src="/js/coco-message.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+
+<div id="loginOverlay" style="display: none;">
+    <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
+    <button class="admin-login-btn" onclick="verifyToken()">验证</button>
+</div>
+
+<div id="adminPanel" style="display: none;" class="admin-immersive-wrapper">
+    
+    <div class="admin-publish-card">
+        
+        <div class="admin-publish-footer write-header-container">
+            <div class="write-header">
+                <input type="text" id="postTitle" class="write-input write-title" placeholder="标题">
+                <input type="text" id="postFilename" class="write-input write-meta" placeholder="文件名.md">
+                <input type="text" id="postSlug" class="write-input write-meta" placeholder="路径">
+                <input type="text" id="postTags" class="write-input write-meta" placeholder="标签 空格或逗号分割">
+                <textarea id="postDesc" class="write-input write-meta write-textarea" placeholder="摘要"></textarea>
+            </div>
+        </div>
+
+        <div class="admin-publish-footer admin-publish-bar" id="stickyToolbar">
+            <div class="admin-toolbar">
+                <div class="admin-icon-btn" title="插入小标题" onclick="wrapText('### ', '', '输入小标题')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M5 4v16h3v-6h8v6h3V4h-3v7H8V4H5z"/></svg>
+                </div>
+                <div class="admin-icon-btn" title="加粗" onclick="insertBold()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" fill-rule="evenodd" d="M4 3a1 1 0 0 1 1-1h6a4.5 4.5 0 0 1 3.274 7.587A4.75 4.75 0 0 1 11.25 18H5a1 1 0 0 1-1-1zm2.5 5.5v-4H11a2 2 0 1 1 0 4zm0 2.5v4.5h4.75a2.25 2.25 0 0 0 0-4.5z" clip-rule="evenodd"/></svg>
+                </div>
+                <div class="admin-icon-btn" title="插入链接" onclick="insertLink()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 13.41c.41.39.41 1.03 0 1.42c-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0a5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24a2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0a5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24a2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24a.973.973 0 0 1 0-1.42"/></svg>
+                </div>
+                <label class="admin-icon-btn" title="上传图片" style="margin: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/><path d="m3 16l5-5c.928-.893 2.072-.893 3 0l5 5"/><path d="m14 14l1-1c.928-.893 2.072-.893 3 0l3 3"/></g></svg>
+                    <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                </label>
+                <div class="admin-icon-btn admin-icon-emoji" title="插入表情" onclick="showEmoji(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
+                </div>
+                <div class="admin-icon-btn" title="修改最新文章" onclick="toggleRecentList()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 7c0 2.21-4.03 4-9 4S3 9.21 3 7m18 0c0-2.21-4.03-4-9-4S3 4.79 3 7m18 0v5M3 7v5m18 0c0 2.21-4.03 4-9 4s-9-1.79-9-4m18 0v5c0 2.21-4.03 4-9 4s-9-1.79-9-4v-5"/></svg>
+                </div>
+                <div class="admin-icon-btn" title="切换预览 (所见即所得)" onclick="togglePreviewMode()" id="modeToggleBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8zm11 3a3 3 0 1 0 0-6a3 3 0 0 0 0 6z"/></svg>
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button id="cancelBtn" class="admin-btn admin-btn-cancel" onclick="cancelEdit()" style="display: none;">取消</button>
+                <button id="submitBtn" class="admin-btn" onclick="publishPost()">写好啦</button>
+            </div>
+        </div>
+
+        <div class="editor-container laodao-content datacont">
+            <textarea id="postContent" class="admin-textarea core-textarea" placeholder=" " autofocus></textarea>
+            <div id="previewContent" class="preview-container content" style="display: none;"></div>
+        </div>
+
+    </div>
+
+    <div id="recentListWrap" class="admin-laodao-list">
+        <div id="recentList"></div>
+    </div>
+
+</div>
+
+<script>
+    const CONFIG = { workerUrl: "https://koobai-laodao.mekoobai.workers.dev", owner: "koobai", repo: "blog", branch: "main", upyunDomain: "https://img.koobai.com" };
+    const CACHE_KEY = 'koobai_article_draft'; 
+
+    let isPreviewMode = false;
+    let emojiDiv = null;
+    let hasFetchedRecent = false;
+    window.STATE = { sha: null, path: null, date: null };
+
+    const $ = id => document.getElementById(id);
+    const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
+    const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
+    const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
+
+    function getFormattedTime() {
+        const d = new Date();
+        return { 
+            year: d.getFullYear(), month: String(d.getMonth() + 1).padStart(2, '0'), day: String(d.getDate()).padStart(2, '0'), 
+            hour: String(d.getHours()).padStart(2, '0'), min: String(d.getMinutes()).padStart(2, '0'), sec: String(d.getSeconds()).padStart(2, '0') 
+        };
+    }
+
+    async function secureFetch(url, options = {}) {
+        options.headers = { ...options.headers, 'x-admin-token': getAdminToken() };
+        const res = await fetch(url, options);
+        if (res.status === 401) throw new Error("401"); 
+        return res;
+    }
+
+    window.addEventListener('scroll', () => {
+        const bar = $('stickyToolbar');
+        if (!bar) return;
+        if (bar.getBoundingClientRect().top <= 0) {
+            bar.classList.add('is-sticky');
+        } else {
+            bar.classList.remove('is-sticky');
+        }
+    }, { passive: true });
+
+    let draftTimer;
+    function scheduleSaveDraft() {
+        if (window.STATE.sha) return; 
+        clearTimeout(draftTimer);
+        draftTimer = setTimeout(() => {
+            const draft = { title: $('postTitle').value, filename: $('postFilename').value, slug: $('postSlug').value, tags: $('postTags').value, desc: $('postDesc').value, content: $('postContent').value };
+            localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
+        }, 1000);
+    }
+
+    function loadDraft() {
+        if (window.STATE.sha) return;
+        const saved = localStorage.getItem(CACHE_KEY);
+        if (saved) {
+            try {
+                const draft = JSON.parse(saved);
+                if (draft.title) $('postTitle').value = draft.title;
+                if (draft.filename) $('postFilename').value = draft.filename;
+                if (draft.slug) $('postSlug').value = draft.slug;
+                if (draft.tags) $('postTags').value = draft.tags;
+                if (draft.desc) { $('postDesc').value = draft.desc; $('postDesc').dispatchEvent(new Event('input')); }
+                if (draft.content) { $('postContent').value = draft.content; $('postContent').dispatchEvent(new Event('input')); }
+            } catch(e) {}
+        }
+    }
+
+    ['postTitle', 'postFilename', 'postSlug', 'postTags', 'postDesc', 'postContent'].forEach(id => { $(id).addEventListener('input', scheduleSaveDraft); });
+
+    // ==========================================
+    // 🚀 核心工具函数组
+    // ==========================================
+    function wrapText(prefix, suffix, placeholder) {
+        if(isPreviewMode) togglePreviewMode(); 
+        const el = $('postContent'); 
+        el.focus({ preventScroll: true });    
+        
+        const start = el.selectionStart; const end = el.selectionEnd;
+        const sel = el.value.substring(start, end);
+        if (sel) { 
+            el.setRangeText(`${prefix}${sel}${suffix}`, start, end, 'end'); 
+        } else { 
+            el.setRangeText(`${prefix}${placeholder}${suffix}`, start, end, 'end'); 
+            el.setSelectionRange(start + prefix.length, start + prefix.length + placeholder.length); 
+        }
+        el.dispatchEvent(new Event('input')); 
+    }
+
+    // 🚀 完美的加粗逻辑（前后强制带空格）
+    function insertBold() {
+        if(isPreviewMode) togglePreviewMode();
+        const el = $('postContent');
+        el.focus({ preventScroll: true });
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        const sel = el.value.substring(start, end);
+
+        if (sel) {
+            el.setRangeText(` **${sel}** `, start, end, 'end');
+        } else {
+            el.setRangeText(` **加粗文字** `, start, end, 'end');
+            // 精准选中"加粗文字"四个字，方便直接打字替换 (前面有两个空格和一个星号=3)
+            el.setSelectionRange(start + 3, start + 7); 
+        }
+        el.dispatchEvent(new Event('input'));
+    }
+
+    // 🚀 完美的链接逻辑（同步唠叨页，光标定位到括号内）
+    function insertLink() {
+        if(isPreviewMode) togglePreviewMode();
+        const el = $('postContent');
+        el.focus({ preventScroll: true });
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        const sel = el.value.substring(start, end);
+
+        if (sel) {
+            el.setRangeText(`[${sel}]()`, start, end, 'end');
+            // 光标精准放到 () 里面
+            el.setSelectionRange(start + sel.length + 3, start + sel.length + 3);
+        } else {
+            el.setRangeText(`[]()`, start, end, 'end');
+            // 光标精准放到 () 里面
+            el.setSelectionRange(start + 3, start + 3);
+        }
+        el.dispatchEvent(new Event('input'));
+    }
+    // ==========================================
+
+    const renderer = new marked.Renderer();
+    renderer.image = function(href, title, text) {
+        if (text) { return `<figure class="post-figure"><img src="${href}" alt="${text}" title="${title || text}"><figcaption class="post-figcaption">${text}</figcaption></figure>`; }
+        return `<img src="${href}" alt="">`;
+    };
+    marked.setOptions({ renderer: renderer, breaks: true, gfm: true });
+
+    function togglePreviewMode() {
+        const contentArea = $('postContent'); const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
+        isPreviewMode = !isPreviewMode;
+        if (isPreviewMode) {
+            contentArea.style.display = 'none'; previewArea.innerHTML = marked.parse(contentArea.value || '*空空如也...*'); previewArea.style.display = 'block';
+            btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
+        } else {
+            previewArea.style.display = 'none'; contentArea.style.display = 'block';
+            btn.style.color = ""; btn.style.opacity = "0.5";
+        }
+    }
+
+    const compressImage = (file) => new Promise((resolve, reject) => {
+        const reader = new FileReader(); reader.readAsDataURL(file);
+        reader.onload = (e) => {
+            const img = new Image(); img.src = e.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas'); 
+                let { width, height } = img; 
+                const MAX = 1500; 
+                if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } } 
+                else { if (height > MAX) { width *= MAX / height; height = MAX; } }
+                
+                canvas.width = width; canvas.height = height; 
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height); 
+                canvas.toBlob(resolve, 'image/webp', 0.75); 
+            }; img.onerror = reject;
+        }; reader.onerror = reject;
+    });
+
+    $('imageInput').addEventListener('change', async function(e) {
+        const files = e.target.files; if (!files.length) return;
+        if(isPreviewMode) togglePreviewMode();
+        let uploadMsg = cocoMessage.info("正在压缩并上传...", 0); 
+        for (let file of files) {
+            try {
+                const webpBlob = await compressImage(file);
+                const fileName = `article/${Date.now()}_${Math.random().toString(36).substr(2, 6)}.webp`;
+                await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: webpBlob });
+                wrapText('![', `](${CONFIG.upyunDomain}/${fileName})\n`, ''); 
+            } catch (err) { 
+                if (typeof uploadMsg === 'function') uploadMsg();
+                if (err.message === "401") return logout(); return cocoMessage.error("图片上传失败"); 
+            }
+        }
+        if (typeof uploadMsg === 'function') uploadMsg();
+        cocoMessage.success("图片准备就绪！"); this.value = '';
+    });
+
+    async function showEmoji(btn) {
+        if (emojiDiv) { emojiDiv.remove(); emojiDiv = null; return; }
+        if (!window.emojisData) { try { window.emojisData = (await fetch('/suju/owo.json').then(r => r.json())).Emoji.container; } catch { return cocoMessage.error("获取表情失败"); } }
+        
+        emojiDiv = document.createElement('div'); 
+        emojiDiv.className = 'emoji-selector'; 
+        emojiDiv.style.width = '100%'; emojiDiv.style.flex = '0 0 100%';
+        emojiDiv.innerHTML = window.emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
+        emojiDiv.onclick = (e) => { const item = e.target.closest('.emoji-item'); if (item) { if(isPreviewMode) togglePreviewMode(); wrapText('', '', item.innerText); } };
+        
+        btn.closest('.admin-publish-bar').appendChild(emojiDiv);
+    }
+
+    function autoResizeTextarea(el) {
+        window.requestAnimationFrame(() => {
+            const currentScrollY = window.scrollY;
+            el.style.height = 'auto'; 
+            el.style.height = el.scrollHeight + 'px'; 
+            window.scrollTo(window.scrollX, currentScrollY);
+        });
+    }
+
+    $('postDesc').addEventListener('input', function() { autoResizeTextarea(this); });
+    $('postContent').addEventListener('input', function() { autoResizeTextarea(this); });
+    $('postContent').addEventListener('paste', async function(e) {
+        if (e.clipboardData.files.length > 0) { e.preventDefault(); $('imageInput').files = e.clipboardData.files; $('imageInput').dispatchEvent(new Event('change')); }
+    });
+
+    async function toggleRecentList() {
+        const wrap = $('recentListWrap');
+        if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
+        if (!hasFetchedRecent) {
+            let loadMsg = cocoMessage.info("正在查询最新提交...", 0);
+            const success = await fetchRecent(); 
+            if (typeof loadMsg === 'function') loadMsg();
+            if (!success) return; 
+        }
+        wrap.style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    async function fetchRecent() {
+        const commitsUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=content/posts&per_page=3&sha=${CONFIG.branch}`;
+        try {
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commitsUrl } });
+            if (!res.ok) { cocoMessage.warning("暂无提交记录"); return false; }
+            const commits = await res.json();
+            
+            let latestFile = null;
+
+            for (const commit of commits) {
+                const detailRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commit.url } });
+                const detail = await detailRes.json();
+                if (!detail.files) continue;
+                
+                latestFile = detail.files.find(f => f.filename.startsWith('content/posts/') && f.filename.endsWith('.md'));
+                if (latestFile) break; 
+            }
+
+            if (!latestFile) { cocoMessage.warning("近期没有文章被修改"); return false; }
+
+            hasFetchedRecent = true; 
+            
+            const filenameOnly = latestFile.filename.split('/').pop();
+            const fileUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${latestFile.filename}?ref=${CONFIG.branch}`);
+            
+            $('recentList').innerHTML = `
+            <div class="laodao-card admin-recent-card" onclick="fetchAndLoadForEdit('${latestFile.filename}', '${fileUrl}')">
+                <div class="laodao-content datacont admin-recent-content" style="margin: 0;">
+                    ${filenameOnly}
+                </div>
+            </div>`;
+            return true;
+        } catch(err) { 
+            if (err.message === "401") return logout();
+            cocoMessage.error("网络异常，拉取失败"); return false;
+        }
+    }
+
+    function getYamlValue(yaml, key) {
+        const regex = new RegExp(`^${key}:\\s*(.*)$`, 'm');
+        const match = yaml.match(regex);
+        return match ? match[1].replace(/(^['"]|['"]$)/g, '').trim() : '';
+    }
+
+    async function fetchAndLoadForEdit(path, url) {
+        let loadMsg = cocoMessage.info("正在加载文章内容...", 0);
+        try {
+            const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
+            const json = await fRes.json();
+            const rawText = b64_to_utf8(json.content);
+            const sha = json.sha; 
+            
+            const fmMatch = rawText.match(/^---\n([\s\S]*?)\n---/);
+            let title = '', slug = '', tagsStr = '', desc = '', date = '', image = '';
+            let bodyContent = rawText;
+
+            if (fmMatch) {
+                const fm = fmMatch[1];
+                title = getYamlValue(fm, 'title');
+                slug = getYamlValue(fm, 'slug');
+                desc = getYamlValue(fm, 'description');
+                date = getYamlValue(fm, 'date');
+                image = getYamlValue(fm, 'image'); 
+                
+                const tagsBlock = fm.match(/(?:^|\n)tags:\s*([\s\S]*?)(?=\n[A-Za-z0-9_-]+:|$)/);
+                if (tagsBlock) {
+                    tagsStr = tagsBlock[1].replace(/[-[\]"'\n,，]/g, ' ').trim().split(/\s+/).filter(Boolean).join(' ');
+                }
+                bodyContent = rawText.replace(/^---\n[\s\S]*?\n---/, '').trimStart();
+            }
+
+            const filename = path.split('/').pop().replace('.md', '');
+            if (!slug) slug = filename;
+            if (image) { bodyContent = `![](${image})\n\n` + bodyContent; }
+
+            window.STATE = { path: path, sha: sha, date: date };
+
+            $('postTitle').value = title;
+            $('postFilename').value = filename; 
+            $('postSlug').value = slug;
+            $('postTags').value = tagsStr;
+            $('postDesc').value = desc;
+            $('postContent').value = bodyContent;
+            
+            const fileInput = $('postFilename');
+            fileInput.readOnly = true;
+            fileInput.style.opacity = '0.3';
+            fileInput.title = "文件名在发布后不可更改，以免引起仓库文件错乱";
+            
+            $('submitBtn').innerText = "修改"; 
+            $('cancelBtn').style.display = 'inline-block'; 
+            
+            if (isPreviewMode) togglePreviewMode(); 
+            
+            $('postDesc').dispatchEvent(new Event('input'));
+            $('postContent').dispatchEvent(new Event('input')); 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (typeof loadMsg === 'function') loadMsg();
+            cocoMessage.success("文章加载完毕，已暂停自动存稿");
+        } catch (err) {
+            if (typeof loadMsg === 'function') loadMsg();
+            if (err.message === "401") return logout();
+            cocoMessage.error("文章内容加载失败");
+        }
+    }
+
+    function cancelEdit(showMsg = true) {
+        $('postTitle').value = ''; $('postFilename').value = ''; $('postSlug').value = ''; $('postTags').value = ''; $('postDesc').value = ''; $('postContent').value = ''; 
+        $('postContent').style.height = '60vh'; $('postDesc').style.height = 'auto';
+        window.STATE = { sha: null, path: null, date: null };
+        
+        const fileInput = $('postFilename');
+        fileInput.readOnly = false;
+        fileInput.style.opacity = '0.6'; 
+        fileInput.title = "";
+
+        $('submitBtn').innerText = "写好啦"; 
+        $('cancelBtn').style.display = 'none';
+        $('postContent').dispatchEvent(new Event('input')); 
+        loadDraft(); 
+        if (showMsg) cocoMessage.info("已取消修改");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initApp() {
+        if (getAdminToken()) {
+            $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
+            loadDraft(); setTimeout(() => $('postContent').focus(), 100); 
+        } else {
+            $('loginOverlay').style.display = 'flex'; $('adminPanel').style.display = 'none';
+            setTimeout(() => $('adminTokenInput').focus(), 100);
+        }
+    }
+
+    async function verifyToken() {
+        const token = $('adminTokenInput').value.trim();
+        if (!token) return cocoMessage.warning("请输入密钥");
+        localStorage.setItem("koobai_admin_token", token);
+        try {
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
+            $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
+            cocoMessage.success("验证成功"); loadDraft(); $('postContent').focus();
+        } catch (e) {
+            logout(false); cocoMessage.error("密钥错误，请重新输入");
+        }
+    }
+
+    function logout(reload = true) {
+        localStorage.removeItem("koobai_admin_token");
+        reload ? location.reload() : ($('loginOverlay').style.display = 'flex', $('adminPanel').style.display = 'none');
+    }
+
+    async function publishPost() {
+        const title = $('postTitle').value.trim(); 
+        const filenameInput = $('postFilename').value.trim(); 
+        const slug = $('postSlug').value.trim(); 
+        const tagsVal = $('postTags').value.trim(); 
+        const desc = $('postDesc').value.trim(); 
+        let contentVal = $('postContent').value.trim(); 
+        
+        if (!title) return cocoMessage.warning("忘写标题啦！");
+        if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
+        
+        $('submitBtn').disabled = true; let pubMsg = cocoMessage.info("正在安全推送至 GitHub...", 0);
+
+        let coverUrl = '';
+        const topImageRegex = /^\s*!\[(.*?)\]\((.*?)\)/; 
+        const match = contentVal.match(topImageRegex);
+
+        if (match) {
+            coverUrl = match[2]; 
+            contentVal = contentVal.replace(topImageRegex, '').trimStart(); 
+        }
+
+        const { year, month, day, hour, min, sec } = getFormattedTime();
+        const finalTime = window.STATE.date ? window.STATE.date : `${year}-${month}-${day}T${hour}:${min}:${sec}+08:00`;
+        const safeSlug = slug || `${year}${month}${day}-${hour}${min}${sec}`;
+        
+        const safeFilename = filenameInput || safeSlug;
+
+        let frontmatter = `---\ntitle: "${title}"\ndate: ${finalTime}\nslug: "${safeSlug}"\n`;
+        if (coverUrl) frontmatter += `image: "${coverUrl}"\n`; 
+        if (desc) frontmatter += `description: "${desc}"\n`;
+        
+        if (tagsVal) {
+            const tagsArr = tagsVal.split(/[,，\s]+/).filter(t => t);
+            if (tagsArr.length > 0) {
+                frontmatter += `tags:\n${tagsArr.map(t => `  - ${t}`).join('\n')}\n`;
+            }
+        }
+        
+        frontmatter += `---\n\n`;
+
+        const finalMD = frontmatter + contentVal; 
+        const path = window.STATE.path ? window.STATE.path : `content/posts/${safeFilename}.md`;
+        
+        const payload = { 
+            message: window.STATE.sha ? `修改博文: ${title}` : `新一篇博文: ${title}`, 
+            content: utf8_to_b64(finalMD), 
+            branch: CONFIG.branch 
+        };
+        if (window.STATE.sha) payload.sha = window.STATE.sha;
+
+        try {
+            const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { 
+                method: 'PUT', 
+                headers: { 'x-target-url': targetUrl, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(payload) 
+            });
+            pubMsg(); cocoMessage.success(window.STATE.sha ? "修改成功！" : "发布成功！"); 
+            
+            if (!window.STATE.sha) localStorage.removeItem(CACHE_KEY); 
+            if ($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
+            
+            cancelEdit(false);
+            
+        } catch (err) { 
+            pubMsg(); err.message === "401" ? (cocoMessage.error("登录失效"), logout()) : cocoMessage.error("发布失败"); 
+        }
+        $('submitBtn').disabled = false;
+    }
+
+    initApp();
+</script>
+{{ end }}

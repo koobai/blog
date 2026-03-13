@@ -1,0 +1,87 @@
+.page-bowen-admin .footer-background{
+    display: none;
+}
+.page-bowen-admin .header{
+  opacity: 0.4;
+  @include dark {
+        opacity: 0.6;
+    }
+}
+.page-bowen-admin .admin-immersive-wrapper {
+  max-width: 800px;
+  margin-bottom: 100px;
+  margin: 30px auto 40px;
+  @include breakpoint('medium') {
+    margin: 5vh auto 160px; 
+  }
+}
+
+/* 2. 头部信息区布局重置 */
+.write-header-container.admin-publish-footer {
+  display: block; 
+  padding-top: 0;
+}
+.write-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.write-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+}
+.write-title {
+  font-size: 1.1rem;
+}
+.write-meta {
+  font-size: 1rem;
+  opacity: 0.4;
+   @include dark {
+        opacity: 0.6;
+    }
+}
+.write-meta:focus {
+  opacity: 1;
+}
+.write-textarea {
+    resize: none !important;
+    overflow-y: hidden;
+    line-height: 1.6;
+}
+
+/* 3. 悬浮工具栏 (基础状态为透明无感) */
+.admin-publish-bar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  padding: 15px 0;
+  transition: background 0.3s, backdrop-filter 0.3s, padding 0.3s;
+}
+.admin-publish-bar.is-sticky {
+  background: var(--background-card-color);
+  padding: 15px 20px; 
+  border-radius: 16px;
+  border-top-color: transparent; 
+    @include dark {
+      background: var(--background-card-dark-color);
+    }
+}
+
+/* 4. 正文核心编辑器高度撑开 */
+.core-textarea {
+  min-height: 300px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.preview-container {
+  min-height: 300px;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
