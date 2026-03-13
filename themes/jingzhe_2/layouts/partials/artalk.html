@@ -7,7 +7,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     Artalk.init({
       el:        '#Comments',
-      pageKey:   '{{ .Permalink }}',
+      pageKey:   '{{ .RelPermalink }}',
       pageTitle: '{{ .Title }}',
       server:    '{{ $.Site.Params.artalk.server }}',
       site:      '{{ $.Site.Params.artalk.site }}',
