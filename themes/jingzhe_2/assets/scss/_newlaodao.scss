@@ -199,6 +199,10 @@
     &:hover {
         opacity: 1;
     }
+    @include dark {
+        background-color: transparent;
+        border: 1px solid transparent;
+    }
 }
 
 .admin-recent-content {

@@ -207,7 +207,7 @@
         const contentArea = $('postContent'); const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
         isPreviewMode = !isPreviewMode;
         if (isPreviewMode) {
-            contentArea.style.display = 'none'; previewArea.innerHTML = marked.parse(contentArea.value || '*空空如也...*'); previewArea.style.display = 'block';
+            contentArea.style.display = 'none'; previewArea.innerHTML = marked.parse(contentArea.value || '*空空如也*'); previewArea.style.display = 'block';
             btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
         } else {
             previewArea.style.display = 'none'; contentArea.style.display = 'block';
@@ -236,7 +236,7 @@
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
         if(isPreviewMode) togglePreviewMode();
-        let uploadMsg = cocoMessage.info("正在压缩并上传...", 0); 
+        let uploadMsg = cocoMessage.info("正在压缩并上传", 0); 
         for (let file of files) {
             try {
                 const webpBlob = await compressImage(file);
@@ -284,7 +284,7 @@
         const wrap = $('recentListWrap');
         if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
         if (!hasFetchedRecent) {
-            let loadMsg = cocoMessage.info("正在查询最新提交...", 0);
+            let loadMsg = cocoMessage.info("正在拉取最新提交", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
@@ -338,7 +338,7 @@
     }
 
     async function fetchAndLoadForEdit(path, url) {
-        let loadMsg = cocoMessage.info("正在加载文章内容...", 0);
+        let loadMsg = cocoMessage.info("正在加载博文内容", 0);
         try {
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
             const json = await fRes.json();
@@ -457,7 +457,7 @@
         if (!title) return cocoMessage.warning("忘写标题啦！");
         if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
         
-        $('submitBtn').disabled = true; let pubMsg = cocoMessage.info("正在安全推送至 GitHub...", 0);
+        $('submitBtn').disabled = true; let pubMsg = cocoMessage.info("正在安全推送至 GitHub", 0);
 
         let coverUrl = '';
         const topImageRegex = /^\s*!\[(.*?)\]\((.*?)\)/; 

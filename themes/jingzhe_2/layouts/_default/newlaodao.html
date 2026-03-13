@@ -205,7 +205,7 @@
 
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
-        let uploadMsg = cocoMessage.info("正在压缩并上传...", 0); 
+        let uploadMsg = cocoMessage.info("正在压缩并上传", 0); 
         
         for (let file of files) {
             try {
@@ -232,7 +232,7 @@
         if (!contentVal) return cocoMessage.warning("写点什么再发吧！");
         
         $('submitBtn').disabled = true; 
-        let pubMsg = cocoMessage.info("正在安全推送至 GitHub...", 0);
+        let pubMsg = cocoMessage.info("正在安全推送至 GitHub", 0);
 
         const tags = [...new Set(Array.from(contentVal.matchAll(/#([^\s<.,!?'"，。！？]+)/g), m => m[1]))];
         const tagStr = tags.length ? `\nlaodaotags:\n${tags.map(t => `  - ${t}`).join('\n')}` : "";
@@ -274,7 +274,7 @@
         }
         
         if (!hasFetchedRecent) {
-            let loadMsg = cocoMessage.info("正在拉取近期记录...", 0);
+            let loadMsg = cocoMessage.info("正在拉取最新提交", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
@@ -283,50 +283,52 @@
     }
 
     async function fetchRecent() {
-        const { year, month } = getFormattedTime();
-        const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/content/laodao/${year}/${month}?ref=${CONFIG.branch}`;
+        const commitsUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=content/laodao&per_page=3&sha=${CONFIG.branch}`;
         
         try {
-            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commitsUrl } });
             
             if (!res.ok) {
-                cocoMessage.warning("本月暂无唠叨记录");
+                cocoMessage.warning("暂无提交记录");
                 $('recentList').innerHTML = '';
                 return false; 
             }
             
-            const files = (await res.json()).filter(f => f.name.endsWith('.md')).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 2);
-            
-            if (files.length === 0) {
-                cocoMessage.warning("本月暂无唠叨记录");
+            const commits = await res.json();
+            let latestFile = null;
+
+            for (const commit of commits) {
+                const detailRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commit.url } });
+                const detail = await detailRes.json();
+                if (!detail.files) continue;
+                
+                latestFile = detail.files.find(f => f.filename.startsWith('content/laodao/') && f.filename.endsWith('.md'));
+                if (latestFile) break;
+            }
+
+            if (!latestFile) {
+                cocoMessage.warning("近期没有唠叨被修改");
                 $('recentList').innerHTML = '';
                 return false;
             }
 
             hasFetchedRecent = true; 
 
-            const results = await Promise.allSettled(files.map(async file => {
-                const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': file.url } });
-                const rawText = b64_to_utf8((await fRes.json()).content);
-                const body = rawText.replace(/---[\s\S]*?---/, '').trim();
-                
-                return `
-                <div class="card-timeline laodao-card admin-recent-card" onclick="loadForEdit('${file.path}', '${file.sha}', \`${encodeURIComponent(rawText)}\`)">
-                    <div class="laodao-content datacont admin-recent-content" style="margin: 0;">
-                        ${body.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 40)}${body.length > 40 ? '...' : ''}
-                    </div>
-                </div>`;
-            }));
+            const fileUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${latestFile.filename}?ref=${CONFIG.branch}`);
+            const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': fileUrl } });
+            const json = await fRes.json(); 
             
-            const validHtml = results.filter(r => r.status === 'fulfilled').map(r => r.value).join('');
+            const rawText = b64_to_utf8(json.content);
+            const body = rawText.replace(/---[\s\S]*?---/, '').trim();
             
-            if (!validHtml) {
-                cocoMessage.warning("获取到的数据无效");
-                $('recentList').innerHTML = '';
-                return false;
-            }
-            
-            $('recentList').innerHTML = validHtml;
+            const previewText = body.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 20) + (body.length > 20 ? '...' : '');
+
+            $('recentList').innerHTML = `
+            <div class="card-timeline laodao-card admin-recent-card" onclick="loadForEdit('${latestFile.filename}', '${json.sha}', \`${encodeURIComponent(rawText)}\`)">
+                <div class="laodao-content datacont admin-recent-content" style="margin: 0;">
+                    ${previewText}
+                </div>
+            </div>`;
             return true;
             
         } catch(err) { 
@@ -335,7 +337,7 @@
                 cocoMessage.error("密钥失效，请重新登录");
                 logout();
             } else {
-                cocoMessage.error("网络异常，拉取列表失败");
+                cocoMessage.error("网络异常，拉取失败");
             }
             return false;
         }
