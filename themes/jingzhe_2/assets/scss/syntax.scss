@@ -1,0 +1,41 @@
+/* ==========================================================
+   Hugo Chroma Highlight - One Dark (经典暗黑风)
+========================================================== */
+.chroma { 
+    background-color: #282c34; /* 深空灰底色 */
+    color: #abb2bf;            /* 柔和的灰白正文 */
+    padding: 15px 25px;  
+    border-radius: 16px;        /* 圆角，更现代 */
+    overflow-x: auto; 
+    font-size: 0.85rem;
+    line-height: 1.65;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+/* 错误与高亮 */
+.chroma .err { color: #e06c75; }
+.chroma .hl { background-color: #2c313c; display: block; width: 100%; }
+
+/* 行号区域 */
+.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: 100%; }
+.chroma .lnt { margin-right: 1.2em; padding-right: 1.2em; color: #4b5363; border-right: 1px solid #3e4451; user-select: none; }
+.chroma .ln { margin-right: 1.2em; padding-right: 1.2em; color: #4b5363; user-select: none; }
+
+/* 语法高亮核心配色 (One Dark) */
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: #c678dd; } /* 关键字 - 紫色 */
+.chroma .kt { color: #e5c07b; } /* 类型 - 黄色 */
+.chroma .na, .chroma .nc { color: #e5c07b; } /* 类名/属性 - 黄色 */
+.chroma .nd, .chroma .ne, .chroma .nf { color: #61afef; } /* 函数/方法 - 蓝色 */
+.chroma .no, .chroma .nb { color: #e5c07b; } /* 内置对象 - 黄色 */
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: #98c379; } /* 字符串 - 绿色 */
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: #d19a66; } /* 数字 - 橙色 */
+.chroma .o, .chroma .ow { color: #56b6c2; } /* 操作符 - 青色 */
+.chroma .p, .chroma .pi { color: #abb2bf; } /* 标点符号 */
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs { color: #5c6370; font-style: italic; } /* 注释 - 灰色斜体 */
+.chroma .cp, .chroma .cpf { color: #56b6c2; } /* 预处理器 - 青色 */
+
+/* Git Diff 差异高亮 */
+.chroma .gd { color: #e06c75; background-color: #4b1a1f; display: inline-block; width: 100%; } /* 删除行 */
+.chroma .gi { color: #98c379; background-color: #1c3a21; display: inline-block; width: 100%; } /* 新增行 */

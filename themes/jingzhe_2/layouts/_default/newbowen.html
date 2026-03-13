@@ -2,7 +2,7 @@
 {{ define "main" }}
 
 <script src="/js/coco-message.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+<script src="/js/marked.min.js"></script>
 
 <div id="loginOverlay" style="display: none;">
     <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
@@ -194,13 +194,14 @@
         el.dispatchEvent(new Event('input'));
     }
     // ==========================================
-
-    const renderer = new marked.Renderer();
-    renderer.image = function(href, title, text) {
-        if (text) { return `<figure class="post-figure"><img src="${href}" alt="${text}" title="${title || text}"><figcaption class="post-figcaption">${text}</figcaption></figure>`; }
-        return `<img src="${href}" alt="">`;
+    
+    const renderer = {
+        image({ href, title, text }) { 
+            if (text) { return `<figure class="post-figure"><img src="${href}" alt="${text}" title="${title || text}"><figcaption class="post-figcaption">${text}</figcaption></figure>`; }
+            return `<img src="${href}" alt="">`;
+        }
     };
-    marked.setOptions({ renderer: renderer, breaks: true, gfm: true });
+    marked.use({ renderer, breaks: true, gfm: true });
 
     function togglePreviewMode() {
         const contentArea = $('postContent'); const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
