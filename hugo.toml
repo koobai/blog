@@ -1,10 +1,10 @@
-baseURL = "https://koobai.com/" # 建议末尾带上斜杠，避免部分相对路径拼接问题
+baseURL = "https://koobai.com"
 languageCode = "zh-cn"
 title = "空白Koobai"
 theme = "jingzhe_2"
 
 enableRobotsTXT = true
-hasCJKLanguage = true
+hasCJKLanguage = true   # 准确计算中文字数和摘要
 
 [module]
   [module.hugoVersion]
@@ -14,34 +14,26 @@ hasCJKLanguage = true
 [permalinks]
   posts = '/:slug/'
 
-# [自定义参数]
 [params]
-  # Artalk 评论系统配置
   [params.artalk]
     server = "https://c.koobai.com"
-    site = "Koobai 空白生活"
+    site = "空白Koobai"
 
-# [内容渲染与处理] - 核心优化部分
+# [内容渲染与处理]
 [markup]
-  # 语法高亮设置
   [markup.highlight]
-    codeFences = true
-    guessSyntax = true
-    lineNos = false
-    lineNumbersInTable = false
-    noClasses = false
+    guessSyntax = true    # 没写语言标签时，自动猜测语言
+    lineNos = false       # 关掉原生行号 (配合纯净版 CSS 高亮)
+    noClasses = false     # 开启 class 模式，让 CSS 接管颜色
   
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      hardWraps = false
-      unsafe = true
-      xhtml = false
+  [markup.goldmark.renderer]
+    unsafe = true         # 允许在 Markdown 中混合书写 HTML 标签
 
-# [tag]
+# [分类与标签]
 [taxonomies]
   category = "categories"
   tag = "tags"
-  laodaotag = "laodaotags"  # 专属标签领地
+  laodaotag = "laodaotags"
 
 # [菜单配置]
 [menu]
@@ -58,6 +50,3 @@ hasCJKLanguage = true
     url = "https://qiszy.taobao.com"
     weight = 6
     params = { new_window = true, umami_event = "Taobao" }
-
-[outputs]
-  home = ["HTML", "RSS"]
