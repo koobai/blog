@@ -313,7 +313,7 @@
         const wrap = $('recentListWrap');
         if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
         if (!hasFetchedRecent) {
-            let loadMsg = cocoMessage.info("正在查询最新提交", 0);
+            let loadMsg = cocoMessage.info("正在获取最新一篇博文", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
@@ -367,7 +367,7 @@
     }
 
     async function fetchAndLoadForEdit(path, url) {
-        let loadMsg = cocoMessage.info("正在加载文章内容", 0);
+        let loadMsg = cocoMessage.info("正在加载博文内容", 0);
         try {
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
             const json = await fRes.json();
