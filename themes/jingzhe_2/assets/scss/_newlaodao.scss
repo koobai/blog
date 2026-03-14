@@ -61,7 +61,7 @@
     padding: 15px;
     box-sizing: border-box;
     @include breakpoint('medium') {
-        margin: 20vh auto 0; 
+        margin: 20vh auto 10vh; 
         padding: 0;
         box-sizing: border-box;
     }
@@ -95,9 +95,6 @@
     overflow-y: hidden;  
     padding: 0;
     scroll-margin-top: 60px;
-    @include breakpoint('medium') {
-        min-height: 300px; 
-    }
 }
 
 .page-laodao-admin .admin-publish-footer {

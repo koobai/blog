@@ -3062,7 +3062,7 @@ html[data-theme='dark'] .apptitle a {
   box-sizing: border-box; }
   @media (min-width: 768px) {
     .admin-immersive-wrapper {
-      margin: 20vh auto 0;
+      margin: 20vh auto 10vh;
       padding: 0;
       box-sizing: border-box; } }
 /* 3. 发布框通用组件 */
@@ -3088,9 +3088,7 @@ html[data-theme='dark'] .apptitle a {
   overflow-y: hidden;
   padding: 0;
   scroll-margin-top: 60px; }
-  @media (min-width: 768px) {
-    .admin-textarea {
-      min-height: 300px; } }
+
 .page-laodao-admin .admin-publish-footer {
   display: flex;
   flex-wrap: wrap;
