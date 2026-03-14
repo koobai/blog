@@ -53,8 +53,8 @@
 .admin-immersive-wrapper {
     max-width: 600px;      
     width: 100%;  
-    margin: 30px auto 40px;
-    padding: 20px;
+    margin: 10px auto 40px;
+    padding: 15px;
     box-sizing: border-box;
     @include breakpoint('medium') {
         margin: 20vh auto 5vh; 
@@ -96,7 +96,6 @@
 }
 
 .admin-publish-footer {
-    padding-top: 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -109,6 +108,9 @@
         opacity: 0;
         visibility: hidden;
     }
+}
+.page-laodao-admin .laodao-content{
+    margin-top: 15px;
 }
 
 /* 4. 左侧 SVG 工具栏组 */
@@ -142,6 +144,14 @@
         @include dark {
             color: var(--text-highlight-dark-color);
             opacity: 1;
+        }
+    }
+    svg {
+        width: 24px;
+        height: 24px;
+        @include breakpoint('medium') {
+            width: 20px;
+            height: 20px;
         }
     }
 }

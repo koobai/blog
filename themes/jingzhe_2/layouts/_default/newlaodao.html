@@ -11,14 +11,7 @@
 <div id="adminPanel" style="display: none;" class="admin-immersive-wrapper">
     
     <div class="admin-publish-card">
-        <div class="laodao-content datacont">
-            <textarea id="content" class="admin-textarea" placeholder=" " autofocus></textarea>
-            <div id="tagSelector" class="tag-selector-dropdown"></div>
-            <div id="locationDisplay" class="admin-location-chip" style="display: none;"></div>
-        </div>
-
-        <div class="laodao-footer admin-publish-footer">
-            
+        <div class="laodao-footer admin-publish-footer">    
             <div class="admin-toolbar">
                 <div class="admin-icon-btn admin-icon-bold" title="加粗" onclick="insertBold()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M6 4.75c0-.69.56-1.25 1.25-1.25h5a4.752 4.752 0 0 1 3.888 7.479A5 5 0 0 1 14 20.5H7.25c-.69 0-1.25-.56-1.25-1.25ZM8.5 13v5H14a2.5 2.5 0 1 0 0-5Zm0-2.5h3.751A2.25 2.25 0 0 0 12.25 6H8.5Z"/></svg>
@@ -50,6 +43,12 @@
                 <button id="cancelBtn" class="admin-btn admin-btn-cancel" onclick="cancelEdit()" style="display: none;">取消</button>
                 <button id="submitBtn" class="admin-btn" onclick="publishPost()">唠叨一下</button>
             </div>
+        </div>
+        
+        <div class="laodao-content datacont">
+            <textarea id="content" class="admin-textarea" placeholder=" " autofocus></textarea>
+            <div id="tagSelector" class="tag-selector-dropdown"></div>
+            <div id="locationDisplay" class="admin-location-chip" style="display: none;"></div>
         </div>
     </div>
     
