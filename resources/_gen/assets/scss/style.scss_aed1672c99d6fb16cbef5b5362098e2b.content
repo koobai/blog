@@ -2997,13 +2997,17 @@ html[data-theme='dark'] .apptitle a {
   display: none; }
 
 .page-laodao-admin .header {
-  opacity: 0.2; }
-  @media (prefers-color-scheme: dark) {
+  display: none; }
+  @media (min-width: 768px) {
+    .page-laodao-admin .header {
+      opacity: 0.2;
+      display: flex; } }
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
     html:not([data-theme='light']) .page-laodao-admin .header {
       opacity: 0.4; } }
-  html[data-theme='dark'] .page-laodao-admin .header {
-    opacity: 0.4; }
-
+  @media (min-width: 768px) {
+      html[data-theme='dark'] .page-laodao-admin .header {
+        opacity: 0.4; } }
 #loginOverlay {
   position: fixed;
   top: 0;
@@ -3053,12 +3057,12 @@ html[data-theme='dark'] .apptitle a {
 .admin-immersive-wrapper {
   max-width: 600px;
   width: 100%;
-  margin: 10px auto 40px;
+  margin: 0 auto;
   padding: 15px;
   box-sizing: border-box; }
   @media (min-width: 768px) {
     .admin-immersive-wrapper {
-      margin: 20vh auto 5vh;
+      margin: 20vh auto 0;
       padding: 0;
       box-sizing: border-box; } }
 /* 3. 发布框通用组件 */
@@ -3086,7 +3090,7 @@ html[data-theme='dark'] .apptitle a {
   @media (min-width: 768px) {
     .admin-textarea {
       min-height: 150px; } }
-.admin-publish-footer {
+.page-laodao-admin .admin-publish-footer {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -3094,11 +3098,29 @@ html[data-theme='dark'] .apptitle a {
   align-items: center;
   transition: opacity 0.8s ease, visibility 0.8s ease;
   opacity: 1;
-  visibility: visible; }
+  visibility: visible;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: var(--background-body-color);
+  padding-top: 15px;
+  padding-bottom: 10px;
+  margin-top: -15px; }
   @media (min-width: 768px) {
-    .admin-publish-footer {
+    .page-laodao-admin .admin-publish-footer {
       opacity: 0;
-      visibility: hidden; } }
+      visibility: hidden;
+      position: static;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      background: transparent; } }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .page-laodao-admin .admin-publish-footer {
+      background: var(--background-dark-body-color); } }
+  html[data-theme='dark'] .page-laodao-admin .admin-publish-footer {
+    background: var(--background-dark-body-color); }
+
 .page-laodao-admin .laodao-content {
   margin-top: 15px; }
 
@@ -3142,8 +3164,8 @@ html[data-theme='dark'] .apptitle a {
     height: 24px; }
     @media (min-width: 768px) {
       .admin-icon-btn svg {
-        width: 20px;
-        height: 20px; } }
+        width: 22px;
+        height: 22px; } }
 /* 5. 右侧发布与操作区 */
 .admin-actions {
   display: flex;
@@ -3329,10 +3351,19 @@ html[data-theme='dark'] .apptitle a {
     .page-bowen-admin .admin-immersive-wrapper {
       margin: 5vh auto 160px; } }
 /* 2. 头部信息区布局重置 */
-.write-header-container.admin-publish-footer {
-  display: block;
-  padding-top: 0; }
-
+.page-bowen-admin .admin-publish-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  opacity: 1;
+  visibility: visible; }
+  @media (min-width: 768px) {
+    .page-bowen-admin .admin-publish-footer {
+      opacity: 0;
+      visibility: hidden; } }
 .write-header {
   display: flex;
   flex-direction: column;
