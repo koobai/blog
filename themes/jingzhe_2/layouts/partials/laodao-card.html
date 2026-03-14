@@ -33,7 +33,16 @@
       {{ range (.GetTerms "laodaotags") }}
         <a href="{{ .RelPermalink }}" class="laodao-tag">#{{ .LinkTitle }}</a>
       {{ end }}
+
+    {{ if .Params.location }}
+    {{ $latlng := split .Params.latlng "," }}
+    {{ $lat := index $latlng 0 }}
+    {{ $lon := index $latlng 1 }}
+    <a href="https://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}#map=16/{{ $lat }}/{{ $lon }}" target="_blank" class="laodao-location">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>{{ .Params.location }}</a>
+      {{ end }}
     </div>
+
     
     <div class="laodao-comment">
       <span onclick="toggleArtalk('{{ .File.TranslationBaseName }}', '{{ .RelPermalink }}')">

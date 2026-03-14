@@ -2881,12 +2881,12 @@ html[data-theme='dark'] .apptitle a {
   align-items: center;
   font-size: 0.85rem; }
 
-.laodao-tags .laodao-tag {
+.laodao-tags .laodao-tag, .laodao-location {
   color: var(--text-info-color); }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .laodao-tags .laodao-tag {
+    html:not([data-theme='light']) .laodao-tags .laodao-tag, html:not([data-theme='light']) .laodao-location {
       color: var(--text-info-dark-color); } }
-  html[data-theme='dark'] .laodao-tags .laodao-tag {
+  html[data-theme='dark'] .laodao-tags .laodao-tag, html[data-theme='dark'] .laodao-location {
     color: var(--text-info-dark-color); }
 
 .laodao-tags .laodao-tag:hover {
@@ -3268,6 +3268,39 @@ html[data-theme='dark'] .apptitle a {
   html[data-theme='dark'] .tag-selector-dropdown .tag-item:hover, html[data-theme='dark'] .tag-selector-dropdown .tag-item.active {
     background: var(--background-dark-body-color);
     color: var(--text-content-dark-color) !important; }
+
+/* ==================================
+   后台唠叨定位小标签 (Admin Location)
+================================== */
+.admin-location-chip {
+  margin: 10px 0 0 0;
+  padding: 8px 10px;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  transition: background 0.2s;
+  background: var(--background-card-color);
+  color: var(--text-content-color);
+  border: 1px solid var(--background-card-border-color);
+  /* 嵌套文字样式 */ }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) .admin-location-chip {
+      color: var(--text-content-dark-color);
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color); } }
+  html[data-theme='dark'] .admin-location-chip {
+    color: var(--text-content-dark-color);
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color); }
+  .admin-location-chip svg {
+    cursor: pointer; }
+  .admin-location-chip .admin-location-text {
+    margin: 0 6px;
+    cursor: pointer; }
+    .admin-location-chip .admin-location-text:hover {
+      text-decoration: underline; }
 
 .page-bowen-admin .footer-background {
   display: none; }

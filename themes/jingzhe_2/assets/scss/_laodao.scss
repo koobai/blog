@@ -57,7 +57,7 @@
   font-size: 0.85rem;
 }
 
-.laodao-tags .laodao-tag {
+.laodao-tags .laodao-tag, .laodao-location{
   color: var(--text-info-color);
     @include dark {
       color: var(--text-info-dark-color);
