@@ -1416,7 +1416,6 @@ html[data-theme='dark'] .apptitle a {
   font-size: 0.75rem; }
 
 .movie-title {
-  font-weight: bold;
   font-size: 1.1rem;
   line-height: 1.3; }
   .movie-title a {
