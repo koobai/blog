@@ -3077,7 +3077,7 @@ html[data-theme='dark'] .apptitle a {
 
 .admin-textarea {
   width: 100%;
-  min-height: 300px;
+  min-height: 100px;
   border: none;
   outline: none;
   background: transparent;
@@ -3086,10 +3086,11 @@ html[data-theme='dark'] .apptitle a {
   color: inherit;
   resize: none !important;
   overflow-y: hidden;
-  padding: 0; }
+  padding: 0;
+  scroll-margin-top: 60px; }
   @media (min-width: 768px) {
     .admin-textarea {
-      min-height: 150px; } }
+      min-height: 300px; } }
 .page-laodao-admin .admin-publish-footer {
   display: flex;
   flex-wrap: wrap;
