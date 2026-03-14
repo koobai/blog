@@ -3053,8 +3053,8 @@ html[data-theme='dark'] .apptitle a {
 .admin-immersive-wrapper {
   max-width: 600px;
   width: 100%;
-  margin: 30px auto 40px;
-  padding: 20px;
+  margin: 10px auto 40px;
+  padding: 15px;
   box-sizing: border-box; }
   @media (min-width: 768px) {
     .admin-immersive-wrapper {
@@ -3087,7 +3087,6 @@ html[data-theme='dark'] .apptitle a {
     .admin-textarea {
       min-height: 150px; } }
 .admin-publish-footer {
-  padding-top: 15px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -3100,6 +3099,9 @@ html[data-theme='dark'] .apptitle a {
     .admin-publish-footer {
       opacity: 0;
       visibility: hidden; } }
+.page-laodao-admin .laodao-content {
+  margin-top: 15px; }
+
 /* 4. 左侧 SVG 工具栏组 */
 .admin-toolbar {
   display: flex;
@@ -3135,7 +3137,13 @@ html[data-theme='dark'] .apptitle a {
     html[data-theme='dark'] .admin-icon-btn:hover {
       color: var(--text-highlight-dark-color);
       opacity: 1; }
-
+  .admin-icon-btn svg {
+    width: 24px;
+    height: 24px; }
+    @media (min-width: 768px) {
+      .admin-icon-btn svg {
+        width: 20px;
+        height: 20px; } }
 /* 5. 右侧发布与操作区 */
 .admin-actions {
   display: flex;
