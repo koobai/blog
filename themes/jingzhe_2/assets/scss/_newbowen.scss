@@ -17,9 +17,19 @@
 }
 
 /* 2. 头部信息区布局重置 */
-.write-header-container.admin-publish-footer {
-  display: block; 
-  padding-top: 0;
+.page-bowen-admin .admin-publish-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease; 
+    opacity: 1;
+    visibility: visible;
+    @include breakpoint('medium') {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 .write-header {
   display: flex;

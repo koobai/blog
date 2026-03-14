@@ -2,9 +2,13 @@
     display: none;
 }
 .page-laodao-admin .header{
-  opacity: 0.2;
-  @include dark {
-        opacity: 0.4;
+    display: none;
+      @include breakpoint('medium') {
+        opacity: 0.2;
+        display: flex;
+        @include dark {
+                opacity: 0.4;
+            }
     }
 }
 
@@ -53,11 +57,11 @@
 .admin-immersive-wrapper {
     max-width: 600px;      
     width: 100%;  
-    margin: 10px auto 40px;
+    margin: 0 auto;
     padding: 15px;
     box-sizing: border-box;
     @include breakpoint('medium') {
-        margin: 20vh auto 5vh; 
+        margin: 20vh auto 0; 
         padding: 0;
         box-sizing: border-box;
     }
@@ -95,7 +99,7 @@
     }
 }
 
-.admin-publish-footer {
+.page-laodao-admin .admin-publish-footer {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -104,9 +108,24 @@
     transition: opacity 0.8s ease, visibility 0.8s ease; 
     opacity: 1;
     visibility: visible;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    background: var(--background-body-color);
+    padding-top: 15px; 
+    padding-bottom: 10px;
+    margin-top: -15px;
     @include breakpoint('medium') {
         opacity: 0;
         visibility: hidden;
+        position: static;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        background: transparent;
+    }
+    @include dark {
+        background: var(--background-dark-body-color);
     }
 }
 .page-laodao-admin .laodao-content{
@@ -150,8 +169,8 @@
         width: 24px;
         height: 24px;
         @include breakpoint('medium') {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
         }
     }
 }
