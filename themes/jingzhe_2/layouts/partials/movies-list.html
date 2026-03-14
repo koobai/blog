@@ -21,7 +21,7 @@
     {{ $yingshiimg := "" }}
     {{ with $imgRaw }}
       {{ $fileId := strings.TrimSuffix (path.Ext .) (path.Base .) }} 
-      {{ $yingshiimg = printf "https://img.koobai.com/douban/%s.webp" $fileId }}
+      {{ $yingshiimg = printf "https://img.koobai.com/movie/%s.webp" $fileId }}
     {{ end }}
     
     {{ $rating := int $ratingRaw | default 0 }}
