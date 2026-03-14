@@ -3,16 +3,17 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [douban-sync]
- # schedule:
- #   - cron: '0 18 * * *'
 
 jobs:
   douban:
     name: Douban mark data sync
     runs-on: ubuntu-latest
     steps:
+    
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PAT }}
 
     # 1. 从豆瓣拉取文字数据 (movie.csv)
     - name: Fetch Movie Data
