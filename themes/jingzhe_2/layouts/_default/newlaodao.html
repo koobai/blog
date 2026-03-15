@@ -240,7 +240,7 @@
 
     async function getLocation(btn) {
         if (STATE.location) return; 
-        let locMsg = cocoMessage.info("正在与卫星通信...", 0);
+        let locMsg = cocoMessage.info("正在与卫星通信", 0);
         try {
             const pos = await GeoHelper.getPosition();
             const { latitude, longitude } = pos.coords;
@@ -331,7 +331,7 @@
         if (!contentVal) return cocoMessage.warning("写点什么再发吧！");
         
         $('submitBtn').disabled = true; 
-        let pubMsg = cocoMessage.info("正在校验状态并安全推送...", 0);
+        let pubMsg = cocoMessage.info("正在推送至 GitHub", 0);
 
         const tags = [...new Set(Array.from(contentVal.matchAll(/#([^\s<.,!?'"，。！？]+)/g), m => m[1]))];
         const tagStr = tags.length ? `\nlaodaotags:\n${tags.map(t => `  - ${t}`).join('\n')}` : "";
