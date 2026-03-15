@@ -28,7 +28,7 @@ def process_movie(row):
         return
 
     # 提取豆瓣 ID 作为唯一标识
-    file_id = douban_poster.split('/')[-1].split('.')[0]
+    file_id = str(row.get('id', douban_poster.split('/')[-1].split('.')[0] if douban_poster else ''))
     webp_name = f"{file_id}.webp"
 
     # 1. 极速增量检查
@@ -124,8 +124,8 @@ def process_movie(row):
     except Exception as e:
         print(f"❌ 处理失败 {clean_title}: {e}")
 
-with open('assets/movie.csv', 'r', encoding='utf-8') as f:
-    movies = list(csv.DictReader(f))
+with open('assets/movie.json', 'r', encoding='utf-8') as f:
+    movies = json.load(f)
 
 # 保持 10 个线程，足够快且绝不会触发 TMDB/又拍云 风控限制
 with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
