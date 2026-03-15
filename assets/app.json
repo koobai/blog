@@ -44,16 +44,6 @@
             "image": "https://img.koobai.com/apps/1773541870728_7wv2.webp"
         },
         {
-            "image2": "https://img.koobai.com/app/cuto2.webp",
-            "title2": "Cuto",
-            "info": "手机壁纸软件，每天更新一张，质量都不错，免费版也够用。同时推荐 X 上的 @BasicAppleGuy，他的壁纸很喜欢。",
-            "tags": [
-                "iOS",
-                "付费"
-            ],
-            "link": "https://apps.apple.com/us/app/cuto-wallpaper/id1068086465"
-        },
-        {
             "image2": "https://img.koobai.com/app/star_Infuse.webp",
             "title2": "Infuse",
             "info": "影视聚合软件，虽然现在同类型软件很多，但还是习惯使用它。辅助备用可以使用网易爆米花全平台。",
@@ -66,6 +56,16 @@
             "link": "https://firecore.com/infuse"
         },
         {
+            "image2": "https://img.koobai.com/app/cuto2.webp",
+            "title2": "Cuto",
+            "info": "手机壁纸软件，每天更新一张，质量都不错，免费版也够用。同时推荐 X 上的 @BasicAppleGuy，他的壁纸很喜欢。",
+            "tags": [
+                "iOS",
+                "付费"
+            ],
+            "link": "https://apps.apple.com/us/app/cuto-wallpaper/id1068086465"
+        },
+        {
             "info": "睡前必须有声音才能睡得着，跟小宇宙交替着使用。",
             "link": "https://apps.apple.com/cn/app/apple%E6%92%AD%E5%AE%A2/id525463029",
             "tags": [
@@ -74,16 +74,6 @@
             ],
             "title": "播客",
             "image": "https://img.koobai.com/apps/1773497170261_d2ir.webp"
-        },
-        {
-            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
-            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845",
-            "tags": [
-                "iOS",
-                "付费"
-            ],
-            "title": "飓风相机",
-            "image": "https://img.koobai.com/apps/1773496718343_902q.webp"
         },
         {
             "info": "播客应用，其实很少听播客，但在开车的时候，放着声音很不错。",
@@ -96,15 +86,14 @@
             "image": "https://img.koobai.com/apps/1773504986289_gvtd.webp"
         },
         {
-            "info": "每天必刷，算是了解世界的一个窗口。",
-            "link": "https://www.x.com",
+            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
+            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845",
             "tags": [
                 "iOS",
-                "Web",
-                "免费"
+                "付费"
             ],
-            "title": "X",
-            "image": "https://img.koobai.com/apps/1773504329641_qp5q.webp"
+            "title": "飓风相机",
+            "image": "https://img.koobai.com/apps/1773496718343_902q.webp"
         },
         {
             "info": "上网必备软件，已使用多年。日常也作为旁路由跟 Ponte 使用。",
@@ -118,16 +107,6 @@
             "image": "https://img.koobai.com/apps/1773505144852_0iqn.webp"
         },
         {
-            "info": "翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。",
-            "link": "https://bobtranslate.com/",
-            "tags": [
-                "macOS",
-                "付费"
-            ],
-            "title": "Bob",
-            "image": "https://img.koobai.com/apps/1773505351878_s7rv.webp"
-        },
-        {
             "info": "干家务的时候，看影视解说或听视频播客",
             "link": "https://apps.apple.com/cn/app/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-%E5%BC%B9%E5%B9%95%E7%95%AA%E5%89%A7%E7%9B%B4%E6%92%AD%E9%AB%98%E6%B8%85%E8%A7%86%E9%A2%91/id736536022",
             "tags": [
@@ -136,6 +115,27 @@
             ],
             "title": "哔哩哔哩",
             "image": "https://img.koobai.com/apps/1773502155820_c74x.webp"
+        },
+        {
+            "info": "每天必刷，算是了解世界的一个窗口。",
+            "link": "https://www.x.com",
+            "tags": [
+                "iOS",
+                "Web",
+                "免费"
+            ],
+            "title": "X",
+            "image": "https://img.koobai.com/apps/1773504329641_qp5q.webp"
+        },
+        {
+            "info": "翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。",
+            "link": "https://bobtranslate.com/",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "Bob",
+            "image": "https://img.koobai.com/apps/1773505351878_s7rv.webp"
         },
         {
             "info": "没什么说的，关注你喜欢的视频频道。",
