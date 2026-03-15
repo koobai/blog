@@ -33,7 +33,7 @@ $breakpoints: (
 @import 'intro';
 @import 'main-menu-mobile';
 @import 'comment';
-@import 'app';
+@import 'apps';
 @import 'tags';
 @import 'movies';
 @import 'about';
@@ -43,6 +43,7 @@ $breakpoints: (
 @import 'laodao';
 @import 'newlaodao';
 @import 'newbowen';
+@import 'newapps';
 @import 'syntax';
 
 @font-face {
