@@ -489,7 +489,7 @@
         if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
         
         $('submitBtn').disabled = true; 
-        let pubMsg = cocoMessage.info("正在推送至 GitHub", 0);
+        let pubMsg = cocoMessage.info("正在校验状态并安全推送...", 0); // 提示语保持一致
 
         // --- 处理封面图与时间 ---
         let coverUrl = '';
@@ -523,13 +523,16 @@
         const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
         
         try {
-            // 🚀 核心防 422 优化：发布前，动态查询该路径下的文件是否存在！
-            const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': targetUrl } });
-            if (checkRes.ok) {
-                const fileData = await checkRes.json();
-                window.STATE.sha = fileData.sha; // 文件存在，获取并更新最新的 sha
-            } else if (checkRes.status === 404) {
-                window.STATE.sha = null; // 文件不存在，重置为空，确保以"新建"身份提交
+            // 🚀 核心防 422 优化：修改旧文章前，精准拉取当前分支下该文件的最新 SHA
+            if (window.STATE.sha || window.STATE.path) {
+                const checkUrl = `${targetUrl}?ref=${CONFIG.branch}`; // 加上分支参数，查询更稳
+                const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': checkUrl } });
+                if (checkRes.ok) {
+                    const fileData = await checkRes.json();
+                    window.STATE.sha = fileData.sha;
+                } else if (checkRes.status === 404) {
+                    window.STATE.sha = null; // 文件不存在则当做新建
+                }
             }
 
             // --- 构建提交 Payload ---
@@ -559,6 +562,7 @@
             cancelEdit(false);
             
         } catch (err) { 
+            console.error("提交报错详情:", err); // 打印排错信息，方便日后维护
             if (typeof pubMsg === 'function') pubMsg(); 
             err.message === "401" ? (cocoMessage.error("登录失效，请重新验证"), logout()) : cocoMessage.error("发布失败，请检查网络或配置"); 
         } finally {
