@@ -21,7 +21,7 @@ jobs:
       with:
         id: jnnsu  # 你的豆瓣 ID
         type: movie
-        format: csv
+        format: json
         dir: ./assets
 
     # 2. 准备 Python 和图像处理依赖
@@ -53,4 +53,4 @@ jobs:
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data & posters'
-        add: './assets/movie.csv'
+        add: './assets/movie.json'
