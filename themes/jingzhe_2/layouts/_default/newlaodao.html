@@ -347,28 +347,35 @@
         const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
         
         try {
-            // 🚀 核心防 422 优化：修改旧唠叨前动态拉取最新的 SHA
+            // 🚀 核心防 422 优化修复：删除了错误的 window. 前缀，并加上了分支查询参数
             if (STATE.sha || STATE.path) {
-                const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': targetUrl } });
-                if (checkRes.ok) window.STATE.sha = (await checkRes.json()).sha;
+                const checkUrl = `${targetUrl}?ref=${CONFIG.branch}`;
+                const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': checkUrl } });
+                if (checkRes.ok) {
+                    const data = await checkRes.json();
+                    STATE.sha = data.sha; // 正确赋值给局部变量 STATE
+                }
             }
 
             const payload = { message: STATE.sha ? "修改一下" : "唠叨一下", content: utf8_to_b64(finalMD), branch: CONFIG.branch };
             if (STATE.sha) payload.sha = STATE.sha;
 
-            await secureFetch(`${CONFIG.workerUrl}/api/github`, {
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, {
                 method: 'PUT', headers: { 'x-target-url': targetUrl, 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
+            if (!res.ok) throw new Error("API_REJECTED");
             
             if (typeof pubMsg === 'function') pubMsg();
             cocoMessage.success("唠叨成功！搞定！"); 
             
-            if (!STATE.sha) localStorage.removeItem(CACHE_KEY); // 发布成功清除草稿
+            if (!STATE.sha) localStorage.removeItem(CACHE_KEY); 
             
             cancelEdit(false); 
             if($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
         } catch (err) { 
+            console.error("提交报错详情:", err); // 增加控制台打印，以后报错按 F12 一眼就能看出原因
             if (typeof pubMsg === 'function') pubMsg();
             err.message === "401" ? (cocoMessage.error("登录状态失效"), logout()) : cocoMessage.error("唠叨失败"); 
         } finally {
