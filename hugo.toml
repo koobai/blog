@@ -4,7 +4,7 @@ title = "空白Koobai"
 theme = "jingzhe_v3"
 
 enableRobotsTXT = true
-hasCJKLanguage = true   # 准确计算中文字数和摘要
+hasCJKLanguage = true           # 准确计算中文字数和摘要
 
 [module]
   [module.hugoVersion]
@@ -12,7 +12,7 @@ hasCJKLanguage = true   # 准确计算中文字数和摘要
     min = "0.120.0"
 
 [permalinks]
-  posts = '/:slug/'
+  posts = "/:slug/"
 
 [params]
   [params.artalk]
@@ -22,12 +22,12 @@ hasCJKLanguage = true   # 准确计算中文字数和摘要
 # [内容渲染与处理]
 [markup]
   [markup.highlight]
-    guessSyntax = true    # 没写语言标签时，自动猜测语言
-    lineNos = false       # 关掉原生行号 (配合纯净版 CSS 高亮)
-    noClasses = false     # 开启 class 模式，让 CSS 接管颜色
-  
+    guessSyntax = true          # 没写语言标签时，自动猜测语言
+    lineNos = false             # 关掉原生行号 (配合纯净版 CSS 高亮)
+    noClasses = false           # 开启 class 模式，让 CSS 接管颜色
+    
   [markup.goldmark.renderer]
-    unsafe = true         # 允许在 Markdown 中混合书写 HTML 标签
+    unsafe = true               # 允许在 Markdown 中混合书写 HTML 标签
 
 # [分类与标签]
 [taxonomies]
@@ -38,12 +38,12 @@ hasCJKLanguage = true   # 准确计算中文字数和摘要
 # [菜单配置]
 [menu]
   [[menu.main]]
-    identifier = 'home'
-    name = '唠叨'
-    url = '/'
+    identifier = "home"
+    name = "唠叨"
+    url = "/"
     weight = 1
     params = { umami_event = "Home" }
-  
+    
   [[menu.main]]
     identifier = "Goods"
     name = "店铺"
