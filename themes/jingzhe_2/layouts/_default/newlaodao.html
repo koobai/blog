@@ -357,7 +357,7 @@
                 }
             }
 
-            const payload = { message: STATE.sha ? "修改一下" : "唠叨一下", content: utf8_to_b64(finalMD), branch: CONFIG.branch };
+            const payload = { message: STATE.sha ? "唠叨修改" : "唠叨一下", content: utf8_to_b64(finalMD), branch: CONFIG.branch };
             if (STATE.sha) payload.sha = STATE.sha;
 
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, {
