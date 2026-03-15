@@ -1,117 +1,44 @@
 // ==========================================
-// 1. 首页调用 (Index Page)
+// 电影墙极简重构样式 (Modern CSS)
 // ==========================================
-.movie-quanju {
+
+.movie-grid {
   display: grid;
-  grid-gap: 10px;
-  @include breakpoint("medium") {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
 }
 
-.movies_bankuai_index {
+.movie-card {
   display: flex;
-  grid-template-columns: auto 1fr;
-  border-radius: 16px;
-  background: var(--background-card-color);
-  padding: 15px;
+  flex-direction: column;
   gap: 10px;
-  @include dark {
-    background: var(--background-card-dark-color);
-  }
-
-  .movies_left a {
-    display: block;
-    width: 110px;
-    border-radius: 14px;
-    overflow: hidden;
-    aspect-ratio: 3 / 4;
-    position: relative;
-    line-height: 0;
-    background: transparent;
-    @include dark {
-      background: transparent;
-    }
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    margin: 0;
-    border-radius: 0;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-
-  // 嵌套 Hover
-  @media (hover: hover) {
-    .movies_left a:hover img {
-      transform: scale(1.08);
-    }
+  animation: fadeInMovie 0.4s ease forwards;
+  
+  // 配合 JS 控制隐藏的核心类
+  &.is-hidden {
+    display: none !important;
   }
 }
-.movies_ingdex_title {
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-  margin-top: 6px;
+
+// 绝不闪屏的原生 CSS 入场动画
+@keyframes fadeInMovie {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.movies_index_info {
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.5;
+
+.movie-poster {
+  display: block;
+  border-radius: 12px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  @include breakpoint("medium") {
-    font-size: 0.9rem;
-  }
-  @include dark {
-    color: var(--text-content-dark-color);
-  }
-}
-
-.movie_index_time {
-  font-size: 0.85rem;
-  margin-top: 5px;
-  color: var(--text-info-color);
-
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-// ==========================================
-// 2. 影视列表页 (Movies Page)
-// ==========================================
-
-#movies_page {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(2, 1fr);
-
-  @include breakpoint("medium") {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.movies_bankuai {
+  aspect-ratio: 270 / 400; // 严格锁定海报比例，防止页面抖动
+  background: var(--background-card-color);
   position: relative;
-  overflow: hidden;
-  width: 100%;
-  border-radius: 16px;
-  aspect-ratio: 3 / 4.4;
-  background: transparent;
-
+  
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.4s ease;
   }
 
   @media (hover: hover) {
@@ -121,73 +48,31 @@
   }
 }
 
-// --- 遮罩层内容 (核心交互优化 - 全端适配版) ---
-.movies-nrong {
+.movie-info {
   display: flex;
-  gap: 4px;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  justify-content: flex-end;
-  padding: 15px;
-  color: var(--text-content-dark-color);
-  font-size: 1rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  opacity: 1;
-  backdrop-filter: none;
-  transition: all 0.3s ease;
-  will-change: opacity, transform;
-  // 手机/触屏端默认隐藏简介，只留标题评分，保持清爽
-  .movie-info,
-  .movie-time {
-    display: none;
-  }
-  // 3. PC 端适配 (仅针对支持鼠标悬停的设备)
-  @media (hover: hover) {
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
-    opacity: 0;
-    .movie-info,
-    .movie-time {
-      display: block;
-    }
-    // 悬停触发显示
-    .movies_bankuai:hover & {
-      opacity: 1;
-      & > div {
-        transform: translateY(0);
-      }
-    }
-  }
-}
-
-// --- 内部文本样式 ---
-.movie-time {
-  color: var(--text-info-color);
-  margin-top: 7px;
-  font-size: 0.75rem;
+  gap: 4px;
 }
 
 .movie-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   a {
-    color: #eaeaea !important;
+    color: var(--text-color) !important;
     text-decoration: none;
+    transition: color 0.2s;
+    &:hover {
+      color: #32D74B !important; 
+    }
   }
 }
 
-.movie-pfeng {
-  margin-bottom: 4px;
+.movie-rating {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -199,41 +84,20 @@
   }
 }
 
-.movie-info {
-  line-height: 1.5;
-  text-align: justify;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  color: var(--text-info-color);
-}
-
-// ==========================================
-// 3. 加载更多按钮
-// ==========================================
-.movies_loadMore {
-  background: transparent;
+.movie-btn-more {
+  margin: 40px auto;
+  text-align: center;
   cursor: pointer;
-  color: var(--text-highlight-color);
+  color: var(--text-color);
+  background: var(--background-card-color);
+  padding: 12px 30px;
   border-radius: 50px;
-  padding: 10px 40px;
-  font-family: var(--font-family-title);
-  font-size: 0.9rem;
-  border: 1px solid var(--text-highlight-color);
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: block;
-  width: fit-content;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
+  display: table;
+  user-select: none;
 
   &:hover {
-    opacity: 0.6;
-  }
-
-  @include dark {
-    color: var(--text-highlight-dark-color);
-    border-color: var(--text-highlight-dark-color);
+    background: var(--border-color);
   }
 }
