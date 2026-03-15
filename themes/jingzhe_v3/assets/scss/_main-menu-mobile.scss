@@ -10,13 +10,14 @@
   cursor: pointer;
   color: var(--text-content-color);
   z-index: 1000; /* 必须在最高层 */
-  position: relative; 
+  position: relative;
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     display: none;
   }
 }
-.icon-menu,.icon-close{
+.icon-menu,
+.icon-close {
   width: 32px;
   height: 32px;
   color: var(--text-highlight-color);
@@ -24,7 +25,7 @@
     color: var(--text-highlight-dark-color);
   }
 }
-.icon-close{
+.icon-close {
   display: none;
 }
 /* 3. 菜单核心容器 (默认隐藏) */
@@ -36,14 +37,14 @@
   height: 100dvh;
   background: var(--background-dark-body-color);
   z-index: 90;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
 
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.96); 
+  transform: scale(0.96);
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 
   ul {
@@ -56,7 +57,6 @@
     gap: 36px;
 
     li {
-
       a {
         display: inline-block;
         font-size: 1.4rem;
@@ -64,7 +64,9 @@
         text-decoration: none;
         transition: opacity 0.2s;
 
-        &:active { opacity: 0.4; }
+        &:active {
+          opacity: 0.4;
+        }
       }
     }
   }
@@ -76,8 +78,12 @@
 
 /* 魔法 1：切换图标 (隐藏汉堡，显示叉叉) */
 .menu-checkbox:checked + .hamburger-trigger {
-  .icon-menu { display: none; }
-  .icon-close { display: block !important; }
+  .icon-menu {
+    display: none;
+  }
+  .icon-close {
+    display: block !important;
+  }
 }
 
 /* 魔法 2：展开菜单 (利用 body:has 跨层级控制) */

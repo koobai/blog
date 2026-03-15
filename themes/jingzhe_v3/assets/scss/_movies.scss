@@ -2,9 +2,9 @@
 // 1. 首页调用 (Index Page)
 // ==========================================
 .movie-quanju {
-    display: grid;
-    grid-gap: 10px;   
-  @include breakpoint('medium') {
+  display: grid;
+  grid-gap: 10px;
+  @include breakpoint("medium") {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -66,8 +66,8 @@
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  @include breakpoint('medium') {
-     font-size: 0.9rem;
+  @include breakpoint("medium") {
+    font-size: 0.9rem;
   }
   @include dark {
     color: var(--text-content-dark-color);
@@ -78,7 +78,7 @@
   font-size: 0.85rem;
   margin-top: 5px;
   color: var(--text-info-color);
-  
+
   @include dark {
     color: var(--text-info-dark-color);
   }
@@ -92,8 +92,8 @@
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(2, 1fr);
-  
-  @include breakpoint('medium') {
+
+  @include breakpoint("medium") {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -127,33 +127,44 @@
   gap: 4px;
   flex-direction: column;
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  justify-content: flex-end; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: flex-end;
   padding: 15px;
   color: var(--text-content-dark-color);
   font-size: 1rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-  opacity: 1; 
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 1;
   backdrop-filter: none;
   transition: all 0.3s ease;
   will-change: opacity, transform;
   // 手机/触屏端默认隐藏简介，只留标题评分，保持清爽
-  .movie-info, .movie-time {
+  .movie-info,
+  .movie-time {
     display: none;
   }
   // 3. PC 端适配 (仅针对支持鼠标悬停的设备)
   @media (hover: hover) {
-    justify-content: center; 
-    background: rgba(0, 0, 0, 0.7); 
-    backdrop-filter: blur(2px); 
-    opacity: 0; 
-    .movie-info, .movie-time {
-      display: block; 
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    .movie-info,
+    .movie-time {
+      display: block;
     }
     // 悬停触发显示
     .movies_bankuai:hover & {
       opacity: 1;
-      & > div { transform: translateY(0); }
+      & > div {
+        transform: translateY(0);
+      }
     }
   }
 }
@@ -209,7 +220,7 @@
   border-radius: 50px;
   padding: 10px 40px;
   font-family: var(--font-family-title);
-  font-size: .9rem;
+  font-size: 0.9rem;
   border: 1px solid var(--text-highlight-color);
   margin-top: 15px;
   margin-bottom: 15px;

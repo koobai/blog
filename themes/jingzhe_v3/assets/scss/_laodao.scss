@@ -1,47 +1,48 @@
-.index-card{
+.index-card {
   display: grid;
   gap: 10px;
 }
-.laodao-card,.index-post{
+.laodao-card,
+.index-post {
   display: grid;
   gap: 6px;
   padding: 15px;
   background: var(--background-card-color);
   border-radius: 16px;
   border: 1px solid var(--background-card-border-color);
-    @include dark {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color);
-    }
-  
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
 }
-.laodao-time a,.index-post-time{
+.laodao-time a,
+.index-post-time {
   font-size: 0.85rem;
   color: var(--text-info-color);
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
-.laodao-content p{ 
+.laodao-content p {
   line-height: 1.55;
   font-size: 1.1rem;
   margin: 0;
-  text-align: justify;         
-  overflow-wrap: break-word; 
+  text-align: justify;
+  overflow-wrap: break-word;
   word-wrap: break-word;
-    @include breakpoint('medium') {
-     line-height: 1.65;
+  @include breakpoint("medium") {
+    line-height: 1.65;
   }
-  a{
-    margin: 0 2px; 
+  a {
+    margin: 0 2px;
     padding: 0;
     text-decoration: underline;
     transition: opacity 0.2s ease;
-    &:hover{
+    &:hover {
       opacity: 0.6;
     }
   }
-  strong{
+  strong {
     color: var(--text-highlight-color);
     font-weight: normal;
     @include dark {
@@ -57,24 +58,26 @@
   font-size: 0.85rem;
 }
 
-.laodao-tags .laodao-tag, .laodao-location{
+.laodao-tags .laodao-tag,
+.laodao-location {
   color: var(--text-info-color);
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .laodao-tags .laodao-tag:hover {
   text-decoration: underline;
 }
-.post-tags-list,.laodao-tags{
+.post-tags-list,
+.laodao-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 .laodao-comment {
   cursor: pointer;
-  svg{
+  svg {
     width: 18px;
     height: 18px;
     color: var(--text-info-color);
@@ -87,7 +90,7 @@
   }
 }
 
-.laodao-more .laodao-more-b{
+.laodao-more .laodao-more-b {
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
@@ -100,12 +103,12 @@
   display: block;
   width: fit-content;
   transition: all 0.3s ease;
-  text-decoration: none; 
+  text-decoration: none;
   text-align: center;
 
   &:hover {
     opacity: 0.6;
-    text-decoration: none; 
+    text-decoration: none;
   }
 
   @include dark {
@@ -136,23 +139,23 @@
   /* =======================================
      📱 移动端默认布局 (Mobile First)
      ======================================= */
-     
+
   /* 1 张图：一列，单图手机端稍微宽一点 */
   &:has(img:first-child:last-child) {
     grid-template-columns: 1fr;
-    width: 50%; 
+    width: 50%;
   }
 
   /* 2 张或 4 张图：两列，手机端撑满 */
   &:has(img:first-child:nth-last-child(2)),
   &:has(img:first-child:nth-last-child(4)) {
     grid-template-columns: repeat(2, 1fr);
-    width: 100%; 
+    width: 100%;
   }
 
   /* 3 张，及 5 张以上图：三列，手机端撑满 */
   &:has(img:first-child:nth-last-child(3)),
-  &:has(img:first-child:nth-last-child(n+5)) {
+  &:has(img:first-child:nth-last-child(n + 5)) {
     grid-template-columns: repeat(3, 1fr);
     width: 100%;
   }
@@ -160,11 +163,10 @@
   /* =======================================
      💻 桌面端布局 (通过 Mixin 覆盖)
      ======================================= */
-  @include breakpoint('medium') {
-    
+  @include breakpoint("medium") {
     /* PC 1 张图：单图变小巧 */
     &:has(img:first-child:last-child) {
-      width: 30%; 
+      width: 30%;
     }
 
     /* PC 2 张或 4 张图：双列占版面一半 */
@@ -175,7 +177,7 @@
 
     /* PC 3 张，及 5 张以上图：三列占 65% */
     &:has(img:first-child:nth-last-child(3)),
-    &:has(img:first-child:nth-last-child(n+5)) {
+    &:has(img:first-child:nth-last-child(n + 5)) {
       width: 65%;
     }
   }
@@ -183,17 +185,17 @@
 
 //博文
 
-.index-post-title{
+.index-post-title {
   font-size: 1.2rem;
 }
 
 //详情页
-.page-laodao-single .footer-background{
+.page-laodao-single .footer-background {
   display: none;
 }
-.page-laodao-single .laodao-more{
+.page-laodao-single .laodao-more {
   margin-bottom: 100px;
-  @include breakpoint('medium') {
-  margin-bottom: 160px;
+  @include breakpoint("medium") {
+    margin-bottom: 160px;
   }
 }

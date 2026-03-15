@@ -12,7 +12,7 @@
 
   a {
     color: var(--text-info-dark-color);
-    
+
     // 暗黑模式
     @include dark {
       color: var(--text-info-color);
@@ -45,7 +45,8 @@
   align-items: center;
 }
 
-.page-time, .single-tag-c {
+.page-time,
+.single-tag-c {
   font-size: 0.9rem;
   color: var(--text-info-color);
   display: inline-block;

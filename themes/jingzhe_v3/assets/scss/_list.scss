@@ -6,8 +6,8 @@
 .posts-new {
   display: grid;
   gap: 30px;
-  
-  @include breakpoint('medium') {
+
+  @include breakpoint("medium") {
     gap: 40px;
   }
 }
@@ -15,9 +15,6 @@
 .posts-background {
   position: relative;
   overflow: hidden;
-  @include breakpoint('medium') {
-    // 预留位置
-  }
 }
 
 // 2. 标题
@@ -42,8 +39,8 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  @include breakpoint('medium') {
-    line-height: 1.65; 
+  @include breakpoint("medium") {
+    line-height: 1.65;
   }
 
   // 暗黑模式内聚
@@ -57,7 +54,7 @@
   display: grid;
   gap: 10px;
   margin-top: 30px;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -69,7 +66,7 @@
   padding: 15px;
   border: 1px solid var(--background-card-border-color);
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     padding: 12px;
   }
 
@@ -101,10 +98,10 @@
   align-items: center;
 }
 .post-biaoji-xinxi {
-   color: var(--text-highlight-color);
+  color: var(--text-highlight-color);
   @include dark {
-      color: var(--text-highlight-dark-color);
-    }
+    color: var(--text-highlight-dark-color);
+  }
 }
 // 5. 图片区域
 .posts-img {
@@ -141,7 +138,7 @@
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     grid-gap: 20px;
   }
 }
@@ -154,7 +151,7 @@
   padding: 15px;
   border: 1px solid var(--background-card-border-color);
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     grid-gap: 20px;
   }
 
@@ -163,7 +160,7 @@
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
-  
+
   @media (hover: hover) {
     &:hover .archive-img img {
       transform: scale(1.05);
@@ -181,7 +178,7 @@
   font-family: var(--font-family-title);
   font-size: 1.3rem;
   line-height: 1.6;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     font-size: 1.2rem;
   }
 }
@@ -192,7 +189,7 @@
   font-size: 0.9rem;
   color: var(--text-info-color);
   font-family: var(--font-family-code);
-  
+
   // 暗黑模式内聚
   @include dark {
     color: var(--text-info-dark-color);
@@ -216,18 +213,17 @@
 .tag-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px; 
-  .index-post-title{
+  gap: 10px;
+  .index-post-title {
     font-size: 1.1rem;
   }
-    @include breakpoint('medium') {
-      grid-template-columns: repeat(2, 1fr);
-        .index-post {
-          grid-column: span 1;
-        }
-        .laodao-card {
-          grid-column: 1 / -1; 
-        }
-      }
-  
+  @include breakpoint("medium") {
+    grid-template-columns: repeat(2, 1fr);
+    .index-post {
+      grid-column: span 1;
+    }
+    .laodao-card {
+      grid-column: 1 / -1;
+    }
+  }
 }
