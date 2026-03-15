@@ -489,7 +489,7 @@
         if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
         
         $('submitBtn').disabled = true; 
-        let pubMsg = cocoMessage.info("正在校验状态并安全推送...", 0); // 提示语保持一致
+        let pubMsg = cocoMessage.info("正在推送至 GitHub", 0); // 提示语保持一致
 
         // --- 处理封面图与时间 ---
         let coverUrl = '';

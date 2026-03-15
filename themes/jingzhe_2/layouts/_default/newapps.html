@@ -140,7 +140,7 @@
             const savedDraft = localStorage.getItem(CONFIG.storageKey);
             if (savedDraft) {
                 appData = JSON.parse(savedDraft);
-                cocoMessage.warning("已恢复您上次未同步的修改草稿！", 3000);
+                cocoMessage.warning("已恢复草稿", 3000);
             } else {
                 appData = fetchedData;
             }
@@ -243,7 +243,7 @@
                         $('appIconUrl').value = data.results[0].artworkUrl512;
                         $('iconPreview').src = data.results[0].artworkUrl512;
                         $('iconPreview').style.display = 'block';
-                        cocoMessage.success("命中！已获取 App Store 高清图标");
+                        cocoMessage.success("已获取 App Store 图标");
                         return;
                     }
                 } catch (e) { console.log("Apple 接口解析失败"); }
@@ -290,7 +290,7 @@
     }
 
     async function processAndUploadBlob(blobOrFile) {
-        let msg = cocoMessage.info("正在压缩并上传至又拍云...", 0); 
+        let msg = cocoMessage.info("正在压缩并上传至又拍云", 0); 
         try {
             const canvas = document.createElement('canvas');
             const img = new Image(); 
@@ -314,7 +314,7 @@
                 $('appIconUrl').value = finalUrl;
                 $('iconPreview').src = finalUrl;
                 $('iconPreview').style.display = 'block';
-                cocoMessage.success("成功！图片已永久存入你的又拍云"); 
+                cocoMessage.success("成功！图片已存入又拍云"); 
                 if (typeof msg === 'function') msg();
             }, 'image/webp', 0.75); 
         } catch(err) { 
@@ -373,7 +373,7 @@
     function closeEditPanel() { $('editModal').style.display = 'none'; }
 
     function deleteApp(index) {
-        if(confirm("确定要删除这个推荐吗？")) {
+        if(confirm("确定要删除吗？")) {
             appData.good.splice(index, 1);
             localStorage.setItem(CONFIG.storageKey, JSON.stringify(appData));
             renderList();
@@ -389,7 +389,7 @@
         const tags = $('appTags').value.split(',').map(t => t.trim()).filter(Boolean);
         const isStar = $('isStarApp').checked;
 
-        if (!title || !link || !imgUrl) return cocoMessage.warning("名称、链接和图片都是必填的哦！");
+        if (!title || !link || !imgUrl) return cocoMessage.warning("名称/链接/图片必填");
 
         // 🚀 优化：完美继承老数据的所有未知属性
         let newObj = editingIndex === -1 ? {} : { ...appData.good[editingIndex] };
@@ -420,7 +420,7 @@
         localStorage.setItem(CONFIG.storageKey, JSON.stringify(appData));
         renderList();
         closeEditPanel();
-        cocoMessage.success("修改已成功暂存！即使刷新网页也不会丢失");
+        cocoMessage.success("修改已成功暂存");
     }
 
     // ==========================================
@@ -428,7 +428,7 @@
     // ==========================================
     async function syncToGithub() {
         $('syncBtn').disabled = true;
-        let msg = cocoMessage.info("正在校验线上文件并打包推送...", 0);
+        let msg = cocoMessage.info("正在推送至 GitHub", 0);
         
         try {
             const getUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.jsonPath}?ref=${CONFIG.branch}`;
@@ -461,11 +461,11 @@
             if (!res.ok) throw new Error("推送被拒绝");
 
             localStorage.removeItem(CONFIG.storageKey); 
-            cocoMessage.success("同步成功！线上数据已完美更新");
+            cocoMessage.success("推送成功");
 
         } catch (e) {
             console.error("同步异常:", e);
-            cocoMessage.error("同步失败，请检查密钥或网络状态");
+            cocoMessage.error("推送失败，请检查密钥或网络状态");
         } finally {
             if (typeof msg === 'function') msg();
             $('syncBtn').disabled = false;
