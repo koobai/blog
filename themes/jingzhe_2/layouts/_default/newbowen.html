@@ -488,12 +488,13 @@
         if (!title) return cocoMessage.warning("忘写标题啦！");
         if (!contentVal) return cocoMessage.warning("正文还是空的哦！");
         
-        $('submitBtn').disabled = true; let pubMsg = cocoMessage.info("正在安全推送至 GitHub", 0);
+        $('submitBtn').disabled = true; 
+        let pubMsg = cocoMessage.info("正在安全推送至 GitHub", 0);
 
+        // --- 处理封面图与时间 ---
         let coverUrl = '';
         const topImageRegex = /^\s*!\[(.*?)\]\((.*?)\)/; 
         const match = contentVal.match(topImageRegex);
-
         if (match) {
             coverUrl = match[2]; 
             contentVal = contentVal.replace(topImageRegex, '').trimStart(); 
@@ -502,9 +503,9 @@
         const { year, month, day, hour, min, sec } = getFormattedTime();
         const finalTime = window.STATE.date ? window.STATE.date : `${year}-${month}-${day}T${hour}:${min}:${sec}+08:00`;
         const safeSlug = slug || `${year}${month}${day}-${hour}${min}${sec}`;
-        
         const safeFilename = filenameInput || safeSlug;
 
+        // --- 拼接 Markdown FrontMatter ---
         let frontmatter = `---\ntitle: "${title}"\ndate: ${finalTime}\nslug: "${safeSlug}"\n`;
         if (coverUrl) frontmatter += `image: "${coverUrl}"\n`; 
         if (desc) frontmatter += `description: "${desc}"\n`;
@@ -515,37 +516,54 @@
                 frontmatter += `tags:\n${tagsArr.map(t => `  - ${t}`).join('\n')}\n`;
             }
         }
-        
         frontmatter += `---\n\n`;
 
         const finalMD = frontmatter + contentVal; 
         const path = window.STATE.path ? window.STATE.path : `content/posts/${safeFilename}.md`;
+        const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
         
-        const payload = { 
-            message: window.STATE.sha ? `修改博文: ${title}` : `新一篇博文: ${title}`, 
-            content: utf8_to_b64(finalMD), 
-            branch: CONFIG.branch 
-        };
-        if (window.STATE.sha) payload.sha = window.STATE.sha;
-
         try {
-            const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
-            await secureFetch(`${CONFIG.workerUrl}/api/github`, { 
+            // 🚀 核心防 422 优化：发布前，动态查询该路径下的文件是否存在！
+            const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': targetUrl } });
+            if (checkRes.ok) {
+                const fileData = await checkRes.json();
+                window.STATE.sha = fileData.sha; // 文件存在，获取并更新最新的 sha
+            } else if (checkRes.status === 404) {
+                window.STATE.sha = null; // 文件不存在，重置为空，确保以"新建"身份提交
+            }
+
+            // --- 构建提交 Payload ---
+            const payload = { 
+                message: window.STATE.sha ? `修改博文: ${title}` : `新一篇博文: ${title}`, 
+                content: utf8_to_b64(finalMD), 
+                branch: CONFIG.branch 
+            };
+            if (window.STATE.sha) payload.sha = window.STATE.sha;
+
+            // --- 正式发起提交 ---
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { 
                 method: 'PUT', 
                 headers: { 'x-target-url': targetUrl, 'Content-Type': 'application/json' }, 
                 body: JSON.stringify(payload) 
             });
-            pubMsg(); cocoMessage.success(window.STATE.sha ? "修改成功！" : "发布成功！"); 
             
+            if (!res.ok) throw new Error("API_REJECTED");
+
+            if (typeof pubMsg === 'function') pubMsg(); 
+            cocoMessage.success(window.STATE.sha ? "修改成功！" : "发布成功！"); 
+            
+            // 发布成功后清理缓存和状态
             if (!window.STATE.sha) localStorage.removeItem(CACHE_KEY); 
             if ($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
             
             cancelEdit(false);
             
         } catch (err) { 
-            pubMsg(); err.message === "401" ? (cocoMessage.error("登录失效"), logout()) : cocoMessage.error("发布失败"); 
+            if (typeof pubMsg === 'function') pubMsg(); 
+            err.message === "401" ? (cocoMessage.error("登录失效，请重新验证"), logout()) : cocoMessage.error("发布失败，请检查网络或配置"); 
+        } finally {
+            $('submitBtn').disabled = false;
         }
-        $('submitBtn').disabled = false;
     }
 
     // ==========================================

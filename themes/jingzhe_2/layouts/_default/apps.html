@@ -9,7 +9,7 @@
   
   <div class="app-list">
     {{ range $index, $app := $goods.good }}
-      <div class="app-card {{ if .image2 }}app-card-star{{ end }}">
+      <div class="app-card {{ if .image2 }}app-card-star{{ end }} img-hide">
         
         {{ if .image2 }}
         <div class="app-bg-img">

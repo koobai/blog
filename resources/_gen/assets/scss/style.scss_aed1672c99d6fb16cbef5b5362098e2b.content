@@ -3667,23 +3667,23 @@ html[data-theme='dark'] .pinglun {
   html[data-theme='dark'] .admin-app-img-big-b {
     color: var(--text-info-dark-color); }
 
-.app-card {
+.page-app-admin .app-card {
   cursor: grab; }
 
-.app-card:active {
+.page-app-admin .app-card:active {
   cursor: grabbing; }
 
-.admin-sortable-ghost {
+.page-app-admin .admin-sortable-ghost {
   opacity: 0.3;
   background-color: var(--background-card-color);
   border: 2px dashed var(--text-info-color);
   transform: scale(0.95);
   /* 稍微缩小一点显得更有层次感 */ }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme='light']) .admin-sortable-ghost {
+    html:not([data-theme='light']) .page-app-admin .admin-sortable-ghost {
       background-color: var(--background-card-dark-color);
       border: 2px dashed var(--text-info-dark-color); } }
-  html[data-theme='dark'] .admin-sortable-ghost {
+  html[data-theme='dark'] .page-app-admin .admin-sortable-ghost {
     background-color: var(--background-card-dark-color);
     border: 2px dashed var(--text-info-dark-color); }
 

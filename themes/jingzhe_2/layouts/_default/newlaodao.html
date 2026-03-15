@@ -62,31 +62,24 @@
         workerUrl: "https://koobai-laodao.mekoobai.workers.dev",
         owner: "koobai", repo: "blog", branch: "main",
         upyunDomain: "https://img.koobai.com",
-        mapboxToken: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" // 📍 Mapbox Token
+        mapboxToken: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw"
     };
 
-    // 📍 状态中增加 location 记录当前定位信息
+    const CACHE_KEY = 'koobai_laodao_draft'; // 📍 唠叨专属草稿 Key
     const STATE = { sha: null, path: null, date: null, emoji: null, location: null };
     let hasFetchedRecent = false; 
+    let draftTimer; // 草稿防抖定时器
 
     let cachedTags = [];
     let filteredTags = [];
     let currentTagIndex = -1;
 
     const $ = id => document.getElementById(id);
+    const contentEl = $('content'); // 缓存高频 DOM
     const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
     
-    const utf8_to_b64 = str => {
-        const bytes = new TextEncoder().encode(str);
-        const binString = Array.from(bytes, byte => String.fromCodePoint(byte)).join('');
-        return btoa(binString);
-    };
-
-    const b64_to_utf8 = str => {
-        const binString = atob(str);
-        const bytes = Uint8Array.from(binString, m => m.codePointAt(0));
-        return new TextDecoder().decode(bytes);
-    };
+    const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
+    const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
 
     function getFormattedTime() {
         const d = new Date(new Date().getTime() + 8 * 3600 * 1000);
@@ -104,6 +97,39 @@
         return res;
     }
 
+    // ==========================================
+    // 📍 核心：自动草稿箱逻辑
+    // ==========================================
+    function scheduleSaveDraft() {
+        if (STATE.sha) return; // 编辑旧动态时不存本地草稿
+        clearTimeout(draftTimer);
+        draftTimer = setTimeout(() => {
+            const draft = { 
+                content: contentEl.value, 
+                location: STATE.location 
+            };
+            localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
+        }, 800);
+    }
+
+    function loadDraft() {
+        if (STATE.sha) return;
+        const saved = localStorage.getItem(CACHE_KEY);
+        if (saved) {
+            try {
+                const draft = JSON.parse(saved);
+                if (draft.content) { 
+                    contentEl.value = draft.content; 
+                    contentEl.dispatchEvent(new Event('input')); 
+                }
+                if (draft.location) { 
+                    STATE.location = draft.location; 
+                    renderLocation(); 
+                }
+            } catch(e) {}
+        }
+    }
+
     async function fetchAllTags() {
         if (cachedTags.length > 0) return;
         try {
@@ -114,9 +140,7 @@
                 const titles = Array.from(xmlDoc.querySelectorAll("item title")).map(t => t.textContent);
                 cachedTags = [...new Set(titles)]; 
             }
-        } catch(e) {
-            console.log("标签拉取失败", e);
-        }
+        } catch(e) {}
     }
 
     function initApp() {
@@ -124,7 +148,8 @@
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
             fetchAllTags(); 
-            setTimeout(() => $('content').focus(), 100); 
+            loadDraft(); // 初始化时加载草稿
+            setTimeout(() => contentEl.focus(), 100); 
         } else {
             $('loginOverlay').style.display = 'flex';
             $('adminPanel').style.display = 'none';
@@ -135,18 +160,15 @@
     async function verifyToken() {
         const token = $('adminTokenInput').value.trim();
         if (!token) return cocoMessage.warning("请输入密钥");
-        
         localStorage.setItem("koobai_admin_token", token);
-
         try {
             await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
-            
             $('loginOverlay').style.display = 'none';
             $('adminPanel').style.display = 'block';
-            
             cocoMessage.success("验证成功");
             fetchAllTags(); 
-            $('content').focus();
+            loadDraft();
+            contentEl.focus();
         } catch (e) {
             logout(false);
             cocoMessage.error("密钥错误，请重新输入");
@@ -155,43 +177,34 @@
 
     function logout(reload = true) {
         localStorage.removeItem("koobai_admin_token");
-        if(reload) {
-            location.reload();
-        } else {
-            $('loginOverlay').style.display = 'flex';
-            $('adminPanel').style.display = 'none';
-        }
+        reload ? location.reload() : ($('loginOverlay').style.display = 'flex', $('adminPanel').style.display = 'none');
     }
 
     function insertText(text, wrap = '', offset = 0) {
-        const el = $('content'); el.focus({ preventScroll: true });
-        const { selectionStart: start, selectionEnd: end } = el;
-        const sel = el.value.substring(start, end);
+        contentEl.focus({ preventScroll: true });
+        const { selectionStart: start, selectionEnd: end } = contentEl;
+        const sel = contentEl.value.substring(start, end);
         const result = sel ? `${wrap}${sel}${wrap === '[' ? ']()' : wrap}` : text;
         
-        el.setRangeText(result, start, end, 'end');
-        el.setSelectionRange(start + result.length - offset, start + result.length - offset);
-        el.dispatchEvent(new Event('input')); 
+        contentEl.setRangeText(result, start, end, 'end');
+        contentEl.setSelectionRange(start + result.length - offset, start + result.length - offset);
+        contentEl.dispatchEvent(new Event('input')); 
     }
 
     const insertLink = () => insertText("[]()", "[", 1);
 
     function insertBold() {
-        const el = $('content'); el.focus({ preventScroll: true });
-        const start = el.selectionStart; 
-        const end = el.selectionEnd;
-        const sel = el.value.substring(start, end);
-        
+        contentEl.focus({ preventScroll: true });
+        const start = contentEl.selectionStart; const end = contentEl.selectionEnd;
+        const sel = contentEl.value.substring(start, end);
         const result = sel ? ` **${sel}** ` : ` **加粗文字** `;
-        el.setRangeText(result, start, end, 'end');
-        
-        if (!sel) el.setSelectionRange(start + 3, start + 3 + 4);
-        el.dispatchEvent(new Event('input'));
+        contentEl.setRangeText(result, start, end, 'end');
+        if (!sel) contentEl.setSelectionRange(start + 3, start + 3 + 4);
+        contentEl.dispatchEvent(new Event('input'));
     }
 
     async function showEmoji(btn) {
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; return; }
-        
         if (!window.emojisData) {
             try { window.emojisData = (await fetch('/suju/owo.json').then(r => r.json())).Emoji.container; } 
             catch { return cocoMessage.error("获取表情失败"); }
@@ -204,14 +217,10 @@
             const item = e.target.closest('.emoji-item');
             if (item) insertText(item.innerText);
         };
-        
         btn.closest('.admin-publish-footer').after(div);
         STATE.emoji = div;
     }
 
-    // ==========================================
-    // 📍 核心定位逻辑
-    // ==========================================
     const GeoHelper = {
         getPosition: () => new Promise((resolve, reject) => {
             if (!navigator.geolocation) return reject("浏览器不支持定位");
@@ -219,28 +228,18 @@
         }),
         getAddress: async (lat, lon) => {
             const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${CONFIG.mapboxToken}&language=zh-CN`;
-            
             const res = await fetch(url);
             const data = await res.json();
-            
             if (data.features && data.features.length > 0) {
-                const target = data.features.find(f => 
-                    !f.place_type.includes('postcode') && 
-                    !/^\d+$/.test(f.text)
-                );
-                
-                if (target) {
-                    return target.text;
-                }
-                
-                return data.features[0].text;
+                const target = data.features.find(f => !f.place_type.includes('postcode') && !/^\d+$/.test(f.text));
+                return target ? target.text : data.features[0].text;
             }
             return "未知位置";
         }
     };
 
     async function getLocation(btn) {
-        if (STATE.location) return; // 已有定位则不重复获取
+        if (STATE.location) return; 
         let locMsg = cocoMessage.info("正在与卫星通信...", 0);
         try {
             const pos = await GeoHelper.getPosition();
@@ -249,12 +248,13 @@
             
             STATE.location = { name, lat: latitude, lng: longitude };
             renderLocation();
+            scheduleSaveDraft(); // 获取到定位后立即保存草稿
             
             if (typeof locMsg === 'function') locMsg();
             cocoMessage.success("定位成功");
         } catch (e) {
             if (typeof locMsg === 'function') locMsg();
-            cocoMessage.error(typeof e === 'string' ? e : "定位获取失败，请检查浏览器权限");
+            cocoMessage.error(typeof e === 'string' ? e : "定位获取失败，请检查权限");
         }
     }
 
@@ -264,7 +264,7 @@
             locDiv.innerHTML = `
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 <span class="admin-location-text" onclick="editLocation()" title="点击可修改名称">${STATE.location.name}</span>
-                <svg onclick="removeLocation()" title="移除" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <svg onclick="removeLocation()" title="移除" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;cursor:pointer;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             `;
             locDiv.style.display = 'flex';
         } else {
@@ -279,15 +279,15 @@
         if (newName && newName.trim()) {
             STATE.location.name = newName.trim();
             renderLocation();
+            scheduleSaveDraft();
         }
     }
 
     function removeLocation() {
         STATE.location = null;
         renderLocation();
+        scheduleSaveDraft();
     }
-    // ==========================================
-
 
     const compressImage = (file) => new Promise((resolve, reject) => {
         const reader = new FileReader(); reader.readAsDataURL(file);
@@ -311,7 +311,6 @@
         
         for (let file of files) {
             if (!file.type.startsWith('image/')) continue;
-            
             try {
                 const webpBlob = await compressImage(file);
                 const fileName = `memos/${Date.now()}_${Math.random().toString(36).substr(2, 6)}.webp`;
@@ -319,72 +318,67 @@
                 insertText(`\n![img](${CONFIG.upyunDomain}/${fileName})`);
             } catch (err) { 
                 if (typeof uploadMsg === 'function') uploadMsg();
-                if (err.message === "401") {
-                    cocoMessage.error("登录状态失效，请重新登录");
-                    return logout(); 
-                }
+                if (err.message === "401") return (cocoMessage.error("登录状态失效"), logout()); 
                 return cocoMessage.error("图片上传失败"); 
             }
         }
         if (typeof uploadMsg === 'function') uploadMsg();
-        cocoMessage.success("图片准备就绪！"); 
-        this.value = '';
+        cocoMessage.success("图片准备就绪！"); this.value = '';
     });
 
     async function publishPost() {
-        const contentVal = $('content').value.trim();
+        const contentVal = contentEl.value.trim();
         if (!contentVal) return cocoMessage.warning("写点什么再发吧！");
         
         $('submitBtn').disabled = true; 
-        let pubMsg = cocoMessage.info("正在安全推送至 GitHub", 0);
+        let pubMsg = cocoMessage.info("正在校验状态并安全推送...", 0);
 
         const tags = [...new Set(Array.from(contentVal.matchAll(/#([^\s<.,!?'"，。！？]+)/g), m => m[1]))];
         const tagStr = tags.length ? `\nlaodaotags:\n${tags.map(t => `  - ${t}`).join('\n')}` : "";
         const { year, month, day, hour, min, sec } = getFormattedTime();
-        
         const finalTime = (STATE.sha && STATE.date) ? STATE.date : `${year}-${month}-${day}T${hour}:${min}:${sec}+08:00`;
         
-        // 📍 将地理位置信息拼接进 Frontmatter
         let frontmatter = `---\ndate: ${finalTime}${tagStr}\n`;
-        if (STATE.location) {
-            frontmatter += `location: "${STATE.location.name}"\nlatlng: "${STATE.location.lat},${STATE.location.lng}"\n`;
-        }
+        if (STATE.location) frontmatter += `location: "${STATE.location.name}"\nlatlng: "${STATE.location.lat},${STATE.location.lng}"\n`;
         frontmatter += `---\n\n`;
 
         const finalMD = frontmatter + contentVal + '\n';
         const path = STATE.path || `content/laodao/${year}/${month}/${year}${month}${day}-${hour}${min}${sec}.md`;
+        const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
         
-        const payload = { message: STATE.sha ? "修改一下" : "唠叨一下", content: utf8_to_b64(finalMD), branch: CONFIG.branch };
-        if (STATE.sha) payload.sha = STATE.sha;
-
         try {
+            // 🚀 核心防 422 优化：修改旧唠叨前动态拉取最新的 SHA
+            if (STATE.sha || STATE.path) {
+                const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': targetUrl } });
+                if (checkRes.ok) window.STATE.sha = (await checkRes.json()).sha;
+            }
+
+            const payload = { message: STATE.sha ? "修改一下" : "唠叨一下", content: utf8_to_b64(finalMD), branch: CONFIG.branch };
+            if (STATE.sha) payload.sha = STATE.sha;
+
             await secureFetch(`${CONFIG.workerUrl}/api/github`, {
-                method: 'PUT', headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`, 'Content-Type': 'application/json' },
+                method: 'PUT', headers: { 'x-target-url': targetUrl, 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+            
             if (typeof pubMsg === 'function') pubMsg();
             cocoMessage.success("唠叨成功！搞定！"); 
-            cancelEdit(); 
-            if($('recentListWrap').style.display === 'block') fetchRecent();
+            
+            if (!STATE.sha) localStorage.removeItem(CACHE_KEY); // 发布成功清除草稿
+            
+            cancelEdit(false); 
+            if($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
         } catch (err) { 
             if (typeof pubMsg === 'function') pubMsg();
-            if (err.message === "401") {
-                cocoMessage.error("登录状态失效");
-                logout();
-            } else {
-                cocoMessage.error("唠叨失败"); 
-            }
+            err.message === "401" ? (cocoMessage.error("登录状态失效"), logout()) : cocoMessage.error("唠叨失败"); 
+        } finally {
+            $('submitBtn').disabled = false;
         }
-        $('submitBtn').disabled = false;
     }
 
     async function toggleRecentList() {
         const wrap = $('recentListWrap');
-        if (wrap.style.display === 'block') {
-            wrap.style.display = 'none';
-            return;
-        }
-        
+        if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
         if (!hasFetchedRecent) {
             let loadMsg = cocoMessage.info("正在获取最新一条唠叨", 0);
             const success = await fetchRecent(); 
@@ -396,15 +390,9 @@
 
     async function fetchRecent() {
         const commitsUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=content/laodao&per_page=3&sha=${CONFIG.branch}`;
-        
         try {
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commitsUrl } });
-            
-            if (!res.ok) {
-                cocoMessage.warning("暂无提交记录");
-                $('recentList').innerHTML = '';
-                return false; 
-            }
+            if (!res.ok) { cocoMessage.warning("暂无提交记录"); $('recentList').innerHTML = ''; return false; }
             
             const commits = await res.json();
             let latestFile = null;
@@ -413,26 +401,19 @@
                 const detailRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commit.url } });
                 const detail = await detailRes.json();
                 if (!detail.files) continue;
-                
                 latestFile = detail.files.find(f => f.filename.startsWith('content/laodao/') && f.filename.endsWith('.md'));
                 if (latestFile) break;
             }
 
-            if (!latestFile) {
-                cocoMessage.warning("近期没有唠叨被修改");
-                $('recentList').innerHTML = '';
-                return false;
-            }
+            if (!latestFile) { cocoMessage.warning("近期没有唠叨被修改"); $('recentList').innerHTML = ''; return false; }
 
             hasFetchedRecent = true; 
-
             const fileUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${latestFile.filename}?ref=${CONFIG.branch}`);
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': fileUrl } });
             const json = await fRes.json(); 
             
             const rawText = b64_to_utf8(json.content);
             const body = rawText.replace(/---[\s\S]*?---/, '').trim();
-            
             const previewText = body.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 20) + (body.length > 20 ? '...' : '');
 
             $('recentList').innerHTML = `
@@ -442,28 +423,19 @@
                 </div>
             </div>`;
             return true;
-            
         } catch(err) { 
             $('recentList').innerHTML = ''; 
-            if (err.message === "401") {
-                cocoMessage.error("密钥失效，请重新登录");
-                logout();
-            } else {
-                cocoMessage.error("网络异常，拉取失败");
-            }
+            err.message === "401" ? (cocoMessage.error("密钥失效，请重新登录"), logout()) : cocoMessage.error("网络异常，拉取失败");
             return false;
         }
     }
 
     function loadForEdit(path, sha, encodedRawText) {
         const rawText = decodeURIComponent(encodedRawText);
-        
-        // 解析基本属性
         const timeMatch = rawText.match(/date:\s*([^\n]+)/);
         STATE.date = timeMatch ? timeMatch[1].trim() : null;
         STATE.path = path; STATE.sha = sha;
 
-        // 📍 提取历史坐标信息并装载至前端
         const locationMatch = rawText.match(/location:\s*"([^"]+)"/);
         const latlngMatch = rawText.match(/latlng:\s*"([^"]+)"/);
         
@@ -475,31 +447,30 @@
         }
         renderLocation();
 
-        // 🚀 核心修改：在 trim() 之后加一个字符串空格 ' '
-        $('content').value = rawText.replace(/---[\s\S]*?---/, '').trim() + ' '; 
-        
+        contentEl.value = rawText.replace(/---[\s\S]*?---/, '').trim() + ' '; 
         $('submitBtn').innerText = "修改"; 
         $('cancelBtn').style.display = 'inline-block'; 
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
         
-        $('content').dispatchEvent(new Event('input'));
+        contentEl.dispatchEvent(new Event('input'));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function cancelEdit() {
-        $('content').value = ''; 
-        $('content').style.height = 'auto'; 
+    function cancelEdit(showMsg = true) {
+        contentEl.value = ''; 
+        contentEl.style.height = 'auto'; 
         STATE.sha = STATE.path = STATE.date = null;
-        
-        // 📍 清除坐标缓存
         STATE.location = null;
         renderLocation();
 
         $('submitBtn').innerText = "唠叨一下"; 
         $('cancelBtn').style.display = 'none';
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
+        
+        loadDraft(); // 取消后恢复本地可能存在的草稿
+        if (showMsg) cocoMessage.info("已取消修改");
     }
-   
+
     const tagSelector = $('tagSelector');
     tagSelector.style.display = 'none';
 
@@ -511,17 +482,16 @@
     }
 
     function insertSelectedTag(tag, keywordLength, cursorStart) {
-        const el = $('content');
-        const before = el.value.substring(0, cursorStart - keywordLength - 1);
-        const after = el.value.substring(cursorStart);
+        const before = contentEl.value.substring(0, cursorStart - keywordLength - 1);
+        const after = contentEl.value.substring(cursorStart);
         const insertText = `#${tag} `;
         
-        el.value = before + insertText + after;
-        el.setSelectionRange(before.length + insertText.length, before.length + insertText.length);
+        contentEl.value = before + insertText + after;
+        contentEl.setSelectionRange(before.length + insertText.length, before.length + insertText.length);
         
         tagSelector.style.display = 'none';
-        el.focus();
-        el.dispatchEvent(new Event('input'));
+        contentEl.focus();
+        contentEl.dispatchEvent(new Event('input'));
     }
 
     tagSelector.addEventListener('mousedown', function(e) {
@@ -529,9 +499,8 @@
         if (!item) return;
         e.preventDefault();
         
-        const el = $('content');
-        const cursorPosition = el.selectionStart;
-        const match = el.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
+        const cursorPosition = contentEl.selectionStart;
+        const match = contentEl.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
         
         if (match) {
             insertSelectedTag(filteredTags[item.dataset.index], match[1].length, cursorPosition);
@@ -539,9 +508,8 @@
     });
 
     function checkTagTrigger() {
-        const el = $('content');
-        const cursorPosition = el.selectionStart;
-        const textBeforeCursor = el.value.substring(0, cursorPosition);
+        const cursorPosition = contentEl.selectionStart;
+        const textBeforeCursor = contentEl.value.substring(0, cursorPosition);
         const match = textBeforeCursor.match(/(?:^|\s)#([^\s]*)$/);
 
         if (match) {
@@ -560,47 +528,34 @@
         }
     }
 
-    $('content').addEventListener('input', function() {
+    contentEl.addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
         checkTagTrigger();
+        scheduleSaveDraft(); // 监听输入存草稿
     });
 
-    $('content').addEventListener('keyup', function(e) {
+    contentEl.addEventListener('keyup', function(e) {
         if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && tagSelector.style.display === 'none') {
              checkTagTrigger();
         }
     });
 
-    $('content').addEventListener('keydown', function(e) {
+    contentEl.addEventListener('keydown', function(e) {
         if (tagSelector.style.display === 'grid') {
             const items = tagSelector.querySelectorAll('.tag-item');
-            const total = items.length;
-            const cols = 4;
-            
+            const total = items.length; const cols = 4;
             if (e.key === 'ArrowRight') {
-                e.preventDefault(); 
-                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1);
-                updateTagHighlight(items);
+                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1); updateTagHighlight(items);
             } else if (e.key === 'ArrowLeft') {
-                e.preventDefault(); 
-                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0);
-                updateTagHighlight(items);
+                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0); updateTagHighlight(items);
             } else if (e.key === 'ArrowDown') {
-                e.preventDefault(); 
-                currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1);
-                updateTagHighlight(items);
+                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1); updateTagHighlight(items);
             } else if (e.key === 'ArrowUp') {
-                e.preventDefault(); 
-                currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0);
-                updateTagHighlight(items);
+                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0); updateTagHighlight(items);
             } else if (e.key === 'Enter') {
-                if (currentTagIndex >= 0) {
-                    e.preventDefault(); 
-                    items[currentTagIndex].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-                } else {
-                    tagSelector.style.display = 'none';
-                }
+                if (currentTagIndex >= 0) { e.preventDefault(); items[currentTagIndex].dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); } 
+                else { tagSelector.style.display = 'none'; }
             } else if (e.key === ' ' || e.key === 'Escape') {
                 tagSelector.style.display = 'none';
             }
