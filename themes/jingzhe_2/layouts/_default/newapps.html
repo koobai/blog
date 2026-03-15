@@ -1,0 +1,443 @@
+{{ define "body_classes" }}page-app-admin{{ end }}
+{{ define "main" }}
+
+<script src="/js/coco-message.min.js" defer></script>
+<script src="/js/Sortable.min.js" defer></script>
+
+<div id="loginOverlay" class="admin-overlay" style="display: flex;">
+    <div style="display: flex; gap: 10px;">
+        <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
+        <button class="admin-login-btn" onclick="verifyToken()">验证</button>
+    </div>
+</div>
+
+<div id="adminPanel" style="display: none;">
+        <div class="admin-header-actions">
+            <button class="admin-app-add" onclick="openEditPanel(-1)">新增 APP</button>
+            <button class="admin-app-github" onclick="syncToGithub()" id="syncBtn">同步至 GitHub</button>
+        </div>
+    <div id="appList"></div>
+</div>
+
+<div id="editModal" class="admin-overlay">
+    <div class="admin-modal">
+        
+        <div class="admin-form-group">
+            <input type="text" id="appTitle" class="admin-app-textarea" placeholder="名称">
+        </div>
+        
+        <div class="admin-form-group">
+            <div class="admin-input-wrap">
+                <input type="text" id="appLink" class="admin-app-textarea" placeholder="链接">
+                <button class="admin-input-btn" onclick="autoFetchIcon()">获取图标</button>
+            </div>
+        </div>
+
+        <div class="admin-form-group">
+            <div class="admin-form-row">
+                <img id="iconPreview" class="admin-icon-preview">
+                <div class="admin-input-wrap" style="flex: 1;">
+                    <input type="text" id="appIconUrl" class="admin-app-textarea" placeholder="图标链接">
+                    <button class="admin-input-btn" onclick="handleIconUpload()">上传</button>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-form-group">
+            <textarea id="appInfo" class="admin-app-textarea" placeholder="推荐理由"></textarea>
+        </div>
+
+        <div class="admin-form-group">
+            <input type="text" id="appTags" class="admin-app-textarea" placeholder="标签 逗号分隔">
+        </div>
+
+        <div class="admin-popup-footer">
+        <div class="admin-app-img-big">
+            <label for="isStarApp" class="admin-app-img-big-b">大图推荐模式</label>
+            <input type="checkbox" id="isStarApp" class="admin-app-img-big-a">
+        </div>
+
+        <div class="admin-edit-popup">
+            <button class="admin-cancel"  onclick="closeEditPanel()">取消</button>
+            <button class="admin-modify"  onclick="saveAppToMemory()">暂存修改</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CONFIG = {
+        workerUrl: "https://koobai-laodao.mekoobai.workers.dev",
+        owner: "koobai", repo: "blog", branch: "main",
+        upyunDomain: "https://img.koobai.com",
+        jsonPath: "assets/app.json",
+        storageKey: "koobai_app_draft" // 📍 用于本地暂存的专属 Key
+    };
+
+    let appData = { good: [] };
+    let currentSha = null;
+    let editingIndex = -1;
+
+    const $ = id => document.getElementById(id);
+    const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
+    
+    const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
+    const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str.replace(/\s/g, '')), m => m.codePointAt(0)));
+
+    async function secureFetch(url, options = {}) {
+        options.headers = { ...options.headers, 'x-admin-token': getAdminToken() };
+        const res = await fetch(url, options);
+        if (res.status === 401) throw new Error("401"); 
+        return res;
+    }
+
+    async function verifyToken() {
+        const token = $('adminTokenInput').value.trim();
+        if (!token) return cocoMessage.warning("请输入密钥");
+        localStorage.setItem("koobai_admin_token", token);
+        try {
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
+            initApp();
+            cocoMessage.success("验证成功");
+        } catch (e) {
+            localStorage.removeItem("koobai_admin_token");
+            cocoMessage.error("密钥错误");
+        }
+    }
+
+    async function initApp() {
+        if (getAdminToken()) {
+            $('loginOverlay').style.display = 'none';
+            $('adminPanel').style.display = 'block';
+            await loadDataFromGithub();
+        } else {
+            $('loginOverlay').style.display = 'flex';
+        }
+    }
+    async function loadDataFromGithub() {
+        let loadMsg = cocoMessage.info("正在拉取线上数据...", 0);
+        try {
+            const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.jsonPath}?ref=${CONFIG.branch}`;
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
+            const json = await res.json();
+            currentSha = json.sha;
+            
+            let fetchedData = JSON.parse(b64_to_utf8(json.content));
+            if(!fetchedData.good) fetchedData.good = []; 
+            
+            // 🚀 核心逻辑：检查本地 Storage 有没有未同步的草稿
+            const savedDraft = localStorage.getItem(CONFIG.storageKey);
+            if (savedDraft) {
+                appData = JSON.parse(savedDraft);
+                cocoMessage.warning("已恢复您上次未同步的修改草稿！", 3000);
+            } else {
+                appData = fetchedData;
+            }
+            
+            renderList();
+            if (typeof loadMsg === 'function') loadMsg();
+        } catch (e) {
+            if (typeof loadMsg === 'function') loadMsg();
+            cocoMessage.error("拉取数据失败，请检查网络");
+        }
+    }
+
+    function autoResizeTextarea(el) {
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    }
+
+    $('appInfo').addEventListener('input', function() {
+        autoResizeTextarea(this);
+    });
+
+    function renderList() {
+        const listDiv = $('appList');
+        listDiv.innerHTML = '<div class="app-list" id="appGridContainer"></div>';
+        const container = $('appGridContainer');
+        
+        let htmlContent = '';
+        
+        appData.good.forEach((app, index) => {
+            const isStar = !!app.title2;
+            const title = isStar ? app.title2 : app.title;
+            const img = isStar ? app.image2 : app.image;
+            
+            let leftTagsHtml = '';
+            let rightTagsHtml = '';
+            
+            if (app.tags && Array.isArray(app.tags)) {
+                app.tags.forEach(t => {
+                    const tag = t.trim();
+                    if (['开源', '付费', '免费'].includes(tag)) {
+                        rightTagsHtml += `<span class="tag-status">${tag}</span>`;
+                    } else {
+                        leftTagsHtml += `<span class="tag-platform">${tag}</span>`;
+                    }
+                });
+            }
+
+            htmlContent += `
+                <div class="app-card ${isStar ? 'app-card-star' : ''}">
+                    
+                    ${isStar ? `
+                    <div class="app-bg-img">
+                        <img src="${img}" alt="${title}">
+                    </div>` : `
+                    <a href="${app.link || 'javascript:;'}" target="_blank" rel="noopener noreferrer">
+                        <img class="app-icon" src="${img}" alt="${title}">
+                    </a>`}
+
+                    <div class="app-content">
+                        <a class="app-title" href="${app.link || 'javascript:;'}" target="_blank" rel="noopener noreferrer">${title}</a>
+                        <div class="app-desc">${app.info}</div>
+                        <div class="app-tags-left">${leftTagsHtml}</div>
+                    </div>
+
+                    <div class="app-tags-right">
+                        ${rightTagsHtml}
+                    </div>
+
+                    <div class="admin-card-actions">
+                        <button class="admin-btn admin-btn-edit" onclick="openEditPanel(${index})">编辑</button>
+                        <button class="admin-btn admin-btn-delete" onclick="deleteApp(${index})">删除</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = htmlContent;
+
+        // 初始化拖拽排序
+        if (typeof Sortable !== 'undefined') {
+            new Sortable(container, {
+                animation: 250, 
+                ghostClass: 'admin-sortable-ghost',
+                
+                filter: 'a, a *, button, button *',
+                preventOnFilter: false,
+                
+                onEnd: function (evt) {
+                    const oldIndex = evt.oldIndex;
+                    const newIndex = evt.newIndex;
+                    if (oldIndex === newIndex) return;
+
+                    const movedItem = appData.good.splice(oldIndex, 1)[0];
+                    appData.good.splice(newIndex, 0, movedItem);
+                    localStorage.setItem(CONFIG.storageKey, JSON.stringify(appData));
+                    renderList();
+                    cocoMessage.success("排序已暂存");
+                }
+            });
+        }
+    }
+
+   async function autoFetchIcon() {
+        const link = $('appLink').value.trim();
+        if (!link) return cocoMessage.warning("请先填入链接！");
+        
+        let msg = cocoMessage.info("正在精准获取图标...", 0);
+
+        try {
+            // 🚀 路线 1：精准狙击 Apple Store 链接
+            if (link.includes('apple.com') && link.match(/id(\d+)/)) {
+                const appleMatch = link.match(/id(\d+)/);
+                try {
+                    const res = await fetch(`https://itunes.apple.com/lookup?id=${appleMatch[1]}`);
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        $('appIconUrl').value = data.results[0].artworkUrl512;
+                        $('iconPreview').src = data.results[0].artworkUrl512;
+                        $('iconPreview').style.display = 'block';
+                        cocoMessage.success("命中！已获取 App Store 高清图标");
+                        return; // 获取成功，直接结束战斗
+                    }
+                } catch (e) { console.log("Apple 接口解析失败"); }
+            }
+
+            // 🚀 路线 2：普通官网链接，老老实实抓官网图标，绝不乱猜
+            const domain = new URL(link).hostname;
+            const iconUrl = `https://icon.horse/icon/${domain}`;
+            
+            $('appIconUrl').value = iconUrl;
+            $('iconPreview').src = iconUrl;
+            $('iconPreview').style.display = 'block';
+            cocoMessage.success("已精准获取官网官方图标！");
+
+        } catch (e) {
+            cocoMessage.error("链接格式有误，请填写带 http/https 的完整网址");
+        } finally {
+            if (typeof msg === 'function') msg();
+        }
+    }
+
+    async function processAndUploadBlob(blobOrFile) {
+        let msg = cocoMessage.info("正在压缩并上传至又拍云...", 0); 
+        try {
+            const canvas = document.createElement('canvas');
+            const img = new Image(); 
+            img.src = URL.createObjectURL(blobOrFile);
+            await new Promise(r => img.onload = r);
+            
+            let { width, height } = img;
+            if (width > 1000) { height *= 1000/width; width = 1000; }
+            
+            canvas.width = width; canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            
+            canvas.toBlob(async (blob) => {
+                const fileName = `apps/${Date.now()}_${Math.random().toString(36).substr(2, 4)}.webp`;
+                await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: blob });
+                const finalUrl = `${CONFIG.upyunDomain}/${fileName}`;
+                
+                $('appIconUrl').value = finalUrl;
+                $('iconPreview').src = finalUrl;
+                $('iconPreview').style.display = 'block';
+                cocoMessage.success("成功！图片已永久存入你的又拍云"); 
+                if (typeof msg === 'function') msg();
+            }, 'image/webp', 0.75); 
+        } catch(err) { 
+            cocoMessage.error("图片处理或上传失败"); 
+            if (typeof msg === 'function') msg(); 
+        }
+    }
+
+    async function handleIconUpload() {
+        const currentUrl = $('appIconUrl').value.trim();
+        
+        if (currentUrl && currentUrl.startsWith('http') && !currentUrl.includes(CONFIG.upyunDomain)) {
+            let msg = cocoMessage.info("正在提取远程图片...", 0);
+            try {
+                const res = await fetch(currentUrl);
+                if (!res.ok) throw new Error("Fetch failed");
+                const blob = await res.blob();
+                
+                if (typeof msg === 'function') msg();
+                await processAndUploadBlob(blob);
+            } catch (e) {
+                if (typeof msg === 'function') msg();
+                cocoMessage.error("该图片跨域拦截较严，请保存到本地后上传");
+                $('imageInput').click(); 
+            }
+        } else {
+            $('imageInput').click();
+        }
+    }
+
+    $('imageInput').addEventListener('change', async function(e) {
+        const file = e.target.files[0]; 
+        if (!file) return;
+        await processAndUploadBlob(file);
+        this.value = ''; 
+    });
+
+    function openEditPanel(index) {
+        editingIndex = index;
+        
+        if (index !== -1) {
+            const app = appData.good[index];
+            const isStar = !!app.title2;
+            $('appTitle').value = isStar ? app.title2 : app.title;
+            $('appLink').value = app.link || '';
+            $('appIconUrl').value = isStar ? app.image2 : app.image;
+            $('appInfo').value = app.info || '';
+            $('appTags').value = app.tags ? app.tags.join(', ') : '';
+            $('isStarApp').checked = isStar;
+            $('iconPreview').src = $('appIconUrl').value;
+            $('iconPreview').style.display = $('appIconUrl').value ? 'block' : 'none';
+        } else {
+            $('appTitle').value = ''; $('appLink').value = ''; $('appIconUrl').value = '';
+            $('appInfo').value = ''; $('appTags').value = ''; $('isStarApp').checked = false;
+            $('iconPreview').style.display = 'none';
+        }
+        $('editModal').style.display = 'flex';
+        setTimeout(() => autoResizeTextarea($('appInfo')), 10);
+    }
+
+    function closeEditPanel() { $('editModal').style.display = 'none'; }
+
+    // 🚀 删除时，也要更新本地草稿
+    function deleteApp(index) {
+        if(confirm("确定要删除这个推荐吗？")) {
+            appData.good.splice(index, 1);
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(appData));
+            renderList();
+            cocoMessage.success("删除已暂存");
+        }
+    }
+
+    // 🚀 核心：暂存时，持久化写入 localStorage
+    function saveAppToMemory() {
+        const title = $('appTitle').value.trim();
+        const link = $('appLink').value.trim();
+        const info = $('appInfo').value.trim();
+        const imgUrl = $('appIconUrl').value.trim();
+        const tags = $('appTags').value.split(',').map(t => t.trim()).filter(Boolean);
+        const isStar = $('isStarApp').checked;
+
+        if (!title || !link || !imgUrl) return cocoMessage.warning("名称、链接和图片都是必填的哦！");
+
+        const newObj = { info, link, tags };
+        if (isStar) {
+            newObj.title2 = title; newObj.image2 = imgUrl;
+        } else {
+            newObj.title = title; newObj.image = imgUrl;
+        }
+
+        if (editingIndex === -1) {
+            appData.good.unshift(newObj);
+        } else {
+            appData.good[editingIndex] = newObj;
+        }
+        
+        // 持久化保存
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(appData));
+        
+        renderList();
+        closeEditPanel();
+        cocoMessage.success("修改已成功暂存！即使刷新网页也不会丢失");
+    }
+
+    // 🚀 核心：同步成功后，彻底清空本地草稿
+    async function syncToGithub() {
+        $('syncBtn').disabled = true;
+        let msg = cocoMessage.info("正在打包并安全推送至 GitHub...", 0);
+        try {
+            const now = new Date();
+            const formattedDate = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+            appData.update_time = formattedDate;
+
+            const prettyJson = JSON.stringify(appData, null, 4);
+            const payload = { 
+                message: "chore: update app recommend list & time", 
+                content: utf8_to_b64(prettyJson), 
+                branch: CONFIG.branch 
+            };
+            if (currentSha) payload.sha = currentSha;
+
+            const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, {
+                method: 'PUT', 
+                headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.jsonPath}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const json = await res.json();
+            currentSha = json.content.sha;
+
+            // 同步成功，清除本地缓存
+            localStorage.removeItem(CONFIG.storageKey);
+
+            cocoMessage.success("同步成功！本地草稿已清空");
+        } catch (e) {
+            cocoMessage.error("同步失败，请重试");
+        }
+        if (typeof msg === 'function') msg();
+        $('syncBtn').disabled = false;
+    }
+
+    window.addEventListener('load', function() {
+        initApp();
+    });
+</script>
+{{ end }}
