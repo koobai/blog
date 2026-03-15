@@ -6,15 +6,19 @@
   --at-color-pink: var(--text-highlight-color) !important;
   --at-color-light: var(--text-highlight-color) !important;
   --at-color-meta: #999 !important;
-  --at-color-border: #DDD !important;
+  --at-color-border: #ddd !important;
 
   @include dark {
-    --at-color-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0), #242021) !important;
+    --at-color-gradient: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0),
+      #242021
+    ) !important;
     --at-color-bg: var(--background-card-dark-color) !important;
-    --at-color-border: #332D2F !important;
+    --at-color-border: #332d2f !important;
     --at-color-meta: #666 !important;
-    --at-color-font: #BBB !important;
-    --at-color-bg-grey: #332D2E !important;
+    --at-color-font: #bbb !important;
+    --at-color-bg-grey: #332d2e !important;
   }
 
   &.atk-dark-mode {
@@ -47,11 +51,11 @@
     }
   }
 }
-.atk-comment>.atk-main>.atk-header .atk-item{
+.atk-comment > .atk-main > .atk-header .atk-item {
   color: var(--text-info-color);
   @include dark {
     color: var(--text-info-dark-color) !important;
-    }
+  }
 }
 .atk-comment {
   padding: 10px 0 !important;
@@ -178,7 +182,10 @@
   font-size: 11px;
 }
 
-.atk-text, .atk-list-no-comment, .atk-copyright, .atk-copyright a {
+.atk-text,
+.atk-list-no-comment,
+.atk-copyright,
+.atk-copyright a {
   color: #999 !important;
   @include dark {
     color: var(--text-info-dark-color) !important;
@@ -211,7 +218,10 @@
   color: var(--text-highlight-color) !important;
 }
 
-.atk-editor-plug-emoticons > .atk-grp-wrap > .atk-grp[data-type="image"] > .atk-item {
+.atk-editor-plug-emoticons
+  > .atk-grp-wrap
+  > .atk-grp[data-type="image"]
+  > .atk-item {
   height: 32px !important;
   width: 32px !important;
 }
@@ -239,7 +249,7 @@
 }
 
 .atk-reply-to {
-  border-left: 3px solid #FFF !important;
+  border-left: 3px solid #fff !important;
   @include dark {
     border-left: 3px solid #242021 !important;
   }
@@ -258,7 +268,7 @@ img[atk-emoticon] {
 }
 
 .atk-main-editor {
-  border: 1px solid #EAE8E5 !important;
+  border: 1px solid #eae8e5 !important;
   border-radius: 16px !important;
   background: transparent !important;
 
@@ -302,7 +312,7 @@ img[atk-emoticon] {
 }
 
 .artalk code {
-  border: 1px solid #FFBE98 !important;
+  border: 1px solid #ffbe98 !important;
   border-radius: 4px !important;
   background: transparent !important;
   margin: 0 4px !important;
@@ -328,7 +338,7 @@ img[atk-emoticon] {
 
   &:hover {
     opacity: 0.8;
-    transition: opacity .3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
   }
 
   @include dark {

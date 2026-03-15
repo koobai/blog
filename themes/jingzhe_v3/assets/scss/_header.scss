@@ -17,49 +17,51 @@
   align-items: center;
 
   border-radius: 50px;
-  background: rgba(255, 255, 255, 0.5); 
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  
-  border: 1px solid rgba(0, 0, 0, 0.09); 
-  box-shadow: 
+
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     0 4px 10px rgba(0, 0, 0, 0.06);
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     width: 580px;
     height: auto;
     padding: 20px 30px;
     bottom: 30px;
-    
+
     /* 3. PC端核心修改（聚融的投影）：
        - 把原本散漫的 30px 模糊，收紧到了 20px。
        - 把阴影深度从 0.06 加重到了 0.1。
        - 配合一层 8px 的超紧凑贴地阴影，导航栏瞬间就有了实体的“重量感”！ */
-    box-shadow: 
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),  /* 顶部厚度反光 */
-      0 4px 8px rgba(0, 0, 0, 0.04),           /* 紧贴底部的聚拢实体影 */
-      0 8px 30px rgba(0, 0, 0, 0.06);           /* 稍微深一点的悬浮影 */
-      
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 4px 8px rgba(0, 0, 0, 0.04),
+      0 8px 30px rgba(0, 0, 0, 0.06);
+
     will-change: transform, backdrop-filter;
     -webkit-transform: translateX(-50%) translateZ(0);
     transform: translateX(-50%) translateZ(0);
   }
-    @include dark {
-      background: rgba(28, 28, 30, 0.6); 
-      backdrop-filter: blur(30px) saturate(200%); 
-      -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid rgba(255, 255, 255, 0.08) ; 
-      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08) ;
-        @include breakpoint('medium') {
-        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4) ;
-      }
+  @include dark {
+    background: rgba(28, 28, 30, 0.6);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    @include breakpoint("medium") {
+      box-shadow:
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 10px 25px rgba(0, 0, 0, 0.4);
     }
+  }
 }
 
 .new-heard-menu {
   display: none;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     display: flex;
     flex-direction: row;
     gap: 40px; /* 菜单项之间的间距 */
@@ -89,7 +91,7 @@
     gap: 4px; /* 图标与文字的间距 */
 
     @include dark {
-      color: #7C7C82;
+      color: #7c7c82;
     }
   }
 }
@@ -109,15 +111,15 @@
 
 .heard-right {
   display: flex;
-  grid-gap: 0; 
+  grid-gap: 0;
   align-items: center;
   margin-left: auto;
-  @include breakpoint('medium') {
-    grid-gap: 16px; 
+  @include breakpoint("medium") {
+    grid-gap: 16px;
   }
   svg {
     display: none;
-    @include breakpoint('medium') {
+    @include breakpoint("medium") {
       fill: var(--text-info-color);
       width: 20px;
       height: 20px;
@@ -132,8 +134,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  transition: opacity .3s ease-in-out;
-  @include breakpoint('medium') {
+  transition: opacity 0.3s ease-in-out;
+  @include breakpoint("medium") {
     width: 36px;
     height: 36px;
     display: block;
@@ -153,7 +155,7 @@
 
 .rss-box {
   position: absolute;
-  bottom: 120%; 
+  bottom: 120%;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   padding: 8px;
@@ -163,8 +165,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid #eeebe6;
-  
-  
+
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease-in-out;
@@ -173,17 +174,16 @@
   &::before {
     content: "";
     position: absolute;
-    top: 100%; 
-    left: 0; 
-    width: 100%; 
+    top: 100%;
+    left: 0;
+    width: 100%;
     height: 30px;
   }
-    @include dark {
+  @include dark {
     background: rgba(28, 28, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
-
 
 .header-Rss:hover .rss-box {
   opacity: 1;
@@ -192,7 +192,8 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.footer-rss, .footer-rss a {
+.footer-rss,
+.footer-rss a {
   font-size: 0.85rem;
   color: var(--text-content-color);
   text-decoration: none;
@@ -202,14 +203,14 @@
 }
 
 // 主题切换
-.theme-toggle svg{
+.theme-toggle svg {
   color: var(--text-info-color);
   @include dark {
     color: var(--text-info-dark-color);
   }
 }
 .theme-item {
-  display: block; 
+  display: block;
   padding: 3px 6px;
   transition: all 0.2s;
   &:hover {
@@ -219,16 +220,16 @@
   &.active {
     color: var(--text-highlight-color);
     @include dark {
-    color: var(--text-highlight-dark-color);
-  }
+      color: var(--text-highlight-dark-color);
+    }
   }
 }
 
 // 唠叨按钮
-.index-laodao a{
+.index-laodao a {
   font-size: 0.8rem;
   color: transparent !important;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     font-size: 1.2rem;
     margin-left: 20px;
   }

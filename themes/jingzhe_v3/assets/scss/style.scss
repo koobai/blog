@@ -1,73 +1,81 @@
 :root {
-  --font-stack-system: 'JetBrainsMono', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-stack-system:
+    "JetBrainsMono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
   --font-family-paragraph: var(--font-stack-system);
   --font-family-title: var(--font-stack-system);
   --font-family-code: var(--font-stack-system);
-  --background-body-color: #F2F0EB;
+  --background-body-color: #f2f0eb;
   --background-dark-body-color: #151516;
-  --background-card-color:#FFFDFA;
-  --background-card-dark-color: #1C1C1E;
-  --background-card-border-color:#FFFDFA;
-  --background-card-border-dark-color:rgba(255, 255, 255, 0.03);
-  
-  --text-content-color:#222;
-  --text-content-dark-color:#98989D;
-  --text-highlight-color:#994D61;
-  --text-highlight-dark-color:#C3AACC;
-  --text-info-color: #adaba6;   
-  --text-info-dark-color: #5C5C62;
+  --background-card-color: #fffdfa;
+  --background-card-dark-color: #1c1c1e;
+  --background-card-border-color: #fffdfa;
+  --background-card-border-dark-color: rgba(255, 255, 255, 0.03);
 
-  --exercise-text-highlight-color:#32D74B;
+  --text-content-color: #222;
+  --text-content-dark-color: #98989d;
+  --text-highlight-color: #994d61;
+  --text-highlight-dark-color: #c3aacc;
+  --text-info-color: #adaba6;
+  --text-info-dark-color: #5c5c62;
+
+  --exercise-text-highlight-color: #32d74b;
 }
 
 $breakpoints: (
-  'medium': 768px,
-  'large': 1280px,
+  "medium": 768px,
+  "large": 1280px,
 );
 
-@import 'normalize';
-@import 'breakpoints';
-@import 'header';
-@import 'footer';
-@import 'content';
-@import 'intro';
-@import 'main-menu-mobile';
-@import 'comment';
-@import 'apps';
-@import 'tags';
-@import 'movies';
-@import 'about';
-@import 'list';
-@import 'tiaozhuan';
-@import 'exercise';
-@import 'laodao';
-@import 'newlaodao';
-@import 'newbowen';
-@import 'newapps';
-@import 'syntax';
+@import "normalize";
+@import "breakpoints";
+@import "header";
+@import "footer";
+@import "content";
+@import "intro";
+@import "main-menu-mobile";
+@import "comment";
+@import "apps";
+@import "tags";
+@import "movies";
+@import "about";
+@import "list";
+@import "tiaozhuan";
+@import "exercise";
+@import "laodao";
+@import "newlaodao";
+@import "newbowen";
+@import "newapps";
+@import "syntax";
 
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: "JetBrainsMono";
   font-display: swap;
   font-weight: 400;
-  src: local('JetBrains Mono'), 
-       local('JetBrainsMono'), 
-       url('https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-  unicode-range: U+0021-00FF; 
+  src:
+    local("JetBrains Mono"),
+    local("JetBrainsMono"),
+    url("https://img.koobai.com/fonts/JetBrainsMono-Regular.woff2")
+      format("woff2");
+  unicode-range: U+0021-00FF;
 }
 
 @font-face {
-  font-family: 'JetBrainsMono'; 
-  font-display: swap; 
-  font-weight: 800; 
+  font-family: "JetBrainsMono";
+  font-display: swap;
+  font-weight: 800;
   font-style: italic;
-  src: local('JetBrains Mono ExtraBold Italic'), 
-       local('JetBrainsMono-ExtraBoldItalic'), 
-       url('https://img.koobai.com/fonts/JetBrainsMono-ExtraBoldItalic.woff2') format('woff2');
-  unicode-range: U+0021-00FF; 
+  src:
+    local("JetBrains Mono ExtraBold Italic"),
+    local("JetBrainsMono-ExtraBoldItalic"),
+    url("https://img.koobai.com/fonts/JetBrainsMono-ExtraBoldItalic.woff2")
+      format("woff2");
+  unicode-range: U+0021-00FF;
 }
 
-html, body {
+html,
+body {
   box-sizing: border-box;
 }
 
@@ -84,12 +92,12 @@ body {
 }
 
 .wrapper {
-  box-sizing: border-box;/* 防止 padding 把盒子撑大 */
+  box-sizing: border-box; /* 防止 padding 把盒子撑大 */
   max-width: 840px;
   margin: 0 auto;
   margin-top: 10px;
   padding: 0 10px;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     margin-top: 60px;
     padding: 0 20px;
   }
@@ -102,7 +110,7 @@ body {
 // 文本选择高亮颜色
 ::selection {
   background: #f7dcd0;
-  
+
   @include dark {
     background: #000;
   }
@@ -116,15 +124,16 @@ p {
   }
 }
 
-h1, h2 {
+h1,
+h2 {
   @include dark {
-    color: #CCCCCC;
+    color: #cccccc;
   }
 }
 
 h3 {
   @include dark {
-    color: #FFF;
+    color: #fff;
   }
 }
 
@@ -141,10 +150,13 @@ img {
 }
 
 // 页面上滑加载动画
-.img-hide, .retu-hide {
+.img-hide,
+.retu-hide {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
 
   &.visible {
     opacity: 1;

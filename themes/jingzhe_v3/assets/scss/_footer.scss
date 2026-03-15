@@ -2,7 +2,7 @@
   margin-top: 40px;
   margin-bottom: 100px;
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     display: block;
     margin-bottom: 160px;
   }
@@ -24,7 +24,8 @@
   }
 }
 
-.footer-info, .footer-info a {
+.footer-info,
+.footer-info a {
   font-size: 0.75rem;
   line-height: 1.6em;
   color: var(--text-info-color);

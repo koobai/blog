@@ -3,23 +3,23 @@
 ========================================= */
 .buttons {
   display: flex;
-  width: fit-content; 
-  max-width: 100%; 
-  box-sizing: border-box; 
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   margin: 0 auto 20px auto;
   position: relative;
-  z-index: 50; 
+  z-index: 50;
   gap: 8px;
   list-style: none;
   padding: 4px;
   background: var(--background-card-color);
   border: 1px solid var(--background-card-border-color);
   border-radius: 99px;
-   @include dark {
+  @include dark {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
-  
+
   /* 保持这些已有的滚动条控制 */
   overflow-x: auto;
   white-space: nowrap;
@@ -37,8 +37,8 @@
     padding: 10px 22px;
     border-radius: 99px;
     transition: all 0.2s ease;
-     @include dark {
-      color: var( --text-info-dark-color);
+    @include dark {
+      color: var(--text-info-dark-color);
     }
 
     &:hover {
@@ -61,21 +61,20 @@
   margin-bottom: 10px;
   flex-direction: column; /* 📱 手机端：默认竖排 */
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     flex-direction: row; /* 💻 PC端：恢复横排 */
     align-items: stretch;
     height: 550px;
   }
 }
 
-
 #mapbox-container {
   height: 260px;
   background-color: var(--background-card-color);
   border-radius: 12px;
   overflow: hidden;
-  position: relative; 
-  @include breakpoint('medium') {
+  position: relative;
+  @include breakpoint("medium") {
     height: 100% !important;
   }
   @include dark {
@@ -84,14 +83,14 @@
 }
 
 .bento-map-placeholder {
-  flex: none; 
+  flex: none;
   width: 100%;
-  height: 260px; 
+  height: 260px;
   position: relative;
   order: 2;
-  @include breakpoint('medium') {
-    flex: 1; 
-    height: 100%; 
+  @include breakpoint("medium") {
+    flex: 1;
+    height: 100%;
     order: 0;
   }
 }
@@ -118,33 +117,33 @@
   transform: translateX(-50%);
   width: calc(100% - 20px) !important;
   max-width: 800px !important;
-  height: 260px !important; 
+  height: 260px !important;
   min-height: 260px !important;
   z-index: 99;
-  border-radius: 16px; 
+  border-radius: 16px;
   border-top: none;
   animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
   #mapbox-container {
-    height: 260px !important; 
+    height: 260px !important;
     min-height: 260px !important;
   }
 }
 
 @keyframes mapSlideDown {
-  0% { 
-    transform: translate(-50%, -120%); 
-    opacity: 0; 
+  0% {
+    transform: translate(-50%, -120%);
+    opacity: 0;
   }
-  100% { 
-    transform: translate(-50%, 0); 
-    opacity: 1; 
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
   }
 }
 
 /* 地图内嵌详情面板 */
 .runDetailCard {
   display: none;
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     display: block;
     position: absolute;
     bottom: 10px;
@@ -164,7 +163,7 @@
     animation: slideUpFade 0.4s forwards;
     @include dark {
       background: var(--background-card-dark-color);
-  }
+    }
 
     .detailName {
       font-size: 0.75rem;
@@ -172,15 +171,15 @@
       display: flex;
       justify-content: space-between;
       gap: 20px;
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
 
     .detailDate {
       color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
 
@@ -197,26 +196,26 @@
       .statLabel {
         color: var(--text-info-color);
         font-size: 0.65rem;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
 
       .statVal {
         font-size: 0.85rem;
         color: var(--text-content-color);
         @include dark {
-        color: var(--text-content-dark-color);
-      }
+          color: var(--text-content-dark-color);
+        }
       }
 
       small {
         font-size: 0.65rem;
         color: var(--text-info-color);
         margin-left: 2px;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
     }
   }
@@ -241,7 +240,7 @@
   width: 100%;
   display: contents; /* 📱 手机端：释放包裹层，允许子元素跨级重排 */
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     display: flex; /* 💻 PC端：恢复右侧侧边栏独立包裹 */
     flex-direction: column;
     gap: 10px;
@@ -251,8 +250,8 @@
 
   .boardContainer {
     display: contents; /* 📱 手机端：释放内层包裹 */
-    
-    @include breakpoint('medium') {
+
+    @include breakpoint("medium") {
       display: flex; /* 💻 PC端：恢复正常弹性布局 */
       flex-direction: column;
       gap: 10px;
@@ -268,17 +267,18 @@
     border-radius: 16px;
     border: 1px solid var(--background-card-border-color);
     padding: 16px;
-      @include dark {
-        background: var(--background-card-dark-color);
-        border: 1px solid var(--background-card-border-dark-color);
-  }
-  }
-  @include breakpoint('medium') {
-    .globalSection, .monthlyInsights {
-      flex-shrink: 0; 
+    @include dark {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color);
     }
   }
-/* =========================================
+  @include breakpoint("medium") {
+    .globalSection,
+    .monthlyInsights {
+      flex-shrink: 0;
+    }
+  }
+  /* =========================================
    5. 年度数据总览 (Global Stats)
 ========================================= */
   .globalSection {
@@ -291,7 +291,7 @@
     align-items: center;
     padding-top: 16px;
 
-    @include breakpoint('medium') {
+    @include breakpoint("medium") {
       order: 0; /* 💻 PC端：恢复默认层级 */
     }
 
@@ -301,8 +301,8 @@
       letter-spacing: 2px;
       margin-bottom: 8px;
       z-index: 2;
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
 
@@ -324,9 +324,9 @@
       .unit {
         font-size: 0.85rem;
         color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
     }
 
@@ -346,25 +346,25 @@
       .metricLabel {
         font-size: 0.65rem;
         color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
 
       .metricValue {
         font-size: 1rem;
         color: var(--text-content-color);
-         @include dark {
-          color: var( --text-content-dark-color);
+        @include dark {
+          color: var(--text-content-dark-color);
         }
-        
+
         small {
-          font-size: 0.65rem; 
-          color: var(--text-info-color);  
-          margin-left: 3px; 
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+          font-size: 0.65rem;
+          color: var(--text-info-color);
+          margin-left: 3px;
+          @include dark {
+            color: var(--text-info-dark-color);
+          }
         }
       }
     }
@@ -381,7 +381,7 @@
 
     .sparklineFill {
       transform-origin: bottom;
-      opacity: 0.7; 
+      opacity: 0.7;
     }
 
     .sparklineLine {
@@ -389,23 +389,23 @@
       stroke-width: 0.8;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.1; 
+      opacity: 0.1;
     }
   }
 
-/* =========================================
+  /* =========================================
    6. 日历热力图面板 (Calendar Grid)
 ========================================= */
   .calendarSection {
     order: 3;
     display: none !important;
-    
-    @include breakpoint('medium') {
-      order: 0; 
+
+    @include breakpoint("medium") {
+      order: 0;
       display: flex !important;
       flex-direction: column;
-      flex: 1; 
-      min-height: 0; 
+      flex: 1;
+      min-height: 0;
     }
   }
 
@@ -421,23 +421,23 @@
       color: var(--text-info-color);
       min-width: 65px;
       text-align: center;
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
 
     button {
       background: transparent;
       border: none;
-      padding: 4px 1px; 
+      padding: 4px 1px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--text-info-color);
       cursor: pointer;
       transition: color 0.2s ease;
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
 
       svg {
@@ -448,8 +448,8 @@
       &:hover:not(:disabled) {
         background: transparent;
         color: var(--text-content-color);
-         @include dark {
-          color: var( --text-content-dark-color);
+        @include dark {
+          color: var(--text-content-dark-color);
         }
       }
 
@@ -467,9 +467,9 @@
     text-align: center;
     font-size: 0.65rem;
     color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
   }
 
   .grid {
@@ -479,19 +479,19 @@
     text-align: center;
     margin-bottom: 6px;
     margin-top: 6px;
-    
-    @include breakpoint('medium') {
+
+    @include breakpoint("medium") {
       flex: 1;
-      min-height: 0; 
+      min-height: 0;
       grid-auto-rows: minmax(0, 1fr);
     }
   }
 
   .dayCell {
     aspect-ratio: 1; /* 恢复原本的正方形设定 */
-    width: 82%; 
+    width: 82%;
     margin: 0 auto;
-    border: 1px solid transparent; 
+    border: 1px solid transparent;
     box-sizing: border-box;
     border-radius: 6px;
     display: flex;
@@ -500,21 +500,21 @@
     position: relative;
     font-size: 0.8rem;
     color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
-    @include breakpoint('medium') {
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+    @include breakpoint("medium") {
       aspect-ratio: auto;
       height: 100%;
     }
     &.hasRun {
       cursor: pointer;
-      
+
       &:hover {
         background: rgba(0, 0, 0, 0.04) !important;
-         @include dark {
-            background: rgba(255, 255, 255, 0.05) !important;
-          } 
+        @include dark {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
       }
     }
 
@@ -537,18 +537,18 @@
     font-size: 0.65rem;
     color: var(--text-info-color);
     text-align: center;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
 
     span {
-      font-weight: 800; 
+      font-weight: 800;
       font-style: italic;
       color: var(--text-content-color);
       margin: 0 1px 0 1px;
-         @include dark {
-          color: var( --text-content-dark-color);
-        }
+      @include dark {
+        color: var(--text-content-dark-color);
+      }
     }
 
     .dot {
@@ -558,7 +558,7 @@
     }
   }
 
-/* =========================================
+  /* =========================================
    7. 洞察图表 (Monthly Insights)
 ========================================= */
   .monthlyInsights {
@@ -566,7 +566,7 @@
     gap: 10px;
     order: 4; /* 📱 手机端：洞察排在最底端 */
 
-    @include breakpoint('medium') {
+    @include breakpoint("medium") {
       order: 0; /* 💻 PC端：恢复默认 */
     }
   }
@@ -580,9 +580,9 @@
     font-size: 0.75rem;
     color: var(--text-info-color);
     margin-bottom: 10px;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
   }
 
   .punchCard {
@@ -600,12 +600,20 @@
         height: 100%;
         border-radius: 2px;
         transition: all 0.2s ease;
-        background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
+        background-color: color-mix(
+          in srgb,
+          var(--text-info-color),
+          transparent 80%
+        );
         @include dark {
-        background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
+          background-color: color-mix(
+            in srgb,
+            var(--text-info-dark-color),
+            transparent 80%
+          );
+        }
       }
-      }
-      
+
       &:hover .punchHole {
         filter: brightness(1.2);
       }
@@ -635,10 +643,18 @@
       .zoneBar {
         width: 100%;
         border-radius: 2px;
-        min-height: 2px; 
-        background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
-         @include dark {
-          background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
+        min-height: 2px;
+        background-color: color-mix(
+          in srgb,
+          var(--text-info-color),
+          transparent 80%
+        );
+        @include dark {
+          background-color: color-mix(
+            in srgb,
+            var(--text-info-dark-color),
+            transparent 80%
+          );
         }
       }
 
@@ -654,41 +670,41 @@
     display: flex;
     justify-content: space-between;
     margin-top: 4px;
-    
+
     span {
       font-size: 0.55rem;
       color: var(--text-info-color);
       opacity: 0.6;
-       @include dark {
-        color: var( --text-info-dark-color);
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
   }
-  
+
   .timeLabels {
     justify-content: space-between;
-    
+
     span:first-child {
       text-align: left;
     }
-    
+
     span:nth-child(2) {
       text-align: center;
       flex: 1;
     }
-    
+
     span:last-child {
       text-align: right;
     }
   }
-  
+
   .zoneLabels {
     gap: 10px;
 
     span {
-      flex: 1; 
+      flex: 1;
       text-align: center;
-      min-width: 0; 
+      min-width: 0;
     }
   }
 }
@@ -732,17 +748,17 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 
   &.activePill,
   &:hover {
     color: var(--text-content-color);
     opacity: 0.9;
-         @include dark {
-          color: var( --text-content-dark-color);
-        }
+    @include dark {
+      color: var(--text-content-dark-color);
+    }
   }
 }
 
@@ -750,9 +766,9 @@
   color: var(--text-info-color);
   font-size: 0.75rem;
   margin-left: auto;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .cardList {
@@ -760,7 +776,7 @@
   grid-template-columns: 1fr; /* 📱 手机端默认：单列布局 */
   gap: 10px;
 
-  @include breakpoint('medium') {
+  @include breakpoint("medium") {
     grid-template-columns: repeat(2, 1fr); /* 💻 PC端：恢复双列布局 */
   }
 }
@@ -774,15 +790,15 @@
   align-items: center;
   position: relative;
   transition: all 0.2s ease;
-    @include dark {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color);
-    }
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
 
   &:hover {
     background: #fff;
     border-color: #fff;
-      @include dark {
+    @include dark {
       background: #232326;
       border-color: rgba(255, 255, 255, 0.08);
     }
@@ -809,11 +825,11 @@
   width: 38px;
   height: 38px;
   margin-right: 14px;
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0;
   @include dark {
-    background-color: #282829; 
+    background-color: #282829;
   }
-  
+
   svg {
     width: 20px;
     height: 20px;
@@ -823,7 +839,7 @@
 .calIconRing {
   width: 25px;
   height: 25px;
-  background: transparent !important; 
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 
@@ -834,24 +850,40 @@
 }
 
 .goldRing {
-  background: linear-gradient(135deg, rgba(247, 183, 29, 0.25) 0%, rgba(247, 183, 29, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(247, 183, 29, 0.25) 0%,
+    rgba(247, 183, 29, 0.08) 100%
+  );
   color: #c89b2a !important;
   border: 1px solid rgba(150, 110, 20, 0.12);
-    @include dark {
-      background: linear-gradient(135deg, rgba(255, 212, 71, 0.18) 0%, rgba(217, 148, 20, 0.05) 100%); 
-      color: #FFD447 !important;
-      border: 1px solid rgba(255, 212, 71, 0.2);
+  @include dark {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 212, 71, 0.18) 0%,
+      rgba(217, 148, 20, 0.05) 100%
+    );
+    color: #ffd447 !important;
+    border: 1px solid rgba(255, 212, 71, 0.2);
   }
 }
 
 .silverRing {
-  background: linear-gradient(135deg, rgba(148, 163, 184, 0.25) 0%, rgba(148, 163, 184, 0.08) 100%);
-  color: #506480 !important; 
+  background: linear-gradient(
+    135deg,
+    rgba(148, 163, 184, 0.25) 0%,
+    rgba(148, 163, 184, 0.08) 100%
+  );
+  color: #506480 !important;
   border: 1px solid rgba(71, 85, 105, 0.12);
-    @include dark {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(152, 152, 157, 0.05) 100%);
-      color: #E2E8F0 !important; 
-      border: 1px solid rgba(255, 255, 255, 0.2);
+  @include dark {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(152, 152, 157, 0.05) 100%
+    );
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -864,8 +896,8 @@
   background: var(--text-info-color);
   border-radius: 50%;
   opacity: 0.5;
-   @include dark {
-      background: var(--text-info-dark-color);
+  @include dark {
+    background: var(--text-info-dark-color);
   }
 }
 
@@ -880,9 +912,9 @@
   color: var(--text-info-color);
   font-size: 0.85rem;
   margin-bottom: 2px;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .runDistance {
@@ -896,24 +928,24 @@
     font-style: normal;
     font-weight: normal;
     color: var(--text-info-color);
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
   }
 }
 
 .runDate {
   color: var(--text-info-color);
   font-size: 0.85rem;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 /* 气泡系统 */
 .runTooltip {
   position: absolute;
-  bottom: calc(100% + 10px); 
+  bottom: calc(100% + 10px);
   background: #ffffff;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -944,27 +976,39 @@
 }
 
 /* 边缘防溢出 */
-.grid > div:nth-child(7n + 1) .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-10%) !important; 
+.grid > div:nth-child(7n + 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-10%) !important;
 }
-.grid > div:nth-child(7n + 2) .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-30%) !important; 
+.grid > div:nth-child(7n + 2) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-30%) !important;
 }
-.grid > div:nth-child(7n - 1) .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-70%) !important; 
+.grid > div:nth-child(7n - 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-70%) !important;
 }
-.grid > div:nth-child(7n) .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-90%) !important; 
+.grid > div:nth-child(7n) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-90%) !important;
 }
 
 .barWrapper:first-child .runTooltip,
-.zoneCol:first-child .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-15%) !important; 
+.zoneCol:first-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-15%) !important;
 }
 
 .barWrapper:last-child .runTooltip,
-.zoneCol:last-child .runTooltip { 
-  left: 50% !important; right: auto !important; transform: translateX(-85%) !important; 
+.zoneCol:last-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-85%) !important;
 }
 
 /* 气泡内部排版 */
@@ -976,35 +1020,36 @@
 
 .ttItem {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   gap: 32px;
 }
 
-.punchCard, .zoneChart {
+.punchCard,
+.zoneChart {
   .runTooltip {
     .ttItem {
-      justify-content: center; 
+      justify-content: center;
       gap: 12px;
     }
     .ttName {
-      color: var(--text-info-color) !important; 
+      color: var(--text-info-color) !important;
       font-size: 0.75rem;
-       @include dark {
-        color: var( --text-info-dark-color) !important;
+      @include dark {
+        color: var(--text-info-dark-color) !important;
       }
     }
     .ttNum {
-      text-align: left; 
+      text-align: left;
     }
   }
 }
 
 .ttItem .ttNum .ttUnit {
-  color: var(--text-info-color); 
-      @include dark {
-      color: var( --text-info-dark-color);
-    }
+  color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .ttNameWrap {
@@ -1016,20 +1061,20 @@
 .ttName {
   color: var(--text-info-color);
   font-size: 0.8rem;
-       @include dark {
-        color: var( --text-info-dark-color);
-      }
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .ttUnitTag {
   padding: 2px 6px;
-  background:#f0eee9;
+  background: #f0eee9;
   border-radius: 4px;
   color: var(--text-info-color);
   font-size: 0.65rem;
-    @include dark {
-     background: rgba(255, 255, 255, 0.04);
-     color: var( --text-info-dark-color);
+  @include dark {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -1037,8 +1082,8 @@
   color: var(--text-content-color);
   font-size: 0.85rem;
   text-align: right;
-    @include dark {
-    color: var( --text-content-dark-color);
+  @include dark {
+    color: var(--text-content-dark-color);
   }
 }
 
@@ -1055,9 +1100,9 @@
   flex-direction: column;
   gap: 8px;
   margin-top: 8px;
-    @include dark {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
+  @include dark {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }
 
 .ttAchieveRow {
@@ -1066,20 +1111,20 @@
   align-items: center;
   font-size: 0.85rem;
   color: var(--text-content-color);
-    @include dark {
-    color: var( --text-content-dark-color);
+  @include dark {
+    color: var(--text-content-dark-color);
   }
 }
 
 .titleTag {
   padding: 2px 6px;
-  background:#f0eee9;
+  background: #f0eee9;
   border-radius: 4px;
   font-size: 0.65rem;
   color: var(--text-info-color);
-    @include dark {
+  @include dark {
     background: rgba(255, 255, 255, 0.04);
-    color: var( --text-info-dark-color);
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -1087,10 +1132,10 @@
 .mapboxgl-ctrl-group {
   background: var(--background-card-color) !important;
   border-radius: 8px !important;
-  border: none !important; 
+  border: none !important;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
-  margin-left: 10px !important; 
+  margin-left: 10px !important;
   @include dark {
     background: var(--background-card-dark-color) !important;
   }
@@ -1098,7 +1143,7 @@
 
 .mapboxgl-ctrl-group button {
   background-color: transparent !important;
-  width: 28px !important; 
+  width: 28px !important;
   height: 28px !important;
   border-top: none !important;
   border-left: none !important;
@@ -1106,13 +1151,13 @@
 }
 
 .mapboxgl-ctrl-group button:last-child {
-  border-bottom: none !important; 
+  border-bottom: none !important;
 }
 
 .mapboxgl-ctrl-icon {
   filter: invert(0) opacity(0.6) !important;
-  opacity: 0.5; 
-  transform: scale(0.8) !important; 
+  opacity: 0.5;
+  transform: scale(0.8) !important;
   transition: opacity 0.2s ease;
   @include dark {
     filter: invert(1) brightness(1) !important;
@@ -1120,7 +1165,7 @@
 }
 
 .mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
-  opacity: 1; 
+  opacity: 1;
 }
 
 .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
@@ -1129,12 +1174,12 @@
 }
 
 .mapboxgl-ctrl-logo {
-  opacity: 0.3 !important; 
-  transform: scale(0.75) !important; 
-  transform-origin: bottom right !important; 
+  opacity: 0.3 !important;
+  transform: scale(0.75) !important;
+  transform-origin: bottom right !important;
   transition: opacity 0.2s ease !important;
 }
 
 .mapboxgl-ctrl-logo:hover {
-  opacity: 0.6 !important; 
+  opacity: 0.6 !important;
 }

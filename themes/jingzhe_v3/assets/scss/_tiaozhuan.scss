@@ -5,9 +5,9 @@
 .page-tiaozhuan .wrapper {
   margin-top: 0 !important;
   min-height: 100vh;
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tiaozhuan-all {
   color: var(--text-info-color);
@@ -39,7 +39,7 @@
     border: 1px solid var(--text-highlight-color);
     display: inline-block;
     @include dark {
-   border: 1px solid var(--text-highlight-dark-color);
-  }
+      border: 1px solid var(--text-highlight-dark-color);
+    }
   }
 }
