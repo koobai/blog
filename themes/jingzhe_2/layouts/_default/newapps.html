@@ -128,7 +128,7 @@
     }
 
     async function loadDataFromGithub() {
-        let loadMsg = cocoMessage.info("正在拉取线上数据...", 0);
+        let loadMsg = cocoMessage.info("正在获取线上数据", 0);
         try {
             const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.jsonPath}?ref=${CONFIG.branch}`;
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
@@ -231,7 +231,7 @@
         if (!link) return cocoMessage.warning("请先填入链接！");
         
         $('fetchIconBtn').disabled = true; 
-        let msg = cocoMessage.info("正在精准获取图标...", 0);
+        let msg = cocoMessage.info("正在获取图标", 0);
 
         try {
             if (link.includes('apple.com') && link.match(/id(\d+)/)) {
@@ -269,7 +269,7 @@
         
         if (currentUrl && currentUrl.startsWith('http') && !currentUrl.includes(CONFIG.upyunDomain)) {
             $('uploadBtn').disabled = true; 
-            let msg = cocoMessage.info("正在提取远程图片...", 0);
+            let msg = cocoMessage.info("正在获取远程图标", 0);
             try {
                 const res = await fetch(currentUrl);
                 if (!res.ok) throw new Error("Fetch failed");
