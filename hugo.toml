@@ -1,7 +1,7 @@
 baseURL = "https://koobai.com"
 languageCode = "zh-cn"
 title = "空白Koobai"
-theme = "jingzhe_2"
+theme = "jingzhe_v3"
 
 enableRobotsTXT = true
 hasCJKLanguage = true   # 准确计算中文字数和摘要
