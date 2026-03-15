@@ -1,242 +1,360 @@
 {
     "good": [
         {
-            "image": "https://img.koobai.com/app/helium.webp",
-            "title": "Helium",
             "info": "已从 Chrome 切换到这，轻量好用。兼容 Chrome 插件。",
-            "tags": ["macOS", "开源"],
-            "link": "https://helium.computer/"
+            "link": "https://helium.computer/",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "Helium",
+            "image": "https://img.koobai.com/apps/1773504320885_fiwf.webp"
         },
         {
-            "image": "https://img.koobai.com/app/gemini.webp",
-            "title": "Gemini",
             "info": "现在主要使用的 ai 工具，每天必备。",
-            "tags": ["macOS", "Web", "iOS", "付费"],
-            "link": "https://gemini.google.com/"
+            "link": "https://gemini.google.com/",
+            "tags": [
+                "macOS",
+                "Web",
+                "iOS",
+                "付费"
+            ],
+            "title": "Gemini",
+            "image": "https://img.koobai.com/apps/1773497428591_qeks.webp"
         },
         {
-            "image": "https://img.koobai.com/app/weibo.webp",
-            "title": "微博",
             "info": "每天必刷，算是了解社会的一个窗口。",
-            "tags": ["iOS", "Web", "免费"],
-            "link": "https://www.weibo.com"
+            "link": "https://www.weibo.com",
+            "tags": [
+                "iOS",
+                "Web",
+                "免费"
+            ],
+            "title": "微博",
+            "image": "https://img.koobai.com/apps/1773499539784_07c8.webp"
         },
         {
-            "image": "https://img.koobai.com/app/nextflux.webp",
-            "title": "Nextflux",
             "info": "RSS，后端使用 Miniflux，前端使用这个，界面非常喜欢友好，现在电脑跟手机上每天必用。",
-            "tags": ["Web", "开源"],
-            "link": "https://github.com/electh/nextflux"
-        },
-        {
-            "image2": "https://img.koobai.com/app/star_Infuse.webp",
-            "title2": "Infuse",
-            "info": "影视聚合软件，虽然现在同类型软件很多，但还是习惯使用它。辅助备用可以使用网易爆米花全平台。",
-            "tags": ["macOS", "iOS", "tvOS", "付费"],
-            "link": "https://firecore.com/infuse"
+            "link": "https://github.com/electh/nextflux",
+            "tags": [
+                "Web",
+                "开源"
+            ],
+            "title": "Nextflux",
+            "image": "https://img.koobai.com/apps/1773541870728_7wv2.webp"
         },
         {
             "image2": "https://img.koobai.com/app/cuto2.webp",
             "title2": "Cuto",
             "info": "手机壁纸软件，每天更新一张，质量都不错，免费版也够用。同时推荐 X 上的 @BasicAppleGuy，他的壁纸很喜欢。",
-            "tags": ["iOS", "付费"],
+            "tags": [
+                "iOS",
+                "付费"
+            ],
             "link": "https://apps.apple.com/us/app/cuto-wallpaper/id1068086465"
         },
         {
-            "image": "https://img.koobai.com/app/jfxj.webp",
-            "title": "飓风相机",
-            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
-            "tags": ["iOS", "付费"],
-            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845"
+            "image2": "https://img.koobai.com/app/star_Infuse.webp",
+            "title2": "Infuse",
+            "info": "影视聚合软件，虽然现在同类型软件很多，但还是习惯使用它。辅助备用可以使用网易爆米花全平台。",
+            "tags": [
+                "macOS",
+                "iOS",
+                "tvOS",
+                "付费"
+            ],
+            "link": "https://firecore.com/infuse"
         },
         {
-            "image": "https://img.koobai.com/app/boke.webp",
-            "title": "播客",
             "info": "睡前必须有声音才能睡得着，跟小宇宙交替着使用。",
-            "tags": ["iOS", "免费"],
-            "link": "https://apps.apple.com/cn/app/apple%E6%92%AD%E5%AE%A2/id525463029"
+            "link": "https://apps.apple.com/cn/app/apple%E6%92%AD%E5%AE%A2/id525463029",
+            "tags": [
+                "iOS",
+                "免费"
+            ],
+            "title": "播客",
+            "image": "https://img.koobai.com/apps/1773497170261_d2ir.webp"
         },
         {
-            "image": "https://img.koobai.com/app/xiaoyuz.webp",
-            "title": "小宇宙",
+            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
+            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845",
+            "tags": [
+                "iOS",
+                "付费"
+            ],
+            "title": "飓风相机",
+            "image": "https://img.koobai.com/apps/1773496718343_902q.webp"
+        },
+        {
             "info": "播客应用，其实很少听播客，但在开车的时候，放着声音很不错。",
-            "tags": ["iOS", "免费"],
-            "link": "https://www.xiaoyuzhoufm.com/"
+            "link": "https://www.xiaoyuzhoufm.com/",
+            "tags": [
+                "iOS",
+                "免费"
+            ],
+            "title": "小宇宙",
+            "image": "https://img.koobai.com/apps/1773504986289_gvtd.webp"
         },
         {
-            "image": "https://img.koobai.com/app/x.webp",
-            "title": "X",
             "info": "每天必刷，算是了解世界的一个窗口。",
-            "tags": ["iOS", "Web", "免费"],
-            "link": "https://www.x.com"
+            "link": "https://www.x.com",
+            "tags": [
+                "iOS",
+                "Web",
+                "免费"
+            ],
+            "title": "X",
+            "image": "https://img.koobai.com/apps/1773504329641_qp5q.webp"
         },
         {
-            "image": "https://img.koobai.com/app/surge.webp",
-            "title": "Surge",
             "info": "上网必备软件，已使用多年。日常也作为旁路由跟 Ponte 使用。",
-            "tags": ["macOS", "iOS", "付费"],
-            "link": "https://nssurge.com/"
-        },  
+            "link": "https://nssurge.com/",
+            "tags": [
+                "macOS",
+                "iOS",
+                "付费"
+            ],
+            "title": "Surge",
+            "image": "https://img.koobai.com/apps/1773505144852_0iqn.webp"
+        },
         {
-            "image": "https://img.koobai.com/app/bob.webp",
-            "title": "Bob",
             "info": "翻译必备软件，支持各种翻译形式。如果自己申请各大平台翻译密钥，配置好之后，日常翻译非常方便。",
-            "tags": ["macOS", "付费"],
-            "link": "https://bobtranslate.com/"
+            "link": "https://bobtranslate.com/",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "Bob",
+            "image": "https://img.koobai.com/apps/1773505351878_s7rv.webp"
         },
         {
-            "image": "https://img.koobai.com/app/bilibili.webp",
-            "title": "哔哩哔哩",
             "info": "干家务的时候，看影视解说或听视频播客",
-            "tags": ["iOS", "免费"],
-            "link": "https://apps.apple.com/cn/app/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-%E5%BC%B9%E5%B9%95%E7%95%AA%E5%89%A7%E7%9B%B4%E6%92%AD%E9%AB%98%E6%B8%85%E8%A7%86%E9%A2%91/id736536022"
+            "link": "https://apps.apple.com/cn/app/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-%E5%BC%B9%E5%B9%95%E7%95%AA%E5%89%A7%E7%9B%B4%E6%92%AD%E9%AB%98%E6%B8%85%E8%A7%86%E9%A2%91/id736536022",
+            "tags": [
+                "iOS",
+                "免费"
+            ],
+            "title": "哔哩哔哩",
+            "image": "https://img.koobai.com/apps/1773502155820_c74x.webp"
         },
         {
-            "image": "https://img.koobai.com/app/youtube.webp",
-            "title": "Youtube",
             "info": "没什么说的，关注你喜欢的视频频道。",
-            "tags": ["macOS", "tvOS", "Web", "免费"],
-            "link": "https://youtube.com"
+            "link": "https://youtube.com",
+            "tags": [
+                "macOS",
+                "tvOS",
+                "Web",
+                "免费"
+            ],
+            "title": "Youtube",
+            "image": "https://img.koobai.com/apps/1773505033585_j413.webp"
         },
         {
-            "image": "https://img.koobai.com/app/wxsrf.webp",
-            "title": "微信输入法",
             "info": "看中的是跨设备复制同步，有一个不好，按住空格键光标移动不顺滑。",
-            "tags": ["macOS", "iOS", "免费"],
-            "link": "https://apps.apple.com/cn/app/%E5%BE%AE%E4%BF%A1%E8%BE%93%E5%85%A5%E6%B3%95/id1618175312"
+            "link": "https://apps.apple.com/cn/app/%E5%BE%AE%E4%BF%A1%E8%BE%93%E5%85%A5%E6%B3%95/id1618175312",
+            "tags": [
+                "macOS",
+                "iOS",
+                "免费"
+            ],
+            "title": "微信输入法",
+            "image": "https://img.koobai.com/apps/1773504470829_ooex.webp"
         },
         {
-            "image": "https://img.koobai.com/app/telegram.webp",
-            "title": "Telegram",
             "info": "关注你想关注的，你能想到的资源都有。",
-            "tags": ["macOS", "iOS", "免费"],
-            "link": "https://telegram.org/"
+            "link": "https://telegram.org/",
+            "tags": [
+                "macOS",
+                "iOS",
+                "免费"
+            ],
+            "title": "Telegram",
+            "image": "https://img.koobai.com/apps/1773505165347_28m0.webp"
         },
         {
-            "image": "https://img.koobai.com/app/1writer.webp",
-            "title": "1writer",
             "info": "主要在手机端配合 WebDav 同步 MD 文件使用。想找替代，但没发现比这个好的。",
-            "tags": ["iOS", "付费"],
-            "link": "https://apps.apple.com/us/app/1writer-markdown-text-editor/id680469088"
+            "link": "https://apps.apple.com/us/app/1writer-markdown-text-editor/id680469088",
+            "tags": [
+                "iOS",
+                "付费"
+            ],
+            "title": "1writer",
+            "image": "https://img.koobai.com/apps/1773504482625_j9xy.webp"
         },
         {
-            "image": "https://img.koobai.com/app/vscode.webp",
-            "title": "Visual Studio Code",
             "info": "代码编辑软件，只能说牛逼，再也不用切来切去了，只恨相见太晚。",
-            "tags": ["macOS", "免费"],
-            "link": "https://code.visualstudio.com/"
-        },  
+            "link": "https://code.visualstudio.com/",
+            "tags": [
+                "macOS",
+                "免费"
+            ],
+            "title": "Visual Studio Code",
+            "image": "https://img.koobai.com/apps/1773540822250_x4ll.webp"
+        },
         {
             "image2": "https://img.koobai.com/app/mijia3.webp",
             "title2": "米家",
             "info": "大大小小有不少小米生态链产品了，所以必须使用，方便日常控制。特别喜欢一句小爱同学操作灯光。",
-            "tags": ["iOS", "免费"],
+            "tags": [
+                "iOS",
+                "免费"
+            ],
             "link": "https://apps.apple.com/cn/app/%E7%B1%B3%E5%AE%B6/id957323480"
-        },                      
+        },
         {
             "image2": "https://img.koobai.com/app/star_pixelmator.webp",
             "title2": "Pixelmator Pro",
             "info": "一直使用Photoshop，在想有没有平替，于是发现了这款轻量级软件，整体操作及快捷键跟ps差不多，还在摸索中～～",
-            "tags": ["macOS", "付费"],
+            "tags": [
+                "macOS",
+                "付费"
+            ],
             "link": "https://www.pixelmator.com/pro/"
-        },  
+        },
         {
-            "image": "https://img.koobai.com/app/ai2.webp",
-            "title": "Illustrator",
             "info": "Adobe的矢量软件，工作必备。",
-            "tags": ["macOS", "付费"],
-            "link": "https://adobe.com/"
-        },    
+            "link": "https://adobe.com/",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "Illustrator",
+            "image": "https://img.koobai.com/apps/1773534090057_2gqy.webp"
+        },
         {
-            "image": "https://img.koobai.com/app/ps.webp",
-            "title": "PhotoShop",
             "info": "Adobe的修图软件，工作必备。",
-            "tags": ["macOS", "付费"],
-            "link": "https://adobe.com/"
-        },                          
+            "link": "https://adobe.com/",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "PhotoShop",
+            "image": "https://img.koobai.com/apps/1773534129602_5jht.webp"
+        },
         {
-            "image": "https://img.koobai.com/app/maccy.webp",
-            "title": "Maccy",
             "info": "剪贴板管理软件，能记录多次的复制内容，方便随时调取使用。免费开源。",
-            "tags": ["macOS", "开源"],
-            "link": "https://maccy.app/"
-        },        
+            "link": "https://apps.apple.com/us/app/maccy/id1527619437?mt=12",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "Maccy",
+            "image": "https://img.koobai.com/apps/1773540951351_1o3h.webp"
+        },
         {
-            "image": "https://img.koobai.com/app/monitorcontrol.webp",
-            "title": "MonitorControl",
             "info": "调整显示器亮度软件，适合外接显示器使用。鼠标在哪个显示屏，调整就是哪个显示屏的亮度。",
-            "tags": ["macOS", "开源"],
-            "link": "https://github.com/MonitorControl/MonitorControl"
+            "link": "https://github.com/MonitorControl/MonitorControl",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "MonitorControl",
+            "image": "https://img.koobai.com/apps/1773541041053_lbli.webp"
         },
         {
-            "image": "https://img.koobai.com/app/loop.webp",
-            "title": "Loop",
             "info": "调整窗口大小软件，配合触发键方式让窗口根据需要分屏。",
-            "tags": ["macOS", "开源"],
-            "link": "https://github.com/MrKai77/Loop"
+            "link": "https://github.com/MrKai77/Loop",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "Loop",
+            "image": "https://img.koobai.com/apps/1773541174591_xntc.webp"
         },
         {
-            "image": "https://img.koobai.com/app/bitwarden.webp",
-            "title": "vaultwarden",
             "info": "密码管理工具，后端使用Docker版，前端使用 Bitwarden，再也不用记该死的密码了。",
-            "tags": ["macOS", "iOS", "Web", "开源"],
-            "link": "https://github.com/dani-garcia/vaultwarden"
+            "link": "https://github.com/dani-garcia/vaultwarden",
+            "tags": [
+                "macOS",
+                "iOS",
+                "Web",
+                "开源"
+            ],
+            "title": "vaultwarden",
+            "image": "https://img.koobai.com/apps/1773505088819_pnim.webp"
         },
         {
-            "image": "https://img.koobai.com/app/appcleaner.webp",
-            "title": "AppCleaner",
             "info": "卸载app工具，使用了多年，能把软件相关文件都能查找出来，比直接删除干净很多。免费开源。",
-            "tags": ["macOS", "开源"],
-            "link": "https://freemacsoft.net/appcleaner/"
+            "link": "https://freemacsoft.net/appcleaner/",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "AppCleaner",
+            "image": "https://img.koobai.com/apps/1773541556687_z7jr.webp"
         },
         {
-            "image": "https://img.koobai.com/app/iina.webp",
-            "title": "IINA",
             "info": "视频播放软件，并且支持IPTV播放。",
-            "tags": ["macOS", "开源"],
-            "link": "https://iina.io/"
+            "link": "https://iina.io/",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "IINA",
+            "image": "https://img.koobai.com/apps/1773541570864_zcig.webp"
         },
         {
-            "image": "https://img.koobai.com/app/zipic.webp",
-            "title": "Zipic",
             "info": "图片压缩软件，电商必备，推荐。",
-            "tags": ["macOS", "付费"],
-            "link": "https://zipic.app/cn/"
+            "link": "https://zipic.app/cn/",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "Zipic",
+            "image": "https://img.koobai.com/apps/1773541588556_d1pt.webp"
         },
         {
-            "image": "https://img.koobai.com/app/upic.webp",
-            "title": "uPic",
             "info": "快速上传图片资源到各大存储平台，如腾讯云、又拍云、Github 等等。同类型开源的有 PicGO。",
-            "tags": ["macOS", "付费"],
-            "link": "https://github.com/gee1k/uPic"
-        }, 
-        {
-            "image": "https://img.koobai.com/app/keka.webp",
-            "title": "Keka",
-            "info": "压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。",
-            "tags": ["macOS", "免费"],
-            "link": "https://www.keka.io/en/"
-        }, 
-        {
-            "image": "https://img.koobai.com/app/obsidiannew.webp",
-            "title": "Obsidian",
-            "info": "知识管理笔记类软件，插件丰富，自己当日常记录、写博客日志使用。",
-            "tags": ["macOS", "iOS", "免费"],
-            "link": "https://obsidian.md/"
-        }, 
-        {
-            "image": "https://img.koobai.com/app/Bark.webp",
-            "title": "Bark",
-            "info": "信息实时推送，譬如博客有人留言会推送到手机。",
-            "tags": ["iOS", "免费"],
-            "link": "https://apps.apple.com/cn/app/bark-%E7%BB%99%E4%BD%A0%E7%9A%84%E6%89%8B%E6%9C%BA%E5%8F%91%E6%8E%A8%E9%80%81/id1403753865"
+            "link": "https://github.com/gee1k/uPic",
+            "tags": [
+                "macOS",
+                "付费"
+            ],
+            "title": "uPic",
+            "image": "https://img.koobai.com/apps/1773541602768_x48c.webp"
         },
         {
-            "image": "https://img.koobai.com/app/jiany.webp",
-            "title": "剪映专业版",
+            "info": "压缩软件，跟MacZip一样，试用它主要是觉得这图标还蛮有意思的。",
+            "link": "https://www.keka.io/en/",
+            "tags": [
+                "macOS",
+                "免费"
+            ],
+            "title": "Keka",
+            "image": "https://img.koobai.com/apps/1773504916813_tglp.webp"
+        },
+        {
+            "info": "知识管理笔记类软件，插件丰富，自己当日常记录、写博客日志使用。",
+            "link": "https://obsidian.md/",
+            "tags": [
+                "macOS",
+                "iOS",
+                "免费"
+            ],
+            "title": "Obsidian",
+            "image": "https://img.koobai.com/apps/1773504904287_ng47.webp"
+        },
+        {
+            "info": "信息实时推送，譬如博客有人留言会推送到手机。",
+            "link": "https://apps.apple.com/cn/app/bark-%E7%BB%99%E4%BD%A0%E7%9A%84%E6%89%8B%E6%9C%BA%E5%8F%91%E6%8E%A8%E9%80%81/id1403753865",
+            "tags": [
+                "iOS",
+                "免费"
+            ],
+            "title": "Bark",
+            "image": "https://img.koobai.com/apps/1773504542807_jkht.webp"
+        },
+        {
             "info": "现在年付太贵了，只用它的免费功能。",
-            "tags": ["macOS", "iOS", "付费"],
-            "link": "https://www.capcut.cn/"
+            "link": "https://www.capcut.cn/",
+            "tags": [
+                "macOS",
+                "iOS",
+                "付费"
+            ],
+            "title": "剪映专业版",
+            "image": "https://img.koobai.com/apps/1773505197509_7sdo.webp"
         }
-    ]
+    ],
+    "update_time": "2026-03-15"
 }
