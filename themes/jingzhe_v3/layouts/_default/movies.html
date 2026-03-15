@@ -1,16 +1,51 @@
 {{ define "body_classes" }}page-movies{{ end }}
-{{ define "main" }}
-<div class="pagetitle">自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中～～</div>
-  
-{{ partial "movies-list.html" nil }}
 
-{{ $csvResource := resources.Get "movie.csv" }}
-{{ with $csvResource }}
-  {{ $movies := . | transform.Unmarshal }}
-  {{ if gt (len $movies) 28 }}
-    <div id="movies_loadMore" class="movies_loadMore">看更多...</div>
+{{ define "main" }}
+<div class="pagetitle">
+  自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下海报墙为已观看或正在追的过程中～～
+</div>
+
+<svg aria-hidden="true" style="display: none;">
+  <symbol id="icon-star" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/>
+  </symbol>
+</svg>
+
+{{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
+  
+<div class="movie-grid">
+  {{ range $index, $item := $movies }}
+    {{ $movie := $item.subject }}
+    
+    {{ $fileId := $movie.id }}
+    {{ $posterUrl := printf "https://img.koobai.com/movie/%s.webp" $fileId }}
+    
+    {{ $rating := 0 }}
+    {{ if $item.rating }}
+      {{ $rating = int $item.rating.value }}
+    {{ end }}
+    
+    <div class="movie-card {{ if ge $index 28 }}is-hidden{{ end }}">
+      <a class="movie-poster" href="{{ $movie.url }}" target="_blank" rel="noopener noreferrer">
+        <img width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $posterUrl }}" loading="lazy" alt="{{ $movie.title }}">
+      </a>
+      <div class="movie-info">
+        <div class="movie-title">
+          <a href="{{ $movie.url }}" target="_blank" rel="noopener noreferrer">{{ $movie.title }}</a>
+        </div>
+        <div class="movie-rating" aria-label="我的评分：{{ $rating }} 星">
+          {{ range seq 5 }}
+            <svg><use href="#icon-star" style="{{ if gt . $rating }}color: var(--text-color-muted);{{ end }}"></use></svg>
+          {{ end }}
+        </div>
+      </div>
+    </div>
   {{ end }}
+</div>
+
+{{ if gt (len $movies) 28 }}
+  <div id="btn-load-more" class="movie-btn-more">看更多...</div>
 {{ end }}
 
-<script src="/js/movies.js?v=201601312" defer></script>
+<script src="/js/movies.js" defer></script>
 {{ end }}
