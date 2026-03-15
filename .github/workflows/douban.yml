@@ -32,6 +32,9 @@ jobs:
     - name: Install dependencies
       run: pip install Pillow
 
+    - name: Fix file permissions
+      run: sudo chown -R $USER:$USER ./assets
+
     # 3. 运行你的黑魔法脚本，自动补全缺失的海报
     - name: Fetch Posters from TMDB
       env:
