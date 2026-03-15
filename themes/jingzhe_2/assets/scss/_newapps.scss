@@ -214,15 +214,15 @@
 }
 
 //拖拽排序专属交互样式
-.app-card {
+.page-app-admin .app-card {
     cursor: grab;
 }
 
-.app-card:active {
+.page-app-admin .app-card:active {
     cursor: grabbing;
 }
 
-.admin-sortable-ghost {
+.page-app-admin .admin-sortable-ghost {
     opacity: 0.3;
     background-color: var(--background-card-color);
     border: 2px dashed var(--text-info-color);
