@@ -2910,31 +2910,5 @@
       ],
       "primary_color_dark": "2e3a4c"
     }
-  },
-  {
-    "id": "36193784",
-    "type": "tv",
-    "title": "黑暗荣耀 第二季",
-    "year": "2023",
-    "rating": 5,
-    "comment": "看完爽了，没有所谓的原谅~",
-    "link": "https://movie.douban.com/subject/36193784/",
-    "create_time": "2023-03-12 16:04:56",
-    "color_scheme": {
-      "is_dark": true,
-      "primary_color_light": "3b6472",
-      "_base_color": [
-        0.5416666666666666,
-        0.48,
-        0.09803921568627451
-      ],
-      "secondary_color": "f4f8f9",
-      "_avg_color": [
-        0.5,
-        0.1,
-        0.23529411764705882
-      ],
-      "primary_color_dark": "27434c"
-    }
   }
 ]
