@@ -40,18 +40,22 @@
       <a class="movie-poster-wrap" href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">
         <img width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $posterUrl }}" loading="lazy" alt="{{ $movie.title }}">
         
-        <div class="movie-rating-inner" aria-label="评分：{{ $rating }} 星">
-          {{ range seq 5 }}
-            <svg><use href="#icon-star" style="{{ if gt . $rating }}color: rgba(255,255,255,0.3);{{ end }}"></use></svg>
-          {{ end }}
-        </div>
-
         <div class="movie-overlay">
-          <div class="movie-title">{{ $movie.title }}</div>
           <div class="movie-comment">{{ if $movie.comment }}{{ $movie.comment }}{{ else }}暂无评价~{{ end }}</div>
           <div class="movie-date"><time class="twitter-time" data-time="{{ $unixTime }}" data-exact="false" data-short="false"></time></div>
         </div>
       </a>
+
+      <div class="movie-bottom">
+        <div class="movie-title" title="{{ $movie.title }}">{{ $movie.title }}</div>
+        <div class="movie-stars" aria-label="评分：{{ $rating }} 星">
+          {{ if gt $rating 0 }}
+            {{ range seq $rating }}
+              <svg><use href="#icon-star"></use></svg>
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
 
     </div>
   {{ end }}
