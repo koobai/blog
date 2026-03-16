@@ -1,103 +1,150 @@
-// ==========================================
-// 电影墙极简重构样式 (Modern CSS)
-// ==========================================
-
 .movie-grid {
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include breakpoint("medium") {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .movie-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation: fadeInMovie 0.4s ease forwards;
-  
-  // 配合 JS 控制隐藏的核心类
   &.is-hidden {
     display: none !important;
   }
 }
 
-// 绝不闪屏的原生 CSS 入场动画
-@keyframes fadeInMovie {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.movie-poster {
+.movie-poster-wrap {
   display: block;
   border-radius: 12px;
   overflow: hidden;
-  aspect-ratio: 270 / 400; // 严格锁定海报比例，防止页面抖动
-  background: var(--background-card-color);
+  aspect-ratio: 270 / 400;
   position: relative;
-  
+  will-change: transform, box-shadow;
+
+  // 骨架屏底色
+  background-color: var(--background-card-color);
+  @include dark {
+    background-color: var(--background-dark-body-color, #2a2a2a);
+  }
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  // 左下角星星
+  .movie-rating-inner {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 6px 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    @include dark {
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    svg {
+      width: 0.8rem;
+      height: 0.8rem;
+      color: #ffd596;
+    }
+  }
+
+  // ✨ 悬浮遮罩层：日夜间模式适配 & 高透版 ✨
+  .movie-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--theme-light);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    z-index: 3;
+    color: #fff;
+    @include dark {
+      background: var(--theme-dark);
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  .movie-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    color: #fff;
+    @include dark {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  .movie-comment {
+    font-size: 1rem;
+    line-height: 1.55;
+    text-align: justify;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    flex-grow: 0;
+    overflow: hidden;
+  }
+
+  .movie-date {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    text-align: left;
   }
 
   @media (hover: hover) {
-    &:hover img {
-      transform: scale(1.05);
-    }
-  }
-}
-
-.movie-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.movie-title {
-  font-size: 1.05rem;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  a {
-    color: var(--text-color) !important;
-    text-decoration: none;
-    transition: color 0.2s;
     &:hover {
-      color: #32D74B !important; 
+      img {
+        transform: scale(1.08);
+      }
+      .movie-overlay {
+        opacity: 1;
+      }
+      .movie-rating-inner {
+        opacity: 0;
+      }
     }
-  }
-}
-
-.movie-rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  svg {
-    width: 0.9rem;
-    height: 0.9rem;
-    color: #ffd596;
   }
 }
 
 .movie-btn-more {
-  margin: 40px auto;
-  text-align: center;
+  background: transparent;
   cursor: pointer;
-  color: var(--text-color);
-  background: var(--background-card-color);
-  padding: 12px 30px;
+  color: var(--text-highlight-color);
   border-radius: 50px;
-  font-size: 0.95rem;
+  padding: 10px 40px;
+  font-family: var(--font-family-title);
+  font-size: 0.9rem;
+  border: 1px solid var(--text-highlight-color);
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: block;
+  width: fit-content;
   transition: all 0.3s ease;
-  display: table;
-  user-select: none;
 
   &:hover {
-    background: var(--border-color);
+    opacity: 0.6;
+  }
+
+  @include dark {
+    color: var(--text-highlight-dark-color);
+    border-color: var(--text-highlight-dark-color);
   }
 }

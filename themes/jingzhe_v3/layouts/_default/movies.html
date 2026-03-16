@@ -15,31 +15,49 @@
   
 <div class="movie-grid">
   {{ range $index, $movie := $movies }}
-    
     {{ $fileId := $movie.id }}
     {{ $posterUrl := printf "https://img.koobai.com/movie/%s.webp" $fileId }}
-    
     {{ $rating := int (default 0 $movie.rating) }}
     
-    <div class="movie-card {{ if ge $index 28 }}is-hidden{{ end }}">
-      <a class="movie-poster" href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">
+    {{ $unixTime := "" }}
+    {{ with $movie.create_time }}
+      {{ $unixTime = (time (printf "%s+08:00" .)).Unix }} 
+    {{ end }}
+
+    {{ $themeLight := "#444444cc" }} 
+    {{ $themeDark := "#1a1a1acc" }} 
+    {{ with $movie.color_scheme }}
+      {{ if .primary_color_light }}
+        {{ $themeLight = printf "#%scc" .primary_color_light }}
+      {{ end }}
+      {{ if .primary_color_dark }}
+        {{ $themeDark = printf "#%scc" .primary_color_dark }}
+      {{ end }}
+    {{ end }}
+    
+    <div class="movie-card {{ if ge $index 30 }}is-hidden{{ end }} img-hide" style="--theme-light: {{ $themeLight | safeCSS }}; --theme-dark: {{ $themeDark | safeCSS }};">
+      
+      <a class="movie-poster-wrap" href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">
         <img width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $posterUrl }}" loading="lazy" alt="{{ $movie.title }}">
-      </a>
-      <div class="movie-info">
-        <div class="movie-title">
-          <a href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">{{ $movie.title }}</a>
-        </div>
-        <div class="movie-rating" aria-label="我的评分：{{ $rating }} 星">
+        
+        <div class="movie-rating-inner" aria-label="评分：{{ $rating }} 星">
           {{ range seq 5 }}
-            <svg><use href="#icon-star" style="{{ if gt . $rating }}color: var(--text-color-muted);{{ end }}"></use></svg>
+            <svg><use href="#icon-star" style="{{ if gt . $rating }}color: rgba(255,255,255,0.3);{{ end }}"></use></svg>
           {{ end }}
         </div>
-      </div>
+
+        <div class="movie-overlay">
+          <div class="movie-title">{{ $movie.title }}</div>
+          <div class="movie-comment">{{ if $movie.comment }}{{ $movie.comment }}{{ else }}暂无评价~{{ end }}</div>
+          <div class="movie-date"><time class="twitter-time" data-time="{{ $unixTime }}" data-exact="false" data-short="false"></time></div>
+        </div>
+      </a>
+
     </div>
   {{ end }}
 </div>
 
-{{ if gt (len $movies) 28 }}
+{{ if gt (len $movies) 30 }}
   <div id="btn-load-more" class="movie-btn-more">看更多...</div>
 {{ end }}
 

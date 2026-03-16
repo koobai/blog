@@ -18,7 +18,7 @@ def chn_to_arabic(chn_str):
     if len(chn_str) == 2 and chn_str[0] == '十': return 10 + chn_num.get(chn_str[1], 0)
     return 1
 
-# 核心处理函数（现在接收的是清洗过后的极简 row）
+# 核心处理函数（增量更新，纯净数据）
 def process_movie(row):
     title = row.get('title')
     douban_id = row.get('id')
@@ -27,11 +27,10 @@ def process_movie(row):
     if not title or not douban_id:
         return
 
-    # 直接使用纯净的 douban_id，再也不用切割网址了
     file_id = str(douban_id)
     webp_name = f"{file_id}.webp"
 
-    # 1. 极速增量检查：如果又拍云有了，瞬间跳过
+    # 1. 极速增量检查：如果又拍云有了，瞬间跳过，绝不浪费 TMDB API (这就是最强的缓存！)
     upyun_url = f"https://img.koobai.com/movie/{webp_name}"
     try:
         req = urllib.request.Request(upyun_url, method='HEAD')
@@ -40,53 +39,76 @@ def process_movie(row):
     except:
         pass 
 
-    # 2. 提取“第几季”并转换为数字
+    # 2. 提取“第几季”并清洗标题
     season_match = re.search(r'\s*第([一二三四五六七八九十\d]+)季', title)
     season_num = chn_to_arabic(season_match.group(1)) if season_match else None
     clean_title = re.sub(r'\s*第[一二三四五六七八九十\d]+季.*', '', title).strip()
 
-    print(f"🔍 准备搜索: {clean_title} " + (f"(第{season_num}季)" if season_num else "") + (f" [{csv_year}]" if csv_year else ""))
-    
-    query = urllib.parse.quote(clean_title)
-    tmdb_api = f"https://api.themoviedb.org/3/search/multi?api_key={TMDB_API_KEY}&query={query}&language=zh-CN"
-    
-    try:
-        res = urllib.request.urlopen(tmdb_api, timeout=5)
-        data = json.loads(res.read())
+    # 🚀 优化 3：构建搜索策略（加入主副标题 Fallback 机制）
+    search_queries = [clean_title]
+    if '：' in clean_title or ':' in clean_title:
+        main_title = re.split(r'[:：]', clean_title)[0].strip()
+        if main_title:
+            search_queries.append(main_title)
+
+    best_item = None
+
+    # 开始执行带兜底的搜索循环
+    for search_title in search_queries:
+        if best_item: break # 如果上一次已经搜到了，直接跳出兜底循环
         
-        best_item = None
+        print(f"🔍 准备搜索: {search_title} " + (f"(第{season_num}季)" if season_num else "") + (f" [{csv_year}]" if csv_year else ""))
+        query = urllib.parse.quote(search_title)
+        tmdb_api = f"https://api.themoviedb.org/3/search/multi?api_key={TMDB_API_KEY}&query={query}&language=zh-CN"
         
-        for item in data.get('results', []):
-            media_type = item.get('media_type')
-            if media_type not in ['movie', 'tv'] or not item.get('poster_path'):
-                continue
-                
-            item_year_str = item.get('release_date') if media_type == 'movie' else item.get('first_air_date')
-            item_year = int(item_year_str[:4]) if (item_year_str and len(item_year_str) >= 4) else None
-
-            is_match = True
-            if media_type == 'movie' and csv_year and item_year:
-                # 把 csv_year 转成整型对比
-                is_match = abs(int(csv_year) - item_year) <= 1
-
-            if is_match:
-                best_item = item
-                break
-
-        if not best_item:
+        try:
+            res = urllib.request.urlopen(tmdb_api, timeout=5)
+            data = json.loads(res.read())
+            
+            # 优先匹配带年份的
             for item in data.get('results', []):
-                if item.get('poster_path'):
+                media_type = item.get('media_type')
+                if media_type not in ['movie', 'tv'] or not item.get('poster_path'):
+                    continue
+                    
+                item_year_str = item.get('release_date') if media_type == 'movie' else item.get('first_air_date')
+                item_year = int(item_year_str[:4]) if (item_year_str and len(item_year_str) >= 4) else None
+
+                is_match = True
+                
+                # 🚀 优化 2：极其稳健的年份比对逻辑 (安全捕获异常)
+                if media_type == 'movie' and csv_year and item_year:
+                    try:
+                        is_match = abs(int(csv_year) - item_year) <= 1
+                    except ValueError:
+                        is_match = True # 如果年份不是合法数字，放宽条件直接过
+
+                if is_match:
                     best_item = item
                     break
-                
-        if not best_item:
-            print(f"⚠️ TMDB 暂无【{clean_title}】的海报，跳过")
-            return
 
+            # 如果按年份没匹配上，退一步直接拿第一个有海报的
+            if not best_item:
+                for item in data.get('results', []):
+                    if item.get('poster_path'):
+                        best_item = item
+                        break
+        except Exception as e:
+            print(f"⚠️ 搜索请求异常 [{search_title}]: {e}")
+            continue
+
+    # 如果所有策略都跑完还是没有，放弃
+    if not best_item:
+        print(f"❌ TMDB 暂无【{clean_title}】的海报，跳过")
+        return
+
+    # 3. 提取海报并下载
+    try:
         poster_path = best_item.get('poster_path')
         tmdb_id = best_item.get('id')
         media_type = best_item.get('media_type')
 
+        # 剧集专属海报抓取
         if media_type == 'tv' and season_num:
             tv_api = f"https://api.themoviedb.org/3/tv/{tmdb_id}?api_key={TMDB_API_KEY}&language=zh-CN"
             try:
@@ -105,7 +127,9 @@ def process_movie(row):
         img_data = urllib.request.urlopen(tmdb_img_url, timeout=10).read()
         
         image = Image.open(BytesIO(img_data)).convert("RGB")
-        image.save(f"temp_posters/{webp_name}", "WEBP", quality=85)
+        
+        # 🚀 优化 1：Google 官方推荐的最佳 WebP 压缩参数（体积更小，画质不损）
+        image.save(f"temp_posters/{webp_name}", "WEBP", quality=82, method=6)
         print(f"✅ 下载并转换成功: {webp_name}")
         
     except Exception as e:
@@ -123,12 +147,10 @@ if __name__ == "__main__":
     for item in raw_data:
         subject = item.get('subject', {})
         
-        # 提取个人评分 (1-5)
         personal_rating = 0
         if item.get('rating'):
             personal_rating = item['rating'].get('value', 0)
 
-        # 提取发行年份 (从 pubdate 中提炼)
         pubdate = subject.get('pubdate', [])
         pub_year = ""
         if pubdate:
@@ -138,7 +160,6 @@ if __name__ == "__main__":
         elif subject.get('year'):
             pub_year = subject.get('year')
 
-        # 组装黄金 9 字段
         clean_item = {
             "id": subject.get('id', ''),
             "type": subject.get('type', ''),
@@ -154,7 +175,6 @@ if __name__ == "__main__":
         if clean_item['id'] and clean_item['title']:
             clean_movies.append(clean_item)
 
-    # 覆写回 movie.json（提交给 GitHub 和 Hugo 的就是这个魔鬼身材版了）
     with open('assets/movie.json', 'w', encoding='utf-8') as f:
         json.dump(clean_movies, f, ensure_ascii=False, indent=2)
     
@@ -163,6 +183,5 @@ if __name__ == "__main__":
     # ==========================================
     # 步骤 B：执行 TMDB 海报处理
     # ==========================================
-    # 保持 10 个线程，足够快且绝不会触发限制
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         executor.map(process_movie, clean_movies)
