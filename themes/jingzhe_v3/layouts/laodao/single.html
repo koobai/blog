@@ -2,13 +2,28 @@
 {{ define "title" }}唠叨 - {{ .Date.Format "2006-01-02 15:04" }}{{ end }}
 
 {{ define "main" }}
+
 <div class="index-card">
   {{ partial "laodao-card.html" . }}
 </div>
 
-<div class="laodao-more img-hide">
-    <a href="/" class="laodao-more-b">看全部唠叨 ...</a>
+  <div class="laodao-single-random img-hide">
+    随机唠叨碎片
   </div>
+  
+  <div class="index-card">
+    {{ $allLaodao := where .Site.RegularPages "Section" "laodao" }}
+    {{ $otherLaodao := $allLaodao | complement (slice .) }}
+    {{ $randomLaodao := first 10 (shuffle $otherLaodao) }}
+    
+    {{ range $randomLaodao }}
+      {{ partial "laodao-card.html" . }}
+    {{ end }}
+  </div>
+
+<div class="laodao-more img-hide">
+  <a href="/laodao/" class="laodao-more-b">看全部唠叨 ...</a>
+</div>
 
 {{ partial "artalk.html" . }}
 {{ end }}
