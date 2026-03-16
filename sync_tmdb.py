@@ -137,7 +137,7 @@ def process_movie(row):
 
 if __name__ == "__main__":
     # ==========================================
-    # 步骤 A：拦截并瘦身豆瓣原始 JSON
+    # 步骤 A：拦截并智能瘦身豆瓣 JSON (支持幂等性)
     # ==========================================
     with open('assets/movie.json', 'r', encoding='utf-8') as f:
         raw_data = json.load(f)
@@ -145,40 +145,53 @@ if __name__ == "__main__":
     clean_movies = []
     
     for item in raw_data:
-        subject = item.get('subject', {})
-        
-        personal_rating = 0
-        if item.get('rating'):
-            personal_rating = item['rating'].get('value', 0)
+        # ✨ 智能识别：判断这是原始豆瓣数据（含有 subject），还是已经洗干净的数据
+        if 'subject' in item:
+            subject = item.get('subject', {})
+            
+            # 安全提取评分：判断它是字典还是已经变成了数字
+            personal_rating = 0
+            rating_data = item.get('rating')
+            if isinstance(rating_data, dict):
+                personal_rating = rating_data.get('value', 0)
+            elif isinstance(rating_data, (int, float)):
+                personal_rating = int(rating_data)
 
-        pubdate = subject.get('pubdate', [])
-        pub_year = ""
-        if pubdate:
-            year_match = re.search(r'(\d{4})', pubdate[0])
-            if year_match:
-                pub_year = year_match.group(1)
-        elif subject.get('year'):
-            pub_year = subject.get('year')
+            # 提取年份
+            pubdate = subject.get('pubdate', [])
+            pub_year = ""
+            if pubdate:
+                year_match = re.search(r'(\d{4})', pubdate[0])
+                if year_match:
+                    pub_year = year_match.group(1)
+            elif subject.get('year'):
+                pub_year = subject.get('year')
 
-        clean_item = {
-            "id": subject.get('id', ''),
-            "type": subject.get('type', ''),
-            "title": subject.get('title', ''),
-            "year": pub_year,
-            "rating": personal_rating,
-            "comment": item.get('comment', ''),
-            "link": subject.get('url', ''),
-            "create_time": item.get('create_time', ''),
-            "color_scheme": subject.get('color_scheme', {})
-        }
+            # 组装黄金字段
+            clean_item = {
+                "id": subject.get('id', ''),
+                "type": subject.get('type', ''),
+                "title": subject.get('title', ''),
+                "year": pub_year,
+                "rating": personal_rating,
+                "comment": item.get('comment', ''),
+                "link": subject.get('url', ''),
+                "create_time": item.get('create_time', ''),
+                "color_scheme": subject.get('color_scheme', {})
+            }
+        else:
+            # ✨ 如果没有 'subject'，说明这已经是完美瘦身过的数据，直接拿来用！
+            clean_item = item
         
-        if clean_item['id'] and clean_item['title']:
+        # 兜底过滤无效数据
+        if clean_item.get('id') and clean_item.get('title'):
             clean_movies.append(clean_item)
 
+    # 覆写回 movie.json
     with open('assets/movie.json', 'w', encoding='utf-8') as f:
         json.dump(clean_movies, f, ensure_ascii=False, indent=2)
     
-    print(f"✨ 数据瘦身完成！共保留 {len(clean_movies)} 条纯净数据。")
+    print(f"✨ 数据读取与检查完成！共保留 {len(clean_movies)} 条纯净数据。")
 
     # ==========================================
     # 步骤 B：执行 TMDB 海报处理
