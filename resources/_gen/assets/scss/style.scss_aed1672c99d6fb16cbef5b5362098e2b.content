@@ -1332,7 +1332,7 @@ html[data-theme="dark"] .pinglun {
   grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 768px) {
     .movie-grid {
-      grid-template-columns: repeat(3, 1fr); } }
+      grid-template-columns: repeat(4, 1fr); } }
 .movie-card.is-hidden {
   display: none !important; }
 
@@ -1375,8 +1375,8 @@ html[data-theme="dark"] .pinglun {
     html[data-theme="dark"] .movie-poster-wrap .movie-rating-inner {
       background: rgba(0, 0, 0, 0.65); }
     .movie-poster-wrap .movie-rating-inner svg {
-      width: 0.8rem;
-      height: 0.8rem;
+      width: 0.6rem;
+      height: 0.6rem;
       color: #ffd596; }
   .movie-poster-wrap .movie-overlay {
     position: absolute;
@@ -1400,7 +1400,7 @@ html[data-theme="dark"] .pinglun {
       background: var(--theme-dark);
       color: rgba(255, 255, 255, 0.7); }
   .movie-poster-wrap .movie-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 10px;
     line-height: 1.3;
     color: #fff; }
@@ -1410,7 +1410,7 @@ html[data-theme="dark"] .pinglun {
     html[data-theme="dark"] .movie-poster-wrap .movie-title {
       color: rgba(255, 255, 255, 0.9); }
   .movie-poster-wrap .movie-comment {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.55;
     text-align: justify;
     margin-bottom: 10px;

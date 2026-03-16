@@ -35,7 +35,7 @@
       {{ end }}
     {{ end }}
     
-    <div class="movie-card {{ if ge $index 30 }}is-hidden{{ end }} img-hide" style="--theme-light: {{ $themeLight | safeCSS }}; --theme-dark: {{ $themeDark | safeCSS }};">
+    <div class="movie-card {{ if ge $index 32 }}is-hidden{{ end }} img-hide" style="--theme-light: {{ $themeLight | safeCSS }}; --theme-dark: {{ $themeDark | safeCSS }};">
       
       <a class="movie-poster-wrap" href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">
         <img width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $posterUrl }}" loading="lazy" alt="{{ $movie.title }}">
@@ -57,7 +57,7 @@
   {{ end }}
 </div>
 
-{{ if gt (len $movies) 30 }}
+{{ if gt (len $movies) 32 }}
   <div id="btn-load-more" class="movie-btn-more">看更多...</div>
 {{ end }}
 

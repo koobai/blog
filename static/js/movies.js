@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   'use strict';
   
-  const BATCH_SIZE = 30; // 每次加载的数量
+  const BATCH_SIZE = 32; // 每次加载的数量
   const btnLoadMore = document.getElementById('btn-load-more');
   
   if (!btnLoadMore) return;
