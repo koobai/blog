@@ -6,7 +6,7 @@ on:
 
 jobs:
   douban:
-    name: Douban mark data sync
+    name: Self-hosted Douban Sync
     runs-on: ubuntu-latest
     steps:
     
@@ -15,16 +15,6 @@ jobs:
       with:
         token: ${{ secrets.PAT }}
 
-    # 1. 从豆瓣拉取原始 JSON 数据
-    - name: Fetch Movie Data
-      uses: lizheming/doumark-action@master
-      with:
-        id: jnnsu  # 你的豆瓣 ID
-        type: movie
-        format: json
-        dir: ./assets
-
-    # 2. 准备 Python 和图像处理依赖
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -33,15 +23,13 @@ jobs:
     - name: Install dependencies
       run: pip install Pillow
 
-    - name: Fix file permissions
-      run: sudo chown -R $USER:$USER ./assets
-
-    - name: Fetch Posters from TMDB
+    # 1. 直接跑我们自己的无敌抓取脚本！
+    - name: Fetch Data and Posters
       env:
         TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-      run: python sync_tmdb.py
+      run: python sync_movies.py
 
-    # 4. 利用 S3 协议直传到又拍云
+    # 2. 上传海报：0 秒极速跳过魔法
     - name: Sync Images to Upyun S3
       if: env.HAS_NEW_POSTERS == 'true'
       env:
@@ -51,10 +39,10 @@ jobs:
       run: |
         aws s3 sync ./temp_posters s3://${{ secrets.UPYUN_SERVICE }}/movie/ --endpoint-url https://s3.api.upyun.com
 
-    # 5. 提交数据更新到你的 GitHub
+    # 3. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净
     - name: Commit
-      id: commit_step
+      if: env.HAS_NEW_DATA == 'true'
       uses: EndBug/add-and-commit@v9
       with:
-        message: 'chore: update douban data & posters'
-        add: './assets/movie.json ./assets/movie_clean.json'
+        message: 'chore: sync new movies and posters'
+        add: './assets/movie.json'
