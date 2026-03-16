@@ -1407,7 +1407,7 @@ html[data-theme="dark"] .pinglun {
   min-width: 0; }
 
 .movie-title {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-content-color);
   line-height: 1.3;
   text-align: center;
@@ -1421,7 +1421,9 @@ html[data-theme="dark"] .pinglun {
       color: var(--text-content-dark-color); } }
   html[data-theme="dark"] .movie-title {
     color: var(--text-content-dark-color); }
-
+  @media (min-width: 768px) {
+    .movie-title {
+      font-size: 0.85rem; } }
 .movie-stars {
   display: flex;
   gap: 2px;
