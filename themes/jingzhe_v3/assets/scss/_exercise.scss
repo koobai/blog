@@ -1183,3 +1183,10 @@
 .mapboxgl-ctrl-logo:hover {
   opacity: 0.6 !important;
 }
+
+.page-home .runTooltip {
+  display: none;
+}
+.page-home .cardList a {
+  text-decoration: none;
+}
