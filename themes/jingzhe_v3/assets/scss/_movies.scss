@@ -21,11 +21,10 @@
   aspect-ratio: 270 / 400;
   position: relative;
   will-change: transform, box-shadow;
-
   // 骨架屏底色
   background-color: var(--background-card-color);
   @include dark {
-    background-color: var(--background-dark-body-color, #2a2a2a);
+    background-color: var(--background-card-dark-color);
   }
 
   img {
