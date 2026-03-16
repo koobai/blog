@@ -11,7 +11,7 @@
   </symbol>
 </svg>
 
-{{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
+{{ $movies := resources.Get "movie_clean.json" | transform.Unmarshal }}
   
 <div class="movie-grid">
   {{ range $index, $movie := $movies }}
