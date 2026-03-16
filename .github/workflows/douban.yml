@@ -15,7 +15,7 @@ jobs:
       with:
         token: ${{ secrets.PAT }}
 
-    # 1. 从豆瓣拉取文字数据 (movie.csv)
+    # 1. 从豆瓣拉取原始 JSON 数据
     - name: Fetch Movie Data
       uses: lizheming/doumark-action@master
       with:
@@ -29,20 +29,21 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
+        
     - name: Install dependencies
       run: pip install Pillow
 
     - name: Fix file permissions
       run: sudo chown -R $USER:$USER ./assets
 
-    # 3. 运行你的黑魔法脚本，自动补全缺失的海报
     - name: Fetch Posters from TMDB
       env:
         TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
       run: python sync_tmdb.py
 
-    # 4. 利用 S3 协议直传到又拍云的 /movie/ 目录下
+    # 4. 利用 S3 协议直传到又拍云
     - name: Sync Images to Upyun S3
+      if: env.HAS_NEW_POSTERS == 'true'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.UPYUN_OPERATOR }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.UPYUN_PASSWORD }}
@@ -50,10 +51,10 @@ jobs:
       run: |
         aws s3 sync ./temp_posters s3://${{ secrets.UPYUN_SERVICE }}/movie/ --endpoint-url https://s3.api.upyun.com
 
-    # 5. 提交 CSV 更新到你的 GitHub
+    # 5. 提交数据更新到你的 GitHub
     - name: Commit
       id: commit_step
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: update douban data & posters'
-        add: './assets/movie.json'
+        add: './assets/movie.json ./assets/movie_clean.json'
