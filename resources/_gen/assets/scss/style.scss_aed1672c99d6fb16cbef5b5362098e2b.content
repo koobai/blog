@@ -1448,6 +1448,8 @@ html[data-theme="dark"] .pinglun {
   border: 1px solid var(--text-highlight-color);
   margin-top: 20px;
   margin-bottom: 15px;
+  margin-right: auto;
+  margin-left: auto;
   display: block;
   width: fit-content;
   transition: all 0.3s ease; }
@@ -2927,8 +2929,7 @@ html[data-theme="dark"] .pinglun {
   padding: 10px 40px;
   font-size: 0.9rem;
   border: 1px solid var(--text-highlight-color);
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin: 15px auto;
   display: block;
   width: fit-content;
   transition: all 0.3s ease;
@@ -3001,6 +3002,33 @@ html[data-theme="dark"] .pinglun {
   @media (min-width: 768px) {
     .page-laodao-single .laodao-more {
       margin-bottom: 160px; } }
+.laodao-single-random {
+  position: relative;
+  font-size: 1.1rem;
+  margin: 30px 0 10px 15px;
+  color: var(--text-info-color);
+  padding-left: 14px;
+  line-height: 1.5; }
+  .laodao-single-random::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 1em;
+    background-color: var(--text-highlight-color);
+    border-radius: 4px; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .laodao-single-random {
+      color: var(--text-info-dark-color); }
+      html:not([data-theme="light"]) .laodao-single-random::before {
+        background-color: var(--text-highlight-dark-color); } }
+  html[data-theme="dark"] .laodao-single-random {
+    color: var(--text-info-dark-color); }
+    html[data-theme="dark"] .laodao-single-random::before {
+      background-color: var(--text-highlight-dark-color); }
+
 .page-laodao-admin .footer-background {
   display: none; }
 
