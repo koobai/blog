@@ -10,7 +10,6 @@ import concurrent.futures
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 os.makedirs('temp_posters', exist_ok=True)
 
-# 辅助函数：将中文季数转为阿拉伯数字
 def chn_to_arabic(chn_str):
     chn_num = {'一':1, '二':2, '三':3, '四':4, '五':5, '六':6, '七':7, '八':8, '九':9, '十':10}
     if chn_str.isdigit(): return int(chn_str)
@@ -18,7 +17,6 @@ def chn_to_arabic(chn_str):
     if len(chn_str) == 2 and chn_str[0] == '十': return 10 + chn_num.get(chn_str[1], 0)
     return 1
 
-# 核心处理函数（增量更新，纯净数据）
 def process_movie(row):
     title = row.get('title')
     douban_id = row.get('id')
@@ -30,7 +28,7 @@ def process_movie(row):
     file_id = str(douban_id)
     webp_name = f"{file_id}.webp"
 
-    # 1. 极速增量检查：如果又拍云有了，瞬间跳过，绝不浪费 TMDB API (这就是最强的缓存！)
+    # 1. 又拍云极速增量检查
     upyun_url = f"https://img.koobai.com/movie/{webp_name}"
     try:
         req = urllib.request.Request(upyun_url, method='HEAD')
@@ -39,12 +37,10 @@ def process_movie(row):
     except:
         pass 
 
-    # 2. 提取“第几季”并清洗标题
     season_match = re.search(r'\s*第([一二三四五六七八九十\d]+)季', title)
     season_num = chn_to_arabic(season_match.group(1)) if season_match else None
     clean_title = re.sub(r'\s*第[一二三四五六七八九十\d]+季.*', '', title).strip()
 
-    # 🚀 优化 3：构建搜索策略（加入主副标题 Fallback 机制）
     search_queries = [clean_title]
     if '：' in clean_title or ':' in clean_title:
         main_title = re.split(r'[:：]', clean_title)[0].strip()
@@ -53,9 +49,8 @@ def process_movie(row):
 
     best_item = None
 
-    # 开始执行带兜底的搜索循环
     for search_title in search_queries:
-        if best_item: break # 如果上一次已经搜到了，直接跳出兜底循环
+        if best_item: break 
         
         print(f"🔍 准备搜索: {search_title} " + (f"(第{season_num}季)" if season_num else "") + (f" [{csv_year}]" if csv_year else ""))
         query = urllib.parse.quote(search_title)
@@ -65,7 +60,6 @@ def process_movie(row):
             res = urllib.request.urlopen(tmdb_api, timeout=5)
             data = json.loads(res.read())
             
-            # 优先匹配带年份的
             for item in data.get('results', []):
                 media_type = item.get('media_type')
                 if media_type not in ['movie', 'tv'] or not item.get('poster_path'):
@@ -75,19 +69,16 @@ def process_movie(row):
                 item_year = int(item_year_str[:4]) if (item_year_str and len(item_year_str) >= 4) else None
 
                 is_match = True
-                
-                # 🚀 优化 2：极其稳健的年份比对逻辑 (安全捕获异常)
                 if media_type == 'movie' and csv_year and item_year:
                     try:
                         is_match = abs(int(csv_year) - item_year) <= 1
                     except ValueError:
-                        is_match = True # 如果年份不是合法数字，放宽条件直接过
+                        is_match = True 
 
                 if is_match:
                     best_item = item
                     break
 
-            # 如果按年份没匹配上，退一步直接拿第一个有海报的
             if not best_item:
                 for item in data.get('results', []):
                     if item.get('poster_path'):
@@ -97,18 +88,15 @@ def process_movie(row):
             print(f"⚠️ 搜索请求异常 [{search_title}]: {e}")
             continue
 
-    # 如果所有策略都跑完还是没有，放弃
     if not best_item:
         print(f"❌ TMDB 暂无【{clean_title}】的海报，跳过")
         return
 
-    # 3. 提取海报并下载
     try:
         poster_path = best_item.get('poster_path')
         tmdb_id = best_item.get('id')
         media_type = best_item.get('media_type')
 
-        # 剧集专属海报抓取
         if media_type == 'tv' and season_num:
             tv_api = f"https://api.themoviedb.org/3/tv/{tmdb_id}?api_key={TMDB_API_KEY}&language=zh-CN"
             try:
@@ -122,13 +110,10 @@ def process_movie(row):
             except Exception as tv_e:
                 print(f"⚠️ 抓取特定季数海报失败，使用剧集默认海报: {tv_e}")
 
-        # 开始下载 TMDB 原图并转换 WebP
         tmdb_img_url = f"https://image.tmdb.org/t/p/w500{poster_path}"
         img_data = urllib.request.urlopen(tmdb_img_url, timeout=10).read()
         
         image = Image.open(BytesIO(img_data)).convert("RGB")
-        
-        # 🚀 优化 1：Google 官方推荐的最佳 WebP 压缩参数（体积更小，画质不损）
         image.save(f"temp_posters/{webp_name}", "WEBP", quality=82, method=6)
         print(f"✅ 下载并转换成功: {webp_name}")
         
@@ -137,7 +122,7 @@ def process_movie(row):
 
 if __name__ == "__main__":
     # ==========================================
-    # 步骤 A：拦截并智能瘦身豆瓣 JSON (支持幂等性)
+    # 步骤 A：读取并保护原版 JSON，另存为清洗版
     # ==========================================
     with open('assets/movie.json', 'r', encoding='utf-8') as f:
         raw_data = json.load(f)
@@ -145,11 +130,9 @@ if __name__ == "__main__":
     clean_movies = []
     
     for item in raw_data:
-        # ✨ 智能识别：判断这是原始豆瓣数据（含有 subject），还是已经洗干净的数据
         if 'subject' in item:
             subject = item.get('subject', {})
             
-            # 安全提取评分：判断它是字典还是已经变成了数字
             personal_rating = 0
             rating_data = item.get('rating')
             if isinstance(rating_data, dict):
@@ -157,7 +140,6 @@ if __name__ == "__main__":
             elif isinstance(rating_data, (int, float)):
                 personal_rating = int(rating_data)
 
-            # 提取年份
             pubdate = subject.get('pubdate', [])
             pub_year = ""
             if pubdate:
@@ -167,7 +149,6 @@ if __name__ == "__main__":
             elif subject.get('year'):
                 pub_year = subject.get('year')
 
-            # 组装黄金字段
             clean_item = {
                 "id": subject.get('id', ''),
                 "type": subject.get('type', ''),
@@ -180,21 +161,34 @@ if __name__ == "__main__":
                 "color_scheme": subject.get('color_scheme', {})
             }
         else:
-            # ✨ 如果没有 'subject'，说明这已经是完美瘦身过的数据，直接拿来用！
             clean_item = item
         
-        # 兜底过滤无效数据
         if clean_item.get('id') and clean_item.get('title'):
             clean_movies.append(clean_item)
 
-    # 覆写回 movie.json
-    with open('assets/movie.json', 'w', encoding='utf-8') as f:
+    # 🚀 必须：另存为 movie_clean.json！
+    with open('assets/movie_clean.json', 'w', encoding='utf-8') as f:
         json.dump(clean_movies, f, ensure_ascii=False, indent=2)
     
-    print(f"✨ 数据读取与检查完成！共保留 {len(clean_movies)} 条纯净数据。")
+    print(f"✨ 数据清洗完成！共生成 {len(clean_movies)} 条纯净数据。")
 
     # ==========================================
     # 步骤 B：执行 TMDB 海报处理
     # ==========================================
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         executor.map(process_movie, clean_movies)
+        
+    # ==========================================
+    # 步骤 C：吹哨人逻辑 (控制下一步的 Upyun 是否运行)
+    # ==========================================
+    downloaded_count = len(os.listdir('temp_posters'))
+    print(f"🎯 本次共下载了 {downloaded_count} 张新海报。")
+    
+    # 将结果写入 GitHub Actions 环境变量
+    github_env = os.environ.get('GITHUB_ENV')
+    if github_env:
+        with open(github_env, 'a') as f:
+            if downloaded_count > 0:
+                f.write("HAS_NEW_POSTERS=true\n")
+            else:
+                f.write("HAS_NEW_POSTERS=false\n")
