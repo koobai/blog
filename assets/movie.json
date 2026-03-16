@@ -1,5 +1,31 @@
 [
   {
+    "id": "36318037",
+    "type": "tv",
+    "title": "唐朝诡事录之长安",
+    "year": "2025",
+    "rating": 4,
+    "comment": "标记下，不是说有多好看，而是在目前一众类似题材中，还是蛮喜欢这个系列的～",
+    "link": "https://movie.douban.com/subject/36318037/",
+    "create_time": "2026-03-16 10:55:46",
+    "color_scheme": {
+      "is_dark": true,
+      "primary_color_light": "a56652",
+      "_base_color": [
+        0.03846153846153846,
+        0.5,
+        0.10196078431372549
+      ],
+      "secondary_color": "f9f6f4",
+      "_avg_color": [
+        0.07228915662650602,
+        0.6148148148148148,
+        0.5294117647058824
+      ],
+      "primary_color_dark": "7f4e3f"
+    }
+  },
+  {
     "id": "36176155",
     "type": "movie",
     "title": "一战再战",
