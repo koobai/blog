@@ -74,12 +74,12 @@ ul {
   font-size: 1.1rem;
   p {
     font-size: 1.1rem;
-    line-height: 1.6;
+    line-height: 1.7;
     margin: 0 0 15px 0;
     text-align: justify;
     text-align-last: left;
     @include breakpoint("medium") {
-      line-height: 1.75;
+      line-height: 1.8;
     }
   }
 
