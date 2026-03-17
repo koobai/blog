@@ -719,7 +719,8 @@ body:has(.menu-checkbox:checked) {
   --at-color-pink: var(--text-highlight-color) !important;
   --at-color-light: var(--text-highlight-color) !important;
   --at-color-meta: #999 !important;
-  --at-color-border: #ddd !important; }
+  --at-color-border: #ddd !important;
+  --at-color-bg: var(--background-card-color) !important; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .artalk {
       --at-color-gradient: linear-gradient(
@@ -900,7 +901,7 @@ html[data-theme="dark"] .atk-item.atk-reply-at > .atk-nick {
 
 .atk-ua {
   color: #999 !important;
-  background: var(--frame-color) !important; }
+  background: var(--background-card-color) !important; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .atk-ua {
       color: #666 !important;
@@ -1029,18 +1030,20 @@ img[atk-emoticon] {
         color: var(--text-content-dark-color) !important; } }
     html[data-theme="dark"] .atk-main-editor .atk-textarea-wrap .atk-textarea {
       color: var(--text-content-dark-color) !important; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .atk-main-editor .atk-bottom .atk-state-btn {
-      background: var(--background-card-dark-color) !important; } }
-  html[data-theme="dark"] .atk-main-editor .atk-bottom .atk-state-btn {
-    background: var(--background-card-dark-color) !important; }
-  .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
-    color: #999; }
+  .atk-main-editor .atk-bottom .atk-state-btn {
+    background: var(--background-card-color) !important; }
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
-        color: #666; } }
-    html[data-theme="dark"] .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
-      color: #666; }
+      html:not([data-theme="light"]) .atk-main-editor .atk-bottom .atk-state-btn {
+        background: var(--background-card-dark-color) !important; } }
+    html[data-theme="dark"] .atk-main-editor .atk-bottom .atk-state-btn {
+      background: var(--background-card-dark-color) !important; }
+    .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
+      color: #999; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
+          color: #666; } }
+      html[data-theme="dark"] .atk-main-editor .atk-bottom .atk-state-btn .atk-text-wrap {
+        color: #666; }
 
 .atk-plug-btn svg {
   color: var(--text-info-color); }
