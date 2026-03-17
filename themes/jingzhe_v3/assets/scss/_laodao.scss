@@ -24,14 +24,14 @@
   }
 }
 .laodao-content p {
-  line-height: 1.55;
+  line-height: 1.6;
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
   overflow-wrap: break-word;
   word-wrap: break-word;
   @include breakpoint("medium") {
-    line-height: 1.65;
+    line-height: 1.7;
   }
   a {
     margin: 0 2px;
@@ -187,6 +187,7 @@
 .index-post-title {
   font-size: 1.2rem;
 }
+//唠叨详情随机碎片
 .laodao-single-random {
   position: relative; // ✨ 核心：给伪元素做定位基准
   font-size: 1.1rem;
@@ -212,4 +213,15 @@
       background-color: var(--text-highlight-dark-color);
     }
   }
+}
+
+//评论显示逻辑
+.laodao-artalk-container {
+  display: none;
+}
+.laodao-main-card .laodao-comment {
+  display: none !important;
+}
+.laodao-main-card .laodao-artalk-container {
+  display: block !important;
 }

@@ -3,55 +3,55 @@
 
 {{ if eq .Type "posts" }}
 <div id="Comments"></div>
+{{ end }}
+
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  // 1. 封装通用初始化
+  function initArtalk(elSelector, key, title) {
+    if (typeof Artalk === 'undefined') return;
     Artalk.init({
-      el:        '#Comments',
-      pageKey:   '{{ .RelPermalink }}',
-      pageTitle: '{{ .Title }}',
-      server:    '{{ $.Site.Params.artalk.server }}',
-      site:      '{{ $.Site.Params.artalk.site }}',
-      darkMode:  'auto'
+      el: elSelector,
+      pageKey: key,
+      pageTitle: title,
+      server: '{{ $.Site.Params.artalk.server }}',
+      site: '{{ $.Site.Params.artalk.site }}',
+      darkMode: 'auto'
     });
+  }
+
+  // 2. 页面加载完毕后的自动展开逻辑
+  document.addEventListener('DOMContentLoaded', function() {
+    {{ if eq .Type "posts" }}
+      initArtalk('#Comments', '{{ .RelPermalink }}', '{{ .Title }}');
+    {{ else if and (eq .Type "laodao") (.IsPage) }}
+      initArtalk('#artalk-{{ .File.TranslationBaseName }}', '{{ .RelPermalink }}', '唠叨 {{ .File.TranslationBaseName }}');
+    {{ end }}
   });
-</script>
 
-{{ else }}
-<script>
+  // 3. 极其纯粹的手风琴点击逻辑
   function toggleArtalk(id, permalink) {
-    // 增加一个容错：防止网速太慢 Artalk.js 还没下载完用户就点了按钮
-    if (typeof Artalk === 'undefined') {
-        alert('评论组件还在加载中，请稍等一秒~');
-        return;
-    }
+    // 纯粹处理：如果没加载完，就默默 return 什么都不做，绝不弹窗打扰
+    if (typeof Artalk === 'undefined') return; 
 
-    const targetContainer = document.getElementById('artalk-' + id);
-    if (!targetContainer) return;
-    
-    // 手风琴逻辑：先把页面上其他打开的唠叨评论框统统关掉、清空
-    document.querySelectorAll('.laodao-artalk-container').forEach(el => {
-        if (el !== targetContainer) {
-            el.style.display = 'none';
-            el.innerHTML = ''; 
-        }
-    });
+    const target = document.getElementById('artalk-' + id);
+    if (!target) return;
 
-    // 切换当前点击的这个评论框
-    if (targetContainer.style.display === 'none' || targetContainer.style.display === '') {
-        targetContainer.style.display = 'block';
-        // 瞬间初始化！
-        Artalk.init({
-            el:        '#artalk-' + id,
-            pageKey:   permalink,        // 使用这条唠叨的永久链接作为精准匹配的 Key
-            pageTitle: '唠叨 ' + id,     // 唠叨没有标题，用它的发布时间名代替
-            server:    '{{ $.Site.Params.artalk.server }}',
-            site:      '{{ $.Site.Params.artalk.site }}',
-            darkMode:  'auto'
-        });
+    // 核心极简判断：里面有内容说明正在展示，点击就收起；没内容就展开
+    if (target.innerHTML !== '') {
+        target.style.display = 'none';
+        target.innerHTML = '';
     } else {
-        targetContainer.style.display = 'none';
-        targetContainer.innerHTML = ''; // 收起时清空内存，保证页面极致流畅
+        // 展开前，先把其他非主贴的框默默关掉
+        document.querySelectorAll('.laodao-artalk-container').forEach(el => {
+            if (!el.closest('.laodao-main-card')) {
+                el.style.display = 'none';
+                el.innerHTML = ''; 
+            }
+        });
+
+        // 展开自己
+        target.style.display = 'block';
+        initArtalk('#artalk-' + id, permalink, '唠叨 ' + id);
     }
   }
 </script>
-{{ end }}

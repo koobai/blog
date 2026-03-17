@@ -40,17 +40,39 @@
   }
 }
 
-.atk-list-read-more {
-  padding-bottom: 0px !important;
+.atk-list-read-more .atk-list-read-more-inner {
+  padding: 0 !important;
+  font-size: 0.95rem !important;
+  border-radius: 99px !important;
+  display: flex;
+  height: 35px !important;
+  width: 120px;
+  margin: 0 auto !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border: 1px solid var(--text-highlight-color) !important;
+
+  &:hover {
+    opacity: 0.8;
+  }
+  .atk-text {
+    color: var(--text-highlight-color) !important;
+  }
 
   @include dark {
-    border-top: 1px dashed #28282b !important;
-    .atk-list-read-more-inner {
-      background: #28282b !important;
-      border-color: transparent !important;
+    border: 1px solid var(--text-highlight-dark-color) !important;
+    .atk-text {
+      color: var(--text-highlight-dark-color) !important;
     }
   }
 }
+
+.atk-list-read-more {
+  border-top: none !important;
+  margin-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+
 .atk-comment > .atk-main > .atk-header .atk-item {
   color: var(--text-info-color);
   @include dark {
@@ -138,7 +160,7 @@
 
   @include dark {
     color: var(--text-content-dark-color) !important;
-    font-size: 15px;
+    font-size: 1.1rem;
     background: transparent !important;
     &::placeholder {
       color: var(--text-info-dark-color) !important;
@@ -179,14 +201,13 @@
 }
 
 .atk-ua-wrap {
-  font-size: 11px;
+  font-size: 0.85rem;
 }
 
-.atk-text,
 .atk-list-no-comment,
 .atk-copyright,
 .atk-copyright a {
-  color: #999 !important;
+  color: var(--text-info-color) !important;
   @include dark {
     color: var(--text-info-dark-color) !important;
   }
@@ -197,18 +218,19 @@
 }
 
 .atk-send-btn {
-  padding: 0 10px !important;
+  padding: 4px 12px !important;
   min-width: 5em !important;
   background: transparent !important;
-  border: 0.5px solid var(--text-highlight-color) !important;
+  border: 1px solid var(--text-highlight-color) !important;
+  border-radius: 99px !important;
   color: var(--text-highlight-color) !important;
 
   &:hover {
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   @include dark {
-    border: 0.5px solid var(--text-highlight-dark-color) !important;
+    border: 1px solid var(--text-highlight-dark-color) !important;
     color: var(--text-highlight-dark-color) !important;
   }
 }
@@ -295,7 +317,8 @@ img[atk-emoticon] {
 
   > .atk-textarea-wrap > .atk-textarea {
     background: transparent !important;
-    line-height: 1.6;
+    line-height: 1.7 !important;
+    font-size: 1.05rem !important;
   }
 
   > .atk-bottom .atk-state-btn {
