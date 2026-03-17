@@ -7,6 +7,7 @@
   --at-color-light: var(--text-highlight-color) !important;
   --at-color-meta: #999 !important;
   --at-color-border: #ddd !important;
+  --at-color-bg: var(--background-card-color) !important;
 
   @include dark {
     --at-color-gradient: linear-gradient(
@@ -196,7 +197,7 @@
 
 .atk-ua {
   color: #999 !important;
-  background: var(--frame-color) !important;
+  background: var(--background-card-color) !important;
 
   @include dark {
     color: #666 !important;
@@ -332,6 +333,7 @@ img[atk-emoticon] {
   }
 
   .atk-bottom .atk-state-btn {
+    background: var(--background-card-color) !important;
     @include dark {
       background: var(--background-card-dark-color) !important;
     }
