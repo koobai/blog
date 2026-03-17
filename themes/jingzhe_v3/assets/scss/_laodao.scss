@@ -19,6 +19,7 @@
 .index-post-time {
   font-size: 0.85rem;
   color: var(--text-info-color);
+  line-height: 1;
   @include dark {
     color: var(--text-info-dark-color);
   }
@@ -187,16 +188,20 @@
 .posts-index-heard {
   display: flex;
   gap: 6px;
+  align-items: center;
 }
 .posts-index-info {
   font-size: 0.85rem;
   color: var(--text-highlight-color);
+  line-height: 1;
   @include dark {
     color: var(--text-highlight-dark-color);
   }
 }
 .index-post-title {
   font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: -4px;
 }
 
 //唠叨详情随机碎片
