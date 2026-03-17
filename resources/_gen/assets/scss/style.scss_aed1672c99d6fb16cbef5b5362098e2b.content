@@ -817,7 +817,13 @@ body:has(.menu-checkbox:checked) {
     margin-bottom: 20px; }
 
 .atk-content {
-  line-height: 1.5 !important; }
+  line-height: 1.5 !important;
+  color: var(--text-content-color) !important; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .atk-content {
+      color: var(--text-content-dark-color) !important; } }
+  html[data-theme="dark"] .atk-content {
+    color: var(--text-content-dark-color) !important; }
   .atk-content p {
     font-size: 1rem !important;
     color: var(--text-content-color) !important; }
