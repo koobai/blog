@@ -22,6 +22,11 @@
         </div>
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
+         {{ if .Params.image }}
+        <a href="{{ .RelPermalink }}">
+          <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
+        </a> 
+        {{ end }}
           {{ with .GetTerms "tags" }}
             <div class="post-tags-list"> {{ range . }}
                 <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>

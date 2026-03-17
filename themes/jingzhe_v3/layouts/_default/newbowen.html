@@ -175,7 +175,7 @@
         if(el) el.addEventListener('input', scheduleSaveDraft); 
     });
 
-    function wrapText(prefix, suffix, placeholder) {
+    function wrapText(prefix, suffix, placeholder, selectPlaceholder = true) {
         if(isPreviewMode) togglePreviewMode(); 
         postContentEl.focus({ preventScroll: true });    
         
@@ -185,7 +185,9 @@
             postContentEl.setRangeText(`${prefix}${sel}${suffix}`, start, end, 'end'); 
         } else { 
             postContentEl.setRangeText(`${prefix}${placeholder}${suffix}`, start, end, 'end'); 
-            postContentEl.setSelectionRange(start + prefix.length, start + prefix.length + placeholder.length); 
+            if (selectPlaceholder) {
+                postContentEl.setSelectionRange(start + prefix.length, start + prefix.length + placeholder.length); 
+            }
         }
         postContentEl.dispatchEvent(new Event('input')); 
     }
@@ -289,7 +291,7 @@
         emojiDiv.className = 'emoji-selector'; 
         emojiDiv.style.width = '100%'; emojiDiv.style.flex = '0 0 100%';
         emojiDiv.innerHTML = window.emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
-        emojiDiv.onclick = (e) => { const item = e.target.closest('.emoji-item'); if (item) { if(isPreviewMode) togglePreviewMode(); wrapText('', '', item.innerText); } };
+        emojiDiv.onclick = (e) => { const item = e.target.closest('.emoji-item'); if (item) { if(isPreviewMode) togglePreviewMode(); wrapText('', '', item.innerText, false); } };
         
         btn.closest('.admin-publish-bar').appendChild(emojiDiv);
     }

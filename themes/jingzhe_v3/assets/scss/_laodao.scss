@@ -200,11 +200,19 @@
 }
 .index-post-title {
   font-size: 1.2rem;
-  font-weight: bold;
   margin-bottom: -4px;
   margin-top: 2px;
 }
-
+.index-post img {
+  width: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  margin-bottom: 4px;
+  @include breakpoint("medium") {
+    width: 30%;
+  }
+}
 //唠叨详情随机碎片
 .laodao-single-random {
   position: relative; // ✨ 核心：给伪元素做定位基准
