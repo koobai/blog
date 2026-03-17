@@ -24,14 +24,14 @@
   }
 }
 .laodao-content p {
-  line-height: 1.6;
+  line-height: 1.55;
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
   overflow-wrap: break-word;
   word-wrap: break-word;
   @include breakpoint("medium") {
-    line-height: 1.7;
+    line-height: 1.65;
   }
   a {
     margin: 0 2px;

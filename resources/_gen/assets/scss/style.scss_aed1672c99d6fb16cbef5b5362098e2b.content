@@ -1477,7 +1477,7 @@ html[data-theme="dark"] .pinglun {
   -webkit-box-orient: vertical; }
 
 .posts-description {
-  line-height: 1.6;
+  line-height: 1.55;
   font-size: 1.1rem;
   margin: 3px 0;
   color: var(--text-content-color);
@@ -1488,7 +1488,7 @@ html[data-theme="dark"] .pinglun {
   -webkit-box-orient: vertical; }
   @media (min-width: 768px) {
     .posts-description {
-      line-height: 1.7; } }
+      line-height: 1.65; } }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .posts-description {
       color: var(--text-content-dark-color); } }
@@ -2746,7 +2746,7 @@ html[data-theme="dark"] .pinglun {
     color: var(--text-info-dark-color); }
 
 .laodao-content p {
-  line-height: 1.6;
+  line-height: 1.55;
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
@@ -2754,7 +2754,7 @@ html[data-theme="dark"] .pinglun {
   word-wrap: break-word; }
   @media (min-width: 768px) {
     .laodao-content p {
-      line-height: 1.7; } }
+      line-height: 1.65; } }
   .laodao-content p a {
     margin: 0 2px;
     padding: 0;
