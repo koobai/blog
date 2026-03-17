@@ -2,7 +2,6 @@
 {{ define "main" }} 
 <div class="single-nrong">
   <div class="single-zw">
-    
     <article class="article_details">
       <h1 class="article_details_title">{{ .Title }}</h1>
       {{ with .Params.image }}
@@ -15,69 +14,17 @@
         {{ .Content }}
       </div>
       
-      <div class="single-biaoq">
-        <div class="page-time twitter-time" data-time="{{ .Date.Unix }}"></div>
-        <div class="single-tag">
-           {{ with .GetTerms "tags" }}
-                {{ range . }}
-           <div class="single-tag-c">#<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
-                {{ end }}
-           {{ end }}
-        </div>
-      </div> 
-    </div>
-
-   <div class="archives_nrong" >
-    {{/* 上一篇 */}}
-    {{ with .PrevInSection }}
-      <div class="archives_one">
-        <div>
-          <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-          <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
-        </div>
-        {{/* 2. 只有当上一篇有图片时，才渲染图片区域 */}}
-        {{ if .Params.image }}
-        <div class="archive-img">
-          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
-        </div>
-        {{ end }}
-      </div>
-    {{ end }}
-    
-    {{/* 下一篇 或 智能推荐 */}}
-    {{ with .NextInSection }}
-      <div class="archives_one">
-        <div>
-          <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-          <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div>  
-        </div>
-        {{ if .Params.image }}
-        <div class="archive-img">
-          <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
-        </div>
-        {{ end }}
-      </div>
-    {{ else }}
-      {{ $related := .Site.RegularPages.Related . | first 1 }}
-      {{ if eq (len $related) 0 }}
-         {{ $related = first 1 (where (where site.RegularPages "Type" "posts") "Permalink" "ne" .Permalink | shuffle) }}
-      {{ end }}
-
-      {{ range $related }}
-        <div class="archives_one">
-          <div>
-            <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-            <div class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></div> 
-          </div>
-          {{ if .Params.image }}
-          <div class="archive-img">
-            <a href="{{ .RelPermalink }}"><img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" /></a>          
-          </div>
+      <div class="posts-time-new">
+          <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
+          {{ with .GetTerms "tags" }}
+            <div class="post-tags-list"> {{ range . }}
+                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+              {{ end }}
+            </div>
           {{ end }}
-        </div>
-      {{ end }}
-    {{ end }}
-
+      </div>
+    </div>
+    
     <button type="button" 
      onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" 
      class="fanhui" title="哪来回哪去" aria-label="返回上一页" data-umami-event="Fanhui">
@@ -85,15 +32,10 @@
         <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
       </svg>
     </button>
-  </div>
-
-  <div id="MoreComments" onclick="loadComments()">评论一下 ...</div>
-  <div class="article-comments" id="articlecomments" style="display: none;">
-    {{ partial "artalk.html" . }}
+    <!--评论-->
+    {{ partial "artalk.html" . }} 
   </div> 
-
-  </div> 
-  
+  <!--右边导航目录-->
   <div>
       {{ if .TableOfContents }}
       <div class="paragraph-dh">

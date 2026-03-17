@@ -1021,27 +1021,6 @@ img[atk-emoticon] {
 html[data-theme="dark"] .pinglun {
   color: var(--text-content-dark-color); }
 
-#MoreComments {
-  background: transparent;
-  cursor: pointer;
-  color: var(--text-highlight-color);
-  border-radius: 99px;
-  padding: 10px 40px;
-  font-family: var(--font-family-title);
-  font-size: 0.9rem;
-  border: 1px solid var(--text-highlight-color);
-  display: inline-block; }
-  #MoreComments:hover {
-    opacity: 0.8;
-    transition: opacity 0.3s ease-in-out; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) #MoreComments {
-      color: var(--text-highlight-dark-color) !important;
-      border: 1px solid var(--text-highlight-dark-color) !important; } }
-  html[data-theme="dark"] #MoreComments {
-    color: var(--text-highlight-dark-color) !important;
-    border: 1px solid var(--text-highlight-dark-color) !important; }
-
 /* ==========================================
    1. 页面基础与容器布局
 ========================================== */
@@ -1265,66 +1244,6 @@ html[data-theme="dark"] .pinglun {
 
 .app-card-star:hover .app-bg-img img {
   transform: scale(1.05); }
-
-/* 归档页标签 */
-.archives_tags {
-  display: flex;
-  flex-wrap: wrap;
-  grid-gap: 10px; }
-
-.list-tags {
-  border-radius: 20px;
-  padding: 10px;
-  font-size: 0.85rem; }
-  .list-tags a {
-    color: var(--text-info-dark-color); }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .list-tags a {
-        color: var(--text-info-color); } }
-    html[data-theme="dark"] .list-tags a {
-      color: var(--text-info-color); }
-
-.archives_tags_f {
-  color: var(--text-info-color);
-  font-size: 0.85rem; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .archives_tags_f {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .archives_tags_f {
-    color: var(--text-info-dark-color); }
-
-/* 文章页标签 */
-.single-biaoq {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center; }
-
-.single-tag {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center; }
-
-.page-time,
-.single-tag-c {
-  font-size: 0.9rem;
-  color: var(--text-info-color);
-  display: inline-block; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-time, html:not([data-theme="light"]) .single-tag-c {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .page-time, html[data-theme="dark"] .single-tag-c {
-    color: var(--text-info-dark-color); }
-
-.single-tag-c a {
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .single-tag-c a {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .single-tag-c a {
-    color: var(--text-info-dark-color); }
 
 .movie-grid {
   display: grid;
@@ -1570,7 +1489,9 @@ html[data-theme="dark"] .pinglun {
   border-radius: 16px;
   background: var(--background-card-color);
   padding: 15px;
-  border: 1px solid var(--background-card-border-color); }
+  border: 1px solid var(--background-card-border-color);
+  display: grid;
+  gap: 4px; }
   @media (min-width: 768px) {
     .posts_list_article {
       padding: 12px; } }
@@ -1581,18 +1502,6 @@ html[data-theme="dark"] .pinglun {
   html[data-theme="dark"] .posts_list_article {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color); }
-
-.posts_list_article-index {
-  position: relative;
-  border-radius: 16px;
-  background: var(--background-card-color);
-  padding: 15px;
-  overflow: hidden; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .posts_list_article-index {
-      background: var(--background-card-dark-color); } }
-  html[data-theme="dark"] .posts_list_article-index {
-    background: var(--background-card-dark-color); }
 
 .post-biaoji {
   display: flex;
@@ -1625,68 +1534,19 @@ html[data-theme="dark"] .pinglun {
 .posts-time-new {
   display: flex;
   align-items: center;
-  gap: 8px; }
+  gap: 8px;
+  line-height: 1;
+  margin-top: 10px; }
 
-.archives_nrong {
-  margin: 30px 0;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-  @media (min-width: 768px) {
-    .archives_nrong {
-      grid-gap: 20px; } }
-.archives_one {
-  display: flex;
-  align-items: center;
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 15px;
-  border: 1px solid var(--background-card-border-color); }
-  @media (min-width: 768px) {
-    .archives_one {
-      grid-gap: 20px; } }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .archives_one {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .archives_one {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color); }
-  @media (hover: hover) {
-    .archives_one:hover .archive-img img {
-      transform: scale(1.05); } }
-.archive-title {
-  font-family: var(--font-family-title);
-  font-size: 1.1em;
-  line-height: 1.6; }
-
-.archive-title-index {
-  font-family: var(--font-family-title);
-  font-size: 1.3rem;
-  line-height: 1.6; }
-  @media (min-width: 768px) {
-    .archive-title-index {
-      font-size: 1.2rem; } }
-.archive-time,
-.archive-time-index {
+.archive-time {
   font-size: 0.9rem;
   color: var(--text-info-color);
   font-family: var(--font-family-code); }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .archive-time, html:not([data-theme="light"]) .archive-time-index {
+    html:not([data-theme="light"]) .archive-time {
       color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .archive-time, html[data-theme="dark"] .archive-time-index {
+  html[data-theme="dark"] .archive-time {
     color: var(--text-info-dark-color); }
-
-.archive-img {
-  margin-left: auto; }
-  .archive-img img {
-    width: 120px;
-    aspect-ratio: 4.5 / 3;
-    object-fit: cover;
-    border-radius: 6px;
-    transition: transform 0.3s ease;
-    margin-left: 10px; }
 
 .tag-list {
   display: grid;
@@ -1701,6 +1561,17 @@ html[data-theme="dark"] .pinglun {
         grid-column: span 1; }
       .tag-list .laodao-card {
         grid-column: 1 / -1; } }
+.single-tag-c,
+.single-tag-c a {
+  font-size: 0.9rem;
+  color: var(--text-info-color);
+  display: inline-block; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .single-tag-c, html:not([data-theme="light"]) .single-tag-c a {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .single-tag-c, html[data-theme="dark"] .single-tag-c a {
+    color: var(--text-info-dark-color); }
+
 .page-tiaozhuan .header,
 .page-tiaozhuan .footer-background {
   display: none; }

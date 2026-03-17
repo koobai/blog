@@ -323,26 +323,3 @@ img[atk-emoticon] {
     color: var(--text-content-dark-color);
   }
 }
-
-// 详情页评论加载按钮
-#MoreComments {
-  background: transparent;
-  cursor: pointer;
-  color: var(--text-highlight-color);
-  border-radius: 99px;
-  padding: 10px 40px;
-  font-family: var(--font-family-title);
-  font-size: 0.9rem;
-  border: 1px solid var(--text-highlight-color);
-  display: inline-block;
-
-  &:hover {
-    opacity: 0.8;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  @include dark {
-    color: var(--text-highlight-dark-color) !important;
-    border: 1px solid var(--text-highlight-dark-color) !important;
-  }
-}

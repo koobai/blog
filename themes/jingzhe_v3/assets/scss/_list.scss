@@ -65,29 +65,14 @@
   background: var(--background-card-color);
   padding: 15px;
   border: 1px solid var(--background-card-border-color);
-
+  display: grid;
+  gap: 4px;
   @include breakpoint("medium") {
     padding: 12px;
   }
-
-  // 暗黑模式内聚
   @include dark {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-// 首页带角标的文章卡片
-.posts_list_article-index {
-  position: relative;
-  border-radius: 16px;
-  background: var(--background-card-color);
-  padding: 15px;
-  overflow: hidden;
-
-  // 暗黑模式内聚
-  @include dark {
-    background: var(--background-card-dark-color);
   }
 }
 
@@ -129,63 +114,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-// 6. 详情页博文推荐
-.archives_nrong {
-  margin: 30px 0;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-
-  @include breakpoint("medium") {
-    grid-gap: 20px;
-  }
-}
-
-.archives_one {
-  display: flex;
-  align-items: center;
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 15px;
-  border: 1px solid var(--background-card-border-color);
-
-  @include breakpoint("medium") {
-    grid-gap: 20px;
-  }
-
-  // 暗黑模式内聚
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-
-  @media (hover: hover) {
-    &:hover .archive-img img {
-      transform: scale(1.05);
-    }
-  }
-}
-
-.archive-title {
-  font-family: var(--font-family-title);
-  font-size: 1.1em;
-  line-height: 1.6;
-}
-
-.archive-title-index {
-  font-family: var(--font-family-title);
-  font-size: 1.3rem;
-  line-height: 1.6;
-  @include breakpoint("medium") {
-    font-size: 1.2rem;
-  }
+  line-height: 1;
+  margin-top: 10px;
 }
 
 // 时间样式
-.archive-time,
-.archive-time-index {
+.archive-time {
   font-size: 0.9rem;
   color: var(--text-info-color);
   font-family: var(--font-family-code);
@@ -196,20 +130,7 @@
   }
 }
 
-.archive-img {
-  margin-left: auto;
-
-  img {
-    width: 120px;
-    aspect-ratio: 4.5 / 3;
-    object-fit: cover;
-    border-radius: 6px;
-    transition: transform 0.3s ease;
-    margin-left: 10px;
-  }
-}
-
-//tag列表
+//tag筛选列表页
 .tag-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -225,5 +146,16 @@
     .laodao-card {
       grid-column: 1 / -1;
     }
+  }
+}
+
+//tag显示
+.single-tag-c,
+.single-tag-c a {
+  font-size: 0.9rem;
+  color: var(--text-info-color);
+  display: inline-block;
+  @include dark {
+    color: var(--text-info-dark-color);
   }
 }
