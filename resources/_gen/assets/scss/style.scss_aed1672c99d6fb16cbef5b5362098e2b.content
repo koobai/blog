@@ -2923,7 +2923,8 @@ html[data-theme="dark"] .pinglun {
 .index-post-title {
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: -4px; }
+  margin-bottom: -4px;
+  margin-top: 2px; }
 
 .laodao-single-random {
   position: relative;
