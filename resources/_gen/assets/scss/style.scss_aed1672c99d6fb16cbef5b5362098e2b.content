@@ -1002,16 +1002,21 @@ img[atk-emoticon] {
   html[data-theme="dark"] .atk-main-editor {
     background: transparent !important;
     border: 1px solid #28282b !important; }
-  .atk-main-editor > .atk-header {
-    padding: 10px 5px 0 !important; }
+  .atk-main-editor .atk-header {
+    padding: 10px 5px 0 !important;
+    color: var(--text-content-color) !important; }
     @media (max-width: 700px) {
-      .atk-main-editor > .atk-header {
+      .atk-main-editor .atk-header {
         display: block !important; } }
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .atk-main-editor > .atk-header input::placeholder {
-        color: var(--text-info-dark-color) !important; } }
-    html[data-theme="dark"] .atk-main-editor > .atk-header input::placeholder {
-      color: var(--text-info-dark-color) !important; }
+      html:not([data-theme="light"]) .atk-main-editor .atk-header {
+        color: var(--text-content-dark-color) !important; }
+        html:not([data-theme="light"]) .atk-main-editor .atk-header input::placeholder {
+          color: var(--text-info-dark-color) !important; } }
+    html[data-theme="dark"] .atk-main-editor .atk-header {
+      color: var(--text-content-dark-color) !important; }
+      html[data-theme="dark"] .atk-main-editor .atk-header input::placeholder {
+        color: var(--text-info-dark-color) !important; }
   .atk-main-editor > .atk-plug-panel-wrap {
     border-top: 0.5px solid var(--at-color-border) !important; }
   .atk-main-editor > .atk-textarea-wrap > .atk-textarea {
@@ -1030,6 +1035,14 @@ img[atk-emoticon] {
         color: #666; } }
     html[data-theme="dark"] .atk-main-editor > .atk-bottom .atk-state-btn .atk-text-wrap {
       color: #666; }
+
+.atk-plug-btn svg {
+  color: var(--text-info-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .atk-plug-btn svg {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .atk-plug-btn svg {
+    color: var(--text-info-dark-color); }
 
 .artalk code {
   border: 1px solid #ffbe98 !important;

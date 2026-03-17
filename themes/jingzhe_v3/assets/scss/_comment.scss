@@ -303,12 +303,14 @@ img[atk-emoticon] {
     border: 1px solid #28282b !important;
   }
 
-  > .atk-header {
+  .atk-header {
     padding: 10px 5px 0 !important;
+    color: var(--text-content-color) !important;
     @media (max-width: 700px) {
       display: block !important;
     }
     @include dark {
+      color: var(--text-content-dark-color) !important;
       input::placeholder {
         color: var(--text-info-dark-color) !important;
       }
@@ -337,7 +339,14 @@ img[atk-emoticon] {
     }
   }
 }
-
+.atk-plug-btn {
+  svg {
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+}
 .artalk code {
   border: 1px solid #ffbe98 !important;
   border-radius: 4px !important;
