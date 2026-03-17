@@ -2879,6 +2879,19 @@ html[data-theme="dark"] .pinglun {
         width: 50%; }
       .laodao-gallery:has(img:first-child:nth-last-child(3)), .laodao-gallery:has(img:first-child:nth-last-child(n + 5)) {
         width: 65%; } }
+.posts-index-heard {
+  display: flex;
+  gap: 6px; }
+
+.posts-index-info {
+  font-size: 0.85rem;
+  color: var(--text-highlight-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .posts-index-info {
+      color: var(--text-highlight-dark-color); } }
+  html[data-theme="dark"] .posts-index-info {
+    color: var(--text-highlight-dark-color); }
+
 .index-post-title {
   font-size: 1.2rem; }
 

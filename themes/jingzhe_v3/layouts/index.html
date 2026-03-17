@@ -16,7 +16,10 @@
     {{/* 博文 */}}
     {{ if eq .Type "posts" }}
       <div class="card-timeline index-post img-hide">
+        <div class="posts-index-heard">
           <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
+          <div class="posts-index-info">博文</div>
+        </div>
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
           {{ with .GetTerms "tags" }}

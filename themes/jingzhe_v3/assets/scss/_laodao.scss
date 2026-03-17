@@ -184,9 +184,21 @@
 
 //博文
 
+.posts-index-heard {
+  display: flex;
+  gap: 6px;
+}
+.posts-index-info {
+  font-size: 0.85rem;
+  color: var(--text-highlight-color);
+  @include dark {
+    color: var(--text-highlight-dark-color);
+  }
+}
 .index-post-title {
   font-size: 1.2rem;
 }
+
 //唠叨详情随机碎片
 .laodao-single-random {
   position: relative; // ✨ 核心：给伪元素做定位基准
