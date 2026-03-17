@@ -2925,10 +2925,18 @@ html[data-theme="dark"] .pinglun {
 
 .index-post-title {
   font-size: 1.2rem;
-  font-weight: bold;
   margin-bottom: -4px;
   margin-top: 2px; }
 
+.index-post img {
+  width: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  margin-bottom: 4px; }
+  @media (min-width: 768px) {
+    .index-post img {
+      width: 30%; } }
 .laodao-single-random {
   position: relative;
   font-size: 1.1rem;
