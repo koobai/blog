@@ -3290,6 +3290,9 @@ html[data-theme="dark"] .pinglun {
     .page-bowen-admin .admin-publish-footer {
       opacity: 0;
       visibility: hidden; } }
+.page-bowen-admin .write-header-container {
+  display: block; }
+
 .write-header {
   display: flex;
   flex-direction: column;
