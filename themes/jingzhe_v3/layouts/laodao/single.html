@@ -7,19 +7,19 @@
   {{ partial "laodao-card.html" . }}
 </div>
 
-  <div class="laodao-single-random img-hide">
-    随机唠叨碎片
-  </div>
+<div class="laodao-single-random img-hide">
+  随机唠叨碎片
+</div>
+
+<div class="index-card">
+  {{ $allLaodao := where .Site.RegularPages "Section" "laodao" }}
+  {{ $otherLaodao := $allLaodao | complement (slice .) }}
+  {{ $randomLaodao := first 10 (shuffle $otherLaodao) }}
   
-  <div class="index-card">
-    {{ $allLaodao := where .Site.RegularPages "Section" "laodao" }}
-    {{ $otherLaodao := $allLaodao | complement (slice .) }}
-    {{ $randomLaodao := first 10 (shuffle $otherLaodao) }}
-    
-    {{ range $randomLaodao }}
-      {{ partial "laodao-card.html" . }}
-    {{ end }}
-  </div>
+  {{ range $randomLaodao }}
+    {{ partial "laodao-card.html" . }}
+  {{ end }}
+</div>
 
 <div class="laodao-more img-hide">
   <a href="/laodao/" class="laodao-more-b">看全部唠叨 ...</a>

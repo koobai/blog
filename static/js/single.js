@@ -1,22 +1,4 @@
-// 1. 评论默认隐藏 (优化：使用 const/let，变量名更规范)
-function loadComments() {
-    const articleComments = document.getElementById("articlecomments");
-    const moreCommentsBtn = document.getElementById("MoreComments");
-    
-    if (!articleComments || !moreCommentsBtn) return; // 防错检查
-
-    articleComments.style.display = "block";
-    moreCommentsBtn.style.display = "none";
-    
-    // 获取按钮位置，平滑滚动
-    const buttonRect = moreCommentsBtn.getBoundingClientRect();
-    window.scroll({
-        top: window.scrollY + buttonRect.top + 300, // 300 是偏移量，可根据实际体验微调
-        behavior: 'smooth'
-    });
-}
-
-// 2. 段落目录导航 (优化：性能与点击健壮性)
+// 段落目录导航 (优化：性能与点击健壮性)
 document.addEventListener("DOMContentLoaded", () => {
     const postTOC = document.querySelector('.paragraph-dh');
     
