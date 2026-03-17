@@ -853,7 +853,7 @@ body:has(.menu-checkbox:checked) {
   margin-top: 8px; }
 
 .atk-textarea {
-  min-height: 70px !important;
+  min-height: 100px !important;
   padding: 10px !important; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .atk-textarea {
