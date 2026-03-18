@@ -278,14 +278,10 @@ ul {
     .site-footer-inner .footer-info a {
       color: inherit; }
 
-.page-blog-single .single-article-container,
-.page-bowen-admin .single-article-container {
-  padding: 0 12px;
-  position: relative; }
-  @media (min-width: 768px) {
-    .page-blog-single .single-article-container,
-    .page-bowen-admin .single-article-container {
-      padding: 0; } }
+.page-blog-single .wrapper,
+.page-bowen-admin .wrapper {
+  padding: 0 20px; }
+
 .page-blog-single .article-header,
 .page-bowen-admin .article-header {
   margin-bottom: 20px; }
@@ -1453,11 +1449,9 @@ html[data-theme="dark"] .pinglun {
   right: 0;
   margin-bottom: 4px; }
 
-.page-blog-list .blog-list-container {
-  padding: 0 12px; }
-  @media (min-width: 768px) {
-    .page-blog-list .blog-list-container {
-      padding: 0; } }
+.page-blog-list .wrapper {
+  padding: 0 20px; }
+
 .page-blog-list .featured-posts {
   display: grid;
   gap: 30px; }
