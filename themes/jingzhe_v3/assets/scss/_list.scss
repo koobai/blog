@@ -1,11 +1,8 @@
-.page-blog-list {
-  .blog-list-container {
-    padding: 0 12px;
-    @include breakpoint("medium") {
-      padding: 0;
-    }
-  }
+.page-blog-list .wrapper {
+  padding: 0 20px;
+}
 
+.page-blog-list {
   // --- 1. 顶部精选文章区 ---
   .featured-posts {
     display: grid;

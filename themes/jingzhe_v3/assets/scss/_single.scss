@@ -1,13 +1,9 @@
+.page-blog-single .wrapper,
+.page-bowen-admin .wrapper {
+  padding: 0 20px;
+}
 .page-blog-single,
 .page-bowen-admin {
-  .single-article-container {
-    padding: 0 12px;
-    position: relative;
-    @include breakpoint("medium") {
-      padding: 0;
-    }
-  }
-
   // 1. 头部区域
   .article-header {
     margin-bottom: 20px;
