@@ -5,8 +5,8 @@
   transform: translateX(-50%);
   z-index: 99;
 
-  width: 140px;
-  height: 50px;
+  width: 150px;
+  height: 58px;
   max-width: 640px;
   padding: 5px 20px;
 
@@ -117,8 +117,8 @@
 
 // --- 独立链接区 ---
 .header-special-link a {
-  font-size: 0.8rem;
-  color: transparent !important; // 维持原有的视觉隐藏设定
+  font-size: 1.1rem;
+  color: transparent !important;
   text-decoration: none;
 
   @include breakpoint("medium") {
