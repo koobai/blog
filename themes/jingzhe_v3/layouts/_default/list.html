@@ -9,15 +9,9 @@
 
     {{/* 博文 */}}
     {{ if eq .Type "posts" }}
-      <div class="card-timeline index-post img-hide">
+      <div class="card-timeline index-post">
           <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div> 
-          {{ with .GetTerms "tags" }}
-            <div class="post-tags-list"> {{ range . }}
-                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
-              {{ end }}
-            </div>
-          {{ end }}
       </div>
 
       {{/* ---------------- 【B. 唠叨动态】 ---------------- */}}

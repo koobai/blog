@@ -1,11 +1,10 @@
 {{ if eq .Page.Type "laodao" }}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" class="laodao-photo img-hide" loading="lazy" decoding="async" />
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" class="laodao-photo" loading="lazy" decoding="async" />
 {{ else }}
   <figure class="post-figure">
     <img src="{{ .Destination | safeURL }}" 
          alt="{{ .Text }}" 
          {{ with .Title }}title="{{ . }}"{{ end }} 
-         class="img-hide" 
          loading="lazy" 
          decoding="async" />
     

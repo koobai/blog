@@ -1,7 +1,8 @@
-.page-tiaozhuan .header,
-.page-tiaozhuan .footer-background {
-  display: none;
+.page-tiaozhuan .floating-header,
+.page-tiaozhuan .site-footer-wrapper {
+  display: none !important;
 }
+
 .page-tiaozhuan .wrapper {
   margin-top: 0 !important;
   min-height: 100vh;
@@ -9,14 +10,16 @@
   align-items: center;
   justify-content: center;
 }
+
 .tiaozhuan-all {
   color: var(--text-info-color);
   text-align: center;
   font-size: 0.85rem;
+  padding: 0 20px; // 稍微加点两边内边距，防止手机端文字完全贴在屏幕边缘
 }
+
 .tiaozhuan-title {
   font-size: 1.3rem;
-  font-family: var(--font-family-title);
   color: var(--text-content-color);
   line-height: 1.4;
   margin-bottom: 4px;
@@ -38,8 +41,17 @@
     font-size: 0.9rem;
     border: 1px solid var(--text-highlight-color);
     display: inline-block;
+
     @include dark {
       border: 1px solid var(--text-highlight-dark-color);
+      color: var(--text-highlight-dark-color);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.6;
+        text-decoration: none;
+      }
     }
   }
 }

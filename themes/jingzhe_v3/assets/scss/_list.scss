@@ -1,176 +1,187 @@
-// 博客列表页
-.page-blog-list .wrapper {
-  padding: 0 20px;
-}
-// 1. 文章列表容器
-.posts-new {
-  display: grid;
-  gap: 30px;
-
-  @include breakpoint("medium") {
-    gap: 40px;
-  }
-}
-
-.posts-background {
-  position: relative;
-  overflow: hidden;
-}
-
-// 2. 标题
-.posts-title a {
-  font-family: var(--font-family-title);
-  font-size: 1.4rem;
-  line-height: 1.5;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-
-// 3. 描述
-.posts-description {
-  line-height: 1.55;
-  font-size: 1.1rem;
-  margin: 3px 0;
-  color: var(--text-content-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-ideograph;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  @include breakpoint("medium") {
-    line-height: 1.65;
+.page-blog-list {
+  .blog-list-container {
+    padding: 0 20px;
+    @include breakpoint("medium") {
+      padding: 0;
+    }
   }
 
-  // 暗黑模式内聚
-  @include dark {
-    color: var(--text-content-dark-color);
-  }
-}
+  // --- 1. 顶部精选文章区 ---
+  .featured-posts {
+    display: grid;
+    gap: 30px;
 
-// 4. 下半部列表容器
-.posts_list {
-  display: grid;
-  gap: 10px;
-  margin-top: 30px;
-  @include breakpoint("medium") {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+    .featured-post-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
 
-// 文章卡片样式
-.posts_list_article {
-  border-radius: 16px;
-  background: var(--background-card-color);
-  padding: 15px;
-  border: 1px solid var(--background-card-border-color);
-  display: grid;
-  gap: 4px;
-  @include breakpoint("medium") {
-    padding: 12px;
-  }
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
+    .post-title {
+      margin: 0 0 12px 0;
 
-.post-biaoji {
-  display: flex;
-  gap: 4px;
-  font-size: 0.9rem;
-  align-items: center;
-}
-.post-biaoji-xinxi {
-  color: var(--text-highlight-color);
-  @include dark {
-    color: var(--text-highlight-dark-color);
+      a {
+        font-size: 1.4rem;
+        line-height: 1.4;
+        font-weight: bold;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    .post-cover {
+      margin: 5px 0 15px 0;
+      overflow: hidden;
+      aspect-ratio: 5.3 / 3;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.02); // 图片加载前的极简骨架底色
+
+      @include dark {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .post-summary {
+      line-height: 1.65;
+      font-size: 1.1rem;
+      color: var(--text-content-color);
+      margin: 0 0 12px 0;
+      text-align: justify;
+      text-align-last: left;
+      text-justify: inter-ideograph;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      @include dark {
+        color: var(--text-content-dark-color);
+      }
+    }
   }
-}
-// 5. 图片区域
-.posts-img {
-  margin: 10px 0;
-  overflow: hidden;
-  aspect-ratio: 5.3 / 3;
-  border-radius: 16px;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-    border-radius: 16px;
+  // --- 2. 下半部次要文章列表区 ---
+  .secondary-posts {
+    display: grid;
+    gap: 10px;
+    margin-top: 30px;
+    @include breakpoint("medium") {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
-    @media (hover: hover) {
-      &:hover {
-        transform: scale(1.03);
+    .secondary-post-card {
+      background: var(--background-card-color);
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid var(--background-card-border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      @include dark {
+        background: var(--background-card-dark-color);
+        border-color: var(--background-card-border-dark-color);
+      }
+
+      .archive-title {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.4;
+
+        a {
+          color: var(--text-content-color);
+          font-weight: normal;
+          @include dark {
+            color: var(--text-content-dark-color);
+          }
+        }
       }
     }
   }
 }
 
-.posts-time-new {
+// ==========================================
+// 标签筛选页独立样式 (解耦，防止污染主列表)
+// ==========================================
+.page-blog-tag {
+  .tag-list {
+    display: grid;
+    gap: 15px;
+
+    @include breakpoint("medium") {
+      grid-template-columns: repeat(2, 1fr);
+      .index-post {
+        grid-column: span 1;
+      }
+      .laodao-card {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .index-post-title {
+    font-weight: normal;
+    font-size: 1.05rem;
+  }
+
+  .tag-info-text {
+    font-size: 0.85rem;
+    color: var(--text-info-color);
+    display: inline-block;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+}
+
+// 全局时间组件
+.post-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  line-height: 1;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: auto;
 }
-
-// 时间样式
 .archive-time {
-  font-size: 0.9rem;
-  color: var(--text-info-color);
-  font-family: var(--font-family-code);
-
-  // 暗黑模式内聚
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-//tag筛选列表页
-.tag-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  .index-post-title {
-    font-size: 1.1rem;
-  }
-  @include breakpoint("medium") {
-    grid-template-columns: repeat(2, 1fr);
-    .index-post {
-      grid-column: span 1;
-    }
-    .laodao-card {
-      grid-column: 1 / -1;
-    }
-  }
-}
-
-.page-blog-tag .index-post-title {
-  font-weight: normal;
-  font-size: 1rem;
-}
-
-.page-blog-tag .single-tag-c {
   font-size: 0.85rem;
-  margin-top: 2px;
-}
-
-//tag显示
-.single-tag-c,
-.single-tag-c a {
-  font-size: 0.9rem;
   color: var(--text-info-color);
-  display: inline-block;
   @include dark {
     color: var(--text-info-dark-color);
+  }
+}
+
+// 全局标签组件
+.post-tags {
+  display: flex;
+  flex-wrap: wrap; // 增加换行，防止标签过多撑破卡片
+  gap: 8px;
+
+  .tag-link {
+    font-size: 0.85rem;
+    color: var(--text-info-color);
+    transition: color 0.3s ease;
+
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--text-highlight-color);
+        @include dark {
+          color: var(--text-highlight-dark-color);
+        }
+      }
+    }
   }
 }

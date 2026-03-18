@@ -28,7 +28,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  font-family: var(--font-family-code);
   font-size: 1.8rem;
 
   @include breakpoint("medium") {
