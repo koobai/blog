@@ -1,16 +1,13 @@
 .page-blog-list .wrapper {
-  padding: 0 15px;
+  padding: 0 20px;
 }
 
 .page-blog-list {
   // --- 1. 顶部精选文章区 ---
   .featured-posts {
     display: grid;
-    gap: 20px;
+    gap: 30px;
 
-    @include breakpoint("medium") {
-      gap: 30px;
-    }
     .featured-post-card {
       position: relative;
       display: flex;
@@ -37,7 +34,7 @@
     .post-cover {
       margin-bottom: 10px;
       overflow: hidden;
-      aspect-ratio: 5.3 / 3;
+      aspect-ratio: 6 / 3;
       border-radius: 16px;
       background: rgba(0, 0, 0, 0.02); // 图片加载前的极简骨架底色
       @include breakpoint("medium") {
@@ -60,7 +57,7 @@
       line-height: 1.65;
       font-size: 1.1rem;
       color: var(--text-content-color);
-      margin: 0 0 12px 0;
+      margin: 0 0 8px 0;
       text-align: justify;
       text-align-last: left;
       text-justify: inter-ideograph;
