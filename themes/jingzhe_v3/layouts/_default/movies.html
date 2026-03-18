@@ -19,9 +19,9 @@
     {{ $posterUrl := printf "https://img.koobai.com/movie/%s.webp" $fileId }}
     {{ $rating := int (default 0 $movie.rating) }}
     
-    {{ $unixTime := "" }}
-    {{ with $movie.create_time }}
-      {{ $unixTime = (time (printf "%s+08:00" .)).Unix }} 
+    {{ $movieTime := "" }}
+    {{ if $movie.create_time }}
+      {{ $movieTime = time (printf "%s+08:00" $movie.create_time) }} 
     {{ end }}
 
     {{ $themeLight := "#444444cc" }} 
@@ -42,7 +42,17 @@
         
         <div class="movie-overlay">
           <div class="movie-comment">{{ if $movie.comment }}{{ $movie.comment }}{{ else }}暂无评价~{{ end }}</div>
-          <div class="movie-date"><time class="twitter-time" data-time="{{ $unixTime }}" data-exact="false" data-short="false"></time></div>
+          <div class="movie-date">
+            {{ if $movieTime }}
+              <time datetime="{{ $movieTime.Format "2006-01-02" }}">
+                {{ if eq $movieTime.Year now.Year }}
+                  {{ $movieTime.Format "01-02" }}
+                {{ else }}
+                  {{ $movieTime.Format "2006-01-02" }}
+                {{ end }}
+              </time>
+            {{ end }}
+          </div>
         </div>
       </a>
 

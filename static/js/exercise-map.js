@@ -373,9 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const color = getColor(runData.type);
         
-        const displayTime = typeof window.formatDate === 'function' 
-          ? window.formatDate(runData.start_date_local, true, true) 
-          : runData.start_date_local.substring(5, 16).replace('T', ' ');
+        const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
 
         statsPanel.innerHTML = `
           <div class="detailName">

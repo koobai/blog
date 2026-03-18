@@ -2,7 +2,11 @@
   
   <div class="laodao-time">
     <a href="{{ .Permalink }}">
-      <span class="twitter-time" data-time="{{ .Date.Unix }}" data-exact="true">{{ .Date.Format "01-02 15:04" }}</span>
+        {{ if eq .Date.Year now.Year }}
+          {{ .Date.Format "01-02 15:04" }}
+        {{ else }}
+          {{ .Date.Format "2006-01-02 15:04" }}
+        {{ end }}
     </a>
   </div>
   

@@ -29,7 +29,11 @@
   </div>
   
   <div class="rightInfo">
-    <div class="runDate twitter-time" data-time="{{ $run.start_date_local }}" data-exact="true" data-short="true"></div>
+    {{ $runTime := time $run.start_date_local }}
+    
+    <time class="runDate" datetime="{{ $runTime.Format "2006-01-02T15:04:05Z07:00" }}">
+      {{ $runTime.Format "01-02 15:04" }}
+    </time>
   </div>
 
 </div>

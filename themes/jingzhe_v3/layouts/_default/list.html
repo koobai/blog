@@ -10,13 +10,18 @@
     {{/* 博文 */}}
     {{ if eq .Type "posts" }}
       <div class="card-timeline index-post">
-          <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
+           <time class="index-post-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ if eq .Date.Year now.Year }}
+              {{ .Date.Format "01-02" }}
+            {{ else }}
+              {{ .Date.Format "2006-01-02" }}
+            {{ end }}
+          </time>
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div> 
       </div>
 
       {{/* ---------------- 【B. 唠叨动态】 ---------------- */}}
       {{ else if eq .Type "laodao" }}
-        {{/* 🌟 统一调用组件，享受“改一处变全站”的快乐 */}}
         {{ partial "laodao-card.html" . }}
       {{ end }}
 
