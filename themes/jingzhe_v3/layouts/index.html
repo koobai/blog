@@ -23,7 +23,7 @@
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
          {{ if .Params.image }}
-        <a href="{{ .RelPermalink }}" class="index-post-img-wrap">
+        <a href="{{ .RelPermalink }}" class="index-post-img-wrap img-hide">
           <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
         </a> 
         {{ end }}
