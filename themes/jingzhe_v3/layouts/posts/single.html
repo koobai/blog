@@ -36,13 +36,13 @@
     {{ partial "artalk.html" . }} 
   </div> 
   <!--右边导航目录-->
-  <div>
-      {{ if .TableOfContents }}
+  {{ if .TableOfContents }}
+  <div class="paragraph-dh-container">
       <div class="paragraph-dh">
        {{ .TableOfContents }}
       </div>
-      {{ end }}
   </div>
+  {{ end }}
 
 </div>
 <script src="/js/single.js?v=20260210a"></script>    
