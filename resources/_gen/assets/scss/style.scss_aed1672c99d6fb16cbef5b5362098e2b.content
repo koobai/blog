@@ -284,12 +284,12 @@ ul {
 
 .page-blog-single .article-header,
 .page-bowen-admin .article-header {
-  margin-bottom: 20px; }
+  margin: 0 0 15px 0; }
   .page-blog-single .article-header .article-title,
   .page-bowen-admin .article-header .article-title {
     font-size: 1.4rem;
     line-height: 1.4;
-    margin-bottom: 15px; }
+    margin: 0 0 15px 0; }
     @media (min-width: 768px) {
       .page-blog-single .article-header .article-title,
       .page-bowen-admin .article-header .article-title {
@@ -429,7 +429,7 @@ ul {
   .page-blog-single .article-content .post-figure,
   .page-bowen-admin .article-content figure,
   .page-bowen-admin .article-content .post-figure {
-    margin: 1.5rem 0;
+    margin: 15px 0;
     text-align: center; }
     .page-blog-single .article-content figure img,
     .page-blog-single .article-content .post-figure img,
@@ -1454,13 +1454,19 @@ html[data-theme="dark"] .pinglun {
 
 .page-blog-list .featured-posts {
   display: grid;
-  gap: 30px; }
+  gap: 20px; }
+  @media (min-width: 768px) {
+    .page-blog-list .featured-posts {
+      gap: 30px; } }
   .page-blog-list .featured-posts .featured-post-card {
     position: relative;
     display: flex;
     flex-direction: column; }
   .page-blog-list .featured-posts .post-title {
-    margin: 0 0 12px 0; }
+    margin: 0 0 10px 0; }
+    @media (min-width: 768px) {
+      .page-blog-list .featured-posts .post-title {
+        margin: 0 0 15px 0; } }
     .page-blog-list .featured-posts .post-title a {
       font-size: 1.4rem;
       line-height: 1.4;
@@ -1470,11 +1476,14 @@ html[data-theme="dark"] .pinglun {
       -webkit-box-orient: vertical;
       overflow: hidden; }
   .page-blog-list .featured-posts .post-cover {
-    margin: 5px 0 15px 0;
+    margin-bottom: 10px;
     overflow: hidden;
     aspect-ratio: 5.3 / 3;
     border-radius: 16px;
     background: rgba(0, 0, 0, 0.02); }
+    @media (min-width: 768px) {
+      .page-blog-list .featured-posts .post-cover {
+        margin-bottom: 15px; } }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .page-blog-list .featured-posts .post-cover {
         background: rgba(255, 255, 255, 0.02); } }
@@ -2924,7 +2933,8 @@ html[data-theme="dark"] .pinglun {
 .index-post-img-wrap {
   display: block;
   width: 50%;
-  margin-bottom: 6px; }
+  margin-bottom: 8px;
+  margin-top: 6px; }
   @media (min-width: 768px) {
     .index-post-img-wrap {
       width: 30%; } }

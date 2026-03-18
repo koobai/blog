@@ -6,13 +6,12 @@
 .page-bowen-admin {
   // 1. 头部区域
   .article-header {
-    margin-bottom: 20px;
+    margin: 0 0 15px 0;
 
     .article-title {
       font-size: 1.4rem;
       line-height: 1.4;
-      margin-bottom: 15px;
-
+      margin: 0 0 15px 0;
       @include breakpoint("medium") {
         font-size: 1.8rem;
       }
@@ -155,7 +154,7 @@
 
     figure,
     .post-figure {
-      margin: 1.5rem 0;
+      margin: 15px 0;
       text-align: center;
 
       img {
