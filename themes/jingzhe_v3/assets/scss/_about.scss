@@ -41,6 +41,10 @@
   line-height: 1.7;
   font-size: 1.1rem;
   text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   a {
     color: var(--text-highlight-color);

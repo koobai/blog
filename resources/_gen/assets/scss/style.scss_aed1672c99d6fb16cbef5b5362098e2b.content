@@ -351,7 +351,10 @@ ul {
     line-height: 1.7;
     margin: 0 0 15px 0;
     text-align: justify;
-    text-align-last: left; }
+    text-align-last: left;
+    text-justify: inter-ideograph;
+    word-break: break-word;
+    overflow-wrap: break-word; }
     @media (min-width: 768px) {
       .content p {
         line-height: 1.8; } }
@@ -1348,6 +1351,10 @@ html[data-theme="dark"] .pinglun {
     font-size: 0.95rem;
     line-height: 1.55;
     text-align: justify;
+    text-align-last: left;
+    text-justify: inter-ideograph;
+    word-break: break-word;
+    overflow-wrap: break-word;
     margin-bottom: 10px;
     display: -webkit-box;
     flex-grow: 0;
@@ -1460,7 +1467,11 @@ html[data-theme="dark"] .pinglun {
   margin: 20px 0 20px 0;
   line-height: 1.7;
   font-size: 1.1rem;
-  text-align: justify; }
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word; }
   .about-text a {
     color: var(--text-highlight-color); }
     @media (prefers-color-scheme: dark) {
@@ -1512,6 +1523,11 @@ html[data-theme="dark"] .pinglun {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; }
   @media (min-width: 768px) {
@@ -2787,8 +2803,10 @@ html[data-theme="dark"] .pinglun {
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
-  overflow-wrap: break-word;
-  word-wrap: break-word; }
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word; }
   @media (min-width: 768px) {
     .laodao-content p {
       line-height: 1.65; } }
@@ -3418,11 +3436,21 @@ html[data-theme="dark"] .pinglun {
 .core-textarea {
   min-height: 300px;
   font-size: 1.1rem;
-  line-height: 1.7; }
+  line-height: 1.8; }
 
 .preview-container {
   min-height: 300px;
   animation: fadeIn 0.3s ease; }
+
+.preview-container p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0 0 15px 0;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word; }
 
 @keyframes fadeIn {
   from {

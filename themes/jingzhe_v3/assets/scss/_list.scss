@@ -37,6 +37,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   @include breakpoint("medium") {

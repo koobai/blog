@@ -63,6 +63,10 @@
     font-size: 0.95rem;
     line-height: 1.55;
     text-align: justify;
+    text-align-last: left;
+    text-justify: inter-ideograph;
+    word-break: break-word;
+    overflow-wrap: break-word;
     margin-bottom: 10px;
     display: -webkit-box;
     flex-grow: 0;

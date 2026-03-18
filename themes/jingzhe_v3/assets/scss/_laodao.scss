@@ -29,8 +29,10 @@
   font-size: 1.1rem;
   margin: 0;
   text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
   overflow-wrap: break-word;
-  word-wrap: break-word;
   @include breakpoint("medium") {
     line-height: 1.65;
   }
