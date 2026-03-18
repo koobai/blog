@@ -6,8 +6,11 @@
   // --- 1. 顶部精选文章区 ---
   .featured-posts {
     display: grid;
-    gap: 30px;
+    gap: 20px;
 
+    @include breakpoint("medium") {
+      gap: 30px;
+    }
     .featured-post-card {
       position: relative;
       display: flex;
@@ -15,7 +18,10 @@
     }
 
     .post-title {
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
+      @include breakpoint("medium") {
+        margin: 0 0 15px 0;
+      }
 
       a {
         font-size: 1.4rem;
@@ -29,11 +35,14 @@
     }
 
     .post-cover {
-      margin: 5px 0 15px 0;
+      margin-bottom: 10px;
       overflow: hidden;
       aspect-ratio: 5.3 / 3;
       border-radius: 16px;
       background: rgba(0, 0, 0, 0.02); // 图片加载前的极简骨架底色
+      @include breakpoint("medium") {
+        margin-bottom: 15px;
+      }
 
       @include dark {
         background: rgba(255, 255, 255, 0.02);
