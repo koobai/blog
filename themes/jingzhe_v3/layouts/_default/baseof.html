@@ -3,11 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   
   <title>{{ block "title" . }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
@@ -17,54 +17,55 @@
   {{ with site.Home.OutputFormats.Get "RSS" }}
     <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
   {{ end }}
-  
   <link rel="canonical" href="{{ .Permalink }}" />
+
+  {{ block "meta_tags" . }}
+    <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
+    
+    <meta property="og:title" content="{{ .Title }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ .Permalink }}"/>
+    <meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
+    {{ if .Params.image }}<meta property="og:image" content="{{ .Params.image | absURL }}"/>{{ end }}
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="{{ .Title }}"/>
+    <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
+    {{ if .Params.image }}<meta name="twitter:image" content="{{ .Params.image | absURL }}"/>{{ end }}
+  {{ end }}
 
   {{ $options := dict "targetPath" "css/style.css" "enableSourceMap" hugo.IsServer }}
   {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS $options }}
   {{ if not hugo.IsServer }}
     {{ $style = $style | minify | fingerprint }}
   {{ end }}
-  
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
   {{ $themeJs := resources.Get "js/theme.js" }}
   {{ if not hugo.IsServer }}
     {{ $themeJs = $themeJs | minify | fingerprint }}
   {{ end }}
   <script src="{{ $themeJs.RelPermalink }}"></script>
-
-  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-
-  {{ block "meta_tags" . }}
-    {{ if .Params.description }}<meta name="description" content="{{ .Params.description }}"/>{{ end }}
-    <meta property="og:title" content="{{ .Title }}"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="{{ .Permalink }}"/>
-    {{ if .Params.image }}<meta property="og:image" content="{{ .Params.image | absURL }}"/>{{ end }}
-    {{ if .Params.description }}<meta property="og:description" content="{{ .Params.description }}"/>{{ end }}
-  {{ end }}
 </head>
 
-{{ $themeStyle := slice "" }}
-
-<body class='page{{ delimit $themeStyle " " }} {{ block "body_classes" . }}{{ end }}'>
+<body class='page {{ block "body_classes" . }}{{ end }}'>
   
   {{ partialCached "menu-main-mobile.html" . }}
   
   <div id="wrapper" class="wrapper">
     {{ partial "header.html" . }}   
-    {{ block "main" . }}
-    {{ end }}
+    
+    {{ block "main" . }}{{ end }}
   </div>
+
   {{ partialCached "footer.html" . }}
-  {{ $js := resources.Get "js/scripts.js" }}
   
+  {{ $js := resources.Get "js/scripts.js" }}
   {{ if not hugo.IsServer }}
     {{ $js = $js | minify | fingerprint }}
   {{ end }}
+  <script src="{{ $js.RelPermalink }}" defer></script>
 
-  <script src="{{ $js.RelPermalink }}"></script>
-
-  {{ block "footer_js" . }}
-  {{ end }} 
+  {{ block "footer_js" . }}{{ end }} 
 </body>
 </html>

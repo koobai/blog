@@ -1,34 +1,5 @@
 // 灯箱调用(首页顶部/Memos页面)
-window.ViewImage && ViewImage.init('.content_zhengwen img, .top-img,.gallery-thumbnail img,.posts_photo a,.photo-moment a,.laodao-photo');
-
-// 页面上滑加载动画
-function animateSummaries() {
-  const articles = document.querySelectorAll('.img-hide, .retu-hide');
-  if (articles.length === 0) return;
-  const options = {
-    // 意思是在元素进入屏幕前一点点就开始准备，防止滑太快出现空白
-    rootMargin: '0px 0px 50px 0px', 
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const target = entry.target;
-
-        const randomDelay = Math.random() * 150; 
-        
-        setTimeout(() => {
-          target.classList.add('visible');
-        }, randomDelay);
-        observer.unobserve(target);
-      }
-    });
-  }, options);
-  articles.forEach((article) => {
-    observer.observe(article);
-  });
-}
-animateSummaries();
+window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-photo');
 
 // ==========================================
 // 极简原生时间格式化

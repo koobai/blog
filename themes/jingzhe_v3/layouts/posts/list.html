@@ -10,40 +10,55 @@
 {{ $pages := where $context.RegularPages "Type" $contentTypeName }}
 
 {{ with $pages }}
-<div class="posts-new">
-  {{ range first 4 . }}
-  {{ $p := . }} 
-  <div class="posts-background img-hide"> 
-      <div class="posts-title">
-        <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
-      </div>     
+<div class="blog-list-container">
+  
+  <section class="featured-posts">
+    {{ range $index, $page := first 4 . }}
+    <article class="featured-post-card"> 
+      
+      <header class="post-header">
+        <h2 class="post-title">
+          <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+        </h2>
+      </header>     
+
       {{ with .Params.image }}
-      <div class="posts-img img-hide">
-        <a href="{{ $p.RelPermalink }}">
-          <img loading="lazy" decoding="async" src="{{ . | relURL }}" alt="{{ $p.Title }}" />
+      <div class="post-cover">
+        <a href="{{ $page.RelPermalink }}">
+          {{ if eq $index 0 }}
+            <img fetchpriority="high" decoding="async" src="{{ . | relURL }}" alt="{{ $page.Title }}" />
+          {{ else }}
+            <img loading="lazy" decoding="async" src="{{ . | relURL }}" alt="{{ $page.Title }}" />
+          {{ end }}
         </a>          
       </div>
       {{ end }}
-      <div class="posts-description">{{ .Params.description }}</div>    
-      <div class="posts-time-new">
-          <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
+
+      <div class="post-summary">{{ .Params.description }}</div>    
+
+      <footer class="post-meta">
+          <time class="archive-time twitter-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" data-time="{{ .Date.Unix }}"></time>  
           {{ with .GetTerms "tags" }}
-            <div class="post-tags-list"> {{ range . }}
-                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+            <div class="post-tags"> 
+              {{ range . }}
+                <a href="{{ .RelPermalink }}" class="tag-link">#{{ .LinkTitle }}</a>
               {{ end }}
             </div>
           {{ end }}
-      </div>
-  </div>
-  {{ end }}
-</div>
-<div class="posts_list">
-  {{ range after 4 . }}
-  <div class="posts_list_article img-hide"> 
-      <div class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
-      <time class="archive-time twitter-time" data-time="{{ .Date.Unix }}"></time> 
-  </div>
-  {{ end }}
+      </footer>
+    </article>
+    {{ end }}
+  </section>
+
+  <section class="secondary-posts">
+    {{ range after 4 . }}
+    <article class="secondary-post-card"> 
+        <h3 class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <time class="archive-time twitter-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" data-time="{{ .Date.Unix }}"></time> 
+    </article>
+    {{ end }}
+  </section>
+
 </div>
 {{ end }}
 

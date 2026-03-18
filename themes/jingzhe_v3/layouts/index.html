@@ -15,7 +15,7 @@
   {{ range $index, $page := $paginator.Pages }}
     {{/* 博文 */}}
     {{ if eq .Type "posts" }}
-      <div class="card-timeline index-post img-hide">
+      <div class="card-timeline index-post">
         <div class="posts-index-heard">
           <span class="twitter-time index-post-time" data-time="{{ .Date.Unix }}">{{ .Date.Format "2006-01-02" }}</span>
           <div class="posts-index-info">博文</div>
@@ -23,13 +23,13 @@
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
          {{ if .Params.image }}
-        <a href="{{ .RelPermalink }}" class="index-post-img-wrap img-hide">
+        <a href="{{ .RelPermalink }}" class="index-post-img-wrap">
           <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
         </a> 
         {{ end }}
           {{ with .GetTerms "tags" }}
-            <div class="post-tags-list"> {{ range . }}
-                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
+            <div class="post-tags"> {{ range . }}
+                <a href="{{ .RelPermalink }}" class="tag-link">#{{ .LinkTitle }}</a>
               {{ end }}
             </div>
           {{ end }}
@@ -45,7 +45,7 @@
         {{ range first 2 $activities }}
           {{ $theme := default $defaultTheme (index $themeMap .type) }}    
           <a href="/exercise" title="动起来">
-            <div class="runCard memos-exercise-card img-hide">      
+            <div class="runCard memos-exercise-card">      
             <div class="iconRing" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>     
             {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme) }}      
           </div></a>

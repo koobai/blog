@@ -35,7 +35,7 @@
       {{ end }}
     {{ end }}
     
-    <div class="movie-card {{ if ge $index 32 }}is-hidden{{ end }} img-hide" style="--theme-light: {{ $themeLight | safeCSS }}; --theme-dark: {{ $themeDark | safeCSS }};">
+    <div class="movie-card {{ if ge $index 32 }}is-hidden{{ end }}" style="--theme-light: {{ $themeLight | safeCSS }}; --theme-dark: {{ $themeDark | safeCSS }};">
       
       <a class="movie-poster-wrap" href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer">
         <img width="270" height="400" referrerpolicy="no-referrer" decoding="async" src="{{ $posterUrl }}" loading="lazy" alt="{{ $movie.title }}">

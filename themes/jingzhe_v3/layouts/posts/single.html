@@ -1,49 +1,41 @@
 {{ define "body_classes" }}page-blog-single{{ end }}
 {{ define "main" }} 
-<div class="single-nrong">
-  <div class="single-zw">
-    <article class="article_details">
-      <h1 class="article_details_title">{{ .Title }}</h1>
-      {{ with .Params.image }}
-      <img src="{{ . | relURL }}" class="top-img img-hide" alt="{{ $.Title }}" />
-      {{ end }}
-    </article>
 
-    <div class="content_zhengwen">
-      <div class="content">
-        {{ .Content }}
-      </div>
-      
-      <div class="posts-time-new">
-          <time class="archive-time posts-time twitter-time" data-time="{{ .Date.Unix }}"></time>  
-          {{ with .GetTerms "tags" }}
-            <div class="post-tags-list"> {{ range . }}
-                <a href="{{ .RelPermalink }}" class="single-tag-c">#{{ .LinkTitle }}</a>
-              {{ end }}
-            </div>
-          {{ end }}
-      </div>
-    </div>
-    
-    <button type="button" 
-     onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" 
-     class="fanhui" title="哪来回哪去" aria-label="返回上一页" data-umami-event="Fanhui">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
-      </svg>
-    </button>
-    <!--评论-->
-    {{ partial "artalk.html" . }} 
-  </div> 
-  <!--右边导航目录-->
-  {{ if .TableOfContents }}
-  <div class="paragraph-dh-container">
-      <div class="paragraph-dh">
-       {{ .TableOfContents }}
-      </div>
+<article class="single-article-container">
+  
+  <header class="article-header">
+    <h1 class="article-title">{{ .Title }}</h1>
+    {{ with .Params.image }}
+    <img src="{{ . | relURL }}" class="article-cover-img" alt="{{ $.Title }}" fetchpriority="high" decoding="async" />
+    {{ end }}
+  </header>
+
+  <div class="article-content">
+    {{ .Content }}
   </div>
-  {{ end }}
+  
+  <footer class="post-meta">
+      <time class="archive-time twitter-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" data-time="{{ .Date.Unix }}"></time>  
+      {{ with .GetTerms "tags" }}
+        <div class="post-tags"> 
+          {{ range . }}
+          <a href="{{ .RelPermalink }}" class="tag-link">#{{ .LinkTitle }}</a>
+        {{ end }}
+      {{ end }}
+  </footer>
+  
+  <button type="button" 
+   onclick="const r=document.referrer; r&&r.includes(window.location.host)?history.back():window.location.href='/'" 
+   class="btn-back" title="返回上一页" aria-label="返回上一页" data-umami-event="Fanhui">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M2.614 5.426A1.5 1.5 0 0 1 4 4.5h10a7.5 7.5 0 1 1 0 15H5a1.5 1.5 0 0 1 0-3h9a4.5 4.5 0 1 0 0-9H7.621l.94.94a1.5 1.5 0 0 1-2.122 2.12l-3.5-3.5a1.5 1.5 0 0 1-.325-1.634Z" fill="currentColor"/>
+    </svg>
+  </button>
 
-</div>
-<script src="/js/single.js?v=20260318b"></script>    
+  <div class="article-comments">
+    {{ partial "artalk.html" . }}
+  </div>
+
+</article> 
+
 {{ end }}

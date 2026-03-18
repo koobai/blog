@@ -315,8 +315,7 @@
 
       .val {
         font-size: 3rem;
-        font-weight: 800;
-        font-style: italic;
+        font-weight: 700;
         color: var(--exercise-text-highlight-color);
         line-height: 1;
       }
@@ -542,8 +541,7 @@
     }
 
     span {
-      font-weight: 800;
-      font-style: italic;
+      font-weight: 700;
       color: var(--text-content-color);
       margin: 0 1px 0 1px;
       @include dark {
@@ -919,8 +917,7 @@
 
 .runDistance {
   font-size: 1.4rem;
-  font-weight: 800;
-  font-style: italic;
+  font-weight: 700;
 
   .distUnit {
     font-size: 0.75rem;

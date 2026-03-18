@@ -1,4 +1,4 @@
-.page-bowen-admin .footer-background {
+.page-bowen-admin .site-footer-wrapper {
   display: none;
 }
 .page-bowen-admin .header {
@@ -98,17 +98,6 @@
 .preview-container {
   min-height: 300px;
   animation: fadeIn 0.3s ease;
-}
-
-.preview-container p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin: 0 0 15px 0;
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-ideograph;
-  word-break: break-word;
-  overflow-wrap: break-word;
 }
 
 @keyframes fadeIn {

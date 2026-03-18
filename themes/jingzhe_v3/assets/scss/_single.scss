@@ -1,0 +1,274 @@
+.page-blog-single,
+.page-bowen-admin {
+  .single-article-container {
+    padding: 0 20px;
+    position: relative;
+    @include breakpoint("medium") {
+      padding: 0;
+    }
+  }
+
+  // 1. 头部区域
+  .article-header {
+    margin-bottom: 20px;
+
+    .article-title {
+      font-size: 1.4rem;
+      line-height: 1.4;
+      margin-bottom: 15px;
+
+      @include breakpoint("medium") {
+        font-size: 1.8rem;
+      }
+    }
+
+    .article-cover-img {
+      width: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
+  }
+
+  // 2. 正文排版核心区
+  .article-content {
+    font-size: 1.1rem;
+    color: var(--text-content-color);
+    margin-bottom: 20px;
+    @include dark {
+      color: var(--text-content-dark-color);
+    }
+
+    p {
+      font-size: inherit;
+      line-height: 1.7;
+      margin: 0 0 15px 0;
+      text-align: justify;
+      text-align-last: left;
+      text-justify: inter-ideograph;
+      word-break: break-word;
+      overflow-wrap: break-word;
+
+      &:empty {
+        display: none;
+      }
+
+      @include breakpoint("medium") {
+        line-height: 1.8;
+      }
+    }
+
+    h2,
+    h3,
+    h4 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      line-height: 1.6;
+      margin: 15px 0 5px 0;
+      color: var(--text-highlight-color);
+      letter-spacing: 0.5px;
+      scroll-margin-top: 80px;
+
+      @include dark {
+        color: var(--text-highlight-dark-color);
+      }
+    }
+
+    strong {
+      color: var(--text-highlight-color);
+      @include dark {
+        color: var(--text-highlight-dark-color);
+      }
+    }
+
+    // 列表排版优化
+    ul,
+    ol {
+      margin: 15px 0 25px 0;
+      padding-left: 20px;
+
+      @include breakpoint("medium") {
+        padding-left: 25px;
+      }
+
+      li {
+        line-height: 1.8;
+        margin-bottom: 8px;
+      }
+    }
+
+    ul li {
+      list-style: disc;
+    }
+    ol li {
+      list-style: decimal;
+    }
+    .footnotes ol li {
+      list-style: decimal;
+    }
+
+    // 链接样式
+    a {
+      color: inherit;
+      text-decoration: underline;
+      word-wrap: break-word;
+      word-break: break-all;
+      margin: 0 2px;
+      transition: opacity 0.3s ease;
+
+      @media (hover: hover) {
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+
+    // 引用块 (稍微优化了视觉表现，更现代)
+    blockquote {
+      border-left: 4px solid var(--text-info-color);
+      margin: 25px 0;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 0 8px 8px 0;
+
+      @include dark {
+        border-left-color: #666;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      p {
+        font-size: 1.05rem;
+        display: inline;
+        color: var(--text-info-color);
+
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
+      }
+    }
+
+    // 图片与图注 (合并了之前的 .post-figure 逻辑)
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 15px 0;
+      border-radius: 12px;
+      cursor: zoom-in;
+      display: block;
+    }
+
+    figure,
+    .post-figure {
+      margin: 1.5rem 0;
+      text-align: center;
+
+      img {
+        margin: 0 auto;
+        display: inline-block;
+      }
+
+      figcaption,
+      .post-figcaption {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: var(--text-info-color);
+        line-height: 1.5;
+
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
+
+        &::before {
+          content: "▲";
+          font-size: 0.85rem;
+          margin-right: 4px;
+          vertical-align: middle;
+          position: relative;
+          top: -1px;
+        }
+
+        h4 {
+          margin: 0;
+          font-size: 1rem;
+        }
+        p {
+          margin: 0;
+          display: inline;
+        }
+      }
+    }
+  }
+
+  // 4. 返回按钮
+  .btn-back {
+    display: none;
+
+    @include breakpoint("medium") {
+      display: flex;
+      position: fixed;
+      right: calc(50% - 400px);
+      bottom: 53px;
+      z-index: 10;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid rgba(0, 0, 0, 0.09);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.04),
+        0 8px 30px rgba(0, 0, 0, 0.06);
+      transform: translateX(-50%) translateZ(0);
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        color: var(--text-info-color);
+        transition: color 0.3s ease;
+      }
+      @media (hover: hover) {
+        &:hover {
+          svg {
+            color: var(--text-highlight-color);
+          }
+        }
+      }
+
+      @include dark {
+        background: rgba(28, 28, 30, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow:
+          inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+          0 10px 25px rgba(0, 0, 0, 0.4);
+
+        svg {
+          color: var(--text-info-dark-color);
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            box-shadow:
+              inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+              0 15px 35px rgba(0, 0, 0, 0.6);
+            svg {
+              color: var(--text-highlight-dark-color);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .article-comments {
+    margin-top: 30px;
+  }
+}

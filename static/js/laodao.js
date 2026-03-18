@@ -40,11 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // 5. 生态链唤醒：监听动画
-      if (typeof window.animateSummaries === 'function') {
-        window.animateSummaries();
-      }
-
       // 6. 翻页接力与销毁
       const newBtn = doc.getElementById("laoda-more-btn");
       if (newBtn && newBtn.dataset.nextUrl) {

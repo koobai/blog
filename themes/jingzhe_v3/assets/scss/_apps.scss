@@ -96,8 +96,10 @@
   }
 }
 
-.app-card:not(.app-card-star):hover .app-desc {
-  display: flex;
+@media (hover: hover) {
+  .app-card:not(.app-card-star):hover .app-desc {
+    display: flex;
+  }
 }
 
 /* ==========================================

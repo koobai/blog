@@ -24,7 +24,8 @@
     color: var(--text-info-dark-color);
   }
 }
-.laodao-content p {
+.laodao-content p,
+.posts-description {
   line-height: 1.55;
   font-size: 1.1rem;
   margin: 0;
@@ -203,8 +204,7 @@
 .index-post-title {
   font-size: 1.15rem;
   font-weight: bold;
-  margin-bottom: -4px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .index-post-img-wrap {
