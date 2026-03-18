@@ -33,11 +33,16 @@
         </a>          
       </div>
       {{ end }}
-
       <div class="post-summary">{{ .Params.description }}</div>    
-
       <footer class="post-meta">
-          <time class="archive-time twitter-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" data-time="{{ .Date.Unix }}"></time>  
+           <time class="archive-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ if eq .Date.Year now.Year }}
+              {{ .Date.Format "01-02" }}
+            {{ else }}
+              {{ .Date.Format "2006-01-02" }}
+            {{ end }}
+          </time>
+        
           {{ with .GetTerms "tags" }}
             <div class="post-tags"> 
               {{ range . }}
@@ -54,7 +59,13 @@
     {{ range after 4 . }}
     <article class="secondary-post-card"> 
         <h3 class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        <time class="archive-time twitter-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" data-time="{{ .Date.Unix }}"></time> 
+         <time class="archive-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ if eq .Date.Year now.Year }}
+              {{ .Date.Format "01-02" }}
+            {{ else }}
+              {{ .Date.Format "2006-01-02" }}
+            {{ end }}
+          </time>
     </article>
     {{ end }}
   </section>

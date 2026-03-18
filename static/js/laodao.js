@@ -28,18 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
       newItems.forEach(item => fragment.appendChild(item));
       timeline.appendChild(fragment);
 
-      // 4. 生态链唤醒：时间格式化
-      if (typeof window.formatDate === 'function') {
-        timeline.querySelectorAll('.twitter-time:not([data-formatted="true"])').forEach(el => {
-          if (el.dataset.time) {
-            const isExact = el.dataset.exact === 'true';
-            const forceShort = el.dataset.short === 'true';
-            el.innerText = window.formatDate(el.dataset.time, isExact, forceShort);
-            el.dataset.formatted = 'true';
-          }
-        });
-      }
-
       // 6. 翻页接力与销毁
       const newBtn = doc.getElementById("laoda-more-btn");
       if (newBtn && newBtn.dataset.nextUrl) {
