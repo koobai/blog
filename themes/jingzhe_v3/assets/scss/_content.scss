@@ -209,83 +209,89 @@ ul {
     opacity: 0;
     top: 30%;
     margin-left: 40px;
-    transition: opacity 0.5s ease;
     max-width: 300px;
+    transition: opacity 0.5s ease; // 整个目录块出现的渐隐渐显
   }
 
-  ul {
+  #TableOfContents > ul {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
-    display: grid;
 
     ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-top: 10px;
-      a {
-        color: #999;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-      }
     }
   }
 
   a {
-    padding-left: 25px;
     position: relative;
     display: flex;
     align-items: center;
-    text-indent: -9999px; // 默认隐藏文字
-    overflow: hidden;
-    white-space: nowrap;
-    line-height: 1.4;
-    color: #666;
+    padding-left: 25px;
     font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
 
+    // ✨ 核心 1：默认状态字体透明，只加 color 的渐隐渐显
+    color: transparent;
+    transition: color 0.3s ease;
     @include dark {
-      color: #999;
+      color: transparent;
     }
 
+    // 左侧小横条（去掉了所有尺寸动画，只保留颜色过渡）
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 16px;
+      height: 5px;
+      border-radius: 6px;
+      background-color: var(--text-info-color);
+      transition: background-color 0.3s ease;
+      opacity: 0.6;
+
+      @include dark {
+        background-color: var(--text-info-dark-color);
+      }
+    }
+
+    // 激活状态：文字可见并高亮
     &.active {
       color: var(--text-highlight-color);
-      text-indent: 0;
 
-      &:before {
+      &::before {
         background-color: var(--text-highlight-color);
       }
 
       @include dark {
         color: var(--text-highlight-dark-color);
-        &:before {
+        &::before {
           background-color: var(--text-highlight-dark-color);
         }
       }
     }
   }
 
-  li > a:before {
-    content: "";
-    display: inline-block;
-    width: 16px;
-    height: 5px;
-    border-radius: 6px;
-    background-color: #ddd;
-    position: absolute;
-    left: 0;
-
-    @include dark {
-      background-color: #6b6063;
-    }
-  }
-
-  li li > a:before {
+  // 二级目录横条样式
+  ul ul a::before {
     width: 10px;
     @include dark {
       background-color: var(--text-info-dark-color);
     }
   }
 
-  // 悬停时显示全部文字
-  &:hover a {
-    text-indent: 0;
+  // ✨ 核心 2：悬停整个目录区域时，非 active 状态的文字颜色平滑浮现
+  &:hover a:not(.active) {
+    color: var(--text-info-color);
+
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
   }
 }
 

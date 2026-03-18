@@ -1,49 +1,37 @@
-// 段落目录导航 (优化：性能与点击健壮性)
+// 现代段落目录导航：零 scroll 事件，极致性能
 document.addEventListener("DOMContentLoaded", () => {
-    const postTOC = document.querySelector('.paragraph-dh');
-    
-    // 如果页面没有目录，直接退出，节省性能
-    if (!postTOC) return; 
+    const toc = document.querySelector('.paragraph-dh');
+    if (!toc) return;
 
-    // A. 目录高亮逻辑 (保持原逻辑，无需大改)
-    const headingObserver = new IntersectionObserver(headings => {
-        headings.forEach(({ target, isIntersecting }) => {
-            const link = postTOC.querySelector(`a[href="#${target.id}"]`);
-            if (isIntersecting && link) {
-                postTOC.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-                link.classList.add('active');
+    // 1. 目录显隐逻辑 (监听主标题)
+    // 逻辑：只要文章标题（H1）离开了屏幕视口，说明用户往下读了，此时显示目录。
+    const postTitle = document.querySelector('.article_details_title');
+    if (postTitle) {
+        const titleObserver = new IntersectionObserver(([entry]) => {
+            // entry.isIntersecting 为 true 说明标题还在屏幕上，false 说明滚下去了
+            toc.style.opacity = entry.isIntersecting ? "0" : "1";
+            // 彻底防止隐藏状态下被误触
+            toc.style.pointerEvents = entry.isIntersecting ? "none" : "auto"; 
+        });
+        titleObserver.observe(postTitle); // 死死盯住这个标题
+    }
+
+    // 2. 目录高亮逻辑 (屏幕顶部隐形扫描线)
+    // rootMargin: '-10% 0px -80% 0px' 意思是：在距离屏幕顶部 10% 到 20% 之间拉一根线
+    // 哪个标题滚到了这根线上，就判定它处于 "活跃" 状态
+    const headingObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // 清理上一个高亮
+                toc.querySelectorAll('a.active').forEach(a => a.classList.remove('active'));
+                
+                // 点亮当前碰线的目录
+                const targetLink = toc.querySelector(`a[href="#${entry.target.id}"]`);
+                if (targetLink) targetLink.classList.add('active');
             }
         });
-    }, { rootMargin: '0px 0px -75%' }); // 视口底部 75% 处触发，适合阅读体验
+    }, { rootMargin: '-10% 0px -80% 0px' });
 
-    document.querySelectorAll('.content h2[id], .content h3[id]').forEach(heading => headingObserver.observe(heading));
-
-    // B. 滚动显示目录 (优化：使用 requestAnimationFrame 节流，提升性能)
-    let isTicking = false;
-    window.addEventListener('scroll', () => {
-        if (!isTicking) {
-            window.requestAnimationFrame(() => {
-                // 逻辑：超过 400px 显示，否则隐藏
-                postTOC.style.opacity = (window.pageYOffset > 400) ? 1 : 0;
-                isTicking = false;
-            });
-            isTicking = true;
-        }
-    });
-
-    // C. 目录点击平滑滚动 (优化：使用 closest 修复子元素点击无效 BUG)
-    postTOC.addEventListener('click', (e) => {
-        const link = e.target.closest('a'); // 【关键修复】确保获取的是 a 标签
-        if (!link) return;
-
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (href) {
-            const targetId = href.substring(1);
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    });
+    // 把正文里所有带 ID 的 h2 和 h3 喂给观察器
+    document.querySelectorAll('.content h2[id], .content h3[id]').forEach(h => headingObserver.observe(h));
 });
