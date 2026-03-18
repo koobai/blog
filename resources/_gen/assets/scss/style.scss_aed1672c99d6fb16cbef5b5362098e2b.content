@@ -3840,10 +3840,6 @@ html,
 body {
   box-sizing: border-box; }
 
-html {
-  /* 平滑滚动 */
-  scroll-behavior: smooth; }
-
 body {
   background: var(--background-body-color);
   font-family: var(--font-family-paragraph);
