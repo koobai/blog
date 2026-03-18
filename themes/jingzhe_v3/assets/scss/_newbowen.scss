@@ -1,12 +1,18 @@
 .page-bowen-admin .site-footer-wrapper {
   display: none;
 }
-.page-bowen-admin .header {
-  opacity: 0.2;
-  @include dark {
-    opacity: 0.4;
+
+.page-bowen-admin .floating-header {
+  display: none;
+  @include breakpoint("medium") {
+    opacity: 0.2;
+    display: flex;
+    @include dark {
+      opacity: 0.4;
+    }
   }
 }
+
 .page-bowen-admin .admin-immersive-wrapper {
   max-width: 800px;
   margin-bottom: 100px;

@@ -280,7 +280,7 @@ ul {
 
 .page-blog-single .single-article-container,
 .page-bowen-admin .single-article-container {
-  padding: 0 20px;
+  padding: 0 12px;
   position: relative; }
   @media (min-width: 768px) {
     .page-blog-single .single-article-container,
@@ -1454,7 +1454,7 @@ html[data-theme="dark"] .pinglun {
   margin-bottom: 4px; }
 
 .page-blog-list .blog-list-container {
-  padding: 0 20px; }
+  padding: 0 12px; }
   @media (min-width: 768px) {
     .page-blog-list .blog-list-container {
       padding: 0; } }
@@ -2980,17 +2980,17 @@ html[data-theme="dark"] .pinglun {
 .page-laodao-admin .site-footer-wrapper {
   display: none; }
 
-.page-laodao-admin .header {
+.page-laodao-admin .floating-header {
   display: none; }
   @media (min-width: 768px) {
-    .page-laodao-admin .header {
+    .page-laodao-admin .floating-header {
       opacity: 0.2;
       display: flex; } }
   @media (min-width: 768px) and (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-laodao-admin .header {
+    html:not([data-theme="light"]) .page-laodao-admin .floating-header {
       opacity: 0.4; } }
   @media (min-width: 768px) {
-      html[data-theme="dark"] .page-laodao-admin .header {
+      html[data-theme="dark"] .page-laodao-admin .floating-header {
         opacity: 0.4; } }
 #loginOverlay {
   position: fixed;
@@ -3320,14 +3320,18 @@ html[data-theme="dark"] .pinglun {
 .page-bowen-admin .site-footer-wrapper {
   display: none; }
 
-.page-bowen-admin .header {
-  opacity: 0.2; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-bowen-admin .header {
+.page-bowen-admin .floating-header {
+  display: none; }
+  @media (min-width: 768px) {
+    .page-bowen-admin .floating-header {
+      opacity: 0.2;
+      display: flex; } }
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .page-bowen-admin .floating-header {
       opacity: 0.4; } }
-  html[data-theme="dark"] .page-bowen-admin .header {
-    opacity: 0.4; }
-
+  @media (min-width: 768px) {
+      html[data-theme="dark"] .page-bowen-admin .floating-header {
+        opacity: 0.4; } }
 .page-bowen-admin .admin-immersive-wrapper {
   max-width: 800px;
   margin-bottom: 100px;
