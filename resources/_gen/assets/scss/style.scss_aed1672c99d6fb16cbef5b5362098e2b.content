@@ -2929,15 +2929,20 @@ html[data-theme="dark"] .pinglun {
   margin-bottom: -4px;
   margin-top: 2px; }
 
-.index-post img {
+.index-post-img-wrap {
+  display: block;
   width: 50%;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
-  margin-bottom: 4px; }
+  margin-bottom: 6px; }
   @media (min-width: 768px) {
-    .index-post img {
+    .index-post-img-wrap {
       width: 30%; } }
+  .index-post-img-wrap img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px; }
+
 .laodao-single-random {
   position: relative;
   font-size: 1.1rem;
