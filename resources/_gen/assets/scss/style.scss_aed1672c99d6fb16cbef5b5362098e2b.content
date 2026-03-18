@@ -1606,6 +1606,14 @@ html[data-theme="dark"] .pinglun {
         grid-column: span 1; }
       .tag-list .laodao-card {
         grid-column: 1 / -1; } }
+.page-blog-tag .index-post-title {
+  font-weight: normal;
+  font-size: 1rem; }
+
+.page-blog-tag .single-tag-c {
+  font-size: 0.85rem;
+  margin-top: 2px; }
+
 .single-tag-c,
 .single-tag-c a {
   font-size: 0.9rem;
