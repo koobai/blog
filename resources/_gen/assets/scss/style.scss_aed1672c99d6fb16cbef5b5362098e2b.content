@@ -280,7 +280,7 @@ ul {
 
 .page-blog-single .wrapper,
 .page-bowen-admin .wrapper {
-  padding: 0 15px; }
+  padding: 0 20px; }
 
 .page-blog-single .article-header,
 .page-bowen-admin .article-header {
@@ -1392,7 +1392,7 @@ html[data-theme="dark"] .pinglun {
     border-color: var(--text-highlight-dark-color); }
 
 .page-about .wrapper {
-  padding: 0 15px; }
+  padding: 0 20px; }
 
 .about-img {
   position: relative;
@@ -1450,14 +1450,11 @@ html[data-theme="dark"] .pinglun {
   margin-bottom: 4px; }
 
 .page-blog-list .wrapper {
-  padding: 0 15px; }
+  padding: 0 20px; }
 
 .page-blog-list .featured-posts {
   display: grid;
-  gap: 20px; }
-  @media (min-width: 768px) {
-    .page-blog-list .featured-posts {
-      gap: 30px; } }
+  gap: 30px; }
   .page-blog-list .featured-posts .featured-post-card {
     position: relative;
     display: flex;
@@ -1478,7 +1475,7 @@ html[data-theme="dark"] .pinglun {
   .page-blog-list .featured-posts .post-cover {
     margin-bottom: 10px;
     overflow: hidden;
-    aspect-ratio: 5.3 / 3;
+    aspect-ratio: 6 / 3;
     border-radius: 16px;
     background: rgba(0, 0, 0, 0.02); }
     @media (min-width: 768px) {
@@ -1498,7 +1495,7 @@ html[data-theme="dark"] .pinglun {
     line-height: 1.65;
     font-size: 1.1rem;
     color: var(--text-content-color);
-    margin: 0 0 12px 0;
+    margin: 0 0 8px 0;
     text-align: justify;
     text-align-last: left;
     text-justify: inter-ideograph;
