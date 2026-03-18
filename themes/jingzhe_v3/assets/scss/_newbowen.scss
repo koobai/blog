@@ -93,12 +93,24 @@
 .core-textarea {
   min-height: 300px;
   font-size: 1.1rem;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 .preview-container {
   min-height: 300px;
   animation: fadeIn 0.3s ease;
 }
+
+.preview-container p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0 0 15px 0;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
