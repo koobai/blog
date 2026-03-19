@@ -358,20 +358,22 @@ ul {
   .page-blog-single .article-content ol,
   .page-bowen-admin .article-content ul,
   .page-bowen-admin .article-content ol {
-    margin: 15px 0 25px 0;
-    padding-left: 20px; }
-    @media (min-width: 768px) {
-      .page-blog-single .article-content ul,
-      .page-blog-single .article-content ol,
-      .page-bowen-admin .article-content ul,
-      .page-bowen-admin .article-content ol {
-        padding-left: 25px; } }
+    margin: 15px 0;
+    padding-left: 1.5em; }
     .page-blog-single .article-content ul li,
     .page-blog-single .article-content ol li,
     .page-bowen-admin .article-content ul li,
     .page-bowen-admin .article-content ol li {
-      line-height: 1.8;
-      margin-bottom: 8px; }
+      line-height: 1.7;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      text-align: justify; }
+      @media (min-width: 768px) {
+        .page-blog-single .article-content ul li,
+        .page-blog-single .article-content ol li,
+        .page-bowen-admin .article-content ul li,
+        .page-bowen-admin .article-content ol li {
+          line-height: 1.8; } }
   .page-blog-single .article-content ul li,
   .page-bowen-admin .article-content ul li {
     list-style: disc; }
