@@ -118,7 +118,7 @@
         return res;
     }
 
-    // 抓取博文专属标签库
+    // 抓取随笔专属标签库
     async function fetchAllTags() {
         if (cachedTags.length > 0) return;
         try {
@@ -315,7 +315,7 @@
         const wrap = $('recentListWrap');
         if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
         if (!hasFetchedRecent) {
-            let loadMsg = cocoMessage.info("正在获取最新一篇博文", 0);
+            let loadMsg = cocoMessage.info("正在获取最新一篇随笔", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
@@ -369,7 +369,7 @@
     }
 
     async function fetchAndLoadForEdit(path, url) {
-        let loadMsg = cocoMessage.info("正在加载博文内容", 0);
+        let loadMsg = cocoMessage.info("正在加载随笔内容", 0);
         try {
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': url } });
             const json = await fRes.json();
@@ -539,7 +539,7 @@
 
             // --- 构建提交 Payload ---
             const payload = { 
-                message: window.STATE.sha ? `修改博文: ${title}` : `新一篇博文: ${title}`, 
+                message: window.STATE.sha ? `修改随笔: ${title}` : `新一篇随笔: ${title}`, 
                 content: utf8_to_b64(finalMD), 
                 branch: CONFIG.branch 
             };

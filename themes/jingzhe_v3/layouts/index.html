@@ -13,7 +13,7 @@
   {{ $paginator := .Paginate $stream.ByDate.Reverse 25 }}
 
   {{ range $index, $page := $paginator.Pages }}
-    {{/* 博文 */}}
+    {{/* 随笔 */}}
     {{ if eq .Type "posts" }}
       <div class="card-timeline index-post">
         <div class="posts-index-heard">   
@@ -24,7 +24,7 @@
               {{ .Date.Format "2006-01-02" }}
             {{ end }}
           </time>
-          <div class="posts-index-info">博文</div>
+          <div class="posts-index-info">随笔</div>
         </div>
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
