@@ -50,3 +50,6 @@ hasCJKLanguage = true           # 准确计算中文字数和摘要
     url = "https://qiszy.taobao.com"
     weight = 6
     params = { new_window = true, umami_event = "Taobao" }
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
