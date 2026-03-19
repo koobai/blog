@@ -3054,11 +3054,6 @@ html[data-theme="dark"] .pinglun {
       padding: 0;
       box-sizing: border-box; } }
 /* 3. 发布框通用组件 */
-@media (min-width: 768px) {
-  .admin-publish-card:hover .admin-publish-footer, .admin-publish-card:has(.admin-textarea:not(:placeholder-shown)) .admin-publish-footer {
-    opacity: 1;
-    visibility: visible; } }
-
 .admin-publish-card:has(.admin-textarea:placeholder-shown) #submitBtn {
   opacity: 0.2;
   cursor: not-allowed; }
@@ -3083,9 +3078,6 @@ html[data-theme="dark"] .pinglun {
   gap: 10px;
   justify-content: space-between;
   align-items: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-  opacity: 1;
-  visibility: visible;
   position: sticky;
   top: 0;
   z-index: 99;
@@ -3095,8 +3087,6 @@ html[data-theme="dark"] .pinglun {
   margin-top: -15px; }
   @media (min-width: 768px) {
     .page-laodao-admin .admin-publish-footer {
-      opacity: 0;
-      visibility: hidden;
       position: static;
       padding-top: 0;
       padding-bottom: 0;
@@ -3350,13 +3340,8 @@ html[data-theme="dark"] .pinglun {
   gap: 10px;
   justify-content: space-between;
   align-items: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-  opacity: 1;
   visibility: visible; }
-  @media (min-width: 768px) {
-    .page-bowen-admin .admin-publish-footer {
-      opacity: 0;
-      visibility: hidden; } }
+
 .page-bowen-admin .write-header-container {
   display: block; }
 
