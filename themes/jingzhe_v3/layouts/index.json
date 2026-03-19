@@ -1,14 +1,9 @@
-{{- /* 1. 只筛选 laodao 分区下的RegularPages */ -}}
 {{- $laodaoPages := where .Site.RegularPages "Section" "laodao" -}}
 {{- $index := slice -}}
-
-{{- /* 2. 遍历唠叨，提取核心字段 */ -}}
 {{- range $laodaoPages -}}
-  {{- /* 确保正文不为空才加入 */ -}}
   {{- if .Plain -}}
-    {{- $index = $index | append (dict "content" .Plain "date" (.Date.Format "2006-01-02")) -}}
+    {{- /* 修改时间格式，并新增 permalink 字段 */ -}}
+    {{- $index = $index | append (dict "content" .Plain "date" (.Date.Format "2006-01-02 15:04") "permalink" .Permalink) -}}
   {{- end -}}
 {{- end -}}
-
-{{- /* 3. 转义为 JSON 输出 */ -}}
 {{- $index | jsonify -}}
