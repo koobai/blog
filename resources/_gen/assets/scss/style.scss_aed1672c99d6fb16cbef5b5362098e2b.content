@@ -359,14 +359,18 @@ ul {
   .page-bowen-admin .article-content ul,
   .page-bowen-admin .article-content ol {
     margin: 15px 0;
-    padding-left: 1.5em; }
+    padding-inline-start: 2em;
+    box-sizing: border-box;
+    max-width: 100%; }
     .page-blog-single .article-content ul li,
     .page-blog-single .article-content ol li,
     .page-bowen-admin .article-content ul li,
     .page-bowen-admin .article-content ol li {
       line-height: 1.7;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
       word-break: break-word;
-      overflow-wrap: break-word;
+      white-space: normal;
       text-align: justify; }
       @media (min-width: 768px) {
         .page-blog-single .article-content ul li,
