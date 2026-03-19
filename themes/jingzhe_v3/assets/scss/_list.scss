@@ -153,11 +153,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: auto;
+  margin-top: 2px;
 }
 .archive-time {
   font-size: 0.85rem;
   color: var(--text-info-color);
+  line-height: 1;
   @include dark {
     color: var(--text-info-dark-color);
   }
@@ -168,11 +169,13 @@
   display: flex;
   flex-wrap: wrap; // 增加换行，防止标签过多撑破卡片
   gap: 8px;
+  align-items: center;
 
   .tag-link {
     font-size: 0.85rem;
     color: var(--text-info-color);
     transition: color 0.3s ease;
+    line-height: 1;
 
     @include dark {
       color: var(--text-info-dark-color);

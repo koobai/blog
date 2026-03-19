@@ -1574,11 +1574,12 @@ html[data-theme="dark"] .pinglun {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: auto; }
+  margin-top: 2px; }
 
 .archive-time {
   font-size: 0.85rem;
-  color: var(--text-info-color); }
+  color: var(--text-info-color);
+  line-height: 1; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .archive-time {
       color: var(--text-info-dark-color); } }
@@ -1588,11 +1589,13 @@ html[data-theme="dark"] .pinglun {
 .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; }
+  gap: 8px;
+  align-items: center; }
   .post-tags .tag-link {
     font-size: 0.85rem;
     color: var(--text-info-color);
-    transition: color 0.3s ease; }
+    transition: color 0.3s ease;
+    line-height: 1; }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .post-tags .tag-link {
         color: var(--text-info-dark-color); } }
