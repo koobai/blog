@@ -686,7 +686,7 @@ body:has(.menu-checkbox:checked) {
   --at-color-light: var(--text-highlight-color) !important;
   --at-color-meta: #999 !important;
   --at-color-border: #ddd !important;
-  --at-color-bg: var(--background-card-color) !important; }
+  --at-color-bg: transparent !important; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .artalk {
       --at-color-gradient: linear-gradient(
@@ -694,7 +694,7 @@ body:has(.menu-checkbox:checked) {
       rgba(255, 255, 255, 0),
       #242021
     ) !important;
-      --at-color-bg: var(--background-card-dark-color) !important;
+      --at-color-bg: transparent !important;
       --at-color-border: #332d2f !important;
       --at-color-meta: #666 !important;
       --at-color-font: #bbb !important;
@@ -705,7 +705,7 @@ body:has(.menu-checkbox:checked) {
       rgba(255, 255, 255, 0),
       #242021
     ) !important;
-    --at-color-bg: var(--background-card-dark-color) !important;
+    --at-color-bg: transparent !important;
     --at-color-border: #332d2f !important;
     --at-color-meta: #666 !important;
     --at-color-font: #bbb !important;
