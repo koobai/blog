@@ -1,9 +1,24 @@
+
 {{- $laodaoPages := where .Site.RegularPages "Section" "laodao" -}}
 {{- $index := slice -}}
+
+{{- $excludeTags := slice "Blog" "博客" "Memos" -}}
+
 {{- range $laodaoPages -}}
-  {{- if .Plain -}}
-    {{- /* 修改时间格式，并新增 permalink 字段 */ -}}
-    {{- $index = $index | append (dict "content" .Plain "date" (.Date.Format "2006-01-02 15:04") "permalink" .Permalink) -}}
+  {{- $plainContent := .Plain -}}
+  {{- $skip := false -}}
+  
+  {{- $pageTags := default slice (or .Params.laodaotags .Params.tags) -}}
+  
+  {{- range $excludeTags -}}
+    {{- if in $pageTags . -}}
+      {{- $skip = true -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if and $plainContent (not $skip) -}}
+    {{- $index = $index | append (dict "content" $plainContent "date" (.Date.Format "2006-01-02 15:04") "permalink" .Permalink) -}}
   {{- end -}}
 {{- end -}}
+
 {{- $index | jsonify -}}
