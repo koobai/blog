@@ -7,7 +7,7 @@
   --at-color-light: var(--text-highlight-color) !important;
   --at-color-meta: #999 !important;
   --at-color-border: #ddd !important;
-  --at-color-bg: var(--background-card-color) !important;
+  --at-color-bg: transparent !important;
 
   @include dark {
     --at-color-gradient: linear-gradient(
@@ -15,7 +15,7 @@
       rgba(255, 255, 255, 0),
       #242021
     ) !important;
-    --at-color-bg: var(--background-card-dark-color) !important;
+    --at-color-bg: transparent !important;
     --at-color-border: #332d2f !important;
     --at-color-meta: #666 !important;
     --at-color-font: #bbb !important;
