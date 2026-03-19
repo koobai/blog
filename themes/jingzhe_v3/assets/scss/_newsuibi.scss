@@ -29,15 +29,7 @@
   gap: 10px;
   justify-content: space-between;
   align-items: center;
-  transition:
-    opacity 0.8s ease,
-    visibility 0.8s ease;
-  opacity: 1;
   visibility: visible;
-  @include breakpoint("medium") {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 .page-bowen-admin .write-header-container {
   display: block;

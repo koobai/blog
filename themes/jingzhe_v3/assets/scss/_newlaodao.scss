@@ -72,13 +72,6 @@
 
 /* 3. 发布框通用组件 */
 .admin-publish-card {
-  @include breakpoint("medium") {
-    &:hover .admin-publish-footer,
-    &:has(.admin-textarea:not(:placeholder-shown)) .admin-publish-footer {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
   &:has(.admin-textarea:placeholder-shown) #submitBtn {
     opacity: 0.2;
     cursor: not-allowed;
@@ -106,11 +99,6 @@
   gap: 10px;
   justify-content: space-between;
   align-items: center;
-  transition:
-    opacity 0.8s ease,
-    visibility 0.8s ease;
-  opacity: 1;
-  visibility: visible;
   position: sticky;
   top: 0;
   z-index: 99;
@@ -119,8 +107,6 @@
   padding-bottom: 10px;
   margin-top: -15px;
   @include breakpoint("medium") {
-    opacity: 0;
-    visibility: hidden;
     position: static;
     padding-top: 0;
     padding-bottom: 0;
