@@ -28,10 +28,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  font-size: 1.8rem;
-
+  font-size: 4rem;
+  opacity: 0.8;
   @include breakpoint("medium") {
-    font-size: 55px;
+    font-size: 5rem;
   }
 }
 

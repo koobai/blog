@@ -1421,10 +1421,11 @@ html[data-theme="dark"] .pinglun {
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  font-size: 1.8rem; }
+  font-size: 4rem;
+  opacity: 0.8; }
   @media (min-width: 768px) {
     .about-img-text {
-      font-size: 55px; } }
+      font-size: 5rem; } }
 .about-text {
   margin: 20px 0 20px 0;
   line-height: 1.7;
