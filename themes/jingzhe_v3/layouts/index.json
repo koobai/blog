@@ -1,25 +1,35 @@
 {{- $laodaoPages := where .Site.RegularPages "Section" "laodao" -}}
 {{- $index := slice -}}
 
+{{- /* 黑名单标签（纯小写） */ -}}
 {{- $excludeTags := slice "blog" "博客" "memos" -}}
+
+{{- /* 获取构建时的当前年份 */ -}}
+{{- $currentYear := now.Year -}}
 
 {{- range $laodaoPages -}}
   {{- $plainContent := .Plain -}}
   {{- $skip := false -}}
   
-  {{- $pageTags := default slice (or .Params.laodaotags .Params.tags) -}}
+  {{- /* 拦截条件 1：如果是今年的数据，直接标记跳过，制造“回忆的距离感” */ -}}
+  {{- if eq .Date.Year $currentYear -}}
+    {{- $skip = true -}}
+  {{- end -}}
   
-  {{- range $excludeTags -}}
-    {{- $exTag := . -}}
-    
-    {{- range $pageTags -}}
-      {{- if eq (lower .) $exTag -}}
-        {{- $skip = true -}}
+  {{- /* 拦截条件 2：只有非今年的数据，才去检查有没有触发黑名单标签 */ -}}
+  {{- if not $skip -}}
+    {{- $pageTags := default slice (or .Params.laodaotags .Params.tags) -}}
+    {{- range $excludeTags -}}
+      {{- $exTag := . -}}
+      {{- range $pageTags -}}
+        {{- if eq (lower .) $exTag -}}
+          {{- $skip = true -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
-    
   {{- end -}}
 
+  {{- /* 通过所有拦截测试后，加入 JSON 数组 */ -}}
   {{- if and $plainContent (not $skip) -}}
     {{- $index = $index | append (dict "content" $plainContent "date" (.Date.Format "2006-01-02 15:04") "permalink" .Permalink) -}}
   {{- end -}}
