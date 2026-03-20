@@ -2,6 +2,7 @@
 {{ define "main" }}
 
 <script src="/js/coco-message.min.js" defer></script>
+<script src="/js/marked.min.js"></script>
 
 <div id="loginOverlay" style="display: none;">
     <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
@@ -37,6 +38,10 @@
                 <div class="admin-icon-btn" title="最近唠叨" onclick="toggleRecentList()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 7c0 2.21-4.03 4-9 4S3 9.21 3 7m18 0c0-2.21-4.03-4-9-4S3 4.79 3 7m18 0v5M3 7v5m18 0c0 2.21-4.03 4-9 4s-9-1.79-9-4m18 0v5c0 2.21-4.03 4-9 4s-9-1.79-9-4v-5"/></svg>
                 </div>
+
+                <div class="admin-icon-btn" title="切换预览 (所见即所得)" onclick="togglePreviewMode()" id="modeToggleBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8zm11 3a3 3 0 1 0 0-6a3 3 0 0 0 0 6z"/></svg>
+                </div>
             </div>
             
             <div class="admin-actions">
@@ -45,11 +50,13 @@
             </div>
         </div>
         
-        <div class="laodao-content datacont">
+        <div id="editorWrap" class="laodao-content datacont">
             <textarea id="content" class="admin-textarea" placeholder=" " autofocus></textarea>
             <div id="tagSelector" class="tag-selector-dropdown"></div>
             <div id="locationDisplay" class="admin-location-chip" style="display: none;"></div>
         </div>
+        
+        <div id="previewCard" class="card-timeline laodao-card" style="display: none; margin-top: 15px;"></div>
     </div>
     
     <div id="recentListWrap" class="admin-laodao-list">
@@ -65,21 +72,95 @@
         mapboxToken: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw"
     };
 
-    const CACHE_KEY = 'koobai_laodao_draft'; // 📍 唠叨专属草稿 Key
+    const CACHE_KEY = 'koobai_laodao_draft';
     const STATE = { sha: null, path: null, date: null, emoji: null, location: null };
     let hasFetchedRecent = false; 
-    let draftTimer; // 草稿防抖定时器
+    let draftTimer;
 
     let cachedTags = [];
     let filteredTags = [];
     let currentTagIndex = -1;
+    let isPreviewMode = false;
+
+    // 初始化 Markdown 解析器
+    marked.use({ breaks: true, gfm: true });
 
     const $ = id => document.getElementById(id);
-    const contentEl = $('content'); // 缓存高频 DOM
+    const contentEl = $('content'); 
     const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
-    
     const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
     const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
+
+    // ==========================================
+    // 💡 核心功能：极简且完美的预览渲染逻辑
+    // ==========================================
+    function togglePreviewMode() {
+        const editorWrap = $('editorWrap');
+        const previewCard = $('previewCard');
+        const btn = $('modeToggleBtn');
+
+        isPreviewMode = !isPreviewMode;
+
+        if (isPreviewMode) {
+            editorWrap.style.display = 'none';
+            let rawMarkdown = contentEl.value || '*空空如也*';
+            
+            // 1. 提取并移除图片 (Markdown 格式: ![alt](url))，从正文中抽离
+            let images = [];
+            rawMarkdown = rawMarkdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, url) => {
+                images.push({ alt, url });
+                return ''; // 直接挖除
+            });
+
+            // 2. 提取并移除标签 (#标签)
+            let tags = [];
+            rawMarkdown = rawMarkdown.replace(/(^|[\s>])#([^\s<.,!?'"，。！？]+)/g, (match, prefix, tag) => {
+                tags.push(tag);
+                return prefix; 
+            });
+
+            // 3. ✨ 核心：解析纯净的 Markdown，并像 Hugo 一样强力剔除可能多出来的空 <p> 段落
+            let finalTextHtml = marked.parse(rawMarkdown.trim());
+            finalTextHtml = finalTextHtml.replace(/<p>\s*(?:<br\s*\/?>)?\s*<\/p>/gi, '');
+
+            // 4. 组装图库和标签
+            let galleryHtml = '';
+            if (images.length > 0) {
+                galleryHtml = `<div class="laodao-gallery">` + images.map(img => `<img src="${img.url}" alt="${img.alt}">`).join('') + `</div>`;
+            }
+
+            let timeStr = STATE.date ? STATE.date.substring(5, 16).replace('T', ' ') : new Date().toLocaleString('zh-CN', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}).replace('/', '-');
+            
+            let locationHtml = STATE.location ? `<a href="javascript:void(0)" class="laodao-location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>${STATE.location.name}</a>` : '';
+            
+            tags = [...new Set(tags)];
+            let tagsHtml = tags.map(t => `<a href="javascript:void(0)" class="laodao-tag">#${t}</a>`).join('');
+
+            // 5. 渲染（已彻底去掉多余的评论 SVG 结构）
+            previewCard.innerHTML = `
+              <div class="laodao-time"><a style="opacity: 0.6;">${timeStr} (预览)</a></div>
+              <div class="laodao-content datacont">
+                ${finalTextHtml}
+                ${galleryHtml}
+              </div>
+              <div class="laodao-footer">
+                <div class="laodao-tags">
+                  ${tagsHtml}
+                  ${locationHtml}
+                </div>
+              </div>
+            `;
+
+            previewCard.style.display = 'grid'; 
+            btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
+        } else {
+            previewCard.style.display = 'none';
+            editorWrap.style.display = ''; 
+            btn.style.color = ""; btn.style.opacity = "0.4";
+            contentEl.focus();
+        }
+    }
 
     function getFormattedTime() {
         const d = new Date(new Date().getTime() + 8 * 3600 * 1000);
@@ -97,17 +178,11 @@
         return res;
     }
 
-    // ==========================================
-    // 📍 核心：自动草稿箱逻辑
-    // ==========================================
     function scheduleSaveDraft() {
-        if (STATE.sha) return; // 编辑旧动态时不存本地草稿
+        if (STATE.sha) return; 
         clearTimeout(draftTimer);
         draftTimer = setTimeout(() => {
-            const draft = { 
-                content: contentEl.value, 
-                location: STATE.location 
-            };
+            const draft = { content: contentEl.value, location: STATE.location };
             localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
         }, 800);
     }
@@ -118,14 +193,8 @@
         if (saved) {
             try {
                 const draft = JSON.parse(saved);
-                if (draft.content) { 
-                    contentEl.value = draft.content; 
-                    contentEl.dispatchEvent(new Event('input')); 
-                }
-                if (draft.location) { 
-                    STATE.location = draft.location; 
-                    renderLocation(); 
-                }
+                if (draft.content) { contentEl.value = draft.content; contentEl.dispatchEvent(new Event('input')); }
+                if (draft.location) { STATE.location = draft.location; renderLocation(); }
             } catch(e) {}
         }
     }
@@ -145,14 +214,10 @@
 
     function initApp() {
         if (getAdminToken()) {
-            $('loginOverlay').style.display = 'none';
-            $('adminPanel').style.display = 'block';
-            fetchAllTags(); 
-            loadDraft(); // 初始化时加载草稿
-            setTimeout(() => contentEl.focus(), 100); 
+            $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
+            fetchAllTags(); loadDraft(); setTimeout(() => contentEl.focus(), 100); 
         } else {
-            $('loginOverlay').style.display = 'flex';
-            $('adminPanel').style.display = 'none';
+            $('loginOverlay').style.display = 'flex'; $('adminPanel').style.display = 'none';
             setTimeout(() => $('adminTokenInput').focus(), 100);
         }
     }
@@ -163,15 +228,10 @@
         localStorage.setItem("koobai_admin_token", token);
         try {
             await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
-            $('loginOverlay').style.display = 'none';
-            $('adminPanel').style.display = 'block';
-            cocoMessage.success("验证成功");
-            fetchAllTags(); 
-            loadDraft();
-            contentEl.focus();
+            $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
+            cocoMessage.success("验证成功"); fetchAllTags(); loadDraft(); contentEl.focus();
         } catch (e) {
-            logout(false);
-            cocoMessage.error("密钥错误，请重新输入");
+            logout(false); cocoMessage.error("密钥错误，请重新输入");
         }
     }
 
@@ -181,6 +241,7 @@
     }
 
     function insertText(text, wrap = '', offset = 0) {
+        if (isPreviewMode) togglePreviewMode(); // 拦截：如果在预览，自动退出
         contentEl.focus({ preventScroll: true });
         const { selectionStart: start, selectionEnd: end } = contentEl;
         const sel = contentEl.value.substring(start, end);
@@ -194,6 +255,7 @@
     const insertLink = () => insertText("[]()", "[", 1);
 
     function insertBold() {
+        if (isPreviewMode) togglePreviewMode();
         contentEl.focus({ preventScroll: true });
         const start = contentEl.selectionStart; const end = contentEl.selectionEnd;
         const sel = contentEl.value.substring(start, end);
@@ -247,8 +309,7 @@
             const name = await GeoHelper.getAddress(latitude, longitude);
             
             STATE.location = { name, lat: latitude, lng: longitude };
-            renderLocation();
-            scheduleSaveDraft(); // 获取到定位后立即保存草稿
+            renderLocation(); scheduleSaveDraft(); 
             
             if (typeof locMsg === 'function') locMsg();
             cocoMessage.success("定位成功");
@@ -268,8 +329,7 @@
             `;
             locDiv.style.display = 'flex';
         } else {
-            locDiv.style.display = 'none';
-            locDiv.innerHTML = '';
+            locDiv.style.display = 'none'; locDiv.innerHTML = '';
         }
     }
 
@@ -277,16 +337,12 @@
         if (!STATE.location) return;
         const newName = prompt('修改你想展示的位置名称:', STATE.location.name);
         if (newName && newName.trim()) {
-            STATE.location.name = newName.trim();
-            renderLocation();
-            scheduleSaveDraft();
+            STATE.location.name = newName.trim(); renderLocation(); scheduleSaveDraft();
         }
     }
 
     function removeLocation() {
-        STATE.location = null;
-        renderLocation();
-        scheduleSaveDraft();
+        STATE.location = null; renderLocation(); scheduleSaveDraft();
     }
 
     const compressImage = (file) => new Promise((resolve, reject) => {
@@ -307,6 +363,7 @@
 
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
+        if (isPreviewMode) togglePreviewMode();
         let uploadMsg = cocoMessage.info("正在压缩并上传", 0); 
         
         for (let file of files) {
@@ -329,6 +386,7 @@
     async function publishPost() {
         const contentVal = contentEl.value.trim();
         if (!contentVal) return cocoMessage.warning("写点什么再发吧！");
+        if (isPreviewMode) togglePreviewMode();
         
         $('submitBtn').disabled = true; 
         let pubMsg = cocoMessage.info("正在推送至 GitHub", 0);
@@ -347,13 +405,12 @@
         const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
         
         try {
-            // 🚀 核心防 422 优化修复：删除了错误的 window. 前缀，并加上了分支查询参数
             if (STATE.sha || STATE.path) {
                 const checkUrl = `${targetUrl}?ref=${CONFIG.branch}`;
                 const checkRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': checkUrl } });
                 if (checkRes.ok) {
                     const data = await checkRes.json();
-                    STATE.sha = data.sha; // 正确赋值给局部变量 STATE
+                    STATE.sha = data.sha; 
                 }
             }
 
@@ -369,13 +426,11 @@
             
             if (typeof pubMsg === 'function') pubMsg();
             cocoMessage.success("唠叨成功！搞定！"); 
-            
             if (!STATE.sha) localStorage.removeItem(CACHE_KEY); 
-            
             cancelEdit(false); 
             if($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
         } catch (err) { 
-            console.error("提交报错详情:", err); // 增加控制台打印，以后报错按 F12 一眼就能看出原因
+            console.error("提交报错详情:", err); 
             if (typeof pubMsg === 'function') pubMsg();
             err.message === "401" ? (cocoMessage.error("登录状态失效"), logout()) : cocoMessage.error("唠叨失败"); 
         } finally {
@@ -438,6 +493,7 @@
     }
 
     function loadForEdit(path, sha, encodedRawText) {
+        if (isPreviewMode) togglePreviewMode();
         const rawText = decodeURIComponent(encodedRawText);
         const timeMatch = rawText.match(/date:\s*([^\n]+)/);
         STATE.date = timeMatch ? timeMatch[1].trim() : null;
@@ -464,17 +520,14 @@
     }
 
     function cancelEdit(showMsg = true) {
-        contentEl.value = ''; 
-        contentEl.style.height = 'auto'; 
-        STATE.sha = STATE.path = STATE.date = null;
-        STATE.location = null;
-        renderLocation();
+        if (isPreviewMode) togglePreviewMode();
+        contentEl.value = ''; contentEl.style.height = 'auto'; 
+        STATE.sha = STATE.path = STATE.date = STATE.location = null; renderLocation();
 
-        $('submitBtn').innerText = "唠叨一下"; 
-        $('cancelBtn').style.display = 'none';
+        $('submitBtn').innerText = "唠叨一下"; $('cancelBtn').style.display = 'none';
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
         
-        loadDraft(); // 取消后恢复本地可能存在的草稿
+        loadDraft(); 
         if (showMsg) cocoMessage.info("已取消修改");
     }
 
@@ -482,10 +535,7 @@
     tagSelector.style.display = 'none';
 
     function updateTagHighlight(items) {
-        items.forEach((item, i) => {
-            if (i === currentTagIndex) item.classList.add('active');
-            else item.classList.remove('active');
-        });
+        items.forEach((item, i) => { i === currentTagIndex ? item.classList.add('active') : item.classList.remove('active'); });
     }
 
     function insertSelectedTag(tag, keywordLength, cursorStart) {
@@ -496,76 +546,51 @@
         contentEl.value = before + insertText + after;
         contentEl.setSelectionRange(before.length + insertText.length, before.length + insertText.length);
         
-        tagSelector.style.display = 'none';
-        contentEl.focus();
-        contentEl.dispatchEvent(new Event('input'));
+        tagSelector.style.display = 'none'; contentEl.focus(); contentEl.dispatchEvent(new Event('input'));
     }
 
     tagSelector.addEventListener('mousedown', function(e) {
-        const item = e.target.closest('.tag-item');
-        if (!item) return;
-        e.preventDefault();
-        
+        const item = e.target.closest('.tag-item'); if (!item) return; e.preventDefault();
         const cursorPosition = contentEl.selectionStart;
         const match = contentEl.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
-        
-        if (match) {
-            insertSelectedTag(filteredTags[item.dataset.index], match[1].length, cursorPosition);
-        }
+        if (match) insertSelectedTag(filteredTags[item.dataset.index], match[1].length, cursorPosition);
     });
 
     function checkTagTrigger() {
         const cursorPosition = contentEl.selectionStart;
-        const textBeforeCursor = contentEl.value.substring(0, cursorPosition);
-        const match = textBeforeCursor.match(/(?:^|\s)#([^\s]*)$/);
+        const match = contentEl.value.substring(0, cursorPosition).match(/(?:^|\s)#([^\s]*)$/);
 
         if (match) {
             const keywordLower = match[1].toLowerCase();
             filteredTags = cachedTags.filter(t => t.toLowerCase().includes(keywordLower));
-            
             if (filteredTags.length > 0) {
                 tagSelector.innerHTML = filteredTags.map((t, i) => `<div class="tag-item" data-index="${i}"># ${t}</div>`).join('');
-                tagSelector.style.display = 'grid'; 
-                currentTagIndex = -1; 
-            } else {
-                tagSelector.style.display = 'none';
-            }
-        } else {
-            tagSelector.style.display = 'none';
-        }
+                tagSelector.style.display = 'grid'; currentTagIndex = -1; 
+            } else { tagSelector.style.display = 'none'; }
+        } else { tagSelector.style.display = 'none'; }
     }
 
     contentEl.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
-        checkTagTrigger();
-        scheduleSaveDraft(); // 监听输入存草稿
+        this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';
+        checkTagTrigger(); scheduleSaveDraft();
     });
 
     contentEl.addEventListener('keyup', function(e) {
-        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && tagSelector.style.display === 'none') {
-             checkTagTrigger();
-        }
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && tagSelector.style.display === 'none') checkTagTrigger();
     });
 
     contentEl.addEventListener('keydown', function(e) {
         if (tagSelector.style.display === 'grid') {
             const items = tagSelector.querySelectorAll('.tag-item');
             const total = items.length; const cols = 4;
-            if (e.key === 'ArrowRight') {
-                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1); updateTagHighlight(items);
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0); updateTagHighlight(items);
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1); updateTagHighlight(items);
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0); updateTagHighlight(items);
-            } else if (e.key === 'Enter') {
+            if (e.key === 'ArrowRight') { e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + 1, total - 1); updateTagHighlight(items); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - 1, 0); updateTagHighlight(items); } 
+            else if (e.key === 'ArrowDown') { e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.min(currentTagIndex + cols, total - 1); updateTagHighlight(items); } 
+            else if (e.key === 'ArrowUp') { e.preventDefault(); currentTagIndex = currentTagIndex === -1 ? 0 : Math.max(currentTagIndex - cols, 0); updateTagHighlight(items); } 
+            else if (e.key === 'Enter') {
                 if (currentTagIndex >= 0) { e.preventDefault(); items[currentTagIndex].dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); } 
                 else { tagSelector.style.display = 'none'; }
-            } else if (e.key === ' ' || e.key === 'Escape') {
-                tagSelector.style.display = 'none';
-            }
+            } else if (e.key === ' ' || e.key === 'Escape') { tagSelector.style.display = 'none'; }
         }
     });
 

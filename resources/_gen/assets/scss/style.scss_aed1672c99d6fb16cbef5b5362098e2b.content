@@ -3049,7 +3049,6 @@ html[data-theme="dark"] .pinglun {
 
 /* 2. 沉浸式编辑区 (全居中，视觉聚焦) */
 .admin-immersive-wrapper {
-  max-width: 600px;
   width: 100%;
   margin: 0 auto;
   padding: 15px;
@@ -3104,7 +3103,7 @@ html[data-theme="dark"] .pinglun {
   html[data-theme="dark"] .page-laodao-admin .admin-publish-footer {
     background: var(--background-dark-body-color); }
 
-.page-laodao-admin .laodao-content {
+.page-laodao-admin #editorWrap {
   margin-top: 15px; }
 
 /* 4. 左侧 SVG 工具栏组 */
