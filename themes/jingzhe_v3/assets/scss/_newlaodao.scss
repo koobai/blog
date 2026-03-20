@@ -58,7 +58,6 @@
 
 /* 2. 沉浸式编辑区 (全居中，视觉聚焦) */
 .admin-immersive-wrapper {
-  max-width: 600px;
   width: 100%;
   margin: 0 auto;
   padding: 15px;
@@ -117,7 +116,7 @@
     background: var(--background-dark-body-color);
   }
 }
-.page-laodao-admin .laodao-content {
+.page-laodao-admin #editorWrap {
   margin-top: 15px;
 }
 
