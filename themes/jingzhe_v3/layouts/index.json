@@ -1,8 +1,7 @@
-
 {{- $laodaoPages := where .Site.RegularPages "Section" "laodao" -}}
 {{- $index := slice -}}
 
-{{- $excludeTags := slice "Blog" "博客" "Memos" -}}
+{{- $excludeTags := slice "blog" "博客" "memos" -}}
 
 {{- range $laodaoPages -}}
   {{- $plainContent := .Plain -}}
@@ -11,9 +10,14 @@
   {{- $pageTags := default slice (or .Params.laodaotags .Params.tags) -}}
   
   {{- range $excludeTags -}}
-    {{- if in $pageTags . -}}
-      {{- $skip = true -}}
+    {{- $exTag := . -}}
+    
+    {{- range $pageTags -}}
+      {{- if eq (lower .) $exTag -}}
+        {{- $skip = true -}}
+      {{- end -}}
     {{- end -}}
+    
   {{- end -}}
 
   {{- if and $plainContent (not $skip) -}}
