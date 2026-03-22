@@ -3,10 +3,6 @@
 
 {{ define "main" }}
 
-{{ $dataEngine := partialCached "exercise-list-data.html" . "exerciseData" }}
-{{ $activities := $dataEngine.activities }}
-{{ $themeMap := $dataEngine.themeMap }}
-{{ $defaultTheme := $dataEngine.defaultTheme }}
  {{/* 分页，默认 25 条一页 */}}
 <div id="index-card-timeline" class="index-card">
   {{ $stream := where site.RegularPages "Type" "in" (slice "posts" "laodao") }}
@@ -44,21 +40,6 @@
     {{ else if eq .Type "laodao" }}
       {{ partial "laodao-card.html" . }}
     {{ end }}
-
-    {{/* 锻炼，仅在第一页的第二条数据下方插入 */}}
-    {{ if and (eq $paginator.PageNumber 1) (eq $index 1) }}
-      <div class="cardList">
-        {{ range first 2 $activities }}
-          {{ $theme := default $defaultTheme (index $themeMap .type) }}    
-          <a href="/exercise" title="动起来">
-            <div class="runCard memos-exercise-card">      
-            <div class="iconRing" style="color: {{ $theme.color }}">{{ $theme.icon }}</div>     
-            {{ partial "exercise-list-card.html" (dict "run" . "theme" $theme) }}      
-          </div></a>
-        {{ end }}   
-      </div>
-    {{ end }}
-
   {{ end }}
 </div>
 
