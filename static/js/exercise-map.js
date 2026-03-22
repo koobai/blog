@@ -454,13 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
               mask.className = 'poster-gradient-mask'; 
               wrapper.appendChild(mask);
             }
-
-            // 按需加载本地 JS
-            if (!window.htmlToImage) {
-              const script = document.createElement('script');
-              script.src = '/js/html-to-image.min.js';
-              document.head.appendChild(script);
-            }
           };
         }
 
