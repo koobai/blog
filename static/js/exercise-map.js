@@ -18,19 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   mapboxgl.accessToken = window.KoobaiRun.config.MAPBOX_TOKEN;
 
-  // 动态获取当前主题样式 URL
+  // 1. 动态获取当前主题样式 URL（完美兼容你的 data-theme 和系统 auto）
   const getMapStyleUrl = () => {
-    const isHtmlDark = document.documentElement.classList.contains('dark');
-    const isSysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = document.documentElement.getAttribute('data-theme');
+    let isDark = false;
     
-    const isDark = isHtmlDark || isSysDark;
+    if (theme === 'dark') {
+      isDark = true;
+    } else if (theme === 'light') {
+      isDark = false;
+    } else {
+      // 如果是 auto（没设置 data-theme），则听命于系统的暗黑模式
+      isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
 
     return isDark 
       ? 'mapbox://styles/koobai/cmma8mwce001v01sge7e0dx1w' // 暗黑版
       : 'mapbox://styles/koobai/cmma9983i00f101qwezj0f77f'; // 浅色版
   };
 
-  // 初始化地图实例
+  // 2. 初始化地图实例
   const map = new mapboxgl.Map({
     container: 'mapbox-container', 
     style: getMapStyleUrl(), 
@@ -40,43 +47,36 @@ document.addEventListener('DOMContentLoaded', () => {
     bearing: 0, 
     maxPitch: 85,
     logoPosition: 'bottom-right', 
-    attributionControl: false     
+    attributionControl: false,
+    preserveDrawingBuffer: true // 👈 【关键】既然还原了原始代码，记得把这句加回来，否则截图黑屏
   });
 
   // 仅保留缩放控件，隐藏指南针
   map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-left');
 
-  /* ========================================================================
-     板块 2：容器缩放与主题监听控制
-  ======================================================================== */
-  
-  // 监听外层容器大小变化，触发 Mapbox 重绘，防止画布拉伸变形
+  // 3. 监听外层容器大小变化
   const mapWrapper = document.getElementById('map-wrapper');
   if (mapWrapper && window.ResizeObserver) {
-    new ResizeObserver(() => {
-      requestAnimationFrame(() => map.resize());
-    }).observe(mapWrapper);
+    new ResizeObserver(() => { requestAnimationFrame(() => map.resize()); }).observe(mapWrapper);
   }
 
-  // 监听全站的 Dark Mode 切换，实时替换 Mapbox 底图风格
+  // 4. 监听主题切换（响应网站按钮点击 & 系统级主题变化）
   let currentMapStyle = getMapStyleUrl();
-  const themeObserver = new MutationObserver(() => {
+  const updateMapTheme = () => {
     const newStyle = getMapStyleUrl();
     if (newStyle !== currentMapStyle) {
       currentMapStyle = newStyle;
       map.setStyle(newStyle); 
     }
-  });
+  };
+
+  // 监听网站 HTML 上的 class 和 data-theme 变化
+  const themeObserver = new MutationObserver(updateMapTheme);
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
 
+  // 监听系统自身的暗黑模式切换（当网站设为自动时，这里会生效）
   if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      const newStyle = getMapStyleUrl();
-      if (newStyle !== currentMapStyle) {
-        currentMapStyle = newStyle;
-        map.setStyle(newStyle); 
-      }
-    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateMapTheme);
   }
 
 
@@ -324,10 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
      板块 5：路线飞行动画 (挂载至全局空间供 UI 调用)
   ======================================================================== */
   window.KoobaiRun.map = {
-    
     flyTo: (rawRunId) => {
-      
-      // 1. 数据洗白与防御
       const normalizeId = (id) => {
         if (!id || id === 'undefined' || id === 'null') return null;
         return String(Number(String(id).replace(/,/g, '')));
@@ -336,11 +333,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const runId = normalizeId(rawRunId);
       const statsPanel = document.getElementById('map-stats-panel'); 
 
+      // 每次点击轨迹时，强制清理可能残留的海报预览状态和遮罩
+      const mapWrapper = document.getElementById('map-wrapper');
+      if (mapWrapper) mapWrapper.classList.remove('show-poster-mode');
+      const oldMask = document.getElementById('real-poster-mask');
+      if (oldMask) oldMask.remove();
+
       // 再次点击同一条路线，相当于“取消选中”，恢复全览状态
       if (normalizeId(activeRunId) === runId) {
         renderDataByYear(currentYear);
         if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
         if (statsPanel) statsPanel.style.display = 'none'; 
+        
+        // ✨ 新增：取消选中时，隐藏左下角的分享按钮
+        const shareCtrl = document.getElementById('custom-share-ctrl');
+        if (shareCtrl) shareCtrl.style.display = 'none';
+        
         return;
       }
 
@@ -359,47 +367,134 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!runData) return;
 
       if (statsPanel) {
-        // ✨ 如果有距离显示数字，没有就直接给 '--'
         const distanceNum = runData.distance > 0 ? runData.distance.toFixed(2) : '--';
-        const distanceUnit = runData.distance > 0 ? 'km' : ''; // 没有距离时，连单位也隐藏
-        
+        const distanceUnit = runData.distance > 0 ? 'km' : ''; 
         const runTime = runData.moving_time || '--';
         const heartRate = runData.average_heartrate || '--';
-        
-        // 配速同理：没距离肯定没配速
         const paceNum = runData.distance > 0 ? (runData.pace_num || '--') : '--';
         const paceUnit = runData.distance > 0 ? (runData.pace_unit || '') : '';
-        
-        const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const color = getColor(runData.type);
-        
+        const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
+        const smartName = window.KoobaiRun.getSmartName(runData.name, runData.type, runData.summary_polyline);
 
+        // 1. 纯净的 HTML 结构（已去除标题旁的分享图标）
         statsPanel.innerHTML = `
-          <div class="detailName">
-            ${window.KoobaiRun.getSmartName(runData.name, runData.type, runData.summary_polyline)}
-            <span class="detailDate">${displayTime}</span>
+          <div class="normal-view">
+            <div class="detailName">
+              <span class="detailDate">${displayTime}</span>
+            </div>
+            <div class="detailStatsRow">
+              <div class="detailStatBlock"><span class="statLabel">里程</span><span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span></div>
+              <div class="detailStatBlock"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
+              <div class="detailStatBlock"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
+              <div class="detailStatBlock"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
+            </div>
           </div>
-          <div class="detailStatsRow">
-            <div class="detailStatBlock">
-              <span class="statLabel">里程</span>
-              <span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span>
+
+          <div class="poster-view" style="display: none;">
+            <div class="poster-actions">
+            <button id="poster-download-btn" title="保存海报"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+              <button id="poster-close-btn" title="退出预览"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
-            <div class="detailStatBlock">
-              <span class="statLabel">用时</span>
-              <span class="statVal">${runTime}</span>
+            
+            
+            
+            <div class="poster-dist-hero">
+              <span class="heroNum">${distanceNum}</span>
+              <span class="heroUnit">${distanceUnit}</span>
             </div>
-            <div class="detailStatBlock">
-              <span class="statLabel">${isRide ? '均速' : '配速'}</span>
-              <span class="statVal">${paceNum}<small>${paceUnit}</small></span>
+            
+            <div class="poster-stats-row">
+              <div class="poster-stat-block"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
+              <div class="poster-stat-block"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
+              <div class="poster-stat-block"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
             </div>
-            <div class="detailStatBlock">
-              <span class="statLabel">心率</span>
-              <span class="statVal">${heartRate}</span>
-            </div>
+            
+            <div class="poster-watermark">${displayTime}</div>
+            <div class="poster-title">${smartName}</div>
           </div>
         `;
         statsPanel.style.display = 'flex';
+
+        const wrapper = document.getElementById('map-wrapper');
+        const normalView = statsPanel.querySelector('.normal-view');
+        const posterView = statsPanel.querySelector('.poster-view');
+        
+        // 🚀 核心：动态生成左下角 Mapbox 风格的分享按钮
+        let shareCtrl = document.getElementById('custom-share-ctrl');
+        if (!shareCtrl) {
+          const target = document.querySelector('.mapboxgl-ctrl-bottom-left');
+          if (target) {
+            shareCtrl = document.createElement('div');
+            shareCtrl.id = 'custom-share-ctrl';
+            // 赋予 Mapbox 原生的 class，自动获取白底/黑底和圆角阴影
+            shareCtrl.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+            shareCtrl.innerHTML = `
+              <button type="button" title="生成海报" class="map-share">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.586l6.207 6.207l-1.414 1.414L13 6.414V16h-2V6.414l-3.793 3.793l-1.414-1.414zM3 18v-4h2v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4h2v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3"/></svg>
+              </button>`;
+            // prepend 确保我们的分享按钮永远排在加减号的上方
+            target.prepend(shareCtrl); 
+          }
+        }
+
+        // 每次选中路线时，显示它并刷新点击事件
+        if (shareCtrl) {
+          shareCtrl.style.display = 'block';
+          shareCtrl.onclick = (e) => {
+            e.stopPropagation();
+            wrapper.classList.add('show-poster-mode');
+            normalView.style.display = 'none';
+            posterView.style.display = 'block';
+
+            if (!document.getElementById('real-poster-mask')) {
+              const mask = document.createElement('div');
+              mask.id = 'real-poster-mask';
+              mask.className = 'poster-gradient-mask'; 
+              wrapper.appendChild(mask);
+            }
+
+            // 按需加载本地 JS
+            if (!window.htmlToImage) {
+              const script = document.createElement('script');
+              script.src = '/js/html-to-image.min.js';
+              document.head.appendChild(script);
+            }
+          };
+        }
+
+        // 关闭预览和下载的逻辑完全不变
+        document.getElementById('poster-close-btn')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          wrapper.classList.remove('show-poster-mode');
+          posterView.style.display = 'none';
+          normalView.style.display = 'block';
+          const mask = document.getElementById('real-poster-mask');
+          if (mask) mask.remove();
+        });
+
+        document.getElementById('poster-download-btn')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const btn = e.currentTarget;
+          btn.style.opacity = '0.5'; 
+
+          htmlToImage.toCanvas(wrapper, {
+            pixelRatio: 4, 
+            backgroundColor: null, 
+            filter: (node) => !node.classList?.contains('poster-actions')
+          }).then(function (canvas) {
+            const webpDataUrl = canvas.toDataURL('image/webp', 0.92);
+            const link = document.createElement('a');
+            link.download = `KoobaiRun_${displayTime.replace(/[\/\s:]/g, '')}.webp`;
+            link.href = webpDataUrl;
+            link.click();
+            btn.style.opacity = '1';
+          }).catch(function (error) {
+            console.error('海报生成失败:', error);
+            btn.style.opacity = '1';
+          });
+        });
       }
 
       // 4. 坐标解析与标记物插入
