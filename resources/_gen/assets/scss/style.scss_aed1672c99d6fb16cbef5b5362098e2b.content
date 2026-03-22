@@ -2844,32 +2844,44 @@ html[data-theme="dark"] .pinglun {
       gap: 12px;
       z-index: 20; }
       #map-wrapper.show-poster-mode .poster-view .poster-actions button {
-        background: rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 50%;
         width: 34px;
         height: 34px;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
         color: var(--text-content-color);
         cursor: pointer;
         transition: background 0.2s;
         backdrop-filter: blur(4px); }
+        #map-wrapper.show-poster-mode .poster-view .poster-actions button svg {
+          display: block;
+          height: 18px;
+          width: 18px;
+          margin: 0 auto; }
         #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
           background: rgba(255, 255, 255, 0.3); }
         @media (prefers-color-scheme: dark) {
           html:not([data-theme="light"]) #map-wrapper.show-poster-mode .poster-view .poster-actions button {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff; } }
+            color: #fff; }
+            html:not([data-theme="light"]) #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
+              background: rgba(0, 0, 0, 0.2); } }
         html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button {
           background: rgba(255, 255, 255, 0.15);
           border: 1px solid rgba(255, 255, 255, 0.2);
           color: #fff; }
+          html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
+            background: rgba(0, 0, 0, 0.2); }
 
 .map-share {
-  display: flex;
+  display: none !important;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -2880,7 +2892,9 @@ html[data-theme="dark"] .pinglun {
     height: 18px;
     width: 18px;
     margin: 0 auto; }
-
+  @media (min-width: 768px) {
+    .map-share {
+      display: flex !important; } }
 #custom-share-ctrl button {
   color: var(--text-info-color); }
   @media (prefers-color-scheme: dark) {
