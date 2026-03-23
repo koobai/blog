@@ -1,5 +1,31 @@
 [
   {
+    "id": "35341071",
+    "type": "tv",
+    "title": "七王国的骑士 第一季",
+    "year": "2026",
+    "rating": 3,
+    "comment": "简短而无聊。一开场冰与火的主题曲出来激动了下，紧接着就是喷屎，靠～",
+    "link": "https://movie.douban.com/subject/35341071/",
+    "create_time": "2026-03-23 09:05:06",
+    "color_scheme": {
+      "is_dark": true,
+      "primary_color_light": "6f7251",
+      "_base_color": [
+        0.1851851851851852,
+        0.2903225806451613,
+        0.12156862745098039
+      ],
+      "secondary_color": "f9f9f4",
+      "_avg_color": [
+        0.2051282051282052,
+        0.13131313131313127,
+        0.38823529411764707
+      ],
+      "primary_color_dark": "4a4c36"
+    }
+  },
+  {
     "id": "36318037",
     "type": "tv",
     "title": "唐朝诡事录之长安",
