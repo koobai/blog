@@ -5,19 +5,19 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "https://img.koobai.com/koobai_icon_192.png",
+      "src": "https://img.koobai.com/icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://img.koobai.com/koobai_icon_512.png",
+      "src": "https://img.koobai.com/icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://img.koobai.com/koobai_icon_1024.png",
+      "src": "https://img.koobai.com/icon_1024.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any"
