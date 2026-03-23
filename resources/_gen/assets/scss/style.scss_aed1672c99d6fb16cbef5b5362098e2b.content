@@ -2433,8 +2433,8 @@ html[data-theme="dark"] .pinglun {
 
 /* 日历里的迷你轨迹容器 (保留底色光晕让它在日历中显眼) */
 .calIconRing.has-track svg {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   /* 日历里的轨迹因为太小，线条稍微加粗一点点保证清晰度 */ }
   .calIconRing.has-track svg .path-track {
     stroke-width: 1.2 !important; }
