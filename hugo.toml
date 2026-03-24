@@ -14,11 +14,6 @@ hasCJKLanguage = true           # 准确计算中文字数和摘要
 [permalinks]
   posts = "/:slug/"
 
-[params]
-  [params.artalk]
-    server = "https://c.koobai.com"
-    site = "空白Koobai"
-
 # [内容渲染与处理]
 [markup]
   [markup.highlight]
