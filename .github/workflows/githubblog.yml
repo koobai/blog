@@ -24,20 +24,9 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      # 1. 部署到当前仓库的 gh-pages 分支 (作为双重备份)
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
-
-      # 🚀 2. 全新步骤：直接将编译好的纯静态文件推送到 Cloudflare Pages
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          projectName: koobaiblog
-          directory: ./public
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./public --project-name=koobaiblog --commit-dirty=true
