@@ -301,16 +301,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================
+// ==========================
   // 🚀 3. 初始加载逻辑
   // ==========================
   const systemDom = document.getElementById('custom-comment-system');
   if (!systemDom) return;
 
-  if (window.KOOBAI_IS_POST) {
+  if (document.querySelector('.article-comments')) {
       systemDom.style.display = 'block';
-      window.fetchKoobaiComments();
-  } else {
+      if (typeof window.fetchKoobaiComments === 'function') {
+          window.fetchKoobaiComments();
+      }
+  } 
+  else if (document.querySelector('.laodao-main-card')) {
       const mainCardTrigger = document.querySelector('.laodao-main-card .koobai-comment-trigger');
       if (mainCardTrigger) {
           mainCardTrigger.click();
