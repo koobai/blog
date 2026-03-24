@@ -1,0 +1,1 @@
+window.ViewImage&&ViewImage.init(".article-cover-img,.post-figure img,.laodao-photo")
