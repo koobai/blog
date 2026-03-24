@@ -1,42 +1,36 @@
 // ==========================
-// 🚀 1. 现代事件代理：处理手风琴点击 (彻底抛弃 ID 匹配)
+// 🚀 1. 现代事件代理：处理手风琴点击
 // ==========================
 document.addEventListener('click', (e) => {
-  // 1. 查找被点击的触发按钮
   const trigger = e.target.closest('.koobai-comment-trigger');
   if (!trigger) return;
 
   const systemDom = document.getElementById('custom-comment-system');
-  // 2. 向上找到当前唠叨的主卡片
   const card = trigger.closest('.laodao-card');
-  // 3. 在当前卡片里找到“评论落脚点”
   const targetContainer = card.querySelector('.laodao-comment-container');
   
   if (!targetContainer || !systemDom) return;
 
-  // 极简判断：如果已经在里面且开着，就关掉
   if (targetContainer.contains(systemDom) && systemDom.style.display !== 'none') {
       systemDom.style.display = 'none';
       return;
   }
 
-  // DOM 瞬移：把评论系统塞进落脚点
   systemDom.style.display = 'block';
   targetContainer.appendChild(systemDom);
 
-  // 获取该卡片的专属 URL 并拉取数据
-  window.KOOBAI_CURRENT_URL = trigger.getAttribute('data-url');
+  // 🚀 优化：强制去除 URL 参数，防止 SEO 污染
+  const rawUrl = trigger.getAttribute('data-url');
+  window.KOOBAI_CURRENT_URL = rawUrl.split('?')[0]; 
   
-  // 恢复状态
   if (typeof window.cancelReply === 'function') window.cancelReply();
   const listDom = document.getElementById('comments-list');
-  if (listDom) listDom.innerHTML = '';
+  if (listDom) listDom.innerHTML = ''; // 保持极简无加载状态
 
   if (typeof window.fetchKoobaiComments === 'function') {
       window.fetchKoobaiComments();
   }
 });
-
 
 // ==========================
 // 🚀 2. 评论系统核心逻辑
@@ -56,20 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cmt-website').value = savedUser.website;
   }
 
+  // 安全过滤
   function escapeHTML(str) {
     if (!str) return '';
-    return str.replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-    }[tag]));
+    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
   }
 
-  async function getGravatarUrl(email) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(email.trim().toLowerCase());
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return `https://weavatar.com/avatar/${hashHex}?s=80&d=mp`;
+  // 🚀 优化：XSS 防护，安全的 URL
+  function safeUrl(url) {
+    try {
+      const u = new URL(url);
+      return ['http:', 'https:'].includes(u.protocol) ? url : '#';
+    } catch {
+      return '#';
+    }
   }
 
   function formatDate(dateStr) {
@@ -81,6 +75,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const hh = String(date.getHours()).padStart(2, '0');
     const min = String(date.getMinutes()).padStart(2, '0');
     return (yyyy === currentYear) ? `${mm}-${dd} ${hh}:${min}` : `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  }
+
+  // 🚀 优化：Gravatar 缓存机制
+  const avatarCache = new Map();
+  async function getGravatarUrlCached(email) {
+    const key = email.trim().toLowerCase();
+    if (avatarCache.has(key)) return avatarCache.get(key);
+    
+    const encoder = new TextEncoder();
+    const data = encoder.encode(key);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    const url = `https://weavatar.com/avatar/${hashHex}?s=80&d=mp`;
+    
+    avatarCache.set(key, url);
+    return url;
   }
 
   function insertTextToTextarea(text) {
@@ -97,13 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('cmt-email').addEventListener('blur', async function(e) {
     if (e.target.value.trim().toLowerCase() === ADMIN_EMAIL && !document.body.classList.contains('admin-mode')) {
-      const pass = prompt("检测到管理员邮箱，请输入操作密码开启上帝模式：");
+      const pass = prompt("输入密码开启管理模式");
       if (pass) {
         try {
           const res = await fetch(`${API_BASE}/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass }) });
           if (res.ok) { localStorage.setItem('koobai_admin_pass', pass); adminPass = pass; document.body.classList.add('admin-mode'); } 
-          else { alert("❌ 密码错误，无法开启上帝模式！"); }
-        } catch (err) { alert("网络错误，无法验证密码。"); }
+          else { alert("密码错误"); }
+        } catch (err) { alert("网络错误"); }
       }
     }
   });
@@ -130,11 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let childrenMapGlobal = {};
   let currentRenderedCount = 0;
 
-  async function generateHtml(nodeList) {
+  // 🚀 优化：完全剥离了 await 的纯同步递归渲染，极速执行！
+  function generateHtmlSync(nodeList) {
     let html = '';
     for (const node of nodeList) {
-      const avatarUrl = await getGravatarUrl(node.email);
-      const authorHtml = node.website ? `<a href="${node.website}" target="_blank" rel="nofollow" class="cmt-author">${escapeHTML(node.author)}</a>` : `<span class="cmt-author">${escapeHTML(node.author)}</span>`;
+      const avatarUrl = avatarCache.get(node.email.trim().toLowerCase()) || 'https://weavatar.com/avatar/?d=mp';
+      // 使用 safeUrl 防止 XSS
+      const authorHtml = node.website ? `<a href="${safeUrl(node.website)}" target="_blank" rel="nofollow" class="cmt-author">${escapeHTML(node.author)}</a>` : `<span class="cmt-author">${escapeHTML(node.author)}</span>`;
       const targetHtml = node.showTarget ? `<span class="reply-arrow">▸</span><span class="cmt-target">${escapeHTML(node.replyToName)}</span>` : '';
       
       html += `
@@ -150,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             </div>
           </div>
-          ${childrenMapGlobal[node.id] && childrenMapGlobal[node.id].length > 0 ? `<div class="cmt-children">${await generateHtml(childrenMapGlobal[node.id])}</div>` : ''}
+          ${childrenMapGlobal[node.id] && childrenMapGlobal[node.id].length > 0 ? `<div class="cmt-children">${generateHtmlSync(childrenMapGlobal[node.id])}</div>` : ''}
         </div>`;
     }
     return html;
@@ -162,17 +174,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (oldBtn) oldBtn.remove();
     const nextBatch = allRoots.slice(currentRenderedCount, currentRenderedCount + PAGE_SIZE);
     if (nextBatch.length === 0) return;
-    const html = await generateHtml(nextBatch);
+    
+    // 🚀 优化：渲染前，先批量并发获取本批次所有未缓存的头像
+    const uniqueEmails = [...new Set(nextBatch.map(c => c.email))];
+    await Promise.all(uniqueEmails.map(getGravatarUrlCached));
+
+    // 头像全部就绪，瞬间同步组装 DOM
+    const html = generateHtmlSync(nextBatch);
     listDom.insertAdjacentHTML('beforeend', html); 
     currentRenderedCount += nextBatch.length;
+    
     if (currentRenderedCount < allRoots.length) {
-      listDom.insertAdjacentHTML('beforeend', `<div id="load-more-cmt-btn"><button type="button" onclick="loadMoreComments()" class="load-more-btn">看更多...</button></div>`);
+      listDom.insertAdjacentHTML('beforeend', `<div id="load-more-cmt-btn"><button type="button" onclick="loadMoreComments()" class="load-more-btn">加载更多</button></div>`);
     }
   };
 
   async function renderCommentsList(comments) {
     const listDom = document.getElementById('comments-list');
     if (comments.length === 0) { listDom.innerHTML = ''; return; }
+    
+    // 🚀 优化：渲染前一次性并发处理这棵树里所有相关联的人的头像（包括子评论）
+    const allUniqueEmails = [...new Set(comments.map(c => c.email))];
+    await Promise.all(allUniqueEmails.map(getGravatarUrlCached));
+
     const { roots, childrenMap } = buildFlatTree(comments);
     roots.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     allRoots = roots; childrenMapGlobal = childrenMap; currentRenderedCount = 0;
@@ -182,7 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.fetchKoobaiComments = async function() {
     try {
-      const targetUrl = window.KOOBAI_CURRENT_URL || window.location.pathname;
+      // 🚀 优化：强制去除原生 URL 的参数，保证干净
+      let targetUrl = window.KOOBAI_CURRENT_URL || window.location.pathname;
+      targetUrl = targetUrl.split('?')[0];
+      
       const res = await fetch(`${API_BASE}/comments?url=${encodeURIComponent(targetUrl)}`);
       if (res.ok) renderCommentsList(await res.json());
     } catch (err) { document.getElementById('comments-list').innerHTML = ''; }
@@ -218,8 +245,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('cmt-submit-btn'), msgDom = document.getElementById('cmt-status-msg');
         btn.disabled = true; msgDom.innerText = '发送中...'; msgDom.className = 'status-loading'; 
         
+        let submitUrl = window.KOOBAI_CURRENT_URL || window.location.pathname;
+        submitUrl = submitUrl.split('?')[0];
+
         const payload = {
-          url: window.KOOBAI_CURRENT_URL || window.location.pathname,
+          url: submitUrl,
           author: document.getElementById('cmt-author').value,
           email: document.getElementById('cmt-email').value,
           website: document.getElementById('cmt-website').value,
@@ -272,18 +302,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================
-  // 🚀 3. 初始加载逻辑 (随笔直显，唠叨详情自动触发)
+  // 🚀 3. 初始加载逻辑
   // ==========================
   const systemDom = document.getElementById('custom-comment-system');
   if (!systemDom) return;
 
   if (window.KOOBAI_IS_POST) {
-      // 随笔页面：直接显示并加载
       systemDom.style.display = 'block';
       window.fetchKoobaiComments();
   } else {
-      // 唠叨单页：我们给唠叨加了一个专门的 wrapper .laodao-main-card
-      // 直接触发主贴的点击事件，完美展开！
       const mainCardTrigger = document.querySelector('.laodao-main-card .koobai-comment-trigger');
       if (mainCardTrigger) {
           mainCardTrigger.click();
