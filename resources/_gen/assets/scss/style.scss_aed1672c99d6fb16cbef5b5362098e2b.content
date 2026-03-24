@@ -1264,57 +1264,6 @@ body:has(.menu-checkbox:checked) {
     @media (hover: hover) {
         html[data-theme="dark"] .post-tags .tag-link:hover {
           color: var(--text-highlight-dark-color); } }
-.page-tiaozhuan .floating-header,
-.page-tiaozhuan .site-footer-wrapper {
-  display: none !important; }
-
-.page-tiaozhuan .wrapper {
-  margin-top: 0 !important;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center; }
-
-.tiaozhuan-all {
-  color: var(--text-info-color);
-  text-align: center;
-  font-size: 0.85rem;
-  padding: 0 20px; }
-
-.tiaozhuan-title {
-  font-size: 1.3rem;
-  color: var(--text-content-color);
-  line-height: 1.4;
-  margin-bottom: 4px; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .tiaozhuan-title {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .tiaozhuan-title {
-    color: var(--text-content-dark-color); }
-
-.tiaozhuan-info {
-  margin-top: 6px; }
-
-.tiaozhuan-button {
-  margin-top: 20px; }
-  .tiaozhuan-button a {
-    color: var(--text-highlight-color);
-    border-radius: 99px;
-    padding: 10px 30px;
-    font-size: 0.9rem;
-    border: 1px solid var(--text-highlight-color);
-    display: inline-block; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .tiaozhuan-button a {
-        border: 1px solid var(--text-highlight-dark-color);
-        color: var(--text-highlight-dark-color); } }
-    html[data-theme="dark"] .tiaozhuan-button a {
-      border: 1px solid var(--text-highlight-dark-color);
-      color: var(--text-highlight-dark-color); }
-    @media (hover: hover) {
-      .tiaozhuan-button a:hover {
-        opacity: 0.6;
-        text-decoration: none; } }
 /* =========================================
    2. 年份导航 (Year Navigation)
 ========================================= */
@@ -3785,15 +3734,14 @@ textarea#cmt-content:focus::placeholder {
     background: var(--background-card-dark-color); }
 
 .cmt-main {
-  flex: 1;
-  display: grid;
-  gap: 6px; }
+  flex: 1; }
 
 .cmt-meta {
   display: flex;
   align-items: center;
   gap: 2px;
-  font-size: 0.85rem; }
+  font-size: 0.85rem;
+  line-height: 1; }
 
 .cmt-author {
   color: var(--text-info-color);
@@ -3825,7 +3773,7 @@ textarea#cmt-content:focus::placeholder {
 .cmt-date {
   color: var(--text-info-color);
   font-size: 0.75rem;
-  margin-left: 10px; }
+  margin-left: 5px; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .cmt-date {
       color: var(--text-info-dark-color); } }
@@ -3837,7 +3785,7 @@ textarea#cmt-content:focus::placeholder {
   line-height: 1.65;
   color: var(--text-content-color);
   word-break: break-all;
-  margin: 0; }
+  margin: 2px 0 4px 0; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .cmt-text {
       color: var(--text-content-dark-color); } }
@@ -3846,7 +3794,8 @@ textarea#cmt-content:focus::placeholder {
 
 .cmt-actions {
   display: flex;
-  gap: 12px; }
+  gap: 15px;
+  line-height: 1; }
 
 .cmt-btn {
   font-size: 0.75rem;
@@ -3885,7 +3834,7 @@ textarea#cmt-content:focus::placeholder {
 
 /* 强制两层嵌套 */
 .cmt-children {
-  margin-left: 52px;
+  margin-left: 40px;
   margin-top: 15px;
   display: grid;
   gap: 15px; }
@@ -3901,11 +3850,10 @@ textarea#cmt-content:focus::placeholder {
 /* 🚀 加载更多按钮样式 */
 #load-more-cmt-btn {
   text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px; }
+  margin-top: 5px; }
 
 .load-more-btn {
-  padding: 4px 15px;
+  padding: 6px 18px;
   background: transparent;
   border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
