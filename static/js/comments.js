@@ -36,7 +36,7 @@ document.addEventListener('click', (e) => {
 // 🚀 2. 评论系统核心逻辑
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = "https://c.yangle.vip/api"; 
+  const API_BASE = "https://comments.koobai.com/api"; 
   const ADMIN_EMAIL = "mekoobai@gmail.com"; 
   const PAGE_SIZE = 12;
 
