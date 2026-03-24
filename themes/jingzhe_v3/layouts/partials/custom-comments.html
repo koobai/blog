@@ -1,0 +1,36 @@
+<div id="custom-comment-system" class="koobai-comments" style="display: none;">
+  <div id="form-placeholder">
+    <div class="comment-form-wrap" id="main-form-wrap">
+      <form id="comment-form" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore>
+        <input type="hidden" id="cmt-parent-id" value="">
+        <div class="form-row">
+          <input type="text" id="cmt-author" placeholder="昵称" required>
+          <input type="email" id="cmt-email" placeholder="邮箱" required>
+          <input type="url" id="cmt-website" placeholder="网址">
+        </div>
+        <textarea id="cmt-content" placeholder="写下点什么..."></textarea>
+        
+        <div class="form-actions" style="position: relative;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="cmt-emoji-btn" id="cmt-emoji-btn" title="插入表情">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
+            </button>
+            <div id="replying-to-badge" class="reply-badge" style="display: none;">
+              <span>回复 </span><strong id="reply-target-name"></strong>
+              <button type="button" class="cancel-reply-btn" onclick="cancelReply()">(取消)</button>
+            </div>
+            <span id="cmt-status-msg"></span>
+          </div>
+          <button type="submit" id="cmt-submit-btn">写好了</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="comments-list"></div>
+
+<script>
+  window.KOOBAI_IS_POST = {{ if eq .Type "posts" }}true{{ else }}false{{ end }};
+  window.KOOBAI_CURRENT_URL = "{{ .RelPermalink }}";
+</script>
+<script src="/js/comments.js?v={{ now.Unix }}" defer></script>

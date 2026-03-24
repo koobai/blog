@@ -1,0 +1,371 @@
+/* 极简评论区基础样式 */
+.comment-form-wrap {
+  padding: 15px;
+  border-radius: 16px;
+  margin-bottom: 0;
+  border: 1px solid #eae8e5;
+  margin-top: 10px;
+
+  @include dark {
+    border: 1px solid #28282b;
+  }
+}
+#comments-list:not(:empty) {
+  margin-top: 20px;
+}
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  @include breakpoint("medium") {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.form-row input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 10px 10px 0;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-content-color);
+  outline: none;
+  font-size: 0.95rem;
+
+  @include dark {
+    border: none;
+    color: var(--text-content-dark-color);
+  }
+}
+
+textarea#cmt-content {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 10px 10px 0;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-content-color);
+  resize: none;
+  overflow: hidden;
+  min-height: 86px;
+  outline: none;
+  font-size: 1rem;
+  line-height: 1.65;
+
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+
+.form-row input::placeholder,
+textarea#cmt-content::placeholder {
+  color: var(--text-info-color);
+  opacity: 0.8;
+  transition: color 0.2s;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+/* 当输入框获得焦点时，让提示文字变得更淡，体验更好 */
+.form-row input:focus::placeholder,
+textarea#cmt-content:focus::placeholder {
+  opacity: 0.3;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#cmt-submit-btn {
+  background: transparent;
+  color: var(--text-highlight-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  outline: none;
+  font-size: 1rem;
+
+  @include dark {
+    color: var(--text-highlight-dark-color);
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+.comment-form-wrap:has(textarea#cmt-content:placeholder-shown) #cmt-submit-btn {
+  opacity: 0.2;
+  cursor: not-allowed;
+  &:hover {
+    opacity: 0.2;
+  }
+}
+#cmt-status-msg {
+  font-size: 0.85rem;
+  transition: color 0.2s;
+  /* 发送中 */
+  &.status-loading {
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+  /* 发送成功*/
+  &.status-success {
+    color: var(--text-highlight-color);
+    @include dark {
+      color: var(--text-highlight-dark-color);
+    }
+  }
+  /* 发送失败 */
+  &.status-error {
+    color: #ff4d4f;
+    @include dark {
+      color: #ff7875;
+    }
+  }
+}
+
+/* ==========================
+   🚀 回复状态徽章 (灰色胶囊)
+   ========================== */
+.reply-badge {
+  font-size: 0.8rem;
+  color: var(--text-info-color);
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+
+  strong {
+    color: var(--text-info-color);
+    font-weight: normal;
+
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  /* 取消回复按钮 */
+  .cancel-reply-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: inherit;
+    color: var(--text-info-color);
+    margin-left: 2px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    outline: none;
+
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/* 列表渲染样式 */
+#comments-list {
+  display: grid;
+  gap: 20px;
+}
+.cmt-body {
+  display: flex;
+  gap: 12px;
+}
+.cmt-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--background-card-color);
+  flex-shrink: 0;
+
+  @include dark {
+    background: var(--background-card-dark-color);
+  }
+}
+.cmt-main {
+  flex: 1;
+  display: grid;
+  gap: 6px;
+}
+.cmt-meta {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+.cmt-author {
+  color: var(--text-info-color);
+  text-decoration: none;
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+.reply-arrow {
+  color: var(--text-info-color);
+  font-size: 0.75rem;
+  margin: 0 2px;
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+.cmt-target {
+  color: var(--text-info-color);
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+.cmt-date {
+  color: var(--text-info-color);
+  font-size: 0.75rem;
+  margin-left: 10px;
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+.cmt-text {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-content-color);
+  word-break: break-all;
+  margin: 0;
+
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+.cmt-actions {
+  display: flex;
+  gap: 12px;
+}
+.cmt-btn {
+  font-size: 0.75rem;
+  color: var(--text-info-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none; /* 去除蓝框 */
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+
+  &:hover {
+    color: var(--text-content-color);
+    @include dark {
+      color: var(--text-content-dark-color);
+    }
+  }
+}
+
+/* 🚀 删除按钮的上帝模式切换 */
+.cmt-btn.delete {
+  color: var(--text-info-color);
+  display: none;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+.admin-mode .cmt-btn.delete {
+  display: inline-block;
+}
+
+/* 强制两层嵌套 */
+.cmt-children {
+  margin-left: 52px;
+  margin-top: 15px;
+  display: grid;
+  gap: 15px;
+}
+.cmt-children .cmt-avatar {
+  width: 28px;
+  height: 28px;
+}
+
+.cmt-main > .comment-form-wrap {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+/* 🚀 加载更多按钮样式 */
+#load-more-cmt-btn {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.load-more-btn {
+  padding: 4px 15px;
+  background: transparent;
+  border: 1px solid var(--text-highlight-color);
+  color: var(--text-highlight-color);
+  border-radius: 99px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  outline: none; /* 去除蓝框 */
+
+  @include dark {
+    border: 1px solid var(--text-highlight-dark-color);
+    color: var(--text-highlight-dark-color);
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+/* 🚀 Emoji 按钮样式 */
+.cmt-emoji-btn {
+  background: none;
+  border: none;
+  color: var(--text-info-color);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+  outline: none; /* 去除蓝框 */
+  opacity: 0.6;
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+
+  &:hover {
+    color: var(--text-content-color);
+    background: var(--background-card-border-color);
+
+    @include dark {
+      color: var(--text-content-dark-color);
+      background: var(--background-card-border-dark-color);
+    }
+  }
+}
