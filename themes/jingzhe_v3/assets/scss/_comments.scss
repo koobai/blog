@@ -191,14 +191,15 @@ textarea#cmt-content:focus::placeholder {
 }
 .cmt-body {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 .cmt-avatar {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--background-card-color);
   flex-shrink: 0;
+  margin-top: 4px;
 
   @include dark {
     background: var(--background-card-dark-color);
@@ -304,8 +305,8 @@ textarea#cmt-content:focus::placeholder {
   gap: 15px;
 }
 .cmt-children .cmt-avatar {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 
 .cmt-main > .comment-form-wrap {
