@@ -9,6 +9,4 @@ menu:
     identifier: "apps"
     name: "APPS"
     weight: 4
-    params:
-        umami_event: "Apps"
 ---
