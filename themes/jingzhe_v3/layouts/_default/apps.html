@@ -9,6 +9,10 @@
   
   <div class="app-list">
     {{ range $index, $app := $goods.good }}
+      
+      {{ $url := .link }}
+      {{ $isInternal := or (strings.Contains $url "koobai.com") (strings.HasPrefix $url "/") (strings.HasPrefix $url "#") }}
+
       <div class="app-card {{ if .image2 }}app-card-star{{ end }} img-hide">
         
         {{ if .image2 }}
@@ -16,13 +20,15 @@
           <img loading="lazy" decoding="async" src="{{ .image2 }}" alt="{{ .title2 }}">
         </div>
         {{ else }}
-        <a href="/tiaozhuan?target={{ .link | base64Encode }}" target="_blank" rel="noopener">
+        <a href="{{ $url | safeURL }}" 
+           {{ if not $isInternal }}target="_blank" rel="noopener external nofollow noreferrer"{{ end }}>
           <img class="app-icon" loading="lazy" decoding="async" src="{{ .image }}" alt="{{ .title }}">
         </a>
         {{ end }}
 
         <div class="app-content">
-          <a class="app-title" href="/tiaozhuan?target={{ .link | base64Encode }}" target="_blank" rel="noopener">
+          <a class="app-title" href="{{ $url | safeURL }}" 
+             {{ if not $isInternal }}target="_blank" rel="noopener external nofollow noreferrer"{{ end }}>
             {{ if .title2 }}{{ .title2 }}{{ else }}{{ .title }}{{ end }}
           </a>
           

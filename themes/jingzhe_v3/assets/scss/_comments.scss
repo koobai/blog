@@ -206,14 +206,13 @@ textarea#cmt-content:focus::placeholder {
 }
 .cmt-main {
   flex: 1;
-  display: grid;
-  gap: 6px;
 }
 .cmt-meta {
   display: flex;
   align-items: center;
   gap: 2px;
   font-size: 0.85rem;
+  line-height: 1;
 }
 .cmt-author {
   color: var(--text-info-color);
@@ -242,7 +241,7 @@ textarea#cmt-content:focus::placeholder {
 .cmt-date {
   color: var(--text-info-color);
   font-size: 0.75rem;
-  margin-left: 10px;
+  margin-left: 5px;
 
   @include dark {
     color: var(--text-info-dark-color);
@@ -253,7 +252,7 @@ textarea#cmt-content:focus::placeholder {
   line-height: 1.65;
   color: var(--text-content-color);
   word-break: break-all;
-  margin: 0;
+  margin: 2px 0 4px 0;
 
   @include dark {
     color: var(--text-content-dark-color);
@@ -261,7 +260,8 @@ textarea#cmt-content:focus::placeholder {
 }
 .cmt-actions {
   display: flex;
-  gap: 12px;
+  gap: 15px;
+  line-height: 1;
 }
 .cmt-btn {
   font-size: 0.75rem;
@@ -298,7 +298,7 @@ textarea#cmt-content:focus::placeholder {
 
 /* 强制两层嵌套 */
 .cmt-children {
-  margin-left: 52px;
+  margin-left: 40px;
   margin-top: 15px;
   display: grid;
   gap: 15px;
@@ -316,11 +316,10 @@ textarea#cmt-content:focus::placeholder {
 /* 🚀 加载更多按钮样式 */
 #load-more-cmt-btn {
   text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 5px;
 }
 .load-more-btn {
-  padding: 4px 15px;
+  padding: 6px 18px;
   background: transparent;
   border: 1px solid var(--text-highlight-color);
   color: var(--text-highlight-color);
