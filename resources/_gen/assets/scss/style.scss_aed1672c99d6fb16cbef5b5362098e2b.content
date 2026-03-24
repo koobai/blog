@@ -3883,7 +3883,6 @@ textarea#cmt-content:focus::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
   transition: all 0.2s;
   outline: none;
   /* 去除蓝框 */
@@ -3894,15 +3893,7 @@ textarea#cmt-content:focus::placeholder {
   html[data-theme="dark"] .cmt-emoji-btn {
     color: var(--text-info-dark-color); }
   .cmt-emoji-btn:hover {
-    color: var(--text-content-color);
-    background: var(--background-card-border-color); }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .cmt-emoji-btn:hover {
-        color: var(--text-content-dark-color);
-        background: var(--background-card-border-dark-color); } }
-    html[data-theme="dark"] .cmt-emoji-btn:hover {
-      color: var(--text-content-dark-color);
-      background: var(--background-card-border-dark-color); }
+    opacity: 1; }
 
 @font-face {
   font-family: "GeistMono";
