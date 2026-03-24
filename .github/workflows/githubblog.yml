@@ -10,13 +10,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # 升级到 v4
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3 # 建议升级到 v3
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
           extended: true
@@ -24,38 +24,20 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      # 1. 部署到当前仓库的 gh-pages 分支
+      # 1. 部署到当前仓库的 gh-pages 分支 (作为双重备份)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # 使用内置 token 即可，无需额外的 PERSONAL_TOKEN
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: gh-pages # 指定推送到当前仓库的这个分支
+          publish_branch: gh-pages
 
-      # 2. 同时将编译好的文件推送到宝塔服务器
-      - name: Deploy to BT Panel via rsync
-        uses: burnett01/rsync-deployments@v8
+      # 🚀 2. 全新步骤：直接将编译好的纯静态文件推送到 Cloudflare Pages
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          switches: -avz --delete  # -a 归档, -v 显示, -z 压缩, --delete 删除冗余文件
-          path: public/
-          remote_path: ${{ secrets.REMOTE_PATH }}
-          remote_host: ${{ secrets.SERVER_IP }}
-          remote_user: deploy
-          remote_key: ${{ secrets.SERVER_SSH_KEY }}
-
-      # 3. 刷新 ESA 缓存 (极简稳定版)
-      - name: Purge Aliyun ESA Cache
-        env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
-          ESA_SITE_ID: ${{ secrets.ESA_SITE_ID }}
-        run: |
-          /bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
-
-          aliyun esa PurgeCaches \
-            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
-            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
-            --region cn-hangzhou \
-            --SiteId "$ESA_SITE_ID" \
-            --Type file \
-            --Content '{"Files": ["https://koobai.com/"]}'
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: koobaiblog
+          directory: ./public
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
