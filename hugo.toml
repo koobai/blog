@@ -37,14 +37,13 @@ hasCJKLanguage = true           # 准确计算中文字数和摘要
     name = "唠叨"
     url = "/"
     weight = 1
-    params = { umami_event = "Home" }
     
   [[menu.main]]
     identifier = "Goods"
     name = "店铺"
     url = "https://qiszy.taobao.com"
     weight = 6
-    params = { new_window = true, umami_event = "Taobao" }
+    params = { new_window = true}
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
