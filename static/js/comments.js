@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = encoder.encode(key);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-    const url = `https://weavatar.com/avatar/${hashHex}?s=80&d=mp`;
+    const url = `https://weavatar.com/avatar/${hashHex}?s=50&d=mp`;
     
     avatarCache.set(key, url);
     return url;
