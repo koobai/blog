@@ -29,14 +29,14 @@ def fetch_tmdb_poster(movie):
     csv_year = movie.get('year')
     webp_name = f"{file_id}.webp"
 
-    # 1. 极速跳过又拍云已有海报
-    upyun_url = f"https://img.koobai.com/movie/{webp_name}"
+    # 1. 极速跳过 R2 已有海报 (增加浏览器伪装，防止被 CF 盾拦截)
+    r2_url = f"https://img.koobai.com/movie/{webp_name}"
     try:
-        req = urllib.request.Request(upyun_url, method='HEAD')
+        req = urllib.request.Request(r2_url, method='HEAD', headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
         urllib.request.urlopen(req, timeout=3)
         return 
     except:
-        pass 
+        pass
 
     season_match = re.search(r'\s*第([一二三四五六七八九十\d]+)季', title)
     season_num = chn_to_arabic(season_match.group(1)) if season_match else None

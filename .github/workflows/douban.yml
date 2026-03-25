@@ -29,15 +29,15 @@ jobs:
         TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
       run: python sync_movies.py
 
-    # 2. 上传海报：0 秒极速跳过魔法
-    - name: Sync Images to Upyun S3
+    # 2. 上传海报：同步到 Cloudflare R2
+    - name: Sync Images to Cloudflare R2
       if: env.HAS_NEW_POSTERS == 'true'
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.UPYUN_OPERATOR }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.UPYUN_PASSWORD }}
-        AWS_DEFAULT_REGION: us-east-1 
+        AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: auto 
       run: |
-        aws s3 sync ./temp_posters s3://${{ secrets.UPYUN_SERVICE }}/movie/ --endpoint-url https://s3.api.upyun.com
+        aws s3 sync ./temp_posters s3://img/movie/ --endpoint-url https://e6be3bc37da7aa1ba43255b3e8a7c1ac.r2.cloudflarestorage.com
 
     # 3. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净
     - name: Commit
