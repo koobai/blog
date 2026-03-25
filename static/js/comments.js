@@ -37,7 +37,7 @@ document.addEventListener('click', (e) => {
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
   const API_BASE = "https://comments.koobai.com/api"; 
-  const ADMIN_EMAIL = "mekoobai@gmail.com"; 
+  const ADMIN_EMAIL = "hi@koobai.com";
   const PAGE_SIZE = 12;
 
   let adminPass = localStorage.getItem('koobai_admin_pass');
