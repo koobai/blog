@@ -1029,8 +1029,6 @@ body:has(.menu-checkbox:checked) {
   border: 1px solid var(--text-highlight-color);
   margin-top: 20px;
   margin-bottom: 15px;
-  margin-right: auto;
-  margin-left: auto;
   display: block;
   width: fit-content;
   transition: all 0.3s ease; }
@@ -2615,7 +2613,7 @@ body:has(.menu-checkbox:checked) {
   padding: 10px 40px;
   font-size: 0.9rem;
   border: 1px solid var(--text-highlight-color);
-  margin: 15px auto;
+  margin: 20px 0;
   display: block;
   width: fit-content;
   transition: all 0.3s ease;
@@ -3850,8 +3848,8 @@ textarea#cmt-content:focus::placeholder {
 
 /* 🚀 加载更多按钮样式 */
 #load-more-cmt-btn {
-  text-align: center;
-  margin-top: 5px; }
+  margin-top: 5px;
+  margin-left: 40px; }
 
 .load-more-btn {
   padding: 6px 18px;
