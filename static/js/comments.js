@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-          const res = await fetch(`${API_BASE}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const res = await fetch(`${API_BASE}/comments/submit`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
           if (res.ok) {
             msgDom.innerText = '发送成功！'; msgDom.className = 'status-success'; 
             localStorage.setItem('koobai_user', JSON.stringify({ author: payload.author, email: payload.email, website: payload.website }));
