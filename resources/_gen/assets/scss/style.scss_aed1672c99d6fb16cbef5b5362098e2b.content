@@ -2593,10 +2593,13 @@ body:has(.menu-checkbox:checked) {
   align-items: center; }
 
 .laodao-comment {
-  cursor: pointer; }
+  cursor: pointer;
+  display: flex;
+  align-items: center; }
   .laodao-comment svg {
     width: 18px;
     height: 18px;
+    display: block;
     color: var(--text-info-color); }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .laodao-comment svg {
