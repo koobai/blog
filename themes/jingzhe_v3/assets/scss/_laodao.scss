@@ -383,8 +383,10 @@
   }
 }
 /* 只有当里面有文字时，hover才显示气泡 */
-.koobai-like-trigger:hover .koobai-tooltip:not(:empty) {
-  display: block;
+@media (hover: hover) and (pointer: fine) {
+  .koobai-like-trigger:hover .koobai-tooltip:not(:empty) {
+    display: block;
+  }
 }
 
 /* 2. 强制显示状态 (用于点击“已赞”后的就地提示) */
