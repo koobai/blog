@@ -78,6 +78,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 }
 .laodao-comment {
   cursor: pointer;
@@ -249,5 +250,141 @@
     &::before {
       background-color: var(--text-highlight-dark-color);
     }
+  }
+}
+
+/* ==========================================
+   唠叨点赞按钮 (极简空心大拇指 + 阅后即焚气泡)
+   ========================================== */
+
+/* ======== 1. 布局与基础属性 ======== */
+
+.koobai-like-trigger {
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* SVG 基础表现属性  */
+.like-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--text-info-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.2s ease;
+  display: block;
+  @include dark {
+    stroke: var(--text-info-dark-color);
+  }
+}
+
+/* ======== 2. 交互状态 ======== */
+/* 悬停时：灰色边框亮起 */
+.koobai-like-trigger:not(.liked):hover .like-icon {
+  stroke: var(--text-highlight-color);
+  @include dark {
+    stroke: var(--text-highlight-dark-color);
+  }
+}
+
+/* 点赞后：鼠标变回普通指针，边框永久变橙色 */
+.koobai-like-trigger.liked {
+  cursor: default;
+}
+.koobai-like-trigger.liked .like-icon {
+  stroke: var(--text-highlight-color);
+  @include dark {
+    stroke: var(--text-highlight-dark-color);
+  }
+}
+
+/* ======== 3. 动态回弹效果 (点击瞬间) ======== */
+.koobai-like-trigger.animating .like-icon {
+  animation: thumbPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes thumbPop {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(0.8) rotate(-10deg);
+  }
+  50% {
+    transform: scale(1.3) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ======== 4. 阅后即焚 +1 飘字 ======== */
+.koobai-floating-plus {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-highlight-color);
+  font-weight: 700;
+  font-size: 14px;
+  pointer-events: none; /* 防止气泡遮挡鼠标后续点击 */
+  animation: floatUpAndFade 0.8s ease-out forwards;
+  @include dark {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+@keyframes floatUpAndFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -35px) scale(1.2);
+  }
+}
+
+/* ======== 极简自定义 Tooltip 悬浮层 (位于下方、左对齐、无小三角、无动画) ======== */
+.koobai-tooltip {
+  position: absolute;
+  top: 100%; /* 放在大拇指正下方 */
+  left: 0; /* 与大拇指左边缘对齐，彻底解决左侧溢出屏幕问题 */
+  margin-top: 8px; /* 距离大拇指的间距 */
+
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+  pointer-events: none; /* 防止遮挡鼠标导致闪烁 */
+  display: none; /* 默认隐藏，使用 display 直接切断，彻底去除动画 */
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  @include dark {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: var(--text-content-dark-color);
+  }
+}
+/* 只有当里面有文字时，hover才显示气泡 */
+.koobai-like-trigger:hover .koobai-tooltip:not(:empty) {
+  display: block;
+}
+
+/* 2. 强制显示状态 (用于点击“已赞”后的就地提示) */
+.koobai-like-trigger .koobai-tooltip.force-show {
+  display: block;
+  background-color: var(--text-highlight-color);
+  @include dark {
+    color: #fff;
+    background-color: var(--text-highlight-dark-color);
   }
 }
