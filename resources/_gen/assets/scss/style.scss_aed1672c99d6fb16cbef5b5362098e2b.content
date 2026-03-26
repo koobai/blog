@@ -2509,8 +2509,6 @@ body:has(.menu-checkbox:checked) {
 
 .laodao-card,
 .index-post {
-  display: grid;
-  gap: 6px;
   padding: 15px;
   background: var(--background-card-color);
   border-radius: 16px;
@@ -2522,6 +2520,10 @@ body:has(.menu-checkbox:checked) {
   html[data-theme="dark"] .laodao-card, html[data-theme="dark"] .index-post {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color); }
+
+.laodao-time,
+.posts-index-heard {
+  margin-bottom: 6px; }
 
 .laodao-time a,
 .index-post-time {
@@ -2571,7 +2573,8 @@ body:has(.menu-checkbox:checked) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem; }
+  font-size: 0.85rem;
+  margin-top: 8px; }
 
 .laodao-tags .laodao-tag,
 .laodao-location {
@@ -2702,7 +2705,7 @@ body:has(.menu-checkbox:checked) {
 .index-post-img-wrap {
   display: block;
   width: 50%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   margin-top: 6px; }
   @media (min-width: 768px) {
     .index-post-img-wrap {
