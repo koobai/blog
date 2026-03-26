@@ -2521,9 +2521,9 @@ body:has(.menu-checkbox:checked) {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color); }
 
-.laodao-time,
-.posts-index-heard {
-  margin-bottom: 6px; }
+.laodao-time {
+  margin-bottom: 6px;
+  line-height: 1; }
 
 .laodao-time a,
 .index-post-time {
@@ -2685,7 +2685,9 @@ body:has(.menu-checkbox:checked) {
 .posts-index-heard {
   display: flex;
   gap: 6px;
-  align-items: center; }
+  align-items: center;
+  line-height: 1;
+  margin-bottom: 8px; }
 
 .posts-index-info {
   font-size: 0.85rem;
