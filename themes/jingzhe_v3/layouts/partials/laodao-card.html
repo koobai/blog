@@ -8,7 +8,15 @@
           {{ .Date.Format "2006-01-02 15:04" }}
         {{ end }}
     </a>
+    {{ if .Params.location }}
+    {{ $latlng := split .Params.latlng "," }}
+    {{ $lat := index $latlng 0 }}
+    {{ $lon := index $latlng 1 }}
+    <a href="https://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}#map=16/{{ $lat }}/{{ $lon }}" target="_blank" class="laodao-location">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>{{ .Params.location }}</a>
+      {{ end }}
   </div>
+  
   
   {{ $rawContent := .Content }}
   {{ $images := findRE "<img[^>]*class=\"[^\"]*laodao-photo[^\"]*\"[^>]*>" $rawContent }}
@@ -33,21 +41,11 @@
   </div>
 
   <div class="laodao-footer">
-    <div class="laodao-tags">
-    
+    <div class="laodao-tags">   
    {{/* {{ range (.GetTerms "laodaotags") }}
   <a href="{{ .RelPermalink }}" class="laodao-tag">#{{ .LinkTitle }}</a>
   {{ end }} 
    */}}
-
-    {{ if .Params.location }}
-    {{ $latlng := split .Params.latlng "," }}
-    {{ $lat := index $latlng 0 }}
-    {{ $lon := index $latlng 1 }}
-    <a href="https://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}#map=16/{{ $lat }}/{{ $lon }}" target="_blank" class="laodao-location">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>{{ .Params.location }}</a>
-      {{ end }}
-
       <span class="koobai-like-trigger" data-url="{{ .RelPermalink }}">       
         <svg class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
@@ -55,7 +53,7 @@
         <span class="koobai-tooltip"></span>
       </span>
     </div>
-    
+  
     <div class="laodao-comment">
       <span class="koobai-comment-trigger" data-url="{{ .RelPermalink }}">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"></path><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"></path></svg>

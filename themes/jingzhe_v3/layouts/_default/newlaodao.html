@@ -131,27 +131,18 @@
 
             let timeStr = STATE.date ? STATE.date.substring(5, 16).replace('T', ' ') : new Date().toLocaleString('zh-CN', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}).replace('/', '-');
             
-            let locationHtml = STATE.location ? `<a href="javascript:void(0)" class="laodao-location">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>${STATE.location.name}</a>` : '';
-            
-            tags = [...new Set(tags)];
-            let tagsHtml = tags.map(t => `<a href="javascript:void(0)" class="laodao-tag">#${t}</a>`).join('');
-
+           
             // 5. 渲染（已彻底去掉多余的评论 SVG 结构）
             previewCard.innerHTML = `
-              <div class="laodao-time"><a style="opacity: 0.6;">${timeStr} (预览)</a></div>
+              <div class="laodao-time"><a>${timeStr}</a>
+            <a href="javascript:void(0)" class="laodao-location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>${STATE.location.name}</a>
+            </div>
               <div class="laodao-content datacont">
                 ${finalTextHtml}
                 ${galleryHtml}
               </div>
-              <div class="laodao-footer">
-                <div class="laodao-tags">
-                  ${tagsHtml}
-                  ${locationHtml}
-                </div>
-              </div>
             `;
-
             previewCard.style.display = 'grid'; 
             btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
         } else {
