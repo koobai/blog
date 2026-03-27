@@ -29,12 +29,6 @@
           <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
         </a> 
         {{ end }}
-          {{ with .GetTerms "tags" }}
-            <div class="post-tags"> {{ range . }}
-                <a href="{{ .RelPermalink }}" class="tag-link">#{{ .LinkTitle }}</a>
-              {{ end }}
-            </div>
-          {{ end }}
       </div>
        {{/* 唠叨 */}}
     {{ else if eq .Type "laodao" }}

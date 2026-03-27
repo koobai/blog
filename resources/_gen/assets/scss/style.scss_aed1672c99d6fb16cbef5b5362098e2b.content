@@ -2574,11 +2574,16 @@ body:has(.menu-checkbox:checked) {
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  margin-top: 8px; }
-
+  margin-top: 14px; }
+  @media (min-width: 768px) {
+    .laodao-footer {
+      margin-top: 8px; } }
 .laodao-tags .laodao-tag,
 .laodao-location {
   color: var(--text-info-color); }
+  .laodao-tags .laodao-tag svg,
+  .laodao-location svg {
+    opacity: 0.8; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .laodao-tags .laodao-tag, html:not([data-theme="light"]) .laodao-location {
       color: var(--text-info-dark-color); } }
@@ -2592,7 +2597,7 @@ body:has(.menu-checkbox:checked) {
 .laodao-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 15px;
   align-items: center; }
 
 .laodao-comment {
@@ -2600,9 +2605,10 @@ body:has(.menu-checkbox:checked) {
   display: flex;
   align-items: center; }
   .laodao-comment svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     display: block;
+    opacity: 0.6;
     color: var(--text-info-color); }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .laodao-comment svg {
@@ -2610,8 +2616,11 @@ body:has(.menu-checkbox:checked) {
     html[data-theme="dark"] .laodao-comment svg {
       color: var(--text-info-dark-color); }
     .laodao-comment svg:hover {
-      opacity: 0.6; }
-
+      opacity: 1; }
+    @media (min-width: 768px) {
+      .laodao-comment svg {
+        width: 18px;
+        height: 18px; } }
 .laodao-more .laodao-more-b {
   background: transparent;
   cursor: pointer;
@@ -2707,7 +2716,6 @@ body:has(.menu-checkbox:checked) {
 .index-post-img-wrap {
   display: block;
   width: 50%;
-  margin-bottom: 10px;
   margin-top: 6px; }
   @media (min-width: 768px) {
     .index-post-img-wrap {
@@ -2753,28 +2761,30 @@ body:has(.menu-checkbox:checked) {
 .koobai-like-trigger {
   display: flex;
   align-items: center;
-  width: 16px;
-  height: 16px;
   position: relative;
   cursor: pointer; }
 
 /* SVG 基础表现属性  */
 .like-icon {
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: var(--text-info-color);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: all 0.2s ease;
-  display: block; }
+  display: block;
+  opacity: 0.6; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .like-icon {
       stroke: var(--text-info-dark-color); } }
   html[data-theme="dark"] .like-icon {
     stroke: var(--text-info-dark-color); }
-
+  @media (min-width: 768px) {
+    .like-icon {
+      width: 18px;
+      height: 18px; } }
 /* ======== 2. 交互状态 ======== */
 /* 悬停时：灰色边框亮起 */
 .koobai-like-trigger:not(.liked):hover .like-icon {
@@ -2868,8 +2878,9 @@ body:has(.menu-checkbox:checked) {
     color: var(--text-content-dark-color); }
 
 /* 只有当里面有文字时，hover才显示气泡 */
-.koobai-like-trigger:hover .koobai-tooltip:not(:empty) {
-  display: block; }
+@media (hover: hover) and (pointer: fine) {
+  .koobai-like-trigger:hover .koobai-tooltip:not(:empty) {
+    display: block; } }
 
 /* 2. 强制显示状态 (用于点击“已赞”后的就地提示) */
 .koobai-like-trigger .koobai-tooltip.force-show {

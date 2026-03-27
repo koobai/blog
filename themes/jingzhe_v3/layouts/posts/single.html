@@ -22,12 +22,6 @@
               {{ .Date.Format "2006-01-02" }}
             {{ end }}
           </time>
-      {{ with .GetTerms "tags" }}
-        <div class="post-tags"> 
-          {{ range . }}
-          <a href="{{ .RelPermalink }}" class="tag-link">#{{ .LinkTitle }}</a>
-        {{ end }}
-      {{ end }}
   </footer>
   
   <button type="button" 
