@@ -133,11 +133,18 @@
             
            
             // 5. 渲染（已彻底去掉多余的评论 SVG 结构）
+            let locationHtml = '';
+            if (STATE.location && STATE.location.name) {
+                locationHtml = `
+                <a href="javascript:void(0)" class="laodao-location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>${STATE.location.name}
+                </a>`;
+            }
+
             previewCard.innerHTML = `
               <div class="laodao-time"><a>${timeStr}</a>
-            <a href="javascript:void(0)" class="laodao-location">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>${STATE.location.name}</a>
-            </div>
+                ${locationHtml}
+              </div>
               <div class="laodao-content datacont">
                 ${finalTextHtml}
                 ${galleryHtml}
