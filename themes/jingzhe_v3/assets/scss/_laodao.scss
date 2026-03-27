@@ -62,12 +62,18 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  margin-top: 8px;
+  margin-top: 14px;
+  @include breakpoint("medium") {
+    margin-top: 8px;
+  }
 }
 
 .laodao-tags .laodao-tag,
 .laodao-location {
   color: var(--text-info-color);
+  svg {
+    opacity: 0.8;
+  }
   @include dark {
     color: var(--text-info-dark-color);
   }
@@ -80,7 +86,7 @@
 .laodao-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 15px;
   align-items: center;
 }
 .laodao-comment {
@@ -88,15 +94,20 @@
   display: flex;
   align-items: center;
   svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     display: block;
+    opacity: 0.6;
     color: var(--text-info-color);
     @include dark {
       color: var(--text-info-dark-color);
     }
     &:hover {
-      opacity: 0.6;
+      opacity: 1;
+    }
+    @include breakpoint("medium") {
+      width: 18px;
+      height: 18px;
     }
   }
 }
@@ -219,7 +230,6 @@
 .index-post-img-wrap {
   display: block;
   width: 50%;
-  margin-bottom: 10px;
   margin-top: 6px;
   @include breakpoint("medium") {
     width: 30%;
@@ -270,16 +280,14 @@
 .koobai-like-trigger {
   display: flex;
   align-items: center;
-  width: 16px;
-  height: 16px;
   position: relative;
   cursor: pointer;
 }
 
 /* SVG 基础表现属性  */
 .like-icon {
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: var(--text-info-color);
   stroke-width: 2;
@@ -287,8 +295,13 @@
   stroke-linejoin: round;
   transition: all 0.2s ease;
   display: block;
+  opacity: 0.6;
   @include dark {
     stroke: var(--text-info-dark-color);
+  }
+  @include breakpoint("medium") {
+    width: 18px;
+    height: 18px;
   }
 }
 

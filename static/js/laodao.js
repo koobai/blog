@@ -48,7 +48,7 @@ async function initLikes() {
     trigger.addEventListener('click', () => {
       // 🚀 优化 4：直接用 JS 变量 isLiked 判断，极速且优雅
       if (isLiked) {
-        tooltip.textContent = '已经悄悄记下你的赞啦~';
+        tooltip.textContent = '已经悄悄记下你的赞';
         tooltip.classList.add('force-show');
         setTimeout(() => { updateText(); tooltip.classList.remove('force-show'); }, 1500);
         return;
