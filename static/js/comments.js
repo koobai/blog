@@ -258,12 +258,29 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-          // 先召唤盾牌获取通行证
-          const token = await turnstile.execute('0x4AAAAAACw0z9xeBryoGaUA', { action: 'submit_comment' });
+          // 🚀 终极完美版：通过 Promise 动态封装隐形发卡器
+          if (!window.getTurnstileToken) {
+            window.getTurnstileToken = function(action) {
+              return new Promise((resolve, reject) => {
+                if (typeof turnstile === 'undefined') return reject(new Error('人机验证超时，刷新重试。'));
+                const div = document.createElement('div');
+                document.body.appendChild(div);
+                const wId = turnstile.render(div, {
+                  sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+                  size: 'invisible', 
+                  action: action,
+                  callback: t => { resolve(t); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); },
+                  'error-callback': () => { reject(new Error('人机验证超时，刷新重试。')); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); }
+                });
+              });
+            };
+          }
+
+          // 召唤盾牌获取通行证
+          const token = await window.getTurnstileToken('submit_comment');
           
-          if (!token) throw new Error('人机验证超时，刷新重试。');
-          
-          const res = await fetch(`${API_BASE}/comments/submit`, { 
+          // 再带着通行证发送评论请求 (下面是你原本的代码)
+          const res = await fetch(`${API_BASE}/comments/submit`, {
             method: 'POST', 
             headers: { 
               'Content-Type': 'application/json',

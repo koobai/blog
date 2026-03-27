@@ -78,7 +78,24 @@ async function initLikes() {
       // 后台带 Turnstile 隐形验证的静默发送
       (async () => {
         try {
-          const token = await turnstile.execute('0x4AAAAAACw0z9xeBryoGaUA', { action: 'like_laodao' });
+          if (!window.getTurnstileToken) {
+            window.getTurnstileToken = function(action) {
+              return new Promise((resolve, reject) => {
+                if (typeof turnstile === 'undefined') return reject(new Error('验证未加载'));
+                const div = document.createElement('div');
+                document.body.appendChild(div);
+                const wId = turnstile.render(div, {
+                  sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+                  size: 'invisible', 
+                  action: action,
+                  callback: t => { resolve(t); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); },
+                  'error-callback': () => { reject(new Error('验证失败')); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); }
+                });
+              });
+            };
+          }
+          const token = await window.getTurnstileToken('like_laodao');
+          
           await fetch('https://likes.koobai.com/api/likes/submit', {
             method: 'POST',
             headers: { 
