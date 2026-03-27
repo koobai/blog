@@ -62,15 +62,16 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  margin-top: 14px;
+  margin-top: 12px;
   @include breakpoint("medium") {
     margin-top: 8px;
   }
 }
 
-.laodao-tags .laodao-tag,
 .laodao-location {
   color: var(--text-info-color);
+  margin-left: 6px;
+  line-height: 1;
   svg {
     opacity: 0.8;
   }
@@ -94,8 +95,8 @@
   display: flex;
   align-items: center;
   svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     display: block;
     opacity: 0.6;
     color: var(--text-info-color);
@@ -286,8 +287,8 @@
 
 /* SVG 基础表现属性  */
 .like-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: var(--text-info-color);
   stroke-width: 2;

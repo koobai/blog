@@ -2574,20 +2574,20 @@ body:has(.menu-checkbox:checked) {
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  margin-top: 14px; }
+  margin-top: 12px; }
   @media (min-width: 768px) {
     .laodao-footer {
       margin-top: 8px; } }
-.laodao-tags .laodao-tag,
 .laodao-location {
-  color: var(--text-info-color); }
-  .laodao-tags .laodao-tag svg,
+  color: var(--text-info-color);
+  margin-left: 6px;
+  line-height: 1; }
   .laodao-location svg {
     opacity: 0.8; }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .laodao-tags .laodao-tag, html:not([data-theme="light"]) .laodao-location {
+    html:not([data-theme="light"]) .laodao-location {
       color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .laodao-tags .laodao-tag, html[data-theme="dark"] .laodao-location {
+  html[data-theme="dark"] .laodao-location {
     color: var(--text-info-dark-color); }
 
 .laodao-tags .laodao-tag:hover {
@@ -2605,8 +2605,8 @@ body:has(.menu-checkbox:checked) {
   display: flex;
   align-items: center; }
   .laodao-comment svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     display: block;
     opacity: 0.6;
     color: var(--text-info-color); }
@@ -2766,8 +2766,8 @@ body:has(.menu-checkbox:checked) {
 
 /* SVG 基础表现属性  */
 .like-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: var(--text-info-color);
   stroke-width: 2;
