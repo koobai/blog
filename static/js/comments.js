@@ -258,19 +258,41 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-          const res = await fetch(`${API_BASE}/comments/submit`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          // 先召唤盾牌获取通行证
+          const token = await turnstile.execute('0x4AAAAAACw0z9xeBryoGaUA', { action: 'submit_comment' });
+          
+          if (!token) throw new Error('人机验证超时，刷新重试。');
+          
+          const res = await fetch(`${API_BASE}/comments/submit`, { 
+            method: 'POST', 
+            headers: { 
+              'Content-Type': 'application/json',
+              'CF-Turnstile-Response': token 
+            }, 
+            body: JSON.stringify(payload) 
+          });
+
           if (res.ok) {
             msgDom.innerText = '发送成功！'; msgDom.className = 'status-success'; 
             localStorage.setItem('koobai_user', JSON.stringify({ author: payload.author, email: payload.email, website: payload.website }));
             document.getElementById('cmt-content').value = ''; cancelReply(); window.fetchKoobaiComments(); 
           } else { 
-            const err = await res.json(); msgDom.innerText = err.error || '发送失败。'; msgDom.className = 'status-error'; 
+            const err = await res.json(); 
+            // 如果后端 Worker 拦截了，提示文字就会在这里被精准展示出来
+            msgDom.innerText = err.error || '发送失败。'; msgDom.className = 'status-error'; 
           }
-        } catch (err) { msgDom.innerText = '网络错误。'; msgDom.className = 'status-error'; } 
-        finally { btn.disabled = false; setTimeout(() => { msgDom.innerText = ''; msgDom.className = ''; }, 3000); }
-      });
-  }
-
+        } catch (err) { 
+          // 优雅捕获网络错误和验证超时
+          msgDom.innerText = err.message === '人机验证超时，刷新重试。' ? err.message : '网络错误。'; 
+          msgDom.className = 'status-error'; 
+        } 
+        finally { 
+          btn.disabled = false; 
+          setTimeout(() => { msgDom.innerText = ''; msgDom.className = ''; }, 3000); 
+        }
+      }); 
+  } 
+  
   window.deleteCmt = async function(id) {
     if (!confirm('确定要删除这条评论吗？')) return;
     try {
@@ -301,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-// ==========================
+  // ==========================
   // 🚀 3. 初始加载逻辑
   // ==========================
   const systemDom = document.getElementById('custom-comment-system');
@@ -319,4 +341,4 @@ document.addEventListener('DOMContentLoaded', () => {
           mainCardTrigger.click();
       }
   }
-});
+}); 

@@ -48,7 +48,7 @@ async function initLikes() {
     trigger.addEventListener('click', () => {
       // 🚀 优化 4：直接用 JS 变量 isLiked 判断，极速且优雅
       if (isLiked) {
-        tooltip.textContent = '已经悄悄记下你的赞';
+        tooltip.textContent = '已悄悄记下你的赞';
         tooltip.classList.add('force-show');
         setTimeout(() => { updateText(); tooltip.classList.remove('force-show'); }, 1500);
         return;
@@ -75,12 +75,20 @@ async function initLikes() {
       trigger.appendChild(bubble);
       setTimeout(() => bubble.remove(), 800);
 
-      // 后台静默发送
-      fetch('https://likes.koobai.com/api/likes/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
-      }).catch(()=>{});
+      // 后台带 Turnstile 隐形验证的静默发送
+      (async () => {
+        try {
+          const token = await turnstile.execute('0x4AAAAAACw0z9xeBryoGaUA', { action: 'like_laodao' });
+          await fetch('https://likes.koobai.com/api/likes/submit', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'CF-Turnstile-Response': token 
+            },
+            body: JSON.stringify({ url })
+          });
+        } catch(e) { console.error("Turnstile 拦截:", e); }
+      })();
     });
   });
 }
