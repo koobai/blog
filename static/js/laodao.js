@@ -75,36 +75,49 @@ async function initLikes() {
       trigger.appendChild(bubble);
       setTimeout(() => bubble.remove(), 800);
 
-      // 后台带 Turnstile 隐形验证的静默发送
+      // 后台带 Turnstile 隐形验证的静默发送 (懒加载极速版)
       (async () => {
         try {
-          if (!window.getTurnstileToken) {
-            window.getTurnstileToken = function(action) {
-              return new Promise((resolve, reject) => {
-                if (typeof turnstile === 'undefined') return reject(new Error('验证未加载'));
-                const div = document.createElement('div');
-                document.body.appendChild(div);
-                const wId = turnstile.render(div, {
-                  sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
-                  size: 'invisible', 
-                  action: action,
-                  callback: t => { resolve(t); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); },
-                  'error-callback': () => { reject(new Error('验证失败')); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); }
-                });
-              });
-            };
-          }
-          const token = await window.getTurnstileToken('like_laodao');
+          const token = await new Promise(resolve => {
+            // 如果没加载出来，直接放行返回 null (防止点赞卡死)
+            if (typeof turnstile === 'undefined') return resolve(null);
+            
+            // 现搭舞台
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            
+            // 召唤隐形盾牌
+            const wId = turnstile.render(div, {
+              sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+              size: 'invisible',
+              action: 'like_laodao',
+              callback: t => { 
+                resolve(t); 
+                turnstile.remove(wId); 
+                div.remove(); 
+              },
+              'error-callback': () => { 
+                resolve(null); 
+                turnstile.remove(wId); 
+                div.remove(); 
+              }
+            });
+          });
           
+          if (!token) return;
+
+          // 带着刚拿到的热乎通行证发给服务器
           await fetch('https://likes.koobai.com/api/likes/submit', {
             method: 'POST',
             headers: { 
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json', 
               'CF-Turnstile-Response': token 
             },
             body: JSON.stringify({ url })
           });
-        } catch(e) { console.error("Turnstile 拦截:", e); }
+        } catch(e) { 
+          console.error("Turnstile 拦截:", e); 
+        }
       })();
     });
   });
