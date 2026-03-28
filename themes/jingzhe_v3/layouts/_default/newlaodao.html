@@ -284,7 +284,17 @@
     const GeoHelper = {
         getPosition: () => new Promise((resolve, reject) => {
             if (!navigator.geolocation) return reject("浏览器不支持定位");
-            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000, enableHighAccuracy: true });
+            navigator.geolocation.getCurrentPosition(
+                resolve, 
+                (err) => {
+                    // 🚀 核心修复：把底层的错误对象翻译成直白的字符串，传给你的 catch
+                    if (err.code === 1) reject("定位失败：你或系统拒绝了定位权限");
+                    else if (err.code === 2) reject("定位失败：位置信息不可用");
+                    else if (err.code === 3) reject("定位失败：获取超时，请重试");
+                    else reject("定位失败：发生未知错误");
+                }, 
+                { timeout: 10000, enableHighAccuracy: true }
+            );
         }),
         getAddress: async (lat, lon) => {
             const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${CONFIG.mapboxToken}&language=zh-CN`;
