@@ -323,7 +323,13 @@
             cocoMessage.success("定位成功");
         } catch (e) {
             if (typeof locMsg === 'function') locMsg();
-            cocoMessage.error(typeof e === 'string' ? e : "定位获取失败，请检查权限");
+            
+            // 👇 1. 在 F12 控制台打印真正的错误对象！
+            console.error("🕵️‍♂️ 真正的报错细节：", e); 
+            
+            // 👇 2. 把对象自带的 message 弹出来，别再用死板的兜底文字了
+            let errorText = typeof e === 'string' ? e : (e.message || "定位获取失败，请检查权限");
+            cocoMessage.error(errorText);
         }
     }
 
