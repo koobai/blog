@@ -281,27 +281,31 @@
         STATE.emoji = div;
     }
 
-    const GeoHelper = {
-        getPosition: () => new Promise((resolve, reject) => {
-            if (!navigator.geolocation) return reject("浏览器不支持定位");
-            navigator.geolocation.getCurrentPosition(
-                resolve, 
-                (err) => {
-                    // 🚀 核心修复：把底层的错误对象翻译成直白的字符串，传给你的 catch
-                    if (err.code === 1) reject("定位失败：你或系统拒绝了定位权限");
-                    else if (err.code === 2) reject("定位失败：位置信息不可用");
-                    else if (err.code === 3) reject("定位失败：获取超时，请重试");
-                    else reject("定位失败：发生未知错误");
-                }, 
-                { timeout: 10000, enableHighAccuracy: true }
-            );
-        }),
-        getAddress: async (lat, lon) => {
-            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${CONFIG.mapboxToken}&language=zh-CN`;
-            const res = await fetch(url);
-            const data = await res.json();
+    // 采用 var 和传统函数写法，彻底绕过 CF 压缩器的作用域重命名 Bug
+    var GeoHelper = {
+        getPosition: function() {
+            return new Promise(function(resolve, reject) {
+                if (!navigator.geolocation) return reject("浏览器不支持定位");
+                navigator.geolocation.getCurrentPosition(
+                    resolve, 
+                    function(err) {
+                        if (err.code === 1) reject("定位失败：你或系统拒绝了定位权限");
+                        else if (err.code === 2) reject("定位失败：位置信息不可用");
+                        else if (err.code === 3) reject("定位失败：获取超时，请重试");
+                        else reject("定位失败：发生未知错误");
+                    }, 
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            });
+        },
+        getAddress: async function(lat, lon) {
+            var url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${CONFIG.mapboxToken}&language=zh-CN`;
+            var res = await fetch(url);
+            var data = await res.json();
             if (data.features && data.features.length > 0) {
-                const target = data.features.find(f => !f.place_type.includes('postcode') && !/^\d+$/.test(f.text));
+                var target = data.features.find(function(f) { 
+                    return !f.place_type.includes('postcode') && !/^\d+$/.test(f.text); 
+                });
                 return target ? target.text : data.features[0].text;
             }
             return "未知位置";
@@ -310,25 +314,23 @@
 
     async function getLocation(btn) {
         if (STATE.location) return; 
-        let locMsg = cocoMessage.info("正在与卫星通信", 0);
+        var locMsg = cocoMessage.info("正在与卫星通信", 0);
         try {
-            const pos = await GeoHelper.getPosition();
-            const { latitude, longitude } = pos.coords;
-            const name = await GeoHelper.getAddress(latitude, longitude);
+            // 全面使用 var，让压缩器无懈可击
+            var pos = await GeoHelper.getPosition();
+            var latitude = pos.coords.latitude;
+            var longitude = pos.coords.longitude;
+            var name = await GeoHelper.getAddress(latitude, longitude);
             
-            STATE.location = { name, lat: latitude, lng: longitude };
-            renderLocation(); scheduleSaveDraft(); 
+            STATE.location = { name: name, lat: latitude, lng: longitude };
+            renderLocation(); 
+            scheduleSaveDraft(); 
             
             if (typeof locMsg === 'function') locMsg();
             cocoMessage.success("定位成功");
-        } catch (e) {
+        } catch (err) {
             if (typeof locMsg === 'function') locMsg();
-            
-            // 👇 1. 在 F12 控制台打印真正的错误对象！
-            console.error("🕵️‍♂️ 真正的报错细节：", e); 
-            
-            // 👇 2. 把对象自带的 message 弹出来，别再用死板的兜底文字了
-            let errorText = typeof e === 'string' ? e : (e.message || "定位获取失败，请检查权限");
+            var errorText = typeof err === 'string' ? err : (err.message || "定位获取失败，请检查权限");
             cocoMessage.error(errorText);
         }
     }
