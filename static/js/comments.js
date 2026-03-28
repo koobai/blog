@@ -36,6 +36,23 @@ document.addEventListener('click', (e) => {
 // 🚀 2. 评论系统核心逻辑
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
+  let cmtTurnstileId = null;
+  let cmtTokenResolve = null;
+  let cmtTokenReject = null;
+  const initCmtTurnstile = setInterval(() => {
+    if (window.turnstile) {
+      clearInterval(initCmtTurnstile);
+      const div = document.createElement('div');
+      document.body.appendChild(div);
+      cmtTurnstileId = turnstile.render(div, {
+        sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+        size: 'invisible',
+        callback: (t) => { if (cmtTokenResolve) cmtTokenResolve(t); },
+        'error-callback': () => { if (cmtTokenReject) cmtTokenReject(new Error('人机验证超时，刷新重试。')); }
+      });
+    }
+  }, 200);
+
   const API_BASE = "https://comments.koobai.com/api"; 
   const ADMIN_EMAIL = "hi@koobai.com";
   const PAGE_SIZE = 12;
@@ -257,29 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
           parent_id: document.getElementById('cmt-parent-id').value || null
         };
 
-        try {
-          // 🚀 终极完美版：通过 Promise 动态封装隐形发卡器
-          if (!window.getTurnstileToken) {
-            window.getTurnstileToken = function(action) {
-              return new Promise((resolve, reject) => {
-                if (typeof turnstile === 'undefined') return reject(new Error('人机验证超时，刷新重试。'));
-                const div = document.createElement('div');
-                document.body.appendChild(div);
-                const wId = turnstile.render(div, {
-                  sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
-                  size: 'invisible', 
-                  action: action,
-                  callback: t => { resolve(t); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); },
-                  'error-callback': () => { reject(new Error('人机验证超时，刷新重试。')); setTimeout(() => { turnstile.remove(wId); div.remove(); }, 1000); }
-                });
-              });
-            };
-          }
-
-          // 召唤盾牌获取通行证
-          const token = await window.getTurnstileToken('submit_comment');
+       try {
+          // 🚀 终极极速版：向已经预加载好的盾牌秒拿 Token
+          const token = await new Promise((resolve, reject) => {
+            if (!window.turnstile || cmtTurnstileId === null) return reject(new Error('人机验证初始化中，请稍后再试。'));
+            cmtTokenResolve = resolve;
+            cmtTokenReject = reject;
+            turnstile.execute(cmtTurnstileId, { action: 'submit_comment' });
+          });
           
-          // 再带着通行证发送评论请求 (下面是你原本的代码)
           const res = await fetch(`${API_BASE}/comments/submit`, {
             method: 'POST', 
             headers: { 
@@ -288,6 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 
             body: JSON.stringify(payload) 
           });
+
+          turnstile.reset(cmtTurnstileId);
 
           if (res.ok) {
             msgDom.innerText = '发送成功！'; msgDom.className = 'status-success'; 
