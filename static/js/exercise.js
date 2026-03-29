@@ -33,8 +33,18 @@
     getColor: (type) => CONFIG.COLORS[type] || CONFIG.COLORS.Default,
     
     getSmartName: (name, type) => {
-      if (!/^(Morning|Afternoon|Evening|Night|Lunch|Run|Ride|Walk|Swim|Hike|Treadmill|晨间|上午|午间|下午|跑步|骑行)/i.test(name) && name.length > 0 && name.length <= 20) return name;
-      const map = { Run: '跑起来', TrailRun: '山野跑起', Treadmill: '跑马机跑起', Ride: '骑起来', Walk: '走起来', Hike: '徒步走起', Swim: '游起来', StairStepper: '楼梯爬起' };
+      // 恢复了完整的默认命名拦截词库（包含英文、中文的各种时间段和运动类型）
+      const isDefault = /^(Morning|Afternoon|Evening|Night|Lunch|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper|晨间|上午|午间|下午|午后|傍晚|晚间|夜间|凌晨|清晨|跑步|骑行|行走|爬楼梯)/i.test(name);
+      
+      if (!isDefault && name.length > 0 && name.length <= 20) return name;
+      
+      const map = { 
+        Run: '跑起来', TrailRun: '山野跑起', Treadmill: '跑马机跑起', VirtualRun: '线上跑起',
+        Ride: '骑起来', EBikeRide: '带电骑起', VirtualRide: '台子踩起',
+        Walk: '走起来', Hike: '徒步走起', 
+        Swim: '游起来', WaterSport: '水上浪起',
+        StairStepper: '楼梯爬起' 
+      };
       return map[type] || '运动';
     },
 
@@ -163,6 +173,7 @@
       const globalInsights = this._extractInsights(currYearRuns);
       const monthlyInsights = this._extractInsights(currMonthRuns);
 
+      // 直接使用足量容量容纳 54 周，不随意切片
       const weekData = new Array(54).fill(0);
       const yearFirstDayUTC = Date.UTC(this.displayYear, 0, 1);
       const dailyStats = new Map();
@@ -206,7 +217,7 @@
           global: {
               stats: globalStats,
               insights: globalInsights,
-              sparkline: this._smoothSparkline(weekData.slice(0, 52)),
+              sparkline: this._smoothSparkline(weekData), // 取消写死的截取前52周
               maxDates: { ride: maxDates.rideY, rw: maxDates.rwY }
           },
           monthly: {
@@ -321,7 +332,7 @@
         <div class="tt-item">
           <span class="tt-name">${CONFIG.getSmartName(r.name, r.type)}</span>
           <span class="tt-num" style="color: ${CONFIG.getColor(r.type)}">
-            ${r.distance > 0 ? `${r.distance.toFixed(1)} <small class="tt-unit">km</small>` : `${r.moving_time} <small class="tt-unit">用时</small>`}
+            ${r.distance > 0 ? `${r.distance.toFixed(1)} <small class="tt-unit">km</small>` : `<span class="tt-unit">已打卡</span>`}
           </span>
         </div>
       `).join('');
