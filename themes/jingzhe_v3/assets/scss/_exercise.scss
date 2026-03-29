@@ -1,113 +1,113 @@
 /* =========================================
-   1. 核心 Bento 网格布局
+   1. 核心网格布局
 ========================================= */
 .run-board {
   flex-shrink: 0;
   width: 100%;
   display: block;
+  margin-bottom: 10px;
 
   .run-grid {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
 
     @include breakpoint("medium") {
       display: grid;
       gap: 10px;
-      grid-template-columns: 2.5fr 1fr 1fr;
-      /* 改为自适应两行 */
-      grid-template-rows: auto auto;
-
-      /* 网格区域映射：左侧日历，右侧上为统计，下为洞察 */
-      grid-template-areas:
-        "calendar stat stat"
-        "calendar time hr";
+      /* 桌面端平分两列：左月度，右年度 */
+      grid-template-columns: 1fr 1fr;
       align-items: stretch;
     }
   }
 }
 
-/* 网格区域映射 */
-.area-calendar {
-  grid-area: calendar;
-}
-.area-stat {
-  grid-area: stat;
-}
-.area-time {
-  grid-area: time;
-}
-.area-hr {
-  grid-area: hr;
-}
-
 /* =========================================
-   2. 基础卡片统一样式 (Base Card)
+   2. 基础卡片样式 (Base Card)
 ========================================= */
 .kb-card {
   background: var(--background-card-color);
   border-radius: 16px;
   border: 1px solid var(--background-card-border-color);
-  padding: 15px;
+  padding: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden; /* 完美裁剪溢出的背景迷你折线图 */
 
   @include dark {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
+
+  // === 数据为空时的灰色覆盖样式 ===
+  &.is-empty {
+    .stat-main .val {
+      color: var(--text-info-color) !important;
+      @include dark {
+        color: var(--text-info-dark-color) !important;
+      }
+    }
+  }
 }
 
 /* =========================================
-   3. 数据总览卡片 (Stats Card)
+   3. 数据卡片内部排版 (Stats Card)
 ========================================= */
 .card-stat {
-  align-items: center;
-  padding-top: 16px;
-  z-index: 1;
-
   .stat-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* 居中整个内容组 */
     align-items: center;
+    gap: 8px; /* 👈 核心：控制箭头和文字之间的紧凑距离 */
     width: 100%;
-    margin-bottom: 8px;
-    z-index: 2;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+    min-height: 24px; /* 保持左右卡片标题高度完全一致 */
 
     .stat-title {
       font-size: 0.75rem;
       color: var(--text-info-color);
       letter-spacing: 2px;
+      text-align: center;
       @include dark {
         color: var(--text-info-dark-color);
       }
     }
 
-    .btn-toggle {
-      background: rgba(0, 0, 0, 0.04);
+    /* 左右透明按钮 */
+    .nav-btn {
+      background: transparent;
       border: none;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.65rem;
+      padding: 2px 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-info-color);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: color 0.2s ease;
 
       @include dark {
-        background: rgba(255, 255, 255, 0.06);
         color: var(--text-info-dark-color);
       }
 
-      &:hover {
-        background: #ffffff;
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover:not(:disabled) {
         color: var(--text-content-color);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         @include dark {
-          background: rgba(255, 255, 255, 0.15);
           color: var(--text-content-dark-color);
         }
+      }
+
+      &:disabled {
+        opacity: 0.2;
+        cursor: default;
       }
     }
   }
@@ -115,37 +115,29 @@
   .stat-main {
     display: flex;
     align-items: baseline;
-    gap: 4px;
+    justify-content: center;
     margin-bottom: 10px;
-    z-index: 2;
+    position: relative;
+    z-index: 1;
 
     .val {
-      font-size: 3rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: var(--exercise-text-highlight-color);
       line-height: 1;
     }
-    .unit {
-      font-size: 0.85rem;
-      color: var(--text-info-color);
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
   }
 
+  /* 核心指标网格：优雅的响应式 */
   .stat-metrics {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 强制分为两列，平分空间 */
-    gap: 24px 10px; /* 上下间距 24px，左右间距 10px，完美撑开高度 */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px 10px;
     width: 100%;
-    z-index: 2;
-    margin-top: 10px;
-
-    @include breakpoint("medium") {
-      flex: 1;
-      align-content: space-evenly; /* 在桌面端自动拉伸时，让两行垂直均匀分布 */
-    }
+    margin-top: auto; /* 在弹性的卡片中自动沉到底部 */
+    position: relative;
+    z-index: 1;
+    padding-bottom: 4px;
 
     .metric-item {
       display: flex;
@@ -179,590 +171,25 @@
     }
   }
 
-  /* 迷你折线图 */
+  /* 迷你折线图背景 */
   .sparkline {
     position: absolute;
-    top: 12px;
+    top: 8px;
     left: 0;
     width: 100%;
-    height: 85px;
-    z-index: -1;
-    pointer-events: none;
-    clip-path: inset(
-      0 0 0 0 round 16px
-    ); /* 防止背景溢出圆角，同时允许气泡飘出卡片 */
+    height: 80px;
+    pointer-events: none; /* 防止遮挡上层元素的鼠标交互 */
+    z-index: 0;
 
     .sparkline-fill {
       transform-origin: bottom;
-      opacity: 0.7;
+      opacity: 0.9;
     }
     .sparkline-line {
-      stroke: var(--exercise-text-highlight-color);
       stroke-width: 0.8;
       stroke-linecap: round;
       stroke-linejoin: round;
       opacity: 0.1;
     }
   }
-}
-
-/* =========================================
-   4. 日历面板 (Calendar Card)
-========================================= */
-.card-calendar {
-  display: none;
-
-  @include breakpoint("medium") {
-    display: flex;
-    height: 380px;
-    min-height: 0;
-  }
-
-  .calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 8px;
-    margin-top: 10px;
-    margin-bottom: 22px;
-
-    .cal-title {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-
-      .cal-month {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-content-color);
-        @include dark {
-          color: var(--text-content-dark-color);
-        }
-      }
-
-      .cal-year {
-        font-size: 0.8rem;
-        color: var(--text-info-color);
-        font-weight: 500;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-      }
-    }
-
-    .cal-nav-group {
-      display: flex;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 8px;
-      padding: 2px;
-
-      @include dark {
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .nav-btn {
-        background: transparent;
-        border: none;
-        padding: 4px 10px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-info-color);
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-
-        &:hover:not(:disabled) {
-          background: #ffffff;
-          color: var(--text-content-color);
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-          @include dark {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-content-dark-color);
-          }
-        }
-
-        &:disabled {
-          opacity: 0.3;
-          cursor: default;
-        }
-      }
-    }
-  }
-
-  .calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 20px;
-    text-align: center;
-    font-size: 0.65rem;
-    color: var(--text-info-color);
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-  }
-
-  .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px 20px;
-    text-align: center;
-    margin: 0;
-
-    @include breakpoint("medium") {
-      flex: 1;
-      min-height: 0;
-    }
-  }
-
-  .day-cell {
-    aspect-ratio: 1;
-    width: 82%;
-    margin: 0 auto;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    font-size: 1rem;
-    color: var(--text-info-color);
-
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-
-    @include breakpoint("medium") {
-      aspect-ratio: auto;
-      height: 100%;
-      min-height: 0;
-    }
-
-    &.is-active:hover {
-      background: rgba(0, 0, 0, 0.04);
-      @include dark {
-        background: rgba(255, 255, 255, 0.05);
-      }
-    }
-
-    &.is-max {
-      background: transparent;
-    }
-
-    .day-num {
-      z-index: 1;
-    }
-
-    &:hover .run-tooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
-  }
-}
-
-/* =========================================
-   5. 洞察卡片 (Insight Card)
-========================================= */
-.card-insight {
-  justify-content: center;
-  display: none;
-  @include breakpoint("medium") {
-    display: block;
-  }
-  .insight-header {
-    font-size: 0.75rem;
-    color: var(--text-info-color);
-    margin-bottom: 10px;
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-  }
-
-  .chart-punch {
-    display: flex;
-    gap: 4px;
-    height: 15px;
-
-    .bar-wrap {
-      flex: 1;
-      position: relative;
-      cursor: pointer;
-
-      .bar-fill {
-        width: 100%;
-        height: 100%;
-        border-radius: 2px;
-        transition: filter 0.2s ease;
-        background-color: color-mix(
-          in srgb,
-          var(--text-info-color),
-          transparent 80%
-        );
-        @include dark {
-          background-color: color-mix(
-            in srgb,
-            var(--text-info-dark-color),
-            transparent 80%
-          );
-        }
-      }
-
-      &:hover .bar-fill {
-        filter: brightness(1.2);
-      }
-      &:hover .run-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
-      }
-    }
-  }
-
-  .chart-zone {
-    display: flex;
-    gap: 10px;
-    height: 15px;
-    align-items: flex-end;
-
-    .zone-col {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      position: relative;
-      height: 100%;
-
-      .zone-bar {
-        width: 100%;
-        border-radius: 2px;
-        min-height: 2px;
-        background-color: color-mix(
-          in srgb,
-          var(--text-info-color),
-          transparent 80%
-        );
-        @include dark {
-          background-color: color-mix(
-            in srgb,
-            var(--text-info-dark-color),
-            transparent 80%
-          );
-        }
-      }
-
-      &:hover .run-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
-      }
-    }
-  }
-
-  .insight-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
-
-    span {
-      font-size: 0.55rem;
-      color: var(--text-info-color);
-      opacity: 0.6;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
-
-    &.labels-time span {
-      flex: 1;
-      text-align: center;
-    }
-    &.labels-time span:first-child {
-      text-align: left;
-    }
-    &.labels-time span:last-child {
-      text-align: right;
-    }
-
-    &.labels-zone {
-      gap: 10px;
-      span {
-        flex: 1;
-        text-align: center;
-        min-width: 0;
-      }
-    }
-  }
-}
-
-/* =========================================
-   6. 共享组件与气泡系统 (Components & Tooltips)
-========================================= */
-
-/* 小微件：成就圆环与状态圆点 */
-.icon-ring {
-  width: 25px;
-  height: 25px;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-
-  svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  &.ring-gold svg {
-    color: #c89b2a;
-    @include dark {
-      color: #ffd447;
-    }
-  }
-
-  &.ring-silver svg {
-    color: #506480;
-    @include dark {
-      color: #e2e8f0;
-    }
-  }
-}
-
-.multi-dot {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 4px;
-  height: 4px;
-  background: var(--text-info-color);
-  border-radius: 50%;
-  opacity: 0.5;
-  @include dark {
-    background: var(--text-info-dark-color);
-  }
-}
-
-/* 核心气泡面板 (Tooltip Base) */
-.run-tooltip {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  /* 基础定位：水平居中对齐 */
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-
-  background: #ffffff;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #eeebe6;
-  border-radius: 12px;
-  padding: 10px;
-  z-index: 100;
-  opacity: 0;
-  visibility: hidden;
-  white-space: nowrap;
-  cursor: default;
-
-  @include dark {
-    background: rgba(28, 28, 30, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-}
-
-/* --- 气泡边缘防溢出处理 --- */
-
-/* 1. 日历网格边缘 (每周一、二、六、日) */
-.calendar-days > div:nth-child(7n + 1) .run-tooltip {
-  transform: translateX(-10%) !important;
-}
-.calendar-days > div:nth-child(7n + 2) .run-tooltip {
-  transform: translateX(-30%) !important;
-}
-.calendar-days > div:nth-child(7n - 1) .run-tooltip {
-  transform: translateX(-70%) !important;
-}
-.calendar-days > div:nth-child(7n) .run-tooltip {
-  transform: translateX(-90%) !important;
-}
-
-/* 2. 洞察卡片 (底部柱状图两侧) */
-.bar-wrap:first-child .run-tooltip,
-.zone-col:first-child .run-tooltip {
-  transform: translateX(-15%) !important;
-}
-
-.bar-wrap:last-child .run-tooltip,
-.zone-col:last-child .run-tooltip {
-  transform: translateX(-85%) !important;
-}
-
-/* 3. 统计卡片 (2x2 网格：左侧向右偏，右侧向左偏) */
-.stat-metrics .metric-item:nth-child(odd) .run-tooltip {
-  transform: translateX(-20%) !important;
-}
-.stat-metrics .metric-item:nth-child(even) .run-tooltip {
-  transform: translateX(-80%) !important;
-}
-
-/* --- 气泡内部排版 --- */
-.tt-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
-  margin-bottom: 8px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.chart-punch .run-tooltip .tt-item,
-.chart-zone .run-tooltip .tt-item {
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 0;
-  .tt-name {
-    font-size: 0.75rem;
-  }
-  .tt-num {
-    text-align: left;
-  }
-}
-
-.tt-name {
-  color: var(--text-info-color);
-  font-size: 0.8rem;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-.tt-num {
-  color: var(--text-content-color);
-  font-size: 0.85rem;
-  text-align: right;
-  @include dark {
-    color: var(--text-content-dark-color);
-  }
-
-  .tt-unit {
-    color: var(--text-info-color);
-    font-size: 0.75rem;
-    margin-left: 2px;
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-  }
-}
-
-.tt-achieve {
-  padding-top: 10px;
-  border-top: 1px solid #f6f3ed;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-  @include dark {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-}
-
-.tt-achieve-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--text-content-color);
-  @include dark {
-    color: var(--text-content-dark-color);
-  }
-
-  .title-tag {
-    padding: 2px 6px;
-    background: #f0eee9;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    color: var(--text-info-color);
-    @include dark {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-info-dark-color);
-    }
-  }
-}
-
-.page-home .run-tooltip {
-  display: none;
-}
-
-/* =========================================
-   7. 指标趋势补充 (Metric Trends)
-========================================= */
-.metric-trend {
-  width: 28px;
-  height: 12px;
-  margin-top: 6px;
-  position: relative;
-  cursor: pointer;
-  color: var(--text-info-color);
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  /* 动态趋势颜色 */
-  &.trend-up {
-    color: #ff3b30;
-  }
-  &.trend-down {
-    color: #32d74b;
-  }
-  &.trend-flat {
-    color: #999;
-  }
-
-  .trend-curve {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* 悬浮唤起气泡 */
-  &:hover .run-tooltip {
-    opacity: 1;
-    visibility: visible;
-    /* 取消了这里的 transform 重置，统一由基础系统和边缘防溢出控制 */
-  }
-
-  /* 趋势专属气泡微调 */
-  .run-tooltip {
-    bottom: calc(100% + 8px);
-    .tt-item {
-      margin-bottom: 0;
-      gap: 16px;
-    }
-  }
-}
-
-/* 覆盖气泡中的数字颜色以匹配涨跌 */
-.tt-num.trend-up {
-  color: #ff3b30 !important;
-}
-.tt-num.trend-down {
-  color: #32d74b !important;
-}
-.tt-num.trend-flat {
-  color: var(--text-info-color) !important;
 }
