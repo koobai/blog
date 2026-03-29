@@ -127,23 +127,18 @@ def process_and_merge(local_data, raw_new_data):
         if not safe_time.startswith(CURRENT_YEAR):
             continue
             
-        hr = item.get('average_heartrate', 0)
-        safe_hr = round(hr) if hr else None
-            
-        # 🔪 极致精简：删除了用时、配速、轨迹、爬升等所有前端不需要的字段
+        # 🔪 极致精简：只保留 去重ID、运动类型、距离、本地时间。摒弃所有用不到的数据
         formatted_new_data.append({
             "run_id": item.get('id'),
-            "name": item.get('name', '未命名运动'),
             "type": item.get('type', 'Workout'),
             "distance": round(item.get('distance', 0) / 1000, 2),
-            "start_date_local": safe_time,               
-            "average_heartrate": safe_hr
+            "start_date_local": safe_time
         })
         
     if not formatted_new_data:
         return local_data, 0, 0
 
-    # 合并去重
+    # 合并去重 (依赖 run_id 进行精准去重)
     merged_dict = {item['run_id']: item for item in local_data if 'run_id' in item}
     initial_count = len(merged_dict)
     
