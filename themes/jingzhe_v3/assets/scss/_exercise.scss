@@ -1,358 +1,166 @@
 /* =========================================
-   2. 年份导航 (Year Navigation)
+   1. 核心 Bento 网格布局
 ========================================= */
-.buttons {
-  display: flex;
-  width: fit-content;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto 20px auto;
-  position: relative;
-  z-index: 50;
-  gap: 8px;
-  list-style: none;
-  padding: 4px;
-  background: var(--background-card-color);
-  border: 1px solid var(--background-card-border-color);
-  border-radius: 99px;
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-
-  /* 保持这些已有的滚动条控制 */
-  overflow-x: auto;
-  white-space: nowrap;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .button {
-    font-size: 0.85rem;
-    cursor: pointer;
-    color: var(--text-info-color);
-    padding: 10px 22px;
-    border-radius: 99px;
-    transition: all 0.2s ease;
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-
-    &:hover {
-      color: var(--text-content-color);
-    }
-
-    &.selected {
-      background: var(--exercise-text-highlight-color);
-      color: #111 !important;
-    }
-  }
-}
-
-/* =========================================
-   3. Bento 核心布局与地图 (Bento & Map)
-========================================= */
-.bento-hero {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-direction: column; /* 📱 手机端：默认竖排 */
-
-  @include breakpoint("medium") {
-    flex-direction: row; /* 💻 PC端：恢复横排 */
-    align-items: stretch;
-    height: 550px;
-  }
-}
-
-#mapbox-container {
-  height: 260px;
-  background-color: var(--background-card-color);
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  @include breakpoint("medium") {
-    height: 100% !important;
-  }
-  @include dark {
-    background: var(--background-card-dark-color);
-  }
-}
-
-.bento-map-placeholder {
-  flex: none;
-  width: 100%;
-  height: 260px;
-  position: relative;
-  order: 2;
-  @include breakpoint("medium") {
-    flex: 1;
-    height: 100%;
-    order: 0;
-  }
-}
-
-.bento-card-map {
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--background-card-border-color);
-  background: var(--background-card-color);
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-/* 吸顶地图 */
-.sticky-map {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 20px) !important;
-  max-width: 800px !important;
-  height: 260px !important;
-  min-height: 260px !important;
-  z-index: 99;
-  border-radius: 16px;
-  border-top: none;
-  animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-  #mapbox-container {
-    height: 260px !important;
-    min-height: 260px !important;
-  }
-}
-
-@keyframes mapSlideDown {
-  0% {
-    transform: translate(-50%, -120%);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-}
-
-/* 地图内嵌详情面板 */
-.runDetailCard {
-  display: none;
-  @include breakpoint("medium") {
-    display: block;
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: max-content;
-    background: var(--background-card-color);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 10;
-    animation: slideUpFade 0.4s forwards;
-    @include dark {
-      background: var(--background-card-dark-color);
-    }
-
-    .detailName {
-      font-size: 0.75rem;
-      color: var(--text-info-color);
-      display: flex;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
-
-    .detailDate {
-      color: var(--text-info-color);
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
-
-    .detailStatsRow {
-      display: flex;
-      gap: 24px;
-    }
-
-    .detailStatBlock {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-
-      .statLabel {
-        color: var(--text-info-color);
-        font-size: 0.65rem;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-      }
-
-      .statVal {
-        font-size: 0.85rem;
-        color: var(--text-content-color);
-        @include dark {
-          color: var(--text-content-dark-color);
-        }
-      }
-
-      small {
-        font-size: 0.65rem;
-        color: var(--text-info-color);
-        margin-left: 2px;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-      }
-    }
-  }
-}
-
-@keyframes slideUpFade {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.normal-view {
-  display: grid;
-  gap: 12px;
-}
-/* =========================================
-   4. 右侧边栏包裹区 (Sidebar Container)
-========================================= */
-.bento-calendar-board {
+.run-board {
   flex-shrink: 0;
   width: 100%;
-  display: contents; /* 📱 手机端：释放包裹层，允许子元素跨级重排 */
+  display: block;
 
-  @include breakpoint("medium") {
-    display: flex; /* 💻 PC端：恢复右侧侧边栏独立包裹 */
-    flex-direction: column;
-    gap: 10px;
-    width: 320px;
-    height: 100%;
-  }
-
-  .boardContainer {
-    display: contents; /* 📱 手机端：释放内层包裹 */
-
-    @include breakpoint("medium") {
-      display: flex; /* 💻 PC端：恢复正常弹性布局 */
-      flex-direction: column;
-      gap: 10px;
-      height: 100%;
-    }
-  }
-
-  /* 侧边栏通用卡片样式 */
-  .globalSection,
-  .calendarSection,
-  .insightCard {
-    background: var(--background-card-color);
-    border-radius: 16px;
-    border: 1px solid var(--background-card-border-color);
-    padding: 16px;
-    @include dark {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color);
-    }
-  }
-  @include breakpoint("medium") {
-    .globalSection,
-    .monthlyInsights {
-      flex-shrink: 0;
-    }
-  }
-  /* =========================================
-   5. 年度数据总览 (Global Stats)
-========================================= */
-  .globalSection {
-    order: 1; /* 📱 手机端：强制排在最上方 */
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+  .run-grid {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 16px;
+    gap: 16px;
 
     @include breakpoint("medium") {
-      order: 0; /* 💻 PC端：恢复默认层级 */
-    }
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 2.5fr 1fr 1fr;
+      /* 改为自适应两行 */
+      grid-template-rows: auto auto;
 
-    .globalTitle {
+      /* 网格区域映射：左侧日历，右侧上为统计，下为洞察 */
+      grid-template-areas:
+        "calendar stat stat"
+        "calendar time hr";
+      align-items: stretch;
+    }
+  }
+}
+
+/* 网格区域映射 */
+.area-calendar {
+  grid-area: calendar;
+}
+.area-stat {
+  grid-area: stat;
+}
+.area-time {
+  grid-area: time;
+}
+.area-hr {
+  grid-area: hr;
+}
+
+/* =========================================
+   2. 基础卡片统一样式 (Base Card)
+========================================= */
+.kb-card {
+  background: var(--background-card-color);
+  border-radius: 16px;
+  border: 1px solid var(--background-card-border-color);
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
+}
+
+/* =========================================
+   3. 数据总览卡片 (Stats Card)
+========================================= */
+.card-stat {
+  align-items: center;
+  padding-top: 16px;
+  z-index: 1;
+
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+    z-index: 2;
+
+    .stat-title {
       font-size: 0.75rem;
       color: var(--text-info-color);
       letter-spacing: 2px;
-      margin-bottom: 8px;
-      z-index: 2;
       @include dark {
         color: var(--text-info-dark-color);
       }
     }
 
-    .globalMainStat {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      margin-bottom: 10px;
-      z-index: 2;
+    .btn-toggle {
+      background: rgba(0, 0, 0, 0.04);
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      color: var(--text-info-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
 
-      .val {
-        font-size: 3rem;
-        font-weight: 700;
-        color: var(--exercise-text-highlight-color);
-        line-height: 1;
+      @include dark {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-info-dark-color);
       }
 
-      .unit {
-        font-size: 0.85rem;
-        color: var(--text-info-color);
+      &:hover {
+        background: #ffffff;
+        color: var(--text-content-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         @include dark {
-          color: var(--text-info-dark-color);
+          background: rgba(255, 255, 255, 0.15);
+          color: var(--text-content-dark-color);
         }
       }
     }
+  }
 
-    .metricsRow {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      z-index: 2;
+  .stat-main {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 10px;
+    z-index: 2;
+
+    .val {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--exercise-text-highlight-color);
+      line-height: 1;
+    }
+    .unit {
+      font-size: 0.85rem;
+      color: var(--text-info-color);
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+    }
+  }
+
+  .stat-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 强制分为两列，平分空间 */
+    gap: 24px 10px; /* 上下间距 24px，左右间距 10px，完美撑开高度 */
+    width: 100%;
+    z-index: 2;
+    margin-top: 10px;
+
+    @include breakpoint("medium") {
+      flex: 1;
+      align-content: space-evenly; /* 在桌面端自动拉伸时，让两行垂直均匀分布 */
     }
 
-    .metricBlock {
+    .metric-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
 
-      .metricLabel {
+      .metric-label {
         font-size: 0.65rem;
         color: var(--text-info-color);
         @include dark {
           color: var(--text-info-dark-color);
         }
       }
-
-      .metricValue {
+      .metric-val {
         font-size: 1rem;
         color: var(--text-content-color);
         @include dark {
@@ -369,23 +177,26 @@
         }
       }
     }
+  }
 
-    .sparkline {
-      position: absolute;
-      top: 12px;
-      left: 0;
-      width: 100%;
-      height: 85px;
-      z-index: -1;
-      pointer-events: none;
-    }
+  /* 迷你折线图 */
+  .sparkline {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 100%;
+    height: 85px;
+    z-index: -1;
+    pointer-events: none;
+    clip-path: inset(
+      0 0 0 0 round 16px
+    ); /* 防止背景溢出圆角，同时允许气泡飘出卡片 */
 
-    .sparklineFill {
+    .sparkline-fill {
       transform-origin: bottom;
       opacity: 0.7;
     }
-
-    .sparklineLine {
+    .sparkline-line {
       stroke: var(--exercise-text-highlight-color);
       stroke-width: 0.8;
       stroke-linecap: round;
@@ -393,78 +204,106 @@
       opacity: 0.1;
     }
   }
+}
 
-  /* =========================================
-   6. 日历热力图面板 (Calendar Grid)
+/* =========================================
+   4. 日历面板 (Calendar Card)
 ========================================= */
-  .calendarSection {
-    order: 3;
-    display: none !important;
+.card-calendar {
+  display: none;
 
-    @include breakpoint("medium") {
-      order: 0;
-      display: flex !important;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
+  @include breakpoint("medium") {
+    display: flex;
+    height: 380px;
+    min-height: 0;
   }
 
-  .monthNav {
+  .calendar-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 12px;
+    padding: 0 8px;
+    margin-top: 10px;
+    margin-bottom: 22px;
 
-    span {
-      font-size: 0.85rem;
-      color: var(--text-info-color);
-      min-width: 65px;
-      text-align: center;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
-
-    button {
-      background: transparent;
-      border: none;
-      padding: 4px 1px;
+    .cal-title {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-info-color);
-      cursor: pointer;
-      transition: color 0.2s ease;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
+      align-items: baseline;
+      gap: 6px;
 
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      &:hover:not(:disabled) {
-        background: transparent;
+      .cal-month {
+        font-size: 1.5rem;
+        font-weight: 700;
         color: var(--text-content-color);
         @include dark {
           color: var(--text-content-dark-color);
         }
       }
 
-      &:disabled {
-        opacity: 0.2;
-        cursor: default;
+      .cal-year {
+        font-size: 0.8rem;
+        color: var(--text-info-color);
+        font-weight: 500;
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
+      }
+    }
+
+    .cal-nav-group {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 8px;
+      padding: 2px;
+
+      @include dark {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav-btn {
+        background: transparent;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-info-color);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
+
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+
+        &:hover:not(:disabled) {
+          background: #ffffff;
+          color: var(--text-content-color);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          @include dark {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-content-dark-color);
+          }
+        }
+
+        &:disabled {
+          opacity: 0.3;
+          cursor: default;
+        }
       }
     }
   }
 
-  .weekdays {
+  .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
+    gap: 20px;
     text-align: center;
     font-size: 0.65rem;
     color: var(--text-info-color);
@@ -473,110 +312,75 @@
     }
   }
 
-  .grid {
+  .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px 4px;
+    gap: 1px 20px;
     text-align: center;
-    margin-bottom: 6px;
-    margin-top: 6px;
+    margin: 0;
 
     @include breakpoint("medium") {
       flex: 1;
       min-height: 0;
-      grid-auto-rows: minmax(0, 1fr);
     }
   }
 
-  .dayCell {
-    aspect-ratio: 1; /* 恢复原本的正方形设定 */
+  .day-cell {
+    aspect-ratio: 1;
     width: 82%;
     margin: 0 auto;
     border: 1px solid transparent;
-    box-sizing: border-box;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--text-info-color);
+
     @include dark {
       color: var(--text-info-dark-color);
     }
+
     @include breakpoint("medium") {
       aspect-ratio: auto;
       height: 100%;
+      min-height: 0;
     }
-    &.hasRun {
-      cursor: pointer;
 
-      &:hover {
-        background: rgba(0, 0, 0, 0.04) !important;
-        @include dark {
-          background: rgba(255, 255, 255, 0.05) !important;
-        }
+    &.is-active:hover {
+      background: rgba(0, 0, 0, 0.04);
+      @include dark {
+        background: rgba(255, 255, 255, 0.05);
       }
     }
 
-    &.maxDay {
-      background: transparent !important;
+    &.is-max {
+      background: transparent;
     }
 
-    .dateNum {
+    .day-num {
       z-index: 1;
     }
 
-    &:hover .runTooltip {
+    &:hover .run-tooltip {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) translateY(0);
     }
   }
+}
 
-  .monthFooter {
-    font-size: 0.65rem;
-    color: var(--text-info-color);
-    text-align: center;
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-
-    span {
-      font-weight: 700;
-      color: var(--text-content-color);
-      margin: 0 1px 0 1px;
-      @include dark {
-        color: var(--text-content-dark-color);
-      }
-    }
-
-    .dot {
-      font-size: 0.5rem;
-      margin: 0 3px;
-      opacity: 0.3;
-    }
-  }
-
-  /* =========================================
-   7. 洞察图表 (Monthly Insights)
+/* =========================================
+   5. 洞察卡片 (Insight Card)
 ========================================= */
-  .monthlyInsights {
-    display: flex;
-    gap: 10px;
-    order: 4; /* 📱 手机端：洞察排在最底端 */
-
-    @include breakpoint("medium") {
-      order: 0; /* 💻 PC端：恢复默认 */
-    }
+.card-insight {
+  justify-content: center;
+  display: none;
+  @include breakpoint("medium") {
+    display: block;
   }
-
-  .insightCard {
-    flex: 1;
-    padding: 12px 16px;
-  }
-
-  .insightHeader {
+  .insight-header {
     font-size: 0.75rem;
     color: var(--text-info-color);
     margin-bottom: 10px;
@@ -585,21 +389,21 @@
     }
   }
 
-  .punchCard {
+  .chart-punch {
     display: flex;
     gap: 4px;
     height: 15px;
 
-    .barWrapper {
+    .bar-wrap {
       flex: 1;
       position: relative;
       cursor: pointer;
 
-      .punchHole {
+      .bar-fill {
         width: 100%;
         height: 100%;
         border-radius: 2px;
-        transition: all 0.2s ease;
+        transition: filter 0.2s ease;
         background-color: color-mix(
           in srgb,
           var(--text-info-color),
@@ -614,11 +418,10 @@
         }
       }
 
-      &:hover .punchHole {
+      &:hover .bar-fill {
         filter: brightness(1.2);
       }
-
-      &:hover .runTooltip {
+      &:hover .run-tooltip {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
@@ -626,13 +429,13 @@
     }
   }
 
-  .zoneChart {
+  .chart-zone {
     display: flex;
     gap: 10px;
     height: 15px;
     align-items: flex-end;
 
-    .zoneCol {
+    .zone-col {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -640,7 +443,7 @@
       position: relative;
       height: 100%;
 
-      .zoneBar {
+      .zone-bar {
         width: 100%;
         border-radius: 2px;
         min-height: 2px;
@@ -658,7 +461,7 @@
         }
       }
 
-      &:hover .runTooltip {
+      &:hover .run-tooltip {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
@@ -666,7 +469,7 @@
     }
   }
 
-  .insightLabels {
+  .insight-labels {
     display: flex;
     justify-content: space-between;
     margin-top: 4px;
@@ -679,212 +482,64 @@
         color: var(--text-info-dark-color);
       }
     }
-  }
 
-  .timeLabels {
-    justify-content: space-between;
-
-    span:first-child {
+    &.labels-time span {
+      flex: 1;
+      text-align: center;
+    }
+    &.labels-time span:first-child {
       text-align: left;
     }
-
-    span:nth-child(2) {
-      text-align: center;
-      flex: 1;
-    }
-
-    span:last-child {
+    &.labels-time span:last-child {
       text-align: right;
     }
-  }
 
-  .zoneLabels {
-    gap: 10px;
-
-    span {
-      flex: 1;
-      text-align: center;
-      min-width: 0;
-    }
-  }
-}
-
-/* =========================================
-   8. 数据列表与过滤器 (Data List & Filter)
-========================================= */
-.tableContainer {
-  width: 100%;
-}
-
-.controlsArea {
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 12px 16px;
-  border: 1px solid var(--background-card-border-color);
-  margin-bottom: 10px;
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-.filterBar {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  align-items: center;
-  min-height: 28px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.filterPill {
-  padding: 4px 8px;
-  color: var(--text-info-color);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-
-  &.activePill,
-  &:hover {
-    color: var(--text-content-color);
-    opacity: 0.9;
-    @include dark {
-      color: var(--text-content-dark-color);
-    }
-  }
-}
-
-.monthLabel {
-  color: var(--text-info-color);
-  font-size: 0.75rem;
-  margin-left: auto;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-.cardList {
-  display: grid;
-  grid-template-columns: 1fr; /* 📱 手机端默认：单列布局 */
-  gap: 10px;
-
-  @include breakpoint("medium") {
-    grid-template-columns: repeat(2, 1fr); /* 💻 PC端：恢复双列布局 */
-  }
-}
-
-.runCard {
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 14px 25px;
-  border: 1px solid var(--background-card-border-color);
-  display: flex;
-  align-items: center;
-  position: relative;
-  transition: all 0.2s ease;
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-
-  &:hover {
-    background: #fff;
-    border-color: #fff;
-    @include dark {
-      background: #232326;
-      border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    .iconRing svg .path-track {
-      color: var(--text-content-color) !important;
-      @include dark {
-        color: var(--text-content-dark-color) !important;
+    &.labels-zone {
+      gap: 10px;
+      span {
+        flex: 1;
+        text-align: center;
+        min-width: 0;
       }
     }
-
-    .runTooltip {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 }
 
 /* =========================================
-   9. 图标、勋章与浮层组件 (纯轨迹视觉)
+   6. 共享组件与气泡系统 (Components & Tooltips)
 ========================================= */
-.iconRing,
-.calIconRing {
-  border-radius: 50%;
+
+/* 小微件：成就圆环与状态圆点 */
+.icon-ring {
+  width: 25px;
+  height: 25px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* 列表里的轨迹容器 */
-.iconRing {
-  width: 38px;
-  height: 38px;
-  margin-right: 20px;
-  color: var(--text-info-color);
-  opacity: 0.8;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
+  border-radius: 50%;
 
   svg {
-    width: 100%;
-    height: 100%;
-    transform: scale(1.1);
-    .path-track {
-      transition: all 0.3s ease;
-    }
+    width: 22px;
+    height: 22px;
   }
 
-  /* 破纪录卡片：覆盖为金/银色 */
-  &.goldRing {
-    color: #f5a623 !important;
-  }
-  &.silverRing {
-    color: #78828f !important;
+  &.ring-gold svg {
+    color: #c89b2a;
     @include dark {
-      color: var(--text-content-dark-color) !important;
+      color: #ffd447;
+    }
+  }
+
+  &.ring-silver svg {
+    color: #506480;
+    @include dark {
+      color: #e2e8f0;
     }
   }
 }
 
-/* 日历里的迷你轨迹容器 (保留底色光晕让它在日历中显眼) */
-.calIconRing {
-  &.has-track svg {
-    width: 26px;
-    height: 26px;
-    /* 日历里的轨迹因为太小，线条稍微加粗一点点保证清晰度 */
-    .path-track {
-      stroke-width: 1.2 !important;
-    }
-  }
-}
-
-/* 金银牌背景光晕 (保留给日历使用) */
-.goldRing {
-  color: #f5a623 !important;
-}
-
-.silverRing {
-  color: #78828f !important;
-  @include dark {
-    color: var(--text-content-dark-color) !important;
-  }
-}
-
-.multiDot {
+.multi-dot {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -898,163 +553,94 @@
   }
 }
 
-.cardContent {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.runName {
-  color: var(--text-info-color);
-  font-size: 0.85rem;
-  margin-bottom: 2px;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-.runDistance {
-  font-size: 1.4rem;
-  font-weight: 700;
-
-  .distUnit {
-    font-size: 0.75rem;
-    margin-left: 3px;
-    font-style: normal;
-    font-weight: normal;
-    color: var(--text-info-color);
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-  }
-}
-
-.runDate {
-  color: var(--text-info-color);
-  font-size: 0.85rem;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-/* 气泡系统 */
-.runTooltip {
+/* 核心气泡面板 (Tooltip Base) */
+.run-tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
+  /* 基础定位：水平居中对齐 */
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+
   background: #ffffff;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid #eeebe6;
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 10px;
   z-index: 100;
   opacity: 0;
   visibility: hidden;
   white-space: nowrap;
   cursor: default;
+
   @include dark {
     background: rgba(28, 28, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
-.runCard .runTooltip {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-}
+/* --- 气泡边缘防溢出处理 --- */
 
-.dayCell .runTooltip,
-.zoneCol .runTooltip {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* 边缘防溢出 */
-.grid > div:nth-child(7n + 1) .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+/* 1. 日历网格边缘 (每周一、二、六、日) */
+.calendar-days > div:nth-child(7n + 1) .run-tooltip {
   transform: translateX(-10%) !important;
 }
-.grid > div:nth-child(7n + 2) .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+.calendar-days > div:nth-child(7n + 2) .run-tooltip {
   transform: translateX(-30%) !important;
 }
-.grid > div:nth-child(7n - 1) .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+.calendar-days > div:nth-child(7n - 1) .run-tooltip {
   transform: translateX(-70%) !important;
 }
-.grid > div:nth-child(7n) .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+.calendar-days > div:nth-child(7n) .run-tooltip {
   transform: translateX(-90%) !important;
 }
 
-.barWrapper:first-child .runTooltip,
-.zoneCol:first-child .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+/* 2. 洞察卡片 (底部柱状图两侧) */
+.bar-wrap:first-child .run-tooltip,
+.zone-col:first-child .run-tooltip {
   transform: translateX(-15%) !important;
 }
 
-.barWrapper:last-child .runTooltip,
-.zoneCol:last-child .runTooltip {
-  left: 50% !important;
-  right: auto !important;
+.bar-wrap:last-child .run-tooltip,
+.zone-col:last-child .run-tooltip {
   transform: translateX(-85%) !important;
 }
 
-/* 气泡内部排版 */
-.ttList {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* 3. 统计卡片 (2x2 网格：左侧向右偏，右侧向左偏) */
+.stat-metrics .metric-item:nth-child(odd) .run-tooltip {
+  transform: translateX(-20%) !important;
+}
+.stat-metrics .metric-item:nth-child(even) .run-tooltip {
+  transform: translateX(-80%) !important;
 }
 
-.ttItem {
+/* --- 气泡内部排版 --- */
+.tt-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 32px;
-}
-
-.punchCard,
-.zoneChart {
-  .runTooltip {
-    .ttItem {
-      justify-content: center;
-      gap: 12px;
-    }
-    .ttName {
-      color: var(--text-info-color) !important;
-      font-size: 0.75rem;
-      @include dark {
-        color: var(--text-info-dark-color) !important;
-      }
-    }
-    .ttNum {
-      text-align: left;
-    }
+  margin-bottom: 8px;
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 
-.ttItem .ttNum .ttUnit {
-  color: var(--text-info-color);
-  @include dark {
-    color: var(--text-info-dark-color);
+.chart-punch .run-tooltip .tt-item,
+.chart-zone .run-tooltip .tt-item {
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 0;
+  .tt-name {
+    font-size: 0.75rem;
+  }
+  .tt-num {
+    text-align: left;
   }
 }
 
-.ttNameWrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ttName {
+.tt-name {
   color: var(--text-info-color);
   font-size: 0.8rem;
   @include dark {
@@ -1062,34 +648,25 @@
   }
 }
 
-.ttUnitTag {
-  padding: 2px 6px;
-  background: #f0eee9;
-  border-radius: 4px;
-  color: var(--text-info-color);
-  font-size: 0.65rem;
-  @include dark {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-info-dark-color);
-  }
-}
-
-.ttNum {
+.tt-num {
   color: var(--text-content-color);
   font-size: 0.85rem;
   text-align: right;
   @include dark {
     color: var(--text-content-dark-color);
   }
+
+  .tt-unit {
+    color: var(--text-info-color);
+    font-size: 0.75rem;
+    margin-left: 2px;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
 }
 
-.ttDayRunList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.ttAchievement {
+.tt-achieve {
   padding-top: 10px;
   border-top: 1px solid #f6f3ed;
   display: flex;
@@ -1101,7 +678,7 @@
   }
 }
 
-.ttAchieveRow {
+.tt-achieve-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1110,268 +687,82 @@
   @include dark {
     color: var(--text-content-dark-color);
   }
-}
 
-.titleTag {
-  padding: 2px 6px;
-  background: #f0eee9;
-  border-radius: 4px;
-  font-size: 0.65rem;
-  color: var(--text-info-color);
-  @include dark {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-info-dark-color);
-  }
-}
-
-/* Mapbox 控件覆写 */
-.mapboxgl-ctrl-group {
-  background: var(--background-card-color) !important;
-  border-radius: 8px !important;
-  border: none !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
-  overflow: hidden;
-  margin-left: 10px !important;
-  @include dark {
-    background: var(--background-card-dark-color) !important;
-  }
-}
-
-.mapboxgl-ctrl-group button {
-  background-color: transparent !important;
-  width: 28px !important;
-  height: 28px !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-}
-
-.mapboxgl-ctrl-group button:last-child {
-  border-bottom: none !important;
-}
-
-.mapboxgl-ctrl-icon {
-  filter: invert(0) opacity(0.6) !important;
-  opacity: 0.5;
-  transform: scale(0.8) !important;
-  transition: opacity 0.2s ease;
-  @include dark {
-    filter: invert(1) brightness(1) !important;
-  }
-}
-
-.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
-  opacity: 1;
-}
-
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
-  margin-right: 10px !important;
-  margin-bottom: 10px !important;
-}
-
-.mapboxgl-ctrl-logo {
-  opacity: 0.3 !important;
-  transform: scale(0.75) !important;
-  transform-origin: bottom right !important;
-  transition: opacity 0.2s ease !important;
-}
-
-.mapboxgl-ctrl-logo:hover {
-  opacity: 0.6 !important;
-}
-
-/* 分享*/
-
-/* 缩短且更柔和的独立遮罩 */
-.poster-gradient-mask {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 55%; /* ✨ 优化：大幅度缩短，仅遮盖下半部分 */
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(255, 255, 255, 0.5) 40%,
-    rgba(255, 255, 255, 0.8) 100%
-  );
-  z-index: 5;
-  pointer-events: none;
-
-  @include dark {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.5) 100%
-    );
-  }
-}
-
-/* 激活海报模式后的卡片变身 */
-#map-wrapper.show-poster-mode {
-  .mapboxgl-control-container {
-    display: none !important;
-  }
-
-  .runDetailCard {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    z-index: 10;
-    width: 100%;
-    max-width: 420px;
-    left: 20px !important;
-    right: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-    bottom: 30px !important;
-    @media (min-width: 768px) {
-      bottom: 40px !important;
-    }
-  }
-
-  /* ✨ 优化：赋予恰到好处的透明度，与背景完美融合 ✨ */
-  .poster-view {
-    position: relative;
-    width: 100%;
-    text-align: left;
-    color: rgba(0, 0, 0, 0.8);
-    @include dark {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .poster-title {
-      font-size: 1rem;
-      margin-top: 6px;
-      letter-spacing: 0.5px;
-      opacity: 0.85;
-    }
-
-    .poster-dist-hero {
-      margin: 0 0 6px 0;
-      line-height: 1;
-      .heroNum {
-        font-size: 3.4rem;
-        font-weight: 700;
-        letter-spacing: -1px;
-      }
-      .heroUnit {
-        font-size: 1rem;
-        font-weight: 700;
-        margin-left: 4px;
-        opacity: 0.6;
-      }
-    }
-
-    .poster-stats-row {
-      display: flex;
-      justify-content: flex-start;
-      gap: 24px;
-      .poster-stat-block {
-        display: flex;
-        flex-direction: column;
-        .statLabel {
-          font-size: 0.65rem;
-          opacity: 0.6;
-          margin-bottom: 2px;
-        }
-        .statVal {
-          font-size: 1.1rem;
-          small {
-            font-size: 0.65rem;
-            opacity: 0.6;
-            margin-left: 2px;
-          }
-        }
-      }
-    }
-
-    .poster-watermark {
-      margin-top: 10px;
-      font-size: 0.85rem;
-      opacity: 0.5;
-    }
-
-    .poster-actions {
-      position: absolute;
-      top: -10px;
-      right: 0px;
-      display: flex;
-      gap: 12px;
-      z-index: 20;
-      button {
-        background: rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        margin: 0;
-        line-height: 0;
-        color: var(--text-content-color);
-        cursor: pointer;
-        transition: background 0.2s;
-        backdrop-filter: blur(4px);
-        svg {
-          display: block;
-          height: 18px;
-          width: 18px;
-          margin: 0 auto;
-        }
-        &:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-
-        @include dark {
-          background: rgba(255, 255, 255, 0.15);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #fff;
-          &:hover {
-            background: rgba(0, 0, 0, 0.2);
-          }
-        }
-      }
-    }
-  }
-}
-//分享图标
-#custom-share-ctrl {
-  display: none !important;
-
-  @include breakpoint("medium") {
-    display: block !important;
-  }
-
-  button {
+  .title-tag {
+    padding: 2px 6px;
+    background: #f0eee9;
+    border-radius: 4px;
+    font-size: 0.65rem;
     color: var(--text-info-color);
     @include dark {
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-info-dark-color);
-    }
-    &:hover {
-      color: var(--text-content-color);
-      @include dark {
-        color: var(--text-content-dark-color);
-      }
     }
   }
 }
-.map-share {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  line-height: 0;
 
-  svg {
-    display: block;
-    height: 18px;
-    width: 18px;
-    margin: 0 auto;
+.page-home .run-tooltip {
+  display: none;
+}
+
+/* =========================================
+   7. 指标趋势补充 (Metric Trends)
+========================================= */
+.metric-trend {
+  width: 28px;
+  height: 12px;
+  margin-top: 6px;
+  position: relative;
+  cursor: pointer;
+  color: var(--text-info-color);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
   }
+
+  /* 动态趋势颜色 */
+  &.trend-up {
+    color: #ff3b30;
+  }
+  &.trend-down {
+    color: #32d74b;
+  }
+  &.trend-flat {
+    color: #999;
+  }
+
+  .trend-curve {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* 悬浮唤起气泡 */
+  &:hover .run-tooltip {
+    opacity: 1;
+    visibility: visible;
+    /* 取消了这里的 transform 重置，统一由基础系统和边缘防溢出控制 */
+  }
+
+  /* 趋势专属气泡微调 */
+  .run-tooltip {
+    bottom: calc(100% + 8px);
+    .tt-item {
+      margin-bottom: 0;
+      gap: 16px;
+    }
+  }
+}
+
+/* 覆盖气泡中的数字颜色以匹配涨跌 */
+.tt-num.trend-up {
+  color: #ff3b30 !important;
+}
+.tt-num.trend-down {
+  color: #32d74b !important;
+}
+.tt-num.trend-flat {
+  color: var(--text-info-color) !important;
 }

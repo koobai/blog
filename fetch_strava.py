@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-import time  # 新增：用于 API 限速保护
+import time
 from datetime import datetime
 
 # ==========================================
@@ -16,7 +16,7 @@ if not all([CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN]):
     exit(1)
 
 # ==========================================
-# 2. 📁 路径绑定
+# 2. 📁 路径绑定与全局变量
 # ==========================================
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
@@ -25,6 +25,9 @@ if not os.path.exists(TARGET_DIR):
     os.makedirs(TARGET_DIR)
 
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
+
+# 锁定系统当前年份，用于数据过滤和跨年清空
+CURRENT_YEAR = str(datetime.now().year)
 
 # ==========================================
 # 3. ⚙️ 核心逻辑与计算引擎
@@ -40,7 +43,6 @@ def get_access_token():
         'f': 'json'
     }
     try:
-        # 🛡️ 优化：增加 20 秒超时防御
         response = requests.post(auth_url, data=payload, verify=True, timeout=20)
         if response.status_code == 200:
             return response.json().get('access_token')
@@ -50,24 +52,31 @@ def get_access_token():
     return None
 
 def load_local_data():
+    """读取本地数据，并执行【跨年销毁】逻辑"""
     if os.path.exists(FILE_NAME):
         with open(FILE_NAME, 'r', encoding='utf-8') as f:
             try:
-                # 🛡️ 优化：防御解析出 None 的情况
-                return json.load(f) or []
+                data = json.load(f) or []
+                # 🔪 核心过滤：只保留当前年份的数据。往年数据在此刻被直接丢弃（销毁）
+                filtered_data = [item for item in data if item.get('start_date_local', '').startswith(CURRENT_YEAR)]
+                return filtered_data
             except json.JSONDecodeError:
                 return []
     return []
 
 def get_latest_timestamp(local_data):
-    if not local_data:
-        return None
-    latest_date_str = local_data[0].get('start_date_local', '') 
-    try:
-        latest_time = datetime.strptime(latest_date_str, "%Y-%m-%dT%H:%M:%S")
-        return int(latest_time.timestamp())
-    except ValueError:
-        return None
+    """获取同步起点。如果有本地数据则从最新一条开始；如果为空则从今年1月1日开始"""
+    if local_data:
+        latest_date_str = local_data[0].get('start_date_local', '') 
+        try:
+            latest_time = datetime.strptime(latest_date_str, "%Y-%m-%dT%H:%M:%S")
+            return int(latest_time.timestamp())
+        except ValueError:
+            pass
+            
+    # 如果本地无数据（例如刚跨年被销毁，或首次运行），则返回今年 1月1日 00:00:00 的时间戳
+    jan1_dt = datetime(datetime.now().year, 1, 1)
+    return int(jan1_dt.timestamp())
 
 def fetch_activities(access_token, after_timestamp=None):
     activities_url = "https://www.strava.com/api/v3/athlete/activities"
@@ -82,9 +91,7 @@ def fetch_activities(access_token, after_timestamp=None):
             
         print(f"📡 正在拉取第 {page} 页数据...")
         try:
-            # 🛡️ 优化：增加 20 秒超时防御
             response = requests.get(activities_url, headers=headers, params=params, timeout=20)
-            
             if response.status_code != 200:
                 print(f"❌ 数据拉取失败 (状态码 {response.status_code}): {response.text}")
                 break
@@ -95,9 +102,7 @@ def fetch_activities(access_token, after_timestamp=None):
                 
             all_activities.extend(data)
             page += 1
-            
-            # 🛡️ 优化：API 限速保护，温柔对待 Strava 服务器
-            time.sleep(0.5) 
+            time.sleep(0.5) # API 限速保护
             
         except Exception as e:
             print(f"❌ 拉取数据时发生异常: {e}")
@@ -105,71 +110,40 @@ def fetch_activities(access_token, after_timestamp=None):
 
     return all_activities
 
-def format_time(seconds):
-    if not seconds: return "--"
-    m, s = divmod(int(seconds), 60)
-    h, m = divmod(m, 60)
-    if h > 0:
-        return f"{h:02d}:{m:02d}:{s:02d}"
-    return f"{m:02d}:{s:02d}"
-
-def calculate_pace(activity_type, average_speed_ms):
-    if not average_speed_ms or average_speed_ms <= 0:
-        return "--", ""
-        
-    if activity_type in ['Ride', 'VirtualRide', 'EBikeRide']:
-        kmh = average_speed_ms * 3.6
-        return f"{kmh:.2f}", "km/h"
-    elif activity_type in ['Swim', 'WaterSport']:
-        sec_per_100m = 100 / average_speed_ms
-        mins, secs = divmod(sec_per_100m, 60)
-        return f"{int(mins)}'{int(secs):02d}''", "/100m"
-    else:
-        sec_per_km = 1000 / average_speed_ms
-        mins, secs = divmod(sec_per_km, 60)
-        return f"{int(mins)}'{int(secs):02d}''", ""
-
-# 🛡️ 优化：安全的时间解析器，用于排序
 def parse_time(time_str):
     try:
         return datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
     except Exception:
-        # 如果格式错误，沉到最下面
         return datetime.min
 
 def process_and_merge(local_data, raw_new_data):
     formatted_new_data = []
     
     for item in raw_new_data:
-        polyline = item.get('map', {}).get('summary_polyline') or ""
-        
         start_date = item.get('start_date_local', '')
         safe_time = start_date.replace('Z', '') if start_date else ""
         
-        avg_speed_ms = item.get('average_speed', 0)
-        pace_num, pace_unit = calculate_pace(item.get('type'), avg_speed_ms)
+        # 🛡️ 双重保险：Strava API 有时会因为时区问题返回去年末的数据，强制过滤掉非今年的数据
+        if not safe_time.startswith(CURRENT_YEAR):
+            continue
+            
         hr = item.get('average_heartrate', 0)
-        # 🛡️ 优化：没有心率时赋予 null 语义 (Python中的 None)
         safe_hr = round(hr) if hr else None
             
+        # 🔪 极致精简：删除了用时、配速、轨迹、爬升等所有前端不需要的字段
         formatted_new_data.append({
             "run_id": item.get('id'),
             "name": item.get('name', '未命名运动'),
             "type": item.get('type', 'Workout'),
             "distance": round(item.get('distance', 0) / 1000, 2),
-            "moving_time": format_time(item.get('moving_time', 0)),
             "start_date_local": safe_time,               
-            "average_heartrate": safe_hr,                
-            "average_speed": round(avg_speed_ms * 3.6, 2), 
-            "pace_num": pace_num,                        
-            "pace_unit": pace_unit,                      
-            "total_elevation_gain": item.get('total_elevation_gain', 0),
-            "summary_polyline": polyline
+            "average_heartrate": safe_hr
         })
         
     if not formatted_new_data:
         return local_data, 0, 0
 
+    # 合并去重
     merged_dict = {item['run_id']: item for item in local_data if 'run_id' in item}
     initial_count = len(merged_dict)
     
@@ -177,12 +151,9 @@ def process_and_merge(local_data, raw_new_data):
         merged_dict[item['run_id']] = item
         
     final_list = list(merged_dict.values())
-    
-    # 🛡️ 优化：使用真实的 datetime 对象进行严谨倒序
     final_list.sort(key=lambda x: parse_time(x.get('start_date_local', '')), reverse=True)
     
     added_count = len(final_list) - initial_count
-    
     return final_list, len(formatted_new_data), added_count
 
 # ==========================================
@@ -190,29 +161,27 @@ def process_and_merge(local_data, raw_new_data):
 # ==========================================
 if __name__ == '__main__':
     print(f"🎯 目标保存路径: {FILE_NAME}")
+    print(f"📅 当前系统年份: {CURRENT_YEAR}年")
     
     local_data = load_local_data()
-    print(f"📁 本地已存在 {len(local_data)} 条记录。")
+    print(f"📁 本地已成功加载 {len(local_data)} 条【当年】记录（往年数据若存在已自动销毁）。")
     
     after_ts = get_latest_timestamp(local_data)
-    if after_ts:
-        print(f"⏱️ 开启增量同步模式 (仅拉取 {datetime.fromtimestamp(after_ts)} 之后的新记录)")
-    else:
-        print("🌍 本地无数据或格式异常，开启首次全量同步模式")
+    print(f"⏱️ 增量同步时间起点: {datetime.fromtimestamp(after_ts)}")
 
     token = get_access_token()
     if token:
         raw_new_activities = fetch_activities(token, after_ts)
         final_data, fetched_count, added_count = process_and_merge(local_data, raw_new_activities)
         
-        if fetched_count > 0:
-            # 🛡️ 优化：原子化写入，防止构建意外中断导致 JSON 变砖
+        if fetched_count > 0 or len(final_data) != len(local_data):
+            # 原子化写入
             tmp_file = FILE_NAME + ".tmp"
             with open(tmp_file, 'w', encoding='utf-8') as f:
                 json.dump(final_data, f, ensure_ascii=False, indent=2)
             os.replace(tmp_file, FILE_NAME)
             
-            print(f"✅ 大功告成！本次从 Strava 获取了 {fetched_count} 条数据，净新增 {added_count} 条记录。")
-            print(f"📊 目前总库中共有 {len(final_data)} 条记录。")
+            print(f"✅ 大功告成！本次获取了 {fetched_count} 条有效数据，净新增 {added_count} 条。")
+            print(f"📊 目前总库中共有 {len(final_data)} 条【{CURRENT_YEAR}年度】记录。")
         else:
-            print("💤 没有发现新的运动记录，JSON 文件无需更新。")
+            print("💤 没有发现新的运动记录，或旧数据无需清理，JSON 文件未变更。")
