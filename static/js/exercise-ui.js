@@ -311,18 +311,6 @@
         if (stats.rwDist > (calRwMMax.get(stats.month) || 0)) { calRwMMax.set(stats.month, stats.rwDist); calRwMDate.set(stats.month, date); }
       });
 
-      // 3. 计算最长连续运动天数
-      let maxStreak = 0;
-      if (datesSet.size > 0) {
-        const timestamps = Array.from(datesSet).sort((a, b) => a - b);
-        maxStreak = 1; let currStreak = 1;
-        for (let i = 1; i < timestamps.length; i++) {
-          const diffDays = (timestamps[i] - timestamps[i - 1]) / 86400000;
-          if (diffDays === 1) maxStreak = Math.max(maxStreak, ++currStreak);
-          else if (diffDays > 1) currStreak = 1;
-        }
-      }
-
       // 平滑处理折线图数据
       const sparklineData = weekData.map((val, idx, arr) => {
         const prev = arr[idx - 1] ?? val;
@@ -375,7 +363,7 @@
         displayYear, 
         availableMonthsArr: Array.from(new Set(filteredRuns.map(r => r.start_date_local.slice(5, 7)))).sort().reverse(),
         globalData: { 
-          stats: { totalDist, rideDist, runDist, activeDays: datesSet.size, maxStreak }, 
+          stats: { totalDist, rideDist, runDist, activeDays: datesSet.size },
           sparklineData, sparklineMax: Math.max(...sparklineData, 1), 
           calRideYDate, calRideMDates: new Set(calRideMDate.values()), 
           calRwYDate, calRwMDates: new Set(calRwMDate.values()) 
@@ -603,10 +591,6 @@
               <div class="metricBlock">
                 <span class="metricLabel">出勤</span>
                 <span class="metricValue">${engine.globalData.stats.activeDays}<small>天</small></span>
-              </div>
-              <div class="metricBlock">
-                <span class="metricLabel">连签</span>
-                <span class="metricValue">${engine.globalData.stats.maxStreak}<small>天</small></span>
               </div>
             </div>
           </div>

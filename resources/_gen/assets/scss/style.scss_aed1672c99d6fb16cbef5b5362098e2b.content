@@ -1540,7 +1540,8 @@ body:has(.menu-checkbox:checked) {
           color: var(--text-info-dark-color); }
     .bento-calendar-board .globalSection .metricsRow {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 60px;
       width: 100%;
       z-index: 2; }
     .bento-calendar-board .globalSection .metricBlock {
