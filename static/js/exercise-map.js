@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
           e.stopPropagation();
           wrapper.classList.remove('show-poster-mode');
           posterView.style.display = 'none';
-          normalView.style.display = 'block';
+          normalView.style.display = '';
           const mask = document.getElementById('real-poster-mask');
           if (mask) mask.remove();
         });

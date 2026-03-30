@@ -282,7 +282,8 @@
 
     .metricsRow {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 60px;
       width: 100%;
       z-index: 2;
     }
