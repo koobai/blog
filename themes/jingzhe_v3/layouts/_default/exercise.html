@@ -132,27 +132,10 @@
               </div>
             </div>
 
-            <div class="runTooltip">
-              <div class="ttList">
-                <div class="ttItem"><div class="ttNameWrap"><span class="ttName">用时</span></div><span class="ttNum">{{ $run.moving_time }}</span></div>
-                {{ if and $run.pace_num (ne $run.pace_num "--") }}
-                  <div class="ttItem">
-                    <div class="ttNameWrap"><span class="ttName">{{ if $run.pace_unit }}均速{{ else }}配速{{ end }}</span>{{ if $run.pace_unit }}<span class="ttUnitTag">{{ $run.pace_unit }}</span>{{ end }}</div>
-                    <span class="ttNum">{{ $run.pace_num }}</span>
-                  </div>
-                {{ end }}
-                {{ if $run.average_heartrate }}
-                  <div class="ttItem"><div class="ttNameWrap"><span class="ttName">心率</span></div><span class="ttNum">{{ $run.average_heartrate }}</span></div>
-                {{ end }}
-              </div>
-              
-              {{ if $hasAchieve }}
-                <div class="ttAchievement">
-                  {{ if $isRideY }}<div class="ttAchieveRow"><span>年度单次最远</span><span class="titleTag">骑行</span></div>{{ else if $isRideM }}<div class="ttAchieveRow"><span>月度单次最远</span><span class="titleTag">骑行</span></div>{{ end }}
-                  {{ if $isRwY }}<div class="ttAchieveRow"><span>年度单次最远</span><span class="titleTag">跑走</span></div>{{ else if $isRwM }}<div class="ttAchieveRow"><span>月度单次最远</span><span class="titleTag">跑走</span></div>{{ end }}
-                </div>
-              {{ end }}
-            </div>
+
+           {{ if $hasAchieve }}
+              <div class="map-achieve-data" data-text="{{ if $isGold }}年度单次最远{{ else }}月度单次最远{{ end }}" style="display: none;"></div>
+            {{ end }}
             </div>
         {{ end }}
       </div>
@@ -176,8 +159,8 @@
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260330c"></script>
-<script defer src="/js/exercise-map.js?v=20260330c"></script>
+<script defer src="/js/exercise-ui.js?v=20260330d"></script>
+<script defer src="/js/exercise-map.js?v=20260330d"></script>
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
