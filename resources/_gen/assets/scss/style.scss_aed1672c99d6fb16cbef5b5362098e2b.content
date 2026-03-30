@@ -1336,6 +1336,8 @@ body:has(.menu-checkbox:checked) {
   .sticky-map #mapbox-container {
     height: 260px !important;
     min-height: 260px !important; }
+  .sticky-map #custom-share-ctrl {
+    display: none !important; }
 
 @keyframes mapSlideDown {
   0% {
@@ -1361,7 +1363,7 @@ body:has(.menu-checkbox:checked) {
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 12px;
-      padding: 12px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -1393,7 +1395,7 @@ body:has(.menu-checkbox:checked) {
           color: var(--text-info-dark-color); }
       .runDetailCard .detailStatsRow {
         display: flex;
-        gap: 24px; }
+        gap: 26px; }
       .runDetailCard .detailStatBlock {
         display: flex;
         flex-direction: column;
@@ -1436,7 +1438,7 @@ body:has(.menu-checkbox:checked) {
 
 .normal-view {
   display: grid;
-  gap: 12px; }
+  gap: 8px; }
 
 /* =========================================
    4. 右侧边栏包裹区 (Sidebar Container)
@@ -2181,59 +2183,29 @@ body:has(.menu-checkbox:checked) {
     color: var(--text-info-dark-color); }
 
 /* Mapbox 控件覆写 */
-.mapboxgl-ctrl-group {
-  background: var(--background-card-color) !important;
-  border-radius: 8px !important;
-  border: none !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
-  overflow: hidden;
-  margin-left: 10px !important; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .mapboxgl-ctrl-group {
-      background: var(--background-card-dark-color) !important; } }
-  html[data-theme="dark"] .mapboxgl-ctrl-group {
-    background: var(--background-card-dark-color) !important; }
-
-.mapboxgl-ctrl-group button {
-  background-color: transparent !important;
-  width: 28px !important;
-  height: 28px !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important; }
-
-.mapboxgl-ctrl-group button:last-child {
-  border-bottom: none !important; }
-
-.mapboxgl-ctrl-icon {
-  filter: invert(0) opacity(0.6) !important;
-  opacity: 0.5;
-  transform: scale(0.8) !important;
-  transition: opacity 0.2s ease; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .mapboxgl-ctrl-icon {
-      filter: invert(1) brightness(1) !important; } }
-  html[data-theme="dark"] .mapboxgl-ctrl-icon {
-    filter: invert(1) brightness(1) !important; }
-
-.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
-  opacity: 1; }
-
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
-  margin-right: 10px !important;
-  margin-bottom: 10px !important; }
-
 .mapboxgl-ctrl-logo {
-  opacity: 0.3 !important;
+  opacity: 0.4 !important;
   transform: scale(0.75) !important;
-  transform-origin: bottom right !important;
-  transition: opacity 0.2s ease !important; }
+  transform-origin: bottom left !important; }
+  .mapboxgl-ctrl-logo:hover {
+    opacity: 0.8 !important; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .mapboxgl-ctrl-logo {
+      opacity: 0.2 !important; }
+      html:not([data-theme="light"]) .mapboxgl-ctrl-logo:hover {
+        opacity: 0.4 !important; } }
+  html[data-theme="dark"] .mapboxgl-ctrl-logo {
+    opacity: 0.2 !important; }
+    html[data-theme="dark"] .mapboxgl-ctrl-logo:hover {
+      opacity: 0.4 !important; }
 
-.mapboxgl-ctrl-logo:hover {
-  opacity: 0.6 !important; }
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  margin: 0 0 15px 15px !important; }
 
-/* 分享*/
-/* 缩短且更柔和的独立遮罩 */
+/* =========================================
+   分享海报模式与按钮样式
+========================================= */
+/* 1. 缩短且更柔和的独立遮罩 */
 .poster-gradient-mask {
   position: absolute;
   bottom: 0;
@@ -2250,7 +2222,7 @@ body:has(.menu-checkbox:checked) {
   html[data-theme="dark"] .poster-gradient-mask {
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.5) 100%); }
 
-/* 激活海报模式后的卡片变身 */
+/* 2. 激活海报模式后的卡片变身 */
 #map-wrapper.show-poster-mode {
   /* ✨ 优化：赋予恰到好处的透明度，与背景完美融合 ✨ */ }
   #map-wrapper.show-poster-mode .mapboxgl-control-container {
@@ -2363,38 +2335,56 @@ body:has(.menu-checkbox:checked) {
           html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
             background: rgba(0, 0, 0, 0.2); }
 
+/* 3. 左下角专属分享海报按钮 (替代原生 Mapbox 控件样式) */
 #custom-share-ctrl {
-  display: none !important; }
+  display: none;
+  background: var(--background-card-color);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  /* 与下方的 Logo 保持间距 */
+  visibility: hidden;
+  pointer-events: none;
+  /* 内部按钮与 SVG 图标样式 */ }
   @media (min-width: 768px) {
     #custom-share-ctrl {
-      display: block !important; } }
-  #custom-share-ctrl button {
-    color: var(--text-info-color); }
+      visibility: visible;
+      pointer-events: auto; } }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) #custom-share-ctrl {
+      background: var(--background-card-dark-color); } }
+  html[data-theme="dark"] #custom-share-ctrl {
+    background: var(--background-card-dark-color); }
+  #custom-share-ctrl button.map-share {
+    background: transparent;
+    border: none;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    color: var(--text-info-color);
+    cursor: pointer;
+    transition: color 0.2s ease; }
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) #custom-share-ctrl button {
+      html:not([data-theme="light"]) #custom-share-ctrl button.map-share {
         color: var(--text-info-dark-color); } }
-    html[data-theme="dark"] #custom-share-ctrl button {
+    html[data-theme="dark"] #custom-share-ctrl button.map-share {
       color: var(--text-info-dark-color); }
-    #custom-share-ctrl button:hover {
+    #custom-share-ctrl button.map-share svg {
+      display: block;
+      height: 18px;
+      width: 18px; }
+    #custom-share-ctrl button.map-share:hover {
       color: var(--text-content-color); }
       @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) #custom-share-ctrl button:hover {
+        html:not([data-theme="light"]) #custom-share-ctrl button.map-share:hover {
           color: var(--text-content-dark-color); } }
-      html[data-theme="dark"] #custom-share-ctrl button:hover {
+      html[data-theme="dark"] #custom-share-ctrl button.map-share:hover {
         color: var(--text-content-dark-color); }
-
-.map-share {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  line-height: 0; }
-  .map-share svg {
-    display: block;
-    height: 18px;
-    width: 18px;
-    margin: 0 auto; }
 
 .index-card {
   display: grid;
