@@ -174,9 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 初始年份读取 (从全局数据中动态提取最新年份)
   let currentYear = new Date().getFullYear().toString();
-  if (window.KoobaiRun && window.KoobaiRun.data && window.KoobaiRun.data.length > 0) {
-    const years = Array.from(new Set(window.KoobaiRun.data.map(r => r.start_date_local?.substring(0, 4)).filter(Boolean))).sort().reverse();
-    if (years.length > 0) currentYear = years[0];
+  if (window.KoobaiRun.availableYears && window.KoobaiRun.availableYears.length > 0) {
+    currentYear = window.KoobaiRun.availableYears[0].toString();
   }
 
   // 清理上一轮的动画和标记

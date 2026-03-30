@@ -96,22 +96,7 @@
       </div>
     </div>
     <div class="bento-calendar-board" id="calendar-board-container"></div>
-  </div>
-
-  <div class="shuju-list">
-    <div class="tableContainer" id="run-table-container">
-      
-      <div class="controlsArea">
-        <div class="filterBar" id="month-filter-bar">
-          <div class="filterPill activePill" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>
-          {{ $defaultMonths := sort (default slice ($s.Get "latestMonths") | uniq) "value" "desc" }}          
-          {{ range $defaultMonths }}
-            <div class="filterPill" onclick="window.KoobaiRun.ui.setListMonth('{{ . }}')">{{ . }}</div>
-          {{ end }}        
-          <div class="monthLabel">月</div>
-        </div>
-      </div>
-      
+  </div>  
       <div class="cardList" id="run-list">
         {{ range $index, $run := $sortedActivities }}
           {{ $y := substr .start_date_local 0 4 }}
@@ -171,9 +156,6 @@
             </div>
         {{ end }}
       </div>
-
-    </div>
-  </div>
 </div>
 
 {{- /* ============================================================
@@ -188,13 +170,14 @@
 <script>
   window.KoobaiRun = {
     data: {{ $lightweightRuns | jsonify | safeJS }},
+    availableYears: {{ $years | jsonify | safeJS }},
     config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
     ui: null, map: null
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260322d"></script>
-<script defer src="/js/exercise-map.js?v=20260322d"></script>
+<script defer src="/js/exercise-ui.js?v=20260330a"></script>
+<script defer src="/js/exercise-map.js?v=20260330a"></script>
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

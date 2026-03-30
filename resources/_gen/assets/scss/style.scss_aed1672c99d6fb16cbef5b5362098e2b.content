@@ -1509,7 +1509,7 @@ body:has(.menu-checkbox:checked) {
     .bento-calendar-board .globalSection .globalTitle {
       font-size: 0.75rem;
       color: var(--text-info-color);
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       margin-bottom: 8px;
       z-index: 2; }
       @media (prefers-color-scheme: dark) {
@@ -1833,64 +1833,6 @@ body:has(.menu-checkbox:checked) {
 /* =========================================
    8. 数据列表与过滤器 (Data List & Filter)
 ========================================= */
-.tableContainer {
-  width: 100%; }
-
-.controlsArea {
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 12px 16px;
-  border: 1px solid var(--background-card-border-color);
-  margin-bottom: 10px; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .controlsArea {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .controlsArea {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color); }
-
-.filterBar {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  align-items: center;
-  min-height: 28px; }
-  .filterBar::-webkit-scrollbar {
-    display: none; }
-
-.filterPill {
-  padding: 4px 8px;
-  color: var(--text-info-color);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .filterPill {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .filterPill {
-    color: var(--text-info-dark-color); }
-  .filterPill.activePill, .filterPill:hover {
-    color: var(--text-content-color);
-    opacity: 0.9; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .filterPill.activePill, html:not([data-theme="light"]) .filterPill:hover {
-        color: var(--text-content-dark-color); } }
-    html[data-theme="dark"] .filterPill.activePill, html[data-theme="dark"] .filterPill:hover {
-      color: var(--text-content-dark-color); }
-
-.monthLabel {
-  color: var(--text-info-color);
-  font-size: 0.75rem;
-  margin-left: auto; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .monthLabel {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .monthLabel {
-    color: var(--text-info-dark-color); }
-
 .cardList {
   display: grid;
   grid-template-columns: 1fr;

@@ -246,7 +246,7 @@
     .globalTitle {
       font-size: 0.75rem;
       color: var(--text-info-color);
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       margin-bottom: 8px;
       z-index: 2;
       @include dark {
@@ -658,65 +658,6 @@
 /* =========================================
    8. 数据列表与过滤器 (Data List & Filter)
 ========================================= */
-.tableContainer {
-  width: 100%;
-}
-
-.controlsArea {
-  background: var(--background-card-color);
-  border-radius: 16px;
-  padding: 12px 16px;
-  border: 1px solid var(--background-card-border-color);
-  margin-bottom: 10px;
-  @include dark {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-.filterBar {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  align-items: center;
-  min-height: 28px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.filterPill {
-  padding: 4px 8px;
-  color: var(--text-info-color);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-
-  &.activePill,
-  &:hover {
-    color: var(--text-content-color);
-    opacity: 0.9;
-    @include dark {
-      color: var(--text-content-dark-color);
-    }
-  }
-}
-
-.monthLabel {
-  color: var(--text-info-color);
-  font-size: 0.75rem;
-  margin-left: auto;
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
 .cardList {
   display: grid;
   grid-template-columns: 1fr; /* 📱 手机端默认：单列布局 */

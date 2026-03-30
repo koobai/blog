@@ -104,13 +104,11 @@
     constructor(allRuns) {
       this.allRuns = allRuns || [];
       
-      // 🚀 新增：动态从数据中提取所有存在的年份（倒序，例如：[2026, 2025, 2024]）
-      const yearsSet = new Set(this.allRuns.map(r => r.start_date_local?.substring(0, 4)).filter(Boolean));
-      this.availableYears = Array.from(yearsSet).sort().reverse();
+      // 🚀 优化：直接读取 Hugo 在 HTML 底部注入的全局年份数组，不再前端重新消耗性能计算
+      this.availableYears = (window.KoobaiRun && window.KoobaiRun.availableYears) ? window.KoobaiRun.availableYears.map(String) : [];
       
       // 初始化状态：默认选中最新年份
       this.currentYear = this.availableYears.length > 0 ? this.availableYears[0] : new Date().getFullYear().toString();
-      this.listMonth = 'All';
       
       // 缓存底部 DOM 卡片
       this.cachedRunCards = document.querySelectorAll('.runCard'); 
@@ -154,12 +152,11 @@
       }
     }
 
-    // 触发底部卡片列表的显示/隐藏过滤
+    // 触发底部卡片列表的显示/隐藏过滤 (仅按年份过滤)
     triggerListFilter() {
       this.cachedRunCards.forEach(card => {
         const isYearMatch = card.classList.contains(`item-year-${this.currentYear}`);
-        const isMonthMatch = this.listMonth === 'All' || card.classList.contains(`item-month-${this.listMonth}`);
-        card.style.display = (isYearMatch && isMonthMatch) ? 'flex' : 'none';
+        card.style.display = isYearMatch ? 'flex' : 'none';
       });
     }
 
@@ -167,7 +164,6 @@
     setYear(year) {
       this.currentYear = year;
       this.setSmartMonth(); 
-      this.listMonth = 'All';
       this.renderAll();
       
       // 🚀 新增：派发自定义全局事件，通知地图层更新数据
@@ -176,30 +172,25 @@
 
     // 新增：通过左右箭头切换年份
     changeYearBy(dir) {
+      // 🚀 防御：如果上一次的 DOM 还没渲染完（过快点击），直接拦截
+      if (this._isChangingYear) return; 
+      this._isChangingYear = true;
+
       const currentIndex = this.availableYears.indexOf(this.currentYear);
-      if (currentIndex === -1) return;
-      
-      // availableYears 是倒序的 (例如 [2026, 2025, 2024])
-      // 往左点(<) dir = -1，意为"更老的年份"，比如从 2026 到 2025，索引增加
-      // 往右点(>) dir =  1，意为"更新的年份"，比如从 2025 到 2026，索引减少
-      const nextIndex = currentIndex - dir; 
-      
-      if (nextIndex >= 0 && nextIndex < this.availableYears.length) {
-        this.setYear(this.availableYears[nextIndex]);
+      if (currentIndex !== -1) {
+        const nextIndex = currentIndex - dir; 
+        if (nextIndex >= 0 && nextIndex < this.availableYears.length) {
+          this.setYear(this.availableYears[nextIndex]);
+        }
       }
+      
+      setTimeout(() => { this._isChangingYear = false; }, 300);
     }
 
     // 切换日历板的月份事件 (-1 或 1)
     setCalMonth(dir) {
       this.calMonthIndex = Math.max(0, Math.min(11, this.calMonthIndex + dir));
       this.renderCalendar(this.computeEngineData());
-    }
-
-    // 切换列表数据的月份过滤事件
-    setListMonth(monthStr) {
-      this.listMonth = monthStr;
-      this.renderMonthFilterUI();
-      this.triggerListFilter(); 
     }
 
     // 地图交互联动：高亮列表卡片和日历格子
@@ -408,29 +399,8 @@
     // 触发全局渲染
     renderAll() {
       const engine = this.computeEngineData();
-      this.renderMonthFilterUI(engine.availableMonthsArr);
       this.triggerListFilter(); 
       this.renderCalendar(engine);
-    }
-
-    // 渲染月份过滤器 (Pills)
-    renderMonthFilterUI(monthsArr) {
-      const filterContainer = document.getElementById('month-filter-bar');
-      if (!filterContainer) return;
-      
-      const arr = monthsArr || Array.from(new Set(this.allRuns.filter(r => r.start_date_local?.startsWith(this.currentYear)).map(r => r.start_date_local.slice(5, 7)))).sort().reverse();
-      
-      const pillsHtml = arr.map(m => `
-        <div class="filterPill ${this.listMonth === m ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('${m}')">
-          ${m}
-        </div>
-      `).join('');
-      
-      filterContainer.innerHTML = `
-        <div class="filterPill ${this.listMonth === 'All' ? 'activePill' : ''}" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>
-        ${pillsHtml}
-        <div class="monthLabel">月</div>
-      `;
     }
 
     // 渲染日历及 Bento 数据面板
