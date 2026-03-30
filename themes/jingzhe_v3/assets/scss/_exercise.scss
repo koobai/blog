@@ -91,78 +91,85 @@
 
 /* 地图内嵌详情面板 */
 .runDetailCard {
-  display: none;
-  @include breakpoint("medium") {
-    display: block;
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: max-content;
-    background: var(--background-card-color);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 12px;
-    padding: 15px;
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  background: var(--background-card-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  animation: slideUpFade 0.4s forwards;
+  @include dark {
+    background: var(--background-card-dark-color);
+  }
+
+  .detailName {
+    font-size: 0.75rem;
+    color: var(--text-info-color);
+    display: flex;
+    align-items: center;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  .detailDate {
+    color: var(--text-info-color);
+    line-height: 1;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  /* 🚀 新增：荣誉标签的专属样式 */
+  .map-achievement-tag {
+    font-size: 0.7rem;
+    line-height: 1;
+    margin-left: 6px;
+    color: var(--exercise-text-highlight-color);
+  }
+
+  .detailStatsRow {
+    display: flex;
+    gap: 26px;
+  }
+
+  .detailStatBlock {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    z-index: 10;
-    animation: slideUpFade 0.4s forwards;
-    @include dark {
-      background: var(--background-card-dark-color);
-    }
+    gap: 2px;
 
-    .detailName {
-      font-size: 0.75rem;
+    .statLabel {
       color: var(--text-info-color);
-      display: flex;
+      font-size: 0.65rem;
       @include dark {
         color: var(--text-info-dark-color);
       }
     }
 
-    .detailDate {
+    .statVal {
+      font-size: 0.85rem;
+      color: var(--text-content-color);
+      @include dark {
+        color: var(--text-content-dark-color);
+      }
+    }
+
+    small {
+      font-size: 0.65rem;
       color: var(--text-info-color);
+      margin-left: 2px;
       @include dark {
         color: var(--text-info-dark-color);
-      }
-    }
-
-    .detailStatsRow {
-      display: flex;
-      gap: 26px;
-    }
-
-    .detailStatBlock {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-
-      .statLabel {
-        color: var(--text-info-color);
-        font-size: 0.65rem;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
-      }
-
-      .statVal {
-        font-size: 0.85rem;
-        color: var(--text-content-color);
-        @include dark {
-          color: var(--text-content-dark-color);
-        }
-      }
-
-      small {
-        font-size: 0.65rem;
-        color: var(--text-info-color);
-        margin-left: 2px;
-        @include dark {
-          color: var(--text-info-dark-color);
-        }
       }
     }
   }
@@ -700,11 +707,6 @@
         color: var(--text-content-dark-color) !important;
       }
     }
-
-    .runTooltip {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 }
 
@@ -849,13 +851,6 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
-
-.runCard .runTooltip {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-}
-
 .dayCell .runTooltip,
 .zoneCol .runTooltip {
   left: 50%;
@@ -939,28 +934,10 @@
   }
 }
 
-.ttNameWrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
 .ttName {
   color: var(--text-info-color);
   font-size: 0.8rem;
   @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
-.ttUnitTag {
-  padding: 2px 6px;
-  background: #f0eee9;
-  border-radius: 4px;
-  color: var(--text-info-color);
-  font-size: 0.65rem;
-  @include dark {
-    background: rgba(255, 255, 255, 0.04);
     color: var(--text-info-dark-color);
   }
 }
@@ -1081,10 +1058,7 @@
     right: auto !important;
     margin: 0 !important;
     transform: none !important;
-    bottom: 30px !important;
-    @media (min-width: 768px) {
-      bottom: 40px !important;
-    }
+    bottom: 40px !important;
   }
 
   /* ✨ 优化：赋予恰到好处的透明度，与背景完美融合 ✨ */

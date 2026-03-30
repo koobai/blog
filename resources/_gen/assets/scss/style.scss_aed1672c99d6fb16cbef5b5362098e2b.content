@@ -1349,85 +1349,85 @@ body:has(.menu-checkbox:checked) {
 
 /* 地图内嵌详情面板 */
 .runDetailCard {
-  display: none; }
-  @media (min-width: 768px) {
-    .runDetailCard {
-      display: block;
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      width: max-content;
-      background: var(--background-card-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 10;
-      animation: slideUpFade 0.4s forwards; } }
-  @media (min-width: 768px) and (prefers-color-scheme: dark) {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  background: var(--background-card-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  animation: slideUpFade 0.4s forwards;
+  /* 🚀 新增：荣誉标签的专属样式 */ }
+  @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .runDetailCard {
       background: var(--background-card-dark-color); } }
-  @media (min-width: 768px) {
-      html[data-theme="dark"] .runDetailCard {
-        background: var(--background-card-dark-color); }
-      .runDetailCard .detailName {
-        font-size: 0.75rem;
-        color: var(--text-info-color);
-        display: flex; } }
-    @media (min-width: 768px) and (prefers-color-scheme: dark) {
+  html[data-theme="dark"] .runDetailCard {
+    background: var(--background-card-dark-color); }
+  .runDetailCard .detailName {
+    font-size: 0.75rem;
+    color: var(--text-info-color);
+    display: flex;
+    align-items: center; }
+    @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .runDetailCard .detailName {
         color: var(--text-info-dark-color); } }
-  @media (min-width: 768px) {
-        html[data-theme="dark"] .runDetailCard .detailName {
-          color: var(--text-info-dark-color); }
-      .runDetailCard .detailDate {
-        color: var(--text-info-color); } }
-    @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html[data-theme="dark"] .runDetailCard .detailName {
+      color: var(--text-info-dark-color); }
+  .runDetailCard .detailDate {
+    color: var(--text-info-color);
+    line-height: 1; }
+    @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .runDetailCard .detailDate {
         color: var(--text-info-dark-color); } }
-  @media (min-width: 768px) {
-        html[data-theme="dark"] .runDetailCard .detailDate {
-          color: var(--text-info-dark-color); }
-      .runDetailCard .detailStatsRow {
-        display: flex;
-        gap: 26px; }
-      .runDetailCard .detailStatBlock {
-        display: flex;
-        flex-direction: column;
-        gap: 2px; }
-        .runDetailCard .detailStatBlock .statLabel {
-          color: var(--text-info-color);
-          font-size: 0.65rem; } }
-      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html[data-theme="dark"] .runDetailCard .detailDate {
+      color: var(--text-info-dark-color); }
+  .runDetailCard .map-achievement-tag {
+    font-size: 0.7rem;
+    line-height: 1;
+    margin-left: 6px;
+    color: var(--exercise-text-highlight-color); }
+  .runDetailCard .detailStatsRow {
+    display: flex;
+    gap: 26px; }
+  .runDetailCard .detailStatBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; }
+    .runDetailCard .detailStatBlock .statLabel {
+      color: var(--text-info-color);
+      font-size: 0.65rem; }
+      @media (prefers-color-scheme: dark) {
         html:not([data-theme="light"]) .runDetailCard .detailStatBlock .statLabel {
           color: var(--text-info-dark-color); } }
-  @media (min-width: 768px) {
-          html[data-theme="dark"] .runDetailCard .detailStatBlock .statLabel {
-            color: var(--text-info-dark-color); }
-        .runDetailCard .detailStatBlock .statVal {
-          font-size: 0.85rem;
-          color: var(--text-content-color); } }
-      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+      html[data-theme="dark"] .runDetailCard .detailStatBlock .statLabel {
+        color: var(--text-info-dark-color); }
+    .runDetailCard .detailStatBlock .statVal {
+      font-size: 0.85rem;
+      color: var(--text-content-color); }
+      @media (prefers-color-scheme: dark) {
         html:not([data-theme="light"]) .runDetailCard .detailStatBlock .statVal {
           color: var(--text-content-dark-color); } }
-  @media (min-width: 768px) {
-          html[data-theme="dark"] .runDetailCard .detailStatBlock .statVal {
-            color: var(--text-content-dark-color); }
-        .runDetailCard .detailStatBlock small {
-          font-size: 0.65rem;
-          color: var(--text-info-color);
-          margin-left: 2px; } }
-      @media (min-width: 768px) and (prefers-color-scheme: dark) {
+      html[data-theme="dark"] .runDetailCard .detailStatBlock .statVal {
+        color: var(--text-content-dark-color); }
+    .runDetailCard .detailStatBlock small {
+      font-size: 0.65rem;
+      color: var(--text-info-color);
+      margin-left: 2px; }
+      @media (prefers-color-scheme: dark) {
         html:not([data-theme="light"]) .runDetailCard .detailStatBlock small {
           color: var(--text-info-dark-color); } }
-  @media (min-width: 768px) {
-          html[data-theme="dark"] .runDetailCard .detailStatBlock small {
-            color: var(--text-info-dark-color); } }
+      html[data-theme="dark"] .runDetailCard .detailStatBlock small {
+        color: var(--text-info-dark-color); }
+
 @keyframes slideUpFade {
   from {
     opacity: 0;
@@ -1878,9 +1878,6 @@ body:has(.menu-checkbox:checked) {
           color: var(--text-content-dark-color) !important; } }
       html[data-theme="dark"] .runCard:hover .iconRing svg .path-track {
         color: var(--text-content-dark-color) !important; }
-    .runCard:hover .runTooltip {
-      opacity: 1;
-      visibility: visible; }
 
 /* =========================================
    9. 图标、勋章与浮层组件 (纯轨迹视觉)
@@ -2019,11 +2016,6 @@ body:has(.menu-checkbox:checked) {
     background: rgba(28, 28, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08); }
 
-.runCard .runTooltip {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%); }
-
 .dayCell .runTooltip,
 .zoneCol .runTooltip {
   left: 50%;
@@ -2101,11 +2093,6 @@ body:has(.menu-checkbox:checked) {
   html[data-theme="dark"] .ttItem .ttNum .ttUnit {
     color: var(--text-info-dark-color); }
 
-.ttNameWrap {
-  display: flex;
-  align-items: center;
-  gap: 6px; }
-
 .ttName {
   color: var(--text-info-color);
   font-size: 0.8rem; }
@@ -2113,20 +2100,6 @@ body:has(.menu-checkbox:checked) {
     html:not([data-theme="light"]) .ttName {
       color: var(--text-info-dark-color); } }
   html[data-theme="dark"] .ttName {
-    color: var(--text-info-dark-color); }
-
-.ttUnitTag {
-  padding: 2px 6px;
-  background: #f0eee9;
-  border-radius: 4px;
-  color: var(--text-info-color);
-  font-size: 0.65rem; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .ttUnitTag {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .ttUnitTag {
-    background: rgba(255, 255, 255, 0.04);
     color: var(--text-info-dark-color); }
 
 .ttNum {
@@ -2240,10 +2213,7 @@ body:has(.menu-checkbox:checked) {
     right: auto !important;
     margin: 0 !important;
     transform: none !important;
-    bottom: 30px !important; }
-    @media (min-width: 768px) {
-      #map-wrapper.show-poster-mode .runDetailCard {
-        bottom: 40px !important; } }
+    bottom: 40px !important; }
   #map-wrapper.show-poster-mode .poster-view {
     position: relative;
     width: 100%;

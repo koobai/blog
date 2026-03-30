@@ -9,12 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ========================================================================
      板块 1：基础配置与 Mapbox 初始化
   ======================================================================== */
-  
-  // 起终点的小旗子 SVG 图标
-  const FLAG_SVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20">
-      <path fill="currentColor" d="M4.5 3.25a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H6v2.75a.75.75 0 0 1-1.5 0zM6 13h3v-3h3v3h3v-3h-3V7h3V4h-3v3H9V4H6v3h3v3H6z"/>
-    </svg>`;
 
   mapboxgl.accessToken = window.KoobaiRun.config.MAPBOX_TOKEN;
 
@@ -147,17 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  // 5. 计算两点之间的方位角 (用于飞行动画时的镜头朝向)
-  const calculateBearing = (start, end) => {
-    const PI = Math.PI;
-    const lat1 = (start[1] * PI) / 180, lon1 = (start[0] * PI) / 180;
-    const lat2 = (end[1] * PI) / 180, lon2 = (end[0] * PI) / 180;
-    const dLon = lon2 - lon1;
-    const y = Math.sin(dLon) * Math.cos(lat2);
-    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-    return ((Math.atan2(y, x) * 180) / PI + 360) % 360;
-  };
-
   /* ========================================================================
      板块 4：全局状态与图层渲染核心
   ======================================================================== */
@@ -166,8 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeRunId = null;
   let animationRef = null;
   let flyToTimeout = null;
-  let currentMarkers = [];
   let isFirstLoad = true;
+  let isUserInteracting = false;
+  ['mousedown', 'touchstart', 'dragstart'].forEach(e => map.on(e, () => isUserInteracting = true));
+  ['mouseup', 'touchend', 'dragend'].forEach(e => map.on(e, () => isUserInteracting = false));
   
   // 初始年份读取 (从全局数据中动态提取最新年份)
   let currentYear = new Date().getFullYear().toString();
@@ -179,8 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetState = () => {
     if (animationRef) cancelAnimationFrame(animationRef);
     if (flyToTimeout) clearTimeout(flyToTimeout);
-    currentMarkers.forEach(m => m.remove());
-    currentMarkers = [];
   };
 
   // 注入自定义地形与轨迹图层
@@ -295,7 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 地图加载完毕后初始化
   map.on('style.load', () => {
-    injectCustomLayers(); 
+    map.setFog(null); // 🚀 新增：彻底关闭 Mapbox 自带的天空雾气遮罩，让画面纯净
+    injectCustomLayers();
     
     if (activeRunId && window.KoobaiRun.ui) {
       window.KoobaiRun.ui.highlightRunInUI(null);
@@ -376,11 +360,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
         const smartName = window.KoobaiRun.getSmartName(runData.name, runData.type, runData.summary_polyline);
 
+        let achievementTagsHtml = '';
+        const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
+        if (sourceCard) {
+          const achieveNode = sourceCard.querySelector('.map-achieve-data');
+          if (achieveNode) {
+            const achieveText = achieveNode.getAttribute('data-text');
+            if (achieveText) {
+              achievementTagsHtml = `<span class="map-achievement-tag">${achieveText}</span>`;
+            }
+          }
+        }
+
         // 1. 纯净的 HTML 结构（已去除标题旁的分享图标）
         statsPanel.innerHTML = `
           <div class="normal-view">
             <div class="detailName">
-              <span class="detailDate">${displayTime}</span>
+              <span class="detailDate">${displayTime}</span>${achievementTagsHtml}
             </div>
             <div class="detailStatsRow">
               <div class="detailStatBlock"><span class="statLabel">里程</span><span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span></div>
@@ -494,135 +490,74 @@ document.addEventListener('DOMContentLoaded', () => {
       const totalPoints = coords.length;
       if (totalPoints < 2) return;
 
-      const sportColor = getColor(runData.type);
-      
-      const startEl = document.createElement('div'); 
-      startEl.style.color = sportColor; 
-      startEl.style.lineHeight = '0'; 
-      startEl.innerHTML = FLAG_SVG;
-      
-      const endEl = document.createElement('div'); 
-      endEl.style.color = sportColor; 
-      endEl.style.lineHeight = '0'; 
-      endEl.innerHTML = FLAG_SVG;
-
-      currentMarkers.push(
-        new mapboxgl.Marker({ element: startEl, anchor: 'bottom-left', offset: [-5, 4] })
-          .setLngLat(coords[0])
-          .addTo(map),
-        new mapboxgl.Marker({ element: endEl, anchor: 'bottom-left', offset: [-5, 4] })
-          .setLngLat(coords[coords.length - 1])
-          .addTo(map)
-      );
-
-      // 5. 构建距离矩阵数组 (供动画二分查找进度使用)
-      const cumulativeDistances = new Float32Array(totalPoints); 
-      cumulativeDistances[0] = 0;
-      for (let i = 1; i < totalPoints; i++) {
-        cumulativeDistances[i] = cumulativeDistances[i - 1] + Math.sqrt(
-          Math.pow(coords[i][0] - coords[i - 1][0], 2) + Math.pow(coords[i][1] - coords[i - 1][1], 2)
-        );
+      // 5. 立即完整绘制当前高亮轨迹 (不再像贪吃蛇那样一点点画了)
+      if (map.getSource('highlight-run-source')) {
+        map.getSource('highlight-run-source').setData({ 
+          type: 'FeatureCollection', 
+          features: [{ 
+            type: 'Feature', 
+            properties: { type: runData.type }, 
+            geometry: { type: 'LineString', coordinates: coords } 
+          }] 
+        });
       }
-      const totalGeoDistance = cumulativeDistances[totalPoints - 1];
 
-      // 6. 开始飞行：先跳跃至起点上空
-      let startTime = null;
-      let currentBearing = calculateBearing(coords[0], coords[Math.min(5, totalPoints - 1)]);
-      map.flyTo({ center: coords[0], bearing: currentBearing, pitch: 70, zoom: 16, duration: 2500, essential: true });
+      // 6. 获取轨迹的中心点与最佳边界
+      const bounds = new mapboxgl.LngLatBounds();
+      coords.forEach(c => bounds.extend(c));
+      const center = bounds.getCenter();
+      
+      // 🚀 优化 2：把之前的 cam.zoom - 0.5 改成 cam.zoom + 0.8（数值越大镜头贴得越近）
+      const cam = map.cameraForBounds(bounds, { padding: 60 });
+      const targetZoom = cam ? cam.zoom + 0.6 : 15; 
 
-      // 7. 动画逐帧渲染核心 (requestAnimationFrame)
-      const animate = (timestamp) => {
+      // 7. 无人机起飞：平滑飞向轨迹中心点上方
+      let initialBearing = map.getBearing();
+      map.flyTo({ 
+        center: center, 
+        zoom: targetZoom, 
+        pitch: 65, 
+        bearing: initialBearing,
+        duration: 2000, 
+        essential: true 
+      });
+
+      // 8. 启动环绕盘旋动画 (完美版：结合平滑防抖 + 智能悬停接管)
+      let lastTimestamp = null;
+      const rotateCamera = (timestamp) => {
+        // 如果用户点击了其他路线或取消选中，立即终止
         if (String(activeRunId) !== runId) return; 
-        if (!startTime) startTime = timestamp;
+
+        // 计算真实流逝的帧时间 (deltaTime)，确保高刷屏和普通屏速度一致且不抖动
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const deltaTime = timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
         
-        // 基于公里数动态计算动画耗时，路程越长飞得越久
-        const progress = Math.min((timestamp - startTime) / Math.min(3500 + Math.sqrt(runData.distance || 5) * 800, 12000), 1);
-        const targetDist = progress * totalGeoDistance;
+        // 获取当前是否处于“海报生成模式”
+        const wrapper = document.getElementById('map-wrapper');
+        const isPosterMode = wrapper && wrapper.classList.contains('show-poster-mode');
 
-        // 二分法极速查找当前进度应在哪个坐标点
-        let l = 0, r = totalPoints - 1, idx = 0;
-        while (l <= r) { 
-          const mid = (l + r) >> 1; 
-          if (cumulativeDistances[mid] <= targetDist) { 
-            idx = mid; 
-            l = mid + 1; 
-          } else {
-            r = mid - 1; 
-          }
-        }
-        if (idx >= totalPoints - 1) idx = totalPoints - 2;
-
-        // 计算跨点间的微小平滑余量
-        const remainder = (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) > 0 
-          ? (targetDist - cumulativeDistances[idx]) / (cumulativeDistances[idx + 1] - cumulativeDistances[idx]) 
-          : 0;
-
-        if (progress < 1) {
-          if (coords[idx] && coords[idx + 1]) {
-            // 插值计算当前飞机的绝对位置
-            const currentPos = [ 
-              coords[idx][0] + (coords[idx + 1][0] - coords[idx][0]) * remainder, 
-              coords[idx][1] + (coords[idx + 1][1] - coords[idx][1]) * remainder 
-            ];
-            
-            // 实时截断线段，渲染高亮轨迹
-            const currentLineCoords = coords.slice(0, idx + 1); 
-            currentLineCoords.push(currentPos);
-            
-            if (map.getSource('highlight-run-source')) {
-              map.getSource('highlight-run-source').setData({ 
-                type: 'FeatureCollection', 
-                features: [{ 
-                  type: 'Feature', 
-                  properties: { type: runData.type }, 
-                  geometry: { type: 'LineString', coordinates: currentLineCoords } 
-                }] 
-              });
-            }
-
-            // 预判前方的转向角，实现丝滑镜头摇摄
-            let lookAheadIdx = idx; 
-            while (lookAheadIdx < totalPoints - 1 && cumulativeDistances[lookAheadIdx] < targetDist + totalGeoDistance * 0.05) {
-              lookAheadIdx++;
-            }
-            currentBearing += ((((calculateBearing(currentPos, coords[lookAheadIdx]) - currentBearing) + 540) % 360) - 180) * 0.05; 
-            
-            map.easeTo({ center: currentPos, bearing: currentBearing, pitch: 70, zoom: 16.5, duration: 32, easing: (t) => t });
-          }
-          animationRef = requestAnimationFrame(animate);
-
-        } else {
-          // 动画结束：完整渲染整条高亮线
-          if (map.getSource('highlight-run-source')) {
-            map.getSource('highlight-run-source').setData({ 
-              type: 'FeatureCollection', 
-              features: [{ 
-                type: 'Feature', 
-                properties: { type: runData.type }, 
-                geometry: { type: 'LineString', coordinates: coords } 
-              }] 
-            });
-          }
+        // 🚀 核心：如果没有打开海报 且 用户没有在触碰地图，才自动旋转
+        if (!isPosterMode && !isUserInteracting) {
+          // 每次都获取地图当前的真实角度。
+          // 这样即使用户刚才手动把地图转到了别的角度，松手后也会从新角度继续丝滑旋转，绝不闪烁！
+          const currentBearing = map.getBearing();
           
-          // 延迟 1 秒后，拉起视角俯瞰全线
-          flyToTimeout = setTimeout(() => {
-            const endCam = map.cameraForBounds([
-              [Math.min(...coords.map(p => p[0])), Math.min(...coords.map(p => p[1]))], 
-              [Math.max(...coords.map(p => p[0])), Math.max(...coords.map(p => p[1]))]
-            ], { padding: 60 });
-            
-            if (endCam) {
-              map.easeTo({ ...endCam, pitch: 0, bearing: 0, duration: 1500 });
-            }
-          }, 1000); 
+          // 这里的 40 控制旋转速度，和之前的手感保持一致
+          const newBearing = (currentBearing + deltaTime / 40) % 360; 
+          
+          // 使用 jumpTo 确保 GPU 底层直接渲染，保持极致顺滑
+          map.jumpTo({ bearing: newBearing });
         }
+        
+        animationRef = requestAnimationFrame(rotateCamera);
       };
+
+      // 等待无人机(镜头)飞行就位后，开始缓缓自转
+      flyToTimeout = setTimeout(() => {
+        animationRef = requestAnimationFrame(rotateCamera);
+      }, 2000);
       
-      // 给镜头降落预留 2.6 秒时间，再启动飞行动画
-      flyToTimeout = setTimeout(() => { 
-        animationRef = requestAnimationFrame(animate); 
-      }, 2600);
-      
-    }
-  };
-});
+    } // 👈 这是 map.flyTo 方法的闭合括号
+  }; // 👈 这是 window.KoobaiRun.map 的闭合括号
+}); // 👈 这是整个文件的闭合括号
