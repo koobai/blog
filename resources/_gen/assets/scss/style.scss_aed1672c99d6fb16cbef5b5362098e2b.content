@@ -1263,55 +1263,6 @@ body:has(.menu-checkbox:checked) {
         html[data-theme="dark"] .post-tags .tag-link:hover {
           color: var(--text-highlight-dark-color); } }
 /* =========================================
-   2. 年份导航 (Year Navigation)
-========================================= */
-.buttons {
-  display: flex;
-  width: fit-content;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto 20px auto;
-  position: relative;
-  z-index: 50;
-  gap: 8px;
-  list-style: none;
-  padding: 4px;
-  background: var(--background-card-color);
-  border: 1px solid var(--background-card-border-color);
-  border-radius: 99px;
-  /* 保持这些已有的滚动条控制 */
-  overflow-x: auto;
-  white-space: nowrap;
-  -ms-overflow-style: none;
-  scrollbar-width: none; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .buttons {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .buttons {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color); }
-  .buttons::-webkit-scrollbar {
-    display: none; }
-  .buttons .button {
-    font-size: 0.85rem;
-    cursor: pointer;
-    color: var(--text-info-color);
-    padding: 10px 22px;
-    border-radius: 99px;
-    transition: all 0.2s ease; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .buttons .button {
-        color: var(--text-info-dark-color); } }
-    html[data-theme="dark"] .buttons .button {
-      color: var(--text-info-dark-color); }
-    .buttons .button:hover {
-      color: var(--text-content-color); }
-    .buttons .button.selected {
-      background: var(--exercise-text-highlight-color);
-      color: #111 !important; }
-
-/* =========================================
    3. Bento 核心布局与地图 (Bento & Map)
 ========================================= */
 .bento-hero {
