@@ -520,32 +520,42 @@ document.addEventListener('DOMContentLoaded', () => {
         essential: true 
       });
 
-      // 8. 启动环绕盘旋动画 (完美版：结合平滑防抖 + 智能悬停接管)
+      // 8. 启动环绕盘旋动画
       let lastTimestamp = null;
+      let startTimestamp = null; 
+      
       const rotateCamera = (timestamp) => {
         // 如果用户点击了其他路线或取消选中，立即终止
         if (String(activeRunId) !== runId) return; 
 
-        // 计算真实流逝的帧时间 (deltaTime)，确保高刷屏和普通屏速度一致且不抖动
+        // 记录时间锁
         if (!lastTimestamp) lastTimestamp = timestamp;
+        if (!startTimestamp) startTimestamp = timestamp; 
+        
         const deltaTime = timestamp - lastTimestamp;
+        const elapsed = timestamp - startTimestamp; 
         lastTimestamp = timestamp;
         
         // 获取当前是否处于“海报生成模式”
         const wrapper = document.getElementById('map-wrapper');
         const isPosterMode = wrapper && wrapper.classList.contains('show-poster-mode');
 
-        // 🚀 核心：如果没有打开海报 且 用户没有在触碰地图，才自动旋转
+        // 如果没有打开海报 且 用户没有在触碰地图，才自动旋转 + 呼吸
         if (!isPosterMode && !isUserInteracting) {
-          // 每次都获取地图当前的真实角度。
-          // 这样即使用户刚才手动把地图转到了别的角度，松手后也会从新角度继续丝滑旋转，绝不闪烁！
           const currentBearing = map.getBearing();
           
-          // 这里的 40 控制旋转速度，和之前的手感保持一致
+          // 自转运算：这里的 40 控制旋转速度（保留原样）
           const newBearing = (currentBearing + deltaTime / 40) % 360; 
           
-          // 使用 jumpTo 确保 GPU 底层直接渲染，保持极致顺滑
-          map.jumpTo({ bearing: newBearing });
+          const newPitch = 65 + Math.sin(elapsed / 1200) * 2;
+          const newZoom = targetZoom + Math.sin(elapsed / 1800) * 0.2;
+          
+          // 使用 jumpTo 确保 GPU 底层直接且丝滑地渲染这三个维度的微小变化
+          map.jumpTo({ 
+            bearing: newBearing, 
+            pitch: newPitch, 
+            zoom: newZoom 
+          });
         }
         
         animationRef = requestAnimationFrame(rotateCamera);
