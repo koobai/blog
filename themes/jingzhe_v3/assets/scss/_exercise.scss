@@ -1,164 +1,358 @@
 /* =========================================
-   1. 核心网格布局
+   2. 年份导航 (Year Navigation)
 ========================================= */
-.run-board {
-  flex-shrink: 0;
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-
-  .run-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    @include breakpoint("medium") {
-      display: grid;
-      gap: 10px;
-      /* 桌面端平分两列：左月度，右年度 */
-      grid-template-columns: 1fr 1fr;
-      align-items: stretch;
-    }
-  }
-}
-
-/* =========================================
-   2. 基础卡片样式 (Base Card)
-========================================= */
-.card-annual {
-  display: none !important;
-  @include breakpoint("medium") {
-    display: block !important;
-  }
-}
-.kb-card {
-  background: var(--background-card-color);
-  border-radius: 16px;
-  border: 1px solid var(--background-card-border-color);
-  padding: 10px;
-  box-sizing: border-box;
+.buttons {
   display: flex;
-  flex-direction: column;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto 20px auto;
   position: relative;
-  overflow: hidden; /* 完美裁剪溢出的背景迷你折线图 */
-
+  z-index: 50;
+  gap: 8px;
+  list-style: none;
+  padding: 4px;
+  background: var(--background-card-color);
+  border: 1px solid var(--background-card-border-color);
+  border-radius: 99px;
   @include dark {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
 
-  // === 数据为空时的灰色覆盖样式 ===
-  &.is-empty {
-    .stat-main .val {
-      color: var(--text-info-color) !important;
-      @include dark {
-        color: var(--text-info-dark-color) !important;
-      }
+  /* 保持这些已有的滚动条控制 */
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .button {
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--text-info-color);
+    padding: 10px 22px;
+    border-radius: 99px;
+    transition: all 0.2s ease;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    &:hover {
+      color: var(--text-content-color);
+    }
+
+    &.selected {
+      background: var(--exercise-text-highlight-color);
+      color: #111 !important;
     }
   }
 }
 
 /* =========================================
-   3. 数据卡片内部排版 (Stats Card)
+   3. Bento 核心布局与地图 (Bento & Map)
 ========================================= */
-.card-stat {
-  .stat-header {
-    display: flex;
-    justify-content: center; /* 居中整个内容组 */
-    align-items: center;
-    gap: 8px; /* 👈 核心：控制箭头和文字之间的紧凑距离 */
-    width: 100%;
-    margin-bottom: 6px;
-    position: relative;
-    z-index: 1;
-    min-height: 24px; /* 保持左右卡片标题高度完全一致 */
+.bento-hero {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-direction: column; /* 📱 手机端：默认竖排 */
 
-    .stat-title {
+  @include breakpoint("medium") {
+    flex-direction: row; /* 💻 PC端：恢复横排 */
+    align-items: stretch;
+    height: 550px;
+  }
+}
+
+#mapbox-container {
+  height: 260px;
+  background-color: var(--background-card-color);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  @include breakpoint("medium") {
+    height: 100% !important;
+  }
+  @include dark {
+    background: var(--background-card-dark-color);
+  }
+}
+
+.bento-map-placeholder {
+  flex: none;
+  width: 100%;
+  height: 260px;
+  position: relative;
+  order: 2;
+  @include breakpoint("medium") {
+    flex: 1;
+    height: 100%;
+    order: 0;
+  }
+}
+
+.bento-card-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--background-card-border-color);
+  background: var(--background-card-color);
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
+}
+
+/* 吸顶地图 */
+.sticky-map {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 20px) !important;
+  max-width: 800px !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  z-index: 99;
+  border-radius: 16px;
+  border-top: none;
+  animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  #mapbox-container {
+    height: 260px !important;
+    min-height: 260px !important;
+  }
+}
+
+@keyframes mapSlideDown {
+  0% {
+    transform: translate(-50%, -120%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* 地图内嵌详情面板 */
+.runDetailCard {
+  display: none;
+  @include breakpoint("medium") {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
+    background: var(--background-card-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+    animation: slideUpFade 0.4s forwards;
+    @include dark {
+      background: var(--background-card-dark-color);
+    }
+
+    .detailName {
       font-size: 0.75rem;
       color: var(--text-info-color);
-      letter-spacing: 2px;
-      text-align: center;
+      display: flex;
       @include dark {
         color: var(--text-info-dark-color);
       }
     }
 
-    /* 左右透明按钮 */
-    .nav-btn {
-      background: transparent;
-      border: none;
-      padding: 2px 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .detailDate {
       color: var(--text-info-color);
-      cursor: pointer;
-      transition: color 0.2s ease;
-
       @include dark {
         color: var(--text-info-dark-color);
       }
+    }
 
-      svg {
-        width: 14px;
-        height: 14px;
+    .detailStatsRow {
+      display: flex;
+      gap: 24px;
+    }
+
+    .detailStatBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .statLabel {
+        color: var(--text-info-color);
+        font-size: 0.65rem;
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
 
-      &:hover:not(:disabled) {
+      .statVal {
+        font-size: 0.85rem;
         color: var(--text-content-color);
         @include dark {
           color: var(--text-content-dark-color);
         }
       }
 
-      &:disabled {
-        opacity: 0.2;
-        cursor: default;
+      small {
+        font-size: 0.65rem;
+        color: var(--text-info-color);
+        margin-left: 2px;
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
       }
     }
   }
+}
 
-  .stat-main {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .val {
-      font-size: 2.6rem;
-      font-weight: 700;
-      color: var(--exercise-text-highlight-color);
-      line-height: 1;
+.normal-view {
+  display: grid;
+  gap: 12px;
+}
+/* =========================================
+   4. 右侧边栏包裹区 (Sidebar Container)
+========================================= */
+.bento-calendar-board {
+  flex-shrink: 0;
+  width: 100%;
+  display: contents; /* 📱 手机端：释放包裹层，允许子元素跨级重排 */
+
+  @include breakpoint("medium") {
+    display: flex; /* 💻 PC端：恢复右侧侧边栏独立包裹 */
+    flex-direction: column;
+    gap: 10px;
+    width: 320px;
+    height: 100%;
+  }
+
+  .boardContainer {
+    display: contents; /* 📱 手机端：释放内层包裹 */
+
+    @include breakpoint("medium") {
+      display: flex; /* 💻 PC端：恢复正常弹性布局 */
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
     }
   }
 
-  /* 核心指标网格：优雅的响应式 */
-  .stat-metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px 10px;
-    width: 100%;
-    margin-top: auto; /* 在弹性的卡片中自动沉到底部 */
+  /* 侧边栏通用卡片样式 */
+  .globalSection,
+  .calendarSection,
+  .insightCard {
+    background: var(--background-card-color);
+    border-radius: 16px;
+    border: 1px solid var(--background-card-border-color);
+    padding: 16px;
+    @include dark {
+      background: var(--background-card-dark-color);
+      border: 1px solid var(--background-card-border-dark-color);
+    }
+  }
+  @include breakpoint("medium") {
+    .globalSection,
+    .monthlyInsights {
+      flex-shrink: 0;
+    }
+  }
+  /* =========================================
+   5. 年度数据总览 (Global Stats)
+========================================= */
+  .globalSection {
+    order: 1; /* 📱 手机端：强制排在最上方 */
     position: relative;
+    overflow: hidden;
     z-index: 1;
-    padding-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
 
-    .metric-item {
+    @include breakpoint("medium") {
+      order: 0; /* 💻 PC端：恢复默认层级 */
+    }
+
+    .globalTitle {
+      font-size: 0.75rem;
+      color: var(--text-info-color);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      z-index: 2;
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+    }
+
+    .globalMainStat {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 10px;
+      z-index: 2;
+
+      .val {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--exercise-text-highlight-color);
+        line-height: 1;
+      }
+
+      .unit {
+        font-size: 0.85rem;
+        color: var(--text-info-color);
+        @include dark {
+          color: var(--text-info-dark-color);
+        }
+      }
+    }
+
+    .metricsRow {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .metricBlock {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
 
-      .metric-label {
+      .metricLabel {
         font-size: 0.65rem;
         color: var(--text-info-color);
         @include dark {
           color: var(--text-info-dark-color);
         }
       }
-      .metric-val {
+
+      .metricValue {
         font-size: 1rem;
         color: var(--text-content-color);
         @include dark {
@@ -175,27 +369,1009 @@
         }
       }
     }
-  }
 
-  /* 迷你折线图背景 */
-  .sparkline {
-    position: absolute;
-    top: 8px;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    pointer-events: none; /* 防止遮挡上层元素的鼠标交互 */
-    z-index: 0;
-
-    .sparkline-fill {
-      transform-origin: bottom;
-      opacity: 0.9;
+    .sparkline {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      width: 100%;
+      height: 85px;
+      z-index: -1;
+      pointer-events: none;
     }
-    .sparkline-line {
+
+    .sparklineFill {
+      transform-origin: bottom;
+      opacity: 0.7;
+    }
+
+    .sparklineLine {
+      stroke: var(--exercise-text-highlight-color);
       stroke-width: 0.8;
       stroke-linecap: round;
       stroke-linejoin: round;
       opacity: 0.1;
     }
+  }
+
+  /* =========================================
+   6. 日历热力图面板 (Calendar Grid)
+========================================= */
+  .calendarSection {
+    order: 3;
+    display: none !important;
+
+    @include breakpoint("medium") {
+      order: 0;
+      display: flex !important;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+  }
+
+  .monthNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+
+    span {
+      font-size: 0.85rem;
+      color: var(--text-info-color);
+      min-width: 65px;
+      text-align: center;
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      padding: 4px 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-info-color);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      &:hover:not(:disabled) {
+        background: transparent;
+        color: var(--text-content-color);
+        @include dark {
+          color: var(--text-content-dark-color);
+        }
+      }
+
+      &:disabled {
+        opacity: 0.2;
+        cursor: default;
+      }
+    }
+  }
+
+  .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px 4px;
+    text-align: center;
+    margin-bottom: 6px;
+    margin-top: 6px;
+
+    @include breakpoint("medium") {
+      flex: 1;
+      min-height: 0;
+      grid-auto-rows: minmax(0, 1fr);
+    }
+  }
+
+  .dayCell {
+    aspect-ratio: 1; /* 恢复原本的正方形设定 */
+    width: 82%;
+    margin: 0 auto;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0.8rem;
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+    @include breakpoint("medium") {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+    &.hasRun {
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.04) !important;
+        @include dark {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+      }
+    }
+
+    &.maxDay {
+      background: transparent !important;
+    }
+
+    .dateNum {
+      z-index: 1;
+    }
+
+    &:hover .runTooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  .monthFooter {
+    font-size: 0.65rem;
+    color: var(--text-info-color);
+    text-align: center;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    span {
+      font-weight: 700;
+      color: var(--text-content-color);
+      margin: 0 1px 0 1px;
+      @include dark {
+        color: var(--text-content-dark-color);
+      }
+    }
+
+    .dot {
+      font-size: 0.5rem;
+      margin: 0 3px;
+      opacity: 0.3;
+    }
+  }
+
+  /* =========================================
+   7. 洞察图表 (Monthly Insights)
+========================================= */
+  .monthlyInsights {
+    display: flex;
+    gap: 10px;
+    order: 4; /* 📱 手机端：洞察排在最底端 */
+
+    @include breakpoint("medium") {
+      order: 0; /* 💻 PC端：恢复默认 */
+    }
+  }
+
+  .insightCard {
+    flex: 1;
+    padding: 12px 16px;
+  }
+
+  .insightHeader {
+    font-size: 0.75rem;
+    color: var(--text-info-color);
+    margin-bottom: 10px;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  .punchCard {
+    display: flex;
+    gap: 4px;
+    height: 15px;
+
+    .barWrapper {
+      flex: 1;
+      position: relative;
+      cursor: pointer;
+
+      .punchHole {
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        transition: all 0.2s ease;
+        background-color: color-mix(
+          in srgb,
+          var(--text-info-color),
+          transparent 80%
+        );
+        @include dark {
+          background-color: color-mix(
+            in srgb,
+            var(--text-info-dark-color),
+            transparent 80%
+          );
+        }
+      }
+
+      &:hover .punchHole {
+        filter: brightness(1.2);
+      }
+
+      &:hover .runTooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  }
+
+  .zoneChart {
+    display: flex;
+    gap: 10px;
+    height: 15px;
+    align-items: flex-end;
+
+    .zoneCol {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      height: 100%;
+
+      .zoneBar {
+        width: 100%;
+        border-radius: 2px;
+        min-height: 2px;
+        background-color: color-mix(
+          in srgb,
+          var(--text-info-color),
+          transparent 80%
+        );
+        @include dark {
+          background-color: color-mix(
+            in srgb,
+            var(--text-info-dark-color),
+            transparent 80%
+          );
+        }
+      }
+
+      &:hover .runTooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  }
+
+  .insightLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+
+    span {
+      font-size: 0.55rem;
+      color: var(--text-info-color);
+      opacity: 0.6;
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+    }
+  }
+
+  .timeLabels {
+    justify-content: space-between;
+
+    span:first-child {
+      text-align: left;
+    }
+
+    span:nth-child(2) {
+      text-align: center;
+      flex: 1;
+    }
+
+    span:last-child {
+      text-align: right;
+    }
+  }
+
+  .zoneLabels {
+    gap: 10px;
+
+    span {
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+    }
+  }
+}
+
+/* =========================================
+   8. 数据列表与过滤器 (Data List & Filter)
+========================================= */
+.tableContainer {
+  width: 100%;
+}
+
+.controlsArea {
+  background: var(--background-card-color);
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--background-card-border-color);
+  margin-bottom: 10px;
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
+}
+
+.filterBar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  align-items: center;
+  min-height: 28px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.filterPill {
+  padding: 4px 8px;
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+
+  &.activePill,
+  &:hover {
+    color: var(--text-content-color);
+    opacity: 0.9;
+    @include dark {
+      color: var(--text-content-dark-color);
+    }
+  }
+}
+
+.monthLabel {
+  color: var(--text-info-color);
+  font-size: 0.75rem;
+  margin-left: auto;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: 1fr; /* 📱 手机端默认：单列布局 */
+  gap: 10px;
+
+  @include breakpoint("medium") {
+    grid-template-columns: repeat(2, 1fr); /* 💻 PC端：恢复双列布局 */
+  }
+}
+
+.runCard {
+  background: var(--background-card-color);
+  border-radius: 16px;
+  padding: 14px 25px;
+  border: 1px solid var(--background-card-border-color);
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s ease;
+  @include dark {
+    background: var(--background-card-dark-color);
+    border: 1px solid var(--background-card-border-dark-color);
+  }
+
+  &:hover {
+    background: #fff;
+    border-color: #fff;
+    @include dark {
+      background: #232326;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .iconRing svg .path-track {
+      color: var(--text-content-color) !important;
+      @include dark {
+        color: var(--text-content-dark-color) !important;
+      }
+    }
+
+    .runTooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+/* =========================================
+   9. 图标、勋章与浮层组件 (纯轨迹视觉)
+========================================= */
+.iconRing,
+.calIconRing {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 列表里的轨迹容器 */
+.iconRing {
+  width: 38px;
+  height: 38px;
+  margin-right: 20px;
+  color: var(--text-info-color);
+  opacity: 0.8;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: scale(1.1);
+    .path-track {
+      transition: all 0.3s ease;
+    }
+  }
+
+  /* 破纪录卡片：覆盖为金/银色 */
+  &.goldRing {
+    color: #f5a623 !important;
+  }
+  &.silverRing {
+    color: #78828f !important;
+    @include dark {
+      color: var(--text-content-dark-color) !important;
+    }
+  }
+}
+
+/* 日历里的迷你轨迹容器 (保留底色光晕让它在日历中显眼) */
+.calIconRing {
+  &.has-track svg {
+    width: 26px;
+    height: 26px;
+    /* 日历里的轨迹因为太小，线条稍微加粗一点点保证清晰度 */
+    .path-track {
+      stroke-width: 1.2 !important;
+    }
+  }
+}
+
+/* 金银牌背景光晕 (保留给日历使用) */
+.goldRing {
+  color: #f5a623 !important;
+}
+
+.silverRing {
+  color: #78828f !important;
+  @include dark {
+    color: var(--text-content-dark-color) !important;
+  }
+}
+
+.multiDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 4px;
+  height: 4px;
+  background: var(--text-info-color);
+  border-radius: 50%;
+  opacity: 0.5;
+  @include dark {
+    background: var(--text-info-dark-color);
+  }
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.runName {
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+
+.runDistance {
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  .distUnit {
+    font-size: 0.75rem;
+    margin-left: 3px;
+    font-style: normal;
+    font-weight: normal;
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+}
+
+.runDate {
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+
+/* 气泡系统 */
+.runTooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6;
+  border-radius: 12px;
+  padding: 12px 16px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  cursor: default;
+  @include dark {
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.runCard .runTooltip {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.dayCell .runTooltip,
+.zoneCol .runTooltip {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 边缘防溢出 */
+.grid > div:nth-child(7n + 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-10%) !important;
+}
+.grid > div:nth-child(7n + 2) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-30%) !important;
+}
+.grid > div:nth-child(7n - 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-70%) !important;
+}
+.grid > div:nth-child(7n) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-90%) !important;
+}
+
+.barWrapper:first-child .runTooltip,
+.zoneCol:first-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-15%) !important;
+}
+
+.barWrapper:last-child .runTooltip,
+.zoneCol:last-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-85%) !important;
+}
+
+/* 气泡内部排版 */
+.ttList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ttItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+}
+
+.punchCard,
+.zoneChart {
+  .runTooltip {
+    .ttItem {
+      justify-content: center;
+      gap: 12px;
+    }
+    .ttName {
+      color: var(--text-info-color) !important;
+      font-size: 0.75rem;
+      @include dark {
+        color: var(--text-info-dark-color) !important;
+      }
+    }
+    .ttNum {
+      text-align: left;
+    }
+  }
+}
+
+.ttItem .ttNum .ttUnit {
+  color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+
+.ttNameWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ttName {
+  color: var(--text-info-color);
+  font-size: 0.8rem;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
+
+.ttUnitTag {
+  padding: 2px 6px;
+  background: #f0eee9;
+  border-radius: 4px;
+  color: var(--text-info-color);
+  font-size: 0.65rem;
+  @include dark {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-info-dark-color);
+  }
+}
+
+.ttNum {
+  color: var(--text-content-color);
+  font-size: 0.85rem;
+  text-align: right;
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+
+.ttDayRunList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ttAchievement {
+  padding-top: 10px;
+  border-top: 1px solid #f6f3ed;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  @include dark {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.ttAchieveRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-content-color);
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+
+.titleTag {
+  padding: 2px 6px;
+  background: #f0eee9;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  color: var(--text-info-color);
+  @include dark {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-info-dark-color);
+  }
+}
+
+/* Mapbox 控件覆写 */
+.mapboxgl-ctrl-group {
+  background: var(--background-card-color) !important;
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden;
+  margin-left: 10px !important;
+  @include dark {
+    background: var(--background-card-dark-color) !important;
+  }
+}
+
+.mapboxgl-ctrl-group button {
+  background-color: transparent !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.mapboxgl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+.mapboxgl-ctrl-icon {
+  filter: invert(0) opacity(0.6) !important;
+  opacity: 0.5;
+  transform: scale(0.8) !important;
+  transition: opacity 0.2s ease;
+  @include dark {
+    filter: invert(1) brightness(1) !important;
+  }
+}
+
+.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
+  opacity: 1;
+}
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+  margin-right: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.mapboxgl-ctrl-logo {
+  opacity: 0.3 !important;
+  transform: scale(0.75) !important;
+  transform-origin: bottom right !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.mapboxgl-ctrl-logo:hover {
+  opacity: 0.6 !important;
+}
+
+/* 分享*/
+
+/* 缩短且更柔和的独立遮罩 */
+.poster-gradient-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 55%; /* ✨ 优化：大幅度缩短，仅遮盖下半部分 */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 40%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  z-index: 5;
+  pointer-events: none;
+
+  @include dark {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+}
+
+/* 激活海报模式后的卡片变身 */
+#map-wrapper.show-poster-mode {
+  .mapboxgl-control-container {
+    display: none !important;
+  }
+
+  .runDetailCard {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: 10;
+    width: 100%;
+    max-width: 420px;
+    left: 20px !important;
+    right: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    bottom: 30px !important;
+    @media (min-width: 768px) {
+      bottom: 40px !important;
+    }
+  }
+
+  /* ✨ 优化：赋予恰到好处的透明度，与背景完美融合 ✨ */
+  .poster-view {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.8);
+    @include dark {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .poster-title {
+      font-size: 1rem;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
+    }
+
+    .poster-dist-hero {
+      margin: 0 0 6px 0;
+      line-height: 1;
+      .heroNum {
+        font-size: 3.4rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+      }
+      .heroUnit {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-left: 4px;
+        opacity: 0.6;
+      }
+    }
+
+    .poster-stats-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 24px;
+      .poster-stat-block {
+        display: flex;
+        flex-direction: column;
+        .statLabel {
+          font-size: 0.65rem;
+          opacity: 0.6;
+          margin-bottom: 2px;
+        }
+        .statVal {
+          font-size: 1.1rem;
+          small {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            margin-left: 2px;
+          }
+        }
+      }
+    }
+
+    .poster-watermark {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      opacity: 0.5;
+    }
+
+    .poster-actions {
+      position: absolute;
+      top: -10px;
+      right: 0px;
+      display: flex;
+      gap: 12px;
+      z-index: 20;
+      button {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
+        color: var(--text-content-color);
+        cursor: pointer;
+        transition: background 0.2s;
+        backdrop-filter: blur(4px);
+        svg {
+          display: block;
+          height: 18px;
+          width: 18px;
+          margin: 0 auto;
+        }
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        @include dark {
+          background: rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #fff;
+          &:hover {
+            background: rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+    }
+  }
+}
+//分享图标
+#custom-share-ctrl {
+  display: none !important;
+
+  @include breakpoint("medium") {
+    display: block !important;
+  }
+
+  button {
+    color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+    &:hover {
+      color: var(--text-content-color);
+      @include dark {
+        color: var(--text-content-dark-color);
+      }
+    }
+  }
+}
+.map-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+
+  svg {
+    display: block;
+    height: 18px;
+    width: 18px;
+    margin: 0 auto;
   }
 }
