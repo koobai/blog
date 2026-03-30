@@ -25,6 +25,12 @@
 /* =========================================
    2. 基础卡片样式 (Base Card)
 ========================================= */
+.card-annual {
+  display: none !important;
+  @include breakpoint("medium") {
+    display: block !important;
+  }
+}
 .kb-card {
   background: var(--background-card-color);
   border-radius: 16px;
