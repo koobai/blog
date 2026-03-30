@@ -46,13 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     pitch: 0, 
     bearing: 0, 
     maxPitch: 85,
-    logoPosition: 'bottom-right', 
+    logoPosition: 'bottom-left', 
     attributionControl: false,
     preserveDrawingBuffer: true // 👈 【关键】既然还原了原始代码，记得把这句加回来，否则截图黑屏
   });
-
-  // 仅保留缩放控件，隐藏指南针
-  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-left');
 
   // 3. 监听外层容器大小变化
   const mapWrapper = document.getElementById('map-wrapper');
@@ -422,20 +419,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const normalView = statsPanel.querySelector('.normal-view');
         const posterView = statsPanel.querySelector('.poster-view');
         
-        // 🚀 核心：动态生成左下角 Mapbox 风格的分享按钮
+        // 🚀 核心：动态生成左下角的分享按钮
         let shareCtrl = document.getElementById('custom-share-ctrl');
         if (!shareCtrl) {
           const target = document.querySelector('.mapboxgl-ctrl-bottom-left');
           if (target) {
             shareCtrl = document.createElement('div');
             shareCtrl.id = 'custom-share-ctrl';
-            // 赋予 Mapbox 原生的 class，自动获取白底/黑底和圆角阴影
-            shareCtrl.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+            
+            // 👈 注意这里：保留 mapboxgl-ctrl，去掉 group，换成自己的 custom-share-box
+            shareCtrl.className = 'mapboxgl-ctrl custom-share-box'; 
+            
             shareCtrl.innerHTML = `
               <button type="button" title="生成海报" class="map-share">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.586l6.207 6.207l-1.414 1.414L13 6.414V16h-2V6.414l-3.793 3.793l-1.414-1.414zM3 18v-4h2v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4h2v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3"/></svg>
               </button>`;
-            // prepend 确保我们的分享按钮永远排在加减号的上方
             target.prepend(shareCtrl); 
           }
         }
