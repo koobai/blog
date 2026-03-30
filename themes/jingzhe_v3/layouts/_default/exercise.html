@@ -1,0 +1,220 @@
+{{ define "body_classes" }}page-exercise{{ end }}
+
+{{ define "main" }}
+<link rel="dns-prefetch" href="//api.mapbox.com">
+<link rel="dns-prefetch" href="//events.mapbox.com">
+
+{{- /* ============================================================
+     板块 1：底层数据引擎与业务逻辑运算 (Hugo 编译期执行)
+============================================================ */ -}}
+
+{{- /* 1. 读取并清洗 JSON 数据 */ -}}
+{{ $rawActivities := resources.Get "activities.json" | unmarshal }}
+{{ $activities := slice }}
+{{ $themeMap := dict
+  "Ride"         (dict "color" "#32D74B") 
+  "VirtualRide"  (dict "color" "#32D74B")
+  "EBikeRide"    (dict "color" "#32D74B")
+  "Run"          (dict "color" "#F58200")
+  "TrailRun"     (dict "color" "#F58200")
+  "Treadmill"    (dict "color" "#F58200")
+  "VirtualRun"   (dict "color" "#F58200")  
+  "Walk"         (dict "color" "#DF40C4")
+  "Hike"         (dict "color" "#DF40C4")
+  "Swim"         (dict "color" "#0BAEE6")
+  "WaterSport"   (dict "color" "#0BAEE6")
+  "StairStepper" (dict "color" "#AF52DE")
+}}
+{{ $defaultTheme := dict "color" "#32D74B" }}
+
+{{ range $rawActivities }}
+  {{ $typeMap := dict "Run" "跑起来" "TrailRun" "山野跑起" "Treadmill" "跑马机跑起" "VirtualRun" "线上跑起" "Ride" "骑起来" "EBikeRide" "带电骑起" "VirtualRide" "台子踩起" "Walk" "走起来" "Hike" "徒步走起" "Swim" "游起来" "WaterSport" "水上浪起" "StairStepper" "楼梯爬起" }}
+  {{ $typeStr := default "运动" (index $typeMap .type) }}
+  
+  {{ if and (in (slice "Run" "Ride") .type) (eq .summary_polyline "") }}
+    {{ $typeStr = printf "室内%s" $typeStr }}
+  {{ end }}
+  
+  {{ $finalName := .name }}
+  {{ $pattern := "^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch).*(跑步|骑行|行走|徒步|游泳|运动|爬楼梯|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper)$" }}
+  {{ if and (le (strings.RuneCount .name) 20) (or (findRE $pattern .name) (in (slice "Run" "Ride" "Walk" "StairStepper" "") .name)) }}
+    {{ $finalName = $typeStr }}
+  {{ end }}
+  
+  {{ $activities = $activities | append (merge . (dict "smart_name" $finalName)) }}
+{{ end }}
+
+{{- /* 2. 排序与极值勋章计算 */ -}}
+{{ $sortedActivities := sort $activities "start_date_local" "desc" }}
+{{ $rideTypes := slice "Ride" "VirtualRide" "EBikeRide" }}
+{{ $rwTypes := slice "Run" "TrailRun" "Treadmill" "VirtualRun" "Trail Run" "Walk" "Hike" }}
+
+{{ $years := slice }}
+{{ $lightweightRuns := slice }} 
+{{ $s := newScratch }}
+
+{{ $latestYear := "" }}
+{{ if gt (len $sortedActivities) 0 }}
+  {{ $latestYear = substr (index $sortedActivities 0).start_date_local 0 4 }}
+{{ end }}
+
+{{ range $sortedActivities }}
+  {{ $y := substr .start_date_local 0 4 }}
+  {{ $m := substr .start_date_local 5 2 }}
+  {{ $ym := printf "%s-%s" $y $m }}
+  
+  {{ $years = $years | append $y }}
+  {{ if eq $y $latestYear }}{{ $s.Add "latestMonths" (slice $m) }}{{ end }}
+  
+  {{ $runData := dict "run_id" .run_id "name" .smart_name "type" .type "distance" .distance "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
+  {{ $lightweightRuns = $lightweightRuns | append $runData }}
+  
+  {{ if in $rideTypes .type }}
+    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideY_%s" $y))) }}{{ $s.Set (printf "maxRideY_%s" $y) .distance }}{{ $s.Set (printf "maxRideY_id_%s" $y) .run_id }}{{ end }}
+    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideM_%s" $ym))) }}{{ $s.Set (printf "maxRideM_%s" $ym) .distance }}{{ $s.Set (printf "maxRideM_id_%s" $ym) .run_id }}{{ end }}
+  {{ else if in $rwTypes .type }}
+    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRwY_%s" $y))) }}{{ $s.Set (printf "maxRwY_%s" $y) .distance }}{{ $s.Set (printf "maxRwY_id_%s" $y) .run_id }}{{ end }}
+    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRwM_%s" $ym))) }}{{ $s.Set (printf "maxRwM_%s" $ym) .distance }}{{ $s.Set (printf "maxRwM_id_%s" $ym) .run_id }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ $years = sort ($years | uniq) "value" "desc" }}
+
+
+{{- /* ============================================================
+     板块 2：全景视图渲染层 (HTML 骨架)
+============================================================ */ -}}
+<div class="exercise-container">
+  <div class="pagetitle">
+    2025 年检查出来二型糖尿病，经过饮食及运动结合，已减重二十多斤。但随着不运动及饮食的不控制，体重开始反弹～今年的目标体重 130-140斤。
+  </div>
+  
+
+
+  <div class="bento-hero" id="bento-hero">
+    <div class="bento-map-placeholder">
+      <div id="map-wrapper" class="page-map bento-card-map">
+        <div id="mapbox-container" style="width: 100%; height: 100%;"></div>
+        <div id="map-stats-panel" class="runDetailCard" style="display: none;"></div>
+      </div>
+    </div>
+    <div class="bento-calendar-board" id="calendar-board-container"></div>
+  </div>
+
+  <div class="shuju-list">
+    <div class="tableContainer" id="run-table-container">
+      
+      <div class="controlsArea">
+        <div class="filterBar" id="month-filter-bar">
+          <div class="filterPill activePill" onclick="window.KoobaiRun.ui.setListMonth('All')">全部</div>
+          {{ $defaultMonths := sort (default slice ($s.Get "latestMonths") | uniq) "value" "desc" }}          
+          {{ range $defaultMonths }}
+            <div class="filterPill" onclick="window.KoobaiRun.ui.setListMonth('{{ . }}')">{{ . }}</div>
+          {{ end }}        
+          <div class="monthLabel">月</div>
+        </div>
+      </div>
+      
+      <div class="cardList" id="run-list">
+        {{ range $index, $run := $sortedActivities }}
+          {{ $y := substr .start_date_local 0 4 }}
+          {{ $m := substr .start_date_local 5 2 }}
+          {{ $ym := printf "%s-%s" $y $m }}
+          
+          {{ $theme := default $defaultTheme (index $themeMap .type) }}
+          {{ $isRideY := eq .run_id ($s.Get (printf "maxRideY_id_%s" $y)) }}
+          {{ $isRideM := eq .run_id ($s.Get (printf "maxRideM_id_%s" $ym)) }}
+          {{ $isRwY := eq .run_id ($s.Get (printf "maxRwY_id_%s" $y)) }}
+          {{ $isRwM := eq .run_id ($s.Get (printf "maxRwM_id_%s" $ym)) }}
+          
+          {{ $isGold := or $isRideY $isRwY }}
+          {{ $hasAchieve := or $isGold $isRideM $isRwM }}
+          
+          <div class="runCard item-year-{{ $y }} item-month-{{ $m }}" 
+               data-run-id="{{ printf "%.0f" .run_id }}" 
+               onclick="window.KoobaiRun.map.flyTo('{{ printf "%.0f" .run_id }}')" 
+               style="cursor: pointer; {{ if ne $y (index $years 0) }}display: none;{{ end }}">
+            
+            <div class="iconRing {{ if $isGold }}goldRing{{ else if $hasAchieve }}silverRing{{ end }}"></div>
+            
+            <div class="cardContent">
+              <div class="leftInfo">
+                <div class="runName">{{ $run.smart_name }}</div>
+                <div class="runDistance" style="color: {{ $theme.color }}">
+                  {{ if gt $run.distance 0 }}{{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>{{ else }}{{ $run.moving_time }}<span class="distUnit"></span>{{ end }}
+                </div>
+              </div>
+              <div class="rightInfo">
+                {{ $runTime := time $run.start_date_local }}
+                <time class="runDate" datetime="{{ $runTime.Format "2006-01-02T15:04:05Z07:00" }}">{{ $runTime.Format "01-02 15:04" }}</time>
+              </div>
+            </div>
+
+            <div class="runTooltip">
+              <div class="ttList">
+                <div class="ttItem"><div class="ttNameWrap"><span class="ttName">用时</span></div><span class="ttNum">{{ $run.moving_time }}</span></div>
+                {{ if and $run.pace_num (ne $run.pace_num "--") }}
+                  <div class="ttItem">
+                    <div class="ttNameWrap"><span class="ttName">{{ if $run.pace_unit }}均速{{ else }}配速{{ end }}</span>{{ if $run.pace_unit }}<span class="ttUnitTag">{{ $run.pace_unit }}</span>{{ end }}</div>
+                    <span class="ttNum">{{ $run.pace_num }}</span>
+                  </div>
+                {{ end }}
+                {{ if $run.average_heartrate }}
+                  <div class="ttItem"><div class="ttNameWrap"><span class="ttName">心率</span></div><span class="ttNum">{{ $run.average_heartrate }}</span></div>
+                {{ end }}
+              </div>
+              
+              {{ if $hasAchieve }}
+                <div class="ttAchievement">
+                  {{ if $isRideY }}<div class="ttAchieveRow"><span>年度单次最远</span><span class="titleTag">骑行</span></div>{{ else if $isRideM }}<div class="ttAchieveRow"><span>月度单次最远</span><span class="titleTag">骑行</span></div>{{ end }}
+                  {{ if $isRwY }}<div class="ttAchieveRow"><span>年度单次最远</span><span class="titleTag">跑走</span></div>{{ else if $isRwM }}<div class="ttAchieveRow"><span>月度单次最远</span><span class="titleTag">跑走</span></div>{{ end }}
+                </div>
+              {{ end }}
+            </div>
+            </div>
+        {{ end }}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{- /* ============================================================
+     板块 3：客户端脚本配置与依赖注入
+============================================================ */ -}}
+
+<link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+<link rel="preconnect" href="https://events.mapbox.com" crossorigin>
+<link rel="stylesheet" href="https://img.koobai.com/mapbox-gl.css">
+<script src="https://img.koobai.com/mapbox-gl.js"></script>
+
+<script>
+  window.KoobaiRun = {
+    data: {{ $lightweightRuns | jsonify | safeJS }},
+    config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
+    ui: null, map: null
+  };
+</script>
+
+<script defer src="/js/exercise-ui.js?v=20260322d"></script>
+<script defer src="/js/exercise-map.js?v=20260322d"></script>
+<script defer src="/js/html-to-image.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const bentoHero = document.getElementById('bento-hero');
+    const mapWrapper = document.getElementById('map-wrapper');
+    if (bentoHero && mapWrapper) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const isSticky = bentoHero.getBoundingClientRect().bottom < 80; 
+            mapWrapper.classList.toggle('sticky-map', isSticky);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+  });
+</script>
+{{ end }}

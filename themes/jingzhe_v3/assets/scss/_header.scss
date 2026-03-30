@@ -7,7 +7,7 @@
 
   width: 150px;
   height: 58px;
-  max-width: 620px;
+  max-width: 640px;
   padding: 5px 20px;
 
   display: flex;
@@ -26,7 +26,7 @@
     0 4px 10px rgba(0, 0, 0, 0.06);
 
   @include breakpoint("medium") {
-    width: 620px;
+    width: 640px;
     height: auto;
     padding: 20px 30px;
     bottom: 30px;
@@ -68,7 +68,7 @@
   .menu-list {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    gap: 40px;
     margin: 0;
     padding: 0;
     list-style: none;

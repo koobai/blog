@@ -2,24 +2,6 @@
 {{ define "title" }}{{ site.Title }}{{ end }}
 
 {{ define "main" }}
-
- {{/* 动起来 */}}
-{{- $rawActivities := resources.Get "activities.json" | unmarshal -}}
-{{- $lightweightRuns := slice -}}
-
-{{- range $rawActivities -}}
-  {{- $runData := dict 
-      "type" .type 
-      "distance" .distance 
-      "start_date_local" .start_date_local 
-  -}}
-  {{- $lightweightRuns = $lightweightRuns | append $runData -}}
-{{- end -}}
-<div class="run-board" id="kb-bento-container"></div>
-<script>
-  window.KoobaiRunData = {{ $lightweightRuns | jsonify | safeJS }};
-</script>
-
  {{/* 分页，默认 25 条一页 */}}
 <div id="index-card-timeline" class="index-card">
   {{ $stream := where site.RegularPages "Type" "in" (slice "posts" "laodao") }}
@@ -60,7 +42,6 @@
   </div>
 {{ end }}
 <script src="/js/laodao.js?v=20260329a" defer></script>
-<script defer src="/js/exercise.js?v=20260330a"></script>
 {{ partial "comments.html" . }}
 
 {{ end }}
