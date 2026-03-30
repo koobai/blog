@@ -1336,7 +1336,7 @@ body:has(.menu-checkbox:checked) {
   .sticky-map #mapbox-container {
     height: 260px !important;
     min-height: 260px !important; }
-  .sticky-map #custom-share-ctrl {
+  .sticky-map .panel-share-btn {
     display: none !important; }
 
 @keyframes mapSlideDown {
@@ -1366,7 +1366,8 @@ body:has(.menu-checkbox:checked) {
   gap: 12px;
   z-index: 10;
   animation: slideUpFade 0.4s forwards;
-  /* 🚀 新增：荣誉标签的专属样式 */ }
+  /* 荣誉标签的专属样式 */
+  /* 面板内嵌的分享按钮样式 */ }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .runDetailCard {
       background: var(--background-card-dark-color); } }
@@ -1376,12 +1377,18 @@ body:has(.menu-checkbox:checked) {
     font-size: 0.75rem;
     color: var(--text-info-color);
     display: flex;
-    align-items: center; }
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; }
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) .runDetailCard .detailName {
         color: var(--text-info-dark-color); } }
     html[data-theme="dark"] .runDetailCard .detailName {
       color: var(--text-info-dark-color); }
+    .runDetailCard .detailName .nameLeft {
+      display: flex;
+      align-items: center;
+      line-height: 1; }
   .runDetailCard .detailDate {
     color: var(--text-info-color);
     line-height: 1; }
@@ -1395,6 +1402,38 @@ body:has(.menu-checkbox:checked) {
     line-height: 1;
     margin-left: 6px;
     color: var(--exercise-text-highlight-color); }
+  .runDetailCard .panel-share-btn {
+    display: none; }
+    @media (min-width: 768px) {
+      .runDetailCard .panel-share-btn {
+        display: flex;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: var(--text-info-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        transition: color 0.2s ease; }
+        .runDetailCard .panel-share-btn svg {
+          width: 14px;
+          height: 14px; } }
+  @media (min-width: 768px) and (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .runDetailCard .panel-share-btn {
+      color: var(--text-info-dark-color); } }
+    @media (min-width: 768px) {
+        html[data-theme="dark"] .runDetailCard .panel-share-btn {
+          color: var(--text-info-dark-color); }
+        .runDetailCard .panel-share-btn:hover {
+          color: var(--text-content-color); } }
+    @media (min-width: 768px) and (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .runDetailCard .panel-share-btn:hover {
+        color: var(--text-content-dark-color); } }
+    @media (min-width: 768px) {
+          html[data-theme="dark"] .runDetailCard .panel-share-btn:hover {
+            color: var(--text-content-dark-color); } }
   .runDetailCard .detailStatsRow {
     display: flex;
     gap: 26px; }
@@ -1438,7 +1477,7 @@ body:has(.menu-checkbox:checked) {
 
 .normal-view {
   display: grid;
-  gap: 8px; }
+  gap: 12px; }
 
 /* =========================================
    4. 右侧边栏包裹区 (Sidebar Container)
@@ -2055,11 +2094,6 @@ body:has(.menu-checkbox:checked) {
   transform: translateX(-85%) !important; }
 
 /* 气泡内部排版 */
-.ttList {
-  display: flex;
-  flex-direction: column;
-  gap: 6px; }
-
 .ttItem {
   display: flex;
   justify-content: space-between;
@@ -2305,57 +2339,6 @@ body:has(.menu-checkbox:checked) {
           color: #fff; }
           html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
             background: rgba(0, 0, 0, 0.2); }
-
-/* 3. 左下角专属分享海报按钮 (替代原生 Mapbox 控件样式) */
-#custom-share-ctrl {
-  display: none;
-  background: var(--background-card-color);
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
-  margin-left: 10px !important;
-  margin-bottom: 8px !important;
-  /* 与下方的 Logo 保持间距 */
-  visibility: hidden;
-  pointer-events: none;
-  /* 内部按钮与 SVG 图标样式 */ }
-  @media (min-width: 768px) {
-    #custom-share-ctrl {
-      visibility: visible;
-      pointer-events: auto; } }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) #custom-share-ctrl {
-      background: var(--background-card-dark-color); } }
-  html[data-theme="dark"] #custom-share-ctrl {
-    background: var(--background-card-dark-color); }
-  #custom-share-ctrl button.map-share {
-    background: transparent;
-    border: none;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-    color: var(--text-info-color);
-    cursor: pointer;
-    transition: color 0.2s ease; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) #custom-share-ctrl button.map-share {
-        color: var(--text-info-dark-color); } }
-    html[data-theme="dark"] #custom-share-ctrl button.map-share {
-      color: var(--text-info-dark-color); }
-    #custom-share-ctrl button.map-share svg {
-      display: block;
-      height: 18px;
-      width: 18px; }
-    #custom-share-ctrl button.map-share:hover {
-      color: var(--text-content-color); }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) #custom-share-ctrl button.map-share:hover {
-          color: var(--text-content-dark-color); } }
-      html[data-theme="dark"] #custom-share-ctrl button.map-share:hover {
-        color: var(--text-content-dark-color); }
 
 .index-card {
   display: grid;

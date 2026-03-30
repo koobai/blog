@@ -73,7 +73,7 @@
     height: 260px !important;
     min-height: 260px !important;
   }
-  #custom-share-ctrl {
+  .panel-share-btn {
     display: none !important;
   }
 }
@@ -117,8 +117,16 @@
     color: var(--text-info-color);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
     @include dark {
       color: var(--text-info-dark-color);
+    }
+    .nameLeft {
+      display: flex;
+      align-items: center;
+      line-height: 1;
     }
   }
 
@@ -130,12 +138,46 @@
     }
   }
 
-  /* 🚀 新增：荣誉标签的专属样式 */
+  /* 荣誉标签的专属样式 */
   .map-achievement-tag {
     font-size: 0.7rem;
     line-height: 1;
     margin-left: 6px;
     color: var(--exercise-text-highlight-color);
+  }
+
+  /* 面板内嵌的分享按钮样式 */
+  .panel-share-btn {
+    display: none;
+    @include breakpoint("medium") {
+      display: flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      color: var(--text-info-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      line-height: 1;
+      transition: color 0.2s ease;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      @include dark {
+        color: var(--text-info-dark-color);
+      }
+
+      &:hover {
+        color: var(--text-content-color);
+        @include dark {
+          color: var(--text-content-dark-color);
+        }
+      }
+    }
   }
 
   .detailStatsRow {
@@ -188,7 +230,7 @@
 
 .normal-view {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 /* =========================================
    4. 右侧边栏包裹区 (Sidebar Container)
@@ -894,11 +936,6 @@
 }
 
 /* 气泡内部排版 */
-.ttList {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
 
 .ttItem {
   display: flex;
@@ -1164,59 +1201,6 @@
             background: rgba(0, 0, 0, 0.2);
           }
         }
-      }
-    }
-  }
-}
-
-/* 3. 左下角专属分享海报按钮 (替代原生 Mapbox 控件样式) */
-#custom-share-ctrl {
-  display: none;
-  background: var(--background-card-color);
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
-  margin-left: 10px !important;
-  margin-bottom: 8px !important; /* 与下方的 Logo 保持间距 */
-  visibility: hidden;
-  pointer-events: none;
-  @include breakpoint("medium") {
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  @include dark {
-    background: var(--background-card-dark-color);
-  }
-
-  /* 内部按钮与 SVG 图标样式 */
-  button.map-share {
-    background: transparent;
-    border: none;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-    color: var(--text-info-color);
-    cursor: pointer;
-    transition: color 0.2s ease;
-
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-
-    svg {
-      display: block;
-      height: 18px;
-      width: 18px;
-    }
-
-    &:hover {
-      color: var(--text-content-color);
-      @include dark {
-        color: var(--text-content-dark-color);
       }
     }
   }

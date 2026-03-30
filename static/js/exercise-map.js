@@ -327,10 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
         if (statsPanel) statsPanel.style.display = 'none'; 
         
-        // ✨ 新增：取消选中时，隐藏左下角的分享按钮
-        const shareCtrl = document.getElementById('custom-share-ctrl');
-        if (shareCtrl) shareCtrl.style.display = 'none';
-        
         return;
       }
 
@@ -347,6 +343,18 @@ document.addEventListener('DOMContentLoaded', () => {
       // 3. 寻找数据与渲染覆盖层 (Bento 面板)
       const runData = window.KoobaiRun.data.find(r => normalizeId(r.run_id) === runId);
       if (!runData) return;
+
+      // 🚀 挪动与新增：提前解析坐标和边界，为 2D/3D 视角无缝切换做准备
+      const polyline = runData.summary_polyline || '';
+      const coords = runData._decodedCoords || decodePolyline(polyline);
+      const hasTrack = coords.length >= 2;
+      
+      let bounds = null, center = null;
+      if (hasTrack) {
+        bounds = new mapboxgl.LngLatBounds();
+        coords.forEach(c => bounds.extend(c));
+        center = bounds.getCenter();
+      }
 
       if (statsPanel) {
         const distanceNum = runData.distance > 0 ? runData.distance.toFixed(2) : '--';
@@ -376,7 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
         statsPanel.innerHTML = `
           <div class="normal-view">
             <div class="detailName">
-              <span class="detailDate">${displayTime}</span>${achievementTagsHtml}
+              <div class="nameLeft">
+                <span class="detailDate">${displayTime}</span>${achievementTagsHtml}
+              </div>
+              <button type="button" id="trigger-poster-btn" class="panel-share-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M9 3a1 1 0 0 1 .117 1.993L9 5H5v14h14v-9a1 1 0 0 1 1.993-.117L21 10v9a2 2 0 0 1-1.85 1.995L19 21H5a2 2 0 0 1-1.995-1.85L3 19V5a2 2 0 0 1 1.85-1.995L5 3zm10.513 0c.622 0 .984.468 1.075.856c.091.389-.025.971-.585 1.247l-.414.211l-.164.088l-.363.201l-.405.236l-.439.27c-.682.43-1.46.976-2.242 1.637c-1.654 1.399-3.258 3.261-4.027 5.57a1 1 0 0 1-1.898-.632c.928-2.784 2.823-4.933 4.634-6.465c.431-.365.862-.698 1.278-1l.31-.219H14a1 1 0 0 1-.117-1.993L14 3z"/></g></svg>
+              </button>
             </div>
             <div class="detailStatsRow">
               <div class="detailStatBlock"><span class="statLabel">里程</span><span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span></div>
@@ -415,29 +428,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const normalView = statsPanel.querySelector('.normal-view');
         const posterView = statsPanel.querySelector('.poster-view');
         
-        // 🚀 核心：动态生成左下角的分享按钮
-        let shareCtrl = document.getElementById('custom-share-ctrl');
-        if (!shareCtrl) {
-          const target = document.querySelector('.mapboxgl-ctrl-bottom-left');
-          if (target) {
-            shareCtrl = document.createElement('div');
-            shareCtrl.id = 'custom-share-ctrl';
-            
-            // 👈 注意这里：保留 mapboxgl-ctrl，去掉 group，换成自己的 custom-share-box
-            shareCtrl.className = 'mapboxgl-ctrl custom-share-box'; 
-            
-            shareCtrl.innerHTML = `
-              <button type="button" title="生成海报" class="map-share">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.586l6.207 6.207l-1.414 1.414L13 6.414V16h-2V6.414l-3.793 3.793l-1.414-1.414zM3 18v-4h2v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4h2v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3"/></svg>
-              </button>`;
-            target.prepend(shareCtrl); 
-          }
-        }
-
-        // 每次选中路线时，显示它并刷新点击事件
-        if (shareCtrl) {
-          shareCtrl.style.display = 'block';
-          shareCtrl.onclick = (e) => {
+        // 🚀 新的极简事件绑定（给刚生成的内嵌按钮）
+        const triggerPosterBtn = document.getElementById('trigger-poster-btn');
+        if (triggerPosterBtn) {
+          triggerPosterBtn.onclick = (e) => {
             e.stopPropagation();
             wrapper.classList.add('show-poster-mode');
             normalView.style.display = 'none';
@@ -449,17 +443,29 @@ document.addEventListener('DOMContentLoaded', () => {
               mask.className = 'poster-gradient-mask'; 
               wrapper.appendChild(mask);
             }
+
+            if (hasTrack && bounds) {
+              map.fitBounds(bounds, {
+                padding: { top: 60, bottom: 260, left: 60, right: 60 },
+                pitch: 0,
+                bearing: 0,
+                duration: 1000
+              });
+            }
           };
         }
 
-        // 关闭预览和下载的逻辑完全不变
+        // 关闭预览和下载的逻辑 
         document.getElementById('poster-close-btn')?.addEventListener('click', (e) => {
           e.stopPropagation();
+          
           wrapper.classList.remove('show-poster-mode');
-          posterView.style.display = 'none';
-          normalView.style.display = '';
           const mask = document.getElementById('real-poster-mask');
           if (mask) mask.remove();
+
+          renderDataByYear(currentYear); 
+          if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
+          if (statsPanel) statsPanel.style.display = 'none';
         });
 
         document.getElementById('poster-download-btn')?.addEventListener('click', (e) => {
@@ -484,12 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       }
-
-      // 4. 坐标解析与标记物插入
-      const coords = runData._decodedCoords || decodePolyline(runData.summary_polyline);
-      const totalPoints = coords.length;
-      if (totalPoints < 2) return;
-
+      if (!hasTrack) return;
+      
       // 5. 立即完整绘制当前高亮轨迹 (不再像贪吃蛇那样一点点画了)
       if (map.getSource('highlight-run-source')) {
         map.getSource('highlight-run-source').setData({ 
@@ -502,11 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // 6. 获取轨迹的中心点与最佳边界
-      const bounds = new mapboxgl.LngLatBounds();
-      coords.forEach(c => bounds.extend(c));
-      const center = bounds.getCenter();
-      
+      // 👇 从这里直接开始算相机缩放级别，不需要再重新定义 bounds 了
       // 🚀 优化 2：把之前的 cam.zoom - 0.5 改成 cam.zoom + 0.8（数值越大镜头贴得越近）
       const cam = map.cameraForBounds(bounds, { padding: 60 });
       const targetZoom = cam ? cam.zoom + 0.6 : 15; 
@@ -558,6 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
         animationRef = requestAnimationFrame(rotateCamera);
       }, 2000);
       
-    } // 👈 这是 map.flyTo 方法的闭合括号
-  }; // 👈 这是 window.KoobaiRun.map 的闭合括号
-}); // 👈 这是整个文件的闭合括号
+    }
+  }; 
+}); 
