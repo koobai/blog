@@ -156,7 +156,7 @@
         </svg>`;
     }
 
-    _renderStatCard(title, dataObj, navOptions = null) {
+    _renderStatCard(title, dataObj, navOptions = null, customClass = '') {
       const renderMetric = (label, val, unit) => `
         <div class="metric-item">
           <span class="metric-label">${label}</span>
@@ -173,7 +173,7 @@
       const isEmpty = dataObj.stats.totalDist === 0;
 
       return `
-        <div class="kb-card card-stat ${isEmpty ? 'is-empty' : ''}">
+        <div class="kb-card card-stat ${isEmpty ? 'is-empty' : ''} ${customClass}">
           ${this._generateSparklineSVG(dataObj.sparkline, isEmpty)}
           <div class="stat-header">
             ${prevBtn}
@@ -205,8 +205,8 @@
 
       this.container.innerHTML = `
         <div class="run-grid">
-          ${this._renderStatCard(monthTitle, engineData.monthly, monthNavOptions)}
-          ${this._renderStatCard('本年度总里程', engineData.global)}
+          ${this._renderStatCard(monthTitle, engineData.monthly, monthNavOptions, 'card-monthly')}
+          ${this._renderStatCard('本年度总里程', engineData.global, null, 'card-annual')}
         </div>
       `;
     }

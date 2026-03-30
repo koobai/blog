@@ -1284,6 +1284,11 @@ body:has(.menu-checkbox:checked) {
 /* =========================================
    2. 基础卡片样式 (Base Card)
 ========================================= */
+.card-annual {
+  display: none !important; }
+  @media (min-width: 768px) {
+    .card-annual {
+      display: block !important; } }
 .kb-card {
   background: var(--background-card-color);
   border-radius: 16px;
