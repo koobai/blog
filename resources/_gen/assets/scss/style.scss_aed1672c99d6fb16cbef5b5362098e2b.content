@@ -2253,17 +2253,20 @@ body:has(.menu-checkbox:checked) {
     border: none;
     box-shadow: none;
     z-index: 10;
-    width: 100%;
+    width: calc(100% - 20px);
     max-width: 420px;
-    left: 10px;
-    right: auto;
-    margin: 0;
-    transform: none;
-    bottom: 20px; }
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 20px;
+    align-items: center; }
     @media (min-width: 768px) {
       #map-wrapper.show-poster-mode .runDetailCard {
         bottom: 40px;
-        left: 20px; } }
+        left: 20px;
+        right: auto;
+        margin: 0;
+        align-items: flex-start; } }
   #map-wrapper.show-poster-mode .poster-view {
     position: relative;
     width: 100%;
