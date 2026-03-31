@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-import time  # 新增：用于 API 限速保护
+import time  # 用于 API 限速保护
 from datetime import datetime
 
 # ==========================================
@@ -10,6 +10,10 @@ from datetime import datetime
 CLIENT_ID = os.getenv('STRAVA_CLIENT_ID')
 CLIENT_SECRET = os.getenv('STRAVA_CLIENT_SECRET')
 REFRESH_TOKEN = os.getenv('STRAVA_REFRESH_TOKEN')
+
+# 👇 新增 CF 环境变量
+CF_ACCOUNT_ID = os.getenv('CF_ACCOUNT_ID')
+CF_AI_TOKEN = os.getenv('CF_AI_TOKEN')
 
 if not all([CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN]):
     print("❌ 致命错误: 缺少 Strava API 环境变量凭证！请检查 GitHub Secrets 设置。")
@@ -137,6 +141,43 @@ def parse_time(time_str):
         # 如果格式错误，沉到最下面
         return datetime.min
 
+# ==========================================
+# 🚀 Cloudflare AI 智能私教生成引擎 (极简稳定版)
+# ==========================================
+def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
+        return None, None
+        
+    type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(activity_type, '运动')
+    
+    # 极简且硬核的 Prompt：只看数据，不说废话
+    prompt = f"""
+    我刚完成了一次{type_cn}。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
+    请你作为一个专业且懂行的运动博主，为这次运动生成两段内容：
+    1. title: 简短有意境的标题（绝不能超过6个字，如"破风"、"稳态有氧"、"极限拉扯"）。
+    2. comment: 一段 50-80 字的专业短评。语气要像懂行的老朋友一样自然。请务必结合心率、距离和配速的关系，给出针对性的点评或后续改进建议（例如：心率偏高建议降速有氧；心率稳说明耐力好；或者针对较长距离给出恢复建议）。
+
+    请严格只返回 JSON 格式数据，不要带任何 markdown 标记或其他废话：
+    {{"title": "你的标题", "comment": "你的短评"}}
+    """
+
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/qwen/qwen1.5-14b-chat-awq"
+    headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
+    payload = {"messages": [{"role": "user", "content": prompt}]}
+
+    try:
+        # 给 AI 留 15 秒的思考时间
+        response = requests.post(url, headers=headers, json=payload, timeout=15)
+        if response.status_code == 200:
+            result_text = response.json()['result']['response']
+            clean_text = result_text.replace('```json', '').replace('```', '').strip()
+            result_json = json.loads(clean_text)
+            return result_json.get('title'), result_json.get('comment')
+    except Exception as e:
+        print(f"⚠️ AI 生成失败 (忽略并继续同步): {e}")
+    
+    return None, None
+
 def process_and_merge(local_data, raw_new_data):
     formatted_new_data = []
     
@@ -151,13 +192,23 @@ def process_and_merge(local_data, raw_new_data):
         hr = item.get('average_heartrate', 0)
         # 🛡️ 优化：没有心率时赋予 null 语义 (Python中的 None)
         safe_hr = round(hr) if hr else None
+        
+        distance_km = round(item.get('distance', 0) / 1000, 2)
+        moving_time_str = format_time(item.get('moving_time', 0))
+        full_pace = f"{pace_num}{pace_unit}"
+        
+        # 👇 只有在抓取到新数据时，才请求 AI 生成文案
+        print(f"🤖 正在为新运动 [{safe_time}] 请求 AI 智能私教生成文案...")
+        ai_title, ai_comment = generate_ai_content(item.get('type'), distance_km, moving_time_str, safe_hr, full_pace)
             
         formatted_new_data.append({
             "run_id": item.get('id'),
             "name": item.get('name', '未命名运动'),
+            "ai_title": ai_title,       # 👈 新增字段
+            "ai_comment": ai_comment,   # 👈 新增字段
             "type": item.get('type', 'Workout'),
-            "distance": round(item.get('distance', 0) / 1000, 2),
-            "moving_time": format_time(item.get('moving_time', 0)),
+            "distance": distance_km,
+            "moving_time": moving_time_str,
             "start_date_local": safe_time,               
             "average_heartrate": safe_hr,                
             "average_speed": round(avg_speed_ms * 3.6, 2), 
