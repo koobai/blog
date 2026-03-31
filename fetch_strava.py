@@ -487,13 +487,21 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
         if res.status_code == 200:
             result_data = res.json()['result']['response']
             
-            # 👇 极其简单直接的判断逻辑：是字典直接用，是字符串就清理
             if isinstance(result_data, dict):
                 result_json = result_data
             else:
-                clean_text = str(result_data).replace('```json', '').replace('```', '').strip().replace('\n', ' ')
-                result_json = json.loads(clean_text)
+                text_str = str(result_data)
+                # 🔪 终极暴力截取：只切出第一个 { 到最后一个 } 之间的真正 JSON 内容
+                start_idx = text_str.find('{')
+                end_idx = text_str.rfind('}')
                 
+                if start_idx != -1 and end_idx != -1:
+                    clean_text = text_str[start_idx:end_idx+1].replace('\n', ' ')
+                    result_json = json.loads(clean_text)
+                else:
+                    print(f"⚠️ AI 严重幻觉，未返回 JSON 结构: {text_str}")
+                    return None, None, phase
+                    
             return result_json.get('title'), result_json.get('comment'), phase
     except Exception as e:
         print(f"⚠️ 月报 AI 生成失败: {e}")
