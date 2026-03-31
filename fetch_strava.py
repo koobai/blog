@@ -173,8 +173,11 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
             clean_text = result_text.replace('```json', '').replace('```', '').strip()
             result_json = json.loads(clean_text)
             return result_json.get('title'), result_json.get('comment')
+        else:
+            # 🚀 抓取真实的报错信息！
+            print(f"⚠️ CF API 拒绝了请求！状态码: {response.status_code}, 详情: {response.text}")
     except Exception as e:
-        print(f"⚠️ AI 生成失败 (忽略并继续同步): {e}")
+        print(f"⚠️ AI 代码执行异常 (忽略并继续同步): {e}")
     
     return None, None
 
