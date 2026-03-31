@@ -56,7 +56,7 @@
 }
 
 /* 吸顶地图 */
-.sticky-map {
+#map-wrapper.sticky-map {
   position: fixed;
   top: 10px;
   left: 50%;
@@ -73,8 +73,12 @@
     height: 260px !important;
     min-height: 260px !important;
   }
-  .panel-share-btn {
+  .panl-share-down,
+  .poster-download {
     display: none !important;
+  }
+  .runDetailCard {
+    bottom: 20px !important;
   }
 }
 
@@ -152,73 +156,77 @@
     gap: 10px;
     align-items: center;
   }
+  .panl-share-down,
+  .poster-download {
+    display: none !important;
+    @include breakpoint("medium") {
+      display: flex !important;
+    }
+  }
   /* 面板内嵌的分享按钮样式 */
   .panel-share-btn {
-    display: none;
-    @include breakpoint("medium") {
-      display: flex;
-      background: transparent;
-      border: none;
-      padding: 0;
-      margin: 0;
-      color: var(--text-info-color);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      line-height: 1;
-      transition: color 0.2s ease;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-
-      &:hover {
-        color: var(--text-content-color);
-        @include dark {
-          color: var(--text-content-dark-color);
-        }
-      }
-    }
-  }
-
-  .detailStatsRow {
     display: flex;
-    gap: 26px;
-  }
-
-  .detailStatBlock {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: var(--text-info-color);
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    line-height: 1;
+    transition: color 0.2s ease;
 
-    .statLabel {
-      color: var(--text-info-color);
-      font-size: 0.65rem;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
+    svg {
+      width: 14px;
+      height: 14px;
     }
 
-    .statVal {
-      font-size: 0.85rem;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    &:hover {
       color: var(--text-content-color);
       @include dark {
         color: var(--text-content-dark-color);
       }
     }
+  }
+}
 
-    small {
-      font-size: 0.65rem;
-      color: var(--text-info-color);
-      margin-left: 2px;
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
+.detailStatsRow {
+  display: flex;
+  gap: 26px;
+}
+
+.detailStatBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .statLabel {
+    color: var(--text-info-color);
+    font-size: 0.65rem;
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  .statVal {
+    font-size: 0.85rem;
+    color: var(--text-content-color);
+    @include dark {
+      color: var(--text-content-dark-color);
+    }
+  }
+
+  small {
+    font-size: 0.65rem;
+    color: var(--text-info-color);
+    margin-left: 2px;
+    @include dark {
+      color: var(--text-info-dark-color);
     }
   }
 }
@@ -1082,26 +1090,28 @@
     );
   }
 }
-
 /* 2. 激活海报模式后的卡片变身 */
 #map-wrapper.show-poster-mode {
   .mapboxgl-control-container {
     display: none !important;
   }
-
   .runDetailCard {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
     z-index: 10;
     width: 100%;
     max-width: 420px;
-    left: 20px !important;
-    right: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-    bottom: 40px !important;
+    left: 10px;
+    right: auto;
+    margin: 0;
+    transform: none;
+    bottom: 20px;
+    @include breakpoint("medium") {
+      bottom: 40px;
+      left: 20px;
+    }
   }
 
   /* ✨ 优化：赋予恰到好处的透明度，与背景完美融合 ✨ */

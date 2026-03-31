@@ -1320,7 +1320,7 @@ body:has(.menu-checkbox:checked) {
     border: 1px solid var(--background-card-border-dark-color); }
 
 /* 吸顶地图 */
-.sticky-map {
+#map-wrapper.sticky-map {
   position: fixed;
   top: 10px;
   left: 50%;
@@ -1333,11 +1333,14 @@ body:has(.menu-checkbox:checked) {
   border-radius: 16px;
   border-top: none;
   animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-  .sticky-map #mapbox-container {
+  #map-wrapper.sticky-map #mapbox-container {
     height: 260px !important;
     min-height: 260px !important; }
-  .sticky-map .panel-share-btn {
+  #map-wrapper.sticky-map .panl-share-down,
+  #map-wrapper.sticky-map .poster-download {
     display: none !important; }
+  #map-wrapper.sticky-map .runDetailCard {
+    bottom: 20px !important; }
 
 @keyframes mapSlideDown {
   0% {
@@ -1407,70 +1410,74 @@ body:has(.menu-checkbox:checked) {
     display: flex;
     gap: 10px;
     align-items: center; }
+  .runDetailCard .panl-share-down,
+  .runDetailCard .poster-download {
+    display: none !important; }
+    @media (min-width: 768px) {
+      .runDetailCard .panl-share-down,
+      .runDetailCard .poster-download {
+        display: flex !important; } }
   .runDetailCard .panel-share-btn {
-    display: none; }
-    @media (min-width: 768px) {
-      .runDetailCard .panel-share-btn {
-        display: flex;
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin: 0;
-        color: var(--text-info-color);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        line-height: 1;
-        transition: color 0.2s ease; }
-        .runDetailCard .panel-share-btn svg {
-          width: 14px;
-          height: 14px; } }
-  @media (min-width: 768px) and (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .runDetailCard .panel-share-btn {
-      color: var(--text-info-dark-color); } }
-    @media (min-width: 768px) {
-        html[data-theme="dark"] .runDetailCard .panel-share-btn {
-          color: var(--text-info-dark-color); }
-        .runDetailCard .panel-share-btn:hover {
-          color: var(--text-content-color); } }
-    @media (min-width: 768px) and (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .runDetailCard .panel-share-btn:hover {
-        color: var(--text-content-dark-color); } }
-    @media (min-width: 768px) {
-          html[data-theme="dark"] .runDetailCard .panel-share-btn:hover {
-            color: var(--text-content-dark-color); } }
-  .runDetailCard .detailStatsRow {
     display: flex;
-    gap: 26px; }
-  .runDetailCard .detailStatBlock {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: var(--text-info-color);
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    gap: 2px; }
-    .runDetailCard .detailStatBlock .statLabel {
-      color: var(--text-info-color);
-      font-size: 0.65rem; }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) .runDetailCard .detailStatBlock .statLabel {
-          color: var(--text-info-dark-color); } }
-      html[data-theme="dark"] .runDetailCard .detailStatBlock .statLabel {
-        color: var(--text-info-dark-color); }
-    .runDetailCard .detailStatBlock .statVal {
-      font-size: 0.85rem;
+    align-items: center;
+    line-height: 1;
+    transition: color 0.2s ease; }
+    .runDetailCard .panel-share-btn svg {
+      width: 14px;
+      height: 14px; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .runDetailCard .panel-share-btn {
+        color: var(--text-info-dark-color); } }
+    html[data-theme="dark"] .runDetailCard .panel-share-btn {
+      color: var(--text-info-dark-color); }
+    .runDetailCard .panel-share-btn:hover {
       color: var(--text-content-color); }
       @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) .runDetailCard .detailStatBlock .statVal {
+        html:not([data-theme="light"]) .runDetailCard .panel-share-btn:hover {
           color: var(--text-content-dark-color); } }
-      html[data-theme="dark"] .runDetailCard .detailStatBlock .statVal {
+      html[data-theme="dark"] .runDetailCard .panel-share-btn:hover {
         color: var(--text-content-dark-color); }
-    .runDetailCard .detailStatBlock small {
-      font-size: 0.65rem;
-      color: var(--text-info-color);
-      margin-left: 2px; }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) .runDetailCard .detailStatBlock small {
-          color: var(--text-info-dark-color); } }
-      html[data-theme="dark"] .runDetailCard .detailStatBlock small {
-        color: var(--text-info-dark-color); }
+
+.detailStatsRow {
+  display: flex;
+  gap: 26px; }
+
+.detailStatBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; }
+  .detailStatBlock .statLabel {
+    color: var(--text-info-color);
+    font-size: 0.65rem; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .detailStatBlock .statLabel {
+        color: var(--text-info-dark-color); } }
+    html[data-theme="dark"] .detailStatBlock .statLabel {
+      color: var(--text-info-dark-color); }
+  .detailStatBlock .statVal {
+    font-size: 0.85rem;
+    color: var(--text-content-color); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .detailStatBlock .statVal {
+        color: var(--text-content-dark-color); } }
+    html[data-theme="dark"] .detailStatBlock .statVal {
+      color: var(--text-content-dark-color); }
+  .detailStatBlock small {
+    font-size: 0.65rem;
+    color: var(--text-info-color);
+    margin-left: 2px; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .detailStatBlock small {
+        color: var(--text-info-dark-color); } }
+    html[data-theme="dark"] .detailStatBlock small {
+      color: var(--text-info-dark-color); }
 
 @keyframes slideUpFade {
   from {
@@ -2241,18 +2248,22 @@ body:has(.menu-checkbox:checked) {
   #map-wrapper.show-poster-mode .mapboxgl-control-container {
     display: none !important; }
   #map-wrapper.show-poster-mode .runDetailCard {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
     z-index: 10;
     width: 100%;
     max-width: 420px;
-    left: 20px !important;
-    right: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-    bottom: 40px !important; }
+    left: 10px;
+    right: auto;
+    margin: 0;
+    transform: none;
+    bottom: 20px; }
+    @media (min-width: 768px) {
+      #map-wrapper.show-poster-mode .runDetailCard {
+        bottom: 40px;
+        left: 20px; } }
   #map-wrapper.show-poster-mode .poster-view {
     position: relative;
     width: 100%;
