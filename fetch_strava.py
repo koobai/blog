@@ -282,10 +282,18 @@ if __name__ == '__main__':
     print(f"📁 本地已存在 {len(local_data)} 条记录。")
     
     after_ts = get_latest_timestamp(local_data)
+    
+    # 🚀 核心修改：设定 2026-01-01 为时间底线
+    start_of_2026_ts = int(datetime(2026, 1, 1).timestamp())
+    
     if after_ts:
+        # 如果本地已有数据，取最新时间与2026年1月1日的较大值，杜绝意外拉取旧数据
+        after_ts = max(after_ts, start_of_2026_ts)
         print(f"⏱️ 开启增量同步模式 (仅拉取 {datetime.fromtimestamp(after_ts)} 之后的新记录)")
     else:
-        print("🌍 本地无数据或格式异常，开启首次全量同步模式")
+        # 如果是空的 JSON，强制从 2026 年开始拉取
+        after_ts = start_of_2026_ts
+        print(f"🌍 本地无数据，开启同步模式 (强制从 2026-01-01 开始拉取)")
 
     token = get_access_token()
     if token:
@@ -293,7 +301,6 @@ if __name__ == '__main__':
         final_data, fetched_count, added_count = process_and_merge(local_data, raw_new_activities)
         
         if fetched_count > 0:
-            # 🛡️ 优化：原子化写入，防止构建意外中断导致 JSON 变砖
             tmp_file = FILE_NAME + ".tmp"
             with open(tmp_file, 'w', encoding='utf-8') as f:
                 json.dump(final_data, f, ensure_ascii=False, indent=2)
