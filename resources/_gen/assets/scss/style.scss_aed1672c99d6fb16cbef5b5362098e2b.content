@@ -1367,6 +1367,7 @@ body:has(.menu-checkbox:checked) {
   z-index: 10;
   animation: slideUpFade 0.4s forwards;
   /* 荣誉标签的专属样式 */
+  /* 面板内嵌的AI、分享按钮 */
   /* 面板内嵌的分享按钮样式 */ }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .runDetailCard {
@@ -1402,6 +1403,10 @@ body:has(.menu-checkbox:checked) {
     line-height: 1;
     margin-left: 6px;
     color: var(--exercise-text-highlight-color); }
+  .runDetailCard .panel-share {
+    display: flex;
+    gap: 10px;
+    align-items: center; }
   .runDetailCard .panel-share-btn {
     display: none; }
     @media (min-width: 768px) {
@@ -2339,6 +2344,34 @@ body:has(.menu-checkbox:checked) {
           color: #fff; }
           html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
             background: rgba(0, 0, 0, 0.2); }
+
+/* AI 标题样式微调 */
+.poster-ai-title {
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.1rem !important;
+  color: var(--text-content-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .poster-ai-title {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .poster-ai-title {
+    color: var(--text-content-dark-color); }
+
+/* AI 短评正文样式 */
+.poster-ai-comment {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-content-color);
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .poster-ai-comment {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .poster-ai-comment {
+    color: var(--text-content-dark-color); }
 
 .index-card {
   display: grid;

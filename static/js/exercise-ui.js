@@ -80,24 +80,6 @@
   const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#14C759';
 
   /* ========================================================================
-     板块 2：数据格式化引擎
-  ======================================================================== */
-  const getSmartName = (name, type, polyline) => {
-    const isDefaultPattern = /^(Morning|Afternoon|Evening|Night|Lunch|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper|晨间|上午|午间|下午|傍晚|晚间|夜间|凌晨|清晨|跑步|骑行|行走|爬楼梯)/i.test(name);
-    if (!isDefaultPattern && name.length > 0 && name.length <= 20) return name;
-
-    const typeMap = {
-      'Run': '跑起来', 'TrailRun': '山野跑起', 'Treadmill': '跑马机跑起', 'VirtualRun': '线上跑起',
-      'Ride': '骑起来', 'EBikeRide': '带电骑起', 'VirtualRide': '台子踩起',
-      'Walk': '走起来', 'Hike': '徒步走起', 'Swim': '游起来', 'WaterSport': '水上浪起', 'StairStepper': '楼梯爬起'
-    };
-    let finalName = typeMap[type] || '运动';
-    if ((type === 'Run' || type === 'Ride') && !polyline) finalName = '室内' + finalName;
-    return finalName;
-  };
-  window.KoobaiRun.getSmartName = getSmartName;
-
-  /* ========================================================================
      板块 3：核心视图逻辑控制引擎 (UIEngine)
   ======================================================================== */
   class UIEngine {
@@ -462,7 +444,7 @@
               
             return `
               <div class="ttItem">
-                <span class="ttName">${getSmartName(r.name, r.type, r.summary_polyline)}</span>
+                <span class="ttName">${r.name}</span>
                 <span class="ttNum" style="color: ${colorFromType(r.type)}">${numDisplay}</span>
               </div>
             `;
