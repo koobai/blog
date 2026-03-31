@@ -161,7 +161,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
     {{"title": "你的标题", "comment": "你的短评"}}
     """
 
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/qwen/qwen1.5-14b-chat-awq"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-3.1-8b-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     payload = {"messages": [{"role": "user", "content": prompt}]}
 
