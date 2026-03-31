@@ -1,35 +1,5 @@
 [
   {
-    "run_id": 17884543465,
-    "name": "午后骑行",
-    "ai_title": "稳态有氧",
-    "ai_comment": "距离25.9公里，配速22.97km/h，平均心率128，表明你已经进入了有氧稳态状态。心率稍高，建议稍微降速，享受有氧的乐趣。距离较长，记得在完成后进行充分的休息和恢复，避免肌肉损伤。",
-    "type": "Ride",
-    "distance": 25.9,
-    "moving_time": "01:07:39",
-    "start_date_local": "2026-03-28T14:52:35",
-    "average_heartrate": 128,
-    "average_speed": 22.97,
-    "pace_num": "22.97",
-    "pace_unit": "km/h",
-    "total_elevation_gain": 81.0,
-    "summary_polyline": "savxD_j_}UTv@n@|AnAnDDd@SXqSfM]JqA|@oGnC_GhD_FzBwAbAuKrFsAh@wArAsAz@aDzAyDzAu@r@Sr@@h@Rv@fB|D~C~HzApEv@xC~DhLbDzHjEnLpBdG|@rB^zAKb@qAdA_@n@Qf@Kv@?dBEv@Mr@Qr@wA`C{CfE]p@Uv@e@tDOvBY|Bg@~FUhAi@dBKt@B|@Z~ATb@VLd@Jr@B~@ElBi@n@KxA?xFV|AGxAYr@B\\LlBjA|@^lBj@tCd@nDhA|BtA|ErDbAdAp@~@t@|AhBtFb@~BFp@@nBc@lFBdARxAVz@h@dAhAvAV~@TnDf@tM@x@Ix@CLm@`AiGzFeAz@]f@sCtJ_@|@uAbBgEbE]b@Yh@Ql@ObAo@fKKdAWvAa@xA{B|DaAzAm@r@g@d@w@f@c@PkEp@wLlCkANmAEkK}CwBeAi@c@yGiHwCyAiC_CcAu@}CgAi@q@w@yBe@s@oIaEy@i@_@c@Uo@OcAuAkQa@iHY}AUsBg@sODa@LKPAvOvAbDH~AOdAe@z@{@rDkEhF{Gr@eAdAqCZqAr@uEHcCOmGAwBJyAl@gEr@sCr@cB~A{CZ[TGVDPN\\`APX|@TjDSvCe@`HRtEKz@FfA^zDnBzE~@hCv@fB`A|EpDfBjBrAhBl@vAX~@x@hD\\dCDbBk@pFEz@@d@LjARr@v@vAr@v@Vf@VhALxAJ~BXdLA|@M|@]p@cAhAuHvGm@bBiBzGS^g@t@mErEkAxA_@jAWrAo@~KMfA[tAm@~AoDdG_AfAmAv@qBVcC^aJxBeC\\uAGeKyCmBw@kAs@oAsAoAgBeBiBiAm@wAi@{EiE}Bk@]Qe@q@s@{BQ[y@o@oIgEm@q@Uu@{AuSyAiYK}C@c@DIp@IlEf@tJr@jB?|AWbAg@x@y@rJeLpAkBj@kAf@eBbAsGFiCQ}E?}B`@uDr@}Dh@sBp@cB`EkHj@_Bf@iDt@kJPe@FuA\\iCf@oAhBcDvAuB~@kB^aBJcDVcAPWh@Sx@k@?g@Jo@G]kCmGmEiMy@eCc@yBu@sBa@m@eAYOM?GLYEYqAaFyAsEIq@{IcWYwA{@aBuHqS[kA_@_AgG_RMu@FWdAu@zDqBnF}BpIiEjDkBjC_BdEcBdNsG`@WN[lAaAfGyClF{C~CwAPBFHZ`A|FdNn@lBbBbE"
-  },
-  {
-    "run_id": 17877178233,
-    "name": "傍晚行走",
-    "type": "Walk",
-    "distance": 5.04,
-    "moving_time": "57:50",
-    "start_date_local": "2026-03-27T20:51:12",
-    "average_heartrate": 95,
-    "average_speed": 5.23,
-    "pace_num": "11'27''",
-    "pace_unit": "",
-    "total_elevation_gain": 46.0,
-    "summary_polyline": "ejvxDyc_}UNz@@jAA\\IRYJoCn@{A`@[Ne@`@WLSBQIOYi@aBi@mAU_@sAkB_@s@Yu@EYAs@Cc@]wAKw@SgEwAkGASBONQ\\Q^MRETBd@\\NDVE^Qx@i@\\]LUBU?QYaAAKBORQxCcBREh@CHE`@[`@k@v@g@bB{@~CiBvEeCTSzBsAfE}BtRaLTKREP@PFbCzB`@b@`@b@bB~Bn@tA|@|ATr@l@v@x@lAn@dAjAvBb@h@Zh@|@lAjAvBN^ATGPMNm@Ty@b@]\\]b@WR{@f@gAf@aAh@a@JWRa@h@kAx@sAj@_Ah@cA^QN]b@s@d@{EpCaA^QNi@n@oAz@gCtAmBnA{Ap@wCdBUBICIIeAkCcAwAg@eAOOKCOBSHMJo@rAa@b@Wp@i@^IZCKGiB?u@CIC@AF"
-  },
-  {
     "run_id": 17850107440,
     "name": "午后骑行",
     "type": "Ride",

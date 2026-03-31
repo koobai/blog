@@ -142,7 +142,7 @@ def parse_time(time_str):
         return datetime.min
 
 # ==========================================
-# 🚀 Cloudflare AI 智能私教生成引擎 (极简稳定版)
+# 🚀 Cloudflare AI 智能私教生成引擎 (高自由度文艺版)
 # ==========================================
 def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
@@ -150,34 +150,40 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
         
     type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(activity_type, '运动')
     
-    # 极简且硬核的 Prompt：只看数据，不说废话
+    # 取消了死板的格式限制，鼓励 AI 用自然词汇体现运动特征
     prompt = f"""
     我刚完成了一次{type_cn}。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
-    请你作为一个专业且懂行的运动博主，为这次运动生成两段内容：
-    1. title: 简短有意境的标题（绝不能超过6个字，如"破风"、"稳态有氧"、"极限拉扯"）。
-    2. comment: 一段 50-80 字的专业短评。语气要像懂行的老朋友一样自然。请务必结合心率、距离和配速的关系，给出针对性的点评或后续改进建议（例如：心率偏高建议降速有氧；心率稳说明耐力好；或者针对较长距离给出恢复建议）。
+    请作为一个懂行且高情商的运动私教，生成两段内容：
+    
+    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的格式或标点符号！请发挥创意，用具有画面感的词汇，自然地让人感觉到这是一次{type_cn}（例如骑行可以用"夜巡破风"、"踏频训练"；跑步可以用"稳态步履"、"晨光慢跑"）。
+    2. comment: 一段 50-80 字的专业短评。
+    
+    【绝对禁令】：绝不能在短评中重复写出距离、配速、用时、心率的具体数字！
+    【点评要求】：根据心率和配速的比例，给出真实的训练反馈（比如心率低配速快夸耐力好，心率高提示多做低心率有氧打底，或者对长距离给予恢复建议）。
+    【多样性】：每次生成请尽量使用不同的修辞和视角，语气像老朋友一样自然。
 
     请严格只返回 JSON 格式数据，不要带任何 markdown 标记或其他废话：
-    {{"title": "你的标题", "comment": "你的短评"}}
+    {{"title": "...", "comment": "..."}}
     """
 
+    # 使用目前 CF 上最强大的 Llama 3.1 8B 模型
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-3.1-8b-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
-    payload = {"messages": [{"role": "user", "content": prompt}]}
+    
+    payload = {
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.85 # 稍微调高一点点温度，让词汇更丰富
+    }
 
     try:
-        # 给 AI 留 15 秒的思考时间
         response = requests.post(url, headers=headers, json=payload, timeout=15)
         if response.status_code == 200:
             result_text = response.json()['result']['response']
             clean_text = result_text.replace('```json', '').replace('```', '').strip()
             result_json = json.loads(clean_text)
             return result_json.get('title'), result_json.get('comment')
-        else:
-            # 🚀 抓取真实的报错信息！
-            print(f"⚠️ CF API 拒绝了请求！状态码: {response.status_code}, 详情: {response.text}")
     except Exception as e:
-        print(f"⚠️ AI 代码执行异常 (忽略并继续同步): {e}")
+        print(f"⚠️ AI 生成失败 (忽略): {e}")
     
     return None, None
 
