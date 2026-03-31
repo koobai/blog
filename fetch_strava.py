@@ -482,8 +482,15 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     try:
         res = requests.post(url, headers=headers, json={"messages": [{"role": "user", "content": prompt}], "temperature": 0.8}, timeout=15)
         if res.status_code == 200:
-            clean_text = res.json()['result']['response'].replace('```json', '').replace('```', '').strip().replace('\n', ' ')
-            result_json = json.loads(clean_text)
+            result_data = res.json()['result']['response']
+            
+            # 👇 极其简单直接的判断逻辑：是字典直接用，是字符串就清理
+            if isinstance(result_data, dict):
+                result_json = result_data
+            else:
+                clean_text = str(result_data).replace('```json', '').replace('```', '').strip().replace('\n', ' ')
+                result_json = json.loads(clean_text)
+                
             return result_json.get('title'), result_json.get('comment'), phase
     except Exception as e:
         print(f"⚠️ 月报 AI 生成失败: {e}")
