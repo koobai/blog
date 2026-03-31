@@ -223,7 +223,7 @@ def process_and_merge(local_data, raw_new_data):
         
         # 👇 只有在抓取到新数据时，才请求 AI 生成文案
         print(f"🤖 正在为新运动 [{safe_time}] 请求 AI 智能私教生成文案...")
-        ai_title, ai_comment = generate_ai_content(item.get('type'), distance_km, moving_time_str, safe_hr, full_pace)
+        ai_title, ai_comment = generate_ai_content(item.get('type'), distance_km, moving_time_str, safe_hr, full_pace, safe_time)
             
         formatted_new_data.append({
             "run_id": item.get('id'),
