@@ -1,9 +1,10 @@
 import requests
 import json
 import os
-import time  # 用于 API 限速保护
-from datetime import datetime
+import time
+from datetime import datetime, timedelta 
 import random
+from collections import defaultdict
 
 # ==========================================
 # 1. 🔑 配置区：通过 GitHub Secrets 动态获取
@@ -339,6 +340,218 @@ def process_and_merge(local_data, raw_new_data):
     return final_list, len(formatted_new_data), added_count
 
 # ==========================================
+# 📊 月度洞察数据引擎 (Monthly Insights Engine)
+# ==========================================
+
+def get_hr_zone_info(bpm):
+    """将冷冰冰的心率数字翻译成专业的心率区间术语"""
+    if not bpm or bpm <= 0: return "未知区间"
+    if bpm < 115: return "舒缓有氧 (Z1)"
+    elif bpm <= 129: return "稳态燃脂 (Z2)"
+    elif bpm <= 144: return "有氧强化 (Z3)"
+    elif bpm <= 159: return "乳酸阈值 (Z4)"
+    else: return "无氧极限 (Z5)"
+
+def get_time_of_day(hour):
+    """将小时映射为诗意的时间段"""
+    time_zones = ["午夜", "破晓", "清晨", "上午", "正午", "午后", "暮色", "暗夜"]
+    return time_zones[hour // 3]
+
+def calculate_monthly_stats(month_activities):
+    """提取单个月份的极值、偏好与统计数据"""
+    stats = {
+        "total_count": len(month_activities),
+        "total_distance": 0.0,
+        "sports_count": defaultdict(int),
+        "time_preferences": defaultdict(int),
+        "longest_ride_km": 0.0,
+        "longest_run_km": 0.0,
+        "hardest_session": {"date": None, "type": None, "hr": 0, "zone": "未知"},
+        "hr_sums": defaultdict(list), # 用于算各运动的平均心率
+        "active_days": set()
+    }
+
+    for act in month_activities:
+        sport_type = act.get('type', 'Unknown')
+        dist = act.get('distance', 0)
+        hr = act.get('average_heartrate', 0)
+        start_date = act.get('start_date_local', '')
+        
+        # 基础累加
+        stats['total_distance'] += dist
+        stats['sports_count'][sport_type] += 1
+        
+        if start_date:
+            try:
+                dt = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
+                stats['active_days'].add(dt.date())
+                stats['time_preferences'][get_time_of_day(dt.hour)] += 1
+            except: pass
+
+        # 极值：最远距离
+        if sport_type in ['Ride', 'VirtualRide'] and dist > stats['longest_ride_km']:
+            stats['longest_ride_km'] = dist
+        elif sport_type in ['Run', 'TrailRun'] and dist > stats['longest_run_km']:
+            stats['longest_run_km'] = dist
+            
+        # 极值：最硬核的运动（最高平均心率）
+        if hr and hr > stats['hardest_session']['hr']:
+            stats['hardest_session'] = {
+                "date": start_date[5:10] if start_date else "未知",
+                "type": sport_type,
+                "hr": round(hr),
+                "zone": get_hr_zone_info(hr)
+            }
+            
+        if hr:
+            stats['hr_sums'][sport_type].append(hr)
+
+    # 后处理：算平均心率和最爱时间
+    stats['total_distance'] = round(stats['total_distance'], 2)
+    stats['sports_count'] = dict(stats['sports_count'])
+    stats['favorite_time'] = max(stats['time_preferences'], key=stats['time_preferences'].get) if stats['time_preferences'] else "未知"
+    
+    stats['avg_hr'] = {}
+    for stype, hrs in stats['hr_sums'].items():
+        avg_bpm = round(sum(hrs) / len(hrs))
+        stats['avg_hr'][stype] = f"{avg_bpm}bpm ({get_hr_zone_info(avg_bpm)})"
+        
+    # 计算最大连续运动天数 (Streak)
+    sorted_days = sorted(list(stats['active_days']))
+    max_streak = 1 if sorted_days else 0
+    current_streak = 1 if sorted_days else 0
+    for i in range(1, len(sorted_days)):
+        if sorted_days[i] == sorted_days[i-1] + timedelta(days=1):
+            current_streak += 1
+            max_streak = max(max_streak, current_streak)
+        else:
+            current_streak = 1
+    stats['max_streak_days'] = max_streak
+    
+    # 清理不可序列化的 set
+    del stats['active_days']
+    del stats['time_preferences']
+    del stats['hr_sums']
+
+    return stats
+
+def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
+    """请求 AI 生成高情商月报"""
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN: return None, None
+    
+    # 🧠 判断时间进度阶段（防月初弱智 Bug）
+    phase = "月末总结阶段"
+    phase_rule = "你必须将本月数据与上个月进行对比，盖棺定论，给出极具仪式感的月末总结。"
+    if current_day <= 7:
+        phase = "月初开局阶段"
+        phase_rule = "绝对禁止将当前极少的数据与上月总量做对比！请把重点放在'良好的开端'和'唤醒身体'上，鼓励用户本月超越上个月。"
+    elif current_day <= 20:
+        phase = "月中巡航阶段"
+        phase_rule = "请重点评价用户目前的运动习惯、时间偏好以及连续打卡表现，鼓励他坚持到月底。"
+
+    # 组装数据上下文
+    context = f"【本月 ({month_str}) 数据】：总运动 {stats['total_count']} 次，总里程 {stats['total_distance']}公里。最长连续运动 {stats['max_streak_days']} 天。\n"
+    context += f"运动偏好：{stats['sports_count']}，最爱在【{stats['favorite_time']}】出没。\n"
+    context += f"心率表现：各运动平均心率 {stats['avg_hr']}。\n"
+    if stats['hardest_session']['hr'] > 0:
+        context += f"高光时刻：{stats['hardest_session']['date']} 的 {stats['hardest_session']['type']} 平均心率高达 {stats['hardest_session']['hr']}，达到了【{stats['hardest_session']['zone']}】！\n"
+    
+    if prev_stats:
+        context += f"【对比情报 (上个月)】：总运动 {prev_stats['total_count']} 次，总里程 {prev_stats['total_distance']}公里。\n"
+
+    prompt = f"""
+    你是我的专属高情商运动私教。当前处于【{phase}】。请根据以下数据，为我的本月表现写一段总结：
+    
+    {context}
+    
+    请生成：
+    1. title: 一个四到六个字的短词或成语作为本月专属称号（如：破风行者、春晨狂飙、稳态燃脂大师）。
+    2. comment: 一段 100 字左右的专业评语。
+    
+    【核心铁律】：
+    1. {phase_rule}
+    2. 请自然地运用“稳态燃脂”、“无氧极限”、“破晓”等专业/意境词汇，体现你的教练素养。
+    3. 拒绝冰冷地罗列所有数字！挑出最亮眼的数据（如最长连胜、最高心率区间或里程突破）进行夸奖或调侃。
+    4. 内部绝对禁止使用双引号（"）和换行符！
+    
+    严格返回 JSON: {{"title": "...", "comment": "..."}}
+    """
+    
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
+    headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
+    try:
+        res = requests.post(url, headers=headers, json={"messages": [{"role": "user", "content": prompt}], "temperature": 0.8}, timeout=15)
+        if res.status_code == 200:
+            clean_text = res.json()['result']['response'].replace('```json', '').replace('```', '').strip().replace('\n', ' ')
+            result_json = json.loads(clean_text)
+            return result_json.get('title'), result_json.get('comment'), phase
+    except Exception as e:
+        print(f"⚠️ 月报 AI 生成失败: {e}")
+    return None, None, phase
+
+def update_monthly_insights(local_data):
+    """主调度函数：分析所有数据并生成月报 JSON"""
+    if not local_data: return
+    
+    MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
+    insights = {}
+    if os.path.exists(MONTHLY_FILE):
+        with open(MONTHLY_FILE, 'r', encoding='utf-8') as f:
+            try: insights = json.load(f)
+            except: pass
+
+    # 1. 将所有数据按 YYYY-MM 分组
+    months_data = defaultdict(list)
+    for act in local_data:
+        date_str = act.get('start_date_local', '')
+        if len(date_str) >= 7:
+            month_key = date_str[0:7] # "2026-03"
+            months_data[month_key].append(act)
+            
+    sorted_months = sorted(months_data.keys(), reverse=True)
+    if not sorted_months: return
+    
+    current_month_key = sorted_months[0]
+    
+    # 2. 计算本月 Stats
+    current_stats = calculate_monthly_stats(months_data[current_month_key])
+    
+    # 3. 计算上个月 Stats (如果有)
+    prev_month_key = sorted_months[1] if len(sorted_months) > 1 else None
+    prev_stats = calculate_monthly_stats(months_data[prev_month_key]) if prev_month_key else None
+    
+    # 4. 判断是否需要重新生成 AI 报告 (防止重复消耗 Token)
+    # 逻辑：如果本月运动总次数或总里程变了，说明有新数据，需要重写报告
+    need_ai_update = True
+    if current_month_key in insights:
+        old_stats = insights[current_month_key].get('stats', {})
+        if old_stats.get('total_count') == current_stats['total_count'] and old_stats.get('total_distance') == current_stats['total_distance']:
+            need_ai_update = False 
+
+    if need_ai_update:
+        print(f"📈 检测到 {current_month_key} 数据变动，正在呼叫 AI 教练撰写最新月报...")
+        # 取本月最近一次运动的日子，用来判断当前是月初还是月末
+        latest_act_date = months_data[current_month_key][0].get('start_date_local', '')
+        current_day = int(latest_act_date[8:10]) if len(latest_act_date) >= 10 else 15
+        
+        title, comment, phase = generate_monthly_ai_report(current_month_key, current_stats, prev_stats, current_day)
+        
+        if title and comment:
+            insights[current_month_key] = {
+                "month_str": current_month_key,
+                "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+                "phase": phase,
+                "stats": current_stats,
+                "ai_title": title,
+                "ai_comment": comment
+            }
+            # 存盘
+            with open(MONTHLY_FILE, 'w', encoding='utf-8') as f:
+                json.dump(insights, f, ensure_ascii=False, indent=2)
+            print(f"🎉 {current_month_key} AI 月报已火热出炉并保存至 monthly_insights.json！")
+
+
+# ==========================================
 # 4. 🚀 运行
 # ==========================================
 if __name__ == '__main__':
@@ -411,5 +624,8 @@ if __name__ == '__main__':
             os.replace(tmp_file, FILE_NAME)
             
             print(f"✅ 大功告成！本次新增 {added_count} 条，并执行了历史记录自愈检测。总库共 {len(final_data)} 条。")
+
+            update_monthly_insights(final_data)
         else:
             print("💤 没有发现新运动，历史记录也完好无缺，无需更新。")
+            update_monthly_insights(final_data)
