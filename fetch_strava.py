@@ -3,6 +3,7 @@ import json
 import os
 import time  # 用于 API 限速保护
 from datetime import datetime
+import random
 
 # ==========================================
 # 1. 🔑 配置区：通过 GitHub Secrets 动态获取
@@ -142,7 +143,7 @@ def parse_time(time_str):
         return datetime.min
 
 # ==========================================
-# 🚀 Cloudflare AI 智能私教生成引擎 (季节感知 + 终极铁律版)
+# 🚀 Cloudflare AI 智能私教生成引擎 (加入抗复读机·随机视角熵机制)
 # ==========================================
 def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_date):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
@@ -155,16 +156,11 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     season = "未知季节"
     if start_date:
         try:
-            # 提取小时数
             hour = int(start_date[11:13])
             block_idx = hour // 3
-            time_zones = [
-                "午夜", "破晓", "清晨", "上午",
-                "正午", "午后", "暮色", "暗夜"
-            ]
+            time_zones = ["午夜", "破晓", "清晨", "上午", "正午", "午后", "暮色", "暗夜"]
             time_of_day = time_zones[block_idx]
             
-            # 提取月份并判断季节 (例如: 2026-03-28 提取出 03)
             month = int(start_date[5:7])
             if month in [3, 4, 5]: season = "春季"
             elif month in [6, 7, 8]: season = "夏季"
@@ -175,21 +171,36 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
             
     # 🧠 动态词汇表：严格隔离词汇
     if activity_type in ['Ride', 'VirtualRide', 'EBikeRide']:
-        examples = '词汇参考：晨光破风、午后巡航、暗夜飞驰等'
+        examples = '比如：破风、巡航、飞驰、踏频'
     elif activity_type in ['Walk', 'Hike']:
-        examples = '词汇参考：晨光漫步、落日丈量、暗夜穿梭等'
+        examples = '比如：漫步、丈量、穿梭、闲步'
     elif activity_type in ['Run', 'TrailRun', 'Treadmill']:
-        examples = '词汇参考：晨光微汗、落日步履、暗夜追影等（绝不能用"漫步"或"行走"）'
+        examples = '比如：微汗、步履、追影、奔袭'
     else:
-        examples = '词汇参考：晨光微汗、破浪前行等'
+        examples = '比如：微汗、前行'
+        
+    # 🎲 核心优化：动态引入“随机视角”，彻底打破 AI 概率塌陷的复读机魔咒
+    creative_angles = [
+        "侧重于呼吸、心跳与肌肉的律动感",
+        "侧重于沿途的风景、光影与自然的变化",
+        "侧重于内心的平静、独处与自我对话",
+        "侧重于脚步的节奏、踏频与大地的接触",
+        "侧重于季节的温度、空气的湿度与风的触感",
+        "采用充满力量感、突破极限的激昂语境",
+        "带一点点武侠风、禅意或极其诗意的抽象表达",
+        "侧重于运动后的汗水、卡路里燃烧与多巴胺释放的快感"
+    ]
+    current_focus = random.choice(creative_angles)
     
     prompt = f"""
     我刚在【{season}】的【{time_of_day}】完成了一次【{type_cn}】。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
     请作为一个懂行且高情商的运动私教，生成两段内容：
     
-    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的标点符号！请强烈结合【{season}】和【{time_of_day}】的环境特点，以及【{type_cn}】的运动特性发挥创意（{examples}）。
+    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的标点符号！请结合【{season}】和【{time_of_day}】的环境，以及【{type_cn}】的特性（{examples}）发挥创意。
     
     2. comment: 一段 50-80 字的专业短评。根据心率和配速的比例，给出真实的训练反馈。
+    
+    【强制创意视角（最高优先级）】：本次生成，请你务必强制使用【{current_focus}】的视角来构思标题和短评！每一次的遣词造句必须绝对新颖，绝不许使用类似"轻抚山径"、"春意漫步"这种机械套话！
     
     【运动类型铁律】：当前运动是【{type_cn}】！标题和短评中绝对禁止出现其他运动的词汇！（例如：如果是跑步绝不能用"漫步/行走"，如果是徒步绝不能用"奔跑/骑行"）！
     【季节与常理铁律】：当前是【{season}】！绝对禁止出现跨季节的词汇（例如春季绝不能说"炎热的夏日/酷暑"，冬季绝不能说"初春"）！
@@ -205,7 +216,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     
     payload = {
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.85 
+        "temperature": 0.9  # 稍微再提一点点温度，配合随机视角产生化学反应
     }
 
     try:
