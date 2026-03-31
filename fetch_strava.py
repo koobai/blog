@@ -142,7 +142,7 @@ def parse_time(time_str):
         return datetime.min
 
 # ==========================================
-# 🚀 Cloudflare AI 智能私教生成引擎 (专属词库 + 纯正中文版)
+# 🚀 Cloudflare AI 智能私教生成引擎 (季节感知 + 终极铁律版)
 # ==========================================
 def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_date):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
@@ -150,47 +150,53 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
         
     type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(activity_type, '运动')
     
-    # 🧠 计算 8 段时间切分
+    # 🧠 计算 8 段时间切分 与 季节感知
     time_of_day = "未知时间"
+    season = "未知季节"
     if start_date:
         try:
+            # 提取小时数
             hour = int(start_date[11:13])
             block_idx = hour // 3
             time_zones = [
-                "午夜(00:00-03:00)", "破晓(03:00-06:00)", 
-                "清晨(06:00-09:00)", "骄阳上午(09:00-12:00)",
-                "烈日正午(12:00-15:00)", "午后(15:00-18:00)", 
-                "暮色掠影(18:00-21:00)", "暗夜(21:00-24:00)"
+                "午夜", "破晓", "清晨", "上午",
+                "正午", "午后", "暮色", "暗夜"
             ]
             time_of_day = time_zones[block_idx]
+            
+            # 提取月份并判断季节 (例如: 2026-03-28 提取出 03)
+            month = int(start_date[5:7])
+            if month in [3, 4, 5]: season = "春季"
+            elif month in [6, 7, 8]: season = "夏季"
+            elif month in [9, 10, 11]: season = "秋季"
+            else: season = "冬季"
         except:
             pass
             
-    # 🧠 动态词汇表：根据不同运动类型，给 AI 不同的取名示范
+    # 🧠 动态词汇表：严格隔离词汇
     if activity_type in ['Ride', 'VirtualRide', 'EBikeRide']:
-        examples = '词汇参考：晨光破风、午后巡航、暗夜飞驰、烈日踏频等'
+        examples = '词汇参考：晨光破风、午后巡航、暗夜飞驰等'
     elif activity_type in ['Walk', 'Hike']:
-        examples = '词汇参考：晨光漫步、落日丈量、暗夜穿梭、清晨闲步等（绝对禁止使用"破风"、"巡航"、"飞驰"等速度感太强的词汇）'
+        examples = '词汇参考：晨光漫步、落日丈量、暗夜穿梭等'
     elif activity_type in ['Run', 'TrailRun', 'Treadmill']:
-        examples = '词汇参考：晨光微汗、落日步履、暗夜追影、骄阳奔袭等'
+        examples = '词汇参考：晨光微汗、落日步履、暗夜追影等（绝不能用"漫步"或"行走"）'
     else:
         examples = '词汇参考：晨光微汗、破浪前行等'
     
     prompt = f"""
-    我刚在【{time_of_day}】完成了一次{type_cn}。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
+    我刚在【{season}】的【{time_of_day}】完成了一次【{type_cn}】。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
     请作为一个懂行且高情商的运动私教，生成两段内容：
     
-    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的标点符号！请强烈结合【{time_of_day}】的光线特点和{type_cn}的运动特性发挥创意。
-    【命名铁律】：{examples}。你可以直接使用这些参考词汇，但为了避免几百条记录千篇一律，强烈要求你发散思维，原创更多同等意境的新词汇！绝对不能在白天使用夜晚的词汇！
+    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的标点符号！请强烈结合【{season}】和【{time_of_day}】的环境特点，以及【{type_cn}】的运动特性发挥创意（{examples}）。
     
-    2. comment: 一段 50-80 字的专业短评。
+    2. comment: 一段 50-80 字的专业短评。根据心率和配速的比例，给出真实的训练反馈。
     
-    【语言要求】：必须是纯正流畅的中文，绝对不能夹杂任何英文单词或生硬的机器翻译腔！
+    【运动类型铁律】：当前运动是【{type_cn}】！标题和短评中绝对禁止出现其他运动的词汇！（例如：如果是跑步绝不能用"漫步/行走"，如果是徒步绝不能用"奔跑/骑行"）！
+    【季节与常理铁律】：当前是【{season}】！绝对禁止出现跨季节的词汇（例如春季绝不能说"炎热的夏日/酷暑"，冬季绝不能说"初春"）！
+    【JSON安全铁律】：在title和comment的文本内部，绝对禁止使用双引号（"）和换行符！如果需要强调请使用单引号（'）。
     【绝对禁令】：绝不能在短评中重复写出距离、配速、用时、心率的具体数字！
-    【点评要求】：根据心率和配速的比例，给出真实的训练反馈（比如心率低配速快夸耐力好，心率高提示多做低心率有氧打底，或者对长距离给予恢复建议）。
-    【多样性】：每次生成请尽量使用不同的修辞和视角，语气像老朋友一样自然。
 
-    请严格只返回 JSON 格式数据，不要带任何 markdown 标记或其他废话：
+    请严格只返回 JSON 格式数据：
     {{"title": "...", "comment": "..."}}
     """
 
@@ -207,6 +213,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
         if response.status_code == 200:
             result_text = response.json()['result']['response']
             clean_text = result_text.replace('```json', '').replace('```', '').strip()
+            clean_text = clean_text.replace('\n', ' ').replace('\r', '') 
             result_json = json.loads(clean_text)
             return result_json.get('title'), result_json.get('comment')
     except Exception as e:
@@ -226,22 +233,20 @@ def process_and_merge(local_data, raw_new_data):
         avg_speed_ms = item.get('average_speed', 0)
         pace_num, pace_unit = calculate_pace(item.get('type'), avg_speed_ms)
         hr = item.get('average_heartrate', 0)
-        # 🛡️ 优化：没有心率时赋予 null 语义 (Python中的 None)
         safe_hr = round(hr) if hr else None
         
         distance_km = round(item.get('distance', 0) / 1000, 2)
         moving_time_str = format_time(item.get('moving_time', 0))
         full_pace = f"{pace_num}{pace_unit}"
         
-        # 👇 只有在抓取到新数据时，才请求 AI 生成文案
         print(f"🤖 正在为新运动 [{safe_time}] 请求 AI 智能私教生成文案...")
         ai_title, ai_comment = generate_ai_content(item.get('type'), distance_km, moving_time_str, safe_hr, full_pace, safe_time)
             
         formatted_new_data.append({
             "run_id": item.get('id'),
             "name": item.get('name', '未命名运动'),
-            "ai_title": ai_title,       # 👈 新增字段
-            "ai_comment": ai_comment,   # 👈 新增字段
+            "ai_title": ai_title,       
+            "ai_comment": ai_comment,   
             "type": item.get('type', 'Workout'),
             "distance": distance_km,
             "moving_time": moving_time_str,
@@ -265,7 +270,6 @@ def process_and_merge(local_data, raw_new_data):
         
     final_list = list(merged_dict.values())
     
-    # 🛡️ 优化：使用真实的 datetime 对象进行严谨倒序
     final_list.sort(key=lambda x: parse_time(x.get('start_date_local', '')), reverse=True)
     
     added_count = len(final_list) - initial_count
@@ -282,31 +286,48 @@ if __name__ == '__main__':
     print(f"📁 本地已存在 {len(local_data)} 条记录。")
     
     after_ts = get_latest_timestamp(local_data)
-    
-    # 🚀 核心修改：设定 2026-01-01 为时间底线
     start_of_2026_ts = int(datetime(2026, 1, 1).timestamp())
     
     if after_ts:
-        # 如果本地已有数据，取最新时间与2026年1月1日的较大值，杜绝意外拉取旧数据
         after_ts = max(after_ts, start_of_2026_ts)
         print(f"⏱️ 开启增量同步模式 (仅拉取 {datetime.fromtimestamp(after_ts)} 之后的新记录)")
     else:
-        # 如果是空的 JSON，强制从 2026 年开始拉取
         after_ts = start_of_2026_ts
         print(f"🌍 本地无数据，开启同步模式 (强制从 2026-01-01 开始拉取)")
 
     token = get_access_token()
     if token:
+        needs_save = False
+        
+        # 🚀 亮点：自愈程序！自动揪出缺失 AI 数据的历史记录重新生成
+        for item in local_data:
+            if not item.get('ai_title') or not item.get('ai_comment'):
+                safe_time = item.get('start_date_local', '')
+                print(f"🛠️ 发现历史记录 [{safe_time}] 缺失 AI 文案，正在尝试自愈修复...")
+                
+                dist = item.get('distance', 0)
+                mov_time = item.get('moving_time', '')
+                hr = item.get('average_heartrate')
+                pace = f"{item.get('pace_num', '')}{item.get('pace_unit', '')}"
+                
+                t, c = generate_ai_content(item.get('type'), dist, mov_time, hr, pace, safe_time)
+                if t and c:
+                    item['ai_title'] = t
+                    item['ai_comment'] = c
+                    needs_save = True
+                    time.sleep(1) # 给 AI 留点喘息时间
+        
+        # 拉取新数据
         raw_new_activities = fetch_activities(token, after_ts)
         final_data, fetched_count, added_count = process_and_merge(local_data, raw_new_activities)
         
-        if fetched_count > 0:
+        # 只要有新数据拉取，或者修复了旧数据，就保存 JSON
+        if fetched_count > 0 or needs_save:
             tmp_file = FILE_NAME + ".tmp"
             with open(tmp_file, 'w', encoding='utf-8') as f:
                 json.dump(final_data, f, ensure_ascii=False, indent=2)
             os.replace(tmp_file, FILE_NAME)
             
-            print(f"✅ 大功告成！本次从 Strava 获取了 {fetched_count} 条数据，净新增 {added_count} 条记录。")
-            print(f"📊 目前总库中共有 {len(final_data)} 条记录。")
+            print(f"✅ 大功告成！本次新增 {added_count} 条，并执行了历史记录自愈检测。总库共 {len(final_data)} 条。")
         else:
-            print("💤 没有发现新的运动记录，JSON 文件无需更新。")
+            print("💤 没有发现新运动，历史记录也完好无缺，无需更新。")
