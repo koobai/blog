@@ -1101,16 +1101,19 @@
     border: none;
     box-shadow: none;
     z-index: 10;
-    width: 100%;
+    width: calc(100% - 20px);
     max-width: 420px;
-    left: 10px;
-    right: auto;
-    margin: 0;
-    transform: none;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     bottom: 20px;
+    align-items: center;
     @include breakpoint("medium") {
       bottom: 40px;
       left: 20px;
+      right: auto;
+      margin: 0;
+      align-items: flex-start;
     }
   }
 
