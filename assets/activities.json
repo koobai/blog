@@ -18,8 +18,8 @@
   {
     "run_id": 17877178233,
     "name": "傍晚行走",
-    "ai_title": null,
-    "ai_comment": null,
+    "ai_title": "暮春步行生涯",
+    "ai_comment": "徒步训练效果良好，心率与配速比例合理，表明个人运动状态良好，建议继续保持",
     "type": "Walk",
     "distance": 5.04,
     "moving_time": "57:50",
@@ -34,8 +34,8 @@
   {
     "run_id": 17850107440,
     "name": "午后骑行",
-    "ai_title": null,
-    "ai_comment": null,
+    "ai_title": "晨光午后飞驰",
+    "ai_comment": "您的春季午后骑行表现良好，心率与配速的比例表明您处于中等强度的训练状态。需要注意的是，心率略高，可能是由于骑行.tech的积极姿势或上坡带来的挑战。建议您在未来训练中保持稳定的心率和配速，继续提高您的骑行效率和耐力。",
     "type": "Ride",
     "distance": 24.73,
     "moving_time": "01:06:02",
@@ -50,8 +50,8 @@
   {
     "run_id": 17827466198,
     "name": "傍晚行走",
-    "ai_title": null,
-    "ai_comment": null,
+    "ai_title": "暮春步行享受",
+    "ai_comment": "你的春季徒步活动表现良好，心率和配速比例看起来合理。 тв正在努力提高自己的徒步效率，平均心率接近106 beats per minute的理想值。请继续保持良好的节奏和心率控制，随着训练的进行，你的徒步能力将受益不少。",
     "type": "Walk",
     "distance": 3.15,
     "moving_time": "38:14",
@@ -66,8 +66,8 @@
   {
     "run_id": 17799069184,
     "name": "午后骑行",
-    "ai_title": null,
-    "ai_comment": null,
+    "ai_title": "春日午后骑行篇",
+    "ai_comment": "根据你的心率与配速比例，看到你的训练状态处于良好状态，心率相对较高，说明你在保持较快的节奏，体现出对骑行的习惯。建议继续保持这种状态，逐渐提高你的骑行距离和速度，提高整体运动效率。",
     "type": "Ride",
     "distance": 32.53,
     "moving_time": "01:29:01",
