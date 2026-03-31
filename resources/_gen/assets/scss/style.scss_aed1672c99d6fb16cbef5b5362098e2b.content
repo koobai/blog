@@ -2266,7 +2266,8 @@ body:has(.menu-checkbox:checked) {
         left: 20px;
         right: auto;
         margin: 0;
-        align-items: flex-start; } }
+        align-items: flex-start;
+        width: calc(100% - 40px); } }
   #map-wrapper.show-poster-mode .poster-view {
     position: relative;
     width: 100%;
