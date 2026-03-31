@@ -466,7 +466,7 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     
     请生成：
     1. title: 一个四到六个字的短词或成语作为本月专属称号（如：破风行者、春晨狂飙、稳态燃脂大师）。
-    2. comment: 一段 100 字左右的专业评语。
+    2. comment: 一段 50-80 字的专业评语。
     
     【核心铁律】：
     1. {phase_rule}

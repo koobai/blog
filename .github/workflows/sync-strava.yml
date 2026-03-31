@@ -36,6 +36,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add assets/activities.json assets/monthly_insights.json
+          git add assets/
           # 如果有更新，则提交并推送
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update Strava activities" && git push)
