@@ -146,6 +146,12 @@
     color: var(--exercise-text-highlight-color);
   }
 
+  /* 面板内嵌的AI、分享按钮 */
+  .panel-share {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   /* 面板内嵌的分享按钮样式 */
   .panel-share-btn {
     display: none;
@@ -1203,5 +1209,30 @@
         }
       }
     }
+  }
+}
+
+/* AI 标题样式微调 */
+.poster-ai-title {
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.1rem !important;
+  color: var(--text-content-color);
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+/* AI 短评正文样式 */
+.poster-ai-comment {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-content-color);
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  @include dark {
+    color: var(--text-content-dark-color);
   }
 }

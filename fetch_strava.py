@@ -200,7 +200,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     {{"title": "...", "comment": "..."}}
     """
 
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-3.1-8b-instruct"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     
     payload = {
@@ -315,7 +315,7 @@ if __name__ == '__main__':
                     item['ai_title'] = t
                     item['ai_comment'] = c
                     needs_save = True
-                    time.sleep(1) # 给 AI 留点喘息时间
+                time.sleep(1) # 给 AI 留点喘息时间
         
         # 拉取新数据
         raw_new_activities = fetch_activities(token, after_ts)

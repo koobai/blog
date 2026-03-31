@@ -37,8 +37,16 @@
   
   {{ $finalName := .name }}
   {{ $pattern := "^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch).*(跑步|骑行|行走|徒步|游泳|运动|爬楼梯|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper)$" }}
-  {{ if and (le (strings.RuneCount .name) 20) (or (findRE $pattern .name) (in (slice "Run" "Ride" "Walk" "StairStepper" "") .name)) }}
-    {{ $finalName = $typeStr }}
+  
+  {{/* 🧠 核心判断：扫一下是不是 Strava/佳明 自动生成的流水线名字 */}}
+  {{ $isDefaultName := or (findRE $pattern .name) (in (slice "Run" "Ride" "Walk" "StairStepper" "Workout" "") .name) }}
+
+  {{ if $isDefaultName }}
+    {{/* 如果是流水线名字 -> 优先使用 AI 标题，如果 AI 还没生成，用默认如“骑起来”兜底 */}}
+    {{ $finalName = default $typeStr .ai_title }}
+  {{ else }}
+    {{/* 如果不是流水线名字 -> 说明是你自己手打的自定义名字，坚决保留！ */}}
+    {{ $finalName = .name }}
   {{ end }}
   
   {{ $activities = $activities | append (merge . (dict "smart_name" $finalName)) }}
@@ -66,7 +74,7 @@
   {{ $years = $years | append $y }}
   {{ if eq $y $latestYear }}{{ $s.Add "latestMonths" (slice $m) }}{{ end }}
   
-  {{ $runData := dict "run_id" .run_id "name" .smart_name "type" .type "distance" .distance "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
+  {{ $runData := dict "run_id" .run_id "name" .smart_name "ai_comment" .ai_comment "type" .type "distance" .distance "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
   {{ $lightweightRuns = $lightweightRuns | append $runData }}
   
   {{ if in $rideTypes .type }}
@@ -159,8 +167,8 @@
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260330e"></script>
-<script defer src="/js/exercise-map.js?v=20260330f"></script>
+<script defer src="/js/exercise-ui.js?v=20260331a"></script>
+<script defer src="/js/exercise-map.js?v=20260331a"></script>
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

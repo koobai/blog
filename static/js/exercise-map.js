@@ -366,7 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const color = getColor(runData.type);
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
-        const smartName = window.KoobaiRun.getSmartName(runData.name, runData.type, runData.summary_polyline);
+        const smartName = runData.name;
+        const aiComment = runData.ai_comment;
 
         let achievementTagsHtml = '';
         const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
@@ -387,9 +388,16 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="nameLeft">
                 <span class="detailDate">${displayTime}</span>${achievementTagsHtml}
               </div>
-              <button type="button" id="trigger-poster-btn" class="panel-share-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M9 3a1 1 0 0 1 .117 1.993L9 5H5v14h14v-9a1 1 0 0 1 1.993-.117L21 10v9a2 2 0 0 1-1.85 1.995L19 21H5a2 2 0 0 1-1.995-1.85L3 19V5a2 2 0 0 1 1.85-1.995L5 3zm10.513 0c.622 0 .984.468 1.075.856c.091.389-.025.971-.585 1.247l-.414.211l-.164.088l-.363.201l-.405.236l-.439.27c-.682.43-1.46.976-2.242 1.637c-1.654 1.399-3.258 3.261-4.027 5.57a1 1 0 0 1-1.898-.632c.928-2.784 2.823-4.933 4.634-6.465c.431-.365.862-.698 1.278-1l.31-.219H14a1 1 0 0 1-.117-1.993L14 3z"/></g></svg>
-              </button>
+              <div class="panel-share">
+                ${aiComment ? `
+                <button type="button" id="trigger-ai-btn" class="panel-share-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+                </button>
+                ` : ''}
+                <button type="button" id="trigger-poster-btn" class="panel-share-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M9 3a1 1 0 0 1 .117 1.993L9 5H5v14h14v-9a1 1 0 0 1 1.993-.117L21 10v9a2 2 0 0 1-1.85 1.995L19 21H5a2 2 0 0 1-1.995-1.85L3 19V5a2 2 0 0 1 1.85-1.995L5 3zm10.513 0c.622 0 .984.468 1.075.856c.091.389-.025.971-.585 1.247l-.414.211l-.164.088l-.363.201l-.405.236l-.439.27c-.682.43-1.46.976-2.242 1.637c-1.654 1.399-3.258 3.261-4.027 5.57a1 1 0 0 1-1.898-.632c.928-2.784 2.823-4.933 4.634-6.465c.431-.365.862-.698 1.278-1l.31-.219H14a1 1 0 0 1-.117-1.993L14 3z"/></g></svg>
+                </button>
+              </div>
             </div>
             <div class="detailStatsRow">
               <div class="detailStatBlock"><span class="statLabel">里程</span><span class="statVal" style="color: ${color}">${distanceNum}<small>${distanceUnit}</small></span></div>
@@ -399,94 +407,129 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <div class="poster-view" style="display: none;">
+          <div class="poster-view data-poster-view" style="display: none;">
             <div class="poster-actions">
-            <button id="poster-download-btn" title="保存海报"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><path fill="currentColor" d="M426.666 426.667H85.333V384h341.333zm-149.333-179.5l91.583-91.583l30.167 30.166L256 328.834L112.916 185.75l30.167-30.166l91.583 91.582v-204.5h42.667z"/></svg></button>
-              <button id="poster-close-btn" title="退出预览"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="poster-download-btn" title="保存海报"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><path fill="currentColor" d="M426.666 426.667H85.333V384h341.333zm-149.333-179.5l91.583-91.583l30.167 30.166L256 328.834L112.916 185.75l30.167-30.166l91.583 91.582v-204.5h42.667z"/></svg></button>
+              <button class="poster-close-btn" title="退出预览"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
-            
-            
-            
             <div class="poster-dist-hero">
               <span class="heroNum">${distanceNum}</span>
               <span class="heroUnit">${distanceUnit}</span>
             </div>
-            
             <div class="poster-stats-row">
               <div class="poster-stat-block"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
               <div class="poster-stat-block"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
               <div class="poster-stat-block"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
             </div>
-            
             <div class="poster-watermark">${displayTime}</div>
             <div class="poster-title">${smartName}</div>
           </div>
+
+          ${aiComment ? `
+          <div class="poster-view ai-poster-view" style="display: none;">
+            <div class="poster-actions">
+              <button class="poster-download-btn" title="保存海报"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><path fill="currentColor" d="M426.666 426.667H85.333V384h341.333zm-149.333-179.5l91.583-91.583l30.167 30.166L256 328.834L112.916 185.75l30.167-30.166l91.583 91.582v-204.5h42.667z"/></svg></button>
+              <button class="poster-close-btn" title="退出预览"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="poster-ai-content">
+              <div class="poster-title poster-ai-title">${smartName}</div>
+              <div class="poster-ai-comment">${aiComment}</div>
+            </div>
+            <div class="poster-watermark">${displayTime}</div>
+          </div>
+          ` : ''}
         `;
         statsPanel.style.display = 'flex';
 
         const wrapper = document.getElementById('map-wrapper');
         const normalView = statsPanel.querySelector('.normal-view');
-        const posterView = statsPanel.querySelector('.poster-view');
+        const dataPosterView = statsPanel.querySelector('.data-poster-view');
+        const aiPosterView = statsPanel.querySelector('.ai-poster-view');
         
-        // 🚀 新的极简事件绑定（给刚生成的内嵌按钮）
+        // 抽象公共逻辑：进入海报模式
+        const enterPosterMode = (viewToShow) => {
+          wrapper.classList.add('show-poster-mode');
+          normalView.style.display = 'none';
+          dataPosterView.style.display = 'none';
+          if (aiPosterView) aiPosterView.style.display = 'none';
+          
+          viewToShow.style.display = 'block';
+
+          if (!document.getElementById('real-poster-mask')) {
+            const mask = document.createElement('div');
+            mask.id = 'real-poster-mask';
+            mask.className = 'poster-gradient-mask'; 
+            wrapper.appendChild(mask);
+          }
+
+          if (hasTrack && bounds) {
+            map.fitBounds(bounds, { padding: { top: 60, bottom: 260, left: 60, right: 60 }, pitch: 0, bearing: 0, duration: 1000 });
+          }
+        };
+
+        // 点击打开数据海报
         const triggerPosterBtn = document.getElementById('trigger-poster-btn');
         if (triggerPosterBtn) {
           triggerPosterBtn.onclick = (e) => {
             e.stopPropagation();
-            wrapper.classList.add('show-poster-mode');
-            normalView.style.display = 'none';
-            posterView.style.display = 'block';
-
-            if (!document.getElementById('real-poster-mask')) {
-              const mask = document.createElement('div');
-              mask.id = 'real-poster-mask';
-              mask.className = 'poster-gradient-mask'; 
-              wrapper.appendChild(mask);
-            }
-
-            if (hasTrack && bounds) {
-              map.fitBounds(bounds, {
-                padding: { top: 60, bottom: 260, left: 60, right: 60 },
-                pitch: 0,
-                bearing: 0,
-                duration: 1000
-              });
-            }
+            enterPosterMode(dataPosterView);
           };
         }
 
-        // 关闭预览和下载的逻辑 
-        document.getElementById('poster-close-btn')?.addEventListener('click', (e) => {
-          e.stopPropagation();
-          
-          wrapper.classList.remove('show-poster-mode');
-          const mask = document.getElementById('real-poster-mask');
-          if (mask) mask.remove();
+        // 点击打开 AI 海报
+        const triggerAiBtn = document.getElementById('trigger-ai-btn');
+        if (triggerAiBtn && aiPosterView) {
+          triggerAiBtn.onclick = (e) => {
+            e.stopPropagation();
+            enterPosterMode(aiPosterView);
+          };
+        }
 
-          renderDataByYear(currentYear); 
-          if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
-          if (statsPanel) statsPanel.style.display = 'none';
+        // 统一绑定：退出预览
+        statsPanel.querySelectorAll('.poster-close-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wrapper.classList.remove('show-poster-mode');
+            const mask = document.getElementById('real-poster-mask');
+            if (mask) mask.remove();
+            renderDataByYear(currentYear); 
+            if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
+            if (statsPanel) statsPanel.style.display = 'none';
+          });
         });
 
-        document.getElementById('poster-download-btn')?.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const btn = e.currentTarget;
-          btn.style.opacity = '0.5'; 
+        // 统一绑定：生成图片下载
+        statsPanel.querySelectorAll('.poster-download-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const currentBtn = e.currentTarget;
+            
+            // 👇 新增防连击锁：如果正在生成中，直接拦截
+            if (currentBtn.dataset.isGenerating === 'true') return;
+            currentBtn.dataset.isGenerating = 'true';
+            currentBtn.style.opacity = '0.5'; 
+            currentBtn.style.cursor = 'wait'; // 给鼠标加个等待状态
 
-          htmlToImage.toCanvas(wrapper, {
-            pixelRatio: 4, 
-            backgroundColor: null, 
-            filter: (node) => !node.classList?.contains('poster-actions')
-          }).then(function (canvas) {
-            const webpDataUrl = canvas.toDataURL('image/webp', 0.92);
-            const link = document.createElement('a');
-            link.download = `KoobaiRun_${displayTime.replace(/[\/\s:]/g, '')}.webp`;
-            link.href = webpDataUrl;
-            link.click();
-            btn.style.opacity = '1';
-          }).catch(function (error) {
-            console.error('海报生成失败:', error);
-            btn.style.opacity = '1';
+            htmlToImage.toCanvas(wrapper, {
+              pixelRatio: 4, backgroundColor: null, filter: (node) => !node.classList?.contains('poster-actions')
+            }).then(function (canvas) {
+              const webpDataUrl = canvas.toDataURL('image/webp', 0.92);
+              const link = document.createElement('a');
+              link.download = `KoobaiRun_${displayTime.replace(/[\/\s:]/g, '')}.webp`;
+              link.href = webpDataUrl;
+              link.click();
+              
+              // 👇 恢复状态
+              currentBtn.dataset.isGenerating = 'false';
+              currentBtn.style.opacity = '1';
+              currentBtn.style.cursor = 'pointer';
+            }).catch(function (error) {
+              console.error('海报生成失败:', error);
+              // 👇 恢复状态
+              currentBtn.dataset.isGenerating = 'false';
+              currentBtn.style.opacity = '1';
+              currentBtn.style.cursor = 'pointer';
+            });
           });
         });
       }
