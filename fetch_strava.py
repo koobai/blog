@@ -142,20 +142,36 @@ def parse_time(time_str):
         return datetime.min
 
 # ==========================================
-# 🚀 Cloudflare AI 智能私教生成引擎 (高自由度文艺版)
+# 🚀 Cloudflare AI 智能私教生成引擎 (前后端时钟完美对齐版)
 # ==========================================
-def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
+def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_date):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
         return None, None
         
     type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(activity_type, '运动')
     
-    # 取消了死板的格式限制，鼓励 AI 用自然词汇体现运动特征
+    # 🧠 完美对齐前端的 8 段时间切分法 (3小时为一个区间)
+    time_of_day = "未知时间"
+    if start_date:
+        try:
+            hour = int(start_date[11:13])
+            # 利用整除特性，极其优雅地映射到 8 个区间 (和前端 Math.floor(r.hour / 3) 完全一致)
+            block_idx = hour // 3
+            time_zones = [
+                "午夜(00:00-03:00)", "破晓(03:00-06:00)", 
+                "清晨(06:00-09:00)", "骄阳上午(09:00-12:00)",
+                "烈日正午(12:00-15:00)", "午后(15:00-18:00)", 
+                "暮色掠影(18:00-21:00)", "暗夜(21:00-24:00)"
+            ]
+            time_of_day = time_zones[block_idx]
+        except:
+            pass
+    
     prompt = f"""
-    我刚完成了一次{type_cn}。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
+    我刚在【{time_of_day}】完成了一次{type_cn}。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。
     请作为一个懂行且高情商的运动私教，生成两段内容：
     
-    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的格式或标点符号！请发挥创意，用具有画面感的词汇，自然地让人感觉到这是一次{type_cn}（例如骑行可以用"夜巡破风"、"踏频训练"；跑步可以用"稳态步履"、"晨光慢跑"）。
+    1. title: 一个简短有意境的标题（绝不能超过6个字）。不要使用任何固定的格式或标点符号！请强烈结合【{time_of_day}】的光线/时间特点和{type_cn}的运动特性发挥创意（例如：晨光微汗、午后巡航、落日破风、暗夜潜行等）。绝对不能在白天使用夜晚的词汇！
     2. comment: 一段 50-80 字的专业短评。
     
     【绝对禁令】：绝不能在短评中重复写出距离、配速、用时、心率的具体数字！
@@ -166,13 +182,12 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str):
     {{"title": "...", "comment": "..."}}
     """
 
-    # 使用目前 CF 上最强大的 Llama 3.1 8B 模型
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-3.1-8b-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     
     payload = {
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.85 # 稍微调高一点点温度，让词汇更丰富
+        "temperature": 0.85 
     }
 
     try:
