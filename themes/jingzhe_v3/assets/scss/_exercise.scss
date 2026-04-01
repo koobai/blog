@@ -412,14 +412,12 @@
 ========================================= */
   .calendarSection {
     order: 3;
-    display: none !important;
-
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
     @include breakpoint("medium") {
       order: 0;
-      display: flex !important;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
     }
   }
 
@@ -490,8 +488,8 @@
     }
 
     svg {
-      width: 14px !important;
-      height: 14px !important;
+      width: 18px !important;
+      height: 18px !important;
     }
   }
 
@@ -614,9 +612,11 @@
     }
 
     &:hover .runTooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
+      @include breakpoint("medium") {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
     }
   }
 
