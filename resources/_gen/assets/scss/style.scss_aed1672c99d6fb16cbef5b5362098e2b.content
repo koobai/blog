@@ -1649,14 +1649,13 @@ body:has(.menu-checkbox:checked) {
       opacity: 0.1; }
   .bento-calendar-board .calendarSection {
     order: 3;
-    display: none !important; }
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0; }
     @media (min-width: 768px) {
       .bento-calendar-board .calendarSection {
-        order: 0;
-        display: flex !important;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0; } }
+        order: 0; } }
   .bento-calendar-board .monthNav {
     position: relative;
     /* 👇 新增：确保内部绝对定位的 AI 按钮以此为原点对齐 */
@@ -1715,8 +1714,8 @@ body:has(.menu-checkbox:checked) {
       background: var(--exercise-text-highlight-color) !important;
       color: #fff !important; }
     .bento-calendar-board .ai-toggle-btn svg {
-      width: 14px !important;
-      height: 14px !important; }
+      width: 18px !important;
+      height: 18px !important; }
   .bento-calendar-board .cal-content-wrapper {
     flex: 1;
     min-height: 0;
@@ -1820,10 +1819,11 @@ body:has(.menu-checkbox:checked) {
       background: transparent !important; }
     .bento-calendar-board .dayCell .dateNum {
       z-index: 1; }
-    .bento-calendar-board .dayCell:hover .runTooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0); }
+    @media (min-width: 768px) {
+      .bento-calendar-board .dayCell:hover .runTooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0); } }
   .bento-calendar-board .monthFooter {
     font-size: 0.65rem;
     color: var(--text-info-color);
