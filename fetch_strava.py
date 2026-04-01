@@ -242,7 +242,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     }
 
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=15)
+        response = requests.post(url, headers=headers, json=payload, timeout=45)
         if response.status_code == 200:
             result_text = response.json()['result']['response']
             clean_text = result_text.replace('```json', '').replace('```', '').strip()
@@ -490,7 +490,7 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     try:
-        res = requests.post(url, headers=headers, json={"messages": [{"role": "user", "content": prompt}], "temperature": 0.8}, timeout=15)
+        res = requests.post(url, headers=headers, json={"messages": [{"role": "user", "content": prompt}], "temperature": 0.8}, timeout=45)
         if res.status_code == 200:
             result_data = res.json()['result']['response']
             
