@@ -91,6 +91,8 @@
       
       // 初始化状态：默认选中最新年份
       this.currentYear = this.availableYears.length > 0 ? this.availableYears[0] : new Date().getFullYear().toString();
+
+      this.showAiInsight = false;
       
       // 缓存底部 DOM 卡片
       this.cachedRunCards = document.querySelectorAll('.runCard'); 
@@ -98,7 +100,31 @@
       this.replaceIconsWithTracks();
     }
     
-
+// 👇 新增：翻转 AI 视图的交互函数
+    toggleAiInsight() {
+      this.showAiInsight = !this.showAiInsight;
+      const gridView = document.querySelector('.calendar-grid-view');
+      const aiView = document.querySelector('.ai-insight-view');
+      const btn = document.querySelector('.ai-toggle-btn');
+      const footer = document.querySelector('.monthFooter'); 
+      const bottomCharts = document.querySelector('.monthlyInsights');
+      
+      if (gridView && aiView && btn) {
+        if (this.showAiInsight) {
+          gridView.style.display = 'none';
+          aiView.style.display = 'flex';
+          btn.classList.add('active');
+          if (footer) footer.style.display = 'none'; 
+          if (bottomCharts) bottomCharts.style.display = 'none'; 
+        } else {
+          gridView.style.display = 'flex';
+          aiView.style.display = 'none';
+          btn.classList.remove('active');
+          if (footer) footer.style.display = 'block'; 
+          if (bottomCharts) bottomCharts.style.display = 'flex';
+        }
+      }
+    }
     // --- 新增：批量替换列表图标为轨迹图 ---
     replaceIconsWithTracks() {
       // 🚀 核心优化：将数组转化为哈希字典，极速匹配
@@ -145,6 +171,7 @@
     // 切换年份事件（核心逻辑更新）
     setYear(year) {
       this.currentYear = year;
+      this.showAiInsight = false;
       this.setSmartMonth(); 
       this.renderAll();
       
@@ -172,6 +199,7 @@
     // 切换日历板的月份事件 (-1 或 1)
     setCalMonth(dir) {
       this.calMonthIndex = Math.max(0, Math.min(11, this.calMonthIndex + dir));
+      this.showAiInsight = false;
       this.renderCalendar(this.computeEngineData());
     }
 
@@ -497,6 +525,19 @@
             ${tooltipHtml}
           </div>`;
       }).join('');
+      const currentMonthStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
+      const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;
+      
+      // 如果本月有 AI 数据，则生成一个星星按钮
+      const aiBtnHtml = insightData ? `
+        <button class="ai-toggle-btn ${this.showAiInsight ? 'active' : ''}" onclick="window.KoobaiRun.ui.toggleAiInsight()" title="教练点评">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+        </button>
+      ` : '';
+
+      const gridViewDisplay = this.showAiInsight ? 'none' : 'flex';
+      const aiViewDisplay = this.showAiInsight ? 'flex' : 'none';
+      const aiComment = insightData ? insightData.ai_comment : '';
 
       // 3. 生成洞察图表：时间段分布打孔图
       const insights = engine.monthlyData.insights;
@@ -579,18 +620,29 @@
           
           <div class="calendarSection">
             <div class="monthHeader">
-              <div class="monthNav">
+              <div class="monthNav" style="position: relative;">
                 <button onclick="window.KoobaiRun.ui.setCalMonth(-1)" ${this.calMonthIndex === 0 ? 'disabled' : ''}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
                 </button>
-                <span>${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}</span>
+                <span>${currentMonthStr}</span>
                 <button onclick="window.KoobaiRun.ui.setCalMonth(1)" ${this.calMonthIndex === 11 ? 'disabled' : ''}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
+                ${aiBtnHtml}
               </div>
             </div>
-            <div class="weekdays"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div>
-            <div class="grid">${gridHtml}</div>
+            
+            <div class="cal-content-wrapper">
+              <div class="calendar-grid-view" style="display: ${gridViewDisplay};">
+                <div class="weekdays"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div>
+                <div class="grid">${gridHtml}</div>
+              </div>
+              
+              <div class="ai-insight-view" style="display: ${aiViewDisplay};">
+                <div class="ai-comment-content">${aiComment}</div>
+              </div>
+            </div>
+
             <div class="monthFooter">
               里程 <span>${engine.monthlyData.monthDetailStats.totalDist.toFixed(1)}</span> km 
               <span class="dot">•</span> 

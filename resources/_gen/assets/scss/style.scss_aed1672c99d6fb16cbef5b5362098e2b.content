@@ -1506,6 +1506,11 @@ body:has(.menu-checkbox:checked) {
   /* =========================================
    6. 日历热力图面板 (Calendar Grid)
 ========================================= */
+  /* 👇 新增 1：AI 切换按钮样式 (星星按钮) */
+  /* 👇 新增 2：日历与 AI 视图的总包裹层 (解决 flex 布局下拉伸的问题) */
+  /* 👇 新增 3：日历网格内部专属包裹层 */
+  /* 👇 极简无边框 AI 点评视图 */
+  /* 👇 新增 5：AI 视图的渐入动画 */
   /* =========================================
    7. 洞察图表 (Monthly Insights)
 ========================================= */ }
@@ -1653,6 +1658,8 @@ body:has(.menu-checkbox:checked) {
         flex: 1;
         min-height: 0; } }
   .bento-calendar-board .monthNav {
+    position: relative;
+    /* 👇 新增：确保内部绝对定位的 AI 按钮以此为原点对齐 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1697,6 +1704,62 @@ body:has(.menu-checkbox:checked) {
       .bento-calendar-board .monthNav button:disabled {
         opacity: 0.2;
         cursor: default; }
+  .bento-calendar-board .ai-toggle-btn {
+    position: absolute;
+    right: 0;
+    color: var(--exercise-text-highlight-color) !important;
+    border-radius: 8px !important;
+    padding: 4px 6px !important;
+    transition: all 0.3s ease !important; }
+    .bento-calendar-board .ai-toggle-btn.active {
+      background: var(--exercise-text-highlight-color) !important;
+      color: #fff !important; }
+    .bento-calendar-board .ai-toggle-btn svg {
+      width: 14px !important;
+      height: 14px !important; }
+  .bento-calendar-board .cal-content-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative; }
+  .bento-calendar-board .calendar-grid-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%; }
+  .bento-calendar-board .ai-insight-view {
+    flex: 1;
+    padding: 0 4px;
+    background: transparent;
+    /* 去掉所有背景色和渐变 */
+    border: none;
+    /* 去掉边框 */
+    margin: 0;
+    overflow-y: auto;
+    align-items: flex-start;
+    /* 文字顶部对齐 */
+    animation: insightFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .bento-calendar-board .ai-insight-view .ai-comment-content {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      /* 增加行高，让大段文字更有呼吸感 */
+      color: var(--text-content-color);
+      text-align: justify; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .ai-comment-content {
+          color: var(--text-content-dark-color); } }
+      html[data-theme="dark"] .bento-calendar-board .ai-insight-view .ai-comment-content {
+        color: var(--text-content-dark-color); }
+
+@keyframes insightFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98); }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1); } }
   .bento-calendar-board .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

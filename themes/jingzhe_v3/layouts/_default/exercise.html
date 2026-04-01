@@ -10,6 +10,13 @@
 
 {{- /* 1. 读取并清洗 JSON 数据 */ -}}
 {{ $rawActivities := resources.Get "activities.json" | unmarshal }}
+
+{{ $monthlyInsightsRaw := resources.Get "monthly_insights.json" }}
+{{ $monthlyInsights := dict }}
+{{ if $monthlyInsightsRaw }}
+  {{ $monthlyInsights = $monthlyInsightsRaw | unmarshal }}
+{{ end }}
+
 {{ $activities := slice }}
 {{ $themeMap := dict
   "Ride"         (dict "color" "#32D74B") 
@@ -161,6 +168,7 @@
 <script>
   window.KoobaiRun = {
     data: {{ $lightweightRuns | jsonify | safeJS }},
+    monthlyInsights: {{ $monthlyInsights | jsonify | safeJS }},
     availableYears: {{ $years | jsonify | safeJS }},
     config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
     ui: null, map: null
