@@ -589,7 +589,7 @@
           
           <div class="globalSection">
             ${sparklineSvg}
-            <div class="globalTitle monthNav" style="display: flex; align-items: center; justify-content: center; gap: 12px; position: relative; z-index: 2; margin-bottom: 4px;">
+            <div class="globalTitle monthNav">
               <button onclick="window.KoobaiRun.ui.changeYearBy(-1)" ${disablePrevY ? 'disabled' : ''}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
               </button>
