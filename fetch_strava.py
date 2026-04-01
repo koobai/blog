@@ -468,8 +468,7 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     {context}
     
     请生成：
-    1. title: 一个四到六个字的短词或成语作为本月专属称号（如：破风行者、春晨狂飙、稳态燃脂大师）。
-    2. comment: 一段 50-80 字的专业评语。
+    1. comment: 一段 50-80 字的专业评语。
     
     【核心铁律】：
     1. {phase_rule}
@@ -477,7 +476,7 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     3. 拒绝冰冷地罗列所有数字！挑出最亮眼的数据（如最长连胜、最高心率区间或里程突破）进行夸奖或调侃。
     4. 内部绝对禁止使用双引号（"）和换行符！
     
-    严格返回 JSON: {{"title": "...", "comment": "..."}}
+    严格返回 JSON: {{"comment": "..."}}
     """
     
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
@@ -500,12 +499,12 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
                     result_json = json.loads(clean_text)
                 else:
                     print(f"⚠️ AI 严重幻觉，未返回 JSON 结构: {text_str}")
-                    return None, None, phase
+                    return None 
                     
-            return result_json.get('title'), result_json.get('comment'), phase
+            return result_json.get('comment')
     except Exception as e:
         print(f"⚠️ 月报 AI 生成失败: {e}")
-    return None, None, phase
+    return None
 
 def update_monthly_insights(local_data):
     """主调度函数：分析所有数据并生成月报 JSON"""
@@ -547,22 +546,20 @@ def update_monthly_insights(local_data):
             latest_act_date = months_data[current_month_key][0].get('start_date_local', '')
             current_day = int(latest_act_date[8:10]) if len(latest_act_date) >= 10 else 15
             
-            title, comment, phase = generate_monthly_ai_report(current_month_key, current_stats, prev_stats, current_day)
+            comment = generate_monthly_ai_report(current_month_key, current_stats, prev_stats, current_day)
             
-            if title and comment:
+            if comment:
                 insights[current_month_key] = {
                     "month_str": current_month_key,
                     "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
-                    "phase": phase,
+                    # 👇 移除了 phase 和 ai_title
                     "stats": current_stats,
-                    "ai_title": title,
                     "ai_comment": comment
                 }
                 with open(MONTHLY_FILE, 'w', encoding='utf-8') as f:
                     json.dump(insights, f, ensure_ascii=False, indent=2)
                 print(f"🎉 {current_month_key} AI 月报已火热出炉并保存！")
                 
-                # 🛡️ 给 AI 一点喘息时间，防止历史月份太多触发接口速率限制
                 time.sleep(2)
 
 
