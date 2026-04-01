@@ -445,29 +445,31 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     
     total_acts = stats.get('total_count', 0)
     
-    # 🧠 判断时间进度阶段（加入基于“运动次数”的动态防范逻辑）
+    # 🧠 动态雷达与时态切分（彻底消除大模型认知矛盾）
     if current_day <= 10:
         phase = "月初开局阶段"
-        phase_rule = "【时态极度警告：当前是月初！】数据刚刚开始积累。"
-        action_target = "接下来的几周"
+        action_target = "本月中下旬"
+        # 🛡️ 核心改动 1：月初只看单次质量，屏蔽总量概念
+        radar_rule = "【单次质量雷达】：现在是月初，数据刚开始积累！你必须且只能从'单次运动的距离'、'心率强度(区间)'来评价。绝对不能提'运动容量'、'总里程'、'连贯性'或'运动比例单一'，因为这毫无意义！"
         
-        # 🛡️ 针对开局仅有零星记录的特殊防御机制
         if total_acts <= 3:
-            critique_directive = "【敲打与防懈怠】：由于目前仅有寥寥几次运动，绝对禁止吐槽“运动偏好单一”、“缺乏交叉训练”、“总里程/容量少”！你的“挑刺”环节只能针对单次表现（比如心率还能更高/距离可以再拉长一点），或者改为“严厉警告”，提醒我不要三分钟热度，必须把开局的好势头保持下去。"
+            critique_directive = "【敲打环节】：因为才刚开局，绝对不要嫌弃我运动次数少！你的'挑刺'只能是：1. 吐槽单次心率没有逼近极限（如果心率偏低）；2. 吐槽单次距离太短热身都不够；3. 严厉警告我'别搞三分钟热度，既然开了头就必须坚持下去'。"
         else:
-            critique_directive = "【指出隐患】：抓出开局前几天的不足（比如单次距离短、低心率散步太多），警告我及时调整节奏。"
-            
+            critique_directive = "【指出隐患】：挑出这几天高频打卡中的瑕疵（例如：高强度高心率占比太低、一直在舒适区等），警告我注意提升单次质量。"
+
     elif current_day <= 22:
         phase = "月中巡航阶段"
-        phase_rule = "【时态警告：当前是月中！】评价目前的运动习惯和打卡频率。"
-        action_target = "本月剩下的时间"
-        critique_directive = "【必须包含“挑刺”环节】：你绝对不能只夸奖！必须抓出目前的【最大短板】。例如：低效散步占比过大、高强度太少、或者出勤率变低等。"
-        
+        action_target = "本月冲刺期"
+        # 🛡️ 核心改动 2：月中看连贯性和偏好
+        radar_rule = "【习惯与强度雷达】：现在是月中，你需要综合考量：连贯性(打卡频率/连胜)、运动偏好分布(是有氧打底还是高强度)、以及心率区间。"
+        critique_directive = "【抓出短板】：挑出我目前的懈怠苗头或偏科现象。例如：最近连胜中断了？低心率的无效消耗占比太高？高强度的跑步/骑行太少？"
+
     else:
         phase = "月末总结阶段"
-        phase_rule = "【时态警告：当前是月末总结！】对整个月的数据进行盖棺定论的无情复盘。"
         action_target = "下个自然月"
-        critique_directive = "【必须包含“挑刺”环节】：必须抓出本月整体数据的【最大短板】。例如：有氧打底不够、缺乏交叉训练、心率一直停留在舒适区等。"
+        # 🛡️ 核心改动 3：月末进行全盘清算
+        radar_rule = "【全维度月度雷达】：现在是月末。你必须全盘考量：本月总运动容量(总里程/频次)、耐力基底、连贯性(最长连胜)、运动比例分配，以及整体心肺强度。"
+        critique_directive = "【无情复盘】：抓出本月整体数据的最大短板！例如：总容量虽然大但都是无效消耗；或者缺乏交叉训练；或者出勤率太低。给出极其专业、犀利的诊断。"
 
     # 组装数据上下文
     context = f"【本月 ({month_str}) 数据】：总运动 {stats['total_count']} 次，总里程 {stats['total_distance']}公里。最长连续运动 {stats['max_streak_days']} 天。\n"
@@ -486,16 +488,15 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
     {context}
     
     请生成：
-    1. comment: 一段 50-80 字的专业私教评语。
+    1. comment: 一段 100-130 字的专业私教评语。
     
     【核心评价铁律（极度重要）】：
-    1. {phase_rule}
-    2. 【多维雷达分析】：严禁只盯着“心率”评价。你必须综合考量：运动容量、耐力、连贯性、运动偏好比例，以及心率强度。（注：月初数据极少时，不要强行分析不存在的“比例”和“连贯性”）
-    3. {critique_directive}
-    4. 【专业减脂黑话】：请自然运用“运动容量”、“耐力基底”、“交叉训练”、“稳态燃脂(Z2)”、“心肺引擎”、“无效消耗”等专业词汇，体现你的严苛教练素养。
-    5. 【结构要求】：先肯定高光亮点 -> 话锋一转犀利指出短板或隐患 -> 给出【{action_target}】具体的行动指令。
-    6. 拒绝冰冷地罗列数字！要把数据化为诊断依据。语气要像个有血有肉的老朋友，带有调侃、严厉，但最终落脚于鼓励。
-    7. 内部绝对禁止使用双引号（"）和换行符！需要强调请用单引号（'）。
+    1. {radar_rule}
+    2. {critique_directive}
+    3. 【专业减脂黑话】：请自然运用“稳态燃脂(Z2)”、“有氧强化(Z3)”、“乳酸阈值”、“心肺引擎”、“无效消耗”等专业词汇。
+    4. 【结构要求】：先结合我的当前表现给予肯定 -> 话锋一转犀利指出短板（严格遵守上文的挑刺规则） -> 给出对【{action_target}】的具体行动指令。
+    5. 拒绝冰冷地罗列数字！要把数据化为诊断依据。语气要像个有血有肉的老朋友，带有调侃、严厉，但最终落脚于鼓励。
+    6. 内部绝对禁止使用双引号（"）和换行符！需要强调请用单引号（'）。
     
     严格返回 JSON: {{"comment": "..."}}
     """
@@ -511,7 +512,6 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
 
     try:
         res = requests.post(url, headers=headers, json=payload, timeout=45)
-        
         if res.status_code == 200:
             result_data = res.json()['result']['response']
             
@@ -519,7 +519,7 @@ def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
                 result_json = result_data
             else:
                 text_str = str(result_data)
-                # 🔪 终极暴力截取：只切出第一个 { 到最后一个 } 之间的真正 JSON 内容
+                # 🔪 终极暴力截取
                 start_idx = text_str.find('{')
                 end_idx = text_str.rfind('}')
                 
