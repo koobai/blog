@@ -315,6 +315,11 @@
       letter-spacing: 1px;
       margin-bottom: 8px;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
       @include dark {
         color: var(--text-info-dark-color);
       }
@@ -427,15 +432,20 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
-    margin-bottom: 12px;
-
+    margin-bottom: 20px;
+    @include breakpoint("medium") {
+      margin-bottom: 12px;
+    }
     span {
-      font-size: 0.85rem;
+      font-size: 1rem;
       color: var(--text-info-color);
       min-width: 65px;
       text-align: center;
       @include dark {
         color: var(--text-info-dark-color);
+      }
+      @include breakpoint("medium") {
+        font-size: 0.85rem;
       }
     }
 
@@ -522,10 +532,13 @@
     animation: insightFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 
     .ai-comment-content {
-      font-size: 0.9rem;
+      font-size: 1rem;
       line-height: 1.8; /* 增加行高，让大段文字更有呼吸感 */
       color: var(--text-content-color);
       text-align: justify;
+      @include breakpoint("medium") {
+        font-size: 0.9rem;
+      }
 
       @include dark {
         color: var(--text-content-dark-color);
@@ -550,10 +563,13 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
     text-align: center;
-    font-size: 0.65rem;
+    font-size: 0.85rem;
     color: var(--text-info-color);
     @include dark {
       color: var(--text-info-dark-color);
+    }
+    @include breakpoint("medium") {
+      font-size: 0.65rem;
     }
   }
 
@@ -583,7 +599,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--text-info-color);
     @include dark {
       color: var(--text-info-dark-color);
@@ -591,6 +607,7 @@
     @include breakpoint("medium") {
       aspect-ratio: auto;
       height: 100%;
+      font-size: 0.8rem;
     }
     &.hasRun {
       cursor: pointer;
