@@ -167,34 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // 注入自定义地形与轨迹图层
+  // 注入自定义地形与轨迹图层
   const injectCustomLayers = () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    
-    try {
-      if (!map.getSource('mapbox-dem')) {
-        map.addSource('mapbox-dem', { 'type': 'raster-dem', 'url': 'mapbox://mapbox.mapbox-terrain-dem-v1', 'tileSize': 512, 'maxzoom': 14 });
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 3 }); 
-      }
-      if (!map.getLayer('3d-buildings')) {
-        map.addLayer({
-          'id': '3d-buildings', 
-          'source': 'composite', 
-          'source-layer': 'building', 
-          'filter': ['==', 'extrude', 'true'], 
-          'type': 'fill-extrusion', 
-          'minzoom': 14,
-          'paint': { 
-            'fill-extrusion-color': isDark ? '#1C1C1E' : '#eaeaf1', 
-            'fill-extrusion-height': ['*', ['get', 'height'], 4], 
-            'fill-extrusion-base': ['*', ['get', 'min_height'], 4], 
-            'fill-extrusion-opacity': 0.6 
-          }
-        }); 
-      }
-    } catch (e) {
-      console.warn("3D地形加载失败，降级为2D显示", e);
-    }
-
     // 核心轨迹线：背景浅色轨迹(all-runs) 与 前景高亮轨迹(highlight-run-source)
     if (!map.getSource('all-runs')) {
       map.addSource('all-runs', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, lineMetrics: true });
