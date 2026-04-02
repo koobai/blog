@@ -368,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
         const smartName = runData.name;
         const aiComment = runData.ai_comment;
+        const sportTypeName = runData.fallback_name || '运动';
 
         let achievementTagsHtml = '';
         const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
@@ -386,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="normal-view">
             <div class="detailName">
               <div class="nameLeft">
-                <span class="detailDate">${displayTime}</span>${achievementTagsHtml}
+                <span class="detailDate">${displayTime}</span>${achievementTagsHtml}${sportTypeName}
               </div>
               <div class="panel-share">
                 ${aiComment ? `
@@ -605,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const currentBearing = map.getBearing();
           
           // 自转运算：这里的 40 控制旋转速度（保留原样）
-          const newBearing = (currentBearing + deltaTime / 40) % 360; 
+          const newBearing = (currentBearing + deltaTime / 80) % 360; 
           
           const newPitch = 65 + Math.sin(elapsed / 1200) * 2;
           const newZoom = targetZoom + Math.sin(elapsed / 1800) * 0.2;

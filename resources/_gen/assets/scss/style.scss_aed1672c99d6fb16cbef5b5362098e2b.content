@@ -1392,7 +1392,8 @@ body:has(.menu-checkbox:checked) {
     .runDetailCard .detailName .nameLeft {
       display: flex;
       align-items: center;
-      line-height: 1; }
+      line-height: 1;
+      gap: 4px; }
   .runDetailCard .detailDate {
     color: var(--text-info-color);
     line-height: 1; }
@@ -1404,7 +1405,6 @@ body:has(.menu-checkbox:checked) {
   .runDetailCard .map-achievement-tag {
     font-size: 0.7rem;
     line-height: 1;
-    margin-left: 6px;
     color: var(--exercise-text-highlight-color); }
   .runDetailCard .panel-share {
     display: flex;
@@ -1447,7 +1447,7 @@ body:has(.menu-checkbox:checked) {
 
 .detailStatsRow {
   display: flex;
-  gap: 26px; }
+  gap: 30px; }
 
 .detailStatBlock {
   display: flex;

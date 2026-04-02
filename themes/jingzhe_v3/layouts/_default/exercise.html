@@ -35,7 +35,7 @@
 {{ $defaultTheme := dict "color" "#32D74B" }}
 
 {{ range $rawActivities }}
-  {{ $typeMap := dict "Run" "跑起来" "TrailRun" "山野跑起" "Treadmill" "跑马机跑起" "VirtualRun" "线上跑起" "Ride" "骑起来" "EBikeRide" "带电骑起" "VirtualRide" "台子踩起" "Walk" "走起来" "Hike" "徒步走起" "Swim" "游起来" "WaterSport" "水上浪起" "StairStepper" "楼梯爬起" }}
+  {{ $typeMap := dict "Run" "跑步" "TrailRun" "山野跑" "Treadmill" "跑步机" "VirtualRun" "线上跑" "Ride" "骑行" "EBikeRide" "电助力骑" "VirtualRide" "虚拟骑" "Walk" "步行" "Hike" "徒步" "Swim" "游泳" "WaterSport" "水上浪" "StairStepper" "爬楼梯" }}
   {{ $typeStr := default "运动" (index $typeMap .type) }}
   
   {{ if and (in (slice "Run" "Ride") .type) (eq .summary_polyline "") }}
@@ -56,7 +56,7 @@
     {{ $finalName = .name }}
   {{ end }}
   
-  {{ $activities = $activities | append (merge . (dict "smart_name" $finalName)) }}
+  {{ $activities = $activities | append (merge . (dict "smart_name" $finalName "fallback_name" $typeStr)) }}
 {{ end }}
 
 {{- /* 2. 排序与极值勋章计算 */ -}}
@@ -81,7 +81,7 @@
   {{ $years = $years | append $y }}
   {{ if eq $y $latestYear }}{{ $s.Add "latestMonths" (slice $m) }}{{ end }}
   
-  {{ $runData := dict "run_id" .run_id "name" .smart_name "ai_comment" .ai_comment "type" .type "distance" .distance "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
+  {{ $runData := dict "run_id" .run_id "name" .smart_name "fallback_name" .fallback_name "ai_comment" .ai_comment "type" .type "distance" .distance "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" .summary_polyline }}
   {{ $lightweightRuns = $lightweightRuns | append $runData }}
   
   {{ if in $rideTypes .type }}
@@ -176,7 +176,7 @@
 </script>
 
 <script defer src="/js/exercise-ui.js?v=20260401c"></script>
-<script defer src="/js/exercise-map.js?v=20260401a"></script>
+<script defer src="/js/exercise-map.js?v=20260402a"></script>
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

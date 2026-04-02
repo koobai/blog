@@ -131,6 +131,7 @@
       display: flex;
       align-items: center;
       line-height: 1;
+      gap: 4px;
     }
   }
 
@@ -146,7 +147,6 @@
   .map-achievement-tag {
     font-size: 0.7rem;
     line-height: 1;
-    margin-left: 6px;
     color: var(--exercise-text-highlight-color);
   }
 
@@ -197,7 +197,7 @@
 
 .detailStatsRow {
   display: flex;
-  gap: 26px;
+  gap: 30px;
 }
 
 .detailStatBlock {
