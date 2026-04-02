@@ -606,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const currentBearing = map.getBearing();
           
           // 自转运算：这里的 40 控制旋转速度（保留原样）
-          const newBearing = (currentBearing + deltaTime / 80) % 360; 
+          const newBearing = (currentBearing + deltaTime / 100) % 360; 
           
           const newPitch = 65 + Math.sin(elapsed / 1200) * 2;
           const newZoom = targetZoom + Math.sin(elapsed / 1800) * 0.2;
