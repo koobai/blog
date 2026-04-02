@@ -131,14 +131,12 @@
                data-run-id="{{ printf "%.0f" .run_id }}" 
                onclick="window.KoobaiRun.map.flyTo('{{ printf "%.0f" .run_id }}')" 
                style="cursor: pointer; {{ if ne $y (index $years 0) }}display: none;{{ end }}">
-            
-            <div class="iconRing {{ if $isGold }}goldRing{{ else if $hasAchieve }}silverRing{{ end }}"></div>
-            
+                
             <div class="cardContent">
               <div class="leftInfo">
-                <div class="runName">{{ $run.smart_name }}</div>
+                <div class="runName {{ if $isGold }}is-gold-text{{ else if $hasAchieve }}is-silver-text{{ end }}">{{ $run.smart_name }}</div>
                 <div class="runDistance" style="color: {{ $theme.color }}">
-                  {{ if gt $run.distance 0 }}{{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>{{ else }}{{ $run.moving_time }}<span class="distUnit"></span>{{ end }}
+                  {{ if gt $run.distance 0 }}{{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>{{ else }}{{ $run.moving_time }}{{ end }}
                 </div>
               </div>
               <div class="rightInfo">

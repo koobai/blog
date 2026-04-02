@@ -6,61 +6,7 @@
     window.KoobaiRun = {};
   }
 
-  /* ========================================================================
-     纯前端矢量轨迹生成引擎
-  ======================================================================== */
-  window.KoobaiTrack = {
-    // 极简操场跑道作为无轨迹的兜底
-    FALLBACK_POINTS: [[3, 7], [7, 7], [8.5, 6.4], [9.5, 5], [8.5, 3.6], [7, 3], [3, 3], [1.5, 3.6], [0.5, 5], [1.5, 6.4], [3, 7]],
-
-    decode: function(str) {
-      let index = 0, lat = 0, lng = 0, coordinates = [], shift = 0, result = 0, byte = null;
-      while (index < str.length) {
-        byte = null; shift = 0; result = 0;
-        do { byte = str.charCodeAt(index++) - 63; result |= (byte & 0x1f) << shift; shift += 5; } while (byte >= 0x20);
-        lat += ((result & 1) ? ~(result >> 1) : (result >> 1));
-        shift = result = 0;
-        do { byte = str.charCodeAt(index++) - 63; result |= (byte & 0x1f) << shift; shift += 5; } while (byte >= 0x20);
-        lng += ((result & 1) ? ~(result >> 1) : (result >> 1));
-        coordinates.push([lng / 1e5, lat / 1e5]);
-      }
-      return coordinates;
-    },
-
-    generate: function(polyline, size = 38, runObj = null) {
-      let points;
-      if (!polyline || polyline === '') {
-        points = this.FALLBACK_POINTS;
-      } else {
-        if (runObj && runObj._decodedCoords) {
-          points = runObj._decodedCoords;
-        } else {
-          points = this.decode(polyline);
-          if (points.length < 2) points = this.FALLBACK_POINTS;
-          if (runObj && points !== this.FALLBACK_POINTS) runObj._decodedCoords = points; 
-        }
-      }
-
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      points.forEach(pt => {
-        if (pt[0] < minX) minX = pt[0]; if (pt[0] > maxX) maxX = pt[0];
-        if (pt[1] < minY) minY = pt[1]; if (pt[1] > maxY) maxY = pt[1];
-      });
-
-      const scale = Math.min((size * 0.95) / (maxX - minX || 1), (size * 0.95) / (maxY - minY || 1));
-      const offX = (size - (maxX - minX) * scale) / 2;
-      const offY = (size - (maxY - minY) * scale) / 2;
-
-      let pathD = '';
-      points.forEach((pt, index) => {
-        const x = (pt[0] - minX) * scale + offX;
-        const y = (maxY - minY - (pt[1] - minY)) * scale + offY;
-        pathD += (index === 0 ? `M ${x.toFixed(2)} ${y.toFixed(2)}` : ` L ${x.toFixed(2)} ${y.toFixed(2)}`);
-      });
-
-      return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg"><path d="${pathD}" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="path-track" /></svg>`;
-    }
-  };
+  
 
   /* ========================================================================
      板块 1：全局配置与枚举字典
@@ -97,7 +43,6 @@
       // 缓存底部 DOM 卡片
       this.cachedRunCards = document.querySelectorAll('.runCard'); 
       this.setSmartMonth(); 
-      this.replaceIconsWithTracks();
     }
     
 // 👇 新增：翻转 AI 视图的交互函数
@@ -124,28 +69,6 @@
           if (bottomCharts) bottomCharts.style.display = 'flex';
         }
       }
-    }
-    // --- 新增：批量替换列表图标为轨迹图 ---
-    replaceIconsWithTracks() {
-      // 🚀 核心优化：将数组转化为哈希字典，极速匹配
-      const normalizeId = (id) => String(Number(String(id).replace(/,/g, '')));
-      const runMap = new Map();
-      this.allRuns.forEach(r => runMap.set(normalizeId(r.run_id), r));
-
-      this.cachedRunCards.forEach(card => {
-        const runId = card.getAttribute('data-run-id');
-        if (!runId) return;
-        
-        const runData = runMap.get(normalizeId(runId));
-        
-        if (runData) {
-          const trackSvg = window.KoobaiTrack.generate(runData.summary_polyline, 38, runData);
-          const iconRing = card.querySelector('.iconRing');
-          if (iconRing && trackSvg) {
-            iconRing.innerHTML = trackSvg;
-          }
-        }
-      });
     }
 
     // --- 状态控制方法 ---
@@ -487,16 +410,9 @@
           const isGold = isRideY || isRwY;
           hasAchieve = isGold || isRideM || isRwM;
 
-          // 决定渲染何种图标指示器
           if (hasAchieve) {
-            const ringClass = isGold ? 'goldRing' : 'silverRing';
-            const trackSvgSmall = window.KoobaiTrack.generate(primaryRun.summary_polyline, 20, primaryRun);
-            iconDom = `
-              <div class="calIconRing ${ringClass} has-track">
-                ${trackSvgSmall}
-              </div>`;
-          } else if (dayRuns.length > 1) {
-            iconDom = `<span class="multiDot"></span>`;
+            const dotClass = isGold ? 'is-gold-dot' : 'is-silver-dot';
+            iconDom = `<span class="multiDot ${dotClass}"></span>`;
           }
           
           // 组装成就标签
@@ -517,13 +433,13 @@
         const dateStyle = hasRun ? `color: ${runColor}; opacity: 1;` : 'opacity: 0.6;';
         
         return `
-          <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" 
-               data-run-id="${hasRun ? primaryRun.run_id : ''}" 
-               ${hasRun ? `onclick="window.KoobaiRun.map.flyTo('${primaryRun.run_id}')" style="cursor: pointer;"` : ''}>
-            ${!hasAchieve ? `<span class="dateNum" style="${dateStyle}">${day}</span>` : ''}
-            ${iconDom}
-            ${tooltipHtml}
-          </div>`;
+            <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}" 
+                 data-run-id="${hasRun ? primaryRun.run_id : ''}" 
+                 ${hasRun ? `onclick="window.KoobaiRun.map.flyTo('${primaryRun.run_id}')" style="cursor: pointer;"` : ''}>
+              <span class="dateNum" style="${dateStyle}">${day}</span>
+              ${iconDom}
+              ${tooltipHtml}
+            </div>`;
       }).join('');
       const currentMonthStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
       const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;

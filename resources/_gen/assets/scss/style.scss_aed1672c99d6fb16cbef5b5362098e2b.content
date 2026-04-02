@@ -2003,87 +2003,6 @@ body:has(.menu-checkbox:checked) {
     html[data-theme="dark"] .runCard:hover {
       background: #232326;
       border-color: rgba(255, 255, 255, 0.08); }
-    .runCard:hover .iconRing svg .path-track {
-      color: var(--text-content-color) !important; }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) .runCard:hover .iconRing svg .path-track {
-          color: var(--text-content-dark-color) !important; } }
-      html[data-theme="dark"] .runCard:hover .iconRing svg .path-track {
-        color: var(--text-content-dark-color) !important; }
-
-/* =========================================
-   9. 图标、勋章与浮层组件 (纯轨迹视觉)
-========================================= */
-.iconRing,
-.calIconRing {
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center; }
-
-/* 列表里的轨迹容器 */
-.iconRing {
-  width: 38px;
-  height: 38px;
-  margin-right: 20px;
-  color: var(--text-info-color);
-  opacity: 0.8;
-  /* 破纪录卡片：覆盖为金/银色 */ }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .iconRing {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .iconRing {
-    color: var(--text-info-dark-color); }
-  .iconRing svg {
-    width: 100%;
-    height: 100%;
-    transform: scale(1.1); }
-    .iconRing svg .path-track {
-      transition: all 0.3s ease; }
-  .iconRing.goldRing {
-    color: #f5a623 !important; }
-  .iconRing.silverRing {
-    color: #78828f !important; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .iconRing.silverRing {
-        color: var(--text-content-dark-color) !important; } }
-    html[data-theme="dark"] .iconRing.silverRing {
-      color: var(--text-content-dark-color) !important; }
-
-/* 日历里的迷你轨迹容器 (保留底色光晕让它在日历中显眼) */
-.calIconRing.has-track svg {
-  width: 26px;
-  height: 26px;
-  /* 日历里的轨迹因为太小，线条稍微加粗一点点保证清晰度 */ }
-  .calIconRing.has-track svg .path-track {
-    stroke-width: 1.2 !important; }
-
-/* 金银牌背景光晕 (保留给日历使用) */
-.goldRing {
-  color: #f5a623 !important; }
-
-.silverRing {
-  color: #78828f !important; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .silverRing {
-      color: var(--text-content-dark-color) !important; } }
-  html[data-theme="dark"] .silverRing {
-    color: var(--text-content-dark-color) !important; }
-
-.multiDot {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 4px;
-  height: 4px;
-  background: var(--text-info-color);
-  border-radius: 50%;
-  opacity: 0.5; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .multiDot {
-      background: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .multiDot {
-    background: var(--text-info-dark-color); }
 
 .cardContent {
   flex: 1;
@@ -2124,6 +2043,44 @@ body:has(.menu-checkbox:checked) {
       color: var(--text-info-dark-color); } }
   html[data-theme="dark"] .runDate {
     color: var(--text-info-dark-color); }
+
+/* =========================================
+   9. 勋章与浮层组件
+========================================= */
+.multiDot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 4px;
+  height: 4px;
+  background: var(--text-info-color);
+  border-radius: 50%;
+  opacity: 0.5; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .multiDot {
+      background: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .multiDot {
+    background: var(--text-info-dark-color); }
+
+/* 金银牌背景 */
+.is-gold-text {
+  color: #f5a623 !important; }
+
+.is-silver-text {
+  color: var(--text-content-color) !important;
+  opacity: 0.6; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .is-silver-text {
+      color: var(--text-content-dark-color) !important;
+      opacity: 0.9; } }
+  html[data-theme="dark"] .is-silver-text {
+    color: var(--text-content-dark-color) !important;
+    opacity: 0.9; }
+
+/* 破纪录的小圆点 */
+.multiDot.is-gold-dot {
+  background-color: #f5a623 !important;
+  opacity: 1; }
 
 /* 气泡系统 */
 .runTooltip {
