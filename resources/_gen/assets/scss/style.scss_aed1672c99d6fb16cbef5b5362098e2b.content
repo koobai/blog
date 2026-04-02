@@ -4021,14 +4021,14 @@ textarea#cmt-content:focus::placeholder {
   font-family: "GeistMono";
   font-display: swap;
   font-weight: 400;
-  src: local("Geist Mono"), local("GeistMono"), url("https://img.koobai.com/fonts/GeistMono-Regular.woff2") format("woff2");
+  src: local("Geist Mono"), local("GeistMono"), url("https://img.koobai.com/fonts/GeistMono-Regular.woff2?v=20260402-1") format("woff2");
   unicode-range: U+0021-00FF; }
 
 @font-face {
   font-family: "GeistMono";
   font-display: swap;
   font-weight: 700;
-  src: local("Geist Mono Bold"), local("GeistMono-Bold"), url("https://img.koobai.com/fonts/GeistMono-Bold.woff2") format("woff2");
+  src: local("Geist Mono Bold"), local("GeistMono-Bold"), url("https://img.koobai.com/fonts/GeistMono-Bold.woff2?v=20260402-1") format("woff2");
   unicode-range: U+0021-00FF; }
 
 *,

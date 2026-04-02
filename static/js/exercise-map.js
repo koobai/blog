@@ -252,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 地图加载完毕后初始化
   map.on('style.load', () => {
-    map.setFog(null); // 🚀 新增：彻底关闭 Mapbox 自带的天空雾气遮罩，让画面纯净
     injectCustomLayers();
     
     if (activeRunId && window.KoobaiRun.ui) {
