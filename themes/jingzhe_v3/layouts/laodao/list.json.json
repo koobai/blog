@@ -1,0 +1,37 @@
+{{- $list := slice -}}
+{{- /* 获取所有唠叨，按时间倒序排列 */ -}}
+{{- $pages := where site.RegularPages "Type" "laodao" -}}
+{{- range $pages.ByDate.Reverse -}}
+
+  {{- $raw := .RawContent -}}
+
+  {{- /* 1. 提取图片 URL 为一个纯净的数组 */ -}}
+  {{- $images := slice -}}
+  {{- range findRE `!\[.*?\]\((.*?)\)` $raw -}}
+    {{- $imgUrl := replaceRE `!\[.*?\]\((.*?)\)` "$1" . -}}
+    {{- $images = $images | append $imgUrl -}}
+  {{- end -}}
+
+  {{- /* 2. 净化正文文本（把 Markdown 图片语法从正文里挖掉） */ -}}
+  {{- $cleanContent := replaceRE `!\[.*?\]\(.*?\)` "" $raw -}}
+  {{- $cleanContent = trim $cleanContent " \n\r" -}}
+
+  {{- /* 3. 处理定位信息 */ -}}
+  {{- $locationName := "" -}}
+  {{- $lat := 0.0 -}}
+  {{- $lng := 0.0 -}}
+  {{- if .Params.location -}}
+    {{- $locationName = .Params.location -}}
+    {{- $latlng := split .Params.latlng "," -}}
+    {{- $lat = index $latlng 0 | float -}}
+    {{- $lng = index $latlng 1 | float -}}
+  {{- end -}}
+
+  {{- /* 4. 组装单条数据 */ -}}
+  {{- $item := dict "id" .File.UniqueID "url" .Permalink "date" (.Date.Format "2006-01-02T15:04:05+08:00") "content" $cleanContent "images" $images "locationName" $locationName "lat" $lat "lng" $lng -}}
+
+  {{- $list = $list | append $item -}}
+{{- end -}}
+
+{{- /* 直接输出为 JSON 格式 */ -}}
+{{- $list | jsonify -}}

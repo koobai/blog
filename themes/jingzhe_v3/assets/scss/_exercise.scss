@@ -113,7 +113,7 @@
   z-index: 10;
   animation: slideUpFade 0.4s forwards;
   @include dark {
-    background: var(--background-card-dark-color);
+    background: #242427;
   }
 
   .detailName {
