@@ -1,0 +1,25 @@
+{{- $list := slice -}}
+{{- /* 获取所有随笔，按时间倒序排列 */ -}}
+{{- $pages := where site.RegularPages "Type" "posts" -}}
+{{- range $pages.ByDate.Reverse -}}
+
+  {{- /* 提取封面图并转化为绝对路径（带有 https 的完整链接） */ -}}
+  {{- $coverImage := "" -}}
+  {{- if .Params.image -}}
+    {{- $coverImage = .Params.image | absURL -}}
+  {{- end -}}
+
+  {{- /* 提取描述 */ -}}
+  {{- $description := "" -}}
+  {{- if .Params.description -}}
+    {{- $description = .Params.description -}}
+  {{- end -}}
+
+  {{- /* 组装单条随笔数据：加入了标题、描述、封面、以及纯文本正文(.Plain) */ -}}
+  {{- $item := dict "id" .File.UniqueID "title" .Title "url" .Permalink "date" (.Date.Format "2006-01-02T15:04:05+08:00") "description" $description "coverImage" $coverImage "content" .Plain -}}
+
+  {{- $list = $list | append $item -}}
+{{- end -}}
+
+{{- /* 输出为 JSON */ -}}
+{{- $list | jsonify -}}
