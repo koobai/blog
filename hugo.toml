@@ -47,3 +47,4 @@ hasCJKLanguage = true           # 准确计算中文字数和摘要
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS", "JSON"]

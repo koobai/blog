@@ -1374,9 +1374,9 @@ body:has(.menu-checkbox:checked) {
   /* 面板内嵌的分享按钮样式 */ }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .runDetailCard {
-      background: var(--background-card-dark-color); } }
+      background: #242427; } }
   html[data-theme="dark"] .runDetailCard {
-    background: var(--background-card-dark-color); }
+    background: #242427; }
   .runDetailCard .detailName {
     font-size: 0.75rem;
     color: var(--text-info-color);
