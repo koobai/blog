@@ -17,8 +17,12 @@
   margin-bottom: 6px;
   line-height: 1;
 }
+.laodao-device {
+  margin-left: 2px;
+}
 .laodao-time a,
-.index-post-time {
+.index-post-time,
+.laodao-device {
   font-size: 0.85rem;
   color: var(--text-info-color);
   line-height: 1;

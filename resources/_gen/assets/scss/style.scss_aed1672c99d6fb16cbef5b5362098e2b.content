@@ -2448,15 +2448,19 @@ body:has(.menu-checkbox:checked) {
   margin-bottom: 6px;
   line-height: 1; }
 
+.laodao-device {
+  margin-left: 2px; }
+
 .laodao-time a,
-.index-post-time {
+.index-post-time,
+.laodao-device {
   font-size: 0.85rem;
   color: var(--text-info-color);
   line-height: 1; }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .laodao-time a, html:not([data-theme="light"]) .index-post-time {
+    html:not([data-theme="light"]) .laodao-time a, html:not([data-theme="light"]) .index-post-time, html:not([data-theme="light"]) .laodao-device {
       color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .laodao-time a, html[data-theme="dark"] .index-post-time {
+  html[data-theme="dark"] .laodao-time a, html[data-theme="dark"] .index-post-time, html[data-theme="dark"] .laodao-device {
     color: var(--text-info-dark-color); }
 
 .laodao-content p,
