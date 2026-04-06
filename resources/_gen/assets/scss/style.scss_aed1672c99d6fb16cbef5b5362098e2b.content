@@ -3022,7 +3022,7 @@ body:has(.menu-checkbox:checked) {
 
 #recentList {
   display: grid;
-  gap: 10px; }
+  gap: 15px; }
 
 .admin-recent-card {
   cursor: pointer;
@@ -3044,7 +3044,8 @@ body:has(.menu-checkbox:checked) {
 .admin-recent-content {
   margin: 10px 0;
   font-size: 1rem;
-  opacity: 0.8; }
+  opacity: 0.8;
+  line-height: 1; }
 
 /* 7. 表情浮窗 */
 .emoji-selector {
@@ -3149,6 +3150,37 @@ body:has(.menu-checkbox:checked) {
     cursor: pointer; }
     .admin-location-chip .admin-location-text:hover {
       text-decoration: underline; }
+
+.draft-item-wrapper {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  line-height: 1; }
+
+.draft-delete-btn {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-info-color);
+  opacity: 0.8; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .draft-delete-btn {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .draft-delete-btn {
+    color: var(--text-info-dark-color); }
+  .draft-delete-btn:hover {
+    color: #ef4444; }
+
+/* 右侧内容区 */
+.draft-content-text {
+  cursor: pointer;
+  color: var(--text-info-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .draft-content-text {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .draft-content-text {
+    color: var(--text-info-dark-color); }
+  .draft-content-text:hover {
+    opacity: 0.6; }
 
 .page-bowen-admin .site-footer-wrapper {
   display: none; }
