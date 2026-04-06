@@ -8,6 +8,13 @@
           {{ .Date.Format "2006-01-02 15:04" }}
         {{ end }}
     </a>
+
+    {{ if .Params.device }}
+        <span class="laodao-device">
+            {{ .Params.device }}
+        </span>
+    {{ end }}
+
     {{ if .Params.location }}
     {{ $latlng := split .Params.latlng "," }}
     {{ $lat := index $latlng 0 }}

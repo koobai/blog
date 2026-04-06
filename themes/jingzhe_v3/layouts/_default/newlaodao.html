@@ -39,6 +39,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 7c0 2.21-4.03 4-9 4S3 9.21 3 7m18 0c0-2.21-4.03-4-9-4S3 4.79 3 7m18 0v5M3 7v5m18 0c0 2.21-4.03 4-9 4s-9-1.79-9-4m18 0v5c0 2.21-4.03 4-9 4s-9-1.79-9-4v-5"/></svg>
                 </div>
 
+                <div class="admin-icon-btn" title="云草稿" onclick="toggleDraftList()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                </div>
+
                 <div class="admin-icon-btn" title="切换预览 (所见即所得)" onclick="togglePreviewMode()" id="modeToggleBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8zm11 3a3 3 0 1 0 0-6a3 3 0 0 0 0 6z"/></svg>
                 </div>
@@ -46,6 +50,7 @@
             
             <div class="admin-actions">
                 <button id="cancelBtn" class="admin-btn admin-btn-cancel" onclick="cancelEdit()" style="display: none;">取消</button>
+                <button id="saveDraftBtn" class="admin-btn admin-btn-cancel" onclick="saveCloudDraft()" style="margin-right: 10px;">存草稿</button>
                 <button id="submitBtn" class="admin-btn" onclick="publishPost()">唠叨一下</button>
             </div>
         </div>
@@ -67,15 +72,17 @@
 <script>
     const CONFIG = {
         workerUrl: "https://newlaodao.koobai.com",
+        draftUrl: "https://laodaodraft.koobai.com",
         owner: "koobai", repo: "blog", branch: "main",
         upyunDomain: "https://img.koobai.com",
         mapboxToken: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw"
     };
 
     const CACHE_KEY = 'koobai_laodao_draft';
-    const STATE = { sha: null, path: null, date: null, emoji: null, location: null };
+    const STATE = { sha: null, path: null, date: null, emoji: null, location: null, draftId: null, device: null };
     let hasFetchedRecent = false; 
     let draftTimer;
+    let currentCloudDrafts = [];
 
     let cachedTags = [];
     let filteredTags = [];
@@ -414,6 +421,11 @@
         
         let frontmatter = `---\ndate: ${finalTime}${tagStr}\n`;
         if (STATE.location) frontmatter += `location: "${STATE.location.name}"\nlatlng: "${STATE.location.lat},${STATE.location.lng}"\n`;
+
+        if (STATE.device) {
+            frontmatter += `device: "${STATE.device}"\n`;
+        }
+
         frontmatter += `---\n\n`;
 
         const finalMD = frontmatter + contentVal + '\n';
@@ -443,6 +455,9 @@
             if (typeof pubMsg === 'function') pubMsg();
             cocoMessage.success("唠叨成功！搞定！"); 
             if (!STATE.sha) localStorage.removeItem(CACHE_KEY); 
+            if (STATE.draftId) {
+                await deleteCloudDraft(STATE.draftId, true);
+            }
             cancelEdit(false); 
             if($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
         } catch (err) { 
@@ -456,14 +471,17 @@
 
     async function toggleRecentList() {
         const wrap = $('recentListWrap');
-        if (wrap.style.display === 'block') { wrap.style.display = 'none'; return; }
-        if (!hasFetchedRecent) {
+        // 🌟 修复：区分当前展示的是最近唠叨还是云草稿
+        if (wrap.style.display === 'block' && wrap.dataset.type === 'recent') { wrap.style.display = 'none'; return; }
+        
+        if (!hasFetchedRecent || wrap.dataset.type !== 'recent') {
             let loadMsg = cocoMessage.info("正在获取最新一条唠叨", 0);
             const success = await fetchRecent(); 
             if (typeof loadMsg === 'function') loadMsg();
             if (!success) return; 
         }
         wrap.style.display = 'block';
+        wrap.dataset.type = 'recent'; // 标记当前为最近修改
     }
 
     async function fetchRecent() {
@@ -507,9 +525,161 @@
             return false;
         }
     }
+// ==========================================
+    // ☁️ 云端草稿核心功能 (获取、保存、删除、加载)
+    // ==========================================
 
+    // 1. 切换/拉取草稿列表
+    async function toggleDraftList(isSilentRefresh = false) {
+        const wrap = $('recentListWrap');
+        // 🌟 如果是静默刷新，就不要隐藏面板
+        if (!isSilentRefresh && wrap.style.display === 'block' && wrap.dataset.type === 'draft') {
+            wrap.style.display = 'none'; return;
+        }
+        
+        let loadMsg = null;
+        // 🌟 只有非静默状态才弹蓝框
+        if (!isSilentRefresh) {
+            loadMsg = cocoMessage.info("正在获取云草稿...", 0);
+        }
+        try {
+            const res = await secureFetch(`${CONFIG.draftUrl}/api/drafts`);
+            if (!res.ok) throw new Error("API Error");
+            const drafts = await res.json();
+            currentCloudDrafts = drafts; // 存入全局，防止特殊字符转义破坏 HTML
+
+            if (typeof loadMsg === 'function') loadMsg();
+
+            if (!drafts || drafts.length === 0) {
+                $('recentList').innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">暂无云草稿</div>';
+            } else {
+                let html = '';
+                drafts.forEach((draft, index) => {
+                    const rawText = draft.content || "";
+                    const previewText = rawText.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 20) + (rawText.length > 20 ? '...' : '');
+                    
+                    // 渲染卡片：左侧点击加载，右侧点击删除
+                    html += `
+                    <div class="card-timeline laodao-card admin-recent-card" style="display:flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+                        <div class="laodao-content datacont admin-recent-content" style="margin: 0; flex: 1; cursor: pointer; padding-right: 10px;" onclick="loadCloudDraft(${index})">
+                            ${previewText}
+                        </div>
+                        <div style="cursor: pointer; color: #ef4444; padding: 5px;" onclick="deleteCloudDraft('${draft.id}')" title="删除">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                        </div>
+                    </div>`;
+                });
+                $('recentList').innerHTML = html;
+            }
+            wrap.style.display = 'block';
+            wrap.dataset.type = 'draft'; // 标记当前面板是草稿
+        } catch(err) {
+            if (loadMsg) loadMsg();
+            if (!isSilentRefresh) {
+                $('recentList').innerHTML = '';
+                cocoMessage.error("获取云草稿失败");
+            }
+        }
+    }
+
+    // 2. 将选中的草稿载入编辑框
+    function loadCloudDraft(index) {
+        const draft = currentCloudDrafts[index];
+        if (!draft) return;
+        if (isPreviewMode) togglePreviewMode();
+        
+        STATE.draftId = draft.id;
+        STATE.sha = null; STATE.path = null; STATE.date = null; // 清除线上修改标记
+
+        // 兼容驼峰和下划线命名，放宽坐标值为 0 时的判断拦截
+        const locName = draft.location_name || draft.locationName || "";
+        if (locName !== "") {
+            STATE.location = { 
+                name: locName, 
+                lat: parseFloat(draft.lat || 0), 
+                lng: parseFloat(draft.lng || 0) 
+            };
+        } else {
+            STATE.location = null;
+        }
+        renderLocation();
+
+        contentEl.value = draft.content || '';
+        $('submitBtn').innerText = "发布草稿";
+        $('cancelBtn').style.display = 'inline-block';
+        $('saveDraftBtn').style.display = 'inline-block';
+        if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
+        
+        contentEl.dispatchEvent(new Event('input'));
+        
+        // 平滑滚动到顶部方便编辑
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 3. 手动保存到云草稿
+    async function saveCloudDraft() {
+        const contentVal = contentEl.value.trim();
+        if (!contentVal) return cocoMessage.warning("写点什么再存吧！");
+
+        let saveMsg = cocoMessage.info("正在保存至云端...", 0);
+        const id = STATE.draftId || URL.createObjectURL(new Blob([])).slice(-36); 
+
+        const payload = {
+            id: id,
+            content: contentVal,
+            location_name: STATE.location ? STATE.location.name : "",
+            lat: STATE.location ? STATE.location.lat : 0,
+            lng: STATE.location ? STATE.location.lng : 0
+        };
+
+        try {
+            const res = await secureFetch(`${CONFIG.draftUrl}/api/drafts`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error("API Error");
+
+            if (typeof saveMsg === 'function') saveMsg();
+            cocoMessage.success("云草稿已保存");
+
+            // 🌟 修复 2：保存成功后，强制清空输入框并重置所有状态
+            cancelEdit(false);
+
+            // 🌟 修复：不再隐藏面板，直接传 true 开启无感静默刷新
+            const wrap = $('recentListWrap');
+            if (wrap.style.display === 'block' && wrap.dataset.type === 'draft') {
+                toggleDraftList(true);
+            }
+        } catch(err) {
+            if (typeof saveMsg === 'function') saveMsg();
+            cocoMessage.error("云草稿保存失败");
+        }
+    }
+
+    // 4. 删除云草稿 (支持静默删除)
+    async function deleteCloudDraft(id, isSilent = false) {
+        if (!isSilent && !confirm("确定要永久删除这条草稿吗？")) return;
+        try {
+            const res = await secureFetch(`${CONFIG.draftUrl}/api/drafts?id=${id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error("API Error");
+            if (!isSilent) {
+                cocoMessage.success("草稿已删除");
+                // 🌟 修复：不再隐藏面板，直接传 true 开启无感静默刷新
+                const wrap = $('recentListWrap');
+                if (wrap.style.display === 'block' && wrap.dataset.type === 'draft') {
+                    toggleDraftList(true);
+                }
+                // 如果删的是当前正在编辑的这篇，清空输入框
+                if (STATE.draftId === id) cancelEdit(false);
+            }
+        } catch(err) {
+            if (!isSilent) cocoMessage.error("删除草稿失败");
+        }
+    }
     function loadForEdit(path, sha, encodedRawText) {
         if (isPreviewMode) togglePreviewMode();
+        STATE.draftId = null;
         const rawText = decodeURIComponent(encodedRawText);
         const timeMatch = rawText.match(/date:\s*([^\n]+)/);
         STATE.date = timeMatch ? timeMatch[1].trim() : null;
@@ -517,6 +687,9 @@
 
         const locationMatch = rawText.match(/location:\s*"([^"]+)"/);
         const latlngMatch = rawText.match(/latlng:\s*"([^"]+)"/);
+
+        const deviceMatch = rawText.match(/device:\s*"([^"]+)"/);
+        STATE.device = deviceMatch ? deviceMatch[1] : null;
         
         if (locationMatch && latlngMatch) {
             const [lat, lng] = latlngMatch[1].split(',');
@@ -529,6 +702,7 @@
         contentEl.value = rawText.replace(/---[\s\S]*?---/, '').trim() + ' '; 
         $('submitBtn').innerText = "修改"; 
         $('cancelBtn').style.display = 'inline-block'; 
+        $('saveDraftBtn').style.display = 'none';
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
         
         contentEl.dispatchEvent(new Event('input'));
@@ -538,13 +712,15 @@
     function cancelEdit(showMsg = true) {
         if (isPreviewMode) togglePreviewMode();
         contentEl.value = ''; contentEl.style.height = 'auto'; 
-        STATE.sha = STATE.path = STATE.date = STATE.location = null; renderLocation();
+        STATE.sha = STATE.path = STATE.date = STATE.location = STATE.draftId = STATE.device = null;
+        renderLocation();
 
         $('submitBtn').innerText = "唠叨一下"; $('cancelBtn').style.display = 'none';
+        $('saveDraftBtn').style.display = 'inline-block';
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
+        localStorage.removeItem(CACHE_KEY); 
         
-        loadDraft(); 
-        if (showMsg) cocoMessage.info("已取消修改");
+        if (showMsg) cocoMessage.info("已取消");
     }
 
     const tagSelector = $('tagSelector');
