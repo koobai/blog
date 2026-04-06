@@ -207,7 +207,7 @@
 }
 #recentList {
   display: grid;
-  gap: 10px;
+  gap: 15px;
 }
 .admin-recent-card {
   cursor: pointer;
@@ -229,6 +229,7 @@
   margin: 10px 0;
   font-size: 1rem;
   opacity: 0.8;
+  line-height: 1;
 }
 
 /* 7. 表情浮窗 */
@@ -330,5 +331,38 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+// 云端草稿
+.draft-item-wrapper {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  line-height: 1;
+}
+
+.draft-delete-btn {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-info-color);
+  opacity: 0.8;
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+/* 右侧内容区 */
+.draft-content-text {
+  cursor: pointer;
+  color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+  &:hover {
+    opacity: 0.6;
   }
 }

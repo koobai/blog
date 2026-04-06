@@ -46,5 +46,5 @@ hasCJKLanguage = true           # 准确计算中文字数和摘要
     params = { new_window = true}
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS"]
   section = ["HTML", "RSS", "JSON"]

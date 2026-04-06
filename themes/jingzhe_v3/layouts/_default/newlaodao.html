@@ -558,15 +558,13 @@
                     const rawText = draft.content || "";
                     const previewText = rawText.replace(/!\[.*?\]\(.*?\)/g, '[图片]').substring(0, 20) + (rawText.length > 20 ? '...' : '');
                     
-                    // 渲染卡片：左侧点击加载，右侧点击删除
+                    // 渲染卡片
                     html += `
-                    <div class="card-timeline laodao-card admin-recent-card" style="display:flex; justify-content: space-between; align-items: center; padding-right: 10px;">
-                        <div class="laodao-content datacont admin-recent-content" style="margin: 0; flex: 1; cursor: pointer; padding-right: 10px;" onclick="loadCloudDraft(${index})">
+                    <div class="draft-item-wrapper">
+                        <div class="draft-content-text" onclick="loadCloudDraft(${index})">
                             ${previewText}
                         </div>
-                        <div style="cursor: pointer; color: #ef4444; padding: 5px;" onclick="deleteCloudDraft('${draft.id}')" title="删除">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
-                        </div>
+                        <div class="draft-delete-btn" onclick="deleteCloudDraft('${draft.id}')">(删除)</div>
                     </div>`;
                 });
                 $('recentList').innerHTML = html;
