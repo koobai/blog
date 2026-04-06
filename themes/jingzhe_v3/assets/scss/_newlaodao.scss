@@ -71,7 +71,8 @@
 
 /* 3. 发布框通用组件 */
 .admin-publish-card {
-  &:has(.admin-textarea:placeholder-shown) #submitBtn {
+  &:has(.admin-textarea:placeholder-shown) #submitBtn,
+  &:has(.admin-textarea:placeholder-shown) #saveDraftBtn {
     opacity: 0.2;
     cursor: not-allowed;
   }
@@ -123,7 +124,7 @@
 /* 4. 左侧 SVG 工具栏组 */
 .admin-toolbar {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   align-items: center;
 }
 
