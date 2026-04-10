@@ -1,5 +1,31 @@
 [
   {
+    "id": "26404869",
+    "type": "movie",
+    "title": "惊天魔盗团3",
+    "year": "2025",
+    "rating": 2,
+    "comment": "啥啥啥，无聊老套，第一部太惊艳了",
+    "link": "https://movie.douban.com/subject/26404869/",
+    "create_time": "2026-04-10 08:39:24",
+    "color_scheme": {
+      "is_dark": true,
+      "primary_color_light": "4570a5",
+      "_base_color": [
+        0.5928571428571429,
+        0.5785123966942148,
+        0.4745098039215686
+      ],
+      "secondary_color": "f4f7f9",
+      "_avg_color": [
+        0.5863095238095237,
+        0.4148148148148148,
+        0.5294117647058824
+      ],
+      "primary_color_dark": "35567f"
+    }
+  },
+  {
     "id": "35341071",
     "type": "tv",
     "title": "七王国的骑士 第一季",
