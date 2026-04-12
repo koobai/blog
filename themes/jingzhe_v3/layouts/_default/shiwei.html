@@ -1,0 +1,492 @@
+{{ define "body_classes" }}rss-app-body{{ end }}
+
+{{ define "main" }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+<div id="loginOverlay" style="display: none;">
+    <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入 RSS 密钥">
+    <button class="admin-login-btn" onclick="verifyToken()">进入阅读器</button>
+</div>
+
+<div id="appPanel" class="rss-layout" style="display: none;">
+    <div class="rss-sidebar" id="sidebarArea">
+        <div class="sidebar-header">
+            <h3>过滤与订阅</h3>
+            
+            <div class="header-actions">
+                <div class="action-btn" id="refreshBtn" onclick="handleRefresh()" title="刷新数据">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+                        <path d="M21 3v5h-5"></path>
+                    </svg>
+                </div>
+                <div class="action-btn" onclick="openFeedModal()" title="添加订阅源">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+            </div>
+        </div>
+        <div id="sidebarContent">加载中...</div>
+    </div>
+
+    <div class="rss-list" id="listArea">
+        <div id="listContent" style="padding: 15px;">点击左侧分类查看文章</div>
+    </div>
+
+    <div class="rss-detail" id="detailArea">
+        <div id="detailContent">
+            <div class="placeholder-text">左侧选择一篇阅读</div>
+        </div>
+    </div>
+</div>
+
+<div id="feedModal" class="rss-modal-overlay" style="display: none;">
+    <div class="rss-modal">
+        <h2 id="modalTitle">添加订阅源</h2>
+        <input type="hidden" id="feedIdInput">
+        
+        <div class="form-group">
+            <label>RSS 地址 (URL)</label>
+            <input type="text" id="feedUrlInput" placeholder="https://example.com/feed">
+        </div>
+        <div class="form-group">
+            <label>网站名称</label>
+            <input type="text" id="feedTitleInput" placeholder="选填，留空自动抓取">
+        </div>
+        <div class="form-group">
+            <label>分类</label>
+            <select id="feedCategorySelect" style="margin-bottom: 8px;"></select>
+            <input type="text" id="newCategoryInput" placeholder="或直接输入新分类名称 (优先生效)">
+        </div>
+        <div class="form-group">
+            <label>保留规则 (关键词)</label>
+            <input type="text" id="feedRulesInput" placeholder="例如：Apple,设计 (包含则永久保留)">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-delete" id="btnDeleteFeed" onclick="deleteFeed()" style="display: none;">删除</button>
+            <button class="btn-cancel" onclick="$('feedModal').style.display='none'">取消</button>
+            <button class="btn-save" onclick="saveFeed()" id="btnSaveFeed">保存</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 🧠 1. 全局状态与配置 (State Management)
+    // ==========================================
+    const API_BASE = "https://rssbackend.koobai.com/api";
+    const $ = id => document.getElementById(id);
+    const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
+
+    let rssData = { categories: [], feeds: [], unreadEntries: [], starredEntries: [], readEntries: [] };
+    
+    // currentFilter 默认选中“全部”。当刷新时，我们会保持这个状态。
+    let currentFilter = { type: 'all', id: null }; 
+    let currentFilteredArticles = [];
+
+    // ==========================================
+    // 🛡️ 2. 核心鉴权与网络请求 (Network & Auth)
+    // ==========================================
+    async function secureFetch(path, options = {}) {
+        options.headers = { ...options.headers, 'X-Auth-Key': getAdminToken(), 'Content-Type': 'application/json' };
+        const res = await fetch(API_BASE + path, options);
+        if (res.status === 401) throw new Error("401"); 
+        return res;
+    }
+
+    async function verifyToken() {
+        const token = $('adminTokenInput').value.trim();
+        if (!token) return alert("请输入密钥");
+        localStorage.setItem("koobai_admin_token", token);
+        try {
+            await secureFetch(`/categories`);
+            $('loginOverlay').style.display = 'none'; 
+            $('appPanel').style.display = 'flex'; 
+            loadSidebarData();
+        } catch (e) {
+            localStorage.removeItem("koobai_admin_token"); 
+            alert("密钥错误，请重新输入");
+        }
+    }
+
+    // ==========================================
+    // 🔄 3. 数据拉取与刷新逻辑 (Data Fetching)
+    // ==========================================
+    async function loadSidebarData() {
+        try {
+            $('sidebarContent').innerHTML = '<div style="padding: 10px; color: var(--text-info-color);">同步云端数据中...</div>';
+            
+            const [catRes, feedRes, unreadRes, starredRes, readRes] = await Promise.all([
+                secureFetch('/categories'), 
+                secureFetch('/feeds'),
+                secureFetch('/articles/unread'), 
+                secureFetch('/articles/starred'), 
+                secureFetch('/articles/read')
+            ]);
+            
+            rssData.categories = await catRes.json();
+            rssData.feeds = await feedRes.json();
+            rssData.unreadEntries = await unreadRes.json();
+            rssData.starredEntries = await starredRes.json();
+            rssData.readEntries = await readRes.json();
+
+            // 🚀 核心修复：不要写死 'all'，而是用当前记录的 currentFilter 重新渲染
+            // 这样无论是首次加载，还是点击刷新，都能保持用户的浏览位置并刷新列表！
+            selectFilter(currentFilter.type, currentFilter.id); 
+
+        } catch (e) {
+            if (e.message === "401") { 
+                localStorage.removeItem("koobai_admin_token"); 
+                location.reload(); 
+            } else { 
+                $('sidebarContent').innerHTML = '<div style="color: red; padding: 10px;">加载失败</div>'; 
+            }
+        }
+    }
+
+    async function handleRefresh() {
+        const btn = $('refreshBtn');
+        if (btn.classList.contains('is-spinning')) return;
+        
+        btn.classList.add('is-spinning');
+        try {
+            await loadSidebarData(); 
+            // 如果希望刷新后重置右侧阅读区，可以取消下面这行的注释：
+            // $('detailContent').innerHTML = '<div class="placeholder-text">列表已刷新，请重新选择阅读</div>';
+        } catch (error) {
+            console.error("刷新数据失败:", error);
+        } finally {
+            setTimeout(() => btn.classList.remove('is-spinning'), 500);
+        }
+    }
+
+    // ==========================================
+    // 🎨 4. 左侧边栏渲染 (Sidebar Rendering)
+    // ==========================================
+    function renderSidebar() {
+        let html = '';
+        const unreadTotal = rssData.unreadEntries.length;
+        
+        html += `
+        <div class="sidebar-item ${currentFilter.type === 'all' ? 'active' : ''}" style="${currentFilter.type === 'all' ? 'background: rgba(128,128,128,0.1)' : ''}">
+            <div class="feed-click-area" onclick="selectFilter('all')"><span class="feed-title">全部</span></div>
+        </div>
+        <div class="sidebar-item ${currentFilter.type === 'unread' ? 'active' : ''} ${unreadTotal > 0 ? 'has-unread' : ''}" style="${currentFilter.type === 'unread' ? 'background: rgba(128,128,128,0.1)' : ''}">
+            <div class="feed-click-area" onclick="selectFilter('unread')"><span class="feed-title">新鲜</span></div>
+            ${unreadTotal > 0 ? `<span class="badge" id="badge-all">${unreadTotal}</span>` : ''}
+        </div>
+        <div class="sidebar-item ${currentFilter.type === 'starred' ? 'active' : ''}" style="${currentFilter.type === 'starred' ? 'background: rgba(128,128,128,0.1)' : ''}">
+            <div class="feed-click-area" onclick="selectFilter('starred')"><span class="feed-title">收藏</span></div>
+        </div>
+        <div class="sidebar-item ${currentFilter.type === 'history' ? 'active' : ''}" style="${currentFilter.type === 'history' ? 'background: rgba(128,128,128,0.1)' : ''}">
+            <div class="feed-click-area" onclick="selectFilter('history')"><span class="feed-title">已看</span></div>
+        </div>`;
+
+        rssData.categories.forEach(cat => {
+            html += `<div class="sidebar-category">${cat.title}</div>`;
+            const catFeeds = rssData.feeds.filter(f => f.category_id === cat.id);
+            
+            catFeeds.forEach(feed => {
+                const count = rssData.unreadEntries.filter(e => e.feed_id === feed.id).length;
+                let iconUrl = '';
+                try { iconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${new URL(feed.site_url || feed.feed_url).hostname}`; } catch(e) {}
+                const isActive = (currentFilter.type === 'feed' && currentFilter.id === feed.id);
+                
+                html += `
+                <div class="sidebar-item ${isActive ? 'active' : ''} ${count > 0 ? 'has-unread' : ''}" style="${isActive ? 'background: rgba(128,128,128,0.1)' : ''}">
+                    <div class="feed-click-area" onclick="selectFilter('feed', ${feed.id})">
+                        <img src="${iconUrl}" class="feed-icon" onerror="this.style.display='none'">
+                        <span class="feed-title">${feed.title}</span>
+                    </div>
+                    ${count > 0 ? `<span class="badge">${count}</span>` : ''}
+                    <div class="feed-edit-icon" onclick="openFeedModal(${feed.id})" title="编辑订阅源">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </div>
+                </div>`;
+            });
+        });
+        $('sidebarContent').innerHTML = html;
+    }
+
+    // ==========================================
+    // 🎯 5. 中间文章列表渲染 (List Rendering)
+    // ==========================================
+    function selectFilter(type, id = null) {
+        // 更新全局状态，并重绘左侧边栏高亮
+        currentFilter = { type, id };
+        renderSidebar(); 
+
+        // 根据当前状态过滤数据
+        if (type === 'all') {
+            const allMap = new Map();
+            [...rssData.unreadEntries, ...rssData.readEntries, ...rssData.starredEntries].forEach(a => {
+                if (!allMap.has(a.id)) allMap.set(a.id, a);
+            });
+            currentFilteredArticles = Array.from(allMap.values()).sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+        }
+        else if (type === 'unread') currentFilteredArticles = rssData.unreadEntries;
+        else if (type === 'starred') currentFilteredArticles = rssData.starredEntries;
+        else if (type === 'history') currentFilteredArticles = rssData.readEntries;
+        else if (type === 'feed') {
+            const feedMap = new Map();
+            [...rssData.unreadEntries, ...rssData.readEntries, ...rssData.starredEntries].forEach(a => {
+                if (a.feed_id === id && !feedMap.has(a.id)) feedMap.set(a.id, a);
+            });
+            currentFilteredArticles = Array.from(feedMap.values()).sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+        }
+
+        // 渲染列表 HTML
+        $('listArea').innerHTML = ''; 
+        if (currentFilteredArticles.length === 0) {
+            $('listArea').innerHTML = '<div style="padding: 30px; text-align: center; color: var(--text-info-color);">这里空空如也</div>';
+            return;
+        }
+
+        let listHtml = '';
+        currentFilteredArticles.forEach(article => {
+            const feedName = article.feed_title || '未知来源';
+            const isRead = !rssData.unreadEntries.some(u => u.id === article.id);
+            const thumbHtml = article.thumbnail_url ? `<img src="${article.thumbnail_url}" class="article-thumbnail" loading="lazy">` : '';
+
+            listHtml += `
+            <div class="article-item ${isRead ? 'is-read' : ''}" id="item-${article.id}" onclick="selectArticle(${article.id})">
+                <div class="article-text-content">
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-meta"><span>${feedName}</span><span>${formatShortTime(article.published_at)}</span></div>
+                </div>
+                ${thumbHtml}
+            </div>`;
+        });
+        $('listArea').innerHTML = listHtml;
+    }
+
+    // ==========================================
+    // 📖 6. 右侧文章详情与交互 (Detail & Actions)
+    // ==========================================
+    async function selectArticle(articleId) {
+        document.querySelectorAll('.article-item').forEach(el => el.classList.remove('active'));
+        const activeItem = $('item-' + articleId);
+        if (activeItem) activeItem.classList.add('active');
+
+        const article = currentFilteredArticles.find(a => a.id === articleId) 
+                     || rssData.unreadEntries.find(a => a.id === articleId)
+                     || rssData.starredEntries.find(a => a.id === articleId)
+                     || rssData.readEntries.find(a => a.id === articleId);
+        if (!article) return;
+
+        const cleanHtml = DOMPurify.sanitize(article.content, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] });
+        const isStarred = rssData.starredEntries.some(a => a.id === articleId);
+
+        $('detailContent').innerHTML = `
+            <div class="article-detail-container">
+                <div class="detail-header">
+                    <h1>${article.title}</h1>
+                    <div class="detail-actions">
+                        <div class="action-btn ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${article.id}, this)" title="收藏">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <a class="action-btn" href="${article.url || article.link}" target="_blank" title="在原网页打开">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="detail-meta">${formatShortTime(article.published_at)}</div>
+                <div class="detail-content">${cleanHtml}</div>
+            </div>
+        `;
+        $('detailArea').scrollTop = 0;
+
+        // 标记已读逻辑
+        const unreadIndex = rssData.unreadEntries.findIndex(a => a.id === articleId);
+        if (unreadIndex !== -1) {
+            const readObj = rssData.unreadEntries.splice(unreadIndex, 1)[0];
+            rssData.readEntries.unshift(readObj); 
+            if (activeItem) activeItem.classList.add('is-read');
+            renderSidebar(); // 更新左侧未读数字
+            secureFetch(`/articles/${articleId}/read`, { method: 'PUT' }).catch(e => console.error("标记已读失败"));
+        }
+    }
+
+    async function toggleStar(articleId, btnElement) {
+        const isCurrentlyStarred = rssData.starredEntries.some(a => a.id === articleId);
+        const articleObj = currentFilteredArticles.find(a => a.id === articleId)
+                        || rssData.unreadEntries.find(a => a.id === articleId)
+                        || rssData.readEntries.find(a => a.id === articleId);
+
+        btnElement.classList.toggle('is-starred');
+        
+        if (isCurrentlyStarred) {
+            rssData.starredEntries = rssData.starredEntries.filter(a => a.id !== articleId);
+        } else {
+            if (articleObj) rssData.starredEntries.unshift(articleObj);
+        }
+
+        secureFetch(`/articles/${articleId}/star`, { method: 'PUT' }).catch(e => console.error("收藏操作失败"));
+    }
+
+    // ==========================================
+    // ⚙️ 7. 订阅源管理 (Feed Management)
+    // ==========================================
+    function openFeedModal(feedId = null) {
+        $('feedCategorySelect').innerHTML = rssData.categories.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+        $('newCategoryInput').value = '';
+        
+        if (feedId) {
+            const feed = rssData.feeds.find(f => f.id === feedId);
+            $('modalTitle').innerText = "编辑订阅源";
+            $('feedIdInput').value = feed.id;
+            $('feedUrlInput').value = feed.feed_url;
+            $('feedTitleInput').value = feed.title;
+            $('feedCategorySelect').value = feed.category_id;
+            $('feedRulesInput').value = feed.keep_rules || '';
+            $('btnDeleteFeed').style.display = 'block';
+        } else {
+            $('modalTitle').innerText = "添加订阅源";
+            $('feedIdInput').value = '';
+            $('feedUrlInput').value = '';
+            $('feedTitleInput').value = '';
+            $('feedRulesInput').value = ''; 
+            $('btnDeleteFeed').style.display = 'none';
+        }
+        $('feedModal').style.display = 'flex';
+    }
+
+    async function saveFeed() {
+        const id = $('feedIdInput').value;
+        let rawRules = $('feedRulesInput').value.trim();
+        let formattedRules = rawRules
+            .split(/[,，]+/)       // 按英文逗号或中文逗号切分开
+            .map(s => s.trim())    // 去掉每个词两边不小心多打的空格
+            .filter(Boolean)       // 过滤掉空的项（防止用户连打两个逗号）
+            .join('|');            // 完美拼接成 Apple|设计 发给后端
+
+        const payload = {
+            feed_url: $('feedUrlInput').value.trim(),
+            title: $('feedTitleInput').value.trim(),
+            category_id: parseInt($('feedCategorySelect').value),
+            keep_rules: formattedRules, // 👈 使用格式化后的规则
+            new_category_title: $('newCategoryInput').value.trim()
+        };
+
+        if (!payload.feed_url) return alert("RSS 地址不能为空");
+
+        const btn = $('btnSaveFeed');
+        btn.innerText = "保存中..."; btn.disabled = true;
+
+        try {
+            if (id) await secureFetch(`/feeds/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+            else await secureFetch(`/feeds`, { method: 'POST', body: JSON.stringify(payload) });
+            
+            $('feedModal').style.display = 'none';
+            await loadSidebarData(); 
+        } catch (e) {
+            alert("保存失败");
+        } finally {
+            btn.innerText = "保存"; btn.disabled = false;
+        }
+    }
+
+    async function deleteFeed() {
+        if (!confirm("确定要删除这个订阅源吗？相关文章也会被清除。")) return;
+        
+        const id = $('feedIdInput').value;
+        const btn = $('btnDeleteFeed');
+        btn.innerText = "删除中..."; btn.disabled = true;
+
+        try {
+            await secureFetch(`/feeds/${id}`, { method: 'DELETE' });
+            $('feedModal').style.display = 'none';
+            await loadSidebarData(); 
+            $('listArea').innerHTML = '<div style="padding: 30px; text-align: center; color: var(--text-info-color);">订阅源已删除</div>';
+            $('detailContent').innerHTML = '';
+        } catch (e) {
+            alert("删除失败");
+        } finally {
+            btn.innerText = "删除"; btn.disabled = false;
+        }
+    }
+
+    // ==========================================
+    // 🛠️ 8. 工具函数与初始化 (Utils & Init)
+    // ==========================================
+    function formatShortTime(isoString) {
+        const d = new Date(isoString);
+        if (isNaN(d.getTime())) return isoString;
+        return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function initApp() {
+        if (getAdminToken()) {
+            $('loginOverlay').style.display = 'none'; 
+            $('appPanel').style.display = 'flex'; 
+            loadSidebarData(); 
+        } else {
+            $('loginOverlay').style.display = 'flex'; 
+            $('appPanel').style.display = 'none';
+        }
+    }
+    // ==========================================
+    // ⌨️ 9. 极客专属键盘快捷键 (Keyboard Shortcuts)
+    // ==========================================
+    document.addEventListener('keydown', (e) => {
+        // 🚀 核心防御：如果焦点在输入框里（正在打字），绝对不要触发快捷键！
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+        const key = e.key.toLowerCase();
+
+        // [R] 键：一键丝滑刷新
+        if (key === 'r') {
+            handleRefresh();
+            return;
+        }
+
+        // 获取当前列表里的所有文章元素
+        const articles = Array.from(document.querySelectorAll('.article-item'));
+        if (articles.length === 0) return; // 列表为空就不往下走了
+
+        // 找到当前高亮（正在阅读）的文章是第几个
+        let currentIndex = articles.findIndex(el => el.classList.contains('active'));
+
+        // [J] 键 或 [下方向键]：下一篇
+        if (key === 'j' || key === 'arrowdown') {
+            e.preventDefault(); // 防止网页跟着乱滚
+            // 如果还没选中任何文章，就选中第一篇；否则往下挪一个
+            let nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, articles.length - 1);
+            articles[nextIndex].click(); // 模拟鼠标点击
+            articles[nextIndex].scrollIntoView({ block: 'nearest' }); // 🚀 列表自动滚动，时刻保持在视野内
+            return;
+        }
+
+        // [K] 键 或 [上方向键]：上一篇
+        if (key === 'k' || key === 'arrowup') {
+            e.preventDefault();
+            if (currentIndex <= 0) return; // 到顶了就不动了
+            let prevIndex = currentIndex - 1;
+            articles[prevIndex].click();
+            articles[prevIndex].scrollIntoView({ block: 'nearest' });
+            return;
+        }
+
+        // [S] 键：一键收藏 / 取消收藏
+        if (key === 's') {
+            // 直接精准狙击右侧详情页里的那个星号按钮，模拟点击！
+            const starBtn = document.querySelector('.detail-actions .action-btn[title="收藏"]');
+            if (starBtn) starBtn.click();
+            return;
+        }
+
+        // [V] 键：新窗口直达原网页 (View Original)
+        if (key === 'v') {
+            // 找到右侧详情页里那个带跳转链接的按钮
+            const linkBtn = document.querySelector('.detail-actions a[title="在原网页打开"]');
+            if (linkBtn && linkBtn.href) {
+                window.open(linkBtn.href, '_blank');
+            }
+            return;
+        }
+    });
+    // 启动应用
+    initApp();
+</script>
+{{ end }}
