@@ -4081,6 +4081,7 @@ textarea#cmt-content:focus::placeholder {
   padding: 10px 10px 10px 0;
   gap: 10px;
   display: grid;
+  align-content: start;
   flex-shrink: 0;
   background-color: var(--background-body-color);
   border-right: 1px solid var(--background-card-border-color);
