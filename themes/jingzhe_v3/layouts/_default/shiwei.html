@@ -203,7 +203,16 @@
         </div>`;
 
         rssData.categories.forEach(cat => {
-            html += `<div class="sidebar-category">${cat.title}</div>`;
+            // 🚀 核心 1：判断当前是否处于该分类的高亮状态，并为 span 增加 onClick 过滤事件
+            const isCatActive = (currentFilter.type === 'category' && currentFilter.id === cat.id);
+            html += `
+            <div class="sidebar-category ${isCatActive ? 'active' : ''}">
+                <span onclick="selectFilter('category', ${cat.id})">${cat.title}</span>
+                <div class="cat-edit-icon" onclick="renameCategory(${cat.id}, '${cat.title.replace(/'/g, "\\'")}')" title="重命名分类">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </div>
+            </div>`;
+            
             const catFeeds = rssData.feeds.filter(f => f.category_id === cat.id);
             
             catFeeds.forEach(feed => {
@@ -247,6 +256,13 @@
         else if (type === 'unread') currentFilteredArticles = rssData.unreadEntries;
         else if (type === 'starred') currentFilteredArticles = rssData.starredEntries;
         else if (type === 'history') currentFilteredArticles = rssData.readEntries;
+        else if (type === 'category') {
+            const catMap = new Map();
+            [...rssData.unreadEntries, ...rssData.readEntries, ...rssData.starredEntries].forEach(a => {
+                if (a.category_id === id && !catMap.has(a.id)) catMap.set(a.id, a);
+            });
+            currentFilteredArticles = Array.from(catMap.values()).sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+        }
         else if (type === 'feed') {
             const feedMap = new Map();
             [...rssData.unreadEntries, ...rssData.readEntries, ...rssData.starredEntries].forEach(a => {
@@ -482,6 +498,30 @@
             alert("删除失败");
         } finally {
             btn.innerText = "删除"; btn.disabled = false;
+        }
+    }
+
+    // 🚀 新增：重命名分类功能
+    async function renameCategory(categoryId, oldTitle) {
+        // 使用原生的 prompt 弹窗，最符合 PC 端极客高效率直改的习惯
+        const newTitle = prompt("重命名分类：", oldTitle);
+        
+        // 如果用户点击取消、没修改、或清空了输入框，直接取消操作
+        if (newTitle === null) return; 
+        const trimmedTitle = newTitle.trim();
+        if (trimmedTitle === "" || trimmedTitle === oldTitle) return;
+
+        try {
+            // 调用你 Workers 里早写好的 PUT 接口
+            await secureFetch(`/categories/${categoryId}`, { 
+                method: 'PUT', 
+                body: JSON.stringify({ title: trimmedTitle }) 
+            });
+            // 修改成功后，直接重新拉取数据刷新侧边栏
+            await loadSidebarData(); 
+        } catch (e) {
+            console.error("分类重命名失败", e);
+            alert("分类重命名失败，请检查网络或稍后重试");
         }
     }
 
