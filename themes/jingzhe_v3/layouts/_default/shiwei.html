@@ -90,6 +90,20 @@
     let currentFilter = { type: 'all', id: null }; 
     let currentFilteredArticles = [];
 
+    // 🚀 终极防盗链武器：全局图片失败自动降级代理 (0 成本方案)
+    document.addEventListener('error', function(e) {
+        if (e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+            const img = e.target;
+            // 如果图片裂开了，且没有被代理过，且不是 base64
+            if (!img.dataset.proxied && img.src && !img.src.startsWith('data:')) {
+                console.log('图片被防盗链拦截，启用公共代理挽救:', img.src);
+                img.dataset.proxied = 'true'; // 打上标记，防止无限死循环
+                // 强制转交全球免费开源代理 weserv (wsrv.nl)
+                img.src = 'https://wsrv.nl/?url=' + encodeURIComponent(img.src);
+            }
+        }
+    }, true); // 这里的 true 极其重要，表示在捕获阶段拦截错误
+
     // ==========================================
     // 🛡️ 2. 核心鉴权与网络请求 (Network & Auth)
     // ==========================================
@@ -252,7 +266,12 @@
         currentFilteredArticles.forEach(article => {
             const feedName = article.feed_title || '未知来源';
             const isRead = !rssData.unreadEntries.some(u => u.id === article.id);
-            const thumbHtml = article.thumbnail_url ? `<img src="${article.thumbnail_url}" class="article-thumbnail" loading="lazy">` : '';
+        // 🚀 缩略图：默认直连，破图了会自动交给上面的全局代理兜底
+            let thumbUrl = article.thumbnail_url;
+            if (thumbUrl && thumbUrl.startsWith('/')) {
+                try { thumbUrl = new URL(article.url || article.link).origin + thumbUrl; } catch(e) {}
+            }
+            const thumbHtml = thumbUrl ? `<img src="${thumbUrl}" class="article-thumbnail" loading="lazy" referrerpolicy="no-referrer">` : '';
 
             listHtml += `
             <div class="article-item ${isRead ? 'is-read' : ''}" id="item-${article.id}" onclick="selectArticle(${article.id})">
@@ -296,7 +315,45 @@
                      || rssData.readEntries.find(a => a.id === articleId);
         if (!article) return;
 
-        const cleanHtml = DOMPurify.sanitize(article.content, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] });
+        // 🚀 1. 允许所有的自定义属性（兼容各类博客框架）
+        let cleanHtml = DOMPurify.sanitize(article.content, { 
+            ADD_TAGS: ['iframe'], 
+            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+            ALLOW_DATA_ATTR: true 
+        });
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = cleanHtml;
+        
+        // 🚀 2. 提取当前文章的域名（用来修复相对路径）
+        let articleOrigin = '';
+        try { articleOrigin = new URL(article.url || article.link).origin; } catch(e) {}
+
+        tempDiv.querySelectorAll('img').forEach(img => {
+            img.removeAttribute('srcset');
+            img.removeAttribute('sizes');
+
+            let realSrc = img.getAttribute('data-src') || 
+                          img.getAttribute('data-original') || 
+                          img.getAttribute('src');
+
+            if (realSrc) {
+                // 修复相对路径
+                if (realSrc.startsWith('/') && articleOrigin) {
+                    realSrc = articleOrigin + realSrc;
+                }
+
+                // 🚀 恢复直连：直接使用原链接，并穿上第一层隐身衣
+                img.setAttribute('src', realSrc);
+                img.setAttribute('referrerpolicy', 'no-referrer');
+                
+                // 阅后即焚，打扫战场
+                img.removeAttribute('data-src'); 
+                img.removeAttribute('data-original');
+            }
+        });
+        cleanHtml = tempDiv.innerHTML;
+
         const isStarred = rssData.starredEntries.some(a => a.id === articleId);
 
         $('detailContent').innerHTML = `
