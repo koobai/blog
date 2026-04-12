@@ -174,10 +174,60 @@
   font-size: 13px;
   font-weight: bold;
   color: var(--text-info-color);
-  margin: 25px 0 10px 10px;
+  margin: 25px 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   @include dark {
     color: var(--text-info-dark-color);
+  }
+
+  // 🚀 新增：让分类文字变成可点击的按钮
+  span {
+    cursor: pointer;
+    transition: color 0.2s;
+    flex-grow: 1; /* 撑满左侧区域，更容易点到 */
+  }
+
+  // 🚀 新增：分类被选中时的专属高亮状态
+  // 🚀 替代方案：像单个订阅源一样，选中时整行出现浅灰色背景并带圆角
+  padding: 8px 10px; // 加上内边距
+  border-radius: 8px; // 加上圆角
+  margin-left: 0; // 对齐子元素
+  margin-right: 0;
+
+  &.active {
+    background-color: rgba(0, 0, 0, 0.05); // 浅灰底色
+    @include dark {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03); // 悬停时的反馈
+    @include dark {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+  }
+
+  .cat-edit-icon {
+    display: none;
+    cursor: pointer;
+    color: var(--text-info-color);
+    transition: color 0.2s;
+
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+
+    &:hover {
+      color: var(--text-content-color);
+    }
+  }
+
+  &:hover .cat-edit-icon {
+    display: block;
   }
 }
 

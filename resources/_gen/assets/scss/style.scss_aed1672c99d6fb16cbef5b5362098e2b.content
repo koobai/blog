@@ -4160,12 +4160,52 @@ textarea#cmt-content:focus::placeholder {
   font-size: 13px;
   font-weight: bold;
   color: var(--text-info-color);
-  margin: 25px 0 10px 10px; }
+  margin: 25px 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-left: 0;
+  margin-right: 0; }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .sidebar-category {
       color: var(--text-info-dark-color); } }
   html[data-theme="dark"] .sidebar-category {
     color: var(--text-info-dark-color); }
+  .sidebar-category span {
+    cursor: pointer;
+    transition: color 0.2s;
+    flex-grow: 1;
+    /* 撑满左侧区域，更容易点到 */ }
+  .sidebar-category.active {
+    background-color: rgba(0, 0, 0, 0.05); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .sidebar-category.active {
+        background-color: rgba(255, 255, 255, 0.05); } }
+    html[data-theme="dark"] .sidebar-category.active {
+      background-color: rgba(255, 255, 255, 0.05); }
+  .sidebar-category:hover {
+    background-color: rgba(0, 0, 0, 0.03); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .sidebar-category:hover {
+        background-color: rgba(255, 255, 255, 0.03); } }
+    html[data-theme="dark"] .sidebar-category:hover {
+      background-color: rgba(255, 255, 255, 0.03); }
+  .sidebar-category .cat-edit-icon {
+    display: none;
+    cursor: pointer;
+    color: var(--text-info-color);
+    transition: color 0.2s; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .sidebar-category .cat-edit-icon {
+        color: var(--text-info-dark-color); } }
+    html[data-theme="dark"] .sidebar-category .cat-edit-icon {
+      color: var(--text-info-dark-color); }
+    .sidebar-category .cat-edit-icon:hover {
+      color: var(--text-content-color); }
+  .sidebar-category:hover .cat-edit-icon {
+    display: block; }
 
 .sidebar-item {
   display: flex;
