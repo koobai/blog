@@ -90,19 +90,20 @@
     let currentFilter = { type: 'all', id: null }; 
     let currentFilteredArticles = [];
 
-    // 🚀 终极防盗链武器：全局图片失败自动降级代理 (0 成本方案)
+    // 🚀 终极防盗链武器：全局图片失败自动降级为“私有 CF 代理”兜底
     document.addEventListener('error', function(e) {
         if (e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
             const img = e.target;
             // 如果图片裂开了，且没有被代理过，且不是 base64
             if (!img.dataset.proxied && img.src && !img.src.startsWith('data:')) {
-                console.log('图片被防盗链拦截，启用公共代理挽救:', img.src);
-                img.dataset.proxied = 'true'; // 打上标记，防止无限死循环
-                // 强制转交全球免费开源代理 weserv (wsrv.nl)
-                img.src = 'https://wsrv.nl/?url=' + encodeURIComponent(img.src);
+                console.log('图片加载失败，启用私有 CF 代理挽救:', img.src);
+                img.dataset.proxied = 'true'; // 打上标记，防止死循环
+                
+                // 只有极少数破图才会走到这里，几乎不消耗额度，但能保证 100% 加载成功率
+                img.src = `${API_BASE}/proxy-image?url=${encodeURIComponent(img.src)}`;
             }
         }
-    }, true); // 这里的 true 极其重要，表示在捕获阶段拦截错误
+    }, true);
 
     // ==========================================
     // 🛡️ 2. 核心鉴权与网络请求 (Network & Auth)
