@@ -904,120 +904,92 @@ body:has(.menu-checkbox:checked) {
 .app-card-star:hover .app-bg-img img {
   transform: scale(1.05); }
 
-.movie-grid {
+.review-grid {
   display: grid;
-  gap: 15px 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  gap: 10px;
+  grid-template-columns: repeat(1, minmax(0, 1fr)); }
   @media (min-width: 768px) {
-    .movie-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.movie-card {
+    .review-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.review-card {
   display: flex;
   flex-direction: column;
-  gap: 8px; }
-  .movie-card.is-hidden {
+  gap: 8px;
+  padding: 18px;
+  border-radius: 16px;
+  background-color: var(--background-card-color);
+  border: 1px solid var(--background-card-border-color); }
+  .review-card.is-hidden {
     display: none !important; }
-
-.movie-poster-wrap {
-  display: block;
-  border-radius: 12px;
-  overflow: hidden;
-  aspect-ratio: 270 / 400;
-  position: relative;
-  will-change: transform, box-shadow;
-  background-color: var(--background-card-color); }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .movie-poster-wrap {
-      background-color: var(--background-card-dark-color); } }
-  html[data-theme="dark"] .movie-poster-wrap {
-    background-color: var(--background-card-dark-color); }
-  .movie-poster-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-  .movie-poster-wrap .movie-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--theme-light);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    z-index: 3;
-    color: #fff; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .movie-poster-wrap .movie-overlay {
-        background: var(--theme-dark);
-        color: rgba(255, 255, 255, 0.7); } }
-    html[data-theme="dark"] .movie-poster-wrap .movie-overlay {
-      background: var(--theme-dark);
-      color: rgba(255, 255, 255, 0.7); }
-  .movie-poster-wrap .movie-comment {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    text-align: justify;
-    text-align-last: left;
-    text-justify: inter-ideograph;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    flex-grow: 0;
-    overflow: hidden; }
-  .movie-poster-wrap .movie-date {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    text-align: left; }
-  @media (hover: hover) {
-    .movie-poster-wrap:hover img {
-      transform: scale(1.08); }
-    .movie-poster-wrap:hover .movie-overlay {
-      opacity: 1; } }
-.movie-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 0 4px;
-  min-width: 0; }
+    html:not([data-theme="light"]) .review-card {
+      background-color: var(--background-card-dark-color);
+      border-color: var(--background-card-border-dark-color); } }
+  html[data-theme="dark"] .review-card {
+    background-color: var(--background-card-dark-color);
+    border-color: var(--background-card-border-dark-color); }
 
-.movie-title {
+.rc-title a {
   font-size: 1rem;
-  color: var(--text-content-color);
-  line-height: 1.3;
-  text-align: center;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.8; }
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--movie-main-color, var(--text-content-color));
+  transition: opacity 0.2s, color 0.2s; }
+  .rc-title a:hover {
+    opacity: 0.6;
+    text-decoration: none; }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .movie-title {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .movie-title {
-    color: var(--text-content-dark-color); }
-  @media (min-width: 768px) {
-    .movie-title {
-      font-size: 0.85rem; } }
-.movie-stars {
+    html:not([data-theme="light"]) .rc-title a {
+      color: var(--movie-main-dark-color, var(--text-content-dark-color));
+      color: color-mix(in srgb, var(--movie-main-dark-color, var(--text-content-dark-color)) 65%, white); } }
+  html[data-theme="dark"] .rc-title a {
+    color: var(--movie-main-dark-color, var(--text-content-dark-color));
+    color: color-mix(in srgb, var(--movie-main-dark-color, var(--text-content-dark-color)) 65%, white); }
+
+.rc-stars {
   display: flex;
-  gap: 2px;
-  color: #d1b58a; }
+  gap: 3px; }
+  .rc-stars svg {
+    width: 13px;
+    height: 13px; }
+  .rc-stars .star-filled {
+    color: #fbc02d; }
+  .rc-stars .star-empty {
+    color: var(--text-info-color);
+    opacity: 0.3; }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .movie-stars {
-      color: #ba9f74; } }
-  html[data-theme="dark"] .movie-stars {
-    color: #ba9f74; }
-  .movie-stars svg {
-    width: 12px;
-    height: 12px; }
+    html:not([data-theme="light"]) .rc-stars .star-filled {
+      color: #d8b257; }
+    html:not([data-theme="light"]) .rc-stars .star-empty {
+      color: var(--text-info-dark-color);
+      opacity: 0.5; } }
+  html[data-theme="dark"] .rc-stars .star-filled {
+    color: #d8b257; }
+  html[data-theme="dark"] .rc-stars .star-empty {
+    color: var(--text-info-dark-color);
+    opacity: 0.5; }
+
+.rc-comment {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: justify;
+  word-break: break-word;
+  flex-grow: 1;
+  color: var(--text-content-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .rc-comment {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .rc-comment {
+    color: var(--text-content-dark-color); }
+
+.rc-time {
+  font-size: 0.85rem;
+  color: var(--text-info-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .rc-time {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .rc-time {
+    color: var(--text-info-dark-color); }
 
 .movie-btn-more {
   background: transparent;
@@ -1980,7 +1952,7 @@ body:has(.menu-checkbox:checked) {
 .runCard {
   background: var(--background-card-color);
   border-radius: 16px;
-  padding: 14px 25px;
+  padding: 14px 18px;
   border: 1px solid var(--background-card-border-color);
   display: flex;
   align-items: center;
