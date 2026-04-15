@@ -34,14 +34,14 @@
             "image": "https://img.koobai.com/apps/1773499539784_07c8.webp"
         },
         {
-            "info": "RSS，后端使用 Miniflux，前端使用这个，界面非常喜欢友好，现在电脑跟手机上每天必用。",
-            "link": "https://github.com/electh/nextflux",
+            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
+            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845",
             "tags": [
-                "Web",
-                "开源"
+                "iOS",
+                "付费"
             ],
-            "title": "Nextflux",
-            "image": "https://img.koobai.com/apps/1773541870728_7wv2.webp"
+            "title": "飓风相机",
+            "image": "https://img.koobai.com/apps/1773496718343_902q.webp"
         },
         {
             "image2": "https://img.koobai.com/apps/1773554907450_e7dk.webp",
@@ -84,16 +84,6 @@
             ],
             "title": "小宇宙",
             "image": "https://img.koobai.com/apps/1773504986289_gvtd.webp"
-        },
-        {
-            "info": "拍Log格式，其实我看中的是里面的滤镜，但买了之后还没真正用起来。",
-            "link": "https://apps.apple.com/cn/app/%E9%A3%93%E9%A3%8E%E7%9B%B8%E6%9C%BA/id6749835845",
-            "tags": [
-                "iOS",
-                "付费"
-            ],
-            "title": "飓风相机",
-            "image": "https://img.koobai.com/apps/1773496718343_902q.webp"
         },
         {
             "info": "上网必备软件，已使用多年。日常也作为旁路由跟 Ponte 使用。",
@@ -192,6 +182,16 @@
             "image": "https://img.koobai.com/apps/1773540822250_x4ll.webp"
         },
         {
+            "info": "剪贴板管理软件，能记录多次的复制内容，方便随时调取使用。免费开源。",
+            "link": "https://apps.apple.com/us/app/maccy/id1527619437?mt=12",
+            "tags": [
+                "macOS",
+                "开源"
+            ],
+            "title": "Maccy",
+            "image": "https://img.koobai.com/apps/1773540951351_1o3h.webp"
+        },
+        {
             "image2": "https://img.koobai.com/apps/1773554949342_7ato.webp",
             "title2": "米家",
             "info": "大大小小有不少小米生态链产品了，所以必须使用，方便日常控制。特别喜欢一句小爱同学操作灯光。",
@@ -230,16 +230,6 @@
             ],
             "title": "PhotoShop",
             "image": "https://img.koobai.com/apps/1773534129602_5jht.webp"
-        },
-        {
-            "info": "剪贴板管理软件，能记录多次的复制内容，方便随时调取使用。免费开源。",
-            "link": "https://apps.apple.com/us/app/maccy/id1527619437?mt=12",
-            "tags": [
-                "macOS",
-                "开源"
-            ],
-            "title": "Maccy",
-            "image": "https://img.koobai.com/apps/1773540951351_1o3h.webp"
         },
         {
             "info": "调整显示器亮度软件，适合外接显示器使用。鼠标在哪个显示屏，调整就是哪个显示屏的亮度。",
@@ -356,5 +346,5 @@
             "image": "https://img.koobai.com/apps/1773505197509_7sdo.webp"
         }
     ],
-    "update_time": "2026-03-15"
+    "update_time": "2026-04-15"
 }
