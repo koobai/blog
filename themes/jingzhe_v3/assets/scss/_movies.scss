@@ -1,135 +1,109 @@
-.movie-grid {
+.review-grid {
   display: grid;
-  gap: 15px 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 
   @include breakpoint("medium") {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.movie-card {
+.review-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 16px;
+  background-color: var(--background-card-color);
+  border: 1px solid var(--background-card-border-color);
+
   &.is-hidden {
     display: none !important;
   }
-  display: flex;
-  flex-direction: column;
-  gap: 8px; // 海报和下方文字的间距
-}
 
-.movie-poster-wrap {
-  display: block;
-  border-radius: 12px;
-  overflow: hidden;
-  aspect-ratio: 270 / 400;
-  position: relative;
-  will-change: transform, box-shadow;
-  // 骨架屏底色
-  background-color: var(--background-card-color);
   @include dark {
     background-color: var(--background-card-dark-color);
+    border-color: var(--background-card-border-dark-color);
   }
+}
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
+.rc-title {
+  a {
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--movie-main-color, var(--text-content-color));
+    transition:
+      opacity 0.2s,
+      color 0.2s;
 
-  // 悬浮遮罩层
-  .movie-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--theme-light);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    z-index: 3;
-    color: #fff;
-    @include dark {
-      background: var(--theme-dark);
-      color: rgba(255, 255, 255, 0.7);
-    }
-  }
-
-  .movie-comment {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    text-align: justify;
-    text-align-last: left;
-    text-justify: inter-ideograph;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    flex-grow: 0;
-    overflow: hidden;
-  }
-
-  .movie-date {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    text-align: left;
-  }
-
-  @media (hover: hover) {
     &:hover {
-      img {
-        transform: scale(1.08);
-      }
-      .movie-overlay {
-        opacity: 1;
-      }
+      opacity: 0.6;
+      text-decoration: none;
+    }
+
+    @include dark {
+      // 1. 基础回退：如果浏览器不支持 color-mix，使用原色
+      color: var(--movie-main-dark-color, var(--text-content-dark-color));
+
+      // 2. 核心提亮：混入 35% 的白色 (white)。
+      // 这样既保留了电影主题色的“灵魂”，又强行提高了对比度，绝对能看清。
+      color: color-mix(
+        in srgb,
+        var(--movie-main-dark-color, var(--text-content-dark-color)) 65%,
+        white
+      );
     }
   }
 }
 
-// ✨ 新增：海报底部的标题与星星区域 ✨
-.movie-bottom {
+.rc-stars {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 0 4px;
-  min-width: 0;
+  gap: 3px;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .star-filled {
+    color: #fbc02d;
+  }
+  .star-empty {
+    color: var(--text-info-color);
+    opacity: 0.3;
+  }
+
+  @include dark {
+    .star-filled {
+      color: #d8b257;
+    }
+    .star-empty {
+      color: var(--text-info-dark-color);
+      opacity: 0.5;
+    }
+  }
 }
 
-.movie-title {
+.rc-comment {
   font-size: 1rem;
+  line-height: 1.6;
+  text-align: justify;
+  word-break: break-word;
+  flex-grow: 1;
   color: var(--text-content-color);
-  line-height: 1.3;
-  text-align: center;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.8;
+
   @include dark {
     color: var(--text-content-dark-color);
   }
-  @include breakpoint("medium") {
-    font-size: 0.85rem;
-  }
 }
 
-.movie-stars {
-  display: flex;
-  gap: 2px;
-  color: #d1b58a;
+.rc-time {
+  font-size: 0.85rem;
+  color: var(--text-info-color);
+
   @include dark {
-    color: #ba9f74;
-  }
-  svg {
-    width: 12px;
-    height: 12px;
+    color: var(--text-info-dark-color);
   }
 }
 
@@ -146,6 +120,7 @@
   display: block;
   width: fit-content;
   transition: all 0.3s ease;
+
   &:hover {
     opacity: 0.6;
   }

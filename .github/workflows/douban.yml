@@ -20,29 +20,14 @@ jobs:
       with:
         python-version: '3.x'
         
-    - name: Install dependencies
-      run: pip install Pillow
-
-    # 1. 直接跑我们自己的无敌抓取脚本！
-    - name: Fetch Data and Posters
-      env:
-        TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+    # 1. 运行轻量化抓取脚本（已移除图片处理依赖和 TMDB 密钥）
+    - name: Fetch Movie Data
       run: python sync_movies.py
 
-    # 2. 上传海报：同步到 Cloudflare R2
-    - name: Sync Images to Cloudflare R2
-      if: env.HAS_NEW_POSTERS == 'true'
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: auto 
-      run: |
-        aws s3 sync ./temp_posters s3://img/movie/ --endpoint-url https://e6be3bc37da7aa1ba43255b3e8a7c1ac.r2.cloudflarestorage.com
-
-    # 3. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净
+    # 2. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净
     - name: Commit
       if: env.HAS_NEW_DATA == 'true'
       uses: EndBug/add-and-commit@v9
       with:
-        message: 'chore: sync new movies and posters'
+        message: 'chore: sync new movies data'
         add: './assets/movie.json'
