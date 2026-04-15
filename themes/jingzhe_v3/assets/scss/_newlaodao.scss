@@ -1,15 +1,6 @@
-.page-laodao-admin .site-footer-wrapper {
-  display: none;
-}
+.page-laodao-admin .site-footer-wrapper,
 .page-laodao-admin .floating-header {
   display: none;
-  @include breakpoint("medium") {
-    opacity: 0.2;
-    display: flex;
-    @include dark {
-      opacity: 0.4;
-    }
-  }
 }
 
 #loginOverlay {
