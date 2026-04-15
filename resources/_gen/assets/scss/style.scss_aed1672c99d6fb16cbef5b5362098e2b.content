@@ -40,7 +40,7 @@ ul {
   z-index: 99;
   width: 150px;
   height: 58px;
-  max-width: 640px;
+  max-width: 600px;
   padding: 5px 20px;
   display: flex;
   flex-direction: row;
@@ -54,7 +54,7 @@ ul {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 10px rgba(0, 0, 0, 0.06); }
   @media (min-width: 768px) {
     .floating-header {
-      width: 640px;
+      width: 600px;
       height: auto;
       padding: 20px 30px;
       bottom: 30px;
@@ -89,7 +89,7 @@ ul {
   .main-nav-menu .menu-list {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 42px;
     margin: 0;
     padding: 0;
     list-style: none; }
@@ -671,255 +671,97 @@ body:has(.menu-checkbox:checked) {
   overscroll-behavior: none;
   touch-action: none; }
 
-/* ==========================================
-   1. 页面基础与容器布局
-========================================== */
-.pagetitle {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  max-width: 640px;
-  margin: auto;
-  padding-bottom: 20px;
-  text-align: center;
-  color: var(--text-info-dark-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .pagetitle {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .pagetitle {
-    color: var(--text-content-dark-color); }
-
-.app-list {
+.ticket-layout {
   display: grid;
-  grid-gap: 10px; }
+  gap: 15px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  align-items: start; }
   @media (min-width: 768px) {
-    .app-list {
-      grid-template-columns: repeat(2, 1fr); } }
-/* ==========================================
-   2. 卡片主结构 (左、中、右 三栏严格锁定)
-========================================== */
-.app-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-gap: 15px;
-  align-items: center;
-  background: var(--background-card-color);
-  padding: 20px 15px;
+    .ticket-layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ticket-item {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-card-color);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--background-card-border-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-card {
-      background: var(--background-card-dark-color);
-      border-color: var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .app-card {
-    background: var(--background-card-dark-color);
-    border-color: var(--background-card-border-dark-color); }
-
-/* ==========================================
-   3. 卡片内部元素 (图标、标题、简介)
-========================================== */
-.app-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-  display: block; }
-
-.app-content {
-  display: flex;
-  flex-direction: column;
-  gap: 6px; }
-
-.app-title {
-  font-size: 1rem;
-  color: var(--text-content-color);
-  text-decoration: none;
-  width: fit-content; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-title {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .app-title {
-    color: var(--text-content-dark-color); }
-
-/* 简介悬浮特效 */
-.app-desc {
-  display: none;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 78px;
-  padding-right: 10px;
-  background: var(--background-card-color);
-  color: var(--text-content-color);
-  font-size: 1rem;
-  align-items: center;
-  z-index: 10; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-desc {
-      background: var(--background-card-dark-color);
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .app-desc {
-    background: var(--background-card-dark-color);
-    color: var(--text-content-dark-color); }
-
-@media (hover: hover) {
-  .app-card:not(.app-card-star):hover .app-desc {
-    display: flex; } }
-
-/* ==========================================
-   4. 标签系统 (彻底分离平台与状态)
-========================================== */
-.app-tags-left {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap; }
-
-.app-tags-right {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: flex-end; }
-
-.tag-platform {
-  font-size: 0.75rem;
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .tag-platform {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .tag-platform {
-    color: var(--text-info-dark-color); }
-
-.tag-status {
-  font-size: 0.85rem;
-  padding: 5px 12px;
-  border-radius: 99px;
-  border: 1px solid var(--text-info-color);
-  color: var(--text-info-color);
-  opacity: 0.7;
-  line-height: 1; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .tag-status {
-      border-color: var(--text-info-dark-color);
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .tag-status {
-    border-color: var(--text-info-dark-color);
-    color: var(--text-info-dark-color); }
-
-/* ==========================================
-   5. 大图推荐模式 (覆写默认样式)
-========================================== */
-.app-card-star {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 30px 25px;
-  aspect-ratio: 1;
-  border: none; }
-
-.app-card-star .app-content {
-  position: relative;
-  z-index: 5;
-  margin-top: 10px; }
-
-.app-card-star .app-tags-right {
-  position: relative;
-  z-index: 5;
-  margin-top: 10px;
-  justify-content: flex-start; }
-
-.app-card-star .app-title {
-  font-size: 1.6rem;
-  color: #ffffff !important;
-  margin-bottom: 8px;
-  opacity: 1; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-card-star .app-title {
-      opacity: 0.8; } }
-  html[data-theme="dark"] .app-card-star .app-title {
-    opacity: 0.8; }
-
-.app-card-star .app-desc {
-  display: block;
-  position: static;
-  background: transparent !important;
-  color: #fff !important;
-  opacity: 1;
-  padding: 0; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-card-star .app-desc {
-      opacity: 0.8; } }
-  html[data-theme="dark"] .app-card-star .app-desc {
-    opacity: 0.8; }
-
-.app-card-star .tag-platform,
-.app-card-star .tag-status {
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-  opacity: 0.8; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .app-card-star .tag-platform, html:not([data-theme="light"]) .app-card-star .tag-status {
-      opacity: 0.6; } }
-  html[data-theme="dark"] .app-card-star .tag-platform, html[data-theme="dark"] .app-card-star .tag-status {
-    opacity: 0.6; }
-
-.app-bg-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  border-radius: 16px;
-  overflow: hidden; }
-
-.app-bg-img::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, transparent 80%);
-  z-index: 2; }
-
-.app-bg-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease; }
-
-.app-card-star:hover .app-bg-img img {
-  transform: scale(1.05); }
-
-.review-grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(1, minmax(0, 1fr)); }
-  @media (min-width: 768px) {
-    .review-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.review-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 18px;
-  border-radius: 16px;
-  background-color: var(--background-card-color);
-  border: 1px solid var(--background-card-border-color); }
-  .review-card.is-hidden {
+  margin: 0; }
+  .ticket-item.is-hidden {
     display: none !important; }
   @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .review-card {
-      background-color: var(--background-card-dark-color);
-      border-color: var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .review-card {
-    background-color: var(--background-card-dark-color);
-    border-color: var(--background-card-border-dark-color); }
+    html:not([data-theme="light"]) .ticket-item {
+      background-color: var(--background-card-dark-color); } }
+  html[data-theme="dark"] .ticket-item {
+    background-color: var(--background-card-dark-color); }
+
+.ticket-body {
+  padding: 40px 40px 20px;
+  flex-grow: 1;
+  position: relative; }
+  .ticket-body::before {
+    content: "“";
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 100px;
+    font-family: "Georgia", serif;
+    color: var(--text-info-color);
+    opacity: 0.15;
+    pointer-events: none; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .ticket-body::before {
+        opacity: 0.08; } }
+    html[data-theme="dark"] .ticket-body::before {
+      opacity: 0.08; }
+
+.rc-comment {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-content-color);
+  text-align: justify; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .rc-comment {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .rc-comment {
+    color: var(--text-content-dark-color); }
+
+.ticket-stub {
+  padding: 20px 40px 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 2px dashed rgba(0, 0, 0, 0.06); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .ticket-stub {
+      border-top-color: rgba(255, 255, 255, 0.04); } }
+  html[data-theme="dark"] .ticket-stub {
+    border-top-color: rgba(255, 255, 255, 0.04); }
+  .ticket-stub::before, .ticket-stub::after {
+    content: "";
+    position: absolute;
+    top: -12px;
+    width: 24px;
+    height: 24px;
+    background-color: var(--background-body-color);
+    border-radius: 50%; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .ticket-stub::before, html:not([data-theme="light"]) .ticket-stub::after {
+        background-color: var(--background-dark-body-color); } }
+    html[data-theme="dark"] .ticket-stub::before, html[data-theme="dark"] .ticket-stub::after {
+      background-color: var(--background-dark-body-color); }
+  .ticket-stub::before {
+    left: -12px; }
+  .ticket-stub::after {
+    right: -12px; }
+
+.rc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; }
 
 .rc-title a {
   font-size: 1rem;
@@ -961,18 +803,11 @@ body:has(.menu-checkbox:checked) {
     color: var(--text-info-dark-color);
     opacity: 0.5; }
 
-.rc-comment {
-  font-size: 1rem;
-  line-height: 1.6;
-  text-align: justify;
-  word-break: break-word;
-  flex-grow: 1;
-  color: var(--text-content-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .rc-comment {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .rc-comment {
-    color: var(--text-content-dark-color); }
+.ticket-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px; }
 
 .rc-time {
   font-size: 0.85rem;
@@ -981,6 +816,18 @@ body:has(.menu-checkbox:checked) {
     html:not([data-theme="light"]) .rc-time {
       color: var(--text-info-dark-color); } }
   html[data-theme="dark"] .rc-time {
+    color: var(--text-info-dark-color); }
+
+.rc-barcode {
+  font-family: "GeistMono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2.4px;
+  color: var(--text-info-color);
+  opacity: 0.5; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .rc-barcode {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .rc-barcode {
     color: var(--text-info-dark-color); }
 
 .movie-btn-more {
@@ -1005,6 +852,21 @@ body:has(.menu-checkbox:checked) {
   html[data-theme="dark"] .movie-btn-more {
     color: var(--text-highlight-dark-color);
     border-color: var(--text-highlight-dark-color); }
+
+.pagetitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 640px;
+  margin: auto;
+  padding-bottom: 20px;
+  text-align: center;
+  color: var(--text-info-dark-color); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .pagetitle {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .pagetitle {
+    color: var(--text-content-dark-color); }
 
 .page-about .wrapper {
   padding: 0 20px; }
@@ -3230,248 +3092,6 @@ body:has(.menu-checkbox:checked) {
 .page-bowen-admin .tag-selector-dropdown {
   grid-template-columns: repeat(5, 1fr);
   max-width: 500px; }
-
-.admin-header-actions {
-  margin-bottom: 20px;
-  justify-content: center;
-  display: flex;
-  gap: 10px; }
-
-.admin-app-github,
-.admin-app-add {
-  background: transparent;
-  color: var(--text-highlight-color);
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-app-github, html:not([data-theme="light"]) .admin-app-add {
-      color: var(--text-highlight-dark-color); } }
-  html[data-theme="dark"] .admin-app-github, html[data-theme="dark"] .admin-app-add {
-    color: var(--text-highlight-dark-color); }
-  .admin-app-github:hover,
-  .admin-app-add:hover {
-    opacity: 0.8; }
-
-.admin-card-actions {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 20;
-  display: flex;
-  gap: 2px;
-  padding: 6px;
-  border-radius: 10px;
-  opacity: 0;
-  background: #ffffff;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #eeebe6; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-card-actions {
-      background: rgba(28, 28, 30, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.08); } }
-  html[data-theme="dark"] .admin-card-actions {
-    background: rgba(28, 28, 30, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08); }
-
-.app-card:hover .admin-card-actions {
-  opacity: 1; }
-
-.admin-btn-edit,
-.admin-btn-delete {
-  font-size: 0.85rem !important;
-  padding: 2px 6px !important; }
-  .admin-btn-edit:hover,
-  .admin-btn-delete:hover {
-    opacity: 0.8; }
-
-.admin-btn-delete {
-  color: var(--text-info-color) !important; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-btn-delete {
-      color: var(--text-info-dark-color) !important; } }
-  html[data-theme="dark"] .admin-btn-delete {
-    color: var(--text-info-dark-color) !important; }
-
-.admin-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(5px);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center; }
-
-.admin-modal {
-  border-radius: 16px;
-  width: 100%;
-  max-width: 480px;
-  padding: 20px;
-  max-height: 85vh;
-  overflow-y: auto;
-  gap: 10px;
-  display: grid;
-  background: var(--background-card-color);
-  border: 1px solid var(--background-card-border-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-modal {
-      background: var(--background-card-dark-color);
-      border: 1px solid var(--background-card-border-dark-color); } }
-  html[data-theme="dark"] .admin-modal {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color); }
-
-.admin-form-group {
-  display: flex;
-  flex-direction: column; }
-
-.admin-app-textarea {
-  min-height: 20px;
-  resize: none;
-  overflow-y: hidden;
-  padding: 16px 8px 16px 8px;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: var(--background-body-color);
-  border: transparent;
-  outline: none;
-  color: var(--text-content-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-app-textarea {
-      color: var(--text-content-dark-color);
-      background: var(--background-dark-body-color); } }
-  html[data-theme="dark"] .admin-app-textarea {
-    color: var(--text-content-dark-color);
-    background: var(--background-dark-body-color); }
-
-.admin-app-textarea::placeholder {
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-app-textarea::placeholder {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .admin-app-textarea::placeholder {
-    color: var(--text-info-dark-color); }
-
-.admin-icon-preview {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  object-fit: cover;
-  display: none;
-  margin-bottom: 10px; }
-
-.admin-input-wrap {
-  position: relative;
-  display: flex;
-  width: 100%; }
-
-.admin-input-wrap .admin-app-textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding-right: 90px !important; }
-
-.admin-input-btn {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0;
-  transition: color 0.2s ease;
-  color: var(--text-info-color); }
-  .admin-input-btn:hover {
-    opacity: 0.8; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-input-btn {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .admin-input-btn {
-    color: var(--text-info-dark-color); }
-
-.admin-popup-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px; }
-
-.admin-edit-popup {
-  display: flex;
-  align-items: center;
-  gap: 8px; }
-
-.admin-cancel,
-.admin-modify {
-  background: transparent;
-  color: var(--text-highlight-color);
-  border: none;
-  font-size: 1rem;
-  cursor: pointer; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-cancel, html:not([data-theme="light"]) .admin-modify {
-      color: var(--text-highlight-dark-color); } }
-  html[data-theme="dark"] .admin-cancel, html[data-theme="dark"] .admin-modify {
-    color: var(--text-highlight-dark-color); }
-  .admin-cancel:hover,
-  .admin-modify:hover {
-    opacity: 0.8; }
-
-.admin-cancel {
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-cancel {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .admin-cancel {
-    color: var(--text-info-dark-color); }
-
-.admin-app-img-big {
-  display: flex;
-  align-items: center;
-  gap: 6px; }
-
-.admin-app-img-big-a {
-  margin: 0;
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-  opacity: 0.5; }
-
-.admin-app-img-big-b {
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin: 0;
-  color: var(--text-info-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .admin-app-img-big-b {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .admin-app-img-big-b {
-    color: var(--text-info-dark-color); }
-
-.page-app-admin .app-card {
-  cursor: grab; }
-
-.page-app-admin .app-card:active {
-  cursor: grabbing; }
-
-.page-app-admin .admin-sortable-ghost {
-  opacity: 0.3;
-  background-color: var(--background-card-color);
-  border: 2px dashed var(--text-info-color);
-  transform: scale(0.95);
-  /* 稍微缩小一点显得更有层次感 */ }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-app-admin .admin-sortable-ghost {
-      background-color: var(--background-card-dark-color);
-      border: 2px dashed var(--text-info-dark-color); } }
-  html[data-theme="dark"] .page-app-admin .admin-sortable-ghost {
-    background-color: var(--background-card-dark-color);
-    border: 2px dashed var(--text-info-dark-color); }
 
 /* ==========================================================
    Hugo Chroma Highlight - One Dark (经典暗黑风)

@@ -1,21 +1,23 @@
-.review-grid {
+// 1. 极简布局中枢：原生 Grid + Gap
+.ticket-layout {
   display: grid;
-  gap: 10px;
+  gap: 15px;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-
+  align-items: start;
   @include breakpoint("medium") {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.review-card {
+// 2. 票根容器 (恢复最干净的状态)
+.ticket-item {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 18px;
-  border-radius: 16px;
   background-color: var(--background-card-color);
-  border: 1px solid var(--background-card-border-color);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
 
   &.is-hidden {
     display: none !important;
@@ -23,37 +25,105 @@
 
   @include dark {
     background-color: var(--background-card-dark-color);
-    border-color: var(--background-card-border-dark-color);
   }
 }
 
-.rc-title {
-  a {
-    font-size: 1rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--movie-main-color, var(--text-content-color));
-    transition:
-      opacity 0.2s,
-      color 0.2s;
+// 3. 语录区
+.ticket-body {
+  padding: 40px 40px 20px;
+  flex-grow: 1;
+  position: relative;
 
-    &:hover {
-      opacity: 0.6;
-      text-decoration: none;
-    }
-
+  &::before {
+    content: "“";
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 100px;
+    font-family: "Georgia", serif;
+    color: var(--text-info-color);
+    opacity: 0.15;
+    pointer-events: none;
     @include dark {
-      // 1. 基础回退：如果浏览器不支持 color-mix，使用原色
-      color: var(--movie-main-dark-color, var(--text-content-dark-color));
-
-      // 2. 核心提亮：混入 35% 的白色 (white)。
-      // 这样既保留了电影主题色的“灵魂”，又强行提高了对比度，绝对能看清。
-      color: color-mix(
-        in srgb,
-        var(--movie-main-dark-color, var(--text-content-dark-color)) 65%,
-        white
-      );
+      opacity: 0.08;
     }
+  }
+}
+
+.rc-comment {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-content-color);
+  text-align: justify;
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+
+// 4. 存根区与物理打孔
+.ticket-stub {
+  padding: 20px 40px 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 2px dashed rgba(0, 0, 0, 0.06);
+
+  @include dark {
+    border-top-color: rgba(255, 255, 255, 0.04);
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: -12px;
+    width: 24px;
+    height: 24px;
+    background-color: var(--background-body-color);
+    border-radius: 50%;
+    @include dark {
+      background-color: var(--background-dark-body-color);
+    }
+  }
+  &::before {
+    left: -12px;
+  }
+  &::after {
+    right: -12px;
+  }
+}
+
+// 5. 文字信息区
+.rc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rc-title a {
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--movie-main-color, var(--text-content-color));
+  transition:
+    opacity 0.2s,
+    color 0.2s;
+
+  &:hover {
+    opacity: 0.6;
+    text-decoration: none;
+  }
+
+  @include dark {
+    color: var(--movie-main-dark-color, var(--text-content-dark-color));
+    color: color-mix(
+      in srgb,
+      var(--movie-main-dark-color, var(--text-content-dark-color)) 65%,
+      white
+    );
   }
 }
 
@@ -65,7 +135,6 @@
     width: 13px;
     height: 13px;
   }
-
   .star-filled {
     color: #fbc02d;
   }
@@ -85,23 +154,27 @@
   }
 }
 
-.rc-comment {
-  font-size: 1rem;
-  line-height: 1.6;
-  text-align: justify;
-  word-break: break-word;
-  flex-grow: 1;
-  color: var(--text-content-color);
-
-  @include dark {
-    color: var(--text-content-dark-color);
-  }
+.ticket-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
 
 .rc-time {
   font-size: 0.85rem;
   color: var(--text-info-color);
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
+}
 
+.rc-barcode {
+  font-family: "GeistMono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2.4px;
+  color: var(--text-info-color);
+  opacity: 0.5;
   @include dark {
     color: var(--text-info-dark-color);
   }
