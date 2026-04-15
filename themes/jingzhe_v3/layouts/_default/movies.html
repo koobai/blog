@@ -16,60 +16,47 @@
 
 {{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
   
-<div class="review-grid">
-  {{ range $index, $movie := $movies }}
+<div class="ticket-layout">
+ {{ range $index, $movie := $movies }}
     {{ $rating := int (default 0 $movie.rating) }}
-    {{ $movieTime := "" }}
-    {{ if $movie.create_time }}
-      {{ $movieTime = time (printf "%s+08:00" $movie.create_time) }} 
-    {{ end }}
-
-    {{ $mainColor := "" }} 
-    {{ $mainDarkColor := "" }} 
+    {{ $movieTime := "" }}{{ if $movie.create_time }}{{ $movieTime = time (printf "%s+08:00" $movie.create_time) }}{{ end }}
+    
+    {{ $mainColor := "" }}{{ $mainDarkColor := "" }} 
     {{ with $movie.color_scheme }}
       {{ if .primary_color_light }}{{ $mainColor = printf "#%s" .primary_color_light }}{{ end }}
       {{ if .primary_color_dark }}{{ $mainDarkColor = printf "#%s" .primary_color_dark }}{{ end }}
     {{ end }}
     
-    <div class="review-card {{ if ge $index 32 }}is-hidden{{ end }}" style="--movie-main-color: {{ $mainColor | safeCSS }}; --movie-main-dark-color: {{ $mainDarkColor | safeCSS }};">
+    <div class="review-card ticket-item {{ if ge $index 16 }}is-hidden{{ end }}" 
+         style="--movie-main-color: {{ $mainColor | safeCSS }}; --movie-main-dark-color: {{ $mainDarkColor | safeCSS }};">
       
-      <div class="rc-title">
-        <a href="{{ $movie.link }}" target="_blank" rel="noopener noreferrer" title="{{ $movie.title }}">
-          {{ $movie.title }}
-        </a>
+      <div class="ticket-body">
+        <div class="rc-comment">{{ if $movie.comment }}{{ $movie.comment }}{{ else }}静静欣赏，沉浸其中...{{ end }}</div>
       </div>
 
-      <div class="rc-stars" aria-label="评分：{{ $rating }} 星">
-        {{ range seq 5 }}
-          {{ if le . $rating }}
-            <svg class="star-filled"><use href="#icon-star-filled"></use></svg>
-          {{ else }}
-            <svg class="star-empty"><use href="#icon-star-empty"></use></svg>
-          {{ end }}
-        {{ end }}
-      </div>
-
-      <div class="rc-comment">
-        {{ if $movie.comment }}{{ $movie.comment }}{{ else }}暂无评价~{{ end }}
-      </div>
-
-      <div class="rc-time">
-        {{ if $movieTime }}
-          <time datetime="{{ $movieTime.Format "2006-01-02" }}">
-            {{ if eq $movieTime.Year now.Year }}
-              {{ $movieTime.Format "01-02" }}
-            {{ else }}
-              {{ $movieTime.Format "2006-01-02" }}
+      <div class="ticket-stub">
+        <div class="rc-meta">
+          <div class="rc-title"><a href="{{ $movie.link }}" target="_blank">{{ $movie.title }}</a></div>
+          <div class="rc-stars">
+            {{ range seq 5 }}
+              <svg class="{{ if le . $rating }}star-filled{{ else }}star-empty{{ end }}"><use href="#icon-{{ if le . $rating }}star-filled{{ else }}star-empty{{ end }}"></use></svg>
             {{ end }}
-          </time>
-        {{ end }}
+          </div>
+        </div>
+        <div class="ticket-footer">
+          <div class="rc-time">
+            {{ if $movieTime }}
+              <time>{{ if eq $movieTime.Year now.Year }}{{ $movieTime.Format "01-02" }}{{ else }}{{ $movieTime.Format "2006-01-02" }}{{ end }}</time>
+            {{ end }}
+          </div>
+          <div class="rc-barcode">ID:{{ $movie.id }}</div>
+        </div>
       </div>
-
     </div>
   {{ end }}
 </div>
 
-{{ if gt (len $movies) 32 }}
+{{ if gt (len $movies) 16 }}
   <div id="btn-load-more" class="movie-btn-more">看更多...</div>
 {{ end }}
 

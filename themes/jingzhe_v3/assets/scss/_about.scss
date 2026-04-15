@@ -1,3 +1,18 @@
+.pagetitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 640px;
+  margin: auto;
+  padding-bottom: 20px;
+  text-align: center;
+  color: var(--text-info-dark-color);
+
+  @include dark {
+    color: var(--text-content-dark-color);
+  }
+}
+
 .page-about .wrapper {
   padding: 0 20px;
 }
