@@ -115,18 +115,6 @@
   }
 }
 
-// --- 独立链接区 ---
-.header-special-link a {
-  font-size: 1.1rem;
-  color: transparent !important;
-  text-decoration: none;
-
-  @include breakpoint("medium") {
-    font-size: 1.2rem;
-    margin-left: 20px;
-  }
-}
-
 // --- 右侧操作区 (头像、RSS、主题切换) ---
 .header-actions {
   display: flex;

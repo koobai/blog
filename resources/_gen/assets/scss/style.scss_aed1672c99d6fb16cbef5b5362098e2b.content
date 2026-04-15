@@ -126,14 +126,6 @@ ul {
       html[data-theme="dark"] .main-nav-menu .menu-item.is-active a {
         color: var(--text-highlight-dark-color); }
 
-.header-special-link a {
-  font-size: 1.1rem;
-  color: transparent !important;
-  text-decoration: none; }
-  @media (min-width: 768px) {
-    .header-special-link a {
-      font-size: 1.2rem;
-      margin-left: 20px; } }
 .header-actions {
   display: flex;
   align-items: center;
@@ -2793,21 +2785,10 @@ body:has(.menu-checkbox:checked) {
     color: #fff;
     background-color: var(--text-highlight-dark-color); }
 
-.page-laodao-admin .site-footer-wrapper {
-  display: none; }
-
+.page-laodao-admin .site-footer-wrapper,
 .page-laodao-admin .floating-header {
   display: none; }
-  @media (min-width: 768px) {
-    .page-laodao-admin .floating-header {
-      opacity: 0.2;
-      display: flex; } }
-  @media (min-width: 768px) and (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-laodao-admin .floating-header {
-      opacity: 0.4; } }
-  @media (min-width: 768px) {
-      html[data-theme="dark"] .page-laodao-admin .floating-header {
-        opacity: 0.4; } }
+
 #loginOverlay {
   position: fixed;
   top: 0;
@@ -3154,21 +3135,10 @@ body:has(.menu-checkbox:checked) {
   .draft-content-text:hover {
     opacity: 0.6; }
 
-.page-bowen-admin .site-footer-wrapper {
-  display: none; }
-
+.page-bowen-admin .site-footer-wrapper,
 .page-bowen-admin .floating-header {
   display: none; }
-  @media (min-width: 768px) {
-    .page-bowen-admin .floating-header {
-      opacity: 0.2;
-      display: flex; } }
-  @media (min-width: 768px) and (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .page-bowen-admin .floating-header {
-      opacity: 0.4; } }
-  @media (min-width: 768px) {
-      html[data-theme="dark"] .page-bowen-admin .floating-header {
-        opacity: 0.4; } }
+
 .page-bowen-admin .admin-immersive-wrapper {
   max-width: 800px;
   margin-bottom: 100px;
