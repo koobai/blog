@@ -1,5 +1,21 @@
 [
   {
+    "run_id": 18118120522,
+    "name": "傍晚行走",
+    "ai_title": "光影斑驳的徒步回响",
+    "ai_comment": "回归运动场，活力重新点燃！这次徒步表现可圈可点，配速稳步提升的同时，心率控制也颇有章法。相较于上次徒步，虽然距离稍有缩短，但整体节奏更加从容，身体逐渐适应了节奏变化。整体活跃度恢复得恰到好处，期待下一次的风景与表现！",
+    "type": "Walk",
+    "distance": 4.89,
+    "moving_time": "57:36",
+    "start_date_local": "2026-04-15T19:56:47",
+    "average_heartrate": 100,
+    "average_speed": 5.09,
+    "pace_num": "11'47''",
+    "pace_unit": "",
+    "total_elevation_gain": 46.2,
+    "summary_polyline": "yjvxDmd_}UVnABXAnAENGJULo@Ns@X}@P}@f@iBl@W?UKUa@WqAM_@gBwCeA{AS_@Qe@IaB[wAIq@JoCAWa@yAa@gCa@oACOBMNQdAo@FAH@TRPHZB`@InAo@`@[NUDO@KEUYiABQRQpBmAf@UVEf@?`@]d@q@nAw@dAk@bIuE|@a@dAs@|Aw@~FeDx@g@nAq@lBkAtDsB~BuA`@MH?LDVPp@r@lA~@lAzAjA~At@|At@tANf@P^f@d@TX~B|Dt@fAvDdGPf@?LCLKNYVcBdAg@`@{@h@sAn@iAr@WJWDiA`AsGpDu@n@kH|DKTWLMJc@v@aAp@q@\\qBt@sBhAiAh@{A`Aw@`@MDM?KCGKe@aAcDsGg@yAMOQEr@JAtBELQT"
+  },
+  {
     "run_id": 18022004273,
     "name": "午间骑行",
     "ai_title": "律动的脉搏",
