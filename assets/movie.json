@@ -1,5 +1,31 @@
 [
   {
+    "id": "36749573",
+    "type": "movie",
+    "title": "极限审判",
+    "year": "2026",
+    "rating": 3,
+    "comment": "前面还不错，紧张刺激～AI 终究会统治人类。可能有生之年还能见识到～",
+    "link": "https://movie.douban.com/subject/36749573/",
+    "create_time": "2026-04-19 12:04:06",
+    "color_scheme": {
+      "is_dark": true,
+      "primary_color_light": "204372",
+      "_base_color": [
+        0.595959595959596,
+        0.717391304347826,
+        0.1803921568627451
+      ],
+      "secondary_color": "f4f7f9",
+      "_avg_color": [
+        0.5798611111111112,
+        0.4485981308411215,
+        0.4196078431372549
+      ],
+      "primary_color_dark": "152c4c"
+    }
+  },
+  {
     "id": "26404869",
     "type": "movie",
     "title": "惊天魔盗团3",
