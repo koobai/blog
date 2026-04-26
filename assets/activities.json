@@ -1,5 +1,21 @@
 [
   {
+    "run_id": 18260002765,
+    "name": "午间骑行",
+    "ai_title": "踏破风阻的激昂",
+    "ai_comment": "你的心率与配速比表现得很协调，显示出强大的耐力基础。相比上次骑行，距离基本持平，配速略有下降，但心率有所控制，显示出你在节奏把握上的进步。保持这种高效率的输出，持续突破自我！",
+    "type": "Ride",
+    "distance": 15.94,
+    "moving_time": "41:44",
+    "start_date_local": "2026-04-26T11:18:39",
+    "average_heartrate": 124,
+    "average_speed": 22.92,
+    "pace_num": "22.92",
+    "pace_unit": "km/h",
+    "total_elevation_gain": 62.2,
+    "summary_polyline": "uavxDci_}UvDlIbAdBbErJ~@hCvCbHd@tA`@vAFX?TIROPcBrAaBzAq@d@w@`@gDlA]He@Fs@^g@Rg@JgBXqBj@qAf@uFdBy@Zu@b@eA`Ay@hAa@f@cDdDuAdBy@lAsCfDkB~AaBfBqClCyAjAmBrAqAfAAB@BGLENCf@@n@Jb@vBpFfDdJ`AnCVfA`CbGHX@XIVi@`@i@f@a@l@MXIXE\\GxBGx@Mv@Wr@gAfBoCvD]l@_@~@WxAIdA]bDS|C[vBYnC_@rBYbAEh@FdANx@PVVPZLXDlADXCd@Kn@]XIr@Kf@ChBBlAJxAFdBAlCOV@XDb@R~AhAp@VvFbAtCp@RH|@d@hEpCdCdBl@l@f@r@~@~AVj@tBfG^pBBj@CbAs@jIAf@Bh@Fj@Pv@\\r@t@x@Zb@Rj@Hl@VdCHvAFhGFhDAl@E\\IZMXQVaB`BgF~Ee@j@Q\\q@hBwAfF[x@q@z@aBdBuBbCi@r@[z@Kd@It@e@vGSzBOfAa@jBWx@w@hB}@`BqAjBo@t@_@Xa@TiAZq@JaBJqARoCh@uGtAi@Dk@C[G{Aa@]K]WyF_BuBw@UKs@m@mF_Gq@k@SOoB_AsEsDk@Y}Ac@WKOU[q@Ys@Uu@OWSQcFiCiCmAa@W]_@M[Mk@Ik@Em@w@aPm@iJm@kLIsBGsC@IFERClARxALhIl@nANf@DnA?zB]f@Ut@k@zCgDzCmD`CwCf@y@Xi@`@eAZmAx@wGBk@?}AO_F@iDFy@TeBh@uCt@sCf@qAt@yAhCoE`@}@h@kBTcANiA\\}FJe@LaAPeCJw@Ps@Na@d@y@pCaEj@oA\\aARs@Hk@PwCFk@XaALUPQxA{@NSJe@A[CKg@oAc@aAy@sBg@{AE[GwBBkDAyHD_DR}AZaBNs@JWNUjAoAb@k@v@yAh@{@lDiE`ByBvA{Ax@mAX[tAuAr@m@x@a@lFgBrAk@|FsAdBk@PCb@@lBgApCmAhBmAvAw@tAqAh@o@`@k@Zm@@OEOgCqEeCqFU[i@[KMKa@k@eA_@aA"
+  },
+  {
     "run_id": 18247692611,
     "name": "午后骑行",
     "ai_title": "燃烧生命的齿轮飞转",
