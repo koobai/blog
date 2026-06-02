@@ -1,5 +1,21 @@
 [
   {
+    "run_id": 18741842706,
+    "name": "傍晚骑行",
+    "ai_title": "热血沸腾的骑行狂潮",
+    "ai_comment": "你的心率和配速比上次骑行有了新的突破！整体活跃度依然高涨，展现出强大的运动韧性。夏季的骑行挑战不容小觑，你的表现堪称出色，继续保持高强度训练，期待你更多的精彩表现！",
+    "type": "Ride",
+    "distance": 16.49,
+    "moving_time": "47:45",
+    "start_date_local": "2026-06-01T20:32:59",
+    "average_heartrate": 110,
+    "average_speed": 20.73,
+    "pace_num": "20.73",
+    "pace_unit": "km/h",
+    "total_elevation_gain": 61.2,
+    "summary_polyline": "{_vxD{f_}Ul@rAz@pC?\\CHONqDvByBvAi@`@kAbAaAj@oAr@wAn@yC|AeR~JqDtBaO`IuD|BsCpAiC`Ay@`@MLEJCzANx@|DpKjArDr@lBb@xAn@~AzAjEnA`E\\t@z@fCdBtEdEtK\\`ANv@Pl@d@rAn@vAXx@HV@JEVEFu@l@i@l@MRYl@GVGp@GhBKdAKd@o@dBWh@c@n@uAhBkAbBYl@Kf@UhBI^MbDo@xHg@~Cu@tBa@t@ET@Hf@d@l@x@NLPH\\HjAL`@?VAnBm@b@In@Gb@AzBHdDBt@AdCOb@B^Ln@ZbC|A\\PvAV~@JjARx@PzAf@dAh@fAt@fFdEb@d@h@t@r@nAjBhFj@nBLp@Hx@BzAAj@OnAQzCCt@Dx@Lz@Vz@`@v@~@fAVh@F\\D`@RdDNjFRzFGbAMf@Ub@[\\_IfHi@z@Sf@y@~CeAhDSd@mA|AkE~Ei@~@Uh@O`A{@rMGd@Kb@o@fBaBlDWd@}ArB{@p@m@V}@PoALmB^wD~@cGtAg@Fe@?[CsA[cEkAcEsAm@Wm@]k@e@wEgF{@w@a@UaAc@{@c@gBaB_BmAa@SaB_@a@WWa@y@gCMUQSUOsGyCsAu@iAeBQmA]eEW_BIaAOuCSiD_@}Hg@gIWyFCy@BGLI\\A~ANlKr@nCXr@A`@AbAM^K\\Od@Yp@o@vBmC`B_CxBaCh@u@lAeB\\w@b@sANu@`@_CRaBH{AAaBS{CMaAAiABk@Hw@v@sE|@iDv@wBx@}AtAuBj@cAVg@Na@`@sBPoAZaDViEHcA^{CXwAVo@Zk@r@}@rBcCx@qARm@JOFWDi@?mDDg@Pq@L]NOx@m@ZQPONc@BYAOQq@Ui@aAuBu@oBSgAEy@I_LBaDFcCNwA`@yBNq@Vk@n@y@fAeA|@wBJQbBmBvAsApAuAfBwBdCgDp@y@hAo@|Aq@fEmAdAc@lAa@rBc@~Bq@l@UzBiA|Am@vBu@lAu@hA}@hAcAfBiBIg@Ok@aBaEgA{Cs@_BcAmB}@uB{@cCwAiDUc@i@s@o@c@UYk@mAqByEMSICG@"
+  },
+  {
     "run_id": 18729626320,
     "name": "傍晚骑行",
     "ai_title": "光影交织的疾驰",
