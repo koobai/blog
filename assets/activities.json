@@ -1,5 +1,37 @@
 [
   {
+    "run_id": 18769886686,
+    "name": "傍晚行走",
+    "ai_title": "踏地生风",
+    "ai_comment": "回归徒步状态，脚步节奏尚需调整。整体活跃度恢复不错，但与上次相比，配速有所放缓，心率表现较稳。交叉训练丰富了你的运动经历，继续保持节奏，稳步提升！",
+    "type": "Walk",
+    "distance": 2.78,
+    "moving_time": "37:30",
+    "start_date_local": "2026-06-03T20:36:29",
+    "average_heartrate": 90,
+    "average_speed": 4.45,
+    "pace_num": "13'28''",
+    "pace_unit": "",
+    "total_elevation_gain": 4.8,
+    "summary_polyline": "imvxD{l_}UC}BMqAMo@?_@KeABGHIvAk@`@WZa@FQ@OC[[_AyAaD{AuDSs@My@Yw@O[]_@IS{@iDo@gB]kB[kAMa@i@iAM_@m@iCa@cAm@uB}@wDeAeDCES?]RINEX@ZRfAd@zA`@bAb@tBp@rBHNLNDJ^bBjA|DLZl@v@DZD|@Db@l@pB`@bAf@|Bh@hA\\b@t@bBfDfINd@@PEHq@b@[^IVAVr@~HNd@\\V"
+  },
+  {
+    "run_id": 18778339860,
+    "name": "傍晚骑行",
+    "ai_title": "夏风轻吻骑行轨迹",
+    "ai_comment": "你的骑行状态相当不错！高心率表明你付出了较多努力，但配速相比上次略有下降，可能是夏日的炎热对你的节奏有所影响。整体而言，你的表现依然稳定，保持了良好的运动习惯。",
+    "type": "Ride",
+    "distance": 16.46,
+    "moving_time": "52:20",
+    "start_date_local": "2026-06-02T20:01:29",
+    "average_heartrate": 110,
+    "average_speed": 18.88,
+    "pace_num": "18.88",
+    "pace_unit": "km/h",
+    "total_elevation_gain": 71.2,
+    "summary_polyline": "_avxDai_}UBDL`@BZNTf@vAbAdCTd@f@n@lAbD`AfB`CrGjBtDt@rBt@`BPfA@PAPIPKLyAlAiApA_@X_Al@cA`@u@RiBx@o@Nk@^mBp@]HoBXuA\\aElBaBh@kBx@uBnA]XmErEkEbFsEvEiChDk@p@eC`CiDbCc@j@EX@^Fj@L^jBnElCfHtAzDTt@Lj@fAxChAfCFT?JERKP{@p@e@f@Wb@M^G^KrCEl@Ib@Qf@_@v@gAhBkB~BW`@m@|AQdAG~@Kz@kAjM[zB[tA[v@k@hAVhALHb@p@NJNHl@JzAA^Ef@IjA]zAU~C`@zBLfABzBIf@@f@R|AbAjB|@r@LhD^r@NtBn@xAr@t@`@fAv@h@RPJjAx@t@t@r@~@l@dAd@fAjBlG\\xBFz@@bAEhA]vE?h@B`@Jb@\\jAh@bAz@`AR`@DXXfEJtDNbEFpBEfASv@a@p@wApA_FbEo@jAg@rAgBdGWn@e@p@u@x@aDdD_AtAUd@Qf@Mz@m@xIE|@MjAOx@c@`Be@hAc@v@cCpDa@d@c@`@[Te@TcAR}ANcAPsCr@aBZ{EhASDu@BsAQeAYkGsBoCcA}@e@}@{@mD}DkAgAi@_@q@[{@g@_As@sAoAc@Yg@SeBg@]SS[kAwCQY_DeBuEaCa@YUYSe@QaAu@sHOuCWeCU}EGsBi@yIE}AOuBM{CFQFC\\?tAHhEb@lIn@`B?nASz@[b@[jAmAlHuIxAoB`A}An@eBXsAXeBPcCBaCG}BQuD?oA`BuIb@_Bp@cBr@uAhCoE^eAf@uBTeBPaBZwETkCZkCLm@`@aAtCwD`BoCVq@Ji@HgADqBLu@Pc@T[pA{@^o@@IBi@Ee@]_Ak@mAgAwCa@qAI_ACuGFqJFoALoAl@yCXi@zBcCT_@n@qAn@}@dGoHlBmBjBcCnAkATMdCiAxAc@`AWbBw@lBi@rDw@ZKXWPW\\u@RWLIzAi@lCiAr@a@j@c@fAkAbBcBNSRg@BMEYuA{CiA}Cq@aBo@uAuCaHq@iBUw@OYMm@i@OQIOOY_@eAkCuAqCIGGASL"
+  },
+  {
     "run_id": 18741842706,
     "name": "傍晚骑行",
     "ai_title": "热血沸腾的骑行狂潮",
