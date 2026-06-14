@@ -1,5 +1,31 @@
 [
   {
+    "id": "36877245",
+    "type": "movie",
+    "title": "火遮眼",
+    "year": "2026",
+    "rating": 5,
+    "comment": "哐哐哐打就对了，爽。另外看不得这种闺女受欺负的情节",
+    "link": "https://movie.douban.com/subject/36877245/",
+    "create_time": "2026-06-13 23:28:14",
+    "color_scheme": {
+      "_base_color": [
+        0.0,
+        0.009852216748768438,
+        0.796078431372549
+      ],
+      "_avg_color": [
+        0.0,
+        0.04761904761904746,
+        0.5764705882352941
+      ],
+      "primary_color_light": "a5a4a4",
+      "primary_color_dark": "7f7e7e",
+      "secondary_color": "f9f4f4",
+      "is_dark": true
+    }
+  },
+  {
     "id": "35010610",
     "type": "movie",
     "title": "挽救计划",
