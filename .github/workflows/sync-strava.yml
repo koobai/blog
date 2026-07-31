@@ -1,22 +1,21 @@
 name: Generate AI Insights
 
 on:
-  # 🚀 核心：增量触发机制！只有当你从本地 push 了 activities.json 的更新时，才会触发此工作流
+  # 🚀 核心改动：监听 push 事件。当你把本地生成的 activities.json 推送到 GitHub 时，自动触发此工作流
   push:
     paths:
-      - 'assets/activities.json' 
-  # 保留手动点击运行的按钮，以防万一需要手动修复
+      - 'assets/activities.json'
+  # 保留手动触发，方便你随时在网页端手动运行
   workflow_dispatch:
 
 jobs:
-  enrich-data:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          # 如果你有配置 PAT 最好用 PAT，如果没有，默认的 github.token 也能用于基础推送
-          token: ${{ secrets.PAT || github.token }} 
+          token: ${{ secrets.PAT }} 
           fetch-depth: 0
 
       - name: Set up Python
@@ -29,16 +28,17 @@ jobs:
 
       - name: Run AI Insights Script
         env:
-          # 🔑 从 GitHub Secrets 提取 Cloudflare 凭证喂给脚本
+          # 🗑️ 删除了所有 Strava 相关的 Secret，彻底与 Strava 解绑
+          # 💡 仅保留 Cloudflare AI 需要的凭证
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_AI_TOKEN: ${{ secrets.CF_AI_TOKEN }}
-        # 确保这里的文件名与你上传的 Python 脚本文件名一致
-        run: python generate_ai_insights.py 
+        # 确保这里运行的是你最新修改的、纯靠本地 JSON 触发 AI 的脚本
+        run: python fetch_strava.py 
 
       - name: Commit and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add assets/
-          # 检查是否有 AI 写入的新内容，如果有，则自动 commit 并 push 回仓库
+          # 💡 修改了 Commit 信息，使其更符合现在的作用
           git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-generate AI insights & monthly report" && git push)
