@@ -255,15 +255,28 @@ def update_monthly_insights(local_data):
         need_ai_update = True
         if current_month_key in insights:
             old_stats = insights[current_month_key].get('stats', {})
-            if old_stats.get('total_count') == current_stats['total_count'] and old_stats.get('total_distance') == current_stats['total_distance']:
+            old_comment = insights[current_month_key].get('ai_comment', '')
+            
+            # 💡 核心修复：检查数据是否变化 AND 文案是否有效
+            is_data_unchanged = (old_stats.get('total_count') == current_stats['total_count'] and old_stats.get('total_distance') == current_stats['total_distance'])
+            # 如果旧文案是以 "【" 开头的，说明它是本地解析出来的兜底模板，属于无效文案，必须重写
+            is_ai_comment_valid = bool(old_comment) and not old_comment.startswith("【")
+            
+            # 只有当数据一模一样，且现有的文案是真实的 AI 文案时，才跳过更新
+            if is_data_unchanged and is_ai_comment_valid:
                 need_ai_update = False 
 
         if need_ai_update:
-            print(f"📈 检测到 {current_month_key} 数据需要更新，正在呼叫 AI 教练撰写月报...")
+            print(f"📈 检测到 {current_month_key} 数据或文案需要更新，正在呼叫 AI 教练撰写月报...")
             latest_act_date = months_data[current_month_key][0].get('start_date_local', '')
             comment = generate_monthly_ai_report(current_month_key, current_stats, prev_stats, int(latest_act_date[8:10]) if len(latest_act_date) >= 10 else 15)
             if comment:
-                insights[current_month_key] = {"month_str": current_month_key, "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), "stats": current_stats, "ai_comment": comment}
+                insights[current_month_key] = {
+                    "month_str": current_month_key, 
+                    "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), 
+                    "stats": current_stats, 
+                    "ai_comment": comment
+                }
                 with open(MONTHLY_FILE, 'w', encoding='utf-8') as f:
                     json.dump(insights, f, ensure_ascii=False, indent=2)
                 time.sleep(2)
