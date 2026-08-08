@@ -1,5 +1,31 @@
 [
   {
+    "id": "35811064",
+    "type": "movie",
+    "title": "欢迎来龙餐馆",
+    "year": "2026",
+    "rating": 5,
+    "comment": "生活在没有战争的国家是得多幸福，感谢国家。沈腾可以搞笑，也可以很正～",
+    "link": "https://movie.douban.com/subject/35811064/",
+    "create_time": "2026-08-08 17:01:40",
+    "color_scheme": {
+      "_base_color": [
+        0.011904761904761937,
+        0.8433734939759037,
+        0.3254901960784314
+      ],
+      "_avg_color": [
+        0.037037037037037035,
+        0.7168141592920354,
+        0.44313725490196076
+      ],
+      "primary_color_light": "721811",
+      "primary_color_dark": "4c100b",
+      "secondary_color": "f9f5f4",
+      "is_dark": true
+    }
+  },
+  {
     "id": "36246195",
     "type": "movie",
     "title": "蜘蛛侠：崭新之日",
