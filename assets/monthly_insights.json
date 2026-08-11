@@ -1,199 +1,245 @@
 {
   "2026-03": {
     "month_str": "2026-03",
-    "last_update": "2026-08-10T03:34:07",
+    "last_update": "2026-08-11T08:54:27",
     "stats": {
       "total_count": 23,
       "total_distance": 225.52,
+      "total_duration_minutes": 1014,
       "sports_count": {
         "骑行": 8,
-        "徒步": 12,
+        "步行": 12,
         "跑步": 3
       },
-      "longest_ride_km": 0.0,
-      "longest_run_km": 0.0,
+      "sports_distance": {
+        "骑行": 175.22,
+        "步行": 39.01,
+        "跑步": 11.29
+      },
+      "longest_ride_km": 32.29,
+      "longest_run_km": 3.84,
       "hardest_session": {
         "date": "3号",
         "type": "跑步",
         "hr": 149,
-        "zone": "乳酸阈值 (Z4)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "晚上",
       "avg_hr": {
-        "骑行": "122bpm (稳态燃脂 (Z2))",
-        "徒步": "102bpm (舒缓有氧 (Z1))",
-        "跑步": "140bpm (有氧强化 (Z3))"
+        "骑行": "122bpm",
+        "步行": "102bpm",
+        "跑步": "140bpm"
       },
-      "max_streak_days": 14
+      "max_streak_days": 14,
+      "active_days_count": 22
     },
-    "ai_comment": "本月表现亮眼，总运动23次，里程225.52公里，远超上月数据。运动多样性较好，骑行、徒步、跑步均有涉及，心率区间合理，燃脂效果显著。最大短板在于高强度运动（Z3）占比仍较低，建议增加高强度训练以提升减脂效率。整体进步明显，但仍需加强运动强度和多样性，期待下月表现。"
+    "ai_comment": ""
   },
   "2026-02": {
     "month_str": "2026-02",
-    "last_update": "2026-08-10T03:34:11",
+    "last_update": "2026-08-11T08:54:25",
     "stats": {
       "total_count": 6,
       "total_distance": 45.18,
+      "total_duration_minutes": 226,
       "sports_count": {
         "骑行": 2,
-        "徒步": 4
+        "步行": 4
       },
-      "longest_ride_km": 0.0,
+      "sports_distance": {
+        "骑行": 32.98,
+        "步行": 12.2
+      },
+      "longest_ride_km": 16.6,
       "longest_run_km": 0.0,
       "hardest_session": {
         "date": "23号",
         "type": "骑行",
         "hr": 136,
-        "zone": "有氧强化 (Z3)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暗夜",
+      "favorite_time": "晚上",
       "avg_hr": {
-        "骑行": "130bpm (有氧强化 (Z3))",
-        "徒步": "113bpm (舒缓有氧 (Z1))"
+        "骑行": "130bpm",
+        "步行": "113bpm"
       },
-      "max_streak_days": 3
+      "max_streak_days": 3,
+      "active_days_count": 5
     },
-    "ai_comment": "本月总体表现为中等强度，运动频次尚可，但总体运动容量偏低。相较于上月（假设数据），总运动次数和里程有所下降。最大短板在于运动强度分布不均，骑行和徒步的心率区间差异较大，亘古有氧强化（Z3）占比过低。尤其在最长连续运动天数仅3天，运动习惯的持续性有待加强。建议下月增加运动频次和强度，优化训练分配，提升减脂效率。"
+    "ai_comment": ""
   },
   "2026-04": {
     "month_str": "2026-04",
-    "last_update": "2026-08-10T03:34:03",
+    "last_update": "2026-08-11T08:54:28",
     "stats": {
       "total_count": 9,
       "total_distance": 107.52,
+      "total_duration_minutes": 387,
       "sports_count": {
-        "徒步": 2,
+        "步行": 2,
         "骑行": 6,
         "跑步": 1
       },
-      "longest_ride_km": 0.0,
-      "longest_run_km": 0.0,
+      "sports_distance": {
+        "步行": 6.49,
+        "骑行": 96.99,
+        "跑步": 4.04
+      },
+      "longest_ride_km": 16.6,
+      "longest_run_km": 4.04,
       "hardest_session": {
         "date": "1号",
         "type": "跑步",
         "hr": 133,
-        "zone": "有氧强化 (Z3)"
+        "zone": "仅按平均心率排序"
       },
       "favorite_time": "上午",
       "avg_hr": {
-        "徒步": "98bpm (舒缓有氧 (Z1))",
-        "骑行": "122bpm (稳态燃脂 (Z2))",
-        "跑步": "133bpm (有氧强化 (Z3))"
+        "步行": "98bpm",
+        "骑行": "122bpm",
+        "跑步": "133bpm"
       },
-      "max_streak_days": 3
+      "max_streak_days": 3,
+      "active_days_count": 9
     },
-    "ai_comment": "本月运动表现较上月有明显下降，总运动次数减少14次，总里程减少118公里。运动频次和运动量不足是最大短板。需加强运动习惯培养，提高运动强度和持续性。尤其是在骑行和跑步方面，可以增加训练次数和时间，以达到更好的减脂效果。"
+    "ai_comment": ""
   },
   "2026-05": {
     "month_str": "2026-05",
-    "last_update": "2026-08-10T03:33:53",
+    "last_update": "2026-08-11T08:54:30",
     "stats": {
       "total_count": 12,
       "total_distance": 178.02,
+      "total_duration_minutes": 541,
       "sports_count": {
         "骑行": 11,
-        "徒步": 1
+        "步行": 1
       },
-      "longest_ride_km": 0.0,
+      "sports_distance": {
+        "骑行": 175.22,
+        "步行": 2.8
+      },
+      "longest_ride_km": 25.31,
       "longest_run_km": 0.0,
       "hardest_session": {
         "date": "13号",
         "type": "骑行",
         "hr": 127,
-        "zone": "稳态燃脂 (Z2)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "上午",
       "avg_hr": {
-        "骑行": "113bpm (舒缓有氧 (Z1))",
-        "徒步": "96bpm (舒缓有氧 (Z1))"
+        "骑行": "113bpm",
+        "步行": "96bpm"
       },
-      "max_streak_days": 6
+      "max_streak_days": 6,
+      "active_days_count": 11
     },
-    "ai_comment": "本月表现较上月有所提升，总运动次数和里程均有增加，展现出一定的训练热情。平均心率表明主要以舒缓有氧（Z1）为主，适合减脂阶段的初期或恢复期。然而，最长连续运动仅6天，运动习惯的持续性有待加强。最大短板在于运动多样性欠缺，过度依赖骑行（11次），缺乏其他运动形式的补充，容易导致训练瓶颈和肌肉失衡。建议增加徒步等其他有氧运动，并注重力量训练，以提升整体减脂效率和身体素质。"
+    "ai_comment": ""
   },
   "2026-06": {
     "month_str": "2026-06",
-    "last_update": "2026-08-10T03:33:48",
+    "last_update": "2026-08-11T08:54:32",
     "stats": {
       "total_count": 10,
       "total_distance": 146.11,
+      "total_duration_minutes": 472,
       "sports_count": {
         "骑行": 9,
-        "徒步": 1
+        "步行": 1
       },
-      "longest_ride_km": 0.0,
+      "sports_distance": {
+        "骑行": 143.33,
+        "步行": 2.78
+      },
+      "longest_ride_km": 16.64,
       "longest_run_km": 0.0,
       "hardest_session": {
         "date": "26号",
         "type": "骑行",
         "hr": 118,
-        "zone": "稳态燃脂 (Z2)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "晚上",
       "avg_hr": {
-        "骑行": "108bpm (舒缓有氧 (Z1))",
-        "徒步": "89bpm (舒缓有氧 (Z1))"
+        "骑行": "108bpm",
+        "步行": "89bpm"
       },
-      "max_streak_days": 3
+      "max_streak_days": 3,
+      "active_days_count": 10
     },
-    "ai_comment": "本月总体表现尚可，但与上月相比有所下滑。总运动次数减少2次，总里程下降31.91公里。骑行和徒步偏好依旧明显，但需注意运动频率和强度。平均心率处于舒缓有氧区间，表明有一定燃脂效果，但仍有提升空间。最大短板在于最长连续运动天数仅3天，缺乏持续性。建议增加训练密度和连续性，加强减脂效果。"
+    "ai_comment": ""
   },
   "2026-07": {
     "month_str": "2026-07",
-    "last_update": "2026-08-10T03:33:44",
+    "last_update": "2026-08-11T08:54:33",
     "stats": {
       "total_count": 18,
       "total_distance": 271.53,
+      "total_duration_minutes": 1179,
       "sports_count": {
         "骑行": 12,
-        "徒步": 3,
-        "运动": 3
+        "步行": 3,
+        "徒步": 3
       },
-      "longest_ride_km": 0.0,
+      "sports_distance": {
+        "骑行": 221.05,
+        "步行": 23.4,
+        "徒步": 27.08
+      },
+      "longest_ride_km": 23.7,
       "longest_run_km": 0.0,
       "hardest_session": {
         "date": "15号",
         "type": "骑行",
         "hr": 128,
-        "zone": "稳态燃脂 (Z2)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "傍晚",
       "avg_hr": {
-        "骑行": "116bpm (稳态燃脂 (Z2))",
-        "徒步": "110bpm (舒缓有氧 (Z1))",
-        "运动": "103bpm (舒缓有氧 (Z1))"
+        "骑行": "116bpm",
+        "步行": "110bpm",
+        "徒步": "103bpm"
       },
-      "max_streak_days": 4
+      "max_streak_days": 4,
+      "active_days_count": 17
     },
-    "ai_comment": "本月表现显著提升，运动次数和里程均较上月翻倍，展现出较强的运动习惯和耐力水平。平均心率数据显示，骑行强度处于稳态燃脂区间，徒步和运动则偏向舒缓有氧。然而，最长连续运动仅4天，运动持续性有待加强。最大短板在于运动的多样性和爆发力，亘古减脂期盼的 '高强度运动' 未有体现，需加入高强度间歇训练（HIIT）以突破瓶颈。"
+    "ai_comment": ""
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-10T14:59:20",
+    "last_update": "2026-08-11T08:54:35",
     "stats": {
       "total_count": 9,
       "total_distance": 148.11,
+      "total_duration_minutes": 462,
       "sports_count": {
-        "徒步": 2,
+        "步行": 2,
         "骑行": 6,
         "跑步": 1
       },
-      "longest_ride_km": 0.0,
-      "longest_run_km": 0.0,
+      "sports_distance": {
+        "步行": 5.15,
+        "骑行": 141.84,
+        "跑步": 1.12
+      },
+      "longest_ride_km": 31.64,
+      "longest_run_km": 1.12,
       "hardest_session": {
         "date": "2号",
         "type": "骑行",
         "hr": 122,
-        "zone": "稳态燃脂 (Z2)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "晚上",
       "avg_hr": {
-        "徒步": "96bpm (舒缓有氧 (Z1))",
-        "骑行": "115bpm (稳态燃脂 (Z2))",
-        "跑步": "117bpm (稳态燃脂 (Z2))"
+        "步行": "96bpm",
+        "骑行": "115bpm",
+        "跑步": "117bpm"
       },
-      "max_streak_days": 5
+      "max_streak_days": 5,
+      "active_days_count": 8
     },
-    "ai_comment": "八月开局表现尚可，累计运动9次，里程148.11公里，虽较上月同期减少，但单次运动质量较高，心率数据显示有效燃脂。需警惕热度减退，维持纪律，持续突破瓶颈期。平均心率表现理想，尤以骑行和跑步的稳态燃脂效果显著，继续保持高强度运动输出，方能确保减脂成效最大化。"
+    "ai_comment": ""
   }
 }
