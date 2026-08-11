@@ -1,5 +1,78 @@
 {
   "schema_version": 1,
-  "activities": {},
+  "activities": {
+    "21856424-3d76-4f2a-98cd-6fe50ee48097": {
+      "input_hash": "739edfb6f8e173ad03d4be43d4e149fb48d598899d886101645d880782820066",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:53"
+    },
+    "ab4b5d43-78ae-4a82-a081-b79bc8852ffa": {
+      "input_hash": "5884baa033b4b31bc2ed9a80798d919f73e77462c85c479b9d83cc491d5f87f3",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:54"
+    },
+    "c8768fc2-1243-4320-b9b6-13eabbf5dd62": {
+      "input_hash": "5d5f80480c2823dc32a2ff1b792c2d3da3ef89fc53763c600e23cfa65ba9575e",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:55"
+    },
+    "f3a3a2db-c39a-4231-b865-8d659d7b0824": {
+      "input_hash": "8af04de32a69de1e480d7f2f13651c3e13eded5f813ba5f7fd7a795f2c2a3850",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:55"
+    },
+    "6950e8cb-c964-44f5-8b5d-fb1095c8f5d4": {
+      "input_hash": "87f80796f3bfb2df11c292c26bfaa000c7b2e7f1e084c6f99e40f75de0a26680",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:56"
+    },
+    "b5e479bf-de1d-415d-8818-0f19686507b1": {
+      "input_hash": "a13d4de1c38a96f21ffb90ab0665d0a2b801e49ce422287c76571d95caacb896",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:57"
+    },
+    "9771c629-5f00-4b6f-b4ae-5dc1c32d9f98": {
+      "input_hash": "b112d014f2a13f3177b1c7dbee769e4e9045568bba42aa55a6226cbdb25498f9",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:58"
+    },
+    "4ed49756-cf19-4daf-ac44-bd249d7cf6bc": {
+      "input_hash": "4bb465f196e7fa27e2d5aa4dceb9dfb85a83159aed0d8a2cb6857ada670f12b4",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:58"
+    },
+    "5df410fc-a551-4d16-98c7-b346c7c4931b": {
+      "input_hash": "f81be708b75361c559d72f2beb05abdd645083ea4b98e92888d0734bea6b3631",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:59"
+    },
+    "c565fb16-902d-45d5-9955-88b0f370f84a": {
+      "input_hash": "0ca26065e662e9d6683a727098cf4ee48a41c1a8b5def3d4c237b5b15e989d4b",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:12:59"
+    },
+    "d112553e-6c6a-48c2-af5a-3882aa749796": {
+      "input_hash": "aae09a21366799886a2b23c471ad5d73596a1e7f531fe0ca0e9c1cf3eece2402",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:13:00"
+    },
+    "c9d32994-4f40-4bff-bcb8-72d8dfbddc19": {
+      "input_hash": "eb72ad9258a5f81c0bb3e527a2617bee4cc2eb34fd32e4ca97c0eccd06c919f9",
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "prompt_version": "activity-copy-v3",
+      "updated_at": "2026-08-11T09:13:01"
+    }
+  },
   "monthly": {}
 }
