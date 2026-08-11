@@ -22,11 +22,11 @@ CF_AI_TOKEN = os.getenv("CF_AI_TOKEN")
 CF_AI_MODEL = os.getenv("CF_AI_MODEL", "@cf/qwen/qwen3-30b-a3b-fp8")
 
 METADATA_SCHEMA_VERSION = 1
-ACTIVITY_PROMPT_VERSION = "activity-copy-v2"
-MONTHLY_PROMPT_VERSION = "monthly-copy-v2"
+ACTIVITY_PROMPT_VERSION = "activity-copy-v3"
+MONTHLY_PROMPT_VERSION = "monthly-copy-v3"
 REQUEST_TIMEOUT_SECONDS = 45
 NETWORK_RETRIES = 3
-QUALITY_RETRIES = 2
+QUALITY_RETRIES = 3
 REQUEST_INTERVAL_SECONDS = float(os.getenv("CF_AI_REQUEST_INTERVAL", "0.25"))
 
 ACTIVITY_TYPE_CN = {
@@ -115,8 +115,18 @@ STYLE_HINTS = (
 ACTIVITY_SCHEMA = {
     "type": "object",
     "properties": {
-        "title": {"type": "string"},
-        "comment": {"type": "string"},
+        "title": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 6,
+            "description": "4至6个纯中文字符，不含标点、数字和空格",
+        },
+        "comment": {
+            "type": "string",
+            "minLength": 18,
+            "maxLength": 60,
+            "description": "自然克制的一到两句中文短评",
+        },
     },
     "required": ["title", "comment"],
     "additionalProperties": False,
@@ -124,7 +134,14 @@ ACTIVITY_SCHEMA = {
 
 MONTHLY_SCHEMA = {
     "type": "object",
-    "properties": {"comment": {"type": "string"}},
+    "properties": {
+        "comment": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 90,
+            "description": "自然克制的中文月记",
+        }
+    },
     "required": ["comment"],
     "additionalProperties": False,
 }
@@ -486,16 +503,16 @@ def validate_activity_copy(title, comment, activity_type, used_titles):
     if any(word in title for word in TITLE_BANNED_WORDS):
         errors.append("标题包含陈词滥调")
 
-    if not 45 <= len(comment) <= 72:
-        errors.append(f"评论必须为 45 至 72 个字符，当前为 {len(comment)}")
+    if not 18 <= len(comment) <= 60:
+        errors.append(f"评论必须为 18 至 60 个字符，当前为 {len(comment)}")
     if comment.count("！") > 1:
         errors.append("评论最多使用一个感叹号")
     if any(phrase in comment for phrase in COMMENT_BANNED_PHRASES):
         errors.append("评论包含常见 AI 套话")
     if any(word in comment for word in UNSUPPORTED_SCENE_WORDS):
         errors.append("评论虚构了未提供的天气或景色")
-    if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 1:
-        errors.append("评论最多保留一个具体数字")
+    if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 2:
+        errors.append("评论最多保留两个具体数字")
 
     mismatch_words = {
         "Ride": ("跑步", "脚步", "步伐", "徒步"),
@@ -513,7 +530,12 @@ def validate_activity_copy(title, comment, activity_type, used_titles):
     return title, comment
 
 
-def activity_prompt(facts, recent_titles, previous_errors=None):
+def activity_prompt(
+    facts,
+    recent_titles,
+    previous_errors=None,
+    previous_output=None,
+):
     prompt = f"""
 请根据下面的事实，为我的个人运动记录写标题和短评。
 
@@ -525,28 +547,33 @@ def activity_prompt(facts, recent_titles, previous_errors=None):
 
 硬性要求：
 1. title 只能是 4 至 6 个中文字符，不要标点、数字和空格。
-2. comment 为 45 至 72 个中文字符，像熟悉我的朋友写的一段私人记录。
-3. 只说一个最值得注意的事实；最多使用一个具体数字，不要写成数据播报。
+2. comment 目标为 24 至 50 个中文字符，写成自然的一到两句，不要为了凑字数说空话。
+3. 只说一个最值得注意的事实；通常不用数字，确有比较价值时最多使用两个。
 4. 只使用给出的事实。没有天气、路线风景和身体感受数据时，不得自行想象。
 5. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
 6. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
 7. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手。
 
 理想语气示例：
-- 标题“稳稳骑完”，短评只说今晚骑得更松或更紧，不上价值。
-- 标题“慢走一圈”，短评可以承认这只是一次普通完成。
-- 标题“久违开跑”，短评可以提到间隔较久，但不要把复出写成史诗。
+- 标题“稳稳骑完”，短评“今晚速度变化不大，心率比上次收得住，整体更像一次轻松完成。”
+- 标题“慢走一圈”，短评“没有特别突出的变化，就是按自己的节奏走完，普通但真实。”
+- 标题“久违开跑”，可以提到间隔较久，但不要把复出写成史诗。
 
 只返回符合 schema 的 JSON，不要解释。使用非思考模式。/no_think
 """.strip()
     if previous_errors:
-        prompt += f"\n\n上一次输出未通过校验：{previous_errors}。请完整重写。"
+        prompt += (
+            f"\n\n上一次输出：{json.dumps(previous_output, ensure_ascii=False)}"
+            f"\n未通过原因：{previous_errors}。保留自然语气，针对原因改写；"
+            "如果太短，只补充一个来自事实的观察，不要添加套话。"
+        )
     return prompt
 
 
 def generate_activity_copy(item, facts, recent_titles):
     used_titles = set(recent_titles)
     previous_errors = None
+    previous_output = None
 
     for _ in range(QUALITY_RETRIES):
         result = call_cloudflare(
@@ -564,11 +591,12 @@ def generate_activity_copy(item, facts, recent_titles):
                         facts,
                         recent_titles,
                         previous_errors,
+                        previous_output,
                     ),
                 },
             ],
             schema=ACTIVITY_SCHEMA,
-            temperature=0.65,
+            temperature=0.5 if previous_errors else 0.65,
             max_tokens=220,
         )
 
@@ -581,8 +609,15 @@ def generate_activity_copy(item, facts, recent_titles):
             )
         except CopyValidationError as error:
             previous_errors = str(error)
+            previous_output = {
+                "title": normalize_text(result.get("title")),
+                "comment": normalize_text(result.get("comment")),
+            }
 
-    raise CopyValidationError(previous_errors or "活动文案未通过质量检查")
+    detail = previous_errors or "活动文案未通过质量检查"
+    if previous_output:
+        detail += f"；最后输出：{json.dumps(previous_output, ensure_ascii=False)}"
+    raise CopyValidationError(detail)
 
 
 def duration_seconds(value):
@@ -720,9 +755,9 @@ def build_monthly_inputs(activities):
 
 def validate_monthly_comment(value):
     comment = normalize_text(value)
-    if not 60 <= len(comment) <= 110:
+    if not 36 <= len(comment) <= 90:
         raise CopyValidationError(
-            f"月报评论必须为 60 至 110 个字符，当前为 {len(comment)}"
+            f"月报评论必须为 36 至 90 个字符，当前为 {len(comment)}"
         )
     if any(phrase in comment for phrase in COMMENT_BANNED_PHRASES):
         raise CopyValidationError("月报包含常见 AI 套话")
@@ -745,6 +780,7 @@ def generate_monthly_comment(month_key, stats, previous_stats):
         **comparison,
     }
     previous_errors = None
+    previous_output = None
 
     for _ in range(QUALITY_RETRIES):
         prompt = f"""
@@ -753,7 +789,7 @@ def generate_monthly_comment(month_key, stats, previous_stats):
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
 要求：
-1. 60 至 110 个中文字符，语气平实、具体，最多谈两个重点。
+1. 目标为 45 至 80 个中文字符，写成两到三句，语气平实、具体，最多谈两个重点。
 2. 有上月数据才允许环比；没有上月数据时必须只谈本月。
 3. 不虚构训练目标，不给 HIIT、减脂或医疗建议。
 4. 不把平均心率直接解释为燃脂区间或训练水平。
@@ -762,7 +798,11 @@ def generate_monthly_comment(month_key, stats, previous_stats):
 7. 只返回符合 schema 的 JSON。使用非思考模式。/no_think
 """.strip()
         if previous_errors:
-            prompt += f"\n\n上一次未通过校验：{previous_errors}。请完整重写。"
+            prompt += (
+                f"\n\n上一次输出：{json.dumps(previous_output, ensure_ascii=False)}"
+                f"\n未通过原因：{previous_errors}。针对原因改写；如果太短，"
+                "只补充一个已有统计里的观察，不要添加套话。"
+            )
 
         result = call_cloudflare(
             messages=[
@@ -773,15 +813,19 @@ def generate_monthly_comment(month_key, stats, previous_stats):
                 {"role": "user", "content": prompt},
             ],
             schema=MONTHLY_SCHEMA,
-            temperature=0.6,
+            temperature=0.5 if previous_errors else 0.6,
             max_tokens=260,
         )
         try:
             return validate_monthly_comment(result.get("comment"))
         except CopyValidationError as error:
             previous_errors = str(error)
+            previous_output = normalize_text(result.get("comment"))
 
-    raise CopyValidationError(previous_errors or "月报未通过质量检查")
+    detail = previous_errors or "月报未通过质量检查"
+    if previous_output:
+        detail += f"；最后输出：{previous_output}"
+    raise CopyValidationError(detail)
 
 
 def update_monthly_insights(activities, monthly_path, metadata_path, metadata):
@@ -832,13 +876,16 @@ def update_monthly_insights(activities, monthly_path, metadata_path, metadata):
                     "month_str": month_key,
                     "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
                     "stats": stats,
-                    "ai_comment": "",
+                    "ai_comment": old_comment,
                 }
                 metadata["monthly"].pop(month_key, None)
                 write_json_atomic(monthly_path, existing)
                 write_json_atomic(metadata_path, metadata)
             failures.append(f"{month_key}: {error}")
             print(f"⚠️ {month_key} 月记生成失败: {error}")
+            if isinstance(error, AIRequestError):
+                print("⏸️ AI 服务当前不可用，停止后续月记请求")
+                break
 
     return updated, failures
 
@@ -914,6 +961,7 @@ def run(args):
 
     activity_failures = []
     generated = 0
+    ai_unavailable = False
 
     valid_source_ids = {item["source_id"] for item in activities}
     metadata["activities"] = {
@@ -956,13 +1004,19 @@ def run(args):
             write_json_atomic(activities_path, activities)
             write_json_atomic(metadata_path, metadata)
             print(f"✅ {time_text}：{title}")
-        except (AIRequestError, CopyValidationError) as error:
+        except AIRequestError as error:
             activity_failures.append(f"{time_text}: {error}")
             print(f"⚠️ {time_text} 生成失败: {error}")
+            print("⏸️ AI 服务当前不可用，停止后续请求，避免重复消耗时间和额度")
+            ai_unavailable = True
+            break
+        except CopyValidationError as error:
+            activity_failures.append(f"{time_text}: {error}")
+            print(f"⚠️ {time_text} 文案未通过质量检查: {error}")
 
     monthly_updated = 0
     monthly_failures = []
-    if not args.skip_monthly:
+    if not args.skip_monthly and not ai_unavailable:
         monthly_updated, monthly_failures = update_monthly_insights(
             activities,
             monthly_path,
@@ -977,6 +1031,10 @@ def run(args):
     )
     for failure in all_failures:
         print(f"   - {failure}")
+    if all_failures and os.getenv("GITHUB_ACTIONS") == "true":
+        annotation = all_failures[0].replace("%", "%25").replace("\r", "%0D")
+        annotation = annotation.replace("\n", "%0A")
+        print(f"::error title=Activity insights failed::{annotation}")
     return 2 if all_failures else 0
 
 
