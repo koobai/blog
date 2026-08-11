@@ -1,7 +1,7 @@
 {
   "2026-03": {
     "month_str": "2026-03",
-    "last_update": "2026-08-11T08:54:27",
+    "last_update": "2026-08-11T09:30:54",
     "stats": {
       "total_count": 23,
       "total_distance": 225.52,
@@ -33,11 +33,11 @@
       "max_streak_days": 14,
       "active_days_count": 22
     },
-    "ai_comment": ""
+    "ai_comment": "本月骑行次数增加至8次，比上月多6次。连续14天运动后，有1天休息。'}"
   },
   "2026-02": {
     "month_str": "2026-02",
-    "last_update": "2026-08-11T08:54:25",
+    "last_update": "2026-08-11T09:30:53",
     "stats": {
       "total_count": 6,
       "total_distance": 45.18,
@@ -66,11 +66,11 @@
       "max_streak_days": 3,
       "active_days_count": 5
     },
-    "ai_comment": ""
+    "ai_comment": "二月共运动六次，骑行两次，步行四次，总距离四十五公里多。最长骑行十六公里，平均心率骑行时一百三十。"
   },
   "2026-04": {
     "month_str": "2026-04",
-    "last_update": "2026-08-11T08:54:28",
+    "last_update": "2026-08-11T09:31:02",
     "stats": {
       "total_count": 9,
       "total_distance": 107.52,
@@ -102,11 +102,11 @@
       "max_streak_days": 3,
       "active_days_count": 9
     },
-    "ai_comment": ""
+    "ai_comment": "四月共运动九次，骑行六次占主导。相比三月骑行次数减少，但单次最长骑行距离增加至十六公里。"
   },
   "2026-05": {
     "month_str": "2026-05",
-    "last_update": "2026-08-11T08:54:30",
+    "last_update": "2026-08-11T09:31:03",
     "stats": {
       "total_count": 12,
       "total_distance": 178.02,
@@ -135,11 +135,11 @@
       "max_streak_days": 6,
       "active_days_count": 11
     },
-    "ai_comment": ""
+    "ai_comment": "五月骑行11次共175公里，最长单次25公里。相比四月骑行次数和距离均有增加，但未出现跑步记录。"
   },
   "2026-06": {
     "month_str": "2026-06",
-    "last_update": "2026-08-11T08:54:32",
+    "last_update": "2026-08-11T09:31:04",
     "stats": {
       "total_count": 10,
       "total_distance": 146.11,
@@ -168,11 +168,11 @@
       "max_streak_days": 3,
       "active_days_count": 10
     },
-    "ai_comment": ""
+    "ai_comment": "本月骑行9次，步行1次，总距离146公里。相比上月骑行次数减少，但最长单次骑行16公里。"
   },
   "2026-07": {
     "month_str": "2026-07",
-    "last_update": "2026-08-11T08:54:33",
+    "last_update": "2026-08-11T09:31:05",
     "stats": {
       "total_count": 18,
       "total_distance": 271.53,
@@ -204,11 +204,11 @@
       "max_streak_days": 4,
       "active_days_count": 17
     },
-    "ai_comment": ""
+    "ai_comment": "七月骑行次数比六月多五次，骑行总距离增加近一倍。连续四天运动后出现间歇，傍晚时段仍是最常选择的运动时间。"
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-11T08:54:35",
+    "last_update": "2026-08-11T09:31:06",
     "stats": {
       "total_count": 9,
       "total_distance": 148.11,
@@ -240,6 +240,6 @@
       "max_streak_days": 5,
       "active_days_count": 8
     },
-    "ai_comment": ""
+    "ai_comment": "本月骑行6次，总距离141.84公里，最长单次31.64公里。上月骑行12次，总距离221.05公里。"
   }
 }
