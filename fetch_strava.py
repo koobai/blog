@@ -2,6 +2,7 @@ import json
 import os
 import time
 import random
+import hashlib
 import requests
 from datetime import datetime, timedelta 
 from collections import defaultdict
@@ -25,12 +26,103 @@ MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
 
 ACTIVITY_TYPE_CN = {
     'Run': '跑步',
+    'TrailRun': '山野跑',
+    'Treadmill': '跑步机',
+    'VirtualRun': '线上跑',
     'Ride': '骑行',
+    'VirtualRide': '虚拟骑',
+    'EBikeRide': '电助力骑',
     'Walk': '步行',
     'Hike': '徒步',
     'StairStepper': '爬楼梯',
-    'Swim': '游泳'
+    'Swim': '游泳',
+    'WaterSport': '水上运动'
 }
+
+ACTIVITY_TITLE_VERBS = {
+    'Run': '跑掉',
+    'TrailRun': '跑掉',
+    'Treadmill': '跑掉',
+    'VirtualRun': '跑掉',
+    'Ride': '骑掉',
+    'VirtualRide': '骑掉',
+    'EBikeRide': '骑掉',
+    'Walk': '走掉',
+    'Hike': '走掉',
+    'StairStepper': '爬掉',
+    'Swim': '游掉',
+    'WaterSport': '游掉'
+}
+
+# 趣味能量换算表。数值只用于挑选自然的整数标题，不作为营养建议展示。
+FOOD_EQUIVALENTS = [
+    {'key': 'sugar_cube', 'name': '方糖', 'unit': '块', 'kcal': 16},
+    {'key': 'chocolate', 'name': '巧克力', 'unit': '块', 'kcal': 28},
+    {'key': 'cookie', 'name': '曲奇', 'unit': '块', 'kcal': 45},
+    {'key': 'banana', 'name': '香蕉', 'unit': '根', 'kcal': 90},
+    {'key': 'cola', 'name': '可乐', 'unit': '罐', 'kcal': 139},
+    {'key': 'beer', 'name': '啤酒', 'unit': '瓶', 'kcal': 139},
+    {'key': 'rice', 'name': '米饭', 'unit': '碗', 'kcal': 180},
+    {'key': 'ice_cream_cone', 'name': '甜筒', 'unit': '支', 'kcal': 200},
+    {'key': 'egg_tart', 'name': '蛋挞', 'unit': '个', 'kcal': 220},
+    {'key': 'fried_chicken', 'name': '炸鸡', 'unit': '块', 'kcal': 250},
+    {'key': 'burger', 'name': '汉堡', 'unit': '个', 'kcal': 250},
+    {'key': 'pizza', 'name': '披萨', 'unit': '片', 'kcal': 280},
+    {'key': 'fries', 'name': '薯条', 'unit': '份', 'kcal': 300},
+    {'key': 'milk_tea', 'name': '奶茶', 'unit': '杯', 'kcal': 450},
+    {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
+]
+FOOD_TITLE_VERSION = 2
+
+CHINESE_COUNTS = {
+    1: '一', 2: '两', 3: '三', 4: '四', 5: '五',
+    6: '六', 7: '七', 8: '八', 9: '九', 10: '十'
+}
+
+def format_food_count(count):
+    """小数量使用更自然的中文，大数量继续支持任意整数。"""
+    return CHINESE_COUNTS.get(count, str(count))
+
+def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
+    """按实际消耗选择一个自然、稳定且尽量不重复的趣味标题。"""
+    verb = ACTIVITY_TITLE_VERBS.get(activity_type)
+    try:
+        calories = float(calories or 0)
+    except (TypeError, ValueError):
+        calories = 0
+
+    if not verb or calories <= 0:
+        return None, None
+
+    recent_food_keys = set(recent_food_keys or [])
+    candidates = []
+
+    for food in FOOD_EQUIVALENTS:
+        count = max(1, int(calories / food['kcal'] + 0.5))
+        converted_calories = count * food['kcal']
+        relative_error = abs(converted_calories - calories) / calories
+
+        candidates.append((relative_error, food, count))
+
+    # 在误差合理的食物中进行稳定随机，优先使用 1～6 份的自然表达。
+    # 如果今后消耗大幅超出当前记录，会自动放宽数量，不存在上限。
+    eligible = [candidate for candidate in candidates if candidate[0] <= 0.18]
+    natural = [candidate for candidate in eligible if candidate[2] <= 6]
+    if natural:
+        eligible = natural
+    elif not eligible:
+        eligible = sorted(candidates, key=lambda candidate: candidate[0])[:4]
+
+    non_repeating = [candidate for candidate in eligible if candidate[1]['key'] not in recent_food_keys]
+    if non_repeating:
+        eligible = non_repeating
+
+    eligible.sort(key=lambda candidate: candidate[1]['key'])
+    digest = hashlib.sha256(f"{run_id}:{calories}:food-title".encode('utf-8')).hexdigest()
+    selected_index = int(digest[:8], 16) % len(eligible)
+    _, selected_food, selected_count = eligible[selected_index]
+    title = f"{verb}{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
+    return title, selected_food['key']
 
 def load_local_data():
     if os.path.exists(FILE_NAME):
@@ -50,13 +142,13 @@ def parse_time(time_str):
         return datetime.min
 
 # ==========================================
-# 🚀 3. Cloudflare AI 智能私教生成引擎 (保留高级特性)
+# 🚀 3. Cloudflare AI 智能私教点评引擎
 # ==========================================
-def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_date, 
-                        global_gap_days=None, last_type=None, 
+def generate_ai_comment(activity_type, distance, time_str, hr, pace_str, start_date,
+                        global_gap_days=None, last_type=None,
                         same_gap_days=None, old_dist=None, old_pace=None, old_hr=None):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
-        return None, None
+        return None
         
     type_cn = ACTIVITY_TYPE_CN.get(activity_type, '运动')
     
@@ -104,21 +196,16 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     prompt = f"""
     我刚在【{season}】的【{time_of_day}】完成了一次【{type_cn}】。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。{context_str}
     
-    请作为一个懂行且高情商的运动私教，生成两段内容：
-    
-    1. title: 一个极具张力和意境的标题（绝不能超过6个字）。
-    【标题致命铁律】：绝对禁止使用“春风”、“春日”、“暮色”、“清晨”等千篇一律的时间/季节词汇作为开头！必须直接从动作、情绪、身体感受或抽象意象切入！
-    
-    2. comment: 一段 50-80 字的专业短评。根据心率和配速的比例给出反馈。
+    请作为一个懂行且高情商的运动私教，生成一段 50-80 字的专业短评。根据心率和配速的比例给出反馈。
     
     【评价策略指引】：如果有【上下文记忆情报】，请将其融入短评（如调侃懈怠、夸奖交叉训练、对比影子对手）。
-    【强制创意视角】：本次生成，请你务必强制使用【{current_focus}】的视角来构思标题和短评！
+    【强制创意视角】：本次生成，请使用【{current_focus}】的视角来构思短评！
     【运动类型铁律】：当前运动是【{type_cn}】！绝对禁止出现其他运动的词汇！
     【JSON安全铁律】：内部绝对禁止使用双引号（"）和换行符！需要强调请用单引号（'）。
     【绝对禁令】：绝不能在短评中像机器一样重复写出距离、配速、用时、心率的具体数字！将它们化为感性的描述。
 
     请严格只返回 JSON 格式数据：
-    {{"title": "...", "comment": "..."}}
+    {{"comment": "..."}}
     """
 
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
@@ -131,10 +218,10 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
             result_text = response.json()['result']['response']
             clean_text = result_text.replace('```json', '').replace('```', '').strip().replace('\n', ' ').replace('\r', '') 
             result_json = json.loads(clean_text)
-            return result_json.get('title'), result_json.get('comment')
+            return result_json.get('comment')
     except Exception as e:
-        print(f"⚠️ AI 生成失败: {e}")
-    return None, None
+        print(f"⚠️ AI 点评生成失败: {e}")
+    return None
 
 # ==========================================
 # 📊 4. 月度洞察数据引擎 (保留完整高级雷达逻辑)
@@ -296,21 +383,51 @@ if __name__ == '__main__':
     print(f"🎯 正在扫描本地运动库: {FILE_NAME}")
     local_data = load_local_data()
     needs_save = False
-    
-    # 🚀 AI 补全文案自愈程序
+
+    # 🍔 旧 AI 标题全部清理；趣味标题按时间顺序稳定生成。
+    recent_food_keys = []
+    for item in reversed(local_data):
+        if 'ai_title' in item:
+            del item['ai_title']
+            needs_save = True
+
+        should_regenerate_title = (
+            not item.get('food_title') or
+            item.get('food_title_version') != FOOD_TITLE_VERSION
+        )
+        if should_regenerate_title:
+            title, food_key = generate_food_title(
+                item.get('type'),
+                item.get('calories'),
+                item.get('run_id'),
+                recent_food_keys[-3:]
+            )
+            if title:
+                item['food_title'] = title
+                item['food_key'] = food_key
+                item['food_title_version'] = FOOD_TITLE_VERSION
+                needs_save = True
+            else:
+                for key in ('food_title', 'food_key', 'food_title_version'):
+                    if key in item:
+                        del item[key]
+                        needs_save = True
+
+        if item.get('food_key'):
+            recent_food_keys.append(item['food_key'])
+
+    # 🧠 AI 只补全专业点评，不再参与标题生成。
     for i, item in enumerate(local_data):
-        # 兼容处理：如果没有AI标题，或者标题是兜底预设词，就触发高级AI重新生成
-        ai_title = item.get('ai_title', '')
-        if not ai_title or ai_title in ["破风前行", "破风逐光"]:
+        if not item.get('ai_comment'):
             safe_time = item.get('start_date_local', '')
-            print(f"🛠️ 发现记录 [{safe_time}] 缺乏高级 AI 文案，正在呼叫私人教练...")
+            print(f"🛠️ 发现记录 [{safe_time}] 缺乏 AI 点评，正在呼叫私人教练...")
             
             older_history = local_data[i+1:]
             current_dt = parse_time(safe_time)
             global_prev = older_history[0] if older_history else None
             same_prev = next((x for x in older_history if x.get('type') == item.get('type')), None)
             
-            t, c = generate_ai_content(
+            comment = generate_ai_comment(
                 item.get('type'), item.get('distance', 0), item.get('moving_time', ''), item.get('average_heartrate'), f"{item.get('pace_num', '')}{item.get('pace_unit', '')}", safe_time,
                 (current_dt - parse_time(global_prev['start_date_local'])).days if global_prev else None,
                 global_prev.get('type') if global_prev else None,
@@ -320,19 +437,18 @@ if __name__ == '__main__':
                 same_prev.get('average_heartrate') if same_prev else None
             )
             
-            if t and c:
-                item['ai_title'] = t
-                item['ai_comment'] = c
+            if comment:
+                item['ai_comment'] = comment
                 needs_save = True
-                print(f"   ↳ 生成成功: [{t}]")
+                print("   ↳ 点评生成成功")
             time.sleep(1) # 防止触发 API 频率限制
             
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:
             json.dump(local_data, f, ensure_ascii=False, indent=2)
-        print("✅ 历史记录 AI 文案填充完毕！")
+        print("✅ 趣味标题与 AI 点评更新完毕！")
     else:
-        print("💤 所有数据均已具备高级文案，跳过更新。")
+        print("💤 所有记录均已具备趣味标题与 AI 点评，跳过更新。")
 
     print("📊 正在同步月度洞察报告...")
     update_monthly_insights(local_data)

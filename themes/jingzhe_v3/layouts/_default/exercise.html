@@ -37,6 +37,8 @@
 {{ range $rawActivities }}
   {{ $typeMap := dict "Run" "跑步" "TrailRun" "山野跑" "Treadmill" "跑步机" "VirtualRun" "线上跑" "Ride" "骑行" "EBikeRide" "电助力骑" "VirtualRide" "虚拟骑" "Walk" "步行" "Hike" "徒步" "Swim" "游泳" "WaterSport" "水上浪" "StairStepper" "爬楼梯" }}
   {{ $typeStr := default "运动" (index $typeMap .type) }}
+  {{ $fallbackTitleMap := dict "Run" "跑起来" "TrailRun" "跑起来" "Treadmill" "跑起来" "VirtualRun" "跑起来" "Ride" "骑起来" "EBikeRide" "骑起来" "VirtualRide" "骑起来" "Walk" "走起来" "Hike" "走起来" "Swim" "游起来" "WaterSport" "游起来" "StairStepper" "爬起来" }}
+  {{ $fallbackTitle := default "动起来" (index $fallbackTitleMap .type) }}
   
   {{/* 新版 App 会明确给出室内标记；旧记录继续兼容“空轨迹即室内”的规则。 */}}
   {{ $hasRouteStatus := isset . "route_status" }}
@@ -54,8 +56,8 @@
   {{ $isDefaultName := or (findRE $pattern .name) (in (slice "Run" "Ride" "Walk" "StairStepper" "Workout" "") .name) }}
 
   {{ if $isDefaultName }}
-    {{/* 如果是流水线名字 -> 优先使用 AI 标题，如果 AI 还没生成，用默认如“骑起来”兜底 */}}
-    {{ $finalName = default $typeStr .ai_title }}
+    {{/* 自动名称优先使用趣味能量标题，缺少消耗数据时用“骑起来”等兜底。 */}}
+    {{ $finalName = default $fallbackTitle .food_title }}
   {{ else }}
     {{/* 如果不是流水线名字 -> 说明是你自己手打的自定义名字，坚决保留！ */}}
     {{ $finalName = .name }}
