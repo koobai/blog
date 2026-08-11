@@ -22,8 +22,8 @@ CF_AI_TOKEN = os.getenv("CF_AI_TOKEN")
 CF_AI_MODEL = os.getenv("CF_AI_MODEL", "@cf/qwen/qwen3-30b-a3b-fp8")
 
 METADATA_SCHEMA_VERSION = 1
-ACTIVITY_PROMPT_VERSION = "activity-copy-v3"
-MONTHLY_PROMPT_VERSION = "monthly-copy-v3"
+ACTIVITY_PROMPT_VERSION = "activity-copy-v4"
+MONTHLY_PROMPT_VERSION = "monthly-copy-v4"
 REQUEST_TIMEOUT_SECONDS = 45
 NETWORK_RETRIES = 3
 QUALITY_RETRIES = 3
@@ -105,6 +105,12 @@ UNSUPPORTED_SCENE_WORDS = {
     "夜色",
 }
 
+UNSUPPORTED_ACTIVITY_CLAIMS = ("步频", "踏频", "功率", "体感")
+STRUCTURAL_ARTIFACT_PATTERN = re.compile(
+    r"[{}\[\]]|['\"]?(?:title|comment)['\"]?\s*:",
+    re.I,
+)
+
 STYLE_HINTS = (
     "像写私人运动日记：平实、具体，不拔高",
     "像熟悉我的朋友随口点评：可以轻微调侃，但不油腻",
@@ -148,6 +154,10 @@ MONTHLY_SCHEMA = {
 
 
 class AIRequestError(RuntimeError):
+    pass
+
+
+class AIResponseError(RuntimeError):
     pass
 
 
@@ -299,6 +309,15 @@ def strip_reasoning_and_fences(value):
     return text
 
 
+def decode_structured_text(value):
+    cleaned = strip_reasoning_and_fences(value)
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError as error:
+        preview = cleaned[:240].replace("\n", " ").replace("\r", " ")
+        raise AIResponseError(f"{error}；内容预览: {preview!r}") from error
+
+
 def extract_structured_result(response_payload):
     result = response_payload.get("result", response_payload)
 
@@ -307,7 +326,7 @@ def extract_structured_result(response_payload):
         if isinstance(response_value, dict):
             return response_value
         if isinstance(response_value, str):
-            return json.loads(strip_reasoning_and_fences(response_value))
+            return decode_structured_text(response_value)
 
         choices = result.get("choices")
         if isinstance(choices, list) and choices:
@@ -316,12 +335,12 @@ def extract_structured_result(response_payload):
             if isinstance(content, dict):
                 return content
             if isinstance(content, str):
-                return json.loads(strip_reasoning_and_fences(content))
+                return decode_structured_text(content)
 
         if all(key in result for key in ("title", "comment")) or "comment" in result:
             return result
 
-    raise AIRequestError("Cloudflare 返回内容中没有可解析的结构化结果")
+    raise AIResponseError("Cloudflare 返回内容中没有可解析的结构化结果")
 
 
 def call_cloudflare(messages, schema, temperature, max_tokens):
@@ -344,10 +363,16 @@ def call_cloudflare(messages, schema, temperature, max_tokens):
         },
     }
 
-    encoded_payload = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     last_error = None
 
     for attempt in range(1, NETWORK_RETRIES + 1):
+        attempt_payload = dict(payload)
+        if attempt > 1:
+            attempt_payload["temperature"] = min(temperature, 0.35)
+        encoded_payload = json.dumps(
+            attempt_payload,
+            ensure_ascii=False,
+        ).encode("utf-8")
         request = Request(
             url,
             data=encoded_payload,
@@ -379,8 +404,14 @@ def call_cloudflare(messages, schema, temperature, max_tokens):
         except (URLError, TimeoutError) as error:
             last_error = AIRequestError(f"Cloudflare 网络请求失败: {error}")
             should_retry = True
-        except (json.JSONDecodeError, KeyError, TypeError, AIRequestError) as error:
-            last_error = AIRequestError(f"Cloudflare 响应解析失败: {error}")
+        except AIRequestError as error:
+            last_error = error
+            should_retry = attempt < NETWORK_RETRIES
+        except AIResponseError as error:
+            last_error = error
+            should_retry = attempt < NETWORK_RETRIES
+        except (json.JSONDecodeError, KeyError, TypeError) as error:
+            last_error = AIResponseError(f"Cloudflare 响应解析失败: {error}")
             should_retry = attempt < NETWORK_RETRIES
 
         if not should_retry or attempt == NETWORK_RETRIES:
@@ -491,15 +522,24 @@ def activity_input_hash(facts):
     return canonical_hash({"facts": facts})
 
 
-def validate_activity_copy(title, comment, activity_type, used_titles):
+def validate_activity_copy(
+    title,
+    comment,
+    activity_type,
+    used_titles,
+    used_comments=None,
+):
     title = normalize_text(title)
     comment = normalize_text(comment)
+    used_comments = used_comments or set()
     errors = []
 
     if not re.fullmatch(r"[\u3400-\u9fff]{4,6}", title):
         errors.append("标题必须是 4 至 6 个纯中文字符，不能有标点")
     if title in used_titles:
         errors.append("标题与已有标题重复")
+    if sum(existing.startswith(title[:2]) for existing in used_titles) >= 2:
+        errors.append("标题前两个字与已有标题重复过多")
     if any(word in title for word in TITLE_BANNED_WORDS):
         errors.append("标题包含陈词滥调")
 
@@ -511,6 +551,12 @@ def validate_activity_copy(title, comment, activity_type, used_titles):
         errors.append("评论包含常见 AI 套话")
     if any(word in comment for word in UNSUPPORTED_SCENE_WORDS):
         errors.append("评论虚构了未提供的天气或景色")
+    if any(word in comment for word in UNSUPPORTED_ACTIVITY_CLAIMS):
+        errors.append("评论使用了数据中没有提供的指标或感受")
+    if STRUCTURAL_ARTIFACT_PATTERN.search(comment):
+        errors.append("评论混入了 JSON 或字段残片")
+    if comment in used_comments:
+        errors.append("评论与已有评论完全重复")
     if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 2:
         errors.append("评论最多保留两个具体数字")
 
@@ -533,6 +579,7 @@ def validate_activity_copy(title, comment, activity_type, used_titles):
 def activity_prompt(
     facts,
     recent_titles,
+    recent_comments,
     previous_errors=None,
     previous_output=None,
 ):
@@ -543,7 +590,10 @@ def activity_prompt(
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
 最近使用过的标题，不能重复：
-{json.dumps(recent_titles[-20:], ensure_ascii=False)}
+{json.dumps(recent_titles[:20], ensure_ascii=False)}
+
+最近使用过的短评，不能照抄：
+{json.dumps(recent_comments[:10], ensure_ascii=False)}
 
 硬性要求：
 1. title 只能是 4 至 6 个中文字符，不要标点、数字和空格。
@@ -553,11 +603,9 @@ def activity_prompt(
 5. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
 6. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
 7. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手。
+8. 不要连续使用相同的标题开头；不要写数据中没有的步频、踏频、功率和体感。
 
-理想语气示例：
-- 标题“稳稳骑完”，短评“今晚速度变化不大，心率比上次收得住，整体更像一次轻松完成。”
-- 标题“慢走一圈”，短评“没有特别突出的变化，就是按自己的节奏走完，普通但真实。”
-- 标题“久违开跑”，可以提到间隔较久，但不要把复出写成史诗。
+理想语气：先说一个真实变化，再给一句平实判断；不要照抄固定例句，也不要把普通完成写成励志故事。
 
 只返回符合 schema 的 JSON，不要解释。使用非思考模式。/no_think
 """.strip()
@@ -570,8 +618,9 @@ def activity_prompt(
     return prompt
 
 
-def generate_activity_copy(item, facts, recent_titles):
+def generate_activity_copy(item, facts, recent_titles, recent_comments):
     used_titles = set(recent_titles)
+    used_comments = set(recent_comments)
     previous_errors = None
     previous_output = None
 
@@ -590,6 +639,7 @@ def generate_activity_copy(item, facts, recent_titles):
                     "content": activity_prompt(
                         facts,
                         recent_titles,
+                        recent_comments,
                         previous_errors,
                         previous_output,
                     ),
@@ -597,7 +647,7 @@ def generate_activity_copy(item, facts, recent_titles):
             ],
             schema=ACTIVITY_SCHEMA,
             temperature=0.5 if previous_errors else 0.65,
-            max_tokens=220,
+            max_tokens=400,
         )
 
         try:
@@ -606,6 +656,7 @@ def generate_activity_copy(item, facts, recent_titles):
                 result.get("comment"),
                 item.get("type"),
                 used_titles,
+                used_comments,
             )
         except CopyValidationError as error:
             previous_errors = str(error)
@@ -814,7 +865,7 @@ def generate_monthly_comment(month_key, stats, previous_stats):
             ],
             schema=MONTHLY_SCHEMA,
             temperature=0.5 if previous_errors else 0.6,
-            max_tokens=260,
+            max_tokens=450,
         )
         try:
             return validate_monthly_comment(result.get("comment"))
@@ -870,7 +921,7 @@ def update_monthly_insights(activities, monthly_path, metadata_path, metadata):
             write_json_atomic(metadata_path, metadata)
             updated += 1
             print(f"📈 {month_key} 月记已更新")
-        except (AIRequestError, CopyValidationError) as error:
+        except (AIRequestError, AIResponseError, CopyValidationError) as error:
             if stats_changed:
                 existing[month_key] = {
                     "month_str": month_key,
@@ -986,6 +1037,20 @@ def run(args):
             for candidate_index, candidate in enumerate(activities)
             if candidate_index != index and normalize_text(candidate.get("ai_title"))
         ]
+        recent_comments = []
+        for candidate_index, candidate in enumerate(activities):
+            if candidate_index == index:
+                continue
+            candidate_comment = normalize_text(candidate.get("ai_comment"))
+            if not candidate_comment:
+                continue
+            if STRUCTURAL_ARTIFACT_PATTERN.search(candidate_comment):
+                continue
+            if any(
+                word in candidate_comment for word in UNSUPPORTED_ACTIVITY_CLAIMS
+            ):
+                continue
+            recent_comments.append(candidate_comment)
         time_text = item.get("start_date_local", "未知时间")
 
         try:
@@ -993,6 +1058,7 @@ def run(args):
                 item,
                 facts,
                 recent_titles,
+                recent_comments,
             )
             item["ai_title"] = title
             item["ai_comment"] = comment
@@ -1010,7 +1076,7 @@ def run(args):
             print("⏸️ AI 服务当前不可用，停止后续请求，避免重复消耗时间和额度")
             ai_unavailable = True
             break
-        except CopyValidationError as error:
+        except (AIResponseError, CopyValidationError) as error:
             activity_failures.append(f"{time_text}: {error}")
             print(f"⚠️ {time_text} 文案未通过质量检查: {error}")
 
