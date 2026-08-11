@@ -25,7 +25,7 @@ CF_AI_MODEL = os.getenv(
 )
 
 METADATA_SCHEMA_VERSION = 1
-ACTIVITY_PROMPT_VERSION = "activity-copy-v5"
+ACTIVITY_PROMPT_VERSION = "activity-copy-v6"
 MONTHLY_PROMPT_VERSION = "monthly-copy-v5"
 REQUEST_TIMEOUT_SECONDS = 45
 NETWORK_RETRIES = 3
@@ -77,6 +77,185 @@ TITLE_BANNED_WORDS = {
     "绽放",
     "激燃",
     "征服",
+}
+
+TITLE_GENERIC_WORDS = {
+    "傍晚",
+    "夜间",
+    "夜里",
+    "晨间",
+    "上午",
+    "下午",
+    "午后",
+    "早上",
+    "晚上",
+    "骑行",
+    "骑出",
+    "晨骑",
+    "夜骑",
+    "快骑",
+    "慢骑",
+    "长骑",
+    "短骑",
+    "跑步",
+    "短跑",
+    "步行",
+    "散步",
+    "徒步",
+    "夜行",
+    "记录",
+    "日常",
+    "练习",
+    "小练",
+    "运动",
+    "活动",
+    "锻炼",
+}
+
+TITLE_MISMATCH_WORDS = {
+    "Ride": ("跑", "步", "走", "游", "爬"),
+    "Run": ("骑", "游", "爬"),
+    "Walk": ("骑", "跑", "游"),
+    "Hike": ("骑", "跑", "游"),
+    "StairStepper": ("骑", "跑", "游"),
+    "Swim": ("骑", "跑", "走", "步", "爬"),
+}
+
+TITLE_FALLBACKS = {
+    "first": (
+        "先记下这次",
+        "从这一笔开始",
+        "给以后留底",
+        "第一笔先收好",
+        "先留个参照",
+    ),
+    "longer": (
+        "今天绕远点",
+        "多绕了一圈",
+        "这回没早收",
+        "把路拉长些",
+        "比平时多些",
+        "路又长一截",
+        "今天多一点",
+        "这一趟加量",
+        "今天多留一段",
+        "再添一段路",
+        "比上回更远",
+        "路程往上加",
+        "这次多绕些",
+        "今天没有省",
+        "又多了一截",
+        "多出来一段",
+        "把距离拉开",
+        "这回路更长",
+        "比上回多点",
+        "再远那么一点",
+        "多出不少路",
+        "今天加一截",
+        "路没有白绕",
+        "这回多一程",
+        "多出来的路",
+    ),
+    "shorter": (
+        "今天少来点",
+        "短一点也行",
+        "这回早收些",
+        "只留一小段",
+        "没打算绕远",
+        "今天先到这",
+        "路短话也少",
+        "这一趟精简",
+        "少一点收工",
+        "这回短不少",
+        "路程收回来",
+        "今天没有贪多",
+        "比上回短些",
+        "少绕一点路",
+        "距离做减法",
+        "早一点收住",
+        "这次少一截",
+        "路程往回收",
+        "短短留一笔",
+        "没有绕太远",
+        "今天收得早",
+        "只取一小段",
+        "少一点也记",
+        "这回没加量",
+    ),
+    "faster": (
+        "悄悄快一点",
+        "今天快半拍",
+        "不知不觉提速",
+        "这回快了点",
+        "速度醒过来",
+        "比上回利索",
+        "今天没拖沓",
+        "这一趟偏快",
+        "速度往上提",
+        "比上回快些",
+        "今天提一档",
+        "这一趟利索",
+        "快了那么一点",
+    ),
+    "slower": (
+        "今天不赶路",
+        "慢一点收尾",
+        "这回放慢些",
+        "不急着提速",
+        "先把速度放下",
+        "今天慢慢来",
+        "这一趟慢些",
+        "慢下来也好",
+        "速度往回收",
+        "比上回慢些",
+        "这次不求快",
+        "先慢慢完成",
+        "速度低一档",
+    ),
+    "heart_up": (
+        "心率先说话",
+        "今天多费点",
+        "心率没闲着",
+        "心率高一点",
+        "这回更费劲",
+    ),
+    "heart_down": (
+        "心率收着点",
+        "今天没太冲",
+        "这回更克制",
+        "心率低一点",
+        "收着完成了",
+        "心率往下收",
+        "比上回低些",
+        "这一回没冲",
+        "数字安静些",
+        "心率更克制",
+    ),
+    "comeback": (
+        "隔些天再来",
+        "重新接上了",
+        "久违的一笔",
+        "回来动一动",
+        "中断以后再续",
+    ),
+    "steady": (
+        "今天不加戏",
+        "照常记一笔",
+        "平常也算数",
+        "这一趟照旧",
+        "没什么波澜",
+        "普通也入账",
+        "今天就这样",
+        "不必找亮点",
+        "照自己的来",
+        "这一笔很平常",
+        "没快也没慢",
+        "起伏不算大",
+        "差不多就好",
+        "如实记一回",
+        "没变化也记",
+        "这一回照常",
+    ),
 }
 
 COMMENT_BANNED_PHRASES = {
@@ -132,7 +311,7 @@ ACTIVITY_SCHEMA = {
             "type": "string",
             "minLength": 4,
             "maxLength": 8,
-            "description": "4至8个纯中文字符，不含标点、数字和空格",
+            "description": "4至8个纯中文字符，有记忆点，不写时间和运动类型",
         },
         "comment": {
             "type": "string",
@@ -304,6 +483,11 @@ def normalize_text(value):
         .replace(",", "，")
         .replace("!", "！")
     )
+
+
+def normalize_comment(value):
+    text = normalize_text(value)
+    return re.sub(r"(?:\s*[{}\[\]]\s*[，,、]?\s*)+$", "", text).strip()
 
 
 def strip_reasoning_and_fences(value):
@@ -505,17 +689,13 @@ def build_comparison_notes(item, global_previous, same_type_previous):
 
 
 def build_activity_facts(item, global_previous, same_type_previous):
-    activity_date = parse_time(item.get("start_date_local"))
     source_id = item.get("source_id", "")
     style_index = sum(source_id.encode("utf-8")) % len(STYLE_HINTS)
     return {
         "运动类型": ACTIVITY_TYPE_CN.get(item.get("type"), "运动"),
-        "发生时间": time_of_day_label(activity_date),
         "是否室内": bool(item.get("is_indoor")),
         "距离公里": item.get("distance"),
-        "用时": item.get("moving_time"),
         "平均心率": item.get("average_heartrate") or None,
-        "平均速度": item.get("average_speed"),
         "配速或速度展示": f"{item.get('pace_num', '')}{item.get('pace_unit', '')}",
         "爬升米": item.get("total_elevation_gain"),
         "可使用的比较结论": build_comparison_notes(
@@ -529,6 +709,59 @@ def activity_input_hash(facts):
     return canonical_hash({"facts": facts})
 
 
+def title_theme(facts):
+    comparison = "；".join(facts.get("可使用的比较结论", []))
+    if "没有更早的同类运动" in comparison:
+        return "first"
+    if "距离比上次同类运动更长" in comparison:
+        return "longer"
+    if "距离比上次同类运动更短" in comparison:
+        return "shorter"
+    if "平均速度比上次同类运动更快" in comparison:
+        return "faster"
+    if "平均速度比上次同类运动更慢" in comparison:
+        return "slower"
+    if "平均心率比上次同类运动高" in comparison:
+        return "heart_up"
+    if "平均心率比上次同类运动低" in comparison:
+        return "heart_down"
+    if "相隔" in comparison:
+        return "comeback"
+    return "steady"
+
+
+def title_is_usable(title, used_titles=None, activity_type=None):
+    used_titles = used_titles or set()
+    return (
+        bool(re.fullmatch(r"[\u3400-\u9fff]{4,8}", title))
+        and not any(word in title for word in TITLE_BANNED_WORDS)
+        and not any(word in title for word in TITLE_GENERIC_WORDS)
+        and not any(
+            word in title for word in TITLE_MISMATCH_WORDS.get(activity_type, ())
+        )
+        and title not in used_titles
+    )
+
+
+def fallback_activity_title(item, facts, used_titles):
+    candidates = TITLE_FALLBACKS[title_theme(facts)]
+    source_id = item.get("source_id", "")
+    offset = int(hashlib.sha256(source_id.encode("utf-8")).hexdigest()[:8], 16)
+    offset %= len(candidates)
+    ordered = candidates[offset:] + candidates[:offset]
+    return next(
+        (candidate for candidate in ordered if candidate not in used_titles),
+        ordered[0],
+    )
+
+
+def prepare_activity_title(value, item, facts, used_titles):
+    title = normalize_text(value)
+    if title_is_usable(title, used_titles, item.get("type")):
+        return title
+    return fallback_activity_title(item, facts, used_titles)
+
+
 def validate_activity_copy(
     title,
     comment,
@@ -536,7 +769,7 @@ def validate_activity_copy(
     used_comments=None,
 ):
     title = normalize_text(title)
-    comment = normalize_text(comment)
+    comment = normalize_comment(comment)
     used_comments = used_comments or set()
     errors = []
 
@@ -544,6 +777,10 @@ def validate_activity_copy(
         errors.append("标题必须是 4 至 8 个纯中文字符，不能有标点")
     if any(word in title for word in TITLE_BANNED_WORDS):
         errors.append("标题包含陈词滥调")
+    if any(word in title for word in TITLE_GENERIC_WORDS):
+        errors.append("标题不能只是时间、运动类型或流水账标签")
+    if any(word in title for word in TITLE_MISMATCH_WORDS.get(activity_type, ())):
+        errors.append("标题混入了其他运动类型的词汇")
 
     if not 55 <= len(comment) <= 115:
         errors.append(f"评论必须为 55 至 115 个字符，当前为 {len(comment)}")
@@ -559,8 +796,6 @@ def validate_activity_copy(
         errors.append("评论混入了 JSON 或字段残片")
     if comment in used_comments:
         errors.append("评论与已有评论完全重复")
-    if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 3:
-        errors.append("评论最多保留三个具体数字")
 
     mismatch_words = {
         "Ride": ("跑步", "脚步", "步伐", "徒步"),
@@ -594,17 +829,18 @@ def activity_prompt(
 {json.dumps(recent_titles[:12], ensure_ascii=False)}
 
 硬性要求：
-1. title 只能是 4 至 8 个中文字符，不要标点、数字和空格。
-2. comment 写 65 至 95 个中文字符，必须是内容完整的三句话。
-3. 第一句交代这次运动最值得记录的事实；第二句写一项有依据的前后变化；第三句用私人日记口吻平实收尾。
-4. 可以使用距离、速度或心率中的一至三个数字，但不要把所有数据机械复述一遍。
-5. 只使用给出的事实。没有天气、路线风景和身体感受数据时，不得自行想象。
-6. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
-7. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
-8. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手、状态趋于平稳、整体保持稳定、正常发挥。
-9. 不要写数据中没有的步频、踏频、功率和体感。
+1. title 只能是 4 至 8 个中文字符，不要标点、数字和空格。它要像日记边上的一句话，有一点态度或反差，不能只是活动标签。
+2. title 禁止出现时间词和运动类型。坏例子：傍晚骑行、夜间跑步、晨间徒步、骑行日常、骑行小练、夜行记录。语气方向可以像“今天不加戏”“慢一点收尾”“多绕了一圈”，但不要照抄。
+3. comment 写 65 至 95 个中文字符，必须是内容完整、前后连贯的三句话。
+4. 全文只挑一个核心数据和一项比较变化，不复述时长，不写成运动数据播报。
+5. 第一句自然交代这次最值得记的一点；第二句写有依据的变化；第三句像本人给日记收尾，可以平淡、轻微自嘲，但不能虚构身体感受。
+6. 只使用给出的事实。没有天气、路线风景和身体感受数据时，不得自行想象。
+7. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
+8. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
+9. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手、状态趋于平稳、整体保持稳定、正常发挥、这是一次普通的、运动结束、感觉还不错、就当日常锻炼、我会继续观察。
+10. 不要写数据中没有的步频、踏频、功率和体感。
 
-理想语气：先说一个真实变化，再给一句平实判断；不要照抄固定例句，也不要把普通完成写成励志故事。
+理想语气：先抓住一个真实变化，再说一句不端着的判断；允许没亮点，但不能没意思，也不要把普通完成写成励志故事。
 
 只返回符合 schema 的 JSON，不要解释。
 """.strip()
@@ -618,6 +854,7 @@ def activity_prompt(
 
 
 def generate_activity_copy(item, facts, recent_titles, recent_comments):
+    used_titles = set(recent_titles)
     used_comments = set(recent_comments)
     previous_errors = None
     previous_output = None
@@ -648,8 +885,14 @@ def generate_activity_copy(item, facts, recent_titles, recent_comments):
         )
 
         try:
-            return validate_activity_copy(
+            title = prepare_activity_title(
                 result.get("title"),
+                item,
+                facts,
+                used_titles,
+            )
+            return validate_activity_copy(
+                title,
                 result.get("comment"),
                 item.get("type"),
                 used_comments,
@@ -657,8 +900,13 @@ def generate_activity_copy(item, facts, recent_titles, recent_comments):
         except CopyValidationError as error:
             previous_errors = str(error)
             previous_output = {
-                "title": normalize_text(result.get("title")),
-                "comment": normalize_text(result.get("comment")),
+                "title": prepare_activity_title(
+                    result.get("title"),
+                    item,
+                    facts,
+                    used_titles,
+                ),
+                "comment": normalize_comment(result.get("comment")),
             }
 
     detail = previous_errors or "活动文案未通过质量检查"
@@ -1093,11 +1341,15 @@ def run(args):
     )
     for failure in all_failures:
         print(f"   - {failure}")
+    made_progress = generated + monthly_updated > 0
+    total_failure = bool(all_failures) and not made_progress
     if all_failures and os.getenv("GITHUB_ACTIONS") == "true":
         annotation = all_failures[0].replace("%", "%25").replace("\r", "%0D")
         annotation = annotation.replace("\n", "%0A")
-        print(f"::error title=Activity insights failed::{annotation}")
-    return 2 if all_failures else 0
+        level = "error" if total_failure else "warning"
+        title = "Activity insights failed" if total_failure else "Activity insights partial"
+        print(f"::{level} title={title}::{annotation}")
+    return 2 if total_failure else 0
 
 
 def build_parser():
