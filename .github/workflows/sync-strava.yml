@@ -36,7 +36,7 @@ jobs:
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_AI_TOKEN: ${{ secrets.CF_AI_TOKEN }}
-          CF_AI_MODEL: ${{ vars.CF_AI_MODEL || '@cf/qwen/qwen3-30b-a3b-fp8' }}
+          CF_AI_MODEL: '@cf/meta/llama-4-scout-17b-16e-instruct'
           PYTHONUNBUFFERED: '1'
         run: python3 fetch_strava.py
 

@@ -19,14 +19,18 @@ DEFAULT_METADATA_FILE = PROJECT_ROOT / "assets" / "activity_ai_meta.json"
 
 CF_ACCOUNT_ID = os.getenv("CF_ACCOUNT_ID")
 CF_AI_TOKEN = os.getenv("CF_AI_TOKEN")
-CF_AI_MODEL = os.getenv("CF_AI_MODEL", "@cf/qwen/qwen3-30b-a3b-fp8")
+CF_AI_MODEL = os.getenv(
+    "CF_AI_MODEL",
+    "@cf/meta/llama-4-scout-17b-16e-instruct",
+)
 
 METADATA_SCHEMA_VERSION = 1
-ACTIVITY_PROMPT_VERSION = "activity-copy-v4"
-MONTHLY_PROMPT_VERSION = "monthly-copy-v4"
+ACTIVITY_PROMPT_VERSION = "activity-copy-v5"
+MONTHLY_PROMPT_VERSION = "monthly-copy-v5"
 REQUEST_TIMEOUT_SECONDS = 45
 NETWORK_RETRIES = 3
-QUALITY_RETRIES = 3
+RESPONSE_RETRIES = 2
+QUALITY_RETRIES = 2
 REQUEST_INTERVAL_SECONDS = float(os.getenv("CF_AI_REQUEST_INTERVAL", "0.25"))
 
 ACTIVITY_TYPE_CN = {
@@ -91,6 +95,9 @@ COMMENT_BANNED_PHRASES = {
     "训练成效显著",
     "强大的耐力基础",
     "心血管适应性",
+    "状态趋于平稳",
+    "整体保持稳定",
+    "正常发挥",
 }
 
 UNSUPPORTED_SCENE_WORDS = {
@@ -114,7 +121,7 @@ STRUCTURAL_ARTIFACT_PATTERN = re.compile(
 STYLE_HINTS = (
     "像写私人运动日记：平实、具体，不拔高",
     "像熟悉我的朋友随口点评：可以轻微调侃，但不油腻",
-    "只抓住一个最值得说的变化，句子短一些",
+    "抓住一个主要变化，用三句完整的话写清楚",
     "语气克制，允许这只是一次普通完成",
 )
 
@@ -124,14 +131,14 @@ ACTIVITY_SCHEMA = {
         "title": {
             "type": "string",
             "minLength": 4,
-            "maxLength": 6,
-            "description": "4至6个纯中文字符，不含标点、数字和空格",
+            "maxLength": 8,
+            "description": "4至8个纯中文字符，不含标点、数字和空格",
         },
         "comment": {
             "type": "string",
-            "minLength": 18,
-            "maxLength": 60,
-            "description": "自然克制的一到两句中文短评",
+            "minLength": 55,
+            "maxLength": 115,
+            "description": "自然克制、内容完整的三句中文点评",
         },
     },
     "required": ["title", "comment"],
@@ -143,9 +150,9 @@ MONTHLY_SCHEMA = {
     "properties": {
         "comment": {
             "type": "string",
-            "minLength": 36,
-            "maxLength": 90,
-            "description": "自然克制的中文月记",
+            "minLength": 70,
+            "maxLength": 160,
+            "description": "自然克制、内容完整的中文月记",
         }
     },
     "required": ["comment"],
@@ -357,10 +364,7 @@ def call_cloudflare(messages, schema, temperature, max_tokens):
         "top_p": 0.9,
         "repetition_penalty": 1.08,
         "max_tokens": max_tokens,
-        "response_format": {
-            "type": "json_schema",
-            "json_schema": schema,
-        },
+        "guided_json": schema,
     }
 
     last_error = None
@@ -393,7 +397,7 @@ def call_cloudflare(messages, schema, temperature, max_tokens):
                 )
             structured = extract_structured_result(response_payload)
             if not isinstance(structured, dict):
-                raise AIRequestError("Cloudflare 结构化结果必须是 JSON 对象")
+                raise AIResponseError("Cloudflare 结构化结果必须是 JSON 对象")
             if REQUEST_INTERVAL_SECONDS > 0:
                 time.sleep(REQUEST_INTERVAL_SECONDS)
             return structured
@@ -409,13 +413,16 @@ def call_cloudflare(messages, schema, temperature, max_tokens):
             should_retry = attempt < NETWORK_RETRIES
         except AIResponseError as error:
             last_error = error
-            should_retry = attempt < NETWORK_RETRIES
+            should_retry = attempt < min(NETWORK_RETRIES, RESPONSE_RETRIES)
         except (json.JSONDecodeError, KeyError, TypeError) as error:
             last_error = AIResponseError(f"Cloudflare 响应解析失败: {error}")
-            should_retry = attempt < NETWORK_RETRIES
+            should_retry = attempt < min(NETWORK_RETRIES, RESPONSE_RETRIES)
 
         if not should_retry or attempt == NETWORK_RETRIES:
             break
+        if isinstance(last_error, AIResponseError):
+            print(f"   ↳ 响应格式异常，立即重试（{attempt}/{RESPONSE_RETRIES}）")
+            continue
         wait_seconds = min(2 ** attempt, 8)
         print(f"   ↳ 请求失败，{wait_seconds} 秒后重试（{attempt}/{NETWORK_RETRIES}）")
         time.sleep(wait_seconds)
@@ -526,7 +533,6 @@ def validate_activity_copy(
     title,
     comment,
     activity_type,
-    used_titles,
     used_comments=None,
 ):
     title = normalize_text(title)
@@ -534,17 +540,13 @@ def validate_activity_copy(
     used_comments = used_comments or set()
     errors = []
 
-    if not re.fullmatch(r"[\u3400-\u9fff]{4,6}", title):
-        errors.append("标题必须是 4 至 6 个纯中文字符，不能有标点")
-    if title in used_titles:
-        errors.append("标题与已有标题重复")
-    if sum(existing.startswith(title[:2]) for existing in used_titles) >= 2:
-        errors.append("标题前两个字与已有标题重复过多")
+    if not re.fullmatch(r"[\u3400-\u9fff]{4,8}", title):
+        errors.append("标题必须是 4 至 8 个纯中文字符，不能有标点")
     if any(word in title for word in TITLE_BANNED_WORDS):
         errors.append("标题包含陈词滥调")
 
-    if not 18 <= len(comment) <= 60:
-        errors.append(f"评论必须为 18 至 60 个字符，当前为 {len(comment)}")
+    if not 55 <= len(comment) <= 115:
+        errors.append(f"评论必须为 55 至 115 个字符，当前为 {len(comment)}")
     if comment.count("！") > 1:
         errors.append("评论最多使用一个感叹号")
     if any(phrase in comment for phrase in COMMENT_BANNED_PHRASES):
@@ -557,8 +559,8 @@ def validate_activity_copy(
         errors.append("评论混入了 JSON 或字段残片")
     if comment in used_comments:
         errors.append("评论与已有评论完全重复")
-    if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 2:
-        errors.append("评论最多保留两个具体数字")
+    if len(re.findall(r"\d+(?:\.\d+)?", comment)) > 3:
+        errors.append("评论最多保留三个具体数字")
 
     mismatch_words = {
         "Ride": ("跑步", "脚步", "步伐", "徒步"),
@@ -579,7 +581,6 @@ def validate_activity_copy(
 def activity_prompt(
     facts,
     recent_titles,
-    recent_comments,
     previous_errors=None,
     previous_output=None,
 ):
@@ -589,25 +590,23 @@ def activity_prompt(
 事实：
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
-最近使用过的标题，不能重复：
-{json.dumps(recent_titles[:20], ensure_ascii=False)}
-
-最近使用过的短评，不能照抄：
-{json.dumps(recent_comments[:10], ensure_ascii=False)}
+最近使用过的标题，尽量不要完全重复：
+{json.dumps(recent_titles[:12], ensure_ascii=False)}
 
 硬性要求：
-1. title 只能是 4 至 6 个中文字符，不要标点、数字和空格。
-2. comment 目标为 24 至 50 个中文字符，写成自然的一到两句，不要为了凑字数说空话。
-3. 只说一个最值得注意的事实；通常不用数字，确有比较价值时最多使用两个。
-4. 只使用给出的事实。没有天气、路线风景和身体感受数据时，不得自行想象。
-5. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
-6. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
-7. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手。
-8. 不要连续使用相同的标题开头；不要写数据中没有的步频、踏频、功率和体感。
+1. title 只能是 4 至 8 个中文字符，不要标点、数字和空格。
+2. comment 写 65 至 95 个中文字符，必须是内容完整的三句话。
+3. 第一句交代这次运动最值得记录的事实；第二句写一项有依据的前后变化；第三句用私人日记口吻平实收尾。
+4. 可以使用距离、速度或心率中的一至三个数字，但不要把所有数据机械复述一遍。
+5. 只使用给出的事实。没有天气、路线风景和身体感受数据时，不得自行想象。
+6. 不做医疗判断，不使用“燃脂区间”“心血管适应性”“耐力基础”等诊断式表达。
+7. 不要每次都夸进步，表现普通时可以直接说普通；通常不用感叹号。
+8. 禁止使用：完美匹配、恰到好处、可圈可点、有目共睹、突破极限、继续保持、期待下一次、越来越强、身体和心灵、多巴胺、影子对手、状态趋于平稳、整体保持稳定、正常发挥。
+9. 不要写数据中没有的步频、踏频、功率和体感。
 
 理想语气：先说一个真实变化，再给一句平实判断；不要照抄固定例句，也不要把普通完成写成励志故事。
 
-只返回符合 schema 的 JSON，不要解释。使用非思考模式。/no_think
+只返回符合 schema 的 JSON，不要解释。
 """.strip()
     if previous_errors:
         prompt += (
@@ -619,7 +618,6 @@ def activity_prompt(
 
 
 def generate_activity_copy(item, facts, recent_titles, recent_comments):
-    used_titles = set(recent_titles)
     used_comments = set(recent_comments)
     previous_errors = None
     previous_output = None
@@ -639,15 +637,14 @@ def generate_activity_copy(item, facts, recent_titles, recent_comments):
                     "content": activity_prompt(
                         facts,
                         recent_titles,
-                        recent_comments,
                         previous_errors,
                         previous_output,
                     ),
                 },
             ],
             schema=ACTIVITY_SCHEMA,
-            temperature=0.5 if previous_errors else 0.65,
-            max_tokens=400,
+            temperature=0.2 if previous_errors else 0.45,
+            max_tokens=360,
         )
 
         try:
@@ -655,7 +652,6 @@ def generate_activity_copy(item, facts, recent_titles, recent_comments):
                 result.get("title"),
                 result.get("comment"),
                 item.get("type"),
-                used_titles,
                 used_comments,
             )
         except CopyValidationError as error:
@@ -806,9 +802,9 @@ def build_monthly_inputs(activities):
 
 def validate_monthly_comment(value):
     comment = normalize_text(value)
-    if not 36 <= len(comment) <= 90:
+    if not 70 <= len(comment) <= 160:
         raise CopyValidationError(
-            f"月报评论必须为 36 至 90 个字符，当前为 {len(comment)}"
+            f"月报评论必须为 70 至 160 个字符，当前为 {len(comment)}"
         )
     if any(phrase in comment for phrase in COMMENT_BANNED_PHRASES):
         raise CopyValidationError("月报包含常见 AI 套话")
@@ -840,13 +836,13 @@ def generate_monthly_comment(month_key, stats, previous_stats):
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
 要求：
-1. 目标为 45 至 80 个中文字符，写成两到三句，语气平实、具体，最多谈两个重点。
+1. 目标为 90 至 140 个中文字符，写成三到四句，语气平实、具体，最多谈三个重点。
 2. 有上月数据才允许环比；没有上月数据时必须只谈本月。
 3. 不虚构训练目标，不给 HIIT、减脂或医疗建议。
 4. 不把平均心率直接解释为燃脂区间或训练水平。
 5. 不使用“表现亮眼、可圈可点、突破极限、继续保持、期待下月”等套话。
 6. 允许指出运动偏科、间隔过长或本月很普通，但不要训话。
-7. 只返回符合 schema 的 JSON。使用非思考模式。/no_think
+7. 只返回符合 schema 的 JSON，不要解释。
 """.strip()
         if previous_errors:
             prompt += (
@@ -864,8 +860,8 @@ def generate_monthly_comment(month_key, stats, previous_stats):
                 {"role": "user", "content": prompt},
             ],
             schema=MONTHLY_SCHEMA,
-            temperature=0.5 if previous_errors else 0.6,
-            max_tokens=450,
+            temperature=0.2 if previous_errors else 0.4,
+            max_tokens=480,
         )
         try:
             return validate_monthly_comment(result.get("comment"))
