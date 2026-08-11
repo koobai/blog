@@ -1,51 +1,62 @@
 name: Generate Activity Insights
 
+permissions:
+  contents: write
+
 concurrency:
   group: activity-insights-${{ github.ref }}
   cancel-in-progress: true
 
 on:
-  # 🚀 核心改动：监听 push 事件。当你把本地生成的 activities.json 推送到 GitHub 时，自动触发此工作流
   push:
     paths:
       - 'assets/activities.json'
-  # 保留手动触发，方便你随时在网页端手动运行
   workflow_dispatch:
 
 jobs:
   sync:
-    # AI 补全文案的提交会再次触发 push；跳过它，避免工作流自循环。
-    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Auto-generate AI insights')
+    # AI 文案提交会再次触发 push；使用固定标记跳过，避免工作流自循环。
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[activity-insights]')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }} 
-          fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
-      - name: Install Dependencies
-        run: pip install requests
-
-      - name: Run AI Insights Script
+      - name: Generate activity insights
+        id: insights
+        continue-on-error: true
         env:
-          # 🗑️ 删除了所有 Strava 相关的 Secret，彻底与 Strava 解绑
-          # 💡 仅保留 Cloudflare AI 需要的凭证
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_AI_TOKEN: ${{ secrets.CF_AI_TOKEN }}
-        # 确保这里运行的是你最新修改的、纯靠本地 JSON 触发 AI 的脚本
-        run: python fetch_strava.py 
+          CF_AI_MODEL: ${{ vars.CF_AI_MODEL || '@cf/qwen/qwen3-30b-a3b-fp8' }}
+          PYTHONUNBUFFERED: '1'
+        run: python3 fetch_strava.py
 
-      - name: Commit and Push changes
+      - name: Commit generated files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add assets/
-          # 💡 修改了 Commit 信息，使其更符合现在的作用
-          git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-generate AI insights & monthly report" && git push)
+          git add -- assets/activities.json assets/monthly_insights.json
+          if [ -f assets/activity_ai_meta.json ]; then
+            git add -- assets/activity_ai_meta.json
+          fi
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+          else
+            git commit -m "[activity-insights] update generated copy"
+            git push
+          fi
+
+      - name: Report generation failure
+        if: always() && steps.insights.outcome == 'failure'
+        run: |
+          echo "Some insights failed after retries; successful results were saved."
+          exit 1
