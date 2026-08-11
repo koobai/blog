@@ -3,57 +3,57 @@
   "activities": {
     "21856424-3d76-4f2a-98cd-6fe50ee48097": {
       "input_hash": "739edfb6f8e173ad03d4be43d4e149fb48d598899d886101645d880782820066",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:24:56"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:43"
     },
     "ab4b5d43-78ae-4a82-a081-b79bc8852ffa": {
-      "input_hash": "5884baa033b4b31bc2ed9a80798d919f73e77462c85c479b9d83cc491d5f87f3",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:25:03"
+      "input_hash": "20c12de77d6ec0d3affa968aa13ebab8e23f1080271db643a4f7e5c6e2fecb78",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:47"
     },
     "c8768fc2-1243-4320-b9b6-13eabbf5dd62": {
-      "input_hash": "5d5f80480c2823dc32a2ff1b792c2d3da3ef89fc53763c600e23cfa65ba9575e",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:55"
+      "input_hash": "77cffb7a0ead011a1f52378484e5ef41c8a3753b903c23ace7043f608ded3cc2",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:48"
     },
     "f3a3a2db-c39a-4231-b865-8d659d7b0824": {
       "input_hash": "8af04de32a69de1e480d7f2f13651c3e13eded5f813ba5f7fd7a795f2c2a3850",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:55"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:49"
     },
     "6950e8cb-c964-44f5-8b5d-fb1095c8f5d4": {
       "input_hash": "87f80796f3bfb2df11c292c26bfaa000c7b2e7f1e084c6f99e40f75de0a26680",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:56"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:51"
     },
     "b5e479bf-de1d-415d-8818-0f19686507b1": {
       "input_hash": "a13d4de1c38a96f21ffb90ab0665d0a2b801e49ce422287c76571d95caacb896",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:57"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:55"
     },
     "9771c629-5f00-4b6f-b4ae-5dc1c32d9f98": {
-      "input_hash": "b112d014f2a13f3177b1c7dbee769e4e9045568bba42aa55a6226cbdb25498f9",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:58"
+      "input_hash": "0b20601e29cfa4b341acd5c85aedcdd86bd88085c8511c81fc3236c605180359",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:43:57"
     },
     "4ed49756-cf19-4daf-ac44-bd249d7cf6bc": {
-      "input_hash": "4bb465f196e7fa27e2d5aa4dceb9dfb85a83159aed0d8a2cb6857ada670f12b4",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:12:58"
+      "input_hash": "8789dad3e745b1b42e352cea7a755b6f87ec0871b8c138b514ee1a8a5abb13ad",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:00"
     },
     "5df410fc-a551-4d16-98c7-b346c7c4931b": {
-      "input_hash": "f81be708b75361c559d72f2beb05abdd645083ea4b98e92888d0734bea6b3631",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:25:36"
+      "input_hash": "6a19693966acc5c8cd7a9b87e36951d69f27a448aaaf3a0fed81d0e84342b140",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:01"
     },
     "c565fb16-902d-45d5-9955-88b0f370f84a": {
       "input_hash": "0ca26065e662e9d6683a727098cf4ee48a41c1a8b5def3d4c237b5b15e989d4b",
@@ -63,9 +63,9 @@
     },
     "d112553e-6c6a-48c2-af5a-3882aa749796": {
       "input_hash": "aae09a21366799886a2b23c471ad5d73596a1e7f531fe0ca0e9c1cf3eece2402",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v3",
-      "updated_at": "2026-08-11T09:13:00"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:06"
     },
     "c9d32994-4f40-4bff-bcb8-72d8dfbddc19": {
       "input_hash": "eb72ad9258a5f81c0bb3e527a2617bee4cc2eb34fd32e4ca97c0eccd06c919f9",
@@ -75,51 +75,51 @@
     },
     "2715581f-b612-4e86-a011-c239800923bf": {
       "input_hash": "569cff5409df30370c0a4ac470b937a89c3d941a05c1ea35bef22d43f5aab9f5",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:26:07"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:15"
     },
     "4165b6b0-b6b6-46cc-ba6e-dfd193998abb": {
-      "input_hash": "6f608ce23355746070568e476b1ca99c1ff520c19d1ee9ac02da24460ce73de1",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:26:08"
+      "input_hash": "3dd610a26a57d3380ad7d6e1fda0c9fc01306ba4034f9d2bca97221e1f196354",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:17"
     },
     "e0ba5e1c-025b-4bfd-b4c5-f950f987631e": {
-      "input_hash": "829f02ff78dd91c45040dac05ddfbea88cfbf7cd460da7a0a372e5accb57a2c2",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:26:10"
+      "input_hash": "ee94e42d4663e3cd22fed0b958edc6464c3de85f8267f50be86b334724f1ef36",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:18"
     },
     "123885ff-9def-454f-8be4-1dce8b586788": {
-      "input_hash": "fe9e1015c5baa65bd7294817948a9a68cc043d5341239ba7c18543636197bd8c",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:26:26"
+      "input_hash": "5bec15b51a6ed610402cdc9cccc5249a0c4ee64f001e97065c649676995ca602",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:21"
     },
     "1004d735-3478-4371-9f03-849deaaee190": {
       "input_hash": "b69b025ab681fca01c7ba0acdeecaed11ad29ada8382b84f2c368dabbfe7929f",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:13"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:43"
     },
     "99ba6d9b-7d95-46aa-ac59-dde700b9dddd": {
       "input_hash": "45184e5f7ce658fc2005e71595e2881dacf807fbaadf491d32e25fc0fd44fda2",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:34"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:02"
     },
     "a12db600-3c9f-4ae1-8907-fadef9ca0811": {
       "input_hash": "0faf2f6976e99f8dac048ada260925eb556786aa7d129ecc1fc596917187ad7d",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:39"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:03"
     },
     "8803787b-7632-4c13-ba2c-802c4458d551": {
       "input_hash": "a71f764d96d485779bdeb4479a90e80c095ceb3c8cdf6475a173d41ea7250d28",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:40"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:05"
     },
     "7c669569-9f29-4ed6-92ff-30826db7ddb8": {
       "input_hash": "476737d1cfdf90f8bff2cf0becc967187afd6285709078fd9db51c7d04305dc0",
@@ -129,101 +129,401 @@
     },
     "14b09f48-400b-4fd7-97c1-ff3d64fac049": {
       "input_hash": "5d6f78dfad533ff0baf7bd7f8e985c80bb4a175345f2126848aea31ddde32a5c",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:45"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:12"
     },
     "db4f1585-9e71-41f5-8f68-0400a3bf4212": {
-      "input_hash": "fdbe5c5f5b1a91d9ed7b825ffd376dfa858d2f6a3e7658ad272291029bf77452",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:48"
+      "input_hash": "450b4f874f2c7a8d811bfbdf86d60ea0afaf0f106d8ee13dee569ec3246a505a",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:17"
     },
     "59f2614c-ee78-45a0-b783-802ee10feb35": {
       "input_hash": "b2c1ba49d939663cb8a42a7a2dd2cd2655bfae8f2982f4958da47a9d549e1dc8",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:27:58"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:26"
     },
     "47a48536-2a9a-401b-93fd-5b942b9e2bf4": {
       "input_hash": "c5919791c4dd3da4153f5c3af63c6e6e23a23be397cc6e4e21055d80d9a1f4c2",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:28:00"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:28"
     },
     "854a1b3d-4d72-4a96-8001-9baf68d48328": {
       "input_hash": "8079396d7f781cd34a4ac4afc5ca1321fe6895df187ede58da7d171249e8b7c4",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:28:50"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:46"
     },
     "0b44a847-fd87-44ce-bac6-6b4d8c17864c": {
       "input_hash": "ab16d34fef1752751b8bdca609ac924d7cd615d4f2d9c865f40664dbbb186d6b",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:29:16"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:01"
     },
     "4e48bec2-a30a-4601-9bbf-3b326616c71d": {
       "input_hash": "1cab21d7e39cf26f7668087cb62dd8e9f922cce83e4997fba7490c4fb0499bfb",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:29:33"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:08"
     },
     "84cd3c60-7f8b-4edd-95e1-2a85439ad8f1": {
       "input_hash": "2e23e1c12c33c2d7908d84ffbaae540d24e57499e2d89e8963441fe727e745f2",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:29:35"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:12"
     },
     "af55929f-2efa-48db-ad1b-fc6790267c89": {
       "input_hash": "548dc7cc891f72aa1cbcb4e4bb68eb8e524d276b6186b2222ccd2fba5aec2e7a",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "activity-copy-v4",
-      "updated_at": "2026-08-11T09:30:17"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:26"
+    },
+    "601cd888-7d93-48d9-8201-4605b14c4df4": {
+      "input_hash": "b1ddba10fc87945df7c05f121f036008bb4d1740394e59630cea35952ca9d842",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:10"
+    },
+    "748ef51c-bcc9-43e9-b525-2999c6e4abaa": {
+      "input_hash": "84815f867b6ead9946cfb3ce8bc9311277e37993de1e8bceedb08808b725ceef",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:11"
+    },
+    "973a8a9f-d2a2-49cb-acd5-6606308dfa20": {
+      "input_hash": "841d216fbf51a97e03036e3e28f9a75636a22ff4c571961cc4efdb7f1a1acc11",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:13"
+    },
+    "149619b0-4b85-4a65-89e9-1327105ad40f": {
+      "input_hash": "0b3e0ce7cb18d91d1c68b3b41d27630e3cc564cd7cdd7f9324e6375859257ce8",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:14"
+    },
+    "f97841d2-a281-4121-8fb2-e4fc077ccd28": {
+      "input_hash": "876871ba48bd270a1850b7207f4012ae0e06195fb1708bdc9e10c67f35dbaa1c",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:22"
+    },
+    "fcdc5afd-6539-4c36-a6ee-f4b4e808053d": {
+      "input_hash": "ca12be41a2c0ed0eaad88ff705860a5c3f65da6c0468bfa01f043b754402c873",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:24"
+    },
+    "24efcafb-f647-4eb2-80c0-7388d38907cf": {
+      "input_hash": "cdea3273c792ae5f179a03eb34de67e36815295ae02110e7d4e8fea8af9584a7",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:25"
+    },
+    "416415fa-62da-48e0-956e-35d6542103fc": {
+      "input_hash": "89d4950af1615f9f4f449ab65d3ce18d4dc3dedab709073d8313b6fdea79586d",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:27"
+    },
+    "1f78edae-7809-41e0-9aa3-7599a0e8ea1a": {
+      "input_hash": "a9ca451cafe64bb66630ef4e97795f7738fa4b65db3a5b58f52d0ba99454b633",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:31"
+    },
+    "01d94462-a10b-4a80-aa12-680d12be797b": {
+      "input_hash": "d5260776472c24d0c5a40633a9a8e041159e2971f30fe11ed32458156d8fd322",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:33"
+    },
+    "4407fefb-4db9-4d46-bdae-5cfce0446e18": {
+      "input_hash": "64227c72c629b0ab173a6576e84b427d049cf145d449464ea9385c34fed9d17e",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:34"
+    },
+    "679f5070-62d7-46b2-a0eb-fdc974ae0715": {
+      "input_hash": "440daeae8aa0c78febc8065f47ab7226f32ab8039ce144caac6d6c4e16d19e3e",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:36"
+    },
+    "ff45b30f-888d-4bfd-bffe-639068d843c9": {
+      "input_hash": "f05e06c1685a0cfaba02170c6f884db4a512e31977b5bbc3f21d3b6a4f609db9",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:37"
+    },
+    "50c71011-e157-4f68-9f1a-e11ebabf861c": {
+      "input_hash": "6a2d384812e2e37476d459ce1067d13100a839e1f5dbb98e6126e0330a32f2e4",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:38"
+    },
+    "a03717e3-7150-4b32-bb0c-f54e772d6200": {
+      "input_hash": "555cb3897e0adb15853a6278693366f7b0f420486c146e1ebf6b4149cdb51cf7",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:40"
+    },
+    "330a7a40-8854-407c-828e-41b73409318a": {
+      "input_hash": "5942a9b3c7a35698098713851378b5d750bedc6c594ed53e97bcab2969e0bafa",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:42"
+    },
+    "a145fea0-5a26-4613-9e0a-9a7f6240de5b": {
+      "input_hash": "e6d59bf9d97aa151fc0a320b9facdcce313831a2603a450f5c6512aedee9d3a8",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:45"
+    },
+    "577896da-de1d-4040-908e-39bcc3d990ba": {
+      "input_hash": "33fe86cddccc2500fe156d2d1868cc4259b153767734c1d0d8a6085b6bad8c05",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:50"
+    },
+    "316a764e-e790-4040-b89b-264b8529e5c7": {
+      "input_hash": "8411199862a4cf3ae01fa8d26faa180bdd4a03e93c6331cae227db2ad3c4766f",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:51"
+    },
+    "25ae8bf4-024d-4ffa-8e97-e87dcd3d0768": {
+      "input_hash": "98948b1c551248b22cb304f1f80200ba4dceadcf0631d1b36d3e1def1469b3ea",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:52"
+    },
+    "67d7ce54-8176-4139-a51f-428863d3f04b": {
+      "input_hash": "7b91ed90a10773d616042294ce70ab013130ab00061021c82fb1fb9d646fa735",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:54"
+    },
+    "c4653621-63b2-40d4-893e-8be6cf144ea7": {
+      "input_hash": "bdf2ebedcbf1a24af495e748cbfd8345fd84242bba5fe3f98c43ddabfb7b0fe0",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:44:56"
+    },
+    "5f8f02b0-07d0-4e31-ac2e-b2b3d915f083": {
+      "input_hash": "9ea3c90895de3640afbe0eb254e1201d6ff10c9cc7cfc3672c7b510f3ba1206c",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:00"
+    },
+    "95744f50-249c-48ec-ac04-a7db25fe1d64": {
+      "input_hash": "5dbb989a22dee9311aa8b6fcc3735621f522bfea38e4d3f82842e0830736bb1a",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:11"
+    },
+    "548b7192-12b0-48a5-b8e1-9c7143e274a7": {
+      "input_hash": "e4b46067c28ef01c4f2579539e4623474d66bd05b65718ebc4616d5679d54c11",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:14"
+    },
+    "b401f580-1a40-4775-ab30-75698143d305": {
+      "input_hash": "a1804c7c89a7800074f8930f13c7edcfd5a1a833b63b7731b076eaa746698545",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:22"
+    },
+    "daa95fac-e5ab-48c9-bae5-1c371df377a0": {
+      "input_hash": "31938279fbd234fe20ebac041addaf9eb4269bc801abf991d65f07ee30bab9ce",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:23"
+    },
+    "18efc010-abeb-4ace-9309-a7fde5bae1c0": {
+      "input_hash": "d02d15e03125f1b0a75f6af2c50f68ea4c5ab8edf47c0cf21904afa405503ee4",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:25"
+    },
+    "fe5bce3c-7b5d-4c9a-afa5-2a070501fe75": {
+      "input_hash": "c0371d23e6852530e2f1846c376f7be11a0a8ed51be149a7a329d7e4d184793a",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:32"
+    },
+    "b10a3a51-eeb2-4968-833b-fc597f4d6bde": {
+      "input_hash": "d7963b5f063b7b24712f95669c2f4f058b12e97e85e2c409b111686b6a64f976",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:33"
+    },
+    "a5dbd963-8c35-4d26-8d01-8586d232e974": {
+      "input_hash": "2f4f1d04f8afedd6fcc3fa629bb6f5506e87d2f9e3dc18dd59e296b7add66c21",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:35"
+    },
+    "9aacaf12-537b-437c-a1d8-6810e3ebf86c": {
+      "input_hash": "3f6e38d7803609f140d0d73c635174923b110251309bfc43840aafeabdcb0446",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:38"
+    },
+    "7607dd81-8527-4f30-a64d-fff2bebae1b3": {
+      "input_hash": "602b5627b7ec968a425817342cb91211670ee2a12813fac8f4223cda7f4db143",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:41"
+    },
+    "f9934aee-ea05-4772-9fd4-bfd20ccec37c": {
+      "input_hash": "efe0e5736fdfe3ab2a04efbf96b48cc71744aa532037f4a919e7fac180e298f7",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:43"
+    },
+    "41982f27-9342-4b21-bb54-c122c3ed16a0": {
+      "input_hash": "c9302d4ecdce1f8aeb747aea21f42f94f0a038891d3a50b994e0683d35c57f3b",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:48"
+    },
+    "ce6efe4f-7c5a-4f10-a102-0c4c6d6895c4": {
+      "input_hash": "f927cc42eefe7fc6e842b58cf0de1248f39d29d3d94fff1c1020a0c645c8d513",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:49"
+    },
+    "88363408-da37-44fa-ae4d-a35c85277382": {
+      "input_hash": "bc59d4d590d53d51fc2d6dda52995a8d8c1cd6d2d85dfed7057a8545df193237",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:51"
+    },
+    "5288558c-6646-4f5c-9e28-070f155c06e0": {
+      "input_hash": "e62c3a3283a4d74e13a2c513b232e2f37599b14aa35009a603429d1d10008cbe",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:55"
+    },
+    "fe9368f1-3a7d-443f-81d0-5fa4a326fcc8": {
+      "input_hash": "48624b7d216f57fc6b87d4a07aedea1a6200f91818e3ae226d02a86bbd5bdac1",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:45:58"
+    },
+    "0a257e7b-43bc-4957-a775-6e3316ee2a86": {
+      "input_hash": "162f494700e1a4745c8aac65d0313674c16ec59554cf6233e0c5116e4926e9ab",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:02"
+    },
+    "c6bb2e38-90e3-4e45-a2e8-9ef4ef267f7f": {
+      "input_hash": "0263ac515629ce7d33922fa92650758b9b9a482332ee6415eb77d400c74aee74",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:05"
+    },
+    "6cd2e22f-dc71-4fb2-a5bd-42a6e694179e": {
+      "input_hash": "386f4876366dbcc6f940360fd3b8a3d151e80a24de8763accb539fb4ae98fff2",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:11"
+    },
+    "4c006596-4142-4450-ba9e-9b5dc1c21028": {
+      "input_hash": "f34a979f737223fc225d74717eb26a2a0e65d40e765989a095afd6961b90da9e",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:22"
+    },
+    "8959c4ca-0e29-419f-8eb6-5ab4f8cf830a": {
+      "input_hash": "75c8c002f91a7adbcd28868666d57e80b56ed70240e8461738748684d4cbb95d",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:23"
+    },
+    "55b3d644-718d-460d-af3f-976b383413af": {
+      "input_hash": "2f3ffeb8c7e82626fbb1cc7ed5f590c1e87614f4c2f033f5b96ab95dea1bbf95",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:24"
+    },
+    "58237a2a-e80c-4c2f-bddd-c2fed496fe70": {
+      "input_hash": "99c21e9b403bb36fcfe69809fdc007da505797cb77d71e4260f8d2ad80edf7a7",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:28"
+    },
+    "89f649f8-6bb8-48a2-bee6-abcb12ebf600": {
+      "input_hash": "f83536bb81ebd419e88d7796c02b4b01a7a8ba3af056939850844e111436f2aa",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:30"
+    },
+    "9b5c6244-6614-4863-bc36-18a21f12f010": {
+      "input_hash": "6bfaec23c65b8ac1913b1d8e58cc71686fe09ca73e8ae4ff87eaf5cff43d2f6d",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:31"
+    },
+    "db1ec3f4-0847-44cc-bd42-3a0afcbbd8a3": {
+      "input_hash": "9cbdde9e7f51a1f392168e9a0ca62fc485657d9634253c70bc1e0a2c223adf58",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:33"
+    },
+    "0d3efb71-bc30-43f1-88c9-9a4ddbe5052d": {
+      "input_hash": "02ab89e2d186dcbf019aba8e5e67e09f168e4f6fc854385abf4dfffb9516a500",
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "activity-copy-v5",
+      "updated_at": "2026-08-11T09:46:34"
     }
   },
   "monthly": {
     "2026-02": {
       "input_hash": "f4b974ee2b81e6f37ff14985d6aa7eeb512c0306d2403e38d4e305003f424de7",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:30:53"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:36"
     },
     "2026-03": {
       "input_hash": "c09f78bf74b777944d48e3a0b56f8c329b7fca602717eeea5004e92671de43dd",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:30:54"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:38"
     },
     "2026-04": {
       "input_hash": "0b173ac878f936aca5d0dfe4e01315d209135b60dd6a1378013300a2ad881d85",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:31:02"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:40"
     },
     "2026-05": {
       "input_hash": "a83960f3822bbc42f7a9e5a72110fcbbf7ea24fcc96b9026113f3559b3cf9dca",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:31:03"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:41"
     },
     "2026-06": {
       "input_hash": "98dcb58cde7fe78e6ca92905fbc2c92b083890a3ca686fafc728a0fe8f228752",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:31:04"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:43"
     },
     "2026-07": {
       "input_hash": "db33a0ce7fbbfb20d7212e4e862446eba313d11f67bd0bdf68c08aba3f0b7893",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:31:05"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:45"
     },
     "2026-08": {
       "input_hash": "2a494496285a62ed96a24465db333860b29963ee6d4dd223d036e68165be9f2f",
-      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-      "prompt_version": "monthly-copy-v4",
-      "updated_at": "2026-08-11T09:31:06"
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "prompt_version": "monthly-copy-v5",
+      "updated_at": "2026-08-11T09:46:47"
     }
   }
 }
