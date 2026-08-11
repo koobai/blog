@@ -23,6 +23,15 @@ TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
 MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
 
+ACTIVITY_TYPE_CN = {
+    'Run': '跑步',
+    'Ride': '骑行',
+    'Walk': '步行',
+    'Hike': '徒步',
+    'StairStepper': '爬楼梯',
+    'Swim': '游泳'
+}
+
 def load_local_data():
     if os.path.exists(FILE_NAME):
         with open(FILE_NAME, 'r', encoding='utf-8') as f:
@@ -30,8 +39,8 @@ def load_local_data():
                 data = json.load(f) or []
                 data.sort(key=lambda x: parse_time(x.get('start_date_local', '')), reverse=True)
                 return data
-            except json.JSONDecodeError:
-                return []
+            except json.JSONDecodeError as error:
+                raise RuntimeError(f"activities.json 格式错误: {error}") from error
     return []
 
 def parse_time(time_str):
@@ -49,7 +58,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
         return None, None
         
-    type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(activity_type, '运动')
+    type_cn = ACTIVITY_TYPE_CN.get(activity_type, '运动')
     
     # 🧠 计算季节与时间
     time_of_day = "未知时间"
@@ -85,7 +94,7 @@ def generate_ai_content(activity_type, distance, time_str, hr, pace_str, start_d
     # 💡 组装【双轨时间线】上下文记忆情报
     context_str = ""
     if global_gap_days is not None:
-        last_type_cn = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}.get(last_type, '运动')
+        last_type_cn = ACTIVITY_TYPE_CN.get(last_type, '运动')
         context_str += f"\n【上下文记忆情报】\n* 整体活跃度：距离上一次运动（{last_type_cn}）相隔了 {global_gap_days} 天。"
         if same_gap_days is not None and same_gap_days != global_gap_days:
             context_str += f"\n* 单项连贯性：这是时隔 {same_gap_days} 天后，再次进行【{type_cn}】。"
@@ -143,7 +152,6 @@ def get_time_of_day(hour):
     return time_zones[hour // 3]
 
 def calculate_monthly_stats(month_activities):
-    TYPE_CN = {'Run': '跑步', 'Ride': '骑行', 'Walk': '徒步', 'Swim': '游泳'}
     stats = {
         "total_count": len(month_activities),
         "total_distance": 0.0,
@@ -157,7 +165,7 @@ def calculate_monthly_stats(month_activities):
     }
 
     for act in month_activities:
-        sport_type_cn = TYPE_CN.get(act.get('type', 'Unknown'), '运动')
+        sport_type_cn = ACTIVITY_TYPE_CN.get(act.get('type', 'Unknown'), '运动')
         dist = act.get('distance', 0)
         hr = act.get('average_heartrate', 0)
         start_date = act.get('start_date_local', '')

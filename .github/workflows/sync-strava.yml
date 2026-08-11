@@ -1,4 +1,8 @@
-name: Generate AI Insights
+name: Generate Activity Insights
+
+concurrency:
+  group: activity-insights-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   # 🚀 核心改动：监听 push 事件。当你把本地生成的 activities.json 推送到 GitHub 时，自动触发此工作流
@@ -10,7 +14,10 @@ on:
 
 jobs:
   sync:
+    # AI 补全文案的提交会再次触发 push；跳过它，避免工作流自循环。
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Auto-generate AI insights')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

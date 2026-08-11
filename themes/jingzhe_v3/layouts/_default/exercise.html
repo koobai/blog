@@ -38,7 +38,12 @@
   {{ $typeMap := dict "Run" "跑步" "TrailRun" "山野跑" "Treadmill" "跑步机" "VirtualRun" "线上跑" "Ride" "骑行" "EBikeRide" "电助力骑" "VirtualRide" "虚拟骑" "Walk" "步行" "Hike" "徒步" "Swim" "游泳" "WaterSport" "水上浪" "StairStepper" "爬楼梯" }}
   {{ $typeStr := default "运动" (index $typeMap .type) }}
   
-  {{ if and (in (slice "Run" "Ride") .type) (eq .summary_polyline "") }}
+  {{/* 新版 App 会明确给出室内标记；旧记录继续兼容“空轨迹即室内”的规则。 */}}
+  {{ $hasRouteStatus := isset . "route_status" }}
+  {{ $isExplicitIndoor := false }}
+  {{ with .is_indoor }}{{ $isExplicitIndoor = . }}{{ end }}
+  {{ $isLegacyIndoor := and (not $hasRouteStatus) (eq .summary_polyline "") }}
+  {{ if and (in (slice "Run" "Ride") .type) (or $isExplicitIndoor $isLegacyIndoor) }}
     {{ $typeStr = printf "室内%s" $typeStr }}
   {{ end }}
   
