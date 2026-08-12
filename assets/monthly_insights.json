@@ -220,19 +220,19 @@
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-12T10:59:49",
+    "last_update": "2026-08-12T15:49:41",
     "stats": {
-      "total_count": 10,
-      "total_distance": 150.04,
-      "total_duration_minutes": 483,
-      "total_calories": 4144,
+      "total_count": 11,
+      "total_distance": 154.63,
+      "total_duration_minutes": 543,
+      "total_calories": 4517,
       "sports_count": {
-        "步行": 3,
+        "步行": 4,
         "骑行": 6,
         "跑步": 1
       },
       "sports_distance": {
-        "步行": 7.08,
+        "步行": 11.67,
         "骑行": 141.84,
         "跑步": 1.12
       },
@@ -246,14 +246,14 @@
       },
       "favorite_time": "晚上",
       "avg_hr": {
-        "步行": "98bpm",
+        "步行": "100bpm",
         "骑行": "115bpm",
         "跑步": "117bpm"
       },
       "max_streak_days": 5,
-      "active_days_count": 9
+      "active_days_count": 10
     },
-    "ai_comment": "这个月与上月同期相比，运动次数、总距离和活跃天数都有所增加，同时整体运动时间也更长。在步行、骑行和跑步这些运动方式上，表现相对活跃。",
+    "ai_comment": "这个月与上月同期相比，运动次数、总距离和活跃天数都更高，运动时间也更长。",
     "ai_comment_version": 3
   }
 }
