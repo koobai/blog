@@ -170,6 +170,11 @@
   }
 }
 
+/* 动起来页面的浮动导航始终高于普通地图和悬停卡片。 */
+.page-exercise .floating-header {
+  z-index: 102;
+}
+
 @keyframes mapSlideDown {
   0% {
     transform: translate(-50%, -120%);
@@ -1356,6 +1361,9 @@
 }
 /* 2. 激活海报模式后的卡片变身 */
 #map-wrapper.show-poster-mode {
+  /* 分享预览需要覆盖页面导航，形成独立海报画布。 */
+  z-index: 103;
+
   /* 分享海报只保留海报自身信息，避免无轨迹说明与 AI 点评重复叠加。 */
   .routeStampOverlay {
     display: none !important;
