@@ -74,6 +74,23 @@ FOOD_EQUIVALENTS = [
 ]
 FOOD_TITLE_VERSION = 2
 
+# 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
+DISTANCE_EQUIVALENTS = [
+    {'key': 'track', 'name': '操场', 'unit': '圈', 'km': 0.4, 'min_km': 0.2, 'max_km': 4.8, 'max_count': 12},
+    {'key': 'bai_causeway', 'name': '白堤', 'unit': '趟', 'km': 1.0, 'min_km': 0.6, 'max_km': 5.5, 'max_count': 6},
+    {'key': 'qiantang_bridge', 'name': '钱塘江大桥', 'unit': '趟', 'km': 1.453, 'min_km': 1.2, 'max_km': 8.5, 'max_count': 6},
+    {'key': 'su_causeway', 'name': '苏堤', 'unit': '趟', 'km': 2.8, 'min_km': 2.3, 'max_km': 16.8, 'max_count': 6},
+    {'key': 'west_lake', 'name': '西湖', 'unit': '圈', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6}
+]
+
+ELEVATION_EQUIVALENTS = [
+    {'key': 'leifeng_pagoda', 'name': '雷峰塔', 'unit': '座', 'meters': 71.0, 'max_count': 4},
+    {'key': 'north_peak', 'name': '北高峰', 'unit': '座', 'meters': 314.0, 'max_count': 6}
+]
+
+ELEVATION_ACTIVITY_TYPES = {'StairStepper'}
+DISTANCE_TITLE_VERSION = 4
+
 CHINESE_COUNTS = {
     1: '一', 2: '两', 3: '三', 4: '四', 5: '五',
     6: '六', 7: '七', 8: '八', 9: '九', 10: '十'
@@ -123,6 +140,83 @@ def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
     _, selected_food, selected_count = eligible[selected_index]
     title = f"{verb}{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
     return title, selected_food['key']
+
+def format_landmark_count(count, unit, name):
+    """把 1、1.5、2.5 等数量写成适合卡片的简短中文。"""
+    whole = int(count)
+    has_half = abs(count - whole - 0.5) < 0.01
+    if whole == 0 and has_half:
+        return f"半{unit}{name}"
+    if whole <= 10:
+        count_text = format_food_count(whole)
+    elif whole < 20:
+        digit = '二' if whole - 10 == 2 else CHINESE_COUNTS[whole - 10]
+        count_text = f"十{digit}"
+    elif whole < 100:
+        tens, ones = divmod(whole, 10)
+        tens_text = '二' if tens == 2 else CHINESE_COUNTS[tens]
+        ones_text = ('二' if ones == 2 else CHINESE_COUNTS[ones]) if ones else ''
+        count_text = f"{tens_text}十{ones_text}"
+    else:
+        count_text = str(whole)
+    return f"{count_text}{unit}{'半' if has_half else ''}{name}"
+
+def stable_landmark_choice(candidates, run_id, value, seed_suffix, recent_keys=None):
+    recent_keys = set(recent_keys or [])
+    non_repeating = [candidate for candidate in candidates if candidate[1]['key'] not in recent_keys]
+    if non_repeating:
+        candidates = non_repeating
+    candidates.sort(key=lambda candidate: candidate[1]['key'])
+    digest = hashlib.sha256(f"{run_id}:{value}:{seed_suffix}".encode('utf-8')).hexdigest()
+    return candidates[int(digest[:8], 16) % len(candidates)]
+
+def generate_distance_title(activity_type, distance, elevation, run_id, recent_keys=None):
+    """生成稳定的杭州距离/爬升参照，保留真实数据作为卡片主信息。"""
+    try:
+        distance = float(distance or 0)
+    except (TypeError, ValueError):
+        distance = 0
+    try:
+        elevation = float(elevation or 0)
+    except (TypeError, ValueError):
+        elevation = 0
+
+    if activity_type in ELEVATION_ACTIVITY_TYPES and elevation > 0:
+        candidates = []
+        for landmark in ELEVATION_EQUIVALENTS:
+            count = max(1, int(elevation / landmark['meters'] + 0.5))
+            relative_error = abs(count * landmark['meters'] - elevation) / elevation
+            candidates.append((relative_error, landmark, count))
+
+        eligible = [candidate for candidate in candidates if candidate[0] <= 0.2 and candidate[2] <= candidate[1]['max_count']]
+        if not eligible:
+            if elevation > ELEVATION_EQUIVALENTS[-1]['meters'] * ELEVATION_EQUIVALENTS[-1]['max_count']:
+                eligible = [candidates[-1]]
+            else:
+                eligible = sorted(candidates, key=lambda candidate: candidate[0])[:1]
+        _, landmark, count = stable_landmark_choice(eligible, run_id, elevation, 'elevation-title-v1', recent_keys)
+        return f"爬升约{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'elevation'
+
+    if distance <= 0:
+        return None, None, None
+
+    candidates = []
+    for landmark in DISTANCE_EQUIVALENTS:
+        count = max(0.5, round(distance / landmark['km'] * 2) / 2)
+        relative_error = abs(count * landmark['km'] - distance) / distance
+        in_range = landmark['min_km'] <= distance <= landmark['max_km']
+        is_natural_count = count <= landmark['max_count']
+        candidates.append((relative_error, landmark, count, in_range and is_natural_count))
+
+    eligible = [candidate[:3] for candidate in candidates if candidate[3] and candidate[0] <= 0.18]
+    if not eligible:
+        if distance > DISTANCE_EQUIVALENTS[-1]['max_km']:
+            eligible = [candidates[-1][:3]]
+        else:
+            eligible = [candidate[:3] for candidate in sorted(candidates, key=lambda candidate: candidate[0])[:3]]
+
+    _, landmark, count = stable_landmark_choice(eligible, run_id, distance, 'distance-title-v1', recent_keys)
+    return f"约{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'distance'
 
 def load_local_data():
     if os.path.exists(FILE_NAME):
@@ -416,6 +510,36 @@ if __name__ == '__main__':
         if item.get('food_key'):
             recent_food_keys.append(item['food_key'])
 
+    # 📏 根据真实距离或爬升生成杭州参照物；结果写回 JSON，刷新页面不会变化。
+    recent_landmark_keys = []
+    for item in reversed(local_data):
+        should_regenerate_distance = (
+            not item.get('distance_title') or
+            item.get('distance_title_version') != DISTANCE_TITLE_VERSION
+        )
+        if should_regenerate_distance:
+            title, landmark_key, title_kind = generate_distance_title(
+                item.get('type'),
+                item.get('distance'),
+                item.get('total_elevation_gain'),
+                item.get('run_id'),
+                recent_landmark_keys[-2:]
+            )
+            if title:
+                item['distance_title'] = title
+                item['distance_title_key'] = landmark_key
+                item['distance_title_kind'] = title_kind
+                item['distance_title_version'] = DISTANCE_TITLE_VERSION
+                needs_save = True
+            else:
+                for key in ('distance_title', 'distance_title_key', 'distance_title_kind', 'distance_title_version'):
+                    if key in item:
+                        del item[key]
+                        needs_save = True
+
+        if item.get('distance_title_key'):
+            recent_landmark_keys.append(item['distance_title_key'])
+
     # 🧠 AI 只补全专业点评，不再参与标题生成。
     for i, item in enumerate(local_data):
         if not item.get('ai_comment'):
@@ -446,9 +570,9 @@ if __name__ == '__main__':
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:
             json.dump(local_data, f, ensure_ascii=False, indent=2)
-        print("✅ 趣味标题与 AI 点评更新完毕！")
+        print("✅ 趣味标题、杭州距离与 AI 点评更新完毕！")
     else:
-        print("💤 所有记录均已具备趣味标题与 AI 点评，跳过更新。")
+        print("💤 所有记录均已具备趣味标题、杭州距离与 AI 点评，跳过更新。")
 
     print("📊 正在同步月度洞察报告...")
     update_monthly_insights(local_data)

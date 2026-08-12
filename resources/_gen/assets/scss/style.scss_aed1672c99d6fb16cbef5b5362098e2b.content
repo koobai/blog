@@ -1576,6 +1576,7 @@ body:has(.menu-checkbox:checked) {
     overflow-y: auto;
     align-items: flex-start;
     /* 文字顶部对齐 */
+    flex-direction: column;
     animation: insightFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
     .bento-calendar-board .ai-insight-view .ai-comment-content {
       font-size: 1rem;
@@ -1591,7 +1592,11 @@ body:has(.menu-checkbox:checked) {
           color: var(--text-content-dark-color); } }
       html[data-theme="dark"] .bento-calendar-board .ai-insight-view .ai-comment-content {
         color: var(--text-content-dark-color); }
-
+    .bento-calendar-board .ai-insight-view .monthly-energy-summary {
+      margin-top: 16px; }
+      @media (min-width: 768px) {
+        .bento-calendar-board .ai-insight-view .monthly-energy-summary {
+          margin-top: 12px; } }
 @keyframes insightFadeIn {
   from {
     opacity: 0;
@@ -1847,6 +1852,9 @@ body:has(.menu-checkbox:checked) {
     color: var(--text-info-dark-color); }
 
 .runDistance {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
   font-size: 1.4rem;
   font-weight: 700; }
   .runDistance .distUnit {
@@ -1859,6 +1867,16 @@ body:has(.menu-checkbox:checked) {
       html:not([data-theme="light"]) .runDistance .distUnit {
         color: var(--text-info-dark-color); } }
     html[data-theme="dark"] .runDistance .distUnit {
+      color: var(--text-info-dark-color); }
+  .runDistance .distanceEquivalent {
+    margin-left: 7px;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--text-info-color); }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .runDistance .distanceEquivalent {
+        color: var(--text-info-dark-color); } }
+    html[data-theme="dark"] .runDistance .distanceEquivalent {
       color: var(--text-info-dark-color); }
 
 .runDate {

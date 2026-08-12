@@ -25,6 +25,81 @@
   const RUN_WALK_TYPES = new Set([...RUN_TYPES, ...WALK_TYPES]);
   const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#14C759';
 
+  // 月度总量只从热量较高的食物中选择，避免出现几百块方糖之类难以阅读的结果。
+  const MONTHLY_FOOD_EQUIVALENTS = [
+    { key: 'cola', name: '可乐', unit: '罐', kcal: 139 },
+    { key: 'beer', name: '啤酒', unit: '瓶', kcal: 139 },
+    { key: 'rice', name: '米饭', unit: '碗', kcal: 180 },
+    { key: 'ice_cream_cone', name: '甜筒', unit: '支', kcal: 200 },
+    { key: 'egg_tart', name: '蛋挞', unit: '个', kcal: 220 },
+    { key: 'fried_chicken', name: '炸鸡', unit: '块', kcal: 250 },
+    { key: 'burger', name: '汉堡', unit: '个', kcal: 250 },
+    { key: 'pizza', name: '披萨', unit: '片', kcal: 280 },
+    { key: 'fries', name: '薯条', unit: '份', kcal: 300 },
+    { key: 'milk_tea', name: '奶茶', unit: '杯', kcal: 450 },
+    { key: 'instant_noodles', name: '泡面', unit: '包', kcal: 470 }
+  ];
+
+  const MONTHLY_ACTIVITY_VERBS = {
+    Run: '跑掉', TrailRun: '跑掉', Treadmill: '跑掉', VirtualRun: '跑掉', 'Trail Run': '跑掉',
+    Ride: '骑掉', VirtualRide: '骑掉', EBikeRide: '骑掉',
+    Walk: '走掉', Hike: '走掉',
+    StairStepper: '爬掉',
+    Swim: '游掉', WaterSport: '游掉'
+  };
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+
+  const stableChoiceIndex = (seed, length) => {
+    let hash = 2166136261;
+    for (let i = 0; i < seed.length; i++) {
+      hash ^= seed.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return length > 0 ? (hash >>> 0) % length : 0;
+  };
+
+  const buildMonthlyEnergySummary = (monthKey, runs) => {
+    const validRuns = (runs || []).filter(run => Number(run.calories) > 0);
+    if (validRuns.length === 0) return null;
+
+    const totalCalories = validRuns.reduce((total, run) => total + Number(run.calories), 0);
+    const caloriesByVerb = new Map();
+    let strongestRun = validRuns[0];
+
+    validRuns.forEach(run => {
+      const calories = Number(run.calories);
+      const verb = MONTHLY_ACTIVITY_VERBS[run.type];
+      if (verb) caloriesByVerb.set(verb, (caloriesByVerb.get(verb) || 0) + calories);
+      if (calories > Number(strongestRun.calories)) strongestRun = run;
+    });
+
+    const dominantEntry = [...caloriesByVerb.entries()].sort((a, b) => b[1] - a[1])[0];
+    const dominantVerb = dominantEntry && dominantEntry[1] / totalCalories >= 0.5 ? dominantEntry[0] : null;
+
+    const candidates = MONTHLY_FOOD_EQUIVALENTS.map(food => ({
+      food,
+      count: Math.max(1, Math.round(totalCalories / food.kcal))
+    }));
+    const naturalCandidates = candidates.filter(candidate => candidate.count >= 8 && candidate.count <= 30);
+    const readableCandidates = naturalCandidates.length > 0
+      ? naturalCandidates
+      : [...candidates].sort((a, b) => Math.abs(a.count - 19) - Math.abs(b.count - 19)).slice(0, 4);
+    readableCandidates.sort((a, b) => a.food.key.localeCompare(b.food.key));
+    const selected = readableCandidates[stableChoiceIndex(`${monthKey}:monthly-food:v1`, readableCandidates.length)];
+
+    return {
+      totalCalories: Math.round(totalCalories),
+      verb: dominantVerb,
+      food: selected.food,
+      foodCount: selected.count,
+      strongestDay: Number(strongestRun.start_date_local?.slice(8, 10)) || null,
+      strongestTitle: strongestRun.food_title || strongestRun.name || strongestRun.fallback_name || ''
+    };
+  };
+
   /* ========================================================================
      板块 3：核心视图逻辑控制引擎 (UIEngine)
   ======================================================================== */
@@ -253,6 +328,7 @@
       
       // 4. 计算选中月份的详细数据 (分布图、心率等)
       const currentMonthData = monthMap.get(this.calMonthIndex) || { runs: [], runsByDate: new Map() };
+      const currentMonthKey = `${displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
       let mTotal = 0, mRide = 0, mRun = 0, maxTimeBlockCount = 0, validHrRuns = 0;
       const timeBlocks = new Array(8).fill(0); 
       const hrCounts = new Array(5).fill(0);   
@@ -304,6 +380,7 @@
         monthlyData: { 
           runsByDate: currentMonthData.runsByDate, 
           monthDetailStats: { totalDist: mTotal, rideDist: mRide, runDist: mRun }, 
+          energySummary: buildMonthlyEnergySummary(currentMonthKey, currentMonthData.runs),
           insights: { 
             hasActivities: currentMonthData.runs.length > 0, 
             timeBlocks, maxTimeBlockCount: Math.max(maxTimeBlockCount, 1), 
@@ -443,9 +520,28 @@
       }).join('');
       const currentMonthStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
       const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;
+      const aiComment = insightData ? insightData.ai_comment : '';
+      const energySummary = engine.monthlyData.energySummary;
+      let monthlyEnergyHtml = '';
+
+      if (energySummary) {
+        const calorieText = energySummary.totalCalories.toLocaleString('zh-CN');
+        const foodText = `${energySummary.foodCount} ${energySummary.food.unit}${energySummary.food.name}`;
+        const equivalentText = energySummary.verb
+          ? `差不多${energySummary.verb}了 ${foodText}`
+          : `换成吃的，差不多是 ${foodText}`;
+        const strongestText = energySummary.strongestDay && energySummary.strongestTitle
+          ? `火力最猛的是 ${energySummary.strongestDay} 日那次：${escapeHtml(energySummary.strongestTitle)}。`
+          : '';
+
+        monthlyEnergyHtml = `
+          <div class="ai-comment-content monthly-energy-summary">
+            本月共消耗 ${calorieText} 千卡，${equivalentText}。${strongestText}
+          </div>`;
+      }
       
-      // 如果本月有 AI 数据，则生成一个星星按钮
-      const aiBtnHtml = insightData ? `
+      // 有 AI 点评或真实消耗总结时，都可以进入月度点评视图。
+      const aiBtnHtml = (aiComment || monthlyEnergyHtml) ? `
         <button class="ai-toggle-btn ${this.showAiInsight ? 'active' : ''}" onclick="window.KoobaiRun.ui.toggleAiInsight()">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
         </button>
@@ -453,7 +549,6 @@
 
       const gridViewDisplay = this.showAiInsight ? 'none' : 'flex';
       const aiViewDisplay = this.showAiInsight ? 'flex' : 'none';
-      const aiComment = insightData ? insightData.ai_comment : '';
 
       // 3. 生成洞察图表：时间段分布打孔图
       const insights = engine.monthlyData.insights;
@@ -555,7 +650,8 @@
               </div>
               
               <div class="ai-insight-view" style="display: ${aiViewDisplay};">
-                <div class="ai-comment-content">${aiComment}</div>
+                ${aiComment ? `<div class="ai-comment-content">${aiComment}</div>` : ''}
+                ${monthlyEnergyHtml}
               </div>
             </div>
 

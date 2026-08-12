@@ -529,6 +529,7 @@
     margin: 0;
     overflow-y: auto;
     align-items: flex-start; /* 文字顶部对齐 */
+    flex-direction: column;
     animation: insightFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 
     .ai-comment-content {
@@ -542,6 +543,14 @@
 
       @include dark {
         color: var(--text-content-dark-color);
+      }
+    }
+
+    .monthly-energy-summary {
+      margin-top: 16px;
+
+      @include breakpoint("medium") {
+        margin-top: 12px;
       }
     }
   }
@@ -866,6 +875,9 @@
 }
 
 .runDistance {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
   font-size: 1.4rem;
   font-weight: 700;
 
@@ -875,6 +887,17 @@
     font-style: normal;
     font-weight: normal;
     color: var(--text-info-color);
+    @include dark {
+      color: var(--text-info-dark-color);
+    }
+  }
+
+  .distanceEquivalent {
+    margin-left: 7px;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--text-info-color);
+
     @include dark {
       color: var(--text-info-dark-color);
     }
