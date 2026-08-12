@@ -1185,6 +1185,7 @@ body:has(.menu-checkbox:checked) {
   right: 0;
   margin: 0 auto;
   width: max-content;
+  max-width: calc(100% - 20px);
   background: var(--background-card-color);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -1274,6 +1275,17 @@ body:has(.menu-checkbox:checked) {
 .detailStatsRow {
   display: flex;
   gap: 30px; }
+
+.routeDetailNotes {
+  color: var(--text-info-color);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .routeDetailNotes {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .routeDetailNotes {
+    color: var(--text-info-dark-color); }
 
 .detailStatBlock {
   display: flex;

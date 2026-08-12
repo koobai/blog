@@ -102,6 +102,7 @@
   right: 0;
   margin: 0 auto;
   width: max-content;
+  max-width: calc(100% - 20px);
   background: var(--background-card-color);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -198,6 +199,17 @@
 .detailStatsRow {
   display: flex;
   gap: 30px;
+}
+
+.routeDetailNotes {
+  color: var(--text-info-color);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+
+  @include dark {
+    color: var(--text-info-dark-color);
+  }
 }
 
 .detailStatBlock {

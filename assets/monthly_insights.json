@@ -1,11 +1,12 @@
 {
   "2026-03": {
     "month_str": "2026-03",
-    "last_update": "2026-08-11T09:46:38",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 23,
       "total_distance": 225.52,
       "total_duration_minutes": 1014,
+      "total_calories": 8010,
       "sports_count": {
         "骑行": 8,
         "步行": 12,
@@ -17,7 +18,7 @@
         "跑步": 11.29
       },
       "longest_ride_km": 32.29,
-      "longest_run_km": 3.84,
+      "longest_run_km": 5.04,
       "hardest_session": {
         "date": "3号",
         "type": "跑步",
@@ -33,15 +34,16 @@
       "max_streak_days": 14,
       "active_days_count": 22
     },
-    "ai_comment": "这个月我一共锻炼了23次，总距离225.52公里，总时长1014分钟。我的运动类型比较多样化，有骑行、步行和跑步，其中骑行距离最长，达到了175.22公里。本月最累的一次是3号的跑步，心率最高达到149。"
+    "ai_comment": "本月以骑行、步行、跑步为主，和上一个自然月相比，出勤和总里程都更高。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   },
   "2026-02": {
     "month_str": "2026-02",
-    "last_update": "2026-08-11T09:46:36",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 6,
       "total_distance": 45.18,
-      "total_duration_minutes": 226,
+      "total_duration_minutes": 227,
+      "total_calories": 1771,
       "sports_count": {
         "骑行": 2,
         "步行": 4
@@ -51,7 +53,7 @@
         "步行": 12.2
       },
       "longest_ride_km": 16.6,
-      "longest_run_km": 0.0,
+      "longest_run_km": 4.2,
       "hardest_session": {
         "date": "23号",
         "type": "骑行",
@@ -66,15 +68,16 @@
       "max_streak_days": 3,
       "active_days_count": 5
     },
-    "ai_comment": "二月一共锻炼了6次，总距离45.18公里，其中骑行2次32.98公里，步行4次12.2公里。最长骑行距离16.6公里，心率最高的一次是23号骑行时的136bpm。这个月以晚上运动为主。"
+    "ai_comment": "这个月已经留下以骑行、步行为主的完整记录，出勤、距离和用时都有明确汇总。先把它作为月度基线，后续变化只和真实历史数据比较。"
   },
   "2026-04": {
     "month_str": "2026-04",
-    "last_update": "2026-08-11T09:46:40",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 9,
       "total_distance": 107.52,
-      "total_duration_minutes": 387,
+      "total_duration_minutes": 385,
+      "total_calories": 3299,
       "sports_count": {
         "步行": 2,
         "骑行": 6,
@@ -86,14 +89,14 @@
         "跑步": 4.04
       },
       "longest_ride_km": 16.6,
-      "longest_run_km": 4.04,
+      "longest_run_km": 4.89,
       "hardest_session": {
         "date": "1号",
         "type": "跑步",
         "hr": 133,
         "zone": "仅按平均心率排序"
       },
-      "favorite_time": "上午",
+      "favorite_time": "晚上",
       "avg_hr": {
         "步行": "98bpm",
         "骑行": "122bpm",
@@ -102,15 +105,16 @@
       "max_streak_days": 3,
       "active_days_count": 9
     },
-    "ai_comment": "这个月我一共运动了9次，总距离是107.52公里。其中骑行6次，步行2次，跑步1次。最长的骑行距离是16.6公里，平均心率在不同运动中的差异比较明显。和上个月相比，我的运动次数和总距离都有所下降，不过我的骑行距离有所增加。"
+    "ai_comment": "本月以步行、骑行、跑步为主，和上一个自然月相比，出勤和总里程都更少。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   },
   "2026-05": {
     "month_str": "2026-05",
-    "last_update": "2026-08-11T09:46:41",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 12,
       "total_distance": 178.02,
       "total_duration_minutes": 541,
+      "total_calories": 4418,
       "sports_count": {
         "骑行": 11,
         "步行": 1
@@ -120,14 +124,14 @@
         "步行": 2.8
       },
       "longest_ride_km": 25.31,
-      "longest_run_km": 0.0,
+      "longest_run_km": 2.8,
       "hardest_session": {
         "date": "13号",
         "type": "骑行",
         "hr": 127,
         "zone": "仅按平均心率排序"
       },
-      "favorite_time": "上午",
+      "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "113bpm",
         "步行": "96bpm"
@@ -135,15 +139,16 @@
       "max_streak_days": 6,
       "active_days_count": 11
     },
-    "ai_comment": "这个月我一共锻炼了12次，总距离是178.02公里，骑行和步行各占大部分时间和里程。其中最累的一次骑行是在5月13日，平均心率达到了127。相比上个月，我的锻炼次数和总距离都增加了不少，平均心率也有所下降。"
+    "ai_comment": "本月以骑行、步行为主，和上一个自然月相比，出勤和总里程都更高。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   },
   "2026-06": {
     "month_str": "2026-06",
-    "last_update": "2026-08-11T09:46:43",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 10,
       "total_distance": 146.11,
-      "total_duration_minutes": 472,
+      "total_duration_minutes": 471,
+      "total_calories": 3621,
       "sports_count": {
         "骑行": 9,
         "步行": 1
@@ -153,7 +158,7 @@
         "步行": 2.78
       },
       "longest_ride_km": 16.64,
-      "longest_run_km": 0.0,
+      "longest_run_km": 2.78,
       "hardest_session": {
         "date": "26号",
         "type": "骑行",
@@ -168,15 +173,16 @@
       "max_streak_days": 3,
       "active_days_count": 10
     },
-    "ai_comment": "六月运动总结：总共锻炼10次，累计骑行143.33公里，步行2.78公里。与五月相比，锻炼次数和骑行距离有所下降，心率也略有降低。最累的一次骑行是在26号，平均心率达到118bpm。"
+    "ai_comment": "本月以骑行、步行为主，和上一个自然月相比，出勤和总里程都更少。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   },
   "2026-07": {
     "month_str": "2026-07",
-    "last_update": "2026-08-11T09:46:45",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 18,
       "total_distance": 271.53,
-      "total_duration_minutes": 1179,
+      "total_duration_minutes": 1177,
+      "total_calories": 9056,
       "sports_count": {
         "骑行": 12,
         "步行": 3,
@@ -188,14 +194,14 @@
         "徒步": 27.08
       },
       "longest_ride_km": 23.7,
-      "longest_run_km": 0.0,
+      "longest_run_km": 9.05,
       "hardest_session": {
         "date": "15号",
         "type": "骑行",
         "hr": 128,
         "zone": "仅按平均心率排序"
       },
-      "favorite_time": "傍晚",
+      "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "116bpm",
         "步行": "110bpm",
@@ -204,35 +210,43 @@
       "max_streak_days": 4,
       "active_days_count": 17
     },
-    "ai_comment": "本月共运动18次，总距离271.53公里。骑行占比较高，为主要运动方式。相比上月，运动次数和总距离均有所增加。最累的一次是15号的骑行，心率为128。"
+    "ai_comment": "本月以骑行、步行、徒步为主，和上一个自然月相比，出勤和总里程都更高。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-11T13:30:08",
+    "last_update": "2026-08-12T18:00:50",
     "stats": {
       "total_count": 10,
       "total_distance": 150.04,
+      "total_duration_minutes": 483,
+      "total_calories": 4144,
       "sports_count": {
         "步行": 3,
         "骑行": 6,
         "跑步": 1
       },
-      "longest_ride_km": 0.0,
-      "longest_run_km": 0.0,
+      "sports_distance": {
+        "步行": 7.08,
+        "骑行": 141.84,
+        "跑步": 1.12
+      },
+      "longest_ride_km": 31.64,
+      "longest_run_km": 4.74,
       "hardest_session": {
         "date": "2号",
         "type": "骑行",
         "hr": 122,
-        "zone": "稳态燃脂 (Z2)"
+        "zone": "仅按平均心率排序"
       },
-      "favorite_time": "暮色",
+      "favorite_time": "晚上",
       "avg_hr": {
-        "步行": "98bpm (舒缓有氧 (Z1))",
-        "骑行": "115bpm (稳态燃脂 (Z2))",
-        "跑步": "117bpm (稳态燃脂 (Z2))"
+        "步行": "98bpm",
+        "骑行": "115bpm",
+        "跑步": "117bpm"
       },
-      "max_streak_days": 5
+      "max_streak_days": 5,
+      "active_days_count": 9
     },
-    "ai_comment": "本月表现尚可，运动频次和里程较上月有所下降，但仍保持一定强度。平均心率数据显示，骑行和跑步的燃脂效果较佳，但需注意步行强度偏低。最长连续运动5天，表现不错，但仍有提升空间。隐患：运动频次偏低，可能影响减脂进度，需调整节奏，加强出勤。建议：增加运动次数，平衡运动强度，预防疲劳。"
+    "ai_comment": "本月以步行、骑行、跑步为主，和上月同期（截至11号）相比，出勤和总里程都更高。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
   }
 }

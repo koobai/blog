@@ -1,8 +1,10 @@
 import json
 import os
 import time
-import random
 import hashlib
+import math
+import re
+import statistics
 import requests
 from datetime import datetime, timedelta 
 from collections import defaultdict
@@ -23,6 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
 MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
+PUBLISH_START_DATE = datetime(2026, 1, 1)
 
 ACTIVITY_TYPE_CN = {
     'Run': '跑步',
@@ -83,6 +86,8 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 FOOD_TITLE_VERSION = 4
+AI_COMMENT_VERSION = 2
+MONTHLY_AI_COMMENT_VERSION = 2
 
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
 OBSOLETE_ACTIVITY_FIELDS = (
@@ -282,248 +287,535 @@ def parse_time(time_str):
     except Exception:
         return datetime.min
 
-# ==========================================
-# 🚀 3. Cloudflare AI 智能私教点评引擎
-# ==========================================
-def generate_ai_comment(activity_type, distance, time_str, hr, pace_str, start_date,
-                        global_gap_days=None, last_type=None,
-                        same_gap_days=None, old_dist=None, old_pace=None, old_hr=None):
-    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
-        return None
-        
-    type_cn = ACTIVITY_TYPE_CN.get(activity_type, '运动')
-    
-    # 🧠 计算季节与时间
-    time_of_day = "未知时间"
-    season = "未知季节"
-    if start_date:
-        try:
-            hour = int(start_date[11:13])
-            block_idx = hour // 3
-            time_zones = ["午夜", "破晓", "清晨", "上午", "正午", "午后", "暮色", "暗夜"]
-            time_of_day = time_zones[block_idx]
-            
-            month = int(start_date[5:7])
-            if month in [3, 4, 5]: season = "春季"
-            elif month in [6, 7, 8]: season = "夏季"
-            elif month in [9, 10, 11]: season = "秋季"
-            else: season = "冬季"
-        except:
-            pass
-            
-    # 🎲 随机视角
-    creative_angles = [
-        "侧重于呼吸、心跳与肌肉的律动感",
-        "侧重于沿途的风景、光影与自然的变化",
-        "侧重于内心的平静、独处与自我对话",
-        "侧重于脚步的节奏、踏频与大地的接触",
-        "侧重于季节的温度、空气的湿度与风的触感",
-        "采用充满力量感、突破极限的激昂语境",
-        "带一点点武侠风、禅意或极其诗意的抽象表达",
-        "侧重于运动后的汗水、卡路里燃烧与多巴胺释放的快感"
-    ]
-    current_focus = random.choice(creative_angles)
-
-    # 💡 组装【双轨时间线】上下文记忆情报
-    context_str = ""
-    if global_gap_days is not None:
-        last_type_cn = ACTIVITY_TYPE_CN.get(last_type, '运动')
-        context_str += f"\n【上下文记忆情报】\n* 整体活跃度：距离上一次运动（{last_type_cn}）相隔了 {global_gap_days} 天。"
-        if same_gap_days is not None and same_gap_days != global_gap_days:
-            context_str += f"\n* 单项连贯性：这是时隔 {same_gap_days} 天后，再次进行【{type_cn}】。"
-        if old_dist is not None and old_pace is not None:
-            context_str += f"\n* 影子对手：上次【{type_cn}】的距离为 {old_dist}公里，配速/均速为 {old_pace}，心率为 {old_hr or '未知'}。"
-    
-    prompt = f"""
-    我刚在【{season}】的【{time_of_day}】完成了一次【{type_cn}】。距离：{distance}公里，用时：{time_str}，配速/均速：{pace_str}，平均心率：{hr or '未知'}。{context_str}
-    
-    请作为一个懂行且高情商的运动私教，生成一段 50-80 字的专业短评。根据心率和配速的比例给出反馈。
-    
-    【评价策略指引】：如果有【上下文记忆情报】，请将其融入短评（如调侃懈怠、夸奖交叉训练、对比影子对手）。
-    【强制创意视角】：本次生成，请使用【{current_focus}】的视角来构思短评！
-    【运动类型铁律】：当前运动是【{type_cn}】！绝对禁止出现其他运动的词汇！
-    【JSON安全铁律】：内部绝对禁止使用双引号（"）和换行符！需要强调请用单引号（'）。
-    【绝对禁令】：绝不能在短评中像机器一样重复写出距离、配速、用时、心率的具体数字！将它们化为感性的描述。
-
-    请严格只返回 JSON 格式数据：
-    {{"comment": "..."}}
-    """
-
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
-    headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
-    payload = {"messages": [{"role": "user", "content": prompt}], "temperature": 0.9, "max_tokens": 1000}
-
+def decode_polyline(encoded, precision=5):
+    if not encoded:
+        return []
+    coordinates = []
+    index = lat = lng = 0
+    factor = 10 ** precision
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=45)
-        if response.status_code == 200:
-            result_text = response.json()['result']['response']
-            clean_text = result_text.replace('```json', '').replace('```', '').strip().replace('\n', ' ').replace('\r', '') 
-            result_json = json.loads(clean_text)
-            return result_json.get('comment')
-    except Exception as e:
-        print(f"⚠️ AI 点评生成失败: {e}")
-    return None
+        while index < len(encoded):
+            values = []
+            for _ in range(2):
+                shift = result = 0
+                while True:
+                    byte = ord(encoded[index]) - 63
+                    index += 1
+                    result |= (byte & 0x1f) << shift
+                    shift += 5
+                    if byte < 0x20:
+                        break
+                values.append(~(result >> 1) if result & 1 else result >> 1)
+            lat += values[0]
+            lng += values[1]
+            coordinates.append((lat / factor, lng / factor))
+    except (IndexError, TypeError, ValueError):
+        return []
+    return coordinates
+
+def haversine_meters(left, right):
+    lat1, lng1 = map(math.radians, left)
+    lat2, lng2 = map(math.radians, right)
+    dlat, dlng = lat2 - lat1, lng2 - lng1
+    value = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlng / 2) ** 2
+    return 6371000 * 2 * math.atan2(math.sqrt(value), math.sqrt(max(0, 1 - value)))
+
+def sample_route(points, sample_count=31):
+    if len(points) < 2:
+        return []
+    cumulative = [0.0]
+    for index in range(1, len(points)):
+        cumulative.append(cumulative[-1] + haversine_meters(points[index - 1], points[index]))
+    total = cumulative[-1]
+    if total <= 0:
+        return []
+
+    result = []
+    segment_index = 1
+    for sample_index in range(sample_count):
+        target = total * sample_index / (sample_count - 1)
+        while segment_index < len(cumulative) - 1 and cumulative[segment_index] < target:
+            segment_index += 1
+        start_distance = cumulative[segment_index - 1]
+        end_distance = cumulative[segment_index]
+        ratio = 0 if end_distance == start_distance else (target - start_distance) / (end_distance - start_distance)
+        start_point, end_point = points[segment_index - 1], points[segment_index]
+        result.append((
+            start_point[0] + (end_point[0] - start_point[0]) * ratio,
+            start_point[1] + (end_point[1] - start_point[1]) * ratio
+        ))
+    return result
+
+def route_match_score(left, right):
+    if len(left) != len(right) or not left:
+        return None
+
+    def score(candidate):
+        distances = sorted(haversine_meters(a, b) for a, b in zip(left, candidate))
+        mean = sum(distances) / len(distances)
+        p90 = distances[min(len(distances) - 1, math.ceil(len(distances) * 0.9) - 1)]
+        return mean, p90
+
+    return min((score(right), score(list(reversed(right)))), key=lambda value: (value[0], value[1]))
+
+def assign_route_groups(activities):
+    """给历史轨迹补稳定同路 ID；App 已按原始轨迹生成的 ID 永远优先保留。"""
+    prototypes = []
+    changed = False
+    for activity in sorted(activities, key=lambda item: parse_time(item.get('start_date_local', ''))):
+        sampled = sample_route(decode_polyline(activity.get('summary_polyline', '')))
+        if not sampled:
+            continue
+
+        activity_type = activity.get('type')
+        try:
+            distance = float(activity.get('distance') or 0)
+        except (TypeError, ValueError):
+            distance = 0
+        if distance <= 0:
+            continue
+
+        preferred_group_id = activity.get('route_group_id')
+        preferred = next((p for p in prototypes if p['group_id'] == preferred_group_id), None)
+        if preferred_group_id and not preferred:
+            prototypes.append({'group_id': preferred_group_id, 'type': activity_type, 'distance': distance, 'route': sampled})
+            continue
+        if preferred:
+            continue
+
+        matches = []
+        for prototype in prototypes:
+            if prototype['type'] != activity_type:
+                continue
+            distance_ratio = max(distance, prototype['distance']) / min(distance, prototype['distance'])
+            if distance_ratio > 1.18:
+                continue
+            score = route_match_score(sampled, prototype['route'])
+            if score and score[0] <= 120 and score[1] <= 250:
+                matches.append((score[0], score[1], prototype))
+
+        if matches:
+            group_id = min(matches, key=lambda value: (value[0], value[1], value[2]['group_id']))[2]['group_id']
+        else:
+            source_key = activity.get('source_id') or activity.get('run_id') or activity.get('start_date_local')
+            digest = hashlib.sha256(f"route-group:{source_key}".encode('utf-8')).hexdigest()[:12]
+            group_id = f"route_{digest}"
+            prototypes.append({'group_id': group_id, 'type': activity_type, 'distance': distance, 'route': sampled})
+
+        if activity.get('route_group_id') != group_id:
+            activity['route_group_id'] = group_id
+            changed = True
+    return changed
 
 # ==========================================
-# 📊 4. 月度洞察数据引擎 (保留完整高级雷达逻辑)
-# ==========================================
-def get_hr_zone_info(bpm):
-    if not bpm or bpm <= 0: return "未知区间"
-    if bpm < 115: return "舒缓有氧 (Z1)"
-    elif bpm <= 129: return "稳态燃脂 (Z2)"
-    elif bpm <= 144: return "有氧强化 (Z3)"
-    elif bpm <= 159: return "乳酸阈值 (Z4)"
-    else: return "无氧极限 (Z5)"
+# AI 点评不让模型自行寻找叙事角度：程序算事实，模型只组织语言。
+AI_FORBIDDEN_TERMS = (
+    '天气', '湿热', '湿冷', '阳光', '微风', '风景', '光影', '空气湿度', '温度适宜',
+    '多巴胺', '燃脂区', '高效燃脂', '心肺功能', '心脏功能', '乳酸', '无氧极限',
+    '身体适应', '身体状态', '恢复状态', '肌肉状态', '突破极限', '减脂效果', '训练效果', '医学'
+)
 
-def get_time_of_day(hour):
-    time_zones = ["午夜", "破晓", "清晨", "上午", "正午", "午后", "暮色", "暗夜"]
-    return time_zones[hour // 3]
+WRONG_SPORT_TERMS = {
+    'Run': ('骑行', '骑车', '游泳', '步行', '徒步', '爬楼'),
+    'TrailRun': ('骑行', '骑车', '游泳', '步行', '爬楼'),
+    'Treadmill': ('骑行', '骑车', '游泳', '步行', '徒步', '爬楼'),
+    'VirtualRun': ('骑行', '骑车', '游泳', '步行', '徒步', '爬楼'),
+    'Ride': ('跑步', '长跑', '短跑', '游泳', '步行', '徒步', '爬楼'),
+    'VirtualRide': ('跑步', '长跑', '短跑', '游泳', '步行', '徒步', '爬楼'),
+    'EBikeRide': ('跑步', '长跑', '短跑', '游泳', '步行', '徒步', '爬楼'),
+    'Walk': ('跑步', '长跑', '短跑', '骑行', '骑车', '游泳', '徒步', '爬楼'),
+    'Hike': ('跑步', '长跑', '短跑', '骑行', '骑车', '游泳', '步行', '爬楼'),
+    'StairStepper': ('跑步', '长跑', '短跑', '骑行', '骑车', '游泳', '步行', '徒步'),
+    'Swim': ('跑步', '长跑', '短跑', '骑行', '骑车', '步行', '徒步', '爬楼')
+}
 
-def calculate_monthly_stats(month_activities):
-    stats = {
-        "total_count": len(month_activities),
-        "total_distance": 0.0,
-        "sports_count": defaultdict(int),
-        "time_preferences": defaultdict(int),
-        "longest_ride_km": 0.0,
-        "longest_run_km": 0.0,
-        "hardest_session": {"date": None, "type": None, "hr": 0, "zone": "未知"},
-        "hr_sums": defaultdict(list), 
-        "active_days": set()
+def duration_seconds(value):
+    if isinstance(value, (int, float)):
+        return int(value)
+    parts = str(value or '').split(':')
+    try:
+        numbers = [int(part) for part in parts]
+    except ValueError:
+        return 0
+    if len(numbers) == 2:
+        return numbers[0] * 60 + numbers[1]
+    if len(numbers) == 3:
+        return numbers[0] * 3600 + numbers[1] * 60 + numbers[2]
+    return 0
+
+def pace_seconds_per_km(activity):
+    seconds = duration_seconds(activity.get('moving_time'))
+    try:
+        distance = float(activity.get('distance') or 0)
+    except (TypeError, ValueError):
+        distance = 0
+    return seconds / distance if seconds > 0 and distance > 0 else None
+
+def compare_direction(current, baseline, tolerance=0.02, lower_is_better=False):
+    if current is None or baseline in (None, 0):
+        return '未知'
+    change = (current - baseline) / baseline
+    if abs(change) <= tolerance:
+        return '接近'
+    if lower_is_better:
+        return '更快' if change < 0 else '更慢'
+    return '更高' if change > 0 else '更低'
+
+def build_activity_facts(activity, older_history):
+    activity_type = activity.get('type')
+    route_group_id = activity.get('route_group_id')
+    current_distance = float(activity.get('distance') or 0)
+    current_pace = pace_seconds_per_km(activity)
+    current_hr = float(activity.get('average_heartrate') or 0) or None
+
+    same_route = [item for item in older_history if route_group_id and item.get('route_group_id') == route_group_id]
+    similar_distance = [
+        item for item in older_history
+        if item.get('type') == activity_type
+        and float(item.get('distance') or 0) > 0
+        and current_distance > 0
+        and abs(float(item.get('distance')) - current_distance) / current_distance <= 0.15
+    ]
+    recent_same_type = [item for item in older_history if item.get('type') == activity_type][:5]
+
+    baseline = None
+    baseline_kind = None
+    if same_route:
+        baseline, baseline_kind = same_route[0], '同一路线的上一次'
+    elif similar_distance:
+        baseline, baseline_kind = similar_distance[0], '同类型且距离相近的上一次'
+    elif recent_same_type:
+        pace_values = [value for value in (pace_seconds_per_km(item) for item in recent_same_type) if value]
+        hr_values = [float(item.get('average_heartrate')) for item in recent_same_type if float(item.get('average_heartrate') or 0) > 0]
+        baseline = {
+            'distance': statistics.median(float(item.get('distance') or 0) for item in recent_same_type),
+            '_pace': statistics.median(pace_values) if pace_values else None,
+            'average_heartrate': statistics.median(hr_values) if hr_values else None
+        }
+        baseline_kind = f'最近{len(recent_same_type)}次同类型记录的中位数'
+
+    comparison = None
+    if baseline:
+        baseline_pace = baseline.get('_pace') or pace_seconds_per_km(baseline)
+        baseline_hr = float(baseline.get('average_heartrate') or 0) or None
+        comparison = {
+            'basis': baseline_kind,
+            'pace': compare_direction(current_pace, baseline_pace, tolerance=0.02, lower_is_better=True),
+            'heart_rate': compare_direction(current_hr, baseline_hr, tolerance=0.03),
+            'distance': compare_direction(current_distance, float(baseline.get('distance') or 0), tolerance=0.03)
+        }
+
+    previous = older_history[0] if older_history else None
+    gap_days = None
+    if previous:
+        gap_days = max(0, (parse_time(activity.get('start_date_local', '')) - parse_time(previous.get('start_date_local', ''))).days)
+
+    return {
+        'sport': ACTIVITY_TYPE_CN.get(activity_type, '运动'),
+        'distance_km': round(current_distance, 2),
+        'duration': activity.get('moving_time') or '未知',
+        'average_heart_rate': round(current_hr) if current_hr else None,
+        'calories': round(float(activity.get('calories') or 0)) or None,
+        'days_since_previous_activity': gap_days,
+        'comparison': comparison
     }
 
-    for act in month_activities:
-        sport_type_cn = ACTIVITY_TYPE_CN.get(act.get('type', 'Unknown'), '运动')
-        dist = act.get('distance', 0)
-        hr = act.get('average_heartrate', 0)
-        start_date = act.get('start_date_local', '')
-        
-        stats['total_distance'] += dist
-        stats['sports_count'][sport_type_cn] += 1
-        
-        if start_date:
-            try:
-                dt = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
-                stats['active_days'].add(dt.date())
-                stats['time_preferences'][get_time_of_day(dt.hour)] += 1
-            except: pass
+def parse_ai_json(response):
+    result_data = response.json().get('result', {}).get('response', '')
+    if isinstance(result_data, dict):
+        return result_data
+    clean_text = str(result_data).replace('```json', '').replace('```', '').strip()
+    start, end = clean_text.find('{'), clean_text.rfind('}')
+    if start < 0 or end < start:
+        return {}
+    return json.loads(clean_text[start:end + 1])
 
-        if hr and hr > stats['hardest_session']['hr']:
-            day_str = f"{int(start_date[8:10])}号" if len(start_date) >= 10 else "未知"
-            stats['hardest_session'] = {"date": day_str, "type": sport_type_cn, "hr": round(hr), "zone": get_hr_zone_info(hr)}
-            
-        if hr: stats['hr_sums'][sport_type_cn].append(hr)
+def validate_ai_comment(comment, activity_type=None, monthly=False):
+    text = re.sub(r'\s+', ' ', str(comment or '')).strip()
+    minimum, maximum = (35, 120) if monthly else (28, 110)
+    if not minimum <= len(text) <= maximum:
+        return None
+    if any(term in text for term in AI_FORBIDDEN_TERMS):
+        return None
+    if not monthly and any(term in text for term in WRONG_SPORT_TERMS.get(activity_type, ())):
+        return None
+    if re.search(r'\d', text):
+        return None
+    return text
 
-    stats['total_distance'] = round(stats['total_distance'], 2)
-    stats['sports_count'] = dict(stats['sports_count'])
-    stats['favorite_time'] = max(stats['time_preferences'], key=stats['time_preferences'].get) if stats['time_preferences'] else "未知"
-    
-    stats['avg_hr'] = {}
-    for stype_cn, hrs in stats['hr_sums'].items():
-        avg_bpm = round(sum(hrs) / len(hrs))
-        stats['avg_hr'][stype_cn] = f"{avg_bpm}bpm ({get_hr_zone_info(avg_bpm)})"
-        
-    sorted_days = sorted(list(stats['active_days']))
-    stats['max_streak_days'] = 1 if sorted_days else 0
-    current_streak = 1 if sorted_days else 0
-    for i in range(1, len(sorted_days)):
-        if sorted_days[i] == sorted_days[i-1] + timedelta(days=1):
-            current_streak += 1
-            stats['max_streak_days'] = max(stats['max_streak_days'], current_streak)
-        else:
-            current_streak = 1
-    
-    del stats['active_days'], stats['time_preferences'], stats['hr_sums']
-    return stats
-
-def generate_monthly_ai_report(month_str, stats, prev_stats, current_day):
-    if not CF_ACCOUNT_ID or not CF_AI_TOKEN: return None
-    
-    if current_day <= 10:
-        phase, action_target = "月初开局阶段", "本月中下旬"
-        radar_rule = "【开局雷达】：月初数据少是正常的，重点评价单次运动的质量。"
-        critique_directive = "【防懈怠警告】：严厉提醒我保持纪律，防止出现热度减退。"
-    elif current_day <= 22:
-        phase, action_target = "月中巡航阶段", "本月冲刺期"
-        radar_rule = "【中和评估雷达】：中立、客观的评估，综合考量目前的出勤频率、心率强度。"
-        critique_directive = "【抓出隐患】：指出目前的潜在短板，及时调整节奏。"
-    else:
-        phase, action_target = "月末总结阶段", "下个自然月"
-        radar_rule = "【全维度月度雷达】：必须全盘考量本月总运动容量。如果有上月数据，必须结合进行对比。"
-        critique_directive = "【无情复盘】：抓出本月整体数据的最大短板，给出犀利专业的诊断。"
-
-    context = f"【本月 ({month_str}) 数据】：总运动 {stats['total_count']} 次，总里程 {stats['total_distance']}公里。最长连续运动 {stats['max_streak_days']} 天。\n偏好：{stats['sports_count']}，最爱【{stats['favorite_time']}】。\n各运动平均心率 {stats['avg_hr']}。\n"
-    if prev_stats: context += f"【对比情报 (上个月)】：总运动 {prev_stats['total_count']} 次，总里程 {prev_stats['total_distance']}公里。\n"
-
-    prompt = f"你是专属“魔鬼”减脂私教。当前处于【{phase}】。请为我的表现写一段全面专业的总结：\n{context}\n\n生成：1. comment: 50-80字专业评语。要求：{radar_rule} {critique_directive} 使用专业减脂词汇。严格返回 JSON: {{\"comment\": \"...\"}}"
-    
+def request_ai_comment(prompt, activity_type=None, monthly=False):
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
+        return None
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
-    try:
-        res = requests.post(url, headers=headers, json={"messages": [{"role": "user", "content": prompt}], "temperature": 0.8, "max_tokens": 1000}, timeout=45)
-        if res.status_code == 200:
-            result_data = res.json()['result']['response']
-            if isinstance(result_data, dict): return result_data.get('comment')
-            clean_text = result_data[result_data.find('{'):result_data.rfind('}')+1].replace('\n', ' ')
-            return json.loads(clean_text).get('comment')
-    except: pass
+    correction = ''
+    for attempt in range(2):
+        payload = {
+            "messages": [{"role": "user", "content": prompt + correction}],
+            "temperature": 0.45 if attempt == 0 else 0.2,
+            "max_tokens": 500
+        }
+        try:
+            response = requests.post(url, headers=headers, json=payload, timeout=45)
+            if response.status_code == 200:
+                comment = parse_ai_json(response).get('comment')
+                validated = validate_ai_comment(comment, activity_type=activity_type, monthly=monthly)
+                if validated:
+                    return validated
+        except Exception as error:
+            print(f"⚠️ AI 点评生成失败: {error}")
+        correction = "\n上一版未通过事实校验。请缩短并重写，绝不添加任何输入中没有的环境、身体、医学或运动数据，也不要出现数字。"
     return None
 
+def fallback_activity_comment(facts):
+    sport = facts['sport']
+    comparison = facts.get('comparison')
+    if not comparison:
+        return f"这次{sport}的数据已经完整记下，距离、用时与强度都有据可查。先把这一笔留作基线，下一次再和真实记录比较。"
+    pace, heart_rate = comparison['pace'], comparison['heart_rate']
+    if pace == '更快' and heart_rate == '更低':
+        result = '节奏更快，平均心率也更低'
+    elif pace == '更快':
+        result = '节奏更快，平均心率没有同步下降' if heart_rate == '更高' else '节奏更快，平均心率变化不大'
+    elif pace == '更慢' and heart_rate == '更低':
+        result = '节奏放缓，平均心率也更低'
+    elif pace == '更慢':
+        result = '节奏稍慢，平均心率也更高' if heart_rate == '更高' else '节奏稍慢，平均心率变化不大'
+    else:
+        result = '节奏接近，平均心率更低' if heart_rate == '更低' else '整体节奏与平均心率都比较接近'
+    return f"这次{sport}和{comparison['basis']}相比，{result}。两项变化都能在现有记录里直接找到，是一笔清楚、可以继续追踪的表现。"
+
+def generate_ai_comment(activity, older_history):
+    facts = build_activity_facts(activity, older_history)
+    prompt = f"""
+你是运动记录的事实编辑，不是医生，也不是训练处方师。
+程序已计算出以下唯一可用事实：
+{json.dumps(facts, ensure_ascii=False, indent=2)}
+
+请把事实写成一段自然、有温度但克制的中文短评。
+要求：只解释上述事实；比较时必须写清比较基准；不猜天气、环境、心情、身体状态或训练效果；不做医学判断；不提其他运动；不提供训练建议；不复述任何具体数字。若某项为未知就不要提。
+只返回 JSON：{{"comment":"..."}}
+"""
+    return request_ai_comment(prompt, activity_type=activity.get('type')) or fallback_activity_comment(facts)
+
+# ==========================================
+# 月报按程序汇总结果，并在当月未结束时采用上月同期口径。
+def get_time_of_day(hour):
+    if hour < 6: return '凌晨'
+    if hour < 9: return '早晨'
+    if hour < 12: return '上午'
+    if hour < 14: return '中午'
+    if hour < 18: return '下午'
+    return '晚上'
+
+def calculate_monthly_stats(month_activities):
+    total_duration_seconds = 0
+    stats = {
+        'total_count': len(month_activities),
+        'total_distance': 0.0,
+        'total_duration_minutes': 0,
+        'total_calories': 0,
+        'sports_count': defaultdict(int),
+        'sports_distance': defaultdict(float),
+        'longest_ride_km': 0.0,
+        'longest_run_km': 0.0,
+        'hardest_session': {'date': None, 'type': None, 'hr': 0, 'zone': '仅按平均心率排序'},
+        'time_preferences': defaultdict(int),
+        'hr_sums': defaultdict(list),
+        'active_days': set()
+    }
+
+    for activity in month_activities:
+        sport_type = activity.get('type', 'Unknown')
+        sport_name = ACTIVITY_TYPE_CN.get(sport_type, '运动')
+        distance = float(activity.get('distance') or 0)
+        heart_rate = float(activity.get('average_heartrate') or 0)
+        calories = float(activity.get('calories') or 0)
+        start_date = activity.get('start_date_local', '')
+
+        stats['total_distance'] += distance
+        total_duration_seconds += duration_seconds(activity.get('moving_time'))
+        stats['total_calories'] += calories
+        stats['sports_count'][sport_name] += 1
+        stats['sports_distance'][sport_name] += distance
+        if sport_type in ('Ride', 'VirtualRide', 'EBikeRide'):
+            stats['longest_ride_km'] = max(stats['longest_ride_km'], distance)
+        if sport_type in ('Run', 'TrailRun', 'Treadmill', 'VirtualRun', 'Walk', 'Hike'):
+            stats['longest_run_km'] = max(stats['longest_run_km'], distance)
+
+        try:
+            date = parse_time(start_date)
+            if date != datetime.min:
+                stats['active_days'].add(date.date())
+                stats['time_preferences'][get_time_of_day(date.hour)] += 1
+        except (TypeError, ValueError):
+            pass
+
+        if heart_rate:
+            stats['hr_sums'][sport_name].append(heart_rate)
+            if heart_rate > stats['hardest_session']['hr']:
+                stats['hardest_session'] = {
+                    'date': f"{int(start_date[8:10])}号" if len(start_date) >= 10 else None,
+                    'type': sport_name,
+                    'hr': round(heart_rate),
+                    'zone': '仅按平均心率排序'
+                }
+
+    sorted_days = sorted(stats['active_days'])
+    max_streak = current_streak = 1 if sorted_days else 0
+    for index in range(1, len(sorted_days)):
+        current_streak = current_streak + 1 if sorted_days[index] == sorted_days[index - 1] + timedelta(days=1) else 1
+        max_streak = max(max_streak, current_streak)
+
+    stats['total_distance'] = round(stats['total_distance'], 2)
+    stats['total_duration_minutes'] = round(total_duration_seconds / 60)
+    stats['total_calories'] = round(stats['total_calories'])
+    stats['sports_count'] = dict(stats['sports_count'])
+    stats['sports_distance'] = {key: round(value, 2) for key, value in stats['sports_distance'].items()}
+    stats['longest_ride_km'] = round(stats['longest_ride_km'], 2)
+    stats['longest_run_km'] = round(stats['longest_run_km'], 2)
+    stats['favorite_time'] = max(stats['time_preferences'], key=stats['time_preferences'].get) if stats['time_preferences'] else '未知'
+    stats['avg_hr'] = {
+        sport: f"{round(sum(values) / len(values))}bpm"
+        for sport, values in stats['hr_sums'].items()
+    }
+    stats['max_streak_days'] = max_streak
+    stats['active_days_count'] = len(stats['active_days'])
+    del stats['time_preferences'], stats['hr_sums'], stats['active_days']
+    return stats
+
+def previous_month(month_key):
+    month_date = datetime.strptime(month_key + '-01', '%Y-%m-%d')
+    return (month_date - timedelta(days=1)).strftime('%Y-%m')
+
+def build_monthly_comparison(stats, previous_stats, comparison_basis):
+    if not previous_stats:
+        return None
+    return {
+        'basis': comparison_basis,
+        'activity_count': compare_direction(stats['total_count'], previous_stats['total_count'], tolerance=0.05),
+        'total_distance': compare_direction(stats['total_distance'], previous_stats['total_distance'], tolerance=0.05),
+        'active_days': compare_direction(stats['active_days_count'], previous_stats['active_days_count'], tolerance=0.05),
+        'duration': compare_direction(stats['total_duration_minutes'], previous_stats['total_duration_minutes'], tolerance=0.05)
+    }
+
+def fallback_monthly_comment(stats, comparison):
+    sports = '、'.join(stats['sports_count'].keys()) or '运动'
+    if not comparison:
+        return f"这个月已经留下以{sports}为主的完整记录，出勤、距离和用时都有明确汇总。先把它作为月度基线，后续变化只和真实历史数据比较。"
+    count, distance = comparison['activity_count'], comparison['total_distance']
+    if count == '更高' and distance == '更高':
+        change = '出勤和总里程都更高'
+    elif count == '更低' and distance == '更低':
+        change = '出勤和总里程都更少'
+    elif count == '接近' and distance == '接近':
+        change = '出勤与总里程都比较接近'
+    else:
+        change = f"出勤{count}，总里程{distance}"
+    return f"本月以{sports}为主，和{comparison['basis']}相比，{change}。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
+
+def generate_monthly_ai_report(month_str, stats, previous_stats, comparison_basis):
+    comparison = build_monthly_comparison(stats, previous_stats, comparison_basis)
+    facts = {
+        'month': month_str,
+        'stats': stats,
+        'comparison': comparison
+    }
+    prompt = f"""
+你是月度运动记录的事实编辑。程序已经完成全部计算，以下是唯一可使用的事实：
+{json.dumps(facts, ensure_ascii=False, indent=2)}
+
+请写一段自然、克制的中文月度点评。必须写清比较口径；只描述运动次数、活跃天数、距离、用时、运动类型和平均心率中确实存在的变化。不猜天气、环境、心情、身体状态或训练效果，不做医学判断，不提供训练处方，不复述具体数字。
+只返回 JSON：{{"comment":"..."}}
+"""
+    return request_ai_comment(prompt, monthly=True) or fallback_monthly_comment(stats, comparison)
+
 def update_monthly_insights(local_data):
-    if not local_data: return
+    if not local_data:
+        return
     insights = {}
     if os.path.exists(MONTHLY_FILE):
-        with open(MONTHLY_FILE, 'r', encoding='utf-8') as f:
-            try: insights = json.load(f)
-            except: pass
+        with open(MONTHLY_FILE, 'r', encoding='utf-8') as file:
+            try:
+                insights = json.load(file)
+            except json.JSONDecodeError:
+                insights = {}
 
     months_data = defaultdict(list)
-    for act in local_data:
-        date_str = act.get('start_date_local', '')
-        if len(date_str) >= 7: months_data[date_str[0:7]].append(act)
-            
-    sorted_months = sorted(months_data.keys(), reverse=True)
-    for i, current_month_key in enumerate(sorted_months):
-        current_stats = calculate_monthly_stats(months_data[current_month_key])
-        prev_month_key = sorted_months[i+1] if i + 1 < len(sorted_months) else None
-        prev_stats = calculate_monthly_stats(months_data[prev_month_key]) if prev_month_key else None
-        
-        need_ai_update = True
-        if current_month_key in insights:
-            old_stats = insights[current_month_key].get('stats', {})
-            old_comment = insights[current_month_key].get('ai_comment', '')
-            
-            # 💡 核心修复：检查数据是否变化 AND 文案是否有效
-            is_data_unchanged = (old_stats.get('total_count') == current_stats['total_count'] and old_stats.get('total_distance') == current_stats['total_distance'])
-            # 如果旧文案是以 "【" 开头的，说明它是本地解析出来的兜底模板，属于无效文案，必须重写
-            is_ai_comment_valid = bool(old_comment) and not old_comment.startswith("【")
-            
-            # 只有当数据一模一样，且现有的文案是真实的 AI 文案时，才跳过更新
-            if is_data_unchanged and is_ai_comment_valid:
-                need_ai_update = False 
+    for activity in local_data:
+        date_string = activity.get('start_date_local', '')
+        if len(date_string) >= 7:
+            months_data[date_string[:7]].append(activity)
 
-        if need_ai_update:
-            print(f"📈 检测到 {current_month_key} 数据或文案需要更新，正在呼叫 AI 教练撰写月报...")
-            latest_act_date = months_data[current_month_key][0].get('start_date_local', '')
-            comment = generate_monthly_ai_report(current_month_key, current_stats, prev_stats, int(latest_act_date[8:10]) if len(latest_act_date) >= 10 else 15)
-            if comment:
-                insights[current_month_key] = {
-                    "month_str": current_month_key, 
-                    "last_update": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), 
-                    "stats": current_stats, 
-                    "ai_comment": comment
-                }
-                with open(MONTHLY_FILE, 'w', encoding='utf-8') as f:
-                    json.dump(insights, f, ensure_ascii=False, indent=2)
-                time.sleep(2)
+    changed = False
+    for stale_month in set(insights) - set(months_data):
+        del insights[stale_month]
+        changed = True
+
+    latest_month = max(months_data.keys())
+    for month_key in sorted(months_data.keys()):
+        month_activities = months_data[month_key]
+        stats = calculate_monthly_stats(month_activities)
+        previous_key = previous_month(month_key)
+        previous_activities = months_data.get(previous_key, [])
+
+        if month_key == latest_month:
+            cutoff_day = max(parse_time(item.get('start_date_local', '')).day for item in month_activities)
+            comparable_previous = [
+                item for item in previous_activities
+                if parse_time(item.get('start_date_local', '')) != datetime.min
+                and parse_time(item.get('start_date_local', '')).day <= cutoff_day
+            ]
+            comparison_basis = f'上月同期（截至{cutoff_day}号）'
+        else:
+            comparable_previous = previous_activities
+            comparison_basis = '上一个自然月'
+
+        previous_stats = calculate_monthly_stats(comparable_previous) if comparable_previous else None
+        old_entry = insights.get(month_key, {})
+        stats_changed = old_entry.get('stats') != stats
+        needs_ai = (
+            not old_entry.get('ai_comment')
+            or old_entry.get('ai_comment_version') != MONTHLY_AI_COMMENT_VERSION
+            or stats_changed
+        )
+
+        entry = dict(old_entry)
+        entry.update({'month_str': month_key, 'stats': stats})
+        if needs_ai:
+            comparison = build_monthly_comparison(stats, previous_stats, comparison_basis)
+            if CF_ACCOUNT_ID and CF_AI_TOKEN:
+                print(f"📈 {month_key} 采用可信事实口径重写月报...")
+                entry['ai_comment'] = generate_monthly_ai_report(month_key, stats, previous_stats, comparison_basis)
+                entry['ai_comment_version'] = MONTHLY_AI_COMMENT_VERSION
+                time.sleep(0.5)
+            else:
+                # 本地没有云端凭证时先落可靠兜底；不写版本号，线上工作流仍会用 AI 重写。
+                entry['ai_comment'] = fallback_monthly_comment(stats, comparison)
+
+        if stats_changed or entry != old_entry:
+            entry['last_update'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+            insights[month_key] = entry
+            changed = True
+
+    if changed:
+        with open(MONTHLY_FILE, 'w', encoding='utf-8') as file:
+            json.dump(insights, file, ensure_ascii=False, indent=2)
 
 # ==========================================
 # 5. 🚀 核心自愈运行逻辑
 # ==========================================
 if __name__ == '__main__':
     print(f"🎯 正在扫描本地运动库: {FILE_NAME}")
-    local_data = load_local_data()
-    needs_save = False
+    all_local_data = load_local_data()
+    local_data = [
+        item for item in all_local_data
+        if parse_time(item.get('start_date_local', '')) >= PUBLISH_START_DATE
+    ]
+    removed_before_publish_date = len(all_local_data) - len(local_data)
+    needs_save = removed_before_publish_date > 0
+    if removed_before_publish_date:
+        print(f"🧹 已移除 2026 年以前的 {removed_before_publish_date} 条记录。")
 
     # 🧹 清理已退出数据契约的字段，避免旧客户端再次写回。
     for item in local_data:
@@ -531,6 +823,10 @@ if __name__ == '__main__':
             if key in item:
                 del item[key]
                 needs_save = True
+
+    # 🧭 App 会用未裁剪原始轨迹生成分组；旧数据由脚本按同一套严格阈值补齐。
+    if assign_route_groups(local_data):
+        needs_save = True
 
     # 🍔 食物换算按时间顺序稳定生成。
     recent_food_keys = []
@@ -588,37 +884,36 @@ if __name__ == '__main__':
         if item.get('distance_title_key'):
             recent_landmark_keys.append(item['distance_title_key'])
 
-    # 🧠 AI 只补全专业点评，不再参与标题生成。
-    for i, item in enumerate(local_data):
-        if not item.get('ai_comment'):
+    # 🧠 程序先算事实，AI 只改写语气；版本升级时会重写旧点评。
+    if CF_ACCOUNT_ID and CF_AI_TOKEN:
+        for i, item in enumerate(local_data):
+            if item.get('ai_comment') and item.get('ai_comment_version') == AI_COMMENT_VERSION:
+                continue
             safe_time = item.get('start_date_local', '')
-            print(f"🛠️ 发现记录 [{safe_time}] 缺乏 AI 点评，正在呼叫私人教练...")
-            
+            print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
             older_history = local_data[i+1:]
-            current_dt = parse_time(safe_time)
-            global_prev = older_history[0] if older_history else None
-            same_prev = next((x for x in older_history if x.get('type') == item.get('type')), None)
-            
-            comment = generate_ai_comment(
-                item.get('type'), item.get('distance', 0), item.get('moving_time', ''), item.get('average_heartrate'), f"{item.get('pace_num', '')}{item.get('pace_unit', '')}", safe_time,
-                (current_dt - parse_time(global_prev['start_date_local'])).days if global_prev else None,
-                global_prev.get('type') if global_prev else None,
-                (current_dt - parse_time(same_prev['start_date_local'])).days if same_prev else None,
-                same_prev.get('distance') if same_prev else None,
-                f"{same_prev.get('pace_num', '')}{same_prev.get('pace_unit', '')}" if same_prev else None,
-                same_prev.get('average_heartrate') if same_prev else None
-            )
-            
-            if comment:
-                item['ai_comment'] = comment
+            item['ai_comment'] = generate_ai_comment(item, older_history)
+            item['ai_comment_version'] = AI_COMMENT_VERSION
+            needs_save = True
+            print("   ↳ 点评已通过校验")
+            time.sleep(0.5)
+    else:
+        pending_count = 0
+        for i, item in enumerate(local_data):
+            if item.get('ai_comment') and item.get('ai_comment_version') == AI_COMMENT_VERSION:
+                continue
+            fallback = fallback_activity_comment(build_activity_facts(item, local_data[i+1:]))
+            if item.get('ai_comment') != fallback:
+                item['ai_comment'] = fallback
                 needs_save = True
-                print("   ↳ 点评生成成功")
-            time.sleep(1) # 防止触发 API 频率限制
+            pending_count += 1
+        if pending_count:
+            print(f"🛡️ 本地先写入 {pending_count} 条可信兜底；线上同步会再由 AI 优化表达。")
             
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:
             json.dump(local_data, f, ensure_ascii=False, indent=2)
-        print("✅ 趣味标题、杭州距离与 AI 点评更新完毕！")
+        print("✅ 路线分组、趣味标题、杭州距离与点评数据已更新！")
     else:
         print("💤 所有记录均已具备趣味标题、杭州距离与 AI 点评，跳过更新。")
 
