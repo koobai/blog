@@ -86,8 +86,8 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 FOOD_TITLE_VERSION = 4
-AI_COMMENT_VERSION = 2
-MONTHLY_AI_COMMENT_VERSION = 2
+AI_COMMENT_VERSION = 3
+MONTHLY_AI_COMMENT_VERSION = 3
 
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
 OBSOLETE_ACTIVITY_FIELDS = (
@@ -412,7 +412,10 @@ def assign_route_groups(activities):
 AI_FORBIDDEN_TERMS = (
     '天气', '湿热', '湿冷', '阳光', '微风', '风景', '光影', '空气湿度', '温度适宜',
     '多巴胺', '燃脂区', '高效燃脂', '心肺功能', '心脏功能', '乳酸', '无氧极限',
-    '身体适应', '身体状态', '恢复状态', '肌肉状态', '突破极限', '减脂效果', '训练效果', '医学'
+    '身体', '恢复', '体能', '状态', '负荷', '疲劳', '轻松', '从容', '吃力',
+    '稳定', '平稳', '强度', '热量', '卡路里', '消耗', '习惯', '体验', '感觉',
+    '进步', '退步', '提升', '逊色', '优势', '出色', '优秀', '积极', '可控', '温和',
+    '建议', '继续', '加油', '留意', '训练', '减脂', '医学'
 )
 
 WRONG_SPORT_TERMS = {
@@ -505,18 +508,8 @@ def build_activity_facts(activity, older_history):
             'distance': compare_direction(current_distance, float(baseline.get('distance') or 0), tolerance=0.03)
         }
 
-    previous = older_history[0] if older_history else None
-    gap_days = None
-    if previous:
-        gap_days = max(0, (parse_time(activity.get('start_date_local', '')) - parse_time(previous.get('start_date_local', ''))).days)
-
     return {
         'sport': ACTIVITY_TYPE_CN.get(activity_type, '运动'),
-        'distance_km': round(current_distance, 2),
-        'duration': activity.get('moving_time') or '未知',
-        'average_heart_rate': round(current_hr) if current_hr else None,
-        'calories': round(float(activity.get('calories') or 0)) or None,
-        'days_since_previous_activity': gap_days,
         'comparison': comparison
     }
 
@@ -525,10 +518,22 @@ def parse_ai_json(response):
     if isinstance(result_data, dict):
         return result_data
     clean_text = str(result_data).replace('```json', '').replace('```', '').strip()
-    start, end = clean_text.find('{'), clean_text.rfind('}')
-    if start < 0 or end < start:
-        return {}
-    return json.loads(clean_text[start:end + 1])
+    decoder = json.JSONDecoder()
+    for match in re.finditer(r'\{', clean_text):
+        try:
+            value, _ = decoder.raw_decode(clean_text[match.start():])
+            if isinstance(value, dict):
+                return value
+        except json.JSONDecodeError:
+            continue
+    return {}
+
+def contains_explicit_measurement(text):
+    # “上一次”是比较口径，不属于复述数值；其余带单位的中英文数字均拒绝。
+    scan_text = re.sub(r'(?:这|上|前|最近|同)一(?:次|回)', '', text)
+    chinese_number = r'[零〇一二两三四五六七八九十百千万点半]+'
+    unit = r'(?:公里|千米|米|小时|分钟|分|秒|千卡|大卡|天|日|周|月|次|回|种|项|圈|趟)'
+    return bool(re.search(rf'{chinese_number}\s*(?:个)?\s*{unit}', scan_text))
 
 def validate_ai_comment(comment, activity_type=None, monthly=False):
     text = re.sub(r'\s+', ' ', str(comment or '')).strip()
@@ -539,7 +544,7 @@ def validate_ai_comment(comment, activity_type=None, monthly=False):
         return None
     if not monthly and any(term in text for term in WRONG_SPORT_TERMS.get(activity_type, ())):
         return None
-    if re.search(r'\d', text):
+    if re.search(r'\d', text) or contains_explicit_measurement(text):
         return None
     return text
 
@@ -587,13 +592,15 @@ def fallback_activity_comment(facts):
 
 def generate_ai_comment(activity, older_history):
     facts = build_activity_facts(activity, older_history)
+    if not facts.get('comparison'):
+        return fallback_activity_comment(facts)
     prompt = f"""
 你是运动记录的事实编辑，不是医生，也不是训练处方师。
 程序已计算出以下唯一可用事实：
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
 请把事实写成一段自然、有温度但克制的中文短评。
-要求：只解释上述事实；比较时必须写清比较基准；不猜天气、环境、心情、身体状态或训练效果；不做医学判断；不提其他运动；不提供训练建议；不复述任何具体数字。若某项为未知就不要提。
+要求：只改写 comparison 中已经算好的变化方向，并写清比较基准；不做“进步、退步、恢复、状态、轻松、稳定、强度、身体负荷”等综合判断；不猜天气、环境、心情或训练效果；不做医学判断；不提其他运动；不提供训练建议；不复述任何具体数字。若某项为未知就不要提。
 只返回 JSON：{{"comment":"..."}}
 """
     return request_ai_comment(prompt, activity_type=activity.get('type')) or fallback_activity_comment(facts)
@@ -712,20 +719,23 @@ def fallback_monthly_comment(stats, comparison):
         change = '出勤与总里程都比较接近'
     else:
         change = f"出勤{count}，总里程{distance}"
-    return f"本月以{sports}为主，和{comparison['basis']}相比，{change}。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
+    basis = '上月同期' if comparison['basis'].startswith('上月同期') else comparison['basis']
+    return f"本月以{sports}为主，和{basis}相比，{change}。运动记录的变化方向很清楚，比较采用的是相同日期范围。"
 
 def generate_monthly_ai_report(month_str, stats, previous_stats, comparison_basis):
     comparison = build_monthly_comparison(stats, previous_stats, comparison_basis)
+    prompt_comparison = dict(comparison) if comparison else None
+    if prompt_comparison and prompt_comparison['basis'].startswith('上月同期'):
+        prompt_comparison['basis'] = '上月同期'
     facts = {
-        'month': month_str,
-        'stats': stats,
-        'comparison': comparison
+        'sports': list(stats['sports_count'].keys()),
+        'comparison': prompt_comparison
     }
     prompt = f"""
 你是月度运动记录的事实编辑。程序已经完成全部计算，以下是唯一可使用的事实：
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
-请写一段自然、克制的中文月度点评。必须写清比较口径；只描述运动次数、活跃天数、距离、用时、运动类型和平均心率中确实存在的变化。不猜天气、环境、心情、身体状态或训练效果，不做医学判断，不提供训练处方，不复述具体数字。
+请写一段自然、克制的中文月度点评。必须写清比较口径；只改写 comparison 中已经算好的运动次数、活跃天数、距离和用时变化，并可提及 sports 中已有的运动类型。不做“状态、进步、恢复、轻松、稳定、强度”等综合判断；不猜天气、环境、心情、身体情况或训练效果；不做医学判断；不提供训练处方；不复述具体数字。
 只返回 JSON：{{"comment":"..."}}
 """
     return request_ai_comment(prompt, monthly=True) or fallback_monthly_comment(stats, comparison)
@@ -753,6 +763,7 @@ def update_monthly_insights(local_data):
         changed = True
 
     latest_month = max(months_data.keys())
+    stats_changed_months = set()
     for month_key in sorted(months_data.keys()):
         month_activities = months_data[month_key]
         stats = calculate_monthly_stats(month_activities)
@@ -778,6 +789,7 @@ def update_monthly_insights(local_data):
             not old_entry.get('ai_comment')
             or old_entry.get('ai_comment_version') != MONTHLY_AI_COMMENT_VERSION
             or stats_changed
+            or previous_key in stats_changed_months
         )
 
         entry = dict(old_entry)
@@ -792,11 +804,14 @@ def update_monthly_insights(local_data):
             else:
                 # 本地没有云端凭证时先落可靠兜底；不写版本号，线上工作流仍会用 AI 重写。
                 entry['ai_comment'] = fallback_monthly_comment(stats, comparison)
+                entry.pop('ai_comment_version', None)
 
         if stats_changed or entry != old_entry:
             entry['last_update'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
             insights[month_key] = entry
             changed = True
+        if stats_changed:
+            stats_changed_months.add(month_key)
 
     if changed:
         with open(MONTHLY_FILE, 'w', encoding='utf-8') as file:
@@ -895,7 +910,7 @@ if __name__ == '__main__':
             item['ai_comment'] = generate_ai_comment(item, older_history)
             item['ai_comment_version'] = AI_COMMENT_VERSION
             needs_save = True
-            print("   ↳ 点评已通过校验")
+            print("   ↳ 点评已写入（AI 校验通过或采用可信兜底）")
             time.sleep(0.5)
     else:
         pending_count = 0
@@ -905,6 +920,8 @@ if __name__ == '__main__':
             fallback = fallback_activity_comment(build_activity_facts(item, local_data[i+1:]))
             if item.get('ai_comment') != fallback:
                 item['ai_comment'] = fallback
+                needs_save = True
+            if item.pop('ai_comment_version', None) is not None:
                 needs_save = True
             pending_count += 1
         if pending_count:

@@ -9,6 +9,8 @@ on:
   push:
     paths:
       - 'assets/activities.json'
+      - 'fetch_strava.py'
+      - '.github/workflows/sync-strava.yml'
   # 保留手动触发，方便你随时在网页端手动运行
   workflow_dispatch:
 
