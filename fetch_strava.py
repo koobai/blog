@@ -39,21 +39,6 @@ ACTIVITY_TYPE_CN = {
     'WaterSport': '水上运动'
 }
 
-ACTIVITY_TITLE_VERBS = {
-    'Run': '跑掉',
-    'TrailRun': '跑掉',
-    'Treadmill': '跑掉',
-    'VirtualRun': '跑掉',
-    'Ride': '骑掉',
-    'VirtualRide': '骑掉',
-    'EBikeRide': '骑掉',
-    'Walk': '走掉',
-    'Hike': '走掉',
-    'StairStepper': '爬掉',
-    'Swim': '游掉',
-    'WaterSport': '游掉'
-}
-
 ACTIVITY_DISTANCE_VERBS = {
     'Run': '跑了',
     'TrailRun': '跑了',
@@ -99,6 +84,15 @@ FOOD_EQUIVALENTS = [
 ]
 FOOD_TITLE_VERSION = 4
 
+# 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
+OBSOLETE_ACTIVITY_FIELDS = (
+    'ai_title',
+    'food_title',
+    'distance_title_kind',
+    'average_speed',
+    'source_timezone'
+)
+
 # 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
 # preferred_groups 是“软归类”：首选类型会有更高概率，其他运动仍可以偶尔抽到。
 DISTANCE_EQUIVALENTS = [
@@ -139,16 +133,15 @@ def format_food_count(count):
     """小数量使用更自然的中文，大数量继续支持任意整数。"""
     return CHINESE_COUNTS.get(count, str(count))
 
-def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
-    """按实际消耗选择一个自然、稳定且尽量不重复的趣味标题。"""
-    verb = ACTIVITY_TITLE_VERBS.get(activity_type)
+def generate_energy_title(calories, run_id, recent_food_keys=None):
+    """按实际消耗选择一个自然、稳定且尽量不重复的食物换算。"""
     try:
         calories = float(calories or 0)
     except (TypeError, ValueError):
         calories = 0
 
-    if not verb or calories <= 0:
-        return None, None, None
+    if calories <= 0:
+        return None, None
 
     recent_food_keys = set(recent_food_keys or [])
     candidates = []
@@ -178,9 +171,8 @@ def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
     selected_index = int(digest[:8], 16) % len(eligible)
     _, selected_food, selected_count = eligible[selected_index]
     food_text = f"{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
-    title = f"{verb}{food_text}"
     energy_title = f"燃掉{food_text}"
-    return title, energy_title, selected_food['key']
+    return energy_title, selected_food['key']
 
 def format_landmark_count(count, unit, name):
     """把 1、1.5、2.5 等数量写成适合卡片的简短中文。"""
@@ -236,12 +228,12 @@ def generate_distance_title(activity_type, distance, elevation, run_id, recent_k
             else:
                 eligible = sorted(candidates, key=lambda candidate: candidate[0])[:1]
         _, landmark, count = stable_landmark_choice(eligible, run_id, elevation, 'elevation-title-v1', recent_keys)
-        return f"爬了{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'elevation'
+        return f"爬了{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key']
 
     distance_verb = ACTIVITY_DISTANCE_VERBS.get(activity_type)
     activity_group = ACTIVITY_DISTANCE_GROUPS.get(activity_type)
     if distance <= 0 or not distance_verb or not activity_group:
-        return None, None, None
+        return None, None
 
     candidates = []
     for landmark in DISTANCE_EQUIVALENTS:
@@ -271,7 +263,7 @@ def generate_distance_title(activity_type, distance, elevation, run_id, recent_k
     _, landmark, count, _, _, _ = stable_landmark_choice(
         weighted_candidates, run_id, distance, 'distance-title-v2', recent_keys
     )
-    return f"{distance_verb}{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'distance'
+    return f"{distance_verb}{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key']
 
 def load_local_data():
     if os.path.exists(FILE_NAME):
@@ -533,33 +525,33 @@ if __name__ == '__main__':
     local_data = load_local_data()
     needs_save = False
 
-    # 🍔 旧 AI 标题全部清理；趣味标题按时间顺序稳定生成。
+    # 🧹 清理已退出数据契约的字段，避免旧客户端再次写回。
+    for item in local_data:
+        for key in OBSOLETE_ACTIVITY_FIELDS:
+            if key in item:
+                del item[key]
+                needs_save = True
+
+    # 🍔 食物换算按时间顺序稳定生成。
     recent_food_keys = []
     for item in reversed(local_data):
-        if 'ai_title' in item:
-            del item['ai_title']
-            needs_save = True
-
         should_regenerate_title = (
-            not item.get('food_title') or
             not item.get('energy_title') or
             item.get('food_title_version') != FOOD_TITLE_VERSION
         )
         if should_regenerate_title:
-            title, energy_title, food_key = generate_food_title(
-                item.get('type'),
+            energy_title, food_key = generate_energy_title(
                 item.get('calories'),
                 item.get('run_id'),
                 recent_food_keys[-3:]
             )
-            if title:
-                item['food_title'] = title
+            if energy_title:
                 item['energy_title'] = energy_title
                 item['food_key'] = food_key
                 item['food_title_version'] = FOOD_TITLE_VERSION
                 needs_save = True
             else:
-                for key in ('food_title', 'energy_title', 'food_key', 'food_title_version'):
+                for key in ('energy_title', 'food_key', 'food_title_version'):
                     if key in item:
                         del item[key]
                         needs_save = True
@@ -575,7 +567,7 @@ if __name__ == '__main__':
             item.get('distance_title_version') != DISTANCE_TITLE_VERSION
         )
         if should_regenerate_distance:
-            title, landmark_key, title_kind = generate_distance_title(
+            title, landmark_key = generate_distance_title(
                 item.get('type'),
                 item.get('distance'),
                 item.get('total_elevation_gain'),
@@ -585,11 +577,10 @@ if __name__ == '__main__':
             if title:
                 item['distance_title'] = title
                 item['distance_title_key'] = landmark_key
-                item['distance_title_kind'] = title_kind
                 item['distance_title_version'] = DISTANCE_TITLE_VERSION
                 needs_save = True
             else:
-                for key in ('distance_title', 'distance_title_key', 'distance_title_kind', 'distance_title_version'):
+                for key in ('distance_title', 'distance_title_key', 'distance_title_version'):
                     if key in item:
                         del item[key]
                         needs_save = True

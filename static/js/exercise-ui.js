@@ -82,7 +82,6 @@
       foodCount: selected.count,
       strongestDay: Number(strongestRun.start_date_local?.slice(8, 10)) || null,
       strongestTitle: strongestRun.energy_title
-        || strongestRun.food_title?.replace(/^(跑掉|骑掉|走掉|爬掉|游掉)/, '燃掉')
         || strongestRun.name
         || strongestRun.fallback_name
         || ''
