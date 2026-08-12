@@ -334,6 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const distanceUnit = runData.distance > 0 ? 'km' : ''; 
         const runTime = runData.moving_time || '--';
         const heartRate = runData.average_heartrate || '--';
+        const hasCalories = Number(runData.calories) > 0;
+        const calories = hasCalories ? Math.round(Number(runData.calories)) : '--';
         const paceNum = runData.distance > 0 ? (runData.pace_num || '--') : '--';
         const paceUnit = runData.distance > 0 ? (runData.pace_unit || '') : '';
         const color = getColor(runData.type);
@@ -378,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="detailStatBlock"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
               <div class="detailStatBlock"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
               <div class="detailStatBlock"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
+              <div class="detailStatBlock"><span class="statLabel">千卡</span><span class="statVal">${calories}</span></div>
             </div>
           </div>
 
@@ -602,4 +605,4 @@ document.addEventListener('DOMContentLoaded', () => {
       
     }
   }; 
-}); 
+});
