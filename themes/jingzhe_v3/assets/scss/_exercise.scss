@@ -1356,6 +1356,11 @@
 }
 /* 2. 激活海报模式后的卡片变身 */
 #map-wrapper.show-poster-mode {
+  /* 分享海报只保留海报自身信息，避免无轨迹说明与 AI 点评重复叠加。 */
+  .routeStampOverlay {
+    display: none !important;
+  }
+
   .mapboxgl-control-container {
     display: none !important;
   }
