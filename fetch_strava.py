@@ -54,6 +54,31 @@ ACTIVITY_TITLE_VERBS = {
     'WaterSport': '游掉'
 }
 
+ACTIVITY_DISTANCE_VERBS = {
+    'Run': '跑了',
+    'TrailRun': '跑了',
+    'Treadmill': '跑了',
+    'VirtualRun': '跑了',
+    'Ride': '骑了',
+    'VirtualRide': '骑了',
+    'EBikeRide': '骑了',
+    'Walk': '走了',
+    'Hike': '走了',
+    'StairStepper': '爬了'
+}
+
+ACTIVITY_DISTANCE_GROUPS = {
+    'Run': 'run',
+    'TrailRun': 'run',
+    'Treadmill': 'run',
+    'VirtualRun': 'run',
+    'Ride': 'ride',
+    'VirtualRide': 'ride',
+    'EBikeRide': 'ride',
+    'Walk': 'walk',
+    'Hike': 'hike'
+}
+
 # 趣味能量换算表。数值只用于挑选自然的整数标题，不作为营养建议展示。
 FOOD_EQUIVALENTS = [
     {'key': 'sugar_cube', 'name': '方糖', 'unit': '块', 'kcal': 16},
@@ -72,15 +97,29 @@ FOOD_EQUIVALENTS = [
     {'key': 'milk_tea', 'name': '奶茶', 'unit': '杯', 'kcal': 450},
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
-FOOD_TITLE_VERSION = 2
+FOOD_TITLE_VERSION = 4
 
 # 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
+# preferred_groups 是“软归类”：首选类型会有更高概率，其他运动仍可以偶尔抽到。
 DISTANCE_EQUIVALENTS = [
-    {'key': 'track', 'name': '操场', 'unit': '圈', 'km': 0.4, 'min_km': 0.2, 'max_km': 4.8, 'max_count': 12},
-    {'key': 'bai_causeway', 'name': '白堤', 'unit': '趟', 'km': 1.0, 'min_km': 0.6, 'max_km': 5.5, 'max_count': 6},
-    {'key': 'qiantang_bridge', 'name': '钱塘江大桥', 'unit': '趟', 'km': 1.453, 'min_km': 1.2, 'max_km': 8.5, 'max_count': 6},
-    {'key': 'su_causeway', 'name': '苏堤', 'unit': '趟', 'km': 2.8, 'min_km': 2.3, 'max_km': 16.8, 'max_count': 6},
-    {'key': 'west_lake', 'name': '西湖', 'unit': '圈', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6}
+    {'key': 'track', 'name': '操场', 'unit': '圈', 'km': 0.4, 'min_km': 0.2, 'max_km': 4.8, 'max_count': 12, 'preferred_groups': ('run', 'walk')},
+    {'key': 'bai_causeway', 'name': '白堤', 'unit': '趟', 'km': 1.0, 'min_km': 0.6, 'max_km': 5.5, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
+    {'key': 'qiantang_bridge', 'name': '钱塘江大桥', 'unit': '趟', 'km': 1.453, 'min_km': 1.2, 'max_km': 8.5, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
+    {'key': 'hubin_pedestrian_street', 'name': '湖滨步行街', 'unit': '趟', 'km': 2.0, 'min_km': 1.5, 'max_km': 10.0, 'max_count': 5, 'preferred_groups': ('run', 'walk')},
+    {'key': 'su_causeway', 'name': '苏堤', 'unit': '趟', 'km': 2.8, 'min_km': 2.3, 'max_km': 16.8, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
+    {'key': 'yang_causeway', 'name': '杨公堤', 'unit': '趟', 'km': 3.4, 'min_km': 2.8, 'max_km': 20.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
+    {'key': 'wentao_riverside', 'name': '闻涛沿江线', 'unit': '趟', 'km': 4.4, 'min_km': 3.5, 'max_km': 26.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
+    {'key': 'jiuxi_baita', 'name': '九溪白塔线', 'unit': '趟', 'km': 7.0, 'min_km': 5.2, 'max_km': 35.0, 'max_count': 5, 'preferred_groups': ('run', 'walk', 'hike')},
+    {'key': 'imperial_city_route', 'name': '皇城根线', 'unit': '趟', 'km': 8.0, 'min_km': 6.0, 'max_km': 40.0, 'max_count': 5, 'preferred_groups': ('run', 'walk', 'hike')},
+    {'key': 'jiangnan_avenue', 'name': '江南大道', 'unit': '趟', 'km': 9.0, 'min_km': 6.7, 'max_km': 45.0, 'max_count': 5, 'preferred_groups': ('ride', 'run', 'walk')},
+    {'key': 'west_lake', 'name': '西湖', 'unit': '圈', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
+    {'key': 'jingshan_trail', 'name': '径山古道', 'unit': '趟', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
+    {'key': 'chaoshan_loop', 'name': '超山环线', 'unit': '圈', 'km': 10.7, 'min_km': 8.0, 'max_km': 64.2, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
+    {'key': 'shili_langdang', 'name': '十里琅珰', 'unit': '趟', 'km': 12.0, 'min_km': 9.0, 'max_km': 72.0, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
+    {'key': 'yuhangtang_river', 'name': '余杭塘河', 'unit': '趟', 'km': 15.73, 'min_km': 11.8, 'max_km': 94.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
+    {'key': 'dajingshan_greenway', 'name': '大径山绿道', 'unit': '趟', 'km': 18.0, 'min_km': 13.5, 'max_km': 108.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'hike')},
+    {'key': 'gaoting_trail', 'name': '皋亭山步道', 'unit': '趟', 'km': 30.0, 'min_km': 22.5, 'max_km': 180.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
+    {'key': 'qingshan_lake_greenway', 'name': '青山湖绿道', 'unit': '圈', 'km': 42.195, 'min_km': 31.6, 'max_km': 253.2, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'hike')}
 ]
 
 ELEVATION_EQUIVALENTS = [
@@ -89,7 +128,7 @@ ELEVATION_EQUIVALENTS = [
 ]
 
 ELEVATION_ACTIVITY_TYPES = {'StairStepper'}
-DISTANCE_TITLE_VERSION = 4
+DISTANCE_TITLE_VERSION = 6
 
 CHINESE_COUNTS = {
     1: '一', 2: '两', 3: '三', 4: '四', 5: '五',
@@ -109,7 +148,7 @@ def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
         calories = 0
 
     if not verb or calories <= 0:
-        return None, None
+        return None, None, None
 
     recent_food_keys = set(recent_food_keys or [])
     candidates = []
@@ -138,8 +177,10 @@ def generate_food_title(activity_type, calories, run_id, recent_food_keys=None):
     digest = hashlib.sha256(f"{run_id}:{calories}:food-title".encode('utf-8')).hexdigest()
     selected_index = int(digest[:8], 16) % len(eligible)
     _, selected_food, selected_count = eligible[selected_index]
-    title = f"{verb}{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
-    return title, selected_food['key']
+    food_text = f"{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
+    title = f"{verb}{food_text}"
+    energy_title = f"燃掉{food_text}"
+    return title, energy_title, selected_food['key']
 
 def format_landmark_count(count, unit, name):
     """把 1、1.5、2.5 等数量写成适合卡片的简短中文。"""
@@ -195,9 +236,11 @@ def generate_distance_title(activity_type, distance, elevation, run_id, recent_k
             else:
                 eligible = sorted(candidates, key=lambda candidate: candidate[0])[:1]
         _, landmark, count = stable_landmark_choice(eligible, run_id, elevation, 'elevation-title-v1', recent_keys)
-        return f"爬升约{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'elevation'
+        return f"爬了{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'elevation'
 
-    if distance <= 0:
+    distance_verb = ACTIVITY_DISTANCE_VERBS.get(activity_type)
+    activity_group = ACTIVITY_DISTANCE_GROUPS.get(activity_type)
+    if distance <= 0 or not distance_verb or not activity_group:
         return None, None, None
 
     candidates = []
@@ -206,17 +249,29 @@ def generate_distance_title(activity_type, distance, elevation, run_id, recent_k
         relative_error = abs(count * landmark['km'] - distance) / distance
         in_range = landmark['min_km'] <= distance <= landmark['max_km']
         is_natural_count = count <= landmark['max_count']
-        candidates.append((relative_error, landmark, count, in_range and is_natural_count))
+        is_preferred = activity_group in landmark['preferred_groups']
+        # 类型不合只增加小幅惩罚，不会将地标彻底排除。
+        fit_score = relative_error + (0 if is_preferred else 0.05)
+        candidates.append((fit_score, landmark, count, in_range and is_natural_count, relative_error, is_preferred))
 
-    eligible = [candidate[:3] for candidate in candidates if candidate[3] and candidate[0] <= 0.18]
+    eligible = [candidate for candidate in candidates if candidate[3] and candidate[4] <= 0.18]
     if not eligible:
         if distance > DISTANCE_EQUIVALENTS[-1]['max_km']:
-            eligible = [candidates[-1][:3]]
+            eligible = [candidates[-1]]
         else:
-            eligible = [candidate[:3] for candidate in sorted(candidates, key=lambda candidate: candidate[0])[:3]]
+            eligible = sorted(candidates, key=lambda candidate: (candidate[0], candidate[1]['key']))[:3]
+    else:
+        # 只在最贴近的五个候选中选择，避免为了随机而出现牵强换算。
+        eligible = sorted(eligible, key=lambda candidate: (candidate[0], candidate[1]['key']))[:5]
 
-    _, landmark, count = stable_landmark_choice(eligible, run_id, distance, 'distance-title-v1', recent_keys)
-    return f"约{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'distance'
+    weighted_candidates = []
+    for candidate in eligible:
+        weighted_candidates.extend([candidate] * (3 if candidate[5] else 1))
+
+    _, landmark, count, _, _, _ = stable_landmark_choice(
+        weighted_candidates, run_id, distance, 'distance-title-v2', recent_keys
+    )
+    return f"{distance_verb}{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key'], 'distance'
 
 def load_local_data():
     if os.path.exists(FILE_NAME):
@@ -487,10 +542,11 @@ if __name__ == '__main__':
 
         should_regenerate_title = (
             not item.get('food_title') or
+            not item.get('energy_title') or
             item.get('food_title_version') != FOOD_TITLE_VERSION
         )
         if should_regenerate_title:
-            title, food_key = generate_food_title(
+            title, energy_title, food_key = generate_food_title(
                 item.get('type'),
                 item.get('calories'),
                 item.get('run_id'),
@@ -498,11 +554,12 @@ if __name__ == '__main__':
             )
             if title:
                 item['food_title'] = title
+                item['energy_title'] = energy_title
                 item['food_key'] = food_key
                 item['food_title_version'] = FOOD_TITLE_VERSION
                 needs_save = True
             else:
-                for key in ('food_title', 'food_key', 'food_title_version'):
+                for key in ('food_title', 'energy_title', 'food_key', 'food_title_version'):
                     if key in item:
                         del item[key]
                         needs_save = True

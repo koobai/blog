@@ -834,6 +834,13 @@
   }
 }
 
+.foodIconSprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 .runCard {
   background: var(--background-card-color);
   border-radius: 16px;
@@ -849,6 +856,7 @@
   }
 
   &:hover {
+    z-index: 5;
     background: #fff;
     border-color: #fff;
     @include dark {
@@ -860,17 +868,126 @@
 
 .cardContent {
   flex: 1;
+  min-width: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+}
+
+.leftInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rightInfo {
+  flex: 0 0 auto;
 }
 
 .runName {
+  min-width: 0;
   color: var(--text-info-color);
   font-size: 0.85rem;
-  margin-bottom: 2px;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @include dark {
     color: var(--text-info-dark-color);
+  }
+}
+
+.foodIconTrigger {
+  appearance: none;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text-info-color), transparent 88%);
+  color: var(--text-info-color);
+  cursor: default;
+
+  &::after {
+    content: attr(data-energy-title);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    z-index: 20;
+    padding: 6px 9px;
+    border: 1px solid #eeebe6;
+    border-radius: 8px;
+    background: var(--background-card-color);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    color: var(--text-content-color);
+    font-size: 0.85rem;
+    font-weight: normal;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, 4px);
+    transition:
+      opacity 0.16s ease,
+      transform 0.16s ease,
+      visibility 0.16s ease;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  @include dark {
+    background: color-mix(in srgb, var(--text-info-dark-color), transparent 72%);
+    color: var(--text-info-dark-color);
+
+    &::after {
+      border-color: rgba(255, 255, 255, 0.08);
+      background: var(--background-card-dark-color);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+      color: var(--text-content-dark-color);
+    }
+  }
+}
+
+.foodIcon {
+  width: 27px;
+  height: 27px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  .foodIconFill {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .foodIconSoft {
+    fill: currentColor;
+    fill-opacity: 0.11;
+    stroke: currentColor;
+  }
+
+  .foodIconWash {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: none;
   }
 }
 
@@ -891,22 +1008,12 @@
       color: var(--text-info-dark-color);
     }
   }
-
-  .distanceEquivalent {
-    margin-left: 7px;
-    font-size: 0.72rem;
-    font-weight: 400;
-    color: var(--text-info-color);
-
-    @include dark {
-      color: var(--text-info-dark-color);
-    }
-  }
 }
 
 .runDate {
   color: var(--text-info-color);
   font-size: 0.85rem;
+  white-space: nowrap;
   @include dark {
     color: var(--text-info-dark-color);
   }

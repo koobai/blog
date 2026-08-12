@@ -40,14 +40,6 @@
     { key: 'instant_noodles', name: '泡面', unit: '包', kcal: 470 }
   ];
 
-  const MONTHLY_ACTIVITY_VERBS = {
-    Run: '跑掉', TrailRun: '跑掉', Treadmill: '跑掉', VirtualRun: '跑掉', 'Trail Run': '跑掉',
-    Ride: '骑掉', VirtualRide: '骑掉', EBikeRide: '骑掉',
-    Walk: '走掉', Hike: '走掉',
-    StairStepper: '爬掉',
-    Swim: '游掉', WaterSport: '游掉'
-  };
-
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[char]);
@@ -66,18 +58,12 @@
     if (validRuns.length === 0) return null;
 
     const totalCalories = validRuns.reduce((total, run) => total + Number(run.calories), 0);
-    const caloriesByVerb = new Map();
     let strongestRun = validRuns[0];
 
     validRuns.forEach(run => {
       const calories = Number(run.calories);
-      const verb = MONTHLY_ACTIVITY_VERBS[run.type];
-      if (verb) caloriesByVerb.set(verb, (caloriesByVerb.get(verb) || 0) + calories);
       if (calories > Number(strongestRun.calories)) strongestRun = run;
     });
-
-    const dominantEntry = [...caloriesByVerb.entries()].sort((a, b) => b[1] - a[1])[0];
-    const dominantVerb = dominantEntry && dominantEntry[1] / totalCalories >= 0.5 ? dominantEntry[0] : null;
 
     const candidates = MONTHLY_FOOD_EQUIVALENTS.map(food => ({
       food,
@@ -92,11 +78,14 @@
 
     return {
       totalCalories: Math.round(totalCalories),
-      verb: dominantVerb,
       food: selected.food,
       foodCount: selected.count,
       strongestDay: Number(strongestRun.start_date_local?.slice(8, 10)) || null,
-      strongestTitle: strongestRun.food_title || strongestRun.name || strongestRun.fallback_name || ''
+      strongestTitle: strongestRun.energy_title
+        || strongestRun.food_title?.replace(/^(跑掉|骑掉|走掉|爬掉|游掉)/, '燃掉')
+        || strongestRun.name
+        || strongestRun.fallback_name
+        || ''
     };
   };
 
@@ -527,9 +516,7 @@
       if (energySummary) {
         const calorieText = energySummary.totalCalories.toLocaleString('zh-CN');
         const foodText = `${energySummary.foodCount} ${energySummary.food.unit}${energySummary.food.name}`;
-        const equivalentText = energySummary.verb
-          ? `差不多${energySummary.verb}了 ${foodText}`
-          : `换成吃的，差不多是 ${foodText}`;
+        const equivalentText = `差不多燃掉了 ${foodText}`;
         const strongestText = energySummary.strongestDay && energySummary.strongestTitle
           ? `火力最猛的是 ${energySummary.strongestDay} 日那次：${escapeHtml(energySummary.strongestTitle)}。`
           : '';
