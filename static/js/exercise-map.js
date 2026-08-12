@@ -167,9 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentIndex = group.findIndex(run => String(run.run_id) === String(current.run_id));
     if (currentIndex < 0) return '';
-    if (currentIndex === 0) return '同路对手 · 这条路线的第一笔记录';
+    if (currentIndex === 0) return '这条路线的第一笔记录';
 
-    const visitPrefix = `同路对手 · 第 ${currentIndex + 1} 次遇见这条路`;
+    const visitPrefix = `第 ${currentIndex + 1} 次遇见这条路`;
     const previous = group[currentIndex - 1];
     const currentPerformance = routePerformance(current);
     const previousPerformance = routePerformance(previous);
@@ -439,11 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const aiComment = runData.ai_comment;
         const sportTypeName = runData.fallback_name || '运动';
         const routeRivalInsight = buildRouteRivalInsight(runData, window.KoobaiRun.data);
-        const routePrivacyInsight = runData.route_status === 'privacy_hidden' ? '公开轨迹已隐藏' : '';
-        const routeNotes = [routeRivalInsight, routePrivacyInsight].filter(Boolean);
-        const routeNotesHtml = routeNotes.length
-          ? `<div class="routeDetailNotes">${routeNotes.map(note => `<div>${note}</div>`).join('')}</div>`
-          : '';
 
         let achievementTagsHtml = '';
         const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
@@ -482,7 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="detailStatBlock"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
               <div class="detailStatBlock"><span class="statLabel">千卡</span><span class="statVal">${calories}</span></div>
             </div>
-            ${routeNotesHtml}
           </div>
 
           <div class="poster-view data-poster-view" style="display: none;">
@@ -511,7 +505,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="poster-ai-content">
               <div class="poster-title poster-ai-title">${smartName}</div>
-              <div class="poster-ai-comment">${aiComment}</div>
+              <div class="poster-ai-comment">
+                <div>${aiComment}</div>
+                ${routeRivalInsight ? `<div class="poster-route-insight">${routeRivalInsight}</div>` : ''}
+              </div>
             </div>
             <div class="poster-watermark">${displayTime}</div>
           </div>

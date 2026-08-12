@@ -1276,17 +1276,6 @@ body:has(.menu-checkbox:checked) {
   display: flex;
   gap: 30px; }
 
-.routeDetailNotes {
-  color: var(--text-info-color);
-  font-size: 0.68rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .routeDetailNotes {
-      color: var(--text-info-dark-color); } }
-  html[data-theme="dark"] .routeDetailNotes {
-    color: var(--text-info-dark-color); }
-
 .detailStatBlock {
   display: flex;
   flex-direction: column;

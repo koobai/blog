@@ -201,17 +201,6 @@
   gap: 30px;
 }
 
-.routeDetailNotes {
-  color: var(--text-info-color);
-  font-size: 0.68rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-
-  @include dark {
-    color: var(--text-info-dark-color);
-  }
-}
-
 .detailStatBlock {
   display: flex;
   flex-direction: column;
