@@ -87,7 +87,7 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 FOOD_TITLE_VERSION = 4
-AI_COMMENT_VERSION = 5
+AI_COMMENT_VERSION = 6
 MONTHLY_AI_COMMENT_VERSION = 3
 
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
@@ -419,6 +419,13 @@ AI_FORBIDDEN_TERMS = (
     '建议', '继续', '加油', '留意', '训练', '减脂', '医学'
 )
 
+# 单条运动点评额外禁止的模板腔和无依据评价；月报不复用这组风格限制。
+AI_ACTIVITY_FORBIDDEN_TERMS = (
+    '挑战', '极限', '突破', '里程碑', '最佳', '佳绩', '成就', '不断', '坚持',
+    '成长', '更好', '卓越', '新高度', '圆满', '成功', '树立', '目标', '自我',
+    '生活节奏', '参照点', '刻度', '痕迹', '表现'
+)
+
 WRONG_SPORT_TERMS = {
     'Run': ('骑行', '骑车', '游泳', '步行', '徒步', '爬楼'),
     'TrailRun': ('骑行', '骑车', '游泳', '步行', '爬楼'),
@@ -636,6 +643,9 @@ def comment_similarity(left, right):
         return 0
     return difflib.SequenceMatcher(None, left_normalized, right_normalized).ratio()
 
+def comment_sentences(text):
+    return [part.strip() for part in re.split(r'(?<=[。！？])', str(text or '')) if part.strip()]
+
 def contains_explicit_measurement(text):
     # 比较口径里的“一次”不是复述数值，其余带单位的中英文数字均拒绝。
     scan_text = re.sub(r'(?:这|上|下|前|最近|同|又|的|最快|此前最快)一(?:次|回)', '', text)
@@ -652,8 +662,10 @@ def ai_fact_validation_issue(text, focus):
         return '没有同路依据却写成了同一路线'
 
     kind = focus.get('kind')
-    if kind == 'baseline' and not any(word in text for word in ('没有', '暂无', '找不到', '基线', '参照')):
+    if kind == 'baseline' and not any(word in text for word in ('没有', '暂无', '找不到', '缺少', '基线', '参照')):
         return '遗漏了暂无合适历史比较记录的事实'
+    if kind == 'baseline' and re.search(r'(?:与|和)暂无.{0,12}(?:相比|比较)', text):
+        return '把“暂无比较记录”错误写成了一个比较对象'
     if kind in ('same_route_change', 'same_route_best') and not any(word in text for word in route_words):
         return '遗漏了程序选定的同路线比较口径'
     if kind == 'similar_distance_change' and not (
@@ -673,6 +685,8 @@ def ai_fact_validation_issue(text, focus):
         return '遗漏了程序选定的同路最快事实'
     if kind != 'same_route_best' and '最快' in text:
         return '加入了未经提供的最快记录结论'
+    if kind not in ('longest_distance', 'monthly_longest_distance', 'same_route_best') and '刷新' in text:
+        return '加入了未经提供的刷新纪录结论'
 
     contradiction_patterns = {
         ('pace', '更快'): r'(?:节奏|速度|配速).{0,6}(?:更慢|放缓|下降)',
@@ -695,10 +709,16 @@ def ai_comment_validation_issue(comment, activity_type=None, monthly=False, allo
     forbidden = next((term for term in AI_FORBIDDEN_TERMS if term in text), None)
     if forbidden:
         return f'出现禁用词“{forbidden}”'
+    if not monthly:
+        style_forbidden = next((term for term in AI_ACTIVITY_FORBIDDEN_TERMS if term in text), None)
+        if style_forbidden:
+            return f'出现模板化或无依据表达“{style_forbidden}”'
     if not monthly and any(term in text for term in WRONG_SPORT_TERMS.get(activity_type, ())):
         return '提到了本次记录以外的运动类型'
     if not monthly and len(re.findall(r'[。！？]', text)) != 2:
         return '必须正好写成两句话，并使用两个句末标点'
+    if not monthly and len(comment_sentences(text)) != 2:
+        return '必须由两句完整、相互衔接的话组成'
     measurement_text = text
     if allowed_route_visit:
         measurement_text = re.sub(rf'第\s*{int(allowed_route_visit)}\s*次', '', measurement_text)
@@ -781,21 +801,21 @@ def fallback_activity_comment(facts, seed='', recent_comments=None):
     focus = facts.get('focus')
     if not focus or focus.get('kind') == 'baseline':
         openings = [
-            f"这次{sport}暂时没有合适的历史记录可供比较，眼下这笔数据先作为新的参照。",
-            f"这一笔{sport}还找不到足够贴近的旧记录，现有数据更适合先留作一条清楚的基线。",
-            f"这次{sport}没有勉强套用不相干的历史记录，眼下的数字先独立成为一枚参照点。"
+            f"这次{sport}暂时没有合适的历史记录可供比较，眼下先单独保留本次数据。",
+            f"这一笔{sport}还找不到足够贴近的旧记录，所以不勉强给出横向判断。",
+            f"这次{sport}缺少可靠的历史比较对象，现阶段只确认本次记录本身。"
         ]
     elif focus['kind'] == 'longest_distance':
         openings = [
-            f"这次{sport}把此前同类型记录的最远距离又向前推了一格，成为新的距离参照。",
-            f"在已有的同类型记录里，这次{sport}达到最远距离，距离这一项留下了新的刻度。",
-            f"这笔{sport}刷新了同类型记录中的最远距离，最鲜明的变化落在距离这一项上。"
+            f"这次{sport}刷新了此前同类型记录的最远距离，距离是本次最明确的事实。",
+            f"在已有的同类型记录里，这次{sport}达到最远距离，其他解释暂不延伸。",
+            f"本次{sport}超过此前所有同类型记录，最远距离已经被明确刷新。"
         ]
     elif focus['kind'] == 'monthly_longest_distance':
         openings = [
-            f"这次{sport}刷新了本月同类型记录的最远距离，距离成为这笔记录最鲜明的部分。",
-            f"放在本月已有的同类型记录里，这笔{sport}达到最远距离，留下了新的月度参照。",
-            f"本月的同类型记录有了新的最远距离，这次{sport}把距离刻度向前推了一格。"
+            f"这次{sport}刷新了本月同类型记录的最远距离，距离是本次最明确的事实。",
+            f"放在本月已有的同类型记录里，这笔{sport}达到最远距离，比较范围仅限本月。",
+            f"本月同类型记录的最远距离被这次{sport}刷新，结论只落在距离这一项。"
         ]
     else:
         result = focus_result_text(focus)
@@ -807,7 +827,7 @@ def fallback_activity_comment(facts, seed='', recent_comments=None):
                 openings = [
                     f"{route_lead}，这次刷新了同路最快记录；和此前最快一次相比，{result}。",
                     f"这条熟路迎来了新的最快记录，和此前最快一次相比，{result}。",
-                    f"同样的路线留下了新的最快刻度，这次与原先最快一次相比，{result}。"
+                    f"同样的路线出现了新的最快记录，这次与原先最快一次相比，{result}。"
                 ]
             else:
                 openings = [
@@ -824,14 +844,14 @@ def fallback_activity_comment(facts, seed='', recent_comments=None):
             ]
 
     endings = [
-        "它不急着给表现下结论，只把最清楚的变化留在记录里。",
-        "这一笔更像新的参照点，让下一次回看时更容易辨认真正的变化。",
-        "数字只负责留下痕迹，但这次最鲜明的部分已经被准确记住。",
-        "把这一笔放回历史记录中，它会成为之后比较时更清楚的一道刻度。",
-        "没有额外猜测，记录本身已经把这次值得看的地方交代清楚。"
+        "配速、心率与距离的关系已经写清，不再补充记录之外的解释。",
+        "这句话只保留可以核对的差异，其余部分不从数据之外推测。",
+        "比较口径一并写明，之后回看时不会混淆本次采用的对象。",
+        "本次只强调最明确的一项，避免让不相干的数据分散重点。",
+        "运动数据能够支持的判断到这里为止，其他感受不从数字推断。"
     ]
     candidates = [f"{opening}{ending}" for opening in openings for ending in endings]
-    digest = hashlib.sha256(f"ai-fallback-v5:{seed}".encode('utf-8')).hexdigest()
+    digest = hashlib.sha256(f"ai-fallback-v6:{seed}".encode('utf-8')).hexdigest()
     offset = int(digest[:8], 16) % len(candidates)
     ordered = candidates[offset:] + candidates[:offset]
     previous_comments = [comment for comment in (recent_comments or []) if comment]
@@ -871,6 +891,13 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
                 candidates = parse_ai_candidates(response)
                 valid, issues = [], []
                 recent_window = recent_comments[-8:]
+                previous_second_sentences = [
+                    sentences[1]
+                    for previous in recent_comments
+                    for sentences in [comment_sentences(previous)]
+                    if len(sentences) == 2
+                ]
+                recent_second_sentences = previous_second_sentences[-8:]
                 for comment in candidates:
                     issue = ai_comment_validation_issue(
                         comment,
@@ -885,10 +912,21 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
                         (comment_similarity(comment, recent) for recent in recent_window),
                         default=0
                     )
-                    if similarity < 0.86 and comment not in recent_comments:
-                        valid.append((similarity, comment))
+                    candidate_sentences = comment_sentences(comment)
+                    second_sentence = candidate_sentences[1]
+                    second_similarity = max(
+                        (comment_similarity(second_sentence, recent) for recent in recent_second_sentences),
+                        default=0
+                    )
+                    if (
+                        similarity < 0.86
+                        and second_similarity < 0.88
+                        and comment not in recent_comments
+                        and second_sentence not in previous_second_sentences
+                    ):
+                        valid.append((max(similarity, second_similarity), comment))
                     else:
-                        issues.append('与近期点评过于相似')
+                        issues.append('整段或第二句话与已有点评过于相似')
                 if valid:
                     return min(valid, key=lambda item: item[0])[1]
                 correction = (
@@ -914,8 +952,8 @@ def generate_ai_comment(activity, older_history, recent_comments=None):
 {json.dumps(recent_comments[-5:], ensure_ascii=False, indent=2)}
 
 请围绕同一个核心事实写三条明显不同的候选点评，每条严格写成两句话、五十五至九十个汉字。
-第一句准确写事实和比较口径；第二句可以有一点记录感、熟路感，或使用“刻度、参照点、留下痕迹”这类轻微比喻，让文字自然、有温度，但不能增加新事实。
-只能使用 focus 中已有内容；focus.route 不存在时绝不能声称是同一路线；focus.route.visit_count 存在时可以省略，也可以严格使用“第 N 次”，不得更改数字。不得猜天气、风景、环境、心情、身体感受、训练效果或健康结论，不给建议，不写“进步、退步、状态很好”等评价。除允许的 visit_count 外，不出现任何数字。三条不得使用相同开头或相同第二句话。
+第一句准确写事实和比较口径；第二句继续解释这组数据本身的关系，或者换一个角度收束同一事实。第二句不能离开运动数据去谈生活、成长、自我或感受，也不要写空泛的抒情总结。
+只能使用 focus 中已有内容；focus.route 不存在时绝不能声称是同一路线；focus.route.visit_count 存在时可以省略，也可以严格使用“第 N 次”，不得更改数字。不得猜天气、风景、环境、心情、身体感受、训练效果或健康结论，不给建议，不写“进步、退步、突破、挑战、极限、个人最佳、里程碑”等评价，不使用“生活节奏、参照点、刻度、痕迹”等模板化比喻。除允许的 visit_count 外，不出现任何数字。三条不得使用相同开头或相同第二句话。
 只返回 JSON：{{"comments":["...","...","..."]}}
 """
     comment = request_activity_ai_comments(
@@ -925,10 +963,15 @@ def generate_ai_comment(activity, older_history, recent_comments=None):
         recent_comments=recent_comments,
         focus=focus
     )
-    return comment or fallback_activity_comment(
-        facts,
-        seed=activity.get('source_id') or activity.get('run_id'),
-        recent_comments=recent_comments
+    if comment:
+        return comment, True
+    return (
+        fallback_activity_comment(
+            facts,
+            seed=activity.get('source_id') or activity.get('run_id'),
+            recent_comments=recent_comments
+        ),
+        False
     )
 
 # ==========================================
@@ -1247,11 +1290,16 @@ if __name__ == '__main__':
                 continue
             safe_time = item.get('start_date_local', '')
             print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
-            item['ai_comment'] = generate_ai_comment(item, older_history, recent_comments)
-            item['ai_comment_version'] = AI_COMMENT_VERSION
+            comment, generated_by_ai = generate_ai_comment(item, older_history, recent_comments)
+            item['ai_comment'] = comment
+            if generated_by_ai:
+                item['ai_comment_version'] = AI_COMMENT_VERSION
+            else:
+                # 兜底只负责保证页面有内容，不冒充已完成；下一次同步继续请求 AI。
+                item.pop('ai_comment_version', None)
             recent_comments.append(item['ai_comment'])
             needs_save = True
-            print("   ↳ 点评已写入（AI 校验通过或采用可信兜底）")
+            print("   ↳ AI 点评已通过校验" if generated_by_ai else "   ↳ 暂用可信兜底，下次同步继续重试 AI")
             time.sleep(0.5)
     else:
         pending_count = 0
