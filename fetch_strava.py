@@ -86,7 +86,7 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 FOOD_TITLE_VERSION = 4
-AI_COMMENT_VERSION = 3
+AI_COMMENT_VERSION = 4
 MONTHLY_AI_COMMENT_VERSION = 3
 
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
@@ -483,11 +483,48 @@ def build_activity_facts(activity, older_history):
 
     baseline = None
     baseline_kind = None
-    if same_route:
-        baseline, baseline_kind = same_route[0], '同一路线的上一次'
-    elif similar_distance:
+    route_context = None
+
+    # 同路信息只在确实有明显变化时成为本次点评焦点，避免每次都重复“又走了这条路”。
+    if same_route and current_pace:
+        previous_route = same_route[0]
+        previous_pace = pace_seconds_per_km(previous_route)
+        previous_hr = float(previous_route.get('average_heartrate') or 0) or None
+        pace_change = (current_pace - previous_pace) / previous_pace if previous_pace else 0
+        heart_rate_change = (
+            (current_hr - previous_hr) / previous_hr
+            if current_hr and previous_hr else 0
+        )
+
+        paced_history = [item for item in same_route if pace_seconds_per_km(item)]
+        previous_best = min(paced_history, key=pace_seconds_per_km) if paced_history else None
+        previous_best_pace = pace_seconds_per_km(previous_best) if previous_best else None
+        is_new_route_best = bool(previous_best_pace and current_pace < previous_best_pace * 0.99)
+        has_notable_pace_change = bool(previous_pace and abs(pace_change) >= 0.08)
+        has_notable_heart_rate_change = bool(previous_hr and abs(heart_rate_change) >= 0.08)
+
+        if is_new_route_best:
+            baseline, baseline_kind = previous_best, '此前同路线最快的一次'
+        elif has_notable_pace_change or has_notable_heart_rate_change:
+            baseline, baseline_kind = previous_route, '同一路线的上一次'
+
+        if baseline:
+            visit_count = len(same_route) + 1
+            source_key = activity.get('source_id') or activity.get('run_id') or activity.get('start_date_local')
+            digest = hashlib.sha256(f"route-visit:{source_key}".encode('utf-8')).hexdigest()
+            milestone = visit_count in (3, 5, 10, 20, 30, 50, 100)
+            route_context = {
+                'focus': '同一路线的历史表现'
+            }
+            if is_new_route_best:
+                route_context['achievement'] = '刷新同路最快记录'
+            # 次数只是偶尔出现的趣味信息；里程碑必写，其余约三分之一记录可写。
+            if milestone or int(digest[:2], 16) % 3 == 0:
+                route_context['visit_count'] = visit_count
+
+    if baseline is None and similar_distance:
         baseline, baseline_kind = similar_distance[0], '同类型且距离相近的上一次'
-    elif recent_same_type:
+    elif baseline is None and recent_same_type:
         pace_values = [value for value in (pace_seconds_per_km(item) for item in recent_same_type) if value]
         hr_values = [float(item.get('average_heartrate')) for item in recent_same_type if float(item.get('average_heartrate') or 0) > 0]
         baseline = {
@@ -510,7 +547,8 @@ def build_activity_facts(activity, older_history):
 
     return {
         'sport': ACTIVITY_TYPE_CN.get(activity_type, '运动'),
-        'comparison': comparison
+        'comparison': comparison,
+        'route_context': route_context
     }
 
 def parse_ai_json(response):
@@ -529,13 +567,13 @@ def parse_ai_json(response):
     return {}
 
 def contains_explicit_measurement(text):
-    # “上一次”是比较口径，不属于复述数值；其余带单位的中英文数字均拒绝。
-    scan_text = re.sub(r'(?:这|上|前|最近|同)一(?:次|回)', '', text)
+    # “上一次、又一次、最快的一次”等是比较口径，不属于复述数值。
+    scan_text = re.sub(r'(?:这|上|前|最近|同|又|的)一(?:次|回)', '', text)
     chinese_number = r'[零〇一二两三四五六七八九十百千万点半]+'
     unit = r'(?:公里|千米|米|小时|分钟|分|秒|千卡|大卡|天|日|周|月|次|回|种|项|圈|趟)'
     return bool(re.search(rf'{chinese_number}\s*(?:个)?\s*{unit}', scan_text))
 
-def validate_ai_comment(comment, activity_type=None, monthly=False):
+def validate_ai_comment(comment, activity_type=None, monthly=False, allowed_route_visit=None):
     text = re.sub(r'\s+', ' ', str(comment or '')).strip()
     minimum, maximum = (35, 120) if monthly else (28, 110)
     if not minimum <= len(text) <= maximum:
@@ -544,11 +582,14 @@ def validate_ai_comment(comment, activity_type=None, monthly=False):
         return None
     if not monthly and any(term in text for term in WRONG_SPORT_TERMS.get(activity_type, ())):
         return None
-    if re.search(r'\d', text) or contains_explicit_measurement(text):
+    measurement_text = text
+    if allowed_route_visit:
+        measurement_text = re.sub(rf'第\s*{int(allowed_route_visit)}\s*次', '', measurement_text)
+    if re.search(r'\d', measurement_text) or contains_explicit_measurement(measurement_text):
         return None
     return text
 
-def request_ai_comment(prompt, activity_type=None, monthly=False):
+def request_ai_comment(prompt, activity_type=None, monthly=False, allowed_route_visit=None):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
         return None
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
@@ -564,7 +605,12 @@ def request_ai_comment(prompt, activity_type=None, monthly=False):
             response = requests.post(url, headers=headers, json=payload, timeout=45)
             if response.status_code == 200:
                 comment = parse_ai_json(response).get('comment')
-                validated = validate_ai_comment(comment, activity_type=activity_type, monthly=monthly)
+                validated = validate_ai_comment(
+                    comment,
+                    activity_type=activity_type,
+                    monthly=monthly,
+                    allowed_route_visit=allowed_route_visit
+                )
                 if validated:
                     return validated
         except Exception as error:
@@ -588,6 +634,13 @@ def fallback_activity_comment(facts):
         result = '节奏稍慢，平均心率也更高' if heart_rate == '更高' else '节奏稍慢，平均心率变化不大'
     else:
         result = '节奏接近，平均心率更低' if heart_rate == '更低' else '整体节奏与平均心率都比较接近'
+    route_context = facts.get('route_context')
+    if route_context:
+        visit_count = route_context.get('visit_count')
+        route_lead = f"第{visit_count}次经过这条熟路" if visit_count else '又一次经过这条熟路'
+        if route_context.get('achievement'):
+            return f"{route_lead}，这一次刷新了同路最快记录；和此前最快的一次相比，{result}。"
+        return f"{route_lead}，和同路上一次相比，{result}。这次只说记录里真正明显的变化。"
     return f"这次{sport}和{comparison['basis']}相比，{result}。这些变化都能在现有记录里直接找到，是一笔清楚、可供后续比较的记录。"
 
 def generate_ai_comment(activity, older_history):
@@ -599,11 +652,16 @@ def generate_ai_comment(activity, older_history):
 程序已计算出以下唯一可用事实：
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
-请把事实写成一段自然、有温度但克制的中文短评。
-要求：只改写 comparison 中已经算好的变化方向，并写清比较基准；不做“进步、退步、恢复、状态、轻松、稳定、强度、身体负荷”等综合判断；不猜天气、环境、心情或训练效果；不做医学判断；不提其他运动；不提供训练建议；不复述任何具体数字。若某项为未知就不要提。
+请把事实写成一段自然、有温度但克制的中文短评，只写一个最值得说的核心观察。
+要求：只改写 comparison 中已经算好的变化方向，并写清比较基准；route_context 存在时，说明程序已经选定“同路表现”为本次核心，可自然写成“这条熟路”或“同路上一次”；route_context 不存在时，绝不能声称是同一路线。若 route_context 含 visit_count，可以省略，也可以严格按“第 N 次”的阿拉伯数字格式使用该数字，不得改写或添加其他数字。achievement 存在时可以写入。不要罗列全部指标，不做“进步、退步、恢复、状态、轻松、稳定、强度、身体负荷”等综合判断；不猜天气、环境、心情或训练效果；不做医学判断；不提其他运动；不提供训练建议；除允许的 visit_count 外，不复述任何具体数字。若某项为未知就不要提。
 只返回 JSON：{{"comment":"..."}}
 """
-    return request_ai_comment(prompt, activity_type=activity.get('type')) or fallback_activity_comment(facts)
+    allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
+    return request_ai_comment(
+        prompt,
+        activity_type=activity.get('type'),
+        allowed_route_visit=allowed_route_visit
+    ) or fallback_activity_comment(facts)
 
 # ==========================================
 # 月报按程序汇总结果，并在当月未结束时采用上月同期口径。
@@ -903,14 +961,20 @@ if __name__ == '__main__':
     # 🧠 程序先算事实，AI 只改写语气；版本升级时会重写旧点评。
     if CF_ACCOUNT_ID and CF_AI_TOKEN:
         for i, item in enumerate(local_data):
+            older_history = local_data[i+1:]
+            facts = build_activity_facts(item, older_history)
+            allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
             if (
                 item.get('ai_comment_version') == AI_COMMENT_VERSION
-                and validate_ai_comment(item.get('ai_comment'), activity_type=item.get('type'))
+                and validate_ai_comment(
+                    item.get('ai_comment'),
+                    activity_type=item.get('type'),
+                    allowed_route_visit=allowed_route_visit
+                )
             ):
                 continue
             safe_time = item.get('start_date_local', '')
             print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
-            older_history = local_data[i+1:]
             item['ai_comment'] = generate_ai_comment(item, older_history)
             item['ai_comment_version'] = AI_COMMENT_VERSION
             needs_save = True
@@ -919,12 +983,18 @@ if __name__ == '__main__':
     else:
         pending_count = 0
         for i, item in enumerate(local_data):
+            facts = build_activity_facts(item, local_data[i+1:])
+            allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
             if (
                 item.get('ai_comment_version') == AI_COMMENT_VERSION
-                and validate_ai_comment(item.get('ai_comment'), activity_type=item.get('type'))
+                and validate_ai_comment(
+                    item.get('ai_comment'),
+                    activity_type=item.get('type'),
+                    allowed_route_visit=allowed_route_visit
+                )
             ):
                 continue
-            fallback = fallback_activity_comment(build_activity_facts(item, local_data[i+1:]))
+            fallback = fallback_activity_comment(facts)
             if item.get('ai_comment') != fallback:
                 item['ai_comment'] = fallback
                 needs_save = True

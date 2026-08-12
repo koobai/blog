@@ -116,100 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return coordinates;
   };
 
-  const parseDurationSeconds = (value) => {
-    const parts = String(value || '').split(':').map(Number);
-    if (parts.some(Number.isNaN)) return 0;
-    if (parts.length === 2) return parts[0] * 60 + parts[1];
-    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    return 0;
-  };
-
-  const routePerformance = (run) => {
-    const seconds = parseDurationSeconds(run.moving_time);
-    const distance = Number(run.distance);
-    return seconds > 0 && distance > 0 ? seconds / distance : null;
-  };
-
-  const formatTimeDifference = (seconds) => {
-    const rounded = Math.max(1, Math.round(Math.abs(seconds)));
-    if (rounded < 60) return `${rounded} 秒`;
-    const minutes = Math.floor(rounded / 60);
-    const remainder = rounded % 60;
-    return remainder ? `${minutes} 分 ${remainder} 秒` : `${minutes} 分钟`;
-  };
-
-  const performanceDifferenceText = (current, previous) => {
-    const currentDuration = parseDurationSeconds(current.moving_time);
-    const previousDuration = parseDurationSeconds(previous.moving_time);
-    const currentDistance = Number(current.distance);
-    const previousDistance = Number(previous.distance);
-    const distanceDifference = Math.abs(currentDistance - previousDistance) / Math.max(currentDistance, previousDistance);
-    if (currentDuration && previousDuration && distanceDifference <= 0.03) {
-      return formatTimeDifference(currentDuration - previousDuration);
-    }
-    const currentPerformance = routePerformance(current);
-    const previousPerformance = routePerformance(previous);
-    if (!currentPerformance || !previousPerformance) return '';
-    if (['Ride', 'VirtualRide', 'EBikeRide'].includes(current.type)) {
-      const currentSpeed = currentDistance * 3600 / currentDuration;
-      const previousSpeed = previousDistance * 3600 / previousDuration;
-      return `${Math.abs(currentSpeed - previousSpeed).toFixed(1)} km/h`;
-    }
-    return `${formatTimeDifference(currentPerformance - previousPerformance)}/公里`;
-  };
-
-  const buildRouteRivalInsight = (current, allRuns) => {
-    if (!current.route_group_id) return '';
-    const group = allRuns
-      .filter(run => run.route_group_id === current.route_group_id)
-      .sort((left, right) => left.start_date_local.localeCompare(right.start_date_local));
-    if (group.length < 2) return '';
-
-    const currentIndex = group.findIndex(run => String(run.run_id) === String(current.run_id));
-    if (currentIndex < 0) return '';
-    if (currentIndex === 0) return '这条路线的第一笔记录';
-
-    const visitPrefix = `第 ${currentIndex + 1} 次遇见这条路`;
-    const previous = group[currentIndex - 1];
-    const currentPerformance = routePerformance(current);
-    const previousPerformance = routePerformance(previous);
-    if (!currentPerformance || !previousPerformance) return visitPrefix;
-
-    const earlier = group.slice(0, currentIndex).filter(run => routePerformance(run));
-    const personalBest = earlier.reduce((best, run) => routePerformance(run) < routePerformance(best) ? run : best, earlier[0]);
-    const bestPerformance = routePerformance(personalBest);
-    if (bestPerformance && currentPerformance < bestPerformance * 0.99) {
-      const difference = performanceDifferenceText(current, personalBest);
-      return `${visitPrefix} · 同路新纪录${difference ? `，比原来最快再快 ${difference}` : ''}`;
-    }
-
-    const performanceChange = (currentPerformance - previousPerformance) / previousPerformance;
-    const paceState = Math.abs(performanceChange) <= 0.02 ? 'close' : (performanceChange < 0 ? 'faster' : 'slower');
-    const currentHeartRate = Number(current.average_heartrate);
-    const previousHeartRate = Number(previous.average_heartrate);
-    const hasHeartRate = currentHeartRate > 0 && previousHeartRate > 0;
-    const heartRateDifference = hasHeartRate ? Math.round(currentHeartRate - previousHeartRate) : 0;
-    const heartRateState = !hasHeartRate ? 'unknown' : (Math.abs(heartRateDifference) <= 4 ? 'close' : (heartRateDifference < 0 ? 'lower' : 'higher'));
-    const performanceText = performanceDifferenceText(current, previous);
-
-    const copy = {
-      'faster-lower': `比上次快 ${performanceText}，平均心率还低了 ${Math.abs(heartRateDifference)}`,
-      'faster-close': `比上次快 ${performanceText}，平均心率差不多`,
-      'faster-higher': `比上次快 ${performanceText}，平均心率高了 ${Math.abs(heartRateDifference)}`,
-      'close-lower': `节奏和上次接近，平均心率低了 ${Math.abs(heartRateDifference)}`,
-      'close-close': '和上次几乎打了个平手',
-      'close-higher': `节奏和上次接近，平均心率高了 ${Math.abs(heartRateDifference)}`,
-      'slower-lower': `比上次慢 ${performanceText}，平均心率也低了 ${Math.abs(heartRateDifference)}`,
-      'slower-close': `比上次慢 ${performanceText}，平均心率差不多`,
-      'slower-higher': `比上次慢 ${performanceText}，平均心率高了 ${Math.abs(heartRateDifference)}`,
-      'faster-unknown': `比上次快 ${performanceText}`,
-      'close-unknown': '节奏和上次基本一致',
-      'slower-unknown': `比上次慢 ${performanceText}`
-    }[`${paceState}-${heartRateState}`];
-
-    return copy ? `${visitPrefix} · ${copy}` : visitPrefix;
-  };
-
   // 4. 坐标网格聚类算法：过滤掉极个别异常漂移的坐标点，确保地图居中缩放时视野正常
   const filterCityBoundingBox = (allCoordinates) => {
     if (allCoordinates.length === 0) return allCoordinates;
@@ -438,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const smartName = runData.name;
         const aiComment = runData.ai_comment;
         const sportTypeName = runData.fallback_name || '运动';
-        const routeRivalInsight = buildRouteRivalInsight(runData, window.KoobaiRun.data);
 
         let achievementTagsHtml = '';
         const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
@@ -505,10 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="poster-ai-content">
               <div class="poster-title poster-ai-title">${smartName}</div>
-              <div class="poster-ai-comment">
-                <div>${aiComment}</div>
-                ${routeRivalInsight ? `<div class="poster-route-insight">${routeRivalInsight}</div>` : ''}
-              </div>
+              <div class="poster-ai-comment">${aiComment}</div>
             </div>
             <div class="poster-watermark">${displayTime}</div>
           </div>
