@@ -844,7 +844,7 @@
 .runCard {
   background: var(--background-card-color);
   border-radius: 16px;
-  padding: 14px 18px;
+  padding: 14px;
   border: 1px solid var(--background-card-border-color);
   display: flex;
   align-items: center;
@@ -951,7 +951,11 @@
   }
 
   @include dark {
-    background: color-mix(in srgb, var(--text-info-dark-color), transparent 72%);
+    background: color-mix(
+      in srgb,
+      var(--text-info-dark-color),
+      transparent 72%
+    );
     color: var(--text-info-dark-color);
 
     &::after {
