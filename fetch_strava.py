@@ -2,6 +2,7 @@ import json
 import os
 import time
 import hashlib
+import difflib
 import math
 import re
 import statistics
@@ -86,7 +87,7 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 FOOD_TITLE_VERSION = 4
-AI_COMMENT_VERSION = 4
+AI_COMMENT_VERSION = 5
 MONTHLY_AI_COMMENT_VERSION = 3
 
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
@@ -413,7 +414,7 @@ AI_FORBIDDEN_TERMS = (
     '天气', '湿热', '湿冷', '阳光', '微风', '风景', '光影', '空气湿度', '温度适宜',
     '多巴胺', '燃脂区', '高效燃脂', '心肺功能', '心脏功能', '乳酸', '无氧极限',
     '身体', '恢复', '体能', '状态', '负荷', '疲劳', '轻松', '从容', '吃力',
-    '稳定', '平稳', '强度', '热量', '卡路里', '消耗', '习惯', '体验', '感觉',
+    '强度', '热量', '卡路里', '消耗', '习惯', '体验', '感觉',
     '进步', '退步', '提升', '逊色', '优势', '出色', '优秀', '积极', '可控', '温和',
     '建议', '继续', '加油', '留意', '训练', '减脂', '医学'
 )
@@ -484,6 +485,7 @@ def build_activity_facts(activity, older_history):
     baseline = None
     baseline_kind = None
     route_context = None
+    candidates = []
 
     # 同路信息只在确实有明显变化时成为本次点评焦点，避免每次都重复“又走了这条路”。
     if same_route and current_pace:
@@ -522,33 +524,92 @@ def build_activity_facts(activity, older_history):
             if milestone or int(digest[:2], 16) % 3 == 0:
                 route_context['visit_count'] = visit_count
 
-    if baseline is None and similar_distance:
-        baseline, baseline_kind = similar_distance[0], '同类型且距离相近的上一次'
-    elif baseline is None and recent_same_type:
+            candidates.append({
+                'kind': 'same_route_best' if is_new_route_best else 'same_route_change',
+                'priority': 100 if is_new_route_best else 82,
+                'basis': baseline_kind,
+                'pace': compare_direction(current_pace, pace_seconds_per_km(baseline), tolerance=0.02, lower_is_better=True),
+                'heart_rate': compare_direction(current_hr, float(baseline.get('average_heartrate') or 0) or None, tolerance=0.03),
+                'distance': compare_direction(current_distance, float(baseline.get('distance') or 0), tolerance=0.03),
+                'route': route_context
+            })
+
+    if similar_distance:
+        similar_baseline = similar_distance[0]
+        similar_pace = pace_seconds_per_km(similar_baseline)
+        similar_hr = float(similar_baseline.get('average_heartrate') or 0) or None
+        similar_comparison = {
+            'kind': 'similar_distance_change',
+            'priority': 62,
+            'basis': '同类型且距离相近的上一次',
+            'pace': compare_direction(current_pace, similar_pace, tolerance=0.02, lower_is_better=True),
+            'heart_rate': compare_direction(current_hr, similar_hr, tolerance=0.03),
+            'distance': compare_direction(current_distance, float(similar_baseline.get('distance') or 0), tolerance=0.03)
+        }
+        notable_count = sum(
+            value not in ('接近', '未知')
+            for value in (similar_comparison['pace'], similar_comparison['heart_rate'])
+        )
+        similar_comparison['priority'] += notable_count * 7
+        candidates.append(similar_comparison)
+
+    if recent_same_type:
         pace_values = [value for value in (pace_seconds_per_km(item) for item in recent_same_type) if value]
         hr_values = [float(item.get('average_heartrate')) for item in recent_same_type if float(item.get('average_heartrate') or 0) > 0]
-        baseline = {
+        recent_baseline = {
             'distance': statistics.median(float(item.get('distance') or 0) for item in recent_same_type),
             '_pace': statistics.median(pace_values) if pace_values else None,
             'average_heartrate': statistics.median(hr_values) if hr_values else None
         }
-        baseline_kind = '近期同类型记录的中位数'
-
-    comparison = None
-    if baseline:
-        baseline_pace = baseline.get('_pace') or pace_seconds_per_km(baseline)
-        baseline_hr = float(baseline.get('average_heartrate') or 0) or None
-        comparison = {
-            'basis': baseline_kind,
-            'pace': compare_direction(current_pace, baseline_pace, tolerance=0.02, lower_is_better=True),
-            'heart_rate': compare_direction(current_hr, baseline_hr, tolerance=0.03),
-            'distance': compare_direction(current_distance, float(baseline.get('distance') or 0), tolerance=0.03)
+        recent_comparison = {
+            'kind': 'recent_median_change',
+            'priority': 54,
+            'basis': '近期同类型记录的中位数',
+            'pace': compare_direction(current_pace, recent_baseline['_pace'], tolerance=0.03, lower_is_better=True),
+            'heart_rate': compare_direction(current_hr, recent_baseline['average_heartrate'], tolerance=0.04),
+            'distance': compare_direction(current_distance, recent_baseline['distance'], tolerance=0.08)
         }
+        notable_count = sum(
+            value not in ('接近', '未知')
+            for value in (recent_comparison['pace'], recent_comparison['heart_rate'], recent_comparison['distance'])
+        )
+        recent_comparison['priority'] += notable_count * 6
+        candidates.append(recent_comparison)
+
+    all_same_type = [item for item in older_history if item.get('type') == activity_type]
+    current_month = str(activity.get('start_date_local') or '')[:7]
+    older_same_month_type = [
+        item for item in all_same_type
+        if str(item.get('start_date_local') or '').startswith(current_month)
+    ]
+    if older_same_month_type and current_distance > max(float(item.get('distance') or 0) for item in older_same_month_type):
+        candidates.append({
+            'kind': 'monthly_longest_distance',
+            'priority': 88,
+            'basis': '本月此前同类型记录',
+            'achievement': '刷新本月同类型最远距离'
+        })
+
+    if all_same_type and current_distance > max(float(item.get('distance') or 0) for item in all_same_type):
+        candidates.append({
+            'kind': 'longest_distance',
+            'priority': 94,
+            'basis': '此前全部同类型记录',
+            'achievement': '刷新同类型最远距离'
+        })
+
+    valid_candidates = [candidate for candidate in candidates if candidate]
+    selected = max(valid_candidates, key=lambda candidate: candidate['priority']) if valid_candidates else {
+        'kind': 'baseline',
+        'priority': 0,
+        'basis': '暂无合适的历史比较记录'
+    }
+    if selected:
+        selected = {key: value for key, value in selected.items() if key != 'priority'}
 
     return {
         'sport': ACTIVITY_TYPE_CN.get(activity_type, '运动'),
-        'comparison': comparison,
-        'route_context': route_context
+        'focus': selected
     }
 
 def parse_ai_json(response):
@@ -566,28 +627,98 @@ def parse_ai_json(response):
             continue
     return {}
 
+def normalize_comment(text):
+    return re.sub(r'[\s，。；：、！？“”‘’（）()·]', '', str(text or ''))
+
+def comment_similarity(left, right):
+    left_normalized, right_normalized = normalize_comment(left), normalize_comment(right)
+    if not left_normalized or not right_normalized:
+        return 0
+    return difflib.SequenceMatcher(None, left_normalized, right_normalized).ratio()
+
 def contains_explicit_measurement(text):
-    # “上一次、又一次、最快的一次”等是比较口径，不属于复述数值。
-    scan_text = re.sub(r'(?:这|上|前|最近|同|又|的)一(?:次|回)', '', text)
+    # 比较口径里的“一次”不是复述数值，其余带单位的中英文数字均拒绝。
+    scan_text = re.sub(r'(?:这|上|下|前|最近|同|又|的|最快|此前最快)一(?:次|回)', '', text)
     chinese_number = r'[零〇一二两三四五六七八九十百千万点半]+'
-    unit = r'(?:公里|千米|米|小时|分钟|分|秒|千卡|大卡|天|日|周|月|次|回|种|项|圈|趟)'
+    unit = r'(?:公里|千米|米|小时|分钟|分|秒|千卡|大卡|天|日|周|月|次|回|圈|趟)'
     return bool(re.search(rf'{chinese_number}\s*(?:个)?\s*{unit}', scan_text))
 
-def validate_ai_comment(comment, activity_type=None, monthly=False, allowed_route_visit=None):
+def ai_fact_validation_issue(text, focus):
+    if not focus:
+        return None
+    route_context = focus.get('route')
+    route_words = ('熟路', '同路', '同一路线', '这条路线', '同样的路线', '熟悉的路线')
+    if not route_context and any(word in text for word in route_words):
+        return '没有同路依据却写成了同一路线'
+
+    kind = focus.get('kind')
+    if kind == 'baseline' and not any(word in text for word in ('没有', '暂无', '找不到', '基线', '参照')):
+        return '遗漏了暂无合适历史比较记录的事实'
+    if kind in ('same_route_change', 'same_route_best') and not any(word in text for word in route_words):
+        return '遗漏了程序选定的同路线比较口径'
+    if kind == 'similar_distance_change' and not (
+        ('相近' in text or '接近' in text) and ('距离' in text or '里程' in text)
+    ):
+        return '遗漏了距离相近的比较口径'
+    if kind == 'recent_median_change' and not ('近期' in text and '中位' in text):
+        return '遗漏了近期同类型记录中位数的比较口径'
+    distance_record_kinds = ('longest_distance', 'monthly_longest_distance')
+    if kind in distance_record_kinds and '最远' not in text:
+        return '遗漏了程序选定的最远距离事实'
+    if kind not in distance_record_kinds and '最远' in text:
+        return '加入了未经提供的最远距离结论'
+    if kind == 'monthly_longest_distance' and '本月' not in text:
+        return '遗漏了程序选定的本月比较口径'
+    if kind == 'same_route_best' and '最快' not in text:
+        return '遗漏了程序选定的同路最快事实'
+    if kind != 'same_route_best' and '最快' in text:
+        return '加入了未经提供的最快记录结论'
+
+    contradiction_patterns = {
+        ('pace', '更快'): r'(?:节奏|速度|配速).{0,6}(?:更慢|放缓|下降)',
+        ('pace', '更慢'): r'(?:节奏|速度|配速).{0,6}(?:更快|加快|提高)',
+        ('heart_rate', '更高'): r'心率.{0,6}(?:更低|下降|降低)',
+        ('heart_rate', '更低'): r'心率.{0,6}(?:更高|上升|提高)',
+        ('distance', '更高'): r'距离.{0,6}(?:更短|减少|下降)',
+        ('distance', '更低'): r'距离.{0,6}(?:更长|增加|上升)'
+    }
+    for (field, direction), pattern in contradiction_patterns.items():
+        if focus.get(field) == direction and re.search(pattern, text):
+            return f'{field} 的描述与程序计算方向相反'
+    return None
+
+def ai_comment_validation_issue(comment, activity_type=None, monthly=False, allowed_route_visit=None, focus=None):
     text = re.sub(r'\s+', ' ', str(comment or '')).strip()
-    minimum, maximum = (35, 120) if monthly else (28, 110)
+    minimum, maximum = (35, 120) if monthly else (48, 100)
     if not minimum <= len(text) <= maximum:
-        return None
-    if any(term in text for term in AI_FORBIDDEN_TERMS):
-        return None
+        return f'长度应为 {minimum}～{maximum} 个字符，实际为 {len(text)}'
+    forbidden = next((term for term in AI_FORBIDDEN_TERMS if term in text), None)
+    if forbidden:
+        return f'出现禁用词“{forbidden}”'
     if not monthly and any(term in text for term in WRONG_SPORT_TERMS.get(activity_type, ())):
-        return None
+        return '提到了本次记录以外的运动类型'
+    if not monthly and len(re.findall(r'[。！？]', text)) != 2:
+        return '必须正好写成两句话，并使用两个句末标点'
     measurement_text = text
     if allowed_route_visit:
         measurement_text = re.sub(rf'第\s*{int(allowed_route_visit)}\s*次', '', measurement_text)
     if re.search(r'\d', measurement_text) or contains_explicit_measurement(measurement_text):
-        return None
-    return text
+        return '出现了未经允许的具体数字或数量'
+    fact_issue = ai_fact_validation_issue(text, focus)
+    if fact_issue:
+        return fact_issue
+    return None
+
+def validate_ai_comment(comment, activity_type=None, monthly=False, allowed_route_visit=None, focus=None):
+    text = re.sub(r'\s+', ' ', str(comment or '')).strip()
+    issue = ai_comment_validation_issue(
+        text,
+        activity_type=activity_type,
+        monthly=monthly,
+        allowed_route_visit=allowed_route_visit,
+        focus=focus
+    )
+    return None if issue else text
 
 def request_ai_comment(prompt, activity_type=None, monthly=False, allowed_route_visit=None):
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
@@ -596,6 +727,7 @@ def request_ai_comment(prompt, activity_type=None, monthly=False, allowed_route_
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     correction = ''
     for attempt in range(2):
+        comment = None
         payload = {
             "messages": [{"role": "user", "content": prompt + correction}],
             "temperature": 0.45 if attempt == 0 else 0.2,
@@ -615,53 +747,189 @@ def request_ai_comment(prompt, activity_type=None, monthly=False, allowed_route_
                     return validated
         except Exception as error:
             print(f"⚠️ AI 点评生成失败: {error}")
-        correction = "\n上一版未通过事实校验。请缩短并重写，绝不添加任何输入中没有的环境、身体、医学或运动数据，也不要出现数字。"
+        issue = ai_comment_validation_issue(
+            comment,
+            activity_type=activity_type,
+            monthly=monthly,
+            allowed_route_visit=allowed_route_visit
+        )
+        correction = f"\n上一版未通过校验，原因：{issue}。请只修正这个问题，不得增加输入中没有的事实。"
     return None
 
-def fallback_activity_comment(facts):
-    sport = facts['sport']
-    comparison = facts.get('comparison')
-    if not comparison:
-        return f"这次{sport}的数据已经完整记下，距离与用时都有明确记录。先把这一笔留作比较基线，后续变化再与真实记录核对。"
-    pace, heart_rate = comparison['pace'], comparison['heart_rate']
+def focus_result_text(focus):
+    pace, heart_rate = focus.get('pace'), focus.get('heart_rate')
     if pace == '更快' and heart_rate == '更低':
-        result = '节奏更快，平均心率也更低'
-    elif pace == '更快':
-        result = '节奏更快，平均心率没有同步下降' if heart_rate == '更高' else '节奏更快，平均心率变化不大'
-    elif pace == '更慢' and heart_rate == '更低':
-        result = '节奏放缓，平均心率也更低'
-    elif pace == '更慢':
-        result = '节奏稍慢，平均心率也更高' if heart_rate == '更高' else '节奏稍慢，平均心率变化不大'
-    else:
-        result = '节奏接近，平均心率更低' if heart_rate == '更低' else '整体节奏与平均心率都比较接近'
-    route_context = facts.get('route_context')
-    if route_context:
-        visit_count = route_context.get('visit_count')
-        route_lead = f"第{visit_count}次经过这条熟路" if visit_count else '又一次经过这条熟路'
-        if route_context.get('achievement'):
-            return f"{route_lead}，这一次刷新了同路最快记录；和此前最快的一次相比，{result}。"
-        return f"{route_lead}，和同路上一次相比，{result}。这次只说记录里真正明显的变化。"
-    return f"这次{sport}和{comparison['basis']}相比，{result}。这些变化都能在现有记录里直接找到，是一笔清楚、可供后续比较的记录。"
+        return '节奏更快，平均心率也更低'
+    if pace == '更快':
+        return '节奏更快，平均心率也更高' if heart_rate == '更高' else '节奏更快，平均心率变化不大'
+    if pace == '更慢' and heart_rate == '更低':
+        return '节奏放缓，平均心率也更低'
+    if pace == '更慢':
+        return '节奏稍慢，平均心率也更高' if heart_rate == '更高' else '节奏稍慢，平均心率变化不大'
+    if heart_rate == '更低':
+        return '节奏接近，平均心率更低'
+    if heart_rate == '更高':
+        return '节奏接近，平均心率更高'
+    if focus.get('distance') == '更高':
+        return '节奏与平均心率接近，但距离更长'
+    if focus.get('distance') == '更低':
+        return '节奏与平均心率接近，但距离更短'
+    return '整体节奏与平均心率都比较接近'
 
-def generate_ai_comment(activity, older_history):
+def fallback_activity_comment(facts, seed='', recent_comments=None):
+    sport = facts['sport']
+    focus = facts.get('focus')
+    if not focus or focus.get('kind') == 'baseline':
+        openings = [
+            f"这次{sport}暂时没有合适的历史记录可供比较，眼下这笔数据先作为新的参照。",
+            f"这一笔{sport}还找不到足够贴近的旧记录，现有数据更适合先留作一条清楚的基线。",
+            f"这次{sport}没有勉强套用不相干的历史记录，眼下的数字先独立成为一枚参照点。"
+        ]
+    elif focus['kind'] == 'longest_distance':
+        openings = [
+            f"这次{sport}把此前同类型记录的最远距离又向前推了一格，成为新的距离参照。",
+            f"在已有的同类型记录里，这次{sport}达到最远距离，距离这一项留下了新的刻度。",
+            f"这笔{sport}刷新了同类型记录中的最远距离，最鲜明的变化落在距离这一项上。"
+        ]
+    elif focus['kind'] == 'monthly_longest_distance':
+        openings = [
+            f"这次{sport}刷新了本月同类型记录的最远距离，距离成为这笔记录最鲜明的部分。",
+            f"放在本月已有的同类型记录里，这笔{sport}达到最远距离，留下了新的月度参照。",
+            f"本月的同类型记录有了新的最远距离，这次{sport}把距离刻度向前推了一格。"
+        ]
+    else:
+        result = focus_result_text(focus)
+        route_context = focus.get('route')
+        if route_context:
+            visit_count = route_context.get('visit_count')
+            route_lead = f"第{visit_count}次经过这条熟路" if visit_count else '又一次经过这条熟路'
+            if route_context.get('achievement'):
+                openings = [
+                    f"{route_lead}，这次刷新了同路最快记录；和此前最快一次相比，{result}。",
+                    f"这条熟路迎来了新的最快记录，和此前最快一次相比，{result}。",
+                    f"同样的路线留下了新的最快刻度，这次与原先最快一次相比，{result}。"
+                ]
+            else:
+                openings = [
+                    f"{route_lead}，和同路上一次相比，{result}，这就是本次最明显的差别。",
+                    f"这次{sport}再次经过熟悉的路线，较同路上一次来看，{result}。",
+                    f"熟路提供了更可靠的参照，这次和同路上一次相比，{result}。"
+                ]
+        else:
+            basis = focus['basis']
+            openings = [
+                f"这次{sport}和{basis}相比，{result}，最值得记录的差别集中在这里。",
+                f"拿{basis}作参照，这笔{sport}呈现出的主要变化是{result}。",
+                f"回看{basis}，这次{sport}的区别并不含糊：{result}。"
+            ]
+
+    endings = [
+        "它不急着给表现下结论，只把最清楚的变化留在记录里。",
+        "这一笔更像新的参照点，让下一次回看时更容易辨认真正的变化。",
+        "数字只负责留下痕迹，但这次最鲜明的部分已经被准确记住。",
+        "把这一笔放回历史记录中，它会成为之后比较时更清楚的一道刻度。",
+        "没有额外猜测，记录本身已经把这次值得看的地方交代清楚。"
+    ]
+    candidates = [f"{opening}{ending}" for opening in openings for ending in endings]
+    digest = hashlib.sha256(f"ai-fallback-v5:{seed}".encode('utf-8')).hexdigest()
+    offset = int(digest[:8], 16) % len(candidates)
+    ordered = candidates[offset:] + candidates[:offset]
+    previous_comments = [comment for comment in (recent_comments or []) if comment]
+    if not previous_comments:
+        return ordered[0]
+    unused = [candidate for candidate in ordered if candidate not in previous_comments]
+    candidate_pool = unused or ordered
+    recent_comments = previous_comments[-8:]
+    return min(
+        candidate_pool,
+        key=lambda candidate: max(comment_similarity(candidate, recent) for recent in recent_comments)
+    )
+
+def parse_ai_candidates(response):
+    data = parse_ai_json(response)
+    comments = data.get('comments')
+    if isinstance(comments, list):
+        return [str(comment).strip() for comment in comments if str(comment).strip()]
+    comment = data.get('comment')
+    return [str(comment).strip()] if comment else []
+
+def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, recent_comments, focus):
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
+        return None
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
+    headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
+    correction = ''
+    for attempt in range(2):
+        payload = {
+            'messages': [{'role': 'user', 'content': prompt + correction}],
+            'temperature': 0.65 if attempt == 0 else 0.45,
+            'max_tokens': 800
+        }
+        try:
+            response = requests.post(url, headers=headers, json=payload, timeout=45)
+            if response.status_code == 200:
+                candidates = parse_ai_candidates(response)
+                valid, issues = [], []
+                recent_window = recent_comments[-8:]
+                for comment in candidates:
+                    issue = ai_comment_validation_issue(
+                        comment,
+                        activity_type=activity_type,
+                        allowed_route_visit=allowed_route_visit,
+                        focus=focus
+                    )
+                    if issue:
+                        issues.append(issue)
+                        continue
+                    similarity = max(
+                        (comment_similarity(comment, recent) for recent in recent_window),
+                        default=0
+                    )
+                    if similarity < 0.86 and comment not in recent_comments:
+                        valid.append((similarity, comment))
+                    else:
+                        issues.append('与近期点评过于相似')
+                if valid:
+                    return min(valid, key=lambda item: item[0])[1]
+                correction = (
+                    "\n这批候选未通过校验：" + '；'.join(sorted(set(issues))) +
+                    "。请重新给出三条，继续严格使用同一组事实，但明显改变开头、句式和第二句话。"
+                )
+        except Exception as error:
+            print(f"⚠️ AI 点评生成失败: {error}")
+            correction = "\n请求未得到有效候选。请严格按要求返回三条完整点评。"
+    return None
+
+def generate_ai_comment(activity, older_history, recent_comments=None):
     facts = build_activity_facts(activity, older_history)
-    if not facts.get('comparison'):
-        return fallback_activity_comment(facts)
+    recent_comments = [comment for comment in (recent_comments or []) if comment]
+    focus = facts.get('focus') or {}
+    route_context = focus.get('route') or {}
+    allowed_route_visit = route_context.get('visit_count')
     prompt = f"""
-你是运动记录的事实编辑，不是医生，也不是训练处方师。
-程序已计算出以下唯一可用事实：
+你是个人运动记录的事实编辑。程序已经选好本次唯一值得展开的核心事实：
 {json.dumps(facts, ensure_ascii=False, indent=2)}
 
-请把事实写成一段自然、有温度但克制的中文短评，只写一个最值得说的核心观察。
-要求：只改写 comparison 中已经算好的变化方向，并写清比较基准；route_context 存在时，说明程序已经选定“同路表现”为本次核心，可自然写成“这条熟路”或“同路上一次”；route_context 不存在时，绝不能声称是同一路线。若 route_context 含 visit_count，可以省略，也可以严格按“第 N 次”的阿拉伯数字格式使用该数字，不得改写或添加其他数字。achievement 存在时可以写入。不要罗列全部指标，不做“进步、退步、恢复、状态、轻松、稳定、强度、身体负荷”等综合判断；不猜天气、环境、心情或训练效果；不做医学判断；不提其他运动；不提供训练建议；除允许的 visit_count 外，不复述任何具体数字。若某项为未知就不要提。
-只返回 JSON：{{"comment":"..."}}
+最近使用过的点评如下，仅用于避开重复表达，不能当作本次事实：
+{json.dumps(recent_comments[-5:], ensure_ascii=False, indent=2)}
+
+请围绕同一个核心事实写三条明显不同的候选点评，每条严格写成两句话、五十五至九十个汉字。
+第一句准确写事实和比较口径；第二句可以有一点记录感、熟路感，或使用“刻度、参照点、留下痕迹”这类轻微比喻，让文字自然、有温度，但不能增加新事实。
+只能使用 focus 中已有内容；focus.route 不存在时绝不能声称是同一路线；focus.route.visit_count 存在时可以省略，也可以严格使用“第 N 次”，不得更改数字。不得猜天气、风景、环境、心情、身体感受、训练效果或健康结论，不给建议，不写“进步、退步、状态很好”等评价。除允许的 visit_count 外，不出现任何数字。三条不得使用相同开头或相同第二句话。
+只返回 JSON：{{"comments":["...","...","..."]}}
 """
-    allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
-    return request_ai_comment(
+    comment = request_activity_ai_comments(
         prompt,
         activity_type=activity.get('type'),
-        allowed_route_visit=allowed_route_visit
-    ) or fallback_activity_comment(facts)
+        allowed_route_visit=allowed_route_visit,
+        recent_comments=recent_comments,
+        focus=focus
+    )
+    return comment or fallback_activity_comment(
+        facts,
+        seed=activity.get('source_id') or activity.get('run_id'),
+        recent_comments=recent_comments
+    )
 
 # ==========================================
 # 月报按程序汇总结果，并在当月未结束时采用上月同期口径。
@@ -960,49 +1228,62 @@ if __name__ == '__main__':
 
     # 🧠 程序先算事实，AI 只改写语气；版本升级时会重写旧点评。
     if CF_ACCOUNT_ID and CF_AI_TOKEN:
+        recent_comments = []
         for i, item in enumerate(local_data):
             older_history = local_data[i+1:]
             facts = build_activity_facts(item, older_history)
-            allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
+            focus = facts.get('focus') or {}
+            allowed_route_visit = (focus.get('route') or {}).get('visit_count')
             if (
                 item.get('ai_comment_version') == AI_COMMENT_VERSION
                 and validate_ai_comment(
                     item.get('ai_comment'),
                     activity_type=item.get('type'),
-                    allowed_route_visit=allowed_route_visit
+                    allowed_route_visit=allowed_route_visit,
+                    focus=focus
                 )
             ):
+                recent_comments.append(item['ai_comment'])
                 continue
             safe_time = item.get('start_date_local', '')
             print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
-            item['ai_comment'] = generate_ai_comment(item, older_history)
+            item['ai_comment'] = generate_ai_comment(item, older_history, recent_comments)
             item['ai_comment_version'] = AI_COMMENT_VERSION
+            recent_comments.append(item['ai_comment'])
             needs_save = True
             print("   ↳ 点评已写入（AI 校验通过或采用可信兜底）")
             time.sleep(0.5)
     else:
         pending_count = 0
+        recent_comments = []
         for i, item in enumerate(local_data):
             facts = build_activity_facts(item, local_data[i+1:])
-            allowed_route_visit = (facts.get('route_context') or {}).get('visit_count')
+            focus = facts.get('focus') or {}
+            allowed_route_visit = (focus.get('route') or {}).get('visit_count')
             if (
                 item.get('ai_comment_version') == AI_COMMENT_VERSION
                 and validate_ai_comment(
                     item.get('ai_comment'),
                     activity_type=item.get('type'),
-                    allowed_route_visit=allowed_route_visit
+                    allowed_route_visit=allowed_route_visit,
+                    focus=focus
                 )
             ):
+                recent_comments.append(item['ai_comment'])
                 continue
-            fallback = fallback_activity_comment(facts)
-            if item.get('ai_comment') != fallback:
+            # 无 AI 凭证时保留已有点评；仅为真正没有点评的新记录补安全兜底。
+            if not item.get('ai_comment'):
+                fallback = fallback_activity_comment(
+                    facts,
+                    seed=item.get('source_id') or item.get('run_id'),
+                    recent_comments=recent_comments
+                )
                 item['ai_comment'] = fallback
                 needs_save = True
-            if item.pop('ai_comment_version', None) is not None:
-                needs_save = True
+            recent_comments.append(item['ai_comment'])
             pending_count += 1
         if pending_count:
-            print(f"🛡️ 本地先写入 {pending_count} 条可信兜底；线上同步会再由 AI 优化表达。")
+            print(f"🛡️ 有 {pending_count} 条点评等待线上 AI 升级；本地保留现有内容。")
             
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:
