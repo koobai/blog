@@ -1145,6 +1145,80 @@ body:has(.menu-checkbox:checked) {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color); }
 
+/* 无公开轨迹时，用运动消耗内容替代空白地图。 */
+.routeStampOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  padding-bottom: 84px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--background-card-color), transparent 50%);
+  backdrop-filter: saturate(0.55) blur(1px);
+  -webkit-backdrop-filter: saturate(0.55) blur(1px); }
+  .routeStampOverlay[hidden] {
+    display: none; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .routeStampOverlay {
+      background: color-mix(in srgb, var(--background-card-dark-color), transparent 60%); } }
+  html[data-theme="dark"] .routeStampOverlay {
+    background: color-mix(in srgb, var(--background-card-dark-color), transparent 60%); }
+  @media (min-width: 768px) {
+    .routeStampOverlay {
+      padding-bottom: 84px; } }
+.routeStamp {
+  width: calc(100% - 64px);
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: var(--text-info-color);
+  text-align: center;
+  animation: routeStampArrive 0.5s ease-out both; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .routeStamp {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .routeStamp {
+    color: var(--text-info-dark-color); }
+
+.routeStampComment {
+  color: var(--text-content-color);
+  font-size: 0.85rem;
+  line-height: 1.65; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .routeStampComment {
+      color: var(--text-content-dark-color); } }
+  html[data-theme="dark"] .routeStampComment {
+    color: var(--text-content-dark-color); }
+
+.routeStampNote {
+  align-self: center;
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: center; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .routeStampNote {
+      color: var(--text-info-dark-color); } }
+  html[data-theme="dark"] .routeStampNote {
+    color: var(--text-info-dark-color); }
+
+.routeStampNote + .routeStampComment {
+  margin-top: 12px; }
+
+@keyframes routeStampArrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px); }
+  to {
+    opacity: 1;
+    transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .routeStamp {
+    animation: none; } }
+
 /* 吸顶地图 */
 #map-wrapper.sticky-map {
   position: fixed;

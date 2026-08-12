@@ -80,6 +80,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const FALLBACK_COLOR = '#00ED5E'; 
   const getColor = (type) => TYPE_COLORS[type] || FALLBACK_COLOR;
 
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+
+  const getRouteStampCopy = (runData) => {
+    if (runData.is_indoor === true) {
+      return {
+        reason: '室内运动没有定位轨迹',
+        tagline: '室内开练，地图休息'
+      };
+    }
+
+    if (runData.route_status === 'privacy_hidden') {
+      return {
+        reason: '定位轨迹未公开',
+        tagline: '地图留白，运动没停'
+      };
+    }
+
+    return {
+      reason: '本次没有定位轨迹',
+      tagline: '没有轨迹，运动照常'
+    };
+  };
+
   // 2. 组装 Mapbox 样式规范的条件渲染表达式 (match [get type])
   const colorRules = ['match', ['get', 'type']];
   for (const [type, color] of Object.entries(TYPE_COLORS)) { 
@@ -160,6 +185,63 @@ document.addEventListener('DOMContentLoaded', () => {
     currentYear = window.KoobaiRun.availableYears[0].toString();
   }
 
+  let routeStampOverlay = document.getElementById('route-stamp-overlay');
+  if (!routeStampOverlay && mapWrapper) {
+    routeStampOverlay = document.createElement('div');
+    routeStampOverlay.id = 'route-stamp-overlay';
+    routeStampOverlay.className = 'routeStampOverlay';
+    routeStampOverlay.hidden = true;
+    mapWrapper.appendChild(routeStampOverlay);
+  }
+
+  const hideRouteStamp = () => {
+    if (mapWrapper) mapWrapper.classList.remove('show-route-stamp');
+    if (routeStampOverlay) {
+      routeStampOverlay.hidden = true;
+      routeStampOverlay.innerHTML = '';
+    }
+  };
+
+  const showRouteStamp = (runData) => {
+    if (!routeStampOverlay || !mapWrapper) return;
+
+    const copy = getRouteStampCopy(runData);
+    const aiComment = String(runData.ai_comment || '').trim();
+
+    routeStampOverlay.innerHTML = `
+      <div class="routeStamp">
+        <span class="routeStampNote">${escapeHtml(copy.tagline)}</span>
+        ${aiComment ? `
+        <div class="routeStampComment">${escapeHtml(aiComment)}</div>
+        ` : ''}
+      </div>
+    `;
+    routeStampOverlay.hidden = false;
+    mapWrapper.classList.add('show-route-stamp');
+  };
+
+  const focusYearOverview = (targetYear) => {
+    let yearCoords = [];
+    window.KoobaiRun.data.forEach(run => {
+      if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
+      if (!run._decodedCoords) run._decodedCoords = decodePolyline(run.summary_polyline);
+      yearCoords.push(...run._decodedCoords);
+    });
+
+    const validCoords = filterCityBoundingBox(yearCoords);
+    if (validCoords.length > 0) {
+      const bounds = new mapboxgl.LngLatBounds();
+      validCoords.forEach(coord => bounds.extend(coord));
+      const camera = map.cameraForBounds(bounds, { padding: 50 });
+      if (camera) {
+        map.easeTo({ ...camera, zoom: camera.zoom - 0.2, pitch: 0, bearing: 0, duration: 700 });
+        return;
+      }
+    }
+
+    map.easeTo({ center: [120.1551, 30.2741], zoom: 11, pitch: 0, bearing: 0, duration: 700 });
+  };
+
   // 清理上一轮的动画和标记
   const resetState = () => {
     if (animationRef) cancelAnimationFrame(animationRef);
@@ -194,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 根据选中的年份，提取数据并重绘底图所有轨迹
   const renderDataByYear = (targetYear) => {
+    hideRouteStamp();
     activeRunId = null; 
     currentYear = targetYear; 
     resetState();
@@ -252,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 地图加载完毕后初始化
   map.on('style.load', () => {
+    hideRouteStamp();
     injectCustomLayers();
     
     if (activeRunId && window.KoobaiRun.ui) {
@@ -287,6 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const runId = normalizeId(rawRunId);
       const statsPanel = document.getElementById('map-stats-panel'); 
+
+      hideRouteStamp();
 
       // 每次点击轨迹时，强制清理可能残留的海报预览状态和遮罩
       const mapWrapper = document.getElementById('map-wrapper');
@@ -365,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="detailDate">${displayTime}</span>${achievementTagsHtml}${sportTypeName}
               </div>
               <div class="panel-share">
-                ${aiComment ? `
+                ${aiComment && hasTrack ? `
                 <button type="button" id="trigger-ai-btn" class="panel-share-btn" style="color: ${color}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
                 </button>
@@ -402,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="poster-title">${smartName}</div>
           </div>
 
-          ${aiComment ? `
+          ${aiComment && hasTrack ? `
           <div class="poster-view ai-poster-view" style="display: none;">
             <div class="poster-actions">
               <button class="poster-download-btn poster-download" title="保存海报"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><path fill="currentColor" d="M426.666 426.667H85.333V384h341.333zm-149.333-179.5l91.583-91.583l30.167 30.166L256 328.834L112.916 185.75l30.167-30.166l91.583 91.582v-204.5h42.667z"/></svg></button>
@@ -527,7 +613,11 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       }
-      if (!hasTrack) return;
+      if (!hasTrack) {
+        focusYearOverview(currentYear);
+        showRouteStamp(runData);
+        return;
+      }
       
       // 5. 立即完整绘制当前高亮轨迹 (不再像贪吃蛇那样一点点画了)
       if (map.getSource('highlight-run-source')) {
