@@ -1906,7 +1906,8 @@ body:has(.menu-checkbox:checked) {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color); }
   .runCard:hover {
-    z-index: 5;
+    /* 食物提示框需要越过吸顶地图（z-index: 99）。 */
+    z-index: 101;
     background: #fff;
     border-color: #fff; }
     @media (prefers-color-scheme: dark) {
@@ -1916,6 +1917,8 @@ body:has(.menu-checkbox:checked) {
     html[data-theme="dark"] .runCard:hover {
       background: #232326;
       border-color: rgba(255, 255, 255, 0.08); }
+  .runCard:focus-within {
+    z-index: 101; }
 
 .cardContent {
   flex: 1;

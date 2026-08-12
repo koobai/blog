@@ -945,13 +945,18 @@
   }
 
   &:hover {
-    z-index: 5;
+    /* 食物提示框需要越过吸顶地图（z-index: 99）。 */
+    z-index: 101;
     background: #fff;
     border-color: #fff;
     @include dark {
       background: #232326;
       border-color: rgba(255, 255, 255, 0.08);
     }
+  }
+
+  &:focus-within {
+    z-index: 101;
   }
 }
 
