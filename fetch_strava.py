@@ -495,7 +495,7 @@ def build_activity_facts(activity, older_history):
             '_pace': statistics.median(pace_values) if pace_values else None,
             'average_heartrate': statistics.median(hr_values) if hr_values else None
         }
-        baseline_kind = f'最近{len(recent_same_type)}次同类型记录的中位数'
+        baseline_kind = '近期同类型记录的中位数'
 
     comparison = None
     if baseline:
@@ -576,7 +576,7 @@ def fallback_activity_comment(facts):
     sport = facts['sport']
     comparison = facts.get('comparison')
     if not comparison:
-        return f"这次{sport}的数据已经完整记下，距离、用时与强度都有据可查。先把这一笔留作基线，下一次再和真实记录比较。"
+        return f"这次{sport}的数据已经完整记下，距离与用时都有明确记录。先把这一笔留作比较基线，后续变化再与真实记录核对。"
     pace, heart_rate = comparison['pace'], comparison['heart_rate']
     if pace == '更快' and heart_rate == '更低':
         result = '节奏更快，平均心率也更低'
@@ -588,7 +588,7 @@ def fallback_activity_comment(facts):
         result = '节奏稍慢，平均心率也更高' if heart_rate == '更高' else '节奏稍慢，平均心率变化不大'
     else:
         result = '节奏接近，平均心率更低' if heart_rate == '更低' else '整体节奏与平均心率都比较接近'
-    return f"这次{sport}和{comparison['basis']}相比，{result}。两项变化都能在现有记录里直接找到，是一笔清楚、可以继续追踪的表现。"
+    return f"这次{sport}和{comparison['basis']}相比，{result}。这些变化都能在现有记录里直接找到，是一笔清楚、可供后续比较的记录。"
 
 def generate_ai_comment(activity, older_history):
     facts = build_activity_facts(activity, older_history)
@@ -788,6 +788,7 @@ def update_monthly_insights(local_data):
         needs_ai = (
             not old_entry.get('ai_comment')
             or old_entry.get('ai_comment_version') != MONTHLY_AI_COMMENT_VERSION
+            or not validate_ai_comment(old_entry.get('ai_comment'), monthly=True)
             or stats_changed
             or previous_key in stats_changed_months
         )
@@ -902,7 +903,10 @@ if __name__ == '__main__':
     # 🧠 程序先算事实，AI 只改写语气；版本升级时会重写旧点评。
     if CF_ACCOUNT_ID and CF_AI_TOKEN:
         for i, item in enumerate(local_data):
-            if item.get('ai_comment') and item.get('ai_comment_version') == AI_COMMENT_VERSION:
+            if (
+                item.get('ai_comment_version') == AI_COMMENT_VERSION
+                and validate_ai_comment(item.get('ai_comment'), activity_type=item.get('type'))
+            ):
                 continue
             safe_time = item.get('start_date_local', '')
             print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
@@ -915,7 +919,10 @@ if __name__ == '__main__':
     else:
         pending_count = 0
         for i, item in enumerate(local_data):
-            if item.get('ai_comment') and item.get('ai_comment_version') == AI_COMMENT_VERSION:
+            if (
+                item.get('ai_comment_version') == AI_COMMENT_VERSION
+                and validate_ai_comment(item.get('ai_comment'), activity_type=item.get('type'))
+            ):
                 continue
             fallback = fallback_activity_comment(build_activity_facts(item, local_data[i+1:]))
             if item.get('ai_comment') != fallback:
