@@ -1,5 +1,9 @@
 name: Githubblog
 
+concurrency:
+  group: githubblog-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
   push:
@@ -8,6 +12,8 @@ on:
 
 jobs:
   deploy:
+    # App 推送的是尚未补齐展示字段的原始运动数据；等待 AI 工作流提交最终 JSON 后再部署。
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Auto-sync Dongqilai')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
