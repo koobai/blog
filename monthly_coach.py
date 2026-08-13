@@ -583,12 +583,10 @@ def build_evidence(
         recommendations.append(f"下一阶段以{primary}作为主线，其他运动承担短程补充，不追求所有类型同时增加。")
     recommendations.append('如果某项运动不足三次，只保留事实，不对能力变化下结论。')
 
-    uncertainties = [
-        '现有数据没有体重、饮食、睡眠、静息心率和个人心率区间，不能判断实际减重、身体恢复或医学风险。'
-    ]
+    sample_limits = []
     for sport, metric in current_stats.get('sport_metrics', {}).items():
         if metric.get('count', 0) < 3:
-            uncertainties.append(f'{sport}本阶段只有{metric.get("count", 0)}次，暂不足以形成稳定趋势。')
+            sample_limits.append(f'{sport}本阶段只有{metric.get("count", 0)}次，不适合据此判断长期趋势。')
 
     return {
         'month': month_key,
@@ -602,7 +600,7 @@ def build_evidence(
             'safe_action_examples': recommendations,
             'freedom': '可以自行组合或提出新的具体安排，但必须能由证据解释、可在下一阶段验证，且不能写医学或极限训练处方。'
         },
-        'uncertainties': uncertainties,
+        'sample_limits': sample_limits,
         'style_avoidance': [
             {
                 'verdict': str(report.get('verdict') or ''),
@@ -646,8 +644,7 @@ def validate_report(report, evidence_ids):
     lengths = {
         'verdict': (25, 120),
         'analysis': (90, 360),
-        'next_plan': (45, 220),
-        'uncertainty': (0, 180)
+        'next_plan': (45, 220)
     }
     for field, (minimum, maximum) in lengths.items():
         size = len(str(report.get(field) or '').strip())
@@ -658,7 +655,7 @@ def validate_report(report, evidence_ids):
         return '至少需要引用三个证据维度'
     if any(item not in evidence_ids for item in used_ids):
         return '引用了不存在的证据维度'
-    combined = ''.join(str(report.get(field) or '') for field in (*required, 'uncertainty'))
+    combined = ''.join(str(report.get(field) or '') for field in required)
     if any(term in combined for term in (
         '你', '您', '博主',
         '心肺功能提升', '恢复良好', '燃脂区', '有氧区', '医学诊断',
@@ -699,7 +696,7 @@ def request_deepseek_report(api_key, facts, correction=None):
 2. verdict 用一句话给出本阶段最重要的判断，必须带具体数字。
 3. analysis 用两至四句话解释选中的事实为什么重要。不能罗列全部数据；要把出勤、总量、单次耐力、节奏心率或运动结构交叉起来，形成一条自然主线。
 4. next_plan 给出未来半个月或下个月可执行、可验证的安排。可以发挥教练判断，不必照抄示例，但必须服从 coaching_boundaries，并说明届时用什么记录判断是否做到。
-5. uncertainty 只保留与本期相关的一项数据边界；没有必要时可以留空。
+5. sample_limits 只用于避免把少量样本写成长期趋势，不要把它单独写成结尾声明；尤其不要输出“缺少体重、饮食、睡眠、心率区间”一类固定免责声明。
 6. 使用公开旁观视角，不出现“你、您、博主”。不写“继续保持、加油”，不把平均心率变化等同于心肺能力、恢复或减脂成果。
 7. style_avoidance 只是近期月报的表达参考，不是运动事实；避免复用相同开头、句式和收束。
 8. evidence_ids 列出实际使用的三至五个证据 id。
@@ -710,7 +707,6 @@ def request_deepseek_report(api_key, facts, correction=None):
   "verdict": "...",
   "analysis": "...",
   "next_plan": "...",
-  "uncertainty": "...",
   "evidence_ids": ["consistency", "event_longest_session", "quality"]
 }}
 """
@@ -760,14 +756,20 @@ def generate_report(api_key, facts):
     report = request_deepseek_report(api_key, facts)
     issue = validate_report(report, evidence_ids)
     if not issue:
-        return report
+        return {
+            key: report[key]
+            for key in ('verdict', 'analysis', 'next_plan', 'evidence_ids')
+        }
     print(f'🔁 DeepSeek 月报未通过校验，定向重写一次: {issue}')
     report = request_deepseek_report(api_key, facts, correction=issue)
     issue = validate_report(report, evidence_ids)
     if issue:
         print(f'⚠️ DeepSeek 月报仍未通过校验: {issue}')
         return None
-    return report
+    return {
+        key: report[key]
+        for key in ('verdict', 'analysis', 'next_plan', 'evidence_ids')
+    }
 
 
 def report_label(phase, cutoff_day=None):
@@ -910,10 +912,17 @@ def update_monthly_insights(
             and old_entry.get('report_phase') == 'midmonth'
             and isinstance(old_entry.get('coach_report'), dict)
         )
+        # 终稿生成后永久冻结；后续提示词调整只影响新月份，不重写历史月报。
+        frozen_final = (
+            not is_current
+            and old_entry.get('report_version') == REPORT_VERSION
+            and old_entry.get('report_phase') == 'final'
+            and isinstance(old_entry.get('coach_report'), dict)
+        )
 
-        report = old_entry.get('coach_report') if (old_report_valid or frozen_midmonth) else None
-        report_data_hash = old_entry.get('report_data_hash') if frozen_midmonth else current_hash
-        report_as_of = old_entry.get('report_as_of') if frozen_midmonth else f'{month_key}-{cutoff_day:02d}'
+        report = old_entry.get('coach_report') if (old_report_valid or frozen_midmonth or frozen_final) else None
+        report_data_hash = old_entry.get('report_data_hash') if (frozen_midmonth or frozen_final) else current_hash
+        report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{cutoff_day:02d}'
 
         if report is None and api_key:
             print(f"🧠 {month_key} 正在生成{'月中观察' if phase == 'midmonth' else '月度复盘'}...")

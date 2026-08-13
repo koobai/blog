@@ -35,7 +35,6 @@ def report_for(facts):
             '下一阶段保留骑行为主线，安排三次相近距离记录，并用完成次数、'
             '典型节奏与平均心率能否复现作为检查标准。'
         ),
-        'uncertainty': '缺少体重、饮食和睡眠数据，结论只覆盖运动记录。',
         'evidence_ids': [item['id'] for item in facts['evidence'][:3]]
     }
 
@@ -185,6 +184,27 @@ class MonthlyCoachStateTests(unittest.TestCase):
         self.assertNotIn('private-polyline', serialized)
         self.assertNotIn('private-source-id', serialized)
         self.assertNotIn('summary_polyline', serialized)
+
+    @patch('monthly_coach.request_deepseek_report')
+    def test_saved_report_drops_unexpected_uncertainty_field(self, request):
+        current = monthly_coach.calculate_monthly_stats(
+            [item for item in self.activities if item['start_date_local'].startswith('2026-08')]
+        )
+        previous = monthly_coach.calculate_monthly_stats(
+            [item for item in self.activities if item['start_date_local'].startswith('2026-07')]
+        )
+        facts = monthly_coach.build_evidence(
+            '2026-08', 'final', current, previous, previous, 31
+        )
+        candidate = report_for(facts)
+        candidate['analysis'] += (
+            '本阶段的出勤密度、重复路线和单次距离可以互相解释，'
+            '因此下一阶段能够用同一组记录继续验证，而不是只看累计数字。'
+        )
+        candidate['uncertainty'] = '这段内容不应进入最终 JSON。'
+        request.return_value = candidate
+        result = monthly_coach.generate_report('test-key', facts)
+        self.assertNotIn('uncertainty', result)
 
 
 if __name__ == '__main__':

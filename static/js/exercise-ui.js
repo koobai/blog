@@ -518,8 +518,7 @@
         const reportParts = [
           coachReport.verdict,
           coachReport.analysis,
-          coachReport.next_plan,
-          coachReport.uncertainty
+          coachReport.next_plan
         ].filter(Boolean);
         monthlyCoachHtml = `
           ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
