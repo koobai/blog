@@ -15,10 +15,6 @@ from collections import defaultdict
 # ==========================================
 CF_ACCOUNT_ID = os.getenv('CF_ACCOUNT_ID')
 CF_AI_TOKEN = os.getenv('CF_AI_TOKEN')
-# Scout 的中文约束稳定性不足，GLM-4.7-Flash 在当前免费账户又返回了与面板不一致的额度错误。
-# 默认改用中文与指令遵循更合适、且明确位于普通 Workers AI 免费额度表内的 Qwen3。
-CF_AI_MODEL = os.getenv('CF_AI_MODEL', '@cf/qwen/qwen3-30b-a3b-fp8')
-CF_AI_PROMPT_SUFFIX = ' /no_think' if CF_AI_MODEL.startswith('@cf/qwen/qwen3-') else ''
 # 一旦 Cloudflare 返回每日免费额度限制，本轮不再继续发送无效请求。
 CF_AI_DAILY_QUOTA_BLOCKED = False
 
@@ -1219,7 +1215,10 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
     global CF_AI_DAILY_QUOTA_BLOCKED
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN or CF_AI_DAILY_QUOTA_BLOCKED:
         return None
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/{CF_AI_MODEL}"
+    url = (
+        f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}"
+        "/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
+    )
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     correction = ''
     for attempt in range(2):
@@ -1227,16 +1226,11 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
             'messages': [
                 {
                     'role': 'system',
-                    'content': (
-                        '你是严格的中文运动事实编辑。只使用输入事实，只输出指定 JSON，不给建议，不推断能力。'
-                        + CF_AI_PROMPT_SUFFIX
-                    )
+                    'content': '你是严格的中文运动事实编辑。只使用输入事实，只输出指定 JSON，不给建议，不推断能力。'
                 },
                 {'role': 'user', 'content': prompt + correction}
             ],
-            'temperature': 0.65 if attempt == 0 else 0.45,
-            'top_p': 0.8,
-            'top_k': 20,
+            'temperature': 0.5 if attempt == 0 else 0.25,
             'max_tokens': 650,
             'frequency_penalty': 0.15
         }
@@ -1245,7 +1239,7 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
             if response.status_code != 200:
                 error_summary = cloudflare_ai_error_summary(response)
                 print(
-                    f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
+                    f"⚠️ Cloudflare AI 请求失败 (Scout, HTTP {response.status_code}): "
                     f"{error_summary}"
                 )
                 if is_cloudflare_daily_quota_block(response, error_summary):
@@ -1257,7 +1251,7 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
 
             candidates = parse_ai_candidates(response)
             if not candidates:
-                print(f"⚠️ {CF_AI_MODEL} 响应成功，但没有解析到 JSON 点评候选。")
+                print("⚠️ Scout 响应成功，但没有解析到 JSON 点评候选。")
                 correction = "\n上一次响应无法解析。只返回包含 comments 数组的 JSON。"
                 continue
 
@@ -1316,7 +1310,7 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
             if valid:
                 return min(valid, key=lambda item: item[0])[1]
             issue_summary = '；'.join(sorted(set(issues))) or '候选内容为空'
-            print(f"⚠️ {CF_AI_MODEL} 点评候选未通过校验: {issue_summary}")
+            print(f"⚠️ Scout 点评候选未通过校验: {issue_summary}")
             correction = (
                 "\n这批候选未通过校验：" + issue_summary +
                 "。请重新给出三条，继续严格使用同一组事实，但明显改变叙事顺序、开头和收束句。"
@@ -1822,7 +1816,10 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
     global CF_AI_DAILY_QUOTA_BLOCKED
     if not CF_ACCOUNT_ID or not CF_AI_TOKEN or CF_AI_DAILY_QUOTA_BLOCKED:
         return None
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/{CF_AI_MODEL}"
+    url = (
+        f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}"
+        "/ai/run/@cf/meta/llama-4-scout-17b-16e-instruct"
+    )
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
     correction = ''
     for attempt in range(2):
@@ -1830,16 +1827,11 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
             'messages': [
                 {
                     'role': 'system',
-                    'content': (
-                        '你是严格的中文运动月报编辑。只使用输入事实，只输出指定 JSON，不写报表式罗列。'
-                        + CF_AI_PROMPT_SUFFIX
-                    )
+                    'content': '你是严格的中文运动月报编辑。只使用输入事实，只输出指定 JSON，不写报表式罗列。'
                 },
                 {'role': 'user', 'content': prompt + correction}
             ],
-            'temperature': 0.65 if attempt == 0 else 0.45,
-            'top_p': 0.8,
-            'top_k': 20,
+            'temperature': 0.55 if attempt == 0 else 0.3,
             'max_tokens': 800,
             'frequency_penalty': 0.15
         }
@@ -1848,7 +1840,7 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
             if response.status_code != 200:
                 error_summary = cloudflare_ai_error_summary(response)
                 print(
-                    f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
+                    f"⚠️ Cloudflare AI 请求失败 (Scout, HTTP {response.status_code}): "
                     f"{error_summary}"
                 )
                 if is_cloudflare_daily_quota_block(response, error_summary):
@@ -1860,7 +1852,7 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
 
             candidates = parse_ai_candidates(response)
             if not candidates:
-                print(f"⚠️ {CF_AI_MODEL} 响应成功，但没有解析到 JSON 月度点评候选。")
+                print("⚠️ Scout 响应成功，但没有解析到 JSON 月度点评候选。")
                 correction = "\n上一次响应无法解析。只返回包含 comments 数组的 JSON。"
                 continue
 
@@ -1884,7 +1876,7 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
             if valid:
                 return min(valid, key=lambda item: item[0])[1]
             issue_summary = '；'.join(sorted(set(issues))) or '候选内容为空'
-            print(f"⚠️ {CF_AI_MODEL} 月度点评候选未通过校验: {issue_summary}")
+            print(f"⚠️ Scout 月度点评候选未通过校验: {issue_summary}")
             correction = (
                 "\n这批候选未通过校验：" + issue_summary +
                 "。请继续使用同一组事实，重新改变切入角度、句序和收束方式。"
