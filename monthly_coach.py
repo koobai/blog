@@ -12,7 +12,7 @@ import requests
 
 
 REPORT_VERSION = 6
-MODEL = 'deepseek-v4-pro'
+MODEL = 'deepseek-v4-flash'
 API_URL = 'https://api.deepseek.com/chat/completions'
 MID_MONTH_DAY = 16
 MIN_MID_MONTH_SESSIONS = 6
@@ -134,7 +134,6 @@ def calculate_monthly_stats(activities):
     sport_rows = defaultdict(list)
     sports_count = defaultdict(int)
     sports_distance = defaultdict(float)
-    route_counts = defaultdict(int)
     time_preferences = defaultdict(int)
     active_dates = []
     total_seconds = 0
@@ -163,8 +162,7 @@ def calculate_monthly_stats(activities):
             'heart_rate': heart_rate or None,
             'pace_seconds_per_km': pace,
             'elevation': elevation,
-            'is_indoor': activity.get('is_indoor') is True,
-            'route_group_id': activity.get('route_group_id') or None
+            'is_indoor': activity.get('is_indoor') is True
         }
         sport_rows[activity_type].append(row)
         sports_count[sport_name] += 1
@@ -179,8 +177,6 @@ def calculate_monthly_stats(activities):
             hour = started_at.hour
             period = '凌晨' if hour < 6 else '早晨' if hour < 9 else '上午' if hour < 12 else '中午' if hour < 14 else '下午' if hour < 18 else '晚上'
             time_preferences[period] += 1
-        if row['route_group_id']:
-            route_counts[row['route_group_id']] += 1
         if heart_rate and (highest_hr is None or heart_rate > highest_hr['hr']):
             highest_hr = {
                 'date': f'{started_at.day}号' if started_at else None,
@@ -250,9 +246,6 @@ def calculate_monthly_stats(activities):
         'primary_sport_share': round((len(sport_rows.get(primary_type, [])) / total_count), 3) if primary_type and total_count else 0,
         'sport_variety': len(sport_rows),
         'sport_metrics': sport_metrics,
-        'repeated_route_groups': sum(1 for count in route_counts.values() if count >= 2),
-        'repeated_route_sessions': sum(count for count in route_counts.values() if count >= 2),
-        'max_route_visits': max(route_counts.values(), default=0),
         'favorite_time': favorite_time,
         'max_streak_days': longest_streak(active_days),
         'longest_gap_days': longest_gap(active_days),
@@ -284,7 +277,7 @@ def group_by_month(activities):
 
 
 def source_data_hash(activities):
-    """只对会影响月报的运动事实取指纹，不包含轨迹、坐标或提示词版本。"""
+    """月报运动事实指纹；保留 route_group_id 仅为兼容既有报告指纹。"""
     fields = (
         'start_date_local',
         'type',
@@ -403,19 +396,6 @@ def build_dynamic_events(current_stats, previous_period_stats, previous_full_sta
             {'current_km': current_longest, 'previous_km': previous_longest, 'change': longest_change}
         ))
 
-    repeated_sessions = current_stats.get('repeated_route_sessions') or 0
-    total_count = current_stats.get('total_count') or 0
-    repeated_share = repeated_sessions / total_count if total_count else 0
-    if repeated_sessions >= 3 and repeated_share >= 0.35:
-        events.append(evidence_item(
-            'event_route_repetition',
-            '路线复现',
-            88,
-            f"本阶段有{repeated_sessions}次运动落在重复路线组，占全部记录约{repeated_share * 100:.0f}%，"
-            '适合观察相近条件下节奏是否能够复现。',
-            {'sessions': repeated_sessions, 'share': repeated_share}
-        ))
-
     favorite_time = current_stats.get('favorite_time')
     previous_time = previous_period_stats.get('favorite_time')
     if favorite_time and previous_time and favorite_time != '未知' and previous_time != '未知' and favorite_time != previous_time:
@@ -444,6 +424,7 @@ def build_dynamic_events(current_stats, previous_period_stats, previous_full_sta
             {'days': current_stats['longest_gap_days']}
         ))
 
+    total_count = current_stats.get('total_count') or 0
     previous_indoor = previous_period_stats.get('indoor_count') or 0
     previous_total = previous_period_stats.get('total_count') or 0
     current_indoor_share = (current_stats.get('indoor_count') or 0) / total_count if total_count else 0
@@ -565,7 +546,7 @@ def build_evidence(
     sports_text = '、'.join(f'{name}{count}次' for name, count in sorted(current_stats['sports_count'].items(), key=lambda item: -item[1]))
     structure_fact = (
         f"本阶段运动结构为{sports_text}；室外{current_stats['outdoor_count']}次、室内{current_stats['indoor_count']}次，"
-        f"累计爬升{current_stats['total_elevation_gain']}米，重复路线覆盖{current_stats['repeated_route_sessions']}次运动。"
+        f"累计爬升{current_stats['total_elevation_gain']}米。"
     )
     evidence.append(evidence_item('structure', '运动结构', 65, structure_fact, {
         'sports_count': current_stats['sports_count'],
@@ -685,6 +666,7 @@ def validate_report(report, evidence_ids):
     combined = ''.join(str(report.get(field) or '') for field in required)
     if any(term in combined for term in (
         '你', '您', '博主',
+        '重复路线', '同一路线', '同路', '路线复现',
         '心肺功能提升', '恢复良好', '燃脂区', '有氧区', '医学诊断',
         '体重下降', '减重成功', '减脂效果', '燃脂效果', '血糖改善', '糖尿病改善',
         '睡眠改善', '代谢提升'
@@ -716,6 +698,7 @@ def request_deepseek_report(api_key, facts, correction=None):
     system_prompt = (
         '你是个人运动博客的月度教练。程序已经完成全部计算；只能使用输入中的证据，'
         '不得补充常识推测、医学判断、天气、身体感受或不存在的训练目标。'
+        '不得判断或总结重复路线、同路表现及路线复现情况。'
         '六个基础维度和动态信号都是候选证据，不是固定栏目；需要自行找出本月真正值得讲的主线。输出必须是 JSON。'
     )
     user_prompt = f"""
@@ -956,12 +939,16 @@ def update_monthly_insights(
         )
 
         report = old_entry.get('coach_report') if (old_report_valid or frozen_midmonth or frozen_final) else None
+        # 已有报告继续保留其实际生成模型；切换默认模型不会改写历史元数据。
+        report_model = old_entry.get('model') if report is not None else None
         report_data_hash = old_entry.get('report_data_hash') if (frozen_midmonth or frozen_final) else current_hash
         report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{report_cutoff_day:02d}'
 
         if report is None and api_key:
             print(f"🧠 {month_key} 正在生成{'月中报告' if phase == 'midmonth' else '最终报告'}...")
             report = generate_report(api_key, facts)
+            if report is not None:
+                report_model = MODEL
         elif report is None:
             print(f'⏸️ {month_key} 等待 DEEPSEEK_API_KEY，保留现有月报。')
 
@@ -976,7 +963,7 @@ def update_monthly_insights(
                 'report_data_hash': report_data_hash,
                 'source_data_hash': current_source_hash,
                 **({'midmonth_source_hash': midmonth_source_hash} if phase == 'midmonth' else {}),
-                'model': MODEL,
+                'model': report_model or MODEL,
                 'comparison_basis': facts['comparison_basis']
             }
         else:

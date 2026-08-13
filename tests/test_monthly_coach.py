@@ -28,7 +28,7 @@ def report_for(facts):
     return {
         'verdict': '本阶段共有10次运动，出勤和单次耐力形成了一条清晰主线。',
         'analysis': (
-            '累计距离与单次距离共同变化，重复路线又提供了相近条件下的观察基础。'
+            '累计距离与单次距离共同变化，典型节奏提供了相近条件下的观察基础。'
             '现有样本足以描述运动安排，但不能据此判断身体恢复或实际减重。'
         ),
         'next_plan': (
@@ -172,6 +172,33 @@ class MonthlyCoachStateTests(unittest.TestCase):
         self.assertEqual(1, generate.call_count)
 
     @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_frozen_report_preserves_its_original_model(self, generate):
+        first_half = [
+            activity(f'2026-08-{day:02d}T19:00:00')
+            for day in (1, 3, 5, 7, 9, 11)
+        ]
+        monthly_coach.update_monthly_insights(
+            first_half,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 16, 4)
+        )
+        data = self.read()
+        data['2026-08']['model'] = 'deepseek-v4-pro'
+        with open(self.path, 'w', encoding='utf-8') as file:
+            json.dump(data, file)
+
+        generate.reset_mock()
+        monthly_coach.update_monthly_insights(
+            first_half,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 20, 20)
+        )
+        self.assertEqual('deepseek-v4-pro', self.read()['2026-08']['model'])
+        generate.assert_not_called()
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
     def test_late_first_half_data_corrects_midmonth_but_second_half_does_not(self, generate):
         first_half = [
             activity(f'2026-08-{day:02d}T19:00:00')
@@ -299,6 +326,15 @@ class MonthlyCoachStateTests(unittest.TestCase):
         self.assertNotIn('private-polyline', serialized)
         self.assertNotIn('private-source-id', serialized)
         self.assertNotIn('summary_polyline', serialized)
+        self.assertNotIn('event_route_repetition', serialized)
+        self.assertNotIn('重复路线', serialized)
+
+        stats = monthly_coach.calculate_monthly_stats(
+            [item for item in self.activities if item['start_date_local'].startswith('2026-08')]
+        )
+        self.assertNotIn('repeated_route_groups', stats)
+        self.assertNotIn('repeated_route_sessions', stats)
+        self.assertNotIn('max_route_visits', stats)
 
     @patch('monthly_coach.request_deepseek_report')
     def test_saved_report_drops_unexpected_uncertainty_field(self, request):
@@ -313,7 +349,7 @@ class MonthlyCoachStateTests(unittest.TestCase):
         )
         candidate = report_for(facts)
         candidate['analysis'] += (
-            '本阶段的出勤密度、重复路线和单次距离可以互相解释，'
+            '本阶段的出勤密度、典型节奏和单次距离可以互相解释，'
             '因此下一阶段能够用同一组记录继续验证，而不是只看累计数字。'
         )
         candidate['uncertainty'] = '这段内容不应进入最终 JSON。'

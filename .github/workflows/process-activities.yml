@@ -13,13 +13,10 @@ on:
     - cron: '0 20 28-29 2 *'
     # UTC 15 日 20:00 = 北京时间每月 16 日 04:00，检查是否生成月中报告。
     - cron: '0 20 15 * *'
-  # 🚀 核心改动：监听 push 事件。当你把本地生成的 activities.json 推送到 GitHub 时，自动触发此工作流
+  # App 同步运动数据时触发；仅修改处理代码不会自动调用月报 API。
   push:
     paths:
       - 'assets/activities.json'
-      - 'process_activities.py'
-      - 'monthly_coach.py'
-      - '.github/workflows/process-activities.yml'
   # 保留手动触发，方便你随时在网页端手动运行
   workflow_dispatch:
 
