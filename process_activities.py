@@ -67,7 +67,7 @@ ACTIVITY_DISTANCE_GROUPS = {
 # 趣味能量换算表。数值只用于挑选自然的整数标题，不作为营养建议展示。
 FOOD_EQUIVALENTS = [
     {'key': 'sugar_cube', 'name': '方糖', 'unit': '块', 'kcal': 16},
-    {'key': 'chocolate', 'name': '巧克力', 'unit': '块', 'kcal': 28},
+    {'key': 'chocolate', 'name': '巧克力', 'unit': '块', 'kcal': 43},
     {'key': 'cookie', 'name': '曲奇', 'unit': '块', 'kcal': 45},
     {'key': 'banana', 'name': '香蕉', 'unit': '根', 'kcal': 90},
     {'key': 'cola', 'name': '可乐', 'unit': '罐', 'kcal': 139},
@@ -82,16 +82,8 @@ FOOD_EQUIVALENTS = [
     {'key': 'milk_tea', 'name': '奶茶', 'unit': '杯', 'kcal': 450},
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
-FOOD_TITLE_VERSION = 4
-
-# 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
-OBSOLETE_ACTIVITY_FIELDS = (
-    'ai_title',
-    'food_title',
-    'distance_title_kind',
-    'average_speed',
-    'source_timezone'
-)
+MAX_FOOD_RELATIVE_ERROR = 0.12
+FOOD_TITLE_VERSION = 5
 
 # 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
 # preferred_groups 是“软归类”：首选类型会有更高概率，其他运动仍可以偶尔抽到。
@@ -155,7 +147,7 @@ def generate_energy_title(calories, run_id, recent_food_keys=None):
 
     # 在误差合理的食物中进行稳定随机，优先使用 1～6 份的自然表达。
     # 如果今后消耗大幅超出当前记录，会自动放宽数量，不存在上限。
-    eligible = [candidate for candidate in candidates if candidate[0] <= 0.18]
+    eligible = [candidate for candidate in candidates if candidate[0] <= MAX_FOOD_RELATIVE_ERROR]
     natural = [candidate for candidate in eligible if candidate[2] <= 6]
     if natural:
         eligible = natural
@@ -417,13 +409,6 @@ if __name__ == '__main__':
     needs_save = removed_before_publish_date > 0
     if removed_before_publish_date:
         print(f"🧹 已移除 2026 年以前的 {removed_before_publish_date} 条记录。")
-
-    # 🧹 清理已退出数据契约的字段，避免旧客户端再次写回。
-    for item in local_data:
-        for key in OBSOLETE_ACTIVITY_FIELDS:
-            if key in item:
-                del item[key]
-                needs_save = True
 
     # 🧭 App 会用未裁剪原始轨迹生成分组；旧数据由脚本按同一套严格阈值补齐。
     if assign_route_groups(local_data):
