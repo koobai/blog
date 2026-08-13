@@ -48,9 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     preserveDrawingBuffer: true // 👈 【关键】既然还原了原始代码，记得把这句加回来，否则截图黑屏
   });
 
-  // 真实地点标题使用 OpenStreetMap 数据；保持地图署名精简但可见。
-  map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
-
   // 4. 监听外层容器大小变化
   const mapWrapper = document.getElementById('map-wrapper');
   if (mapWrapper && window.ResizeObserver) {
