@@ -15,9 +15,12 @@ from collections import defaultdict
 # ==========================================
 CF_ACCOUNT_ID = os.getenv('CF_ACCOUNT_ID')
 CF_AI_TOKEN = os.getenv('CF_AI_TOKEN')
-# Scout 在长约束中文改写中出现过方向写反、无依据评价与英文残留。
-# 默认使用低 Neuron 成本的多语言指令模型，尽量让全量重写与日常增量都落在免费额度内。
-CF_AI_MODEL = os.getenv('CF_AI_MODEL', '@cf/zai-org/glm-4.7-flash')
+# Scout 的中文约束稳定性不足，GLM-4.7-Flash 在当前免费账户又返回了与面板不一致的额度错误。
+# 默认改用中文与指令遵循更合适、且明确位于普通 Workers AI 免费额度表内的 Qwen3。
+CF_AI_MODEL = os.getenv('CF_AI_MODEL', '@cf/qwen/qwen3-30b-a3b-fp8')
+CF_AI_PROMPT_SUFFIX = ' /no_think' if CF_AI_MODEL.startswith('@cf/qwen/qwen3-') else ''
+# 一旦 Cloudflare 返回每日免费额度限制，本轮不再继续发送无效请求。
+CF_AI_DAILY_QUOTA_BLOCKED = False
 
 if not all([CF_ACCOUNT_ID, CF_AI_TOKEN]):
     print("⚠️ 警告: 缺少 Cloudflare AI 环境变量，AI 文案将无法生成。")
@@ -854,6 +857,16 @@ def cloudflare_ai_error_summary(response):
     summary = re.sub(r'\s+', ' ', str(summary)).strip()
     return summary[:240] or 'Cloudflare 未返回错误详情'
 
+def is_cloudflare_daily_quota_block(response, error_summary=''):
+    if response.status_code != 429:
+        return False
+    summary = (error_summary or cloudflare_ai_error_summary(response)).lower()
+    return (
+        'daily free allocation' in summary
+        or 'used up your daily' in summary
+        or ('10,000' in summary and 'neuron' in summary)
+    )
+
 def normalize_comment(text):
     return re.sub(r'[\s，。；：、！？“”‘’（）()·]', '', str(text or ''))
 
@@ -1203,7 +1216,8 @@ def parse_ai_candidates(response):
     return [str(comment).strip()] if comment else []
 
 def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, recent_comments, focus, facts):
-    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
+    global CF_AI_DAILY_QUOTA_BLOCKED
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN or CF_AI_DAILY_QUOTA_BLOCKED:
         return None
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/{CF_AI_MODEL}"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
@@ -1213,21 +1227,31 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
             'messages': [
                 {
                     'role': 'system',
-                    'content': '你是严格的中文运动事实编辑。只使用输入事实，只输出指定 JSON，不给建议，不推断能力。'
+                    'content': (
+                        '你是严格的中文运动事实编辑。只使用输入事实，只输出指定 JSON，不给建议，不推断能力。'
+                        + CF_AI_PROMPT_SUFFIX
+                    )
                 },
                 {'role': 'user', 'content': prompt + correction}
             ],
-            'temperature': 0.5 if attempt == 0 else 0.25,
+            'temperature': 0.65 if attempt == 0 else 0.45,
+            'top_p': 0.8,
+            'top_k': 20,
             'max_tokens': 650,
             'frequency_penalty': 0.15
         }
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=45)
             if response.status_code != 200:
+                error_summary = cloudflare_ai_error_summary(response)
                 print(
                     f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
-                    f"{cloudflare_ai_error_summary(response)}"
+                    f"{error_summary}"
                 )
+                if is_cloudflare_daily_quota_block(response, error_summary):
+                    CF_AI_DAILY_QUOTA_BLOCKED = True
+                    print("⏸️ Cloudflare 返回每日免费额度限制，本轮停止后续 AI 请求并保留现有点评。")
+                    return None
                 correction = "\n上一次请求失败。请严格按要求返回三条完整点评。"
                 continue
 
@@ -1795,7 +1819,8 @@ def fallback_monthly_comment(month_str, facts, recent_comments=None):
     return min(ordered, key=lambda candidate: max(comment_similarity(candidate, item) for item in recent))
 
 def request_monthly_ai_comments(prompt, facts, recent_comments):
-    if not CF_ACCOUNT_ID or not CF_AI_TOKEN:
+    global CF_AI_DAILY_QUOTA_BLOCKED
+    if not CF_ACCOUNT_ID or not CF_AI_TOKEN or CF_AI_DAILY_QUOTA_BLOCKED:
         return None
     url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/{CF_AI_MODEL}"
     headers = {"Authorization": f"Bearer {CF_AI_TOKEN}"}
@@ -1805,21 +1830,31 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
             'messages': [
                 {
                     'role': 'system',
-                    'content': '你是严格的中文运动月报编辑。只使用输入事实，只输出指定 JSON，不写报表式罗列。'
+                    'content': (
+                        '你是严格的中文运动月报编辑。只使用输入事实，只输出指定 JSON，不写报表式罗列。'
+                        + CF_AI_PROMPT_SUFFIX
+                    )
                 },
                 {'role': 'user', 'content': prompt + correction}
             ],
-            'temperature': 0.55 if attempt == 0 else 0.3,
+            'temperature': 0.65 if attempt == 0 else 0.45,
+            'top_p': 0.8,
+            'top_k': 20,
             'max_tokens': 800,
             'frequency_penalty': 0.15
         }
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=45)
             if response.status_code != 200:
+                error_summary = cloudflare_ai_error_summary(response)
                 print(
                     f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
-                    f"{cloudflare_ai_error_summary(response)}"
+                    f"{error_summary}"
                 )
+                if is_cloudflare_daily_quota_block(response, error_summary):
+                    CF_AI_DAILY_QUOTA_BLOCKED = True
+                    print("⏸️ Cloudflare 返回每日免费额度限制，本轮停止后续 AI 请求并保留现有月报。")
+                    return None
                 correction = "\n上一次请求失败。请严格按要求返回三条完整月度点评。"
                 continue
 
@@ -1897,6 +1932,8 @@ def update_monthly_insights(local_data):
             months_data[date_string[:7]].append(activity)
 
     changed = False
+    if CF_AI_DAILY_QUOTA_BLOCKED:
+        print("⏸️ 本轮已被 Cloudflare 每日额度限制；月度统计照常核对，现有月报不重复请求。")
     for stale_month in set(insights) - set(months_data):
         del insights[stale_month]
         changed = True
@@ -1944,7 +1981,7 @@ def update_monthly_insights(local_data):
             'comparison_basis': comparison_basis
         })
         if needs_ai:
-            if CF_ACCOUNT_ID and CF_AI_TOKEN:
+            if CF_ACCOUNT_ID and CF_AI_TOKEN and not CF_AI_DAILY_QUOTA_BLOCKED:
                 print(f"📈 {month_key} 采用可信事实口径重写月报...")
                 comment, generated_by_ai, _ = generate_monthly_ai_report(
                     month_key,
@@ -2088,7 +2125,10 @@ if __name__ == '__main__':
                 continue
             safe_time = item.get('start_date_local', '')
             print(f"🛠️ 记录 [{safe_time}] 正在采用可信事实口径重写点评...")
+            existing_comment = item.get('ai_comment')
             comment, generated_by_ai = generate_ai_comment(item, older_history, recent_comments)
+            if CF_AI_DAILY_QUOTA_BLOCKED and existing_comment and not generated_by_ai:
+                comment = existing_comment
             item['ai_comment'] = comment
             if generated_by_ai:
                 item['ai_comment_version'] = AI_COMMENT_VERSION
@@ -2098,6 +2138,10 @@ if __name__ == '__main__':
             recent_comments.append(item['ai_comment'])
             needs_save = True
             print("   ↳ AI 点评已通过校验" if generated_by_ai else "   ↳ 暂用可信兜底，下次同步继续重试 AI")
+            if CF_AI_DAILY_QUOTA_BLOCKED:
+                remaining_count = len(local_data) - i - 1
+                print(f"⏭️ 已停止本轮 AI 改写，剩余 {remaining_count} 条将在额度重置后的下次同步继续。")
+                break
             time.sleep(0.5)
     else:
         pending_count = 0
