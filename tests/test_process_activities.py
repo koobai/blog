@@ -34,5 +34,113 @@ class FoodConversionContractTests(unittest.TestCase):
         self.assertEqual('sugar_cube', key)
 
 
+class PublicRouteTitleTests(unittest.TestCase):
+    class _FakeResponse:
+        status_code = 200
+
+        def __init__(self, payload):
+            self.payload = payload
+
+        def json(self):
+            return self.payload
+
+    class _FakeSession:
+        def __init__(self, payloads):
+            self.payloads = iter(payloads)
+            self.calls = []
+
+        def get(self, url, **kwargs):
+            self.calls.append((url, kwargs))
+            return PublicRouteTitleTests._FakeResponse(next(self.payloads))
+
+    def test_osm_reverse_result_is_reduced_to_public_title_evidence(self):
+        observation = process_activities.parse_nominatim_observation({
+            'name': '湘江风光带',
+            'category': 'leisure',
+            'type': 'park',
+            'address': {
+                'city': '长沙市',
+                'city_district': '天心区',
+                'road': '湘江中路',
+                'residential': '某某小区'
+            }
+        })
+        self.assertEqual('长沙', observation['city'])
+        self.assertEqual(['湘江中路'], observation['street'])
+        self.assertEqual(['天心区'], observation['district'])
+        self.assertEqual(['湘江风光带'], observation['scenic'])
+
+    def test_public_title_uses_real_city_and_dominant_road(self):
+        title = process_activities.choose_public_route_title(
+            'Ride',
+            ['湘江中路', '湘江中路', '湘江中路', '劳动西路'],
+            [
+                {'city': '长沙市', 'scenic': [], 'street': [], 'district': ['天心区']},
+                {'city': '长沙市', 'scenic': [], 'street': [], 'district': ['天心区']},
+                {'city': '长沙市', 'scenic': [], 'street': [], 'district': ['岳麓区']}
+            ]
+        )
+        self.assertEqual('骑过长沙 · 湘江中路', title)
+
+    def test_route_lookup_samples_three_inner_points_and_identifies_itself(self):
+        session = self._FakeSession([
+            {'address': {'city': '长沙市', 'road': '湘江中路'}},
+            {'address': {'city': '长沙市', 'road': '湘江中路'}},
+            {'address': {'city': '长沙市', 'road': '劳动西路'}}
+        ])
+        observations = process_activities.reverse_route_observations(
+            [(28.10 + index / 100, 112.90 + index / 100) for index in range(9)],
+            session=session,
+            min_interval=0
+        )
+
+        self.assertEqual(3, len(session.calls))
+        self.assertEqual(3, len(observations))
+        self.assertTrue(all(
+            call[1]['headers']['User-Agent'] == process_activities.NOMINATIM_USER_AGENT
+            for call in session.calls
+        ))
+        self.assertEqual(
+            '骑过长沙 · 湘江中路',
+            process_activities.choose_public_route_title('Ride', [], observations)
+        )
+
+    def test_repeated_real_area_is_more_representative_than_a_road(self):
+        title = process_activities.choose_public_route_title(
+            'Walk',
+            ['科荟路', '科荟路', '林萃路'],
+            [
+                {'city': '北京市', 'scenic': ['奥林匹克森林公园'], 'street': [], 'district': ['朝阳区']},
+                {'city': '北京市', 'scenic': ['奥林匹克森林公园'], 'street': [], 'district': ['朝阳区']},
+                {'city': '北京市', 'scenic': [], 'street': [], 'district': ['朝阳区']}
+            ]
+        )
+        self.assertEqual('走过北京 · 奥林匹克森林公园', title)
+
+    def test_single_nearby_poi_does_not_override_dominant_road(self):
+        title = process_activities.choose_public_route_title(
+            'Run',
+            ['江南大道', '江南大道', '江南大道', '滨盛路'],
+            [
+                {'city': '杭州市', 'scenic': ['某某公园'], 'street': [], 'district': ['滨江区']},
+                {'city': '杭州市', 'scenic': [], 'street': [], 'district': ['滨江区']},
+                {'city': '杭州市', 'scenic': [], 'street': [], 'district': ['滨江区']}
+            ]
+        )
+        self.assertEqual('跑过杭州 · 江南大道', title)
+
+    def test_private_residential_names_are_not_scenic_candidates(self):
+        self.assertFalse(process_activities.is_scenic_place('西湖花园小区'))
+        self.assertTrue(process_activities.is_scenic_place('西湖风景区'))
+
+    def test_public_title_contract_version_is_explicit(self):
+        self.assertEqual(1, process_activities.PUBLIC_ROUTE_TITLE_VERSION)
+
+    def test_only_health_generated_names_need_a_public_route_title(self):
+        self.assertTrue(process_activities.is_default_activity_name('晚间行走'))
+        self.assertTrue(process_activities.is_default_activity_name('Morning Ride'))
+        self.assertFalse(process_activities.is_default_activity_name('岳麓山夜骑'))
+
+
 if __name__ == '__main__':
     unittest.main()

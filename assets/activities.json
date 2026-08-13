@@ -1227,9 +1227,6 @@
     "average_heartrate" : 96,
     "calories" : 90.1,
     "distance" : 1.6,
-    "distance_title" : "走了一趟半白堤",
-    "distance_title_key" : "bai_causeway",
-    "distance_title_version" : 6,
     "energy_title" : "燃掉六块方糖",
     "food_key" : "sugar_cube",
     "food_title_version" : 6,
@@ -1246,7 +1243,9 @@
     "start_date_utc" : "2026-04-28T14:38:42Z",
     "summary_polyline" : "{zakDwbppTlAfFFvEn@l@wIs@y@To@vA{G?w@f@RwB^WaBx@lTaAf@}A@iEt@uD",
     "total_elevation_gain" : 17.3,
-    "type" : "Walk"
+    "type" : "Walk",
+    "route_title" : "走过长沙 · 黄兴中路",
+    "route_title_version" : 1
   },
   {
     "average_heartrate" : 123,

@@ -3,7 +3,10 @@ import os
 import hashlib
 import math
 import re
+import time
 from datetime import datetime
+
+import requests
 
 from monthly_coach import update_monthly_insights as update_monthly_coach_insights
 
@@ -11,6 +14,11 @@ from monthly_coach import update_monthly_insights as update_monthly_coach_insigh
 # 1. 🔑 配置区：DeepSeek 只负责月中与月末教练月报
 # ==========================================
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
+NOMINATIM_BASE_URL = os.getenv(
+    'NOMINATIM_BASE_URL',
+    'https://nominatim.openstreetmap.org'
+).rstrip('/')
+NOMINATIM_USER_AGENT = 'KoobaiExerciseBlog/1.0 (https://koobai.com/exercise/)'
 
 if not DEEPSEEK_API_KEY:
     print("ℹ️ 未提供 DEEPSEEK_API_KEY：运动数据照常处理，月报保留现有内容。")
@@ -116,6 +124,33 @@ ELEVATION_EQUIVALENTS = [
 
 ELEVATION_ACTIVITY_TYPES = {'StairStepper'}
 DISTANCE_TITLE_VERSION = 6
+PUBLIC_ROUTE_TITLE_VERSION = 1
+
+PUBLIC_ROUTE_TITLE_VERBS = {
+    'Run': '跑过',
+    'TrailRun': '跑过',
+    'Ride': '骑过',
+    'EBikeRide': '骑过',
+    'Walk': '走过',
+    'Hike': '走过',
+    'Swim': '游过'
+}
+
+SCENIC_PLACE_SUFFIXES = (
+    '公园', '景区', '风景区', '森林公园', '湿地', '绿道', '步道', '古道',
+    '风光带', '植物园', '体育场', '湖', '江', '河', '山', '堤', '桥'
+)
+
+PRIVATE_OR_TRIVIAL_PLACE_WORDS = (
+    '小区', '家园', '公寓', '宿舍', '住宅', '花园', '别墅', '公司', '酒店',
+    '宾馆', '银行', '医院', '学校', '幼儿园', '便利店', '餐厅', '商场'
+)
+
+DEFAULT_ACTIVITY_NAME_PATTERN = re.compile(
+    r'^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch)'
+    r'.*(跑步|骑行|行走|徒步|游泳|运动|爬楼梯|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper)$'
+)
+DEFAULT_ACTIVITY_NAMES = {'Run', 'Ride', 'Walk', 'StairStepper', 'Workout', ''}
 
 
 def validate_landmark_route_library(activities=None):
@@ -399,6 +434,186 @@ def sample_route(points, sample_count=31):
         ))
     return result
 
+def clean_geo_name(value, strip_city_suffix=False):
+    """清理地图服务返回的展示名称，不把空值、门牌号或无名道路写进标题。"""
+    if not isinstance(value, str):
+        return None
+    name = re.sub(r'\s+', ' ', value).strip(' ·,，;；')
+    if not name or name.lower() in {'unnamed road', 'unknown road', 'unknown'}:
+        return None
+    if name in {'无名道路', '未知道路'} or re.fullmatch(r'[\d\W]+', name):
+        return None
+    if strip_city_suffix and len(name) > 2 and name.endswith('市'):
+        name = name[:-1]
+    return name or None
+
+
+def is_default_activity_name(value):
+    name = value if isinstance(value, str) else ''
+    return name in DEFAULT_ACTIVITY_NAMES or bool(DEFAULT_ACTIVITY_NAME_PATTERN.match(name))
+
+def is_scenic_place(name):
+    if not name or any(word in name for word in PRIVATE_OR_TRIVIAL_PLACE_WORDS):
+        return False
+    return any(name.endswith(suffix) or suffix in name for suffix in SCENIC_PLACE_SUFFIXES)
+
+def parse_nominatim_observation(payload):
+    """从一次 OSM 地点反查中提取城市、真实区域、道路和行政区候选。"""
+    observation = {'city': None, 'scenic': [], 'street': [], 'district': []}
+
+    def append_unique(key, value):
+        if value and value not in observation[key]:
+            observation[key].append(value)
+
+    address = (payload or {}).get('address') or {}
+    for key in ('city', 'town', 'municipality', 'county', 'state_district'):
+        city = clean_geo_name(address.get(key), strip_city_suffix=True)
+        if city:
+            observation['city'] = city
+            break
+
+    for key in ('road', 'pedestrian', 'cycleway', 'footway', 'path'):
+        append_unique('street', clean_geo_name(address.get(key)))
+
+    for key in ('city_district', 'district', 'borough', 'suburb', 'quarter', 'neighbourhood'):
+        append_unique('district', clean_geo_name(address.get(key)))
+
+    name = clean_geo_name((payload or {}).get('name'))
+    category = (payload or {}).get('category')
+    place_type = (payload or {}).get('type')
+    if name and is_scenic_place(name) and (
+        category in {'leisure', 'tourism', 'natural', 'boundary'} or
+        place_type in {'park', 'nature_reserve', 'attraction', 'water', 'peak'}
+    ):
+        append_unique('scenic', name)
+    return observation
+
+_nominatim_last_request_at = None
+
+
+def wait_for_nominatim_slot(min_interval):
+    """公共 Nominatim 的周期脚本请求严格限制为每分钟不超过四次。"""
+    global _nominatim_last_request_at
+    if min_interval <= 0:
+        return
+    now = time.monotonic()
+    if _nominatim_last_request_at is not None:
+        remaining = min_interval - (now - _nominatim_last_request_at)
+        if remaining > 0:
+            time.sleep(remaining)
+    _nominatim_last_request_at = time.monotonic()
+
+
+def reverse_route_observations(sampled, session=None, attempts=2, min_interval=15):
+    """低频反查路线 25%、50%、75% 三处；最终标题写入 JSON 后不再请求。"""
+    if not sampled:
+        return []
+    client = session or requests
+    indices = sorted({
+        round((len(sampled) - 1) * ratio)
+        for ratio in (0.25, 0.5, 0.75)
+    })
+    observations = []
+    for index in indices:
+        lat, lng = sampled[index]
+        for attempt in range(attempts):
+            wait_for_nominatim_slot(min_interval)
+            try:
+                response = client.get(
+                    f'{NOMINATIM_BASE_URL}/reverse',
+                    params={
+                        'format': 'jsonv2',
+                        'lat': f'{lat:.6f}',
+                        'lon': f'{lng:.6f}',
+                        'zoom': 18,
+                        'addressdetails': 1,
+                        'namedetails': 1,
+                        'accept-language': 'zh-CN,zh,en'
+                    },
+                    headers={
+                        'User-Agent': NOMINATIM_USER_AGENT,
+                        'Referer': 'https://koobai.com/exercise/'
+                    },
+                    timeout=20
+                )
+                if response.status_code == 200:
+                    observations.append(parse_nominatim_observation(response.json()))
+                    break
+                if response.status_code not in {429, 500, 502, 503, 504}:
+                    print(f"⚠️ OSM 地点识别失败（HTTP {response.status_code}），跳过当前采样点。")
+                    break
+            except (requests.RequestException, ValueError) as error:
+                if attempt == attempts - 1:
+                    print(f"⚠️ OSM 地点识别请求异常：{error}")
+    return observations
+
+def most_common_name(values):
+    counts = {}
+    first_seen = {}
+    for index, value in enumerate(values):
+        name = clean_geo_name(value)
+        if not name:
+            continue
+        counts[name] = counts.get(name, 0) + 1
+        first_seen.setdefault(name, index)
+    if not counts:
+        return None, 0
+    selected = max(counts, key=lambda name: (counts[name], -first_seen[name], len(name)))
+    return selected, counts[selected]
+
+def choose_public_route_title(activity_type, road_names, observations):
+    """按整条轨迹投票：城市看覆盖多数，地点优先连续出现的景区，再选主要道路。"""
+    verb = PUBLIC_ROUTE_TITLE_VERBS.get(activity_type)
+    if not verb:
+        return None
+
+    city, _ = most_common_name([
+        observation.get('city')
+        for observation in observations
+    ])
+    city = clean_geo_name(city, strip_city_suffix=True)
+
+    scenic, scenic_count = most_common_name([
+        name
+        for observation in observations
+        for name in observation.get('scenic', [])
+    ])
+    road, _ = most_common_name(road_names + [
+        name
+        for observation in observations
+        for name in observation.get('street', [])
+    ])
+    district, _ = most_common_name([
+        name
+        for observation in observations
+        for name in observation.get('district', [])
+    ])
+
+    # 单个采样点附近的景点很可能只是擦肩而过；至少两处命中才覆盖主要路线。
+    place = scenic if scenic_count >= 2 else road
+    if not place:
+        place = scenic or district
+    if not city or not place:
+        return None
+
+    for suffix in ('市',):
+        if place.startswith(city + suffix):
+            place = place[len(city + suffix):].lstrip(' ·')
+    if place == city:
+        place = district
+    if not place or place == city:
+        return None
+    return f'{verb}{city} · {place}'
+
+def generate_public_route_title(activity, session=None):
+    polyline = activity.get('summary_polyline') or ''
+    points = decode_polyline(polyline)
+    if len(points) < 2:
+        return None
+    sampled = sample_route(points, sample_count=min(41, max(11, len(points))))
+    observations = reverse_route_observations(sampled, session=session)
+    return choose_public_route_title(activity.get('type'), [], observations)
+
 def route_match_score(left, right):
     if len(left) != len(right) or not left:
         return None
@@ -508,9 +723,52 @@ if __name__ == '__main__':
         if item.get('food_key'):
             recent_food_keys.append(item['food_key'])
 
-    # 📏 根据真实距离或爬升生成杭州参照物；结果写回 JSON，刷新页面不会变化。
+    # 🧭 公开轨迹从路线内部三处识别真实城市与主要道路/区域；成功后永久缓存。
+    for item in local_data:
+        if item.get('route_status') != 'available':
+            for key in ('route_title', 'route_title_version'):
+                if key in item:
+                    del item[key]
+                    needs_save = True
+            continue
+
+        # 手工命名优先且页面不会使用自动地点标题，不为它消耗 API 或保留冗余字段。
+        if not is_default_activity_name(item.get('name')):
+            for key in (
+                'route_title', 'route_title_version',
+                'distance_title', 'distance_title_key', 'distance_title_version'
+            ):
+                if key in item:
+                    del item[key]
+                    needs_save = True
+            continue
+
+        should_generate_public_title = (
+            not item.get('route_title') or
+            item.get('route_title_version') != PUBLIC_ROUTE_TITLE_VERSION
+        )
+        if should_generate_public_title:
+            print(f"🗺️ 公开轨迹 [{item.get('start_date_local', '未知时间')}] 正在识别真实地点...")
+            route_title = generate_public_route_title(item)
+            if route_title:
+                item['route_title'] = route_title
+                item['route_title_version'] = PUBLIC_ROUTE_TITLE_VERSION
+                needs_save = True
+                print(f"   ↳ {route_title}")
+            else:
+                print("   ↳ 暂未找到可靠地点，保留原始运动名称并在下次同步重试。")
+
+        if item.get('route_title'):
+            for key in ('distance_title', 'distance_title_key', 'distance_title_version'):
+                if key in item:
+                    del item[key]
+                    needs_save = True
+
+    # 📏 隐私与室内运动继续根据真实距离或爬升生成杭州参照物。
     recent_landmark_keys = []
     for item in reversed(local_data):
+        if item.get('route_status') == 'available':
+            continue
         should_regenerate_distance = (
             not item.get('distance_title') or
             item.get('distance_title_version') != DISTANCE_TITLE_VERSION
@@ -539,10 +797,11 @@ if __name__ == '__main__':
 
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:
-            json.dump(local_data, f, ensure_ascii=False, indent=2)
-        print("✅ 路线分组、趣味标题与杭州距离数据已更新！")
+            # 保持与 iOS 同步文件一致的冒号空格风格，避免一次标题更新改动整份 JSON。
+            json.dump(local_data, f, ensure_ascii=False, indent=2, separators=(',', ' : '))
+        print("✅ 路线分组、趣味标题与公开轨迹地点已更新！")
     else:
-        print("💤 所有记录均已具备趣味标题与杭州距离，跳过更新。")
+        print("💤 所有记录均已具备所需标题与地点数据，跳过更新。")
 
     print("📊 正在同步月度教练报告...")
     update_monthly_coach_insights(

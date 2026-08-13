@@ -12,26 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   mapboxgl.accessToken = window.KoobaiRun.config.MAPBOX_TOKEN;
 
-  // 1. 动态获取当前主题样式 URL（完美兼容你的 data-theme 和系统 auto）
-  const getMapStyleUrl = () => {
+  // 1. 统一判断当前主题，供底图和自定义轨迹图层共同使用。
+  const isDarkMapTheme = () => {
     const theme = document.documentElement.getAttribute('data-theme');
-    let isDark = false;
-    
+
     if (theme === 'dark') {
-      isDark = true;
-    } else if (theme === 'light') {
-      isDark = false;
-    } else {
-      // 如果是 auto（没设置 data-theme），则听命于系统的暗黑模式
-      isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return true;
+    }
+    if (theme === 'light') {
+      return false;
     }
 
-    return isDark 
+    // 如果是 auto（没设置 data-theme），则听命于系统的暗黑模式。
+    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  };
+
+  // 2. 动态获取当前主题样式 URL。
+  const getMapStyleUrl = () => {
+    return isDarkMapTheme()
       ? 'mapbox://styles/koobai/cmma8mwce001v01sge7e0dx1w' // 暗黑版
       : 'mapbox://styles/koobai/cmma9983i00f101qwezj0f77f'; // 浅色版
   };
 
-  // 2. 初始化地图实例
+  // 3. 初始化地图实例
   const map = new mapboxgl.Map({
     container: 'mapbox-container', 
     style: getMapStyleUrl(), 
@@ -45,13 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
     preserveDrawingBuffer: true // 👈 【关键】既然还原了原始代码，记得把这句加回来，否则截图黑屏
   });
 
-  // 3. 监听外层容器大小变化
+  // 真实地点标题使用 OpenStreetMap 数据；保持地图署名精简但可见。
+  map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
+
+  // 4. 监听外层容器大小变化
   const mapWrapper = document.getElementById('map-wrapper');
   if (mapWrapper && window.ResizeObserver) {
     new ResizeObserver(() => { requestAnimationFrame(() => map.resize()); }).observe(mapWrapper);
   }
 
-  // 4. 监听主题切换（响应网站按钮点击 & 系统级主题变化）
+  // 5. 监听主题切换（响应网站按钮点击 & 系统级主题变化）
   let currentMapStyle = getMapStyleUrl();
   const updateMapTheme = () => {
     const newStyle = getMapStyleUrl();
@@ -482,7 +488,10 @@ document.addEventListener('DOMContentLoaded', () => {
           'line-cap': 'round'
         },
         paint: {
-          'line-color': 'rgba(255, 255, 255, 0.72)',
+          // 浅色底图用白色描边分离道路；暗黑底图改用深色描边，避免年度总览泛白。
+          'line-color': isDarkMapTheme()
+            ? 'rgba(4, 5, 7, 0.68)'
+            : 'rgba(255, 255, 255, 0.72)',
           'line-width': [
             'interpolate', ['linear'], ['zoom'],
             8.5, [
@@ -501,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ['interpolate', ['linear'], ['get', 'visits'], 1, 2.8, 3, 4, 6, 5.5, 12, 7.2, 24, 9.2]
             ]
           ],
-          'line-opacity': 0.82
+          'line-opacity': isDarkMapTheme() ? 0.64 : 0.82
         }
       });
 
