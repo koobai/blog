@@ -263,7 +263,6 @@ class MonthlyCoachStateTests(unittest.TestCase):
                 'month_str': '2026-08',
                 'stats': monthly_coach.public_stats(monthly_coach.calculate_monthly_stats(august)),
                 'report_phase': 'final',
-                'report_label': '月度复盘',
                 'report_as_of': '2026-08-31',
                 'coach_report': report_for({'evidence': [{'id': 'attendance'}]}),
                 'report_version': monthly_coach.REPORT_VERSION,

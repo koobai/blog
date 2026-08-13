@@ -1658,16 +1658,6 @@ body:has(.menu-checkbox:checked) {
           color: var(--text-content-dark-color); } }
       html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-summary-text {
         color: var(--text-content-dark-color); }
-    .bento-calendar-board .ai-insight-view .monthly-coach-label {
-      margin-bottom: 8px;
-      color: var(--text-info-color);
-      font-size: 0.78rem;
-      line-height: 1.4; }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-coach-label {
-          color: var(--text-info-dark-color); } }
-      html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-coach-label {
-        color: var(--text-info-dark-color); }
     .bento-calendar-board .ai-insight-view .monthly-coach-report {
       color: var(--text-content-color);
       font-size: 1rem;
@@ -1690,6 +1680,17 @@ body:has(.menu-checkbox:checked) {
       @media (min-width: 768px) {
         .bento-calendar-board .ai-insight-view .monthly-energy-summary {
           margin-top: 12px; } }
+    .bento-calendar-board .ai-insight-view .monthly-data-cutoff {
+      margin-top: 6px;
+      color: var(--text-info-color);
+      font-size: 0.78rem;
+      line-height: 1.4; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-data-cutoff {
+          color: var(--text-info-dark-color); } }
+      html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-data-cutoff {
+        color: var(--text-info-dark-color); }
+
 @keyframes insightFadeIn {
   from {
     opacity: 0;

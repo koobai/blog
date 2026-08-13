@@ -626,17 +626,6 @@
       }
     }
 
-    .monthly-coach-label {
-      margin-bottom: 8px;
-      color: var(--text-info-color);
-      font-size: 0.78rem;
-      line-height: 1.4;
-
-      @include dark {
-        color: var(--text-info-dark-color);
-      }
-    }
-
     .monthly-coach-report {
       color: var(--text-content-color);
       font-size: 1rem;
@@ -665,6 +654,17 @@
 
       @include breakpoint("medium") {
         margin-top: 12px;
+      }
+    }
+
+    .monthly-data-cutoff {
+      margin-top: 6px;
+      color: var(--text-info-color);
+      font-size: 0.78rem;
+      line-height: 1.4;
+
+      @include dark {
+        color: var(--text-info-dark-color);
       }
     }
   }

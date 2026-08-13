@@ -510,7 +510,13 @@
       const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;
       const statusText = insightData ? (insightData.status_text || '') : '';
       const coachReport = insightData && insightData.coach_report ? insightData.coach_report : null;
-      const reportLabel = insightData && insightData.report_label ? insightData.report_label : '';
+      const reportAsOf = insightData && insightData.report_as_of ? insightData.report_as_of : '';
+      const reportCutoffDay = Number.parseInt(reportAsOf.slice(-2), 10);
+      const midmonthCutoffHtml = insightData
+        && insightData.report_phase === 'midmonth'
+        && Number.isInteger(reportCutoffDay)
+        ? `<div class="monthly-data-cutoff">数据截止到${reportCutoffDay}日</div>`
+        : '';
       let monthlyCoachHtml = '';
 
       if (coachReport) {
@@ -520,13 +526,11 @@
           coachReport.next_plan
         ].filter(Boolean);
         monthlyCoachHtml = `
-          ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
           <div class="monthly-coach-report">
             ${reportParts.map(part => `<p>${escapeHtml(part)}</p>`).join('')}
           </div>`;
       } else if (statusText) {
         monthlyCoachHtml = `
-          ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
           <div class="monthly-summary-text">${escapeHtml(statusText)}</div>`;
       }
 
@@ -544,7 +548,8 @@
         monthlyEnergyHtml = `
           <div class="monthly-summary-text monthly-energy-summary">
             本月共消耗 ${calorieText} 千卡，${equivalentText}。${strongestText}
-          </div>`;
+          </div>
+          ${midmonthCutoffHtml}`;
       }
       
       // 有 AI 点评或真实消耗总结时，都可以进入月度点评视图。

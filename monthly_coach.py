@@ -799,14 +799,6 @@ def generate_report(api_key, facts):
     }
 
 
-def report_label(phase, cutoff_day=None):
-    if phase == 'midmonth':
-        return f'月中观察 · 截至{cutoff_day}日'
-    if phase == 'final':
-        return '月度复盘'
-    return '月度观察'
-
-
 def update_monthly_insights(
     activities,
     output_path,
@@ -861,7 +853,7 @@ def update_monthly_insights(
             and midmonth_stats['active_days_count'] >= MIN_MID_MONTH_ACTIVE_DAYS
         )
 
-        # 月中观察固定统计 1～15 日。16 日 04:00 会主动检查；若当时数据尚未
+        # 月中报告固定统计 1～15 日。16 日 04:00 会主动检查；若当时数据尚未
         # 同步，之后任意一次普通同步达到门槛后都会补生成。已生成后若 1～15 日
         # 的源数据迟到变化则纠正一次，16 日之后新发生的运动不会反复改写它。
         if is_current and not existing_midmonth and not midmonth_eligible:
@@ -875,7 +867,6 @@ def update_monthly_insights(
                 'month_str': month_key,
                 'stats': public_stats(stats),
                 'report_phase': 'accumulating',
-                'report_label': '月度观察',
                 'status_text': accumulating_text,
                 'comparison_basis': '等待月中样本',
                 'source_data_hash': current_source_hash
@@ -964,7 +955,7 @@ def update_monthly_insights(
         report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{report_cutoff_day:02d}'
 
         if report is None and api_key:
-            print(f"🧠 {month_key} 正在生成{'月中观察' if phase == 'midmonth' else '月度复盘'}...")
+            print(f"🧠 {month_key} 正在生成{'月中报告' if phase == 'midmonth' else '最终报告'}...")
             report = generate_report(api_key, facts)
         elif report is None:
             print(f'⏸️ {month_key} 等待 DEEPSEEK_API_KEY，保留现有月报。')
@@ -974,7 +965,6 @@ def update_monthly_insights(
                 'month_str': month_key,
                 'stats': public_stats(stats),
                 'report_phase': phase,
-                'report_label': report_label(phase, int(str(report_as_of)[-2:])),
                 'report_as_of': report_as_of,
                 'coach_report': report,
                 'report_version': REPORT_VERSION,

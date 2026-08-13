@@ -76,7 +76,6 @@
       "outdoor_count": 6
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-02-28",
     "coach_report": {
       "verdict": "本阶段6次运动分布在5个活跃日，步行4次平均每次3.0公里，骑行2次合计约33.2公里，形成步行维持出勤频率、骑行扩大距离量的结构。",
@@ -188,7 +187,6 @@
       "outdoor_count": 22
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-03-28",
     "coach_report": {
       "verdict": "本阶段23次运动覆盖22个活跃日、最长连续14天，累计225.5公里、1014分钟，单次峰值从16.6公里升至32.3公里，但相近步行典型节奏由10分52秒/公里慢至11分56秒/公里、平均心率中位数由112降至95。",
@@ -301,7 +299,6 @@
       "outdoor_count": 9
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-04-28",
     "coach_report": {
       "verdict": "4月运动总量为107.5公里、385分钟，较上月减少52%和62%，但相近骑行节奏从21.4公里/小时升至22.6公里/小时，平均心率中位数仅从118升至122。",
@@ -399,7 +396,6 @@
       "outdoor_count": 12
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-05-31",
     "coach_report": {
       "verdict": "本阶段骑行出勤由9次增至12次，累计距离增加66%，最长单次25.3公里，形成以量为主的减脂耐力主线。",
@@ -496,7 +492,6 @@
       "outdoor_count": 10
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-06-28",
     "coach_report": {
       "verdict": "在骑行总量减少约18%、单次距离峰值减少约34%的背景下，相近骑行典型节奏由21.7公里/小时降至20.9公里/小时，平均心率中位数仅从112降至109，单次耐力仍稳定在15.9公里、47分钟。",
@@ -609,7 +604,6 @@
       "outdoor_count": 18
     },
     "report_phase": "final",
-    "report_label": "月度复盘",
     "report_as_of": "2026-07-31",
     "coach_report": {
       "verdict": "本阶段运动总量较上月增加86%、活跃日增加70%，最长单次从16.6公里增至23.7公里，相近骑行节奏由20.9公里/小时升至22.5公里/小时，同时平均心率中位数由109升至118，负荷与强度同步上升。",
@@ -721,7 +715,6 @@
       "outdoor_count": 11
     },
     "report_phase": "accumulating",
-    "report_label": "月度观察",
     "status_text": "还在热身，继续动起来，月报稍后见。",
     "comparison_basis": "等待月中样本",
     "source_data_hash": "ab35bc22faa106ee67e9269f529f679a7e1d3b0c32b6911991840f22726dd593",
