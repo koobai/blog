@@ -38,24 +38,14 @@ jobs:
           beijing_day="$(TZ=Asia/Shanghai date +%d)"
           if [[ "$event_name" == "push" ]]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "finalize_closed=false" >> "$GITHUB_OUTPUT"
-            echo "generate_midmonth=false" >> "$GITHUB_OUTPUT"
           elif [[ "$event_name" == "workflow_dispatch" ]]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "finalize_closed=true" >> "$GITHUB_OUTPUT"
-            echo "generate_midmonth=true" >> "$GITHUB_OUTPUT"
           elif [[ "$beijing_day" == "01" ]]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "finalize_closed=true" >> "$GITHUB_OUTPUT"
-            echo "generate_midmonth=false" >> "$GITHUB_OUTPUT"
           elif [[ "$beijing_day" == "16" ]]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "finalize_closed=false" >> "$GITHUB_OUTPUT"
-            echo "generate_midmonth=true" >> "$GITHUB_OUTPUT"
           else
             echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "finalize_closed=false" >> "$GITHUB_OUTPUT"
-            echo "generate_midmonth=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Checkout Code
@@ -84,9 +74,6 @@ jobs:
         env:
           # DeepSeek 只接收程序汇总后的月度证据，不接收轨迹与坐标。
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          # 普通 push 不生成点评；两个开关由北京时间窗口或手动运行精确控制。
-          MONTHLY_FINALIZE_CLOSED_MONTHS: ${{ steps.monthly_window.outputs.finalize_closed }}
-          MONTHLY_GENERATE_MIDMONTH: ${{ steps.monthly_window.outputs.generate_midmonth }}
         run: python process_activities.py
 
       - name: Commit and Push changes

@@ -62,7 +62,7 @@
   z-index: 8;
   display: grid;
   place-items: center;
-  padding-bottom: 84px;
+  padding-bottom: 48px;
   pointer-events: none;
   background: color-mix(in srgb, var(--background-card-color), transparent 50%);
   backdrop-filter: saturate(0.55) blur(1px);
@@ -81,7 +81,7 @@
   }
 
   @include breakpoint("medium") {
-    padding-bottom: 84px;
+    padding-bottom: 48px;
   }
 }
 
@@ -102,13 +102,13 @@
 
 .routeStampNote {
   align-self: center;
-  color: var(--text-info-color);
+  color: var(--text-content-color);
   font-size: 0.85rem;
   line-height: 1.35;
   text-align: center;
 
   @include dark {
-    color: var(--text-info-dark-color);
+    color: var(--text-content-dark-color);
   }
 }
 
@@ -230,7 +230,7 @@
     color: var(--exercise-text-highlight-color);
   }
 
-  /* 面板内嵌的AI、分享按钮 */
+  /* 面板内嵌的分享按钮 */
   .panel-share {
     display: flex;
     gap: 10px;
@@ -600,7 +600,7 @@
     min-height: 0;
     width: 100%;
   }
-  /* 👇 极简无边框 AI 点评视图 */
+  /* 月度教练报告视图 */
   .ai-insight-view {
     flex: 1;
     padding: 0 4px;
@@ -612,7 +612,7 @@
     flex-direction: column;
     animation: insightFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 
-    .ai-comment-content {
+    .monthly-summary-text {
       font-size: 1rem;
       line-height: 1.8; /* 增加行高，让大段文字更有呼吸感 */
       color: var(--text-content-color);
@@ -669,7 +669,7 @@
     }
   }
 
-  /* 👇 新增 5：AI 视图的渐入动画 */
+  /* 月度报告视图的渐入动画 */
   @keyframes insightFadeIn {
     from {
       opacity: 0;
@@ -1384,7 +1384,7 @@
   /* 分享预览需要覆盖页面导航，形成独立海报画布。 */
   z-index: 103;
 
-  /* 分享海报只保留海报自身信息，避免无轨迹说明与 AI 点评重复叠加。 */
+  /* 分享海报只保留海报自身信息，避免无轨迹说明重复叠加。 */
   .routeStampOverlay {
     display: none !important;
   }

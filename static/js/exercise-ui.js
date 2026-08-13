@@ -508,8 +508,7 @@
       }).join('');
       const currentMonthStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
       const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;
-      // ai_comment 只用于兼容首次 DeepSeek 迁移前的旧月报；新结构使用 status_text / coach_report。
-      const aiComment = insightData ? (insightData.status_text || insightData.ai_comment || '') : '';
+      const statusText = insightData ? (insightData.status_text || '') : '';
       const coachReport = insightData && insightData.coach_report ? insightData.coach_report : null;
       const reportLabel = insightData && insightData.report_label ? insightData.report_label : '';
       let monthlyCoachHtml = '';
@@ -525,10 +524,10 @@
           <div class="monthly-coach-report">
             ${reportParts.map(part => `<p>${escapeHtml(part)}</p>`).join('')}
           </div>`;
-      } else if (aiComment) {
+      } else if (statusText) {
         monthlyCoachHtml = `
           ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
-          <div class="ai-comment-content">${escapeHtml(aiComment)}</div>`;
+          <div class="monthly-summary-text">${escapeHtml(statusText)}</div>`;
       }
 
       const energySummary = engine.monthlyData.energySummary;
@@ -543,7 +542,7 @@
           : '';
 
         monthlyEnergyHtml = `
-          <div class="ai-comment-content monthly-energy-summary">
+          <div class="monthly-summary-text monthly-energy-summary">
             本月共消耗 ${calorieText} 千卡，${equivalentText}。${strongestText}
           </div>`;
       }

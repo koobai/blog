@@ -283,6 +283,33 @@ def group_by_month(activities):
     return dict(grouped)
 
 
+def source_data_hash(activities):
+    """只对会影响月报的运动事实取指纹，不包含轨迹、坐标或提示词版本。"""
+    fields = (
+        'start_date_local',
+        'type',
+        'distance',
+        'moving_time',
+        'calories',
+        'average_heartrate',
+        'total_elevation_gain',
+        'is_indoor',
+        'route_group_id'
+    )
+    normalized = [
+        {field: activity.get(field) for field in fields}
+        for activity in sorted(
+            activities,
+            key=lambda item: (
+                str(item.get('start_date_local') or ''),
+                str(item.get('source_id') or item.get('run_id') or '')
+            )
+        )
+    ]
+    encoded = json.dumps(normalized, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+    return hashlib.sha256(encoded.encode('utf-8')).hexdigest()
+
+
 def activities_through_day(activities, cutoff_day):
     result = []
     for activity in activities:
@@ -784,21 +811,11 @@ def update_monthly_insights(
     activities,
     output_path,
     api_key=None,
-    now=None,
-    finalize_closed_months=None,
-    generate_midmonth=None
+    now=None
 ):
     # GitHub Actions 使用 UTC；月中和月末边界必须按博客所在的杭州时区判断。
     now = now or datetime.now(ZoneInfo('Asia/Shanghai'))
     api_key = api_key or os.getenv('DEEPSEEK_API_KEY')
-    if finalize_closed_months is None:
-        finalize_closed_months = str(
-            os.getenv('MONTHLY_FINALIZE_CLOSED_MONTHS', '')
-        ).strip().lower() in {'1', 'true', 'yes', 'on'}
-    if generate_midmonth is None:
-        generate_midmonth = str(
-            os.getenv('MONTHLY_GENERATE_MIDMONTH', '')
-        ).strip().lower() in {'1', 'true', 'yes', 'on'}
     grouped = group_by_month(activities)
     try:
         with open(output_path, 'r', encoding='utf-8') as file:
@@ -816,6 +833,10 @@ def update_monthly_insights(
     for month_key in sorted(grouped):
         month_activities = grouped[month_key]
         stats = calculate_monthly_stats(month_activities)
+        current_source_hash = source_data_hash(month_activities)
+        midmonth_activities = activities_through_day(month_activities, MID_MONTH_DAY - 1)
+        midmonth_stats = calculate_monthly_stats(midmonth_activities)
+        midmonth_source_hash = source_data_hash(midmonth_activities)
         old_entry = existing.get(month_key, {})
         is_current = month_key == current_month
         cutoff_day = now.day if is_current else max(
@@ -828,19 +849,26 @@ def update_monthly_insights(
             and old_entry.get('report_phase') == 'midmonth'
             and isinstance(old_entry.get('coach_report'), dict)
         )
+        previous_midmonth_source_hash = old_entry.get('midmonth_source_hash')
+        midmonth_source_changed = bool(
+            existing_midmonth
+            and previous_midmonth_source_hash
+            and previous_midmonth_source_hash != midmonth_source_hash
+        )
         midmonth_eligible = (
             now.day >= MID_MONTH_DAY
-            and stats['total_count'] >= MIN_MID_MONTH_SESSIONS
-            and stats['active_days_count'] >= MIN_MID_MONTH_ACTIVE_DAYS
+            and midmonth_stats['total_count'] >= MIN_MID_MONTH_SESSIONS
+            and midmonth_stats['active_days_count'] >= MIN_MID_MONTH_ACTIVE_DAYS
         )
 
-        # 月中观察只允许 16 日 04:00 定时任务或明确的手动任务生成。
-        # 普通运动同步只更新统计；没有达到样本门槛时，本月直接跳过月中点评。
-        if is_current and not existing_midmonth and (not generate_midmonth or not midmonth_eligible):
+        # 月中观察固定统计 1～15 日。16 日 04:00 会主动检查；若当时数据尚未
+        # 同步，之后任意一次普通同步达到门槛后都会补生成。已生成后若 1～15 日
+        # 的源数据迟到变化则纠正一次，16 日之后新发生的运动不会反复改写它。
+        if is_current and not existing_midmonth and not midmonth_eligible:
             if now.day < MID_MONTH_DAY:
-                accumulating_text = '本月数据积累中'
+                accumulating_text = '还在热身，继续动起来，月报稍后见。'
             elif not midmonth_eligible:
-                accumulating_text = '本月样本尚少，继续积累中'
+                accumulating_text = '热身继续，再动几次，就有话说了。'
             else:
                 accumulating_text = '本月数据已就绪'
             entry = {
@@ -849,7 +877,8 @@ def update_monthly_insights(
                 'report_phase': 'accumulating',
                 'report_label': '月度观察',
                 'status_text': accumulating_text,
-                'comparison_basis': '等待月中样本'
+                'comparison_basis': '等待月中样本',
+                'source_data_hash': current_source_hash
             }
             if entry != {key: value for key, value in old_entry.items() if key != 'last_update'}:
                 entry['last_update'] = now.strftime('%Y-%m-%dT%H:%M:%S')
@@ -859,19 +888,25 @@ def update_monthly_insights(
             updated[month_key] = entry
             continue
 
-        # 普通运动同步不生成月中或月末点评。完整自然月的终稿只能由每月 1 日
-        # 04:00（北京时间）的定时任务或明确的手动任务生成。
-        if not is_current and not finalize_closed_months:
+        existing_final = (
+            old_entry.get('report_version') == REPORT_VERSION
+            and old_entry.get('report_phase') == 'final'
+            and isinstance(old_entry.get('coach_report'), dict)
+        )
+        previous_source_hash = old_entry.get('source_data_hash')
+        final_source_changed = bool(
+            existing_final
+            and previous_source_hash
+            and previous_source_hash != current_source_hash
+        )
+
+        # 已完成且源数据未变化的终稿永久冻结。旧终稿第一次遇到源数据指纹时
+        # 只补记当前基线，不因代码或提示词变化而重写。
+        if not is_current and existing_final and not final_source_changed:
             entry = dict(old_entry)
             entry['month_str'] = month_key
             entry['stats'] = public_stats(stats)
-            if not old_entry:
-                entry.update({
-                    'report_phase': 'pending_final',
-                    'report_label': '月度观察',
-                    'status_text': '等待月度复盘',
-                    'comparison_basis': '等待每月 1 日定时生成'
-                })
+            entry['source_data_hash'] = current_source_hash
             comparable_old = {key: value for key, value in old_entry.items() if key != 'last_update'}
             if entry != comparable_old:
                 entry['last_update'] = now.strftime('%Y-%m-%dT%H:%M:%S')
@@ -884,18 +919,20 @@ def update_monthly_insights(
             continue
 
         phase = 'midmonth' if is_current else 'final'
+        report_stats = midmonth_stats if phase == 'midmonth' else stats
+        report_cutoff_day = MID_MONTH_DAY - 1 if phase == 'midmonth' else cutoff_day
         comparison_month = previous_month_key(month_key)
         previous_activities = grouped.get(comparison_month, [])
         previous_full_stats = calculate_monthly_stats(previous_activities) if previous_activities else None
-        previous_period_activities = activities_through_day(previous_activities, cutoff_day) if phase == 'midmonth' else previous_activities
+        previous_period_activities = activities_through_day(previous_activities, report_cutoff_day) if phase == 'midmonth' else previous_activities
         previous_period_stats = calculate_monthly_stats(previous_period_activities) if previous_period_activities else None
         facts = build_evidence(
             month_key,
             phase,
-            stats,
+            report_stats,
             previous_period_stats,
             previous_full_stats,
-            cutoff_day,
+            report_cutoff_day,
             recent_report_styles=recent_report_styles
         )
         current_hash = report_hash(facts)
@@ -911,18 +948,20 @@ def update_monthly_insights(
             and old_entry.get('report_version') == REPORT_VERSION
             and old_entry.get('report_phase') == 'midmonth'
             and isinstance(old_entry.get('coach_report'), dict)
+            and not midmonth_source_changed
         )
-        # 终稿生成后永久冻结；后续提示词调整只影响新月份，不重写历史月报。
+        # 终稿只有在源运动数据没有迟到变化时才冻结；迟到同步会让它重新生成。
         frozen_final = (
             not is_current
             and old_entry.get('report_version') == REPORT_VERSION
             and old_entry.get('report_phase') == 'final'
             and isinstance(old_entry.get('coach_report'), dict)
+            and not final_source_changed
         )
 
         report = old_entry.get('coach_report') if (old_report_valid or frozen_midmonth or frozen_final) else None
         report_data_hash = old_entry.get('report_data_hash') if (frozen_midmonth or frozen_final) else current_hash
-        report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{cutoff_day:02d}'
+        report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{report_cutoff_day:02d}'
 
         if report is None and api_key:
             print(f"🧠 {month_key} 正在生成{'月中观察' if phase == 'midmonth' else '月度复盘'}...")
@@ -940,6 +979,8 @@ def update_monthly_insights(
                 'coach_report': report,
                 'report_version': REPORT_VERSION,
                 'report_data_hash': report_data_hash,
+                'source_data_hash': current_source_hash,
+                **({'midmonth_source_hash': midmonth_source_hash} if phase == 'midmonth' else {}),
                 'model': MODEL,
                 'comparison_basis': facts['comparison_basis']
             }

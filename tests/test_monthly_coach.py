@@ -63,8 +63,7 @@ class MonthlyCoachStateTests(unittest.TestCase):
             self.activities,
             self.path,
             api_key='test-key',
-            now=datetime(2026, 8, 13, 12),
-            finalize_closed_months=True
+            now=datetime(2026, 8, 13, 12)
         )
         data = self.read()
         self.assertEqual('accumulating', data['2026-08']['report_phase'])
@@ -85,17 +84,6 @@ class MonthlyCoachStateTests(unittest.TestCase):
             self.path,
             api_key='test-key',
             now=datetime(2026, 8, 16, 4)
-        )
-        normal_sync = self.read()['2026-08']
-        self.assertEqual('accumulating', normal_sync['report_phase'])
-        generate.assert_not_called()
-
-        monthly_coach.update_monthly_insights(
-            self.activities,
-            self.path,
-            api_key='test-key',
-            now=datetime(2026, 8, 16, 4),
-            generate_midmonth=True
         )
         midmonth = self.read()['2026-08']
         self.assertEqual('midmonth', midmonth['report_phase'])
@@ -120,17 +108,6 @@ class MonthlyCoachStateTests(unittest.TestCase):
             api_key='test-key',
             now=datetime(2026, 9, 1, 12)
         )
-        still_midmonth = self.read()['2026-08']
-        self.assertEqual('midmonth', still_midmonth['report_phase'])
-        generate.assert_not_called()
-
-        monthly_coach.update_monthly_insights(
-            expanded,
-            self.path,
-            api_key='test-key',
-            now=datetime(2026, 9, 1, 4),
-            finalize_closed_months=True
-        )
         final = self.read()['2026-08']
         self.assertEqual('final', final['report_phase'])
         self.assertEqual(1, generate.call_count)
@@ -145,10 +122,9 @@ class MonthlyCoachStateTests(unittest.TestCase):
             five_sessions,
             self.path,
             api_key='test-key',
-            now=datetime(2026, 8, 16, 4),
-            generate_midmonth=True
+            now=datetime(2026, 8, 16, 4)
         )
-        self.assertEqual('本月样本尚少，继续积累中', self.read()['2026-08']['status_text'])
+        self.assertEqual('热身继续，再动几次，就有话说了。', self.read()['2026-08']['status_text'])
         generate.assert_not_called()
 
         six_sessions_four_days = [
@@ -163,10 +139,150 @@ class MonthlyCoachStateTests(unittest.TestCase):
             six_sessions_four_days,
             self.path,
             api_key='test-key',
-            now=datetime(2026, 8, 16, 4),
-            generate_midmonth=True
+            now=datetime(2026, 8, 16, 4)
         )
-        self.assertEqual('本月样本尚少，继续积累中', self.read()['2026-08']['status_text'])
+        self.assertEqual('热身继续，再动几次，就有话说了。', self.read()['2026-08']['status_text'])
+        generate.assert_not_called()
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_late_sync_catches_up_missed_midmonth_report(self, generate):
+        first_batch = [
+            activity(f'2026-08-{day:02d}T19:00:00')
+            for day in (1, 3, 5, 7, 9)
+        ]
+        monthly_coach.update_monthly_insights(
+            first_batch,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 16, 4)
+        )
+        self.assertEqual('accumulating', self.read()['2026-08']['report_phase'])
+        generate.assert_not_called()
+
+        late_batch = first_batch + [activity('2026-08-12T19:00:00')]
+        monthly_coach.update_monthly_insights(
+            late_batch,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 20, 19)
+        )
+        caught_up = self.read()['2026-08']
+        self.assertEqual('midmonth', caught_up['report_phase'])
+        self.assertEqual('2026-08-15', caught_up['report_as_of'])
+        self.assertEqual(1, generate.call_count)
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_late_first_half_data_corrects_midmonth_but_second_half_does_not(self, generate):
+        first_half = [
+            activity(f'2026-08-{day:02d}T19:00:00')
+            for day in (1, 3, 5, 7, 9, 11)
+        ]
+        monthly_coach.update_monthly_insights(
+            first_half,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 16, 4)
+        )
+        initial = self.read()['2026-08']
+        initial_hash = initial['midmonth_source_hash']
+        self.assertEqual(1, generate.call_count)
+
+        generate.reset_mock()
+        corrected = first_half + [
+            activity('2026-08-13T19:00:00'),
+            activity('2026-08-18T19:00:00')
+        ]
+        monthly_coach.update_monthly_insights(
+            corrected,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 20, 19)
+        )
+        revised = self.read()['2026-08']
+        self.assertNotEqual(initial_hash, revised['midmonth_source_hash'])
+        self.assertEqual(1, generate.call_count)
+
+        generate.reset_mock()
+        second_half_only = corrected + [activity('2026-08-22T19:00:00')]
+        monthly_coach.update_monthly_insights(
+            second_half_only,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 8, 22, 20)
+        )
+        unchanged = self.read()['2026-08']
+        self.assertEqual(revised['midmonth_source_hash'], unchanged['midmonth_source_hash'])
+        generate.assert_not_called()
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_late_closed_month_data_regenerates_final_once(self, generate):
+        august = [
+            activity(f'2026-08-{day:02d}T19:00:00', 10 + day / 10)
+            for day in (1, 3, 5, 7, 9, 11)
+        ]
+        monthly_coach.update_monthly_insights(
+            august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 1, 4)
+        )
+        first_final = self.read()['2026-08']
+        first_source_hash = first_final['source_data_hash']
+        self.assertEqual('final', first_final['report_phase'])
+        self.assertEqual(1, generate.call_count)
+
+        generate.reset_mock()
+        late_august = august + [activity('2026-08-28T19:00:00', 18)]
+        monthly_coach.update_monthly_insights(
+            late_august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 10, 20)
+        )
+        corrected_final = self.read()['2026-08']
+        self.assertNotEqual(first_source_hash, corrected_final['source_data_hash'])
+        self.assertEqual(1, generate.call_count)
+
+        generate.reset_mock()
+        monthly_coach.update_monthly_insights(
+            late_august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 10, 21)
+        )
+        generate.assert_not_called()
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_existing_final_without_source_hash_only_records_baseline(self, generate):
+        august = [
+            activity(f'2026-08-{day:02d}T19:00:00')
+            for day in (1, 3, 5, 7, 9, 11)
+        ]
+        previous_final = {
+            '2026-08': {
+                'month_str': '2026-08',
+                'stats': monthly_coach.public_stats(monthly_coach.calculate_monthly_stats(august)),
+                'report_phase': 'final',
+                'report_label': '月度复盘',
+                'report_as_of': '2026-08-31',
+                'coach_report': report_for({'evidence': [{'id': 'attendance'}]}),
+                'report_version': monthly_coach.REPORT_VERSION,
+                'report_data_hash': 'historical-report-hash',
+                'model': monthly_coach.MODEL
+            }
+        }
+        with open(self.path, 'w', encoding='utf-8') as file:
+            json.dump(previous_final, file, ensure_ascii=False)
+
+        monthly_coach.update_monthly_insights(
+            august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 10, 20)
+        )
+        result = self.read()['2026-08']
+        self.assertEqual('historical-report-hash', result['report_data_hash'])
+        self.assertIn('source_data_hash', result)
         generate.assert_not_called()
 
     def test_deepseek_facts_do_not_contain_activity_identity_or_track(self):

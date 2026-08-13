@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (runData.route_status === 'privacy_hidden') {
       return {
         reason: '定位轨迹未公开',
-        tagline: '地图留白，运动没停'
+        tagline: '轨迹留白，运动没停'
       };
     }
 

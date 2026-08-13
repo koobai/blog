@@ -87,8 +87,6 @@ FOOD_TITLE_VERSION = 4
 # 已退出当前数据契约的旧字段；同步脚本会自动清理，兼容尚未升级的客户端。
 OBSOLETE_ACTIVITY_FIELDS = (
     'ai_title',
-    'ai_comment',
-    'ai_comment_version',
     'food_title',
     'distance_title_kind',
     'average_speed',
