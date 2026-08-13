@@ -18,7 +18,6 @@ def activity(date, distance=10, sport='Ride'):
         'average_heartrate': 110,
         'total_elevation_gain': 50,
         'is_indoor': False,
-        'route_group_id': 'private-route-id',
         'summary_polyline': 'private-polyline',
         'source_id': 'private-source-id'
     }
@@ -332,7 +331,6 @@ class MonthlyCoachStateTests(unittest.TestCase):
         stats = monthly_coach.calculate_monthly_stats(
             [item for item in self.activities if item['start_date_local'].startswith('2026-08')]
         )
-        self.assertNotIn('repeated_route_groups', stats)
         self.assertNotIn('repeated_route_sessions', stats)
         self.assertNotIn('max_route_visits', stats)
 

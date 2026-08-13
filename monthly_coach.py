@@ -277,7 +277,7 @@ def group_by_month(activities):
 
 
 def source_data_hash(activities):
-    """月报运动事实指纹；保留 route_group_id 仅为兼容既有报告指纹。"""
+    """月报运动事实指纹；仅包含实际参与月报统计的字段。"""
     fields = (
         'start_date_local',
         'type',
@@ -286,8 +286,7 @@ def source_data_hash(activities):
         'calories',
         'average_heartrate',
         'total_elevation_gain',
-        'is_indoor',
-        'route_group_id'
+        'is_indoor'
     )
     normalized = [
         {field: activity.get(field) for field in fields}

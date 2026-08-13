@@ -614,68 +614,6 @@ def generate_public_route_title(activity, session=None):
     observations = reverse_route_observations(sampled, session=session)
     return choose_public_route_title(activity.get('type'), [], observations)
 
-def route_match_score(left, right):
-    if len(left) != len(right) or not left:
-        return None
-
-    def score(candidate):
-        distances = sorted(haversine_meters(a, b) for a, b in zip(left, candidate))
-        mean = sum(distances) / len(distances)
-        p90 = distances[min(len(distances) - 1, math.ceil(len(distances) * 0.9) - 1)]
-        return mean, p90
-
-    return min((score(right), score(list(reversed(right)))), key=lambda value: (value[0], value[1]))
-
-def assign_route_groups(activities):
-    """给历史轨迹补稳定同路 ID；App 已按原始轨迹生成的 ID 永远优先保留。"""
-    prototypes = []
-    changed = False
-    for activity in sorted(activities, key=lambda item: parse_time(item.get('start_date_local', ''))):
-        sampled = sample_route(decode_polyline(activity.get('summary_polyline', '')))
-        if not sampled:
-            continue
-
-        activity_type = activity.get('type')
-        try:
-            distance = float(activity.get('distance') or 0)
-        except (TypeError, ValueError):
-            distance = 0
-        if distance <= 0:
-            continue
-
-        preferred_group_id = activity.get('route_group_id')
-        preferred = next((p for p in prototypes if p['group_id'] == preferred_group_id), None)
-        if preferred_group_id and not preferred:
-            prototypes.append({'group_id': preferred_group_id, 'type': activity_type, 'distance': distance, 'route': sampled})
-            continue
-        if preferred:
-            continue
-
-        matches = []
-        for prototype in prototypes:
-            if prototype['type'] != activity_type:
-                continue
-            distance_ratio = max(distance, prototype['distance']) / min(distance, prototype['distance'])
-            if distance_ratio > 1.18:
-                continue
-            score = route_match_score(sampled, prototype['route'])
-            if score and score[0] <= 120 and score[1] <= 250:
-                matches.append((score[0], score[1], prototype))
-
-        if matches:
-            group_id = min(matches, key=lambda value: (value[0], value[1], value[2]['group_id']))[2]['group_id']
-        else:
-            source_key = activity.get('source_id') or activity.get('run_id') or activity.get('start_date_local')
-            digest = hashlib.sha256(f"route-group:{source_key}".encode('utf-8')).hexdigest()[:12]
-            group_id = f"route_{digest}"
-            prototypes.append({'group_id': group_id, 'type': activity_type, 'distance': distance, 'route': sampled})
-
-        if activity.get('route_group_id') != group_id:
-            activity['route_group_id'] = group_id
-            changed = True
-    return changed
-
-
 # ==========================================
 # 5. 🚀 核心自愈运行逻辑
 # ==========================================
@@ -691,10 +629,6 @@ if __name__ == '__main__':
     needs_save = removed_before_publish_date > 0
     if removed_before_publish_date:
         print(f"🧹 已移除 2026 年以前的 {removed_before_publish_date} 条记录。")
-
-    # 🧭 App 只用可公开轨迹生成分组；旧的公开数据由脚本按同一套严格阈值补齐。
-    if assign_route_groups(local_data):
-        needs_save = True
 
     # 🍔 食物换算按时间顺序稳定生成。
     recent_food_keys = []

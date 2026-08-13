@@ -87,7 +87,7 @@
     },
     "report_version": 6,
     "report_data_hash": "6d3fcfaf43f2a6a8ce6f402a9881969a1b1d00aac9ac386c947cdb912bc1c740",
-    "source_data_hash": "30a8abec11a01043234df31b2be5b48cf02690846698b9f2f4032b85c83543a0",
+    "source_data_hash": "c620eb8b23829a131589e22e36e3ea46a9318d9f85266b1470cdf71865d243e7",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -196,7 +196,7 @@
     },
     "report_version": 6,
     "report_data_hash": "2a549131d7ebb9d16c3fbaf589eff132f74e85689b5f379fedd6d8474cf493cd",
-    "source_data_hash": "e4df54348df154c17280f02fca73482fb6269fae570f71b43a81633395f47a9e",
+    "source_data_hash": "fe9a2c758a2c2c913460413eb8f17cdaf211e5ac69d8ba9697c652dee0f68f5e",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -305,7 +305,7 @@
     },
     "report_version": 6,
     "report_data_hash": "d141c8c5270000f82e0cbab1455ec8ec1d25d037a1beab7a3fabe2addd5cb041",
-    "source_data_hash": "77e0ac5cf7e2d0ae35753d56fc85ab35307a27e06808a28e96e06b49ccef1a73",
+    "source_data_hash": "5fcccc960f6b53e776cadff72273538a9bd3d9527c357c3fc9ba03be30332a12",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -399,7 +399,7 @@
     },
     "report_version": 6,
     "report_data_hash": "3eb20376b08a5d7af33b578792928962d847f366c345f68a68ea0d9ddba87541",
-    "source_data_hash": "9d41849decb74b230f17c7135ed9bc2935ad6796ede9a44ae6d365e4d90680f3",
+    "source_data_hash": "757f0c8437c1d458f82a44b479e6dc57372c34ae66f57885d4e35864cd2d097b",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -493,7 +493,7 @@
     },
     "report_version": 6,
     "report_data_hash": "e29b27507265946b8775ac724f813b2bab9f859e85d91c53fa5b13d9073a5da0",
-    "source_data_hash": "4db0acde7110e236da5f37afe31afac9674c69bd37a3a937fda4630e74f72606",
+    "source_data_hash": "8bb2cef544ab1d29bace976a3f3c699e097eb86ba3aef2a08bf1c7453d354a7f",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -601,7 +601,7 @@
     },
     "report_version": 6,
     "report_data_hash": "7ffbe747dbd5f24e0f2a297d2e6d410794fb10d504d297dcbbe28d851485e184",
-    "source_data_hash": "35863e081f35a9ccadbb2de05dc636f7fd9b364dc21859410b18c1108befad8b",
+    "source_data_hash": "110aa37a05b34362f38e729770c550b454a4c48aba5b6a5e3eb1f97a55f234a1",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
     "last_update": "2026-08-13T21:50:24"
@@ -697,7 +697,7 @@
     "report_phase": "accumulating",
     "status_text": "还在热身，继续动起来，月报稍后见。",
     "comparison_basis": "等待月中样本",
-    "source_data_hash": "cce743731c994a5d9844913b0c354601a944bfa7df624ed179b73c05b44ed290",
+    "source_data_hash": "3501b023e2299844fc724b0a8795bcf133e53f0740b9ced73726e6d7c64e14aa",
     "last_update": "2026-08-13T21:50:24"
   }
 }
