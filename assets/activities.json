@@ -14,7 +14,13 @@
     "start_date_local" : "2026-08-13T20:01:38",
     "start_date_utc" : "2026-08-13T12:01:38Z",
     "total_elevation_gain" : 40.2,
-    "type" : "Walk"
+    "type" : "Walk",
+    "energy_title" : "燃掉两瓶啤酒",
+    "food_key" : "beer",
+    "food_title_version" : 6,
+    "distance_title" : "走了四趟钱塘江大桥",
+    "distance_title_key" : "qiantang_bridge",
+    "distance_title_version" : 6
   },
   {
     "average_heartrate" : 104,

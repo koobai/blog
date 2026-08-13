@@ -65,9 +65,6 @@
           "heart_rate_samples": 4
         }
       },
-      "repeated_route_groups": 1,
-      "repeated_route_sessions": 2,
-      "max_route_visits": 2,
       "favorite_time": "晚上",
       "max_streak_days": 3,
       "longest_gap_days": 1,
@@ -93,7 +90,7 @@
     "source_data_hash": "30a8abec11a01043234df31b2be5b48cf02690846698b9f2f4032b85c83543a0",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-03": {
     "month_str": "2026-03",
@@ -176,9 +173,6 @@
           "heart_rate_samples": 3
         }
       },
-      "repeated_route_groups": 4,
-      "repeated_route_sessions": 11,
-      "max_route_visits": 5,
       "favorite_time": "晚上",
       "max_streak_days": 14,
       "longest_gap_days": 1,
@@ -205,7 +199,7 @@
     "source_data_hash": "e4df54348df154c17280f02fca73482fb6269fae570f71b43a81633395f47a9e",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-04": {
     "month_str": "2026-04",
@@ -288,9 +282,6 @@
           "heart_rate_samples": 1
         }
       },
-      "repeated_route_groups": 1,
-      "repeated_route_sessions": 3,
-      "max_route_visits": 3,
       "favorite_time": "晚上",
       "max_streak_days": 3,
       "longest_gap_days": 6,
@@ -317,7 +308,7 @@
     "source_data_hash": "77e0ac5cf7e2d0ae35753d56fc85ab35307a27e06808a28e96e06b49ccef1a73",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-05": {
     "month_str": "2026-05",
@@ -385,9 +376,6 @@
           "heart_rate_samples": 1
         }
       },
-      "repeated_route_groups": 2,
-      "repeated_route_sessions": 6,
-      "max_route_visits": 4,
       "favorite_time": "晚上",
       "max_streak_days": 6,
       "longest_gap_days": 10,
@@ -414,7 +402,7 @@
     "source_data_hash": "9d41849decb74b230f17c7135ed9bc2935ad6796ede9a44ae6d365e4d90680f3",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-06": {
     "month_str": "2026-06",
@@ -482,9 +470,6 @@
           "heart_rate_samples": 1
         }
       },
-      "repeated_route_groups": 2,
-      "repeated_route_sessions": 5,
-      "max_route_visits": 3,
       "favorite_time": "晚上",
       "max_streak_days": 3,
       "longest_gap_days": 8,
@@ -511,7 +496,7 @@
     "source_data_hash": "4db0acde7110e236da5f37afe31afac9674c69bd37a3a937fda4630e74f72606",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-07": {
     "month_str": "2026-07",
@@ -594,9 +579,6 @@
           "heart_rate_samples": 3
         }
       },
-      "repeated_route_groups": 3,
-      "repeated_route_sessions": 11,
-      "max_route_visits": 6,
       "favorite_time": "晚上",
       "max_streak_days": 4,
       "longest_gap_days": 3,
@@ -622,28 +604,28 @@
     "source_data_hash": "35863e081f35a9ccadbb2de05dc636f7fd9b364dc21859410b18c1108befad8b",
     "model": "deepseek-v4-pro",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-08-13T19:38:43"
+    "last_update": "2026-08-13T21:50:24"
   },
   "2026-08": {
     "month_str": "2026-08",
     "stats": {
-      "total_count": 11,
-      "total_distance": 154.63,
-      "total_duration_minutes": 543,
-      "total_calories": 3664,
-      "total_elevation_gain": 349,
+      "total_count": 12,
+      "total_distance": 160.09,
+      "total_duration_minutes": 605,
+      "total_calories": 3944,
+      "total_elevation_gain": 389,
       "sports_count": {
-        "步行": 4,
+        "步行": 5,
         "骑行": 6,
         "跑步": 1
       },
       "sports_distance": {
-        "步行": 11.67,
+        "步行": 17.13,
         "骑行": 141.84,
         "跑步": 1.12
       },
       "longest_ride_km": 31.64,
-      "longest_run_km": 4.74,
+      "longest_run_km": 5.46,
       "longest_activity_km": 31.64,
       "longest_activity_type": "骑行",
       "highest_average_hr_session": {
@@ -658,25 +640,25 @@
         "hr": 122,
         "zone": "仅按平均心率排序"
       },
-      "average_distance_per_activity": 14.06,
-      "average_duration_minutes": 49,
+      "average_distance_per_activity": 13.34,
+      "average_duration_minutes": 50,
       "primary_sport": "骑行",
       "primary_sport_type": "Ride",
-      "primary_sport_share": 0.545,
+      "primary_sport_share": 0.5,
       "sport_variety": 3,
       "sport_metrics": {
         "步行": {
           "type": "Walk",
-          "count": 4,
-          "average_distance": 2.9,
-          "median_distance": 3.3,
-          "average_duration_minutes": 37,
-          "median_duration_minutes": 41,
+          "count": 5,
+          "average_distance": 3.4,
+          "median_distance": 4.6,
+          "average_duration_minutes": 42,
+          "median_duration_minutes": 59,
           "average_heartrate": 100,
-          "median_heartrate": 101,
-          "pace_seconds_per_km": 767,
-          "median_pace_seconds_per_km": 766,
-          "heart_rate_samples": 4
+          "median_heartrate": 103,
+          "pace_seconds_per_km": 750,
+          "median_pace_seconds_per_km": 757,
+          "heart_rate_samples": 5
         },
         "骑行": {
           "type": "Ride",
@@ -705,20 +687,17 @@
           "heart_rate_samples": 1
         }
       },
-      "repeated_route_groups": 2,
-      "repeated_route_sessions": 4,
-      "max_route_visits": 2,
       "favorite_time": "晚上",
       "max_streak_days": 5,
       "longest_gap_days": 1,
-      "active_days_count": 10,
+      "active_days_count": 11,
       "indoor_count": 0,
-      "outdoor_count": 11
+      "outdoor_count": 12
     },
     "report_phase": "accumulating",
     "status_text": "还在热身，继续动起来，月报稍后见。",
     "comparison_basis": "等待月中样本",
-    "source_data_hash": "dbdc3f02d7142a6ea7e6f06fc5e19c73282e9588d7b6a76647143e1ffd952a5c",
-    "last_update": "2026-08-13T13:56:15"
+    "source_data_hash": "cce743731c994a5d9844913b0c354601a944bfa7df624ed179b73c05b44ed290",
+    "last_update": "2026-08-13T21:50:24"
   }
 }
