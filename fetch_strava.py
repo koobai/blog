@@ -779,8 +779,44 @@ def build_activity_facts(activity, older_history):
         'candidate_modes': select_activity_narrative_modes(activity, selected)
     }
 
+def extract_ai_response_content(response):
+    """兼容 Workers AI 旧式 response 与 OpenAI Chat Completions 返回结构。"""
+    payload = response.json()
+    if not isinstance(payload, dict):
+        return payload
+    result = payload.get('result', payload)
+    if not isinstance(result, dict):
+        return result
+
+    # Scout 等旧模型直接把文本放在 result.response。
+    if result.get('response') not in (None, ''):
+        return result['response']
+
+    # GLM 等新模型采用 result.choices[].message.content。
+    choices = result.get('choices') or payload.get('choices') or []
+    if choices and isinstance(choices[0], dict):
+        choice = choices[0]
+        message = choice.get('message') or {}
+        content = message.get('content') if isinstance(message, dict) else None
+        if content in (None, ''):
+            content = choice.get('text')
+        if isinstance(content, list):
+            text_blocks = []
+            for block in content:
+                if isinstance(block, str):
+                    text_blocks.append(block)
+                elif isinstance(block, dict):
+                    block_text = block.get('text') or block.get('content')
+                    if block_text:
+                        text_blocks.append(str(block_text))
+            return ''.join(text_blocks)
+        if content not in (None, ''):
+            return content
+
+    return result.get('output_text', '')
+
 def parse_ai_json(response):
-    result_data = response.json().get('result', {}).get('response', '')
+    result_data = extract_ai_response_content(response)
     if isinstance(result_data, dict):
         return result_data
     clean_text = str(result_data).replace('```json', '').replace('```', '').strip()
@@ -793,6 +829,30 @@ def parse_ai_json(response):
         except json.JSONDecodeError:
             continue
     return {}
+
+def cloudflare_ai_error_summary(response):
+    """为 Actions 日志提取不包含鉴权信息的简短 Cloudflare 错误。"""
+    try:
+        payload = response.json()
+        if not isinstance(payload, dict):
+            raise TypeError
+        errors = payload.get('errors') or []
+        if errors:
+            parts = []
+            for error in errors[:2]:
+                if isinstance(error, dict):
+                    code = error.get('code')
+                    message = error.get('message') or error.get('detail')
+                    parts.append(' '.join(str(value) for value in (code, message) if value not in (None, '')))
+                else:
+                    parts.append(str(error))
+            summary = '；'.join(part for part in parts if part)
+        else:
+            summary = payload.get('message') or payload.get('error') or ''
+    except (ValueError, TypeError):
+        summary = response.text or ''
+    summary = re.sub(r'\s+', ' ', str(summary)).strip()
+    return summary[:240] or 'Cloudflare 未返回错误详情'
 
 def normalize_comment(text):
     return re.sub(r'[\s，。；：、！？“”‘’（）()·]', '', str(text or ''))
@@ -1163,66 +1223,80 @@ def request_activity_ai_comments(prompt, activity_type, allowed_route_visit, rec
         }
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=45)
-            if response.status_code == 200:
-                candidates = parse_ai_candidates(response)
-                valid, issues = [], []
-                recent_window = recent_comments[-8:]
-                previous_openings = [
-                    sentences[0]
-                    for previous in recent_comments
-                    for sentences in [comment_sentences(previous)]
-                    if sentences
-                ]
-                previous_endings = [
-                    sentences[-1]
-                    for previous in recent_comments
-                    for sentences in [comment_sentences(previous)]
-                    if sentences
-                ]
-                recent_openings = previous_openings[-8:]
-                recent_endings = previous_endings[-8:]
-                for comment in candidates:
-                    issue = ai_comment_validation_issue(
-                        comment,
-                        activity_type=activity_type,
-                        allowed_route_visit=allowed_route_visit,
-                        focus=focus,
-                        facts=facts
-                    )
-                    if issue:
-                        issues.append(issue)
-                        continue
-                    similarity = max(
-                        (comment_similarity(comment, recent) for recent in recent_window),
-                        default=0
-                    )
-                    candidate_sentences = comment_sentences(comment)
-                    opening, ending = candidate_sentences[0], candidate_sentences[-1]
-                    opening_similarity = max(
-                        (comment_similarity(opening, recent) for recent in recent_openings),
-                        default=0
-                    )
-                    ending_similarity = max(
-                        (comment_similarity(ending, recent) for recent in recent_endings),
-                        default=0
-                    )
-                    if (
-                        similarity < 0.86
-                        and opening_similarity < 0.9
-                        and ending_similarity < 0.88
-                        and comment not in recent_comments
-                        and opening not in previous_openings
-                        and ending not in previous_endings
-                    ):
-                        valid.append((max(similarity, opening_similarity, ending_similarity), comment))
-                    else:
-                        issues.append('整段、开头或收束句与已有点评过于相似')
-                if valid:
-                    return min(valid, key=lambda item: item[0])[1]
-                correction = (
-                    "\n这批候选未通过校验：" + '；'.join(sorted(set(issues))) +
-                    "。请重新给出三条，继续严格使用同一组事实，但明显改变叙事顺序、开头和收束句。"
+            if response.status_code != 200:
+                print(
+                    f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
+                    f"{cloudflare_ai_error_summary(response)}"
                 )
+                correction = "\n上一次请求失败。请严格按要求返回三条完整点评。"
+                continue
+
+            candidates = parse_ai_candidates(response)
+            if not candidates:
+                print(f"⚠️ {CF_AI_MODEL} 响应成功，但没有解析到 JSON 点评候选。")
+                correction = "\n上一次响应无法解析。只返回包含 comments 数组的 JSON。"
+                continue
+
+            valid, issues = [], []
+            recent_window = recent_comments[-8:]
+            previous_openings = [
+                sentences[0]
+                for previous in recent_comments
+                for sentences in [comment_sentences(previous)]
+                if sentences
+            ]
+            previous_endings = [
+                sentences[-1]
+                for previous in recent_comments
+                for sentences in [comment_sentences(previous)]
+                if sentences
+            ]
+            recent_openings = previous_openings[-8:]
+            recent_endings = previous_endings[-8:]
+            for comment in candidates:
+                issue = ai_comment_validation_issue(
+                    comment,
+                    activity_type=activity_type,
+                    allowed_route_visit=allowed_route_visit,
+                    focus=focus,
+                    facts=facts
+                )
+                if issue:
+                    issues.append(issue)
+                    continue
+                similarity = max(
+                    (comment_similarity(comment, recent) for recent in recent_window),
+                    default=0
+                )
+                candidate_sentences = comment_sentences(comment)
+                opening, ending = candidate_sentences[0], candidate_sentences[-1]
+                opening_similarity = max(
+                    (comment_similarity(opening, recent) for recent in recent_openings),
+                    default=0
+                )
+                ending_similarity = max(
+                    (comment_similarity(ending, recent) for recent in recent_endings),
+                    default=0
+                )
+                if (
+                    similarity < 0.86
+                    and opening_similarity < 0.9
+                    and ending_similarity < 0.88
+                    and comment not in recent_comments
+                    and opening not in previous_openings
+                    and ending not in previous_endings
+                ):
+                    valid.append((max(similarity, opening_similarity, ending_similarity), comment))
+                else:
+                    issues.append('整段、开头或收束句与已有点评过于相似')
+            if valid:
+                return min(valid, key=lambda item: item[0])[1]
+            issue_summary = '；'.join(sorted(set(issues))) or '候选内容为空'
+            print(f"⚠️ {CF_AI_MODEL} 点评候选未通过校验: {issue_summary}")
+            correction = (
+                "\n这批候选未通过校验：" + issue_summary +
+                "。请重新给出三条，继续严格使用同一组事实，但明显改变叙事顺序、开头和收束句。"
+            )
         except Exception as error:
             print(f"⚠️ AI 点评生成失败: {error}")
             correction = "\n请求未得到有效候选。请严格按要求返回三条完整点评。"
@@ -1741,31 +1815,45 @@ def request_monthly_ai_comments(prompt, facts, recent_comments):
         }
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=45)
-            if response.status_code == 200:
-                candidates = parse_ai_candidates(response)
-                valid, issues = [], []
-                recent_window = [comment for comment in recent_comments if comment][-6:]
-                recent_openings = [comment_sentences(item)[0] for item in recent_window if comment_sentences(item)]
-                recent_endings = [comment_sentences(item)[-1] for item in recent_window if comment_sentences(item)]
-                for comment in candidates:
-                    issue = ai_comment_validation_issue(comment, monthly=True, facts=facts)
-                    if issue:
-                        issues.append(issue)
-                        continue
-                    sentences = comment_sentences(comment)
-                    similarity = max((comment_similarity(comment, item) for item in recent_window), default=0)
-                    opening_similarity = max((comment_similarity(sentences[0], item) for item in recent_openings), default=0)
-                    ending_similarity = max((comment_similarity(sentences[-1], item) for item in recent_endings), default=0)
-                    if similarity < 0.86 and opening_similarity < 0.9 and ending_similarity < 0.88:
-                        valid.append((max(similarity, opening_similarity, ending_similarity), comment))
-                    else:
-                        issues.append('整段、开头或收束句与已有月报过于相似')
-                if valid:
-                    return min(valid, key=lambda item: item[0])[1]
-                correction = (
-                    "\n这批候选未通过校验：" + '；'.join(sorted(set(issues))) +
-                    "。请继续使用同一组事实，重新改变切入角度、句序和收束方式。"
+            if response.status_code != 200:
+                print(
+                    f"⚠️ Cloudflare AI 请求失败 ({CF_AI_MODEL}, HTTP {response.status_code}): "
+                    f"{cloudflare_ai_error_summary(response)}"
                 )
+                correction = "\n上一次请求失败。请严格按要求返回三条完整月度点评。"
+                continue
+
+            candidates = parse_ai_candidates(response)
+            if not candidates:
+                print(f"⚠️ {CF_AI_MODEL} 响应成功，但没有解析到 JSON 月度点评候选。")
+                correction = "\n上一次响应无法解析。只返回包含 comments 数组的 JSON。"
+                continue
+
+            valid, issues = [], []
+            recent_window = [comment for comment in recent_comments if comment][-6:]
+            recent_openings = [comment_sentences(item)[0] for item in recent_window if comment_sentences(item)]
+            recent_endings = [comment_sentences(item)[-1] for item in recent_window if comment_sentences(item)]
+            for comment in candidates:
+                issue = ai_comment_validation_issue(comment, monthly=True, facts=facts)
+                if issue:
+                    issues.append(issue)
+                    continue
+                sentences = comment_sentences(comment)
+                similarity = max((comment_similarity(comment, item) for item in recent_window), default=0)
+                opening_similarity = max((comment_similarity(sentences[0], item) for item in recent_openings), default=0)
+                ending_similarity = max((comment_similarity(sentences[-1], item) for item in recent_endings), default=0)
+                if similarity < 0.86 and opening_similarity < 0.9 and ending_similarity < 0.88:
+                    valid.append((max(similarity, opening_similarity, ending_similarity), comment))
+                else:
+                    issues.append('整段、开头或收束句与已有月报过于相似')
+            if valid:
+                return min(valid, key=lambda item: item[0])[1]
+            issue_summary = '；'.join(sorted(set(issues))) or '候选内容为空'
+            print(f"⚠️ {CF_AI_MODEL} 月度点评候选未通过校验: {issue_summary}")
+            correction = (
+                "\n这批候选未通过校验：" + issue_summary +
+                "。请继续使用同一组事实，重新改变切入角度、句序和收束方式。"
+            )
         except Exception as error:
             print(f"⚠️ AI 月度点评生成失败: {error}")
             correction = "\n请求未得到有效候选。请严格按要求返回三条完整月度点评。"
