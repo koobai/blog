@@ -28,6 +28,69 @@
   }
 }
 
+/* 年度匿名总览与私人路线画布：保留轨迹密度，不承载真实地理坐标。 */
+.anonymousRouteOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 24% 32%, rgba(128, 128, 128, 0.065), transparent 30%),
+    radial-gradient(circle at 72% 66%, rgba(128, 128, 128, 0.055), transparent 34%),
+    repeating-linear-gradient(28deg, transparent 0 46px, rgba(128, 128, 128, 0.035) 47px 48px),
+    repeating-linear-gradient(118deg, transparent 0 70px, rgba(128, 128, 128, 0.028) 71px 72px),
+    var(--background-card-color);
+
+  &[hidden] {
+    display: none;
+  }
+
+  @include dark {
+    background:
+      radial-gradient(circle at 24% 32%, rgba(255, 255, 255, 0.045), transparent 30%),
+      radial-gradient(circle at 72% 66%, rgba(255, 255, 255, 0.04), transparent 34%),
+      repeating-linear-gradient(28deg, transparent 0 46px, rgba(255, 255, 255, 0.022) 47px 48px),
+      repeating-linear-gradient(118deg, transparent 0 70px, rgba(255, 255, 255, 0.018) 71px 72px),
+      var(--background-card-dark-color);
+  }
+}
+
+.anonymousRouteCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+
+  path {
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.annualRouteCanvas path {
+  stroke-width: 2.2;
+  opacity: 0.28;
+}
+
+.singleRouteCanvas path {
+  stroke-width: 4;
+  opacity: 0.52;
+}
+
+#map-wrapper.show-anonymous-map {
+  #mapbox-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mapboxgl-control-container {
+    display: none;
+  }
+}
+
 .bento-map-placeholder {
   flex: none;
   width: 100%;

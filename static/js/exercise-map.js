@@ -141,30 +141,56 @@ document.addEventListener('DOMContentLoaded', () => {
     return coordinates;
   };
 
-  // 4. 坐标网格聚类算法：过滤掉极个别异常漂移的坐标点，确保地图居中缩放时视野正常
-  const filterCityBoundingBox = (allCoordinates) => {
-    if (allCoordinates.length === 0) return allCoordinates;
-    const grid = {};
-    
-    allCoordinates.forEach(coord => {
-      const key = `${Math.round(coord[1] * 10) / 10},${Math.round(coord[0] * 10) / 10}`;
-      grid[key] = (grid[key] || 0) + 1;
-    });
-    
-    let maxCount = 0, maxCenterLat = 0, maxCenterLng = 0;
-    for (const key in grid) {
-      if (grid[key] > maxCount) {
-        maxCount = grid[key];
-        const parts = key.split(',');
-        maxCenterLat = parseFloat(parts[0]);
-        maxCenterLng = parseFloat(parts[1]);
-      }
+  // 4. 匿名轨迹工具。年度总览不再使用任何真实地理位置，而是把每条路线
+  // 归一化后按“同路分组”组成一张活动版图。私人路线只读取 App 生成的 route_shape。
+  const stableHash = (value) => {
+    let hash = 2166136261;
+    for (const char of String(value ?? '')) {
+      hash ^= char.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
     }
-    return allCoordinates.filter(c => 
-      c[1] >= maxCenterLat - 0.5 && c[1] <= maxCenterLat + 0.5 && 
-      c[0] >= maxCenterLng - 0.5 && c[0] <= maxCenterLng + 0.5
-    );
+    return hash >>> 0;
   };
+
+  const normalizeAnonymousCoordinates = (coordinates, seedKey) => {
+    if (!Array.isArray(coordinates) || coordinates.length < 2) return [];
+    const xs = coordinates.map(coord => Number(coord[0])).filter(Number.isFinite);
+    const ys = coordinates.map(coord => Number(coord[1])).filter(Number.isFinite);
+    if (xs.length < 2 || ys.length < 2) return [];
+
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    const minY = Math.min(...ys), maxY = Math.max(...ys);
+    const span = Math.max(maxX - minX, maxY - minY);
+    if (!Number.isFinite(span) || span <= 0) return [];
+
+    const seed = stableHash(seedKey);
+    const angle = (seed % 360) * Math.PI / 180;
+    const mirror = ((seed >>> 9) & 1) === 0 ? 1 : -1;
+    const xScale = 0.84 + ((seed >>> 10) % 25) / 100;
+    const yScale = 0.84 + ((seed >>> 16) % 25) / 100;
+    const phaseX = ((seed >>> 21) % 628) / 100;
+    const phaseY = ((seed >>> 5) % 628) / 100;
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+
+    return coordinates.map(coord => {
+      const x = ((coord[0] - centerX) / span) * mirror;
+      const y = (coord[1] - centerY) / span;
+      const rotatedX = (x * Math.cos(angle) - y * Math.sin(angle)) * xScale;
+      const rotatedY = (x * Math.sin(angle) + y * Math.cos(angle)) * yScale;
+      return [
+        rotatedX + Math.sin(rotatedY * 7 + phaseX) * 0.035,
+        rotatedY + Math.sin(rotatedX * 8 + phaseY) * 0.035
+      ];
+    });
+  };
+
+  const coordinatesToPath = (coordinates, centerX, centerY, scale, jitterX = 0, jitterY = 0) =>
+    coordinates.map((coord, index) => {
+      const x = centerX + coord[0] * scale + jitterX;
+      const y = centerY - coord[1] * scale + jitterY;
+      return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join(' ');
 
   /* ========================================================================
      板块 4：全局状态与图层渲染核心
@@ -174,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeRunId = null;
   let animationRef = null;
   let flyToTimeout = null;
-  let isFirstLoad = true;
   let isUserInteracting = false;
   ['mousedown', 'touchstart', 'dragstart'].forEach(e => map.on(e, () => isUserInteracting = true));
   ['mouseup', 'touchend', 'dragend'].forEach(e => map.on(e, () => isUserInteracting = false));
@@ -184,6 +209,114 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.KoobaiRun.availableYears && window.KoobaiRun.availableYears.length > 0) {
     currentYear = window.KoobaiRun.availableYears[0].toString();
   }
+
+  let anonymousOverlay = document.getElementById('anonymous-route-overlay');
+  if (!anonymousOverlay && mapWrapper) {
+    anonymousOverlay = document.createElement('div');
+    anonymousOverlay.id = 'anonymous-route-overlay';
+    anonymousOverlay.className = 'anonymousRouteOverlay';
+    anonymousOverlay.hidden = true;
+    mapWrapper.appendChild(anonymousOverlay);
+  }
+
+  const hideAnonymousOverlay = () => {
+    if (mapWrapper) {
+      mapWrapper.classList.remove('show-anonymous-map');
+    }
+    if (anonymousOverlay) {
+      anonymousOverlay.hidden = true;
+      anonymousOverlay.innerHTML = '';
+    }
+  };
+
+  const anonymousCoordinatesForRun = (run) => {
+    const isPrivate = run.route_status === 'privacy_hidden';
+    const encoded = isPrivate ? (run.route_shape || '') : (run.summary_polyline || '');
+    if (!encoded) return [];
+    const decoded = decodePolyline(encoded);
+    const groupKey = run.route_group_id || `route-${run.run_id}`;
+    return normalizeAnonymousCoordinates(decoded, `${groupKey}:overview-v1`);
+  };
+
+  const showAnnualRouteOverview = (targetYear) => {
+    if (!anonymousOverlay || !mapWrapper) return;
+
+    const routes = window.KoobaiRun.data.filter(run => {
+      if (!run.start_date_local?.startsWith(targetYear) || run.is_indoor === true) return false;
+      if (run.route_status === 'privacy_hidden') return Boolean(run.route_shape);
+      return run.route_status === 'available' && Boolean(run.summary_polyline);
+    });
+
+    const grouped = new Map();
+    routes.forEach(run => {
+      const key = run.route_group_id || `route-${run.run_id}`;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(run);
+    });
+
+    const groups = Array.from(grouped.entries())
+      .sort((left, right) => right[1].length - left[1].length || left[0].localeCompare(right[0]));
+    const paths = [];
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    const groupScale = Math.max(105, Math.min(210, 410 / Math.sqrt(Math.max(groups.length, 1))));
+
+    groups.forEach(([groupKey, groupRuns], groupIndex) => {
+      const radius = groupIndex === 0 ? 0 : 58 + Math.sqrt(groupIndex) * 72;
+      const angle = groupIndex * goldenAngle;
+      const centerX = 500 + Math.cos(angle) * Math.min(radius * 1.2, 380);
+      const centerY = 305 + Math.sin(angle) * Math.min(radius * 0.72, 220);
+      const densityScale = groupScale * (1 + Math.min(groupRuns.length - 1, 5) * 0.035);
+
+      groupRuns.forEach((run, runIndex) => {
+        const coordinates = anonymousCoordinatesForRun(run);
+        if (coordinates.length < 2) return;
+        const jitterSeed = stableHash(`${run.run_id}:overview-jitter`);
+        const jitterX = ((jitterSeed % 17) - 8) * Math.min(runIndex, 2) * 0.45;
+        const jitterY = (((jitterSeed >>> 8) % 17) - 8) * Math.min(runIndex, 2) * 0.45;
+        const color = getColor(run.type);
+        const path = coordinatesToPath(
+          coordinates,
+          centerX,
+          centerY,
+          densityScale,
+          jitterX,
+          jitterY
+        );
+        paths.push(`<path d="${path}" stroke="${color}" />`);
+      });
+    });
+
+    anonymousOverlay.innerHTML = `
+      <svg class="anonymousRouteCanvas annualRouteCanvas" viewBox="0 0 1000 610" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <g class="annualRouteLines">${paths.join('')}</g>
+      </svg>
+    `;
+    anonymousOverlay.hidden = false;
+    mapWrapper.classList.add('show-anonymous-map');
+  };
+
+  const showSingleAnonymousRoute = (run, coordinates) => {
+    if (!anonymousOverlay || !mapWrapper) return;
+    const normalized = normalizeAnonymousCoordinates(
+      coordinates,
+      `${run.route_group_id || run.run_id}:single-v1`
+    );
+    const path = coordinatesToPath(normalized, 500, 285, 510);
+    anonymousOverlay.innerHTML = `
+      <svg class="anonymousRouteCanvas singleRouteCanvas" viewBox="0 0 1000 610" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path d="${path}" stroke="${getColor(run.type)}" />
+      </svg>
+    `;
+    anonymousOverlay.hidden = false;
+    mapWrapper.classList.add('show-anonymous-map');
+  };
+
+  const showEmptyAnonymousMap = () => {
+    if (!anonymousOverlay || !mapWrapper) return;
+    anonymousOverlay.innerHTML = '';
+    anonymousOverlay.hidden = false;
+    mapWrapper.classList.add('show-anonymous-map');
+  };
 
   let routeStampOverlay = document.getElementById('route-stamp-overlay');
   if (!routeStampOverlay && mapWrapper) {
@@ -214,28 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     routeStampOverlay.hidden = false;
     mapWrapper.classList.add('show-route-stamp');
-  };
-
-  const focusYearOverview = (targetYear) => {
-    let yearCoords = [];
-    window.KoobaiRun.data.forEach(run => {
-      if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
-      if (!run._decodedCoords) run._decodedCoords = decodePolyline(run.summary_polyline);
-      yearCoords.push(...run._decodedCoords);
-    });
-
-    const validCoords = filterCityBoundingBox(yearCoords);
-    if (validCoords.length > 0) {
-      const bounds = new mapboxgl.LngLatBounds();
-      validCoords.forEach(coord => bounds.extend(coord));
-      const camera = map.cameraForBounds(bounds, { padding: 50 });
-      if (camera) {
-        map.easeTo({ ...camera, zoom: camera.zoom - 0.2, pitch: 0, bearing: 0, duration: 700 });
-        return;
-      }
-    }
-
-    map.easeTo({ center: [120.1551, 30.2741], zoom: 11, pitch: 0, bearing: 0, duration: 700 });
   };
 
   // 清理上一轮的动画和标记
@@ -276,11 +387,11 @@ document.addEventListener('DOMContentLoaded', () => {
     activeRunId = null; 
     currentYear = targetYear; 
     resetState();
+    showAnnualRouteOverview(targetYear);
     
     if (!map.getSource('all-runs')) return;
     
     const features = []; 
-    let allCoordsForBounds = [];
 
     // 遍历筛选属于当前年份的数据
     window.KoobaiRun.data.forEach(run => {
@@ -294,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (coords.length === 0) return;
       
-      allCoordsForBounds.push(...coords);
       features.push({ 
         type: 'Feature', 
         properties: { id: Number(run.run_id), type: run.type }, 
@@ -306,27 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
     map.getSource('all-runs').setData({ type: 'FeatureCollection', features });
     map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
     map.setPaintProperty('runs-core', 'line-opacity', 0.8);
-
-    // 将地图视角居中至这一年的全部轨迹范围
-    if (allCoordsForBounds.length > 0) {
-      const validCoords = filterCityBoundingBox(allCoordsForBounds);
-      const bounds = new mapboxgl.LngLatBounds();
-      validCoords.forEach(c => bounds.extend(c));
-      
-      const cam = map.cameraForBounds(bounds, { padding: 50 });
-      
-      if (cam) {
-        if (isFirstLoad) {
-          map.jumpTo({ ...cam, zoom: cam.zoom - 0.2, pitch: 0, bearing: 0 });
-          setTimeout(() => { 
-            map.easeTo({ ...cam, pitch: 0, bearing: 0, duration: 1000, easing: (t) => t * (2 - t) }); 
-          }, 50);
-          isFirstLoad = false;
-        } else {
-          map.easeTo({ ...cam, pitch: 0, bearing: 0, duration: 1000 });
-        }
-      }
-    }
   }; 
 
   // 地图加载完毕后初始化
@@ -369,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const statsPanel = document.getElementById('map-stats-panel'); 
 
       hideRouteStamp();
+      hideAnonymousOverlay();
 
       // 每次点击轨迹时，强制清理可能残留的海报预览状态和遮罩
       const mapWrapper = document.getElementById('map-wrapper');
@@ -402,10 +492,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // 🚀 挪动与新增：提前解析坐标和边界，为 2D/3D 视角无缝切换做准备
       const polyline = runData.summary_polyline || '';
       const coords = runData._decodedCoords || decodePolyline(polyline);
-      const hasTrack = coords.length >= 2;
+      const abstractCoords = decodePolyline(runData.route_shape || '');
+      const hasRealTrack = runData.route_status === 'available' && coords.length >= 2;
+      const hasAbstractTrack = runData.route_status === 'privacy_hidden' && abstractCoords.length >= 2;
       
       let bounds = null, center = null;
-      if (hasTrack) {
+      if (hasRealTrack) {
         bounds = new mapboxgl.LngLatBounds();
         coords.forEach(c => bounds.extend(c));
         center = bounds.getCenter();
@@ -500,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.appendChild(mask);
           }
 
-          if (hasTrack && bounds) {
+          if (hasRealTrack && bounds) {
             const h = wrapper.clientHeight;
             const w = wrapper.clientWidth;
             
@@ -579,8 +671,12 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       }
-      if (!hasTrack) {
-        focusYearOverview(currentYear);
+      if (!hasRealTrack) {
+        if (hasAbstractTrack) {
+          showSingleAnonymousRoute(runData, abstractCoords);
+        } else {
+          showEmptyAnonymousMap();
+        }
         showRouteStamp(runData);
         return;
       }
