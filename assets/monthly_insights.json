@@ -1,7 +1,7 @@
 {
   "2026-03": {
     "month_str": "2026-03",
-    "last_update": "2026-08-13T00:41:20",
+    "last_update": "2026-08-13T01:21:57",
     "stats": {
       "total_count": 23,
       "total_distance": 225.52,
@@ -19,12 +19,44 @@
       },
       "longest_ride_km": 32.29,
       "longest_run_km": 5.04,
+      "longest_activity_km": 32.29,
       "hardest_session": {
         "date": "3号",
         "type": "跑步",
         "hr": 149,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 9.81,
+      "average_duration_minutes": 44,
+      "primary_sport": "步行",
+      "primary_sport_share": 0.522,
+      "sport_variety": 3,
+      "sport_metrics": {
+        "步行": {
+          "count": 12,
+          "average_distance": 3.25,
+          "average_duration_minutes": 37,
+          "average_heartrate": 102,
+          "pace_seconds_per_km": 679
+        },
+        "骑行": {
+          "count": 8,
+          "average_distance": 21.9,
+          "average_duration_minutes": 60,
+          "average_heartrate": 122,
+          "pace_seconds_per_km": 165
+        },
+        "跑步": {
+          "count": 3,
+          "average_distance": 3.76,
+          "average_duration_minutes": 30,
+          "average_heartrate": 140,
+          "pace_seconds_per_km": 483
+        }
+      },
+      "repeated_route_groups": 4,
+      "repeated_route_sessions": 11,
+      "max_route_visits": 5,
       "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "122bpm",
@@ -34,12 +66,12 @@
       "max_streak_days": 14,
       "active_days_count": 22
     },
-    "ai_comment": "从运动构成看，本月重心落在步行，另有骑行、跑步补足月内记录。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "ai_comment": "与上月相比，平均单次距离和单次用时都更长，真正拉开差异的是每次运动的分量。晚上是本月最常出现的运动时段，步行在这个时间带里占据多数，骑行、跑步穿插其间。这个月更鲜明的是单次运动向距离和时间两端一起展开。",
     "comparison_basis": "上一个自然月"
   },
   "2026-02": {
     "month_str": "2026-02",
-    "last_update": "2026-08-13T00:41:19",
+    "last_update": "2026-08-13T01:21:56",
     "stats": {
       "total_count": 6,
       "total_distance": 45.18,
@@ -55,12 +87,37 @@
       },
       "longest_ride_km": 16.6,
       "longest_run_km": 4.2,
+      "longest_activity_km": 16.6,
       "hardest_session": {
         "date": "23号",
         "type": "骑行",
         "hr": 136,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 7.53,
+      "average_duration_minutes": 38,
+      "primary_sport": "步行",
+      "primary_sport_share": 0.667,
+      "sport_variety": 2,
+      "sport_metrics": {
+        "步行": {
+          "count": 4,
+          "average_distance": 3.05,
+          "average_duration_minutes": 34,
+          "average_heartrate": 113,
+          "pace_seconds_per_km": 661
+        },
+        "骑行": {
+          "count": 2,
+          "average_distance": 16.49,
+          "average_duration_minutes": 46,
+          "average_heartrate": 130,
+          "pace_seconds_per_km": 168
+        }
+      },
+      "repeated_route_groups": 1,
+      "repeated_route_sessions": 2,
+      "max_route_visits": 2,
       "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "130bpm",
@@ -69,12 +126,12 @@
       "max_streak_days": 3,
       "active_days_count": 5
     },
-    "ai_comment": "步行构成本月主要运动内容，同时穿插骑行，晚上是最常出现的时段。这是目前第一份可靠月报，先作为后续自然月比较的基线。",
+    "ai_comment": "这是目前第一份可靠月报，暂时不与缺失月份强行比较，先把本月真实运动留作后续自然月的基线。步行贯穿本月，骑行穿插其间，记录多出现在晚上，月内面貌不只由总量决定。这份月报的重点不是评价高低，而是先把运动构成、出勤节奏和单次分量放进同一条时间线。",
     "comparison_basis": "上一个自然月"
   },
   "2026-04": {
     "month_str": "2026-04",
-    "last_update": "2026-08-13T00:41:21",
+    "last_update": "2026-08-13T01:21:57",
     "stats": {
       "total_count": 9,
       "total_distance": 107.52,
@@ -92,12 +149,44 @@
       },
       "longest_ride_km": 16.6,
       "longest_run_km": 4.89,
+      "longest_activity_km": 16.6,
       "hardest_session": {
         "date": "1号",
         "type": "跑步",
         "hr": 133,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 11.95,
+      "average_duration_minutes": 43,
+      "primary_sport": "骑行",
+      "primary_sport_share": 0.667,
+      "sport_variety": 3,
+      "sport_metrics": {
+        "骑行": {
+          "count": 6,
+          "average_distance": 16.16,
+          "average_duration_minutes": 43,
+          "average_heartrate": 122,
+          "pace_seconds_per_km": 160
+        },
+        "步行": {
+          "count": 2,
+          "average_distance": 3.25,
+          "average_duration_minutes": 45,
+          "average_heartrate": 98,
+          "pace_seconds_per_km": 836
+        },
+        "跑步": {
+          "count": 1,
+          "average_distance": 4.04,
+          "average_duration_minutes": 36,
+          "average_heartrate": 133,
+          "pace_seconds_per_km": 529
+        }
+      },
+      "repeated_route_groups": 1,
+      "repeated_route_sessions": 3,
+      "max_route_visits": 3,
       "favorite_time": "晚上",
       "avg_hr": {
         "步行": "98bpm",
@@ -107,12 +196,12 @@
       "max_streak_days": 3,
       "active_days_count": 9
     },
-    "ai_comment": "骑行构成本月主要运动内容，同时穿插步行、跑步，晚上是最常出现的时段。与上月相比，总里程和总用时都减少，本月的运动分量相对收缩。",
+    "ai_comment": "本月出现连续出勤，骑行贯穿这些日期，步行、跑步穿插其间，记录多出现在晚上。与上月相比，出勤次数有所减少，平均单次距离却更长，本月的分量更多落在每次运动本身。总次数不是这个月最重要的部分，单次距离的分量更值得留下。",
     "comparison_basis": "上一个自然月"
   },
   "2026-05": {
     "month_str": "2026-05",
-    "last_update": "2026-08-13T00:41:22",
+    "last_update": "2026-08-13T01:21:58",
     "stats": {
       "total_count": 12,
       "total_distance": 178.02,
@@ -128,12 +217,37 @@
       },
       "longest_ride_km": 25.31,
       "longest_run_km": 2.8,
+      "longest_activity_km": 25.31,
       "hardest_session": {
         "date": "13号",
         "type": "骑行",
         "hr": 127,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 14.84,
+      "average_duration_minutes": 45,
+      "primary_sport": "骑行",
+      "primary_sport_share": 0.917,
+      "sport_variety": 2,
+      "sport_metrics": {
+        "骑行": {
+          "count": 11,
+          "average_distance": 15.93,
+          "average_duration_minutes": 46,
+          "average_heartrate": 113,
+          "pace_seconds_per_km": 172
+        },
+        "步行": {
+          "count": 1,
+          "average_distance": 2.8,
+          "average_duration_minutes": 40,
+          "average_heartrate": 96,
+          "pace_seconds_per_km": 860
+        }
+      },
+      "repeated_route_groups": 2,
+      "repeated_route_sessions": 6,
+      "max_route_visits": 4,
       "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "113bpm",
@@ -142,12 +256,12 @@
       "max_streak_days": 6,
       "active_days_count": 11
     },
-    "ai_comment": "本月以骑行为主，步行作为补充，记录多出现在晚上。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "ai_comment": "与上月相比，活跃天数和连续出勤都增加，运动在整个月里铺得更开。这个月真正醒目的部分是出勤被铺开，而不只是累计总量增加。本月有一条熟悉路线多次出现，骑行是这些路线记录中的主要运动，记录多出现在晚上。",
     "comparison_basis": "上一个自然月"
   },
   "2026-06": {
     "month_str": "2026-06",
-    "last_update": "2026-08-13T00:41:24",
+    "last_update": "2026-08-13T01:21:59",
     "stats": {
       "total_count": 10,
       "total_distance": 146.11,
@@ -163,12 +277,37 @@
       },
       "longest_ride_km": 16.64,
       "longest_run_km": 2.78,
+      "longest_activity_km": 16.64,
       "hardest_session": {
         "date": "26号",
         "type": "骑行",
         "hr": 118,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 14.61,
+      "average_duration_minutes": 47,
+      "primary_sport": "骑行",
+      "primary_sport_share": 0.9,
+      "sport_variety": 2,
+      "sport_metrics": {
+        "骑行": {
+          "count": 9,
+          "average_distance": 15.93,
+          "average_duration_minutes": 47,
+          "average_heartrate": 108,
+          "pace_seconds_per_km": 178
+        },
+        "步行": {
+          "count": 1,
+          "average_distance": 2.78,
+          "average_duration_minutes": 46,
+          "average_heartrate": 89,
+          "pace_seconds_per_km": 985
+        }
+      },
+      "repeated_route_groups": 2,
+      "repeated_route_sessions": 5,
+      "max_route_visits": 3,
       "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "108bpm",
@@ -177,12 +316,12 @@
       "max_streak_days": 3,
       "active_days_count": 10
     },
-    "ai_comment": "从运动构成看，本月重心落在骑行，另有步行补足月内记录。与上月相比，总里程和总用时都减少，本月的运动分量相对收缩。",
+    "ai_comment": "骑行贯穿本月，步行穿插其间，记录多出现在晚上，月内面貌不只由总量决定。与上月相比，活跃天数和连续出勤都减少，运动集中在更少的日期里。月度节奏因此更集中，总量变化只是这组分布的结果之一。",
     "comparison_basis": "上一个自然月"
   },
   "2026-07": {
     "month_str": "2026-07",
-    "last_update": "2026-08-13T00:41:25",
+    "last_update": "2026-08-13T01:22:00",
     "stats": {
       "total_count": 18,
       "total_distance": 271.53,
@@ -200,12 +339,44 @@
       },
       "longest_ride_km": 23.7,
       "longest_run_km": 9.05,
+      "longest_activity_km": 23.7,
       "hardest_session": {
         "date": "15号",
         "type": "骑行",
         "hr": 128,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 15.08,
+      "average_duration_minutes": 65,
+      "primary_sport": "骑行",
+      "primary_sport_share": 0.667,
+      "sport_variety": 3,
+      "sport_metrics": {
+        "骑行": {
+          "count": 12,
+          "average_distance": 18.42,
+          "average_duration_minutes": 50,
+          "average_heartrate": 116,
+          "pace_seconds_per_km": 163
+        },
+        "徒步": {
+          "count": 3,
+          "average_distance": 9.03,
+          "average_duration_minutes": 104,
+          "average_heartrate": 103,
+          "pace_seconds_per_km": 692
+        },
+        "步行": {
+          "count": 3,
+          "average_distance": 7.8,
+          "average_duration_minutes": 88,
+          "average_heartrate": 110,
+          "pace_seconds_per_km": 677
+        }
+      },
+      "repeated_route_groups": 3,
+      "repeated_route_sessions": 11,
+      "max_route_visits": 6,
       "favorite_time": "晚上",
       "avg_hr": {
         "骑行": "116bpm",
@@ -215,12 +386,12 @@
       "max_streak_days": 4,
       "active_days_count": 17
     },
-    "ai_comment": "骑行构成本月主要运动内容，同时穿插徒步、步行，晚上是最常出现的时段。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "ai_comment": "与上月相比，本月新增徒步，月内运动不再只沿着原有类型展开。本月出现连续出勤，骑行贯穿这些日期，徒步、步行穿插其间，记录多出现在晚上。类型的丰富让这个月有了不同于此前的运动面貌。",
     "comparison_basis": "上一个自然月"
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-13T00:41:26",
+    "last_update": "2026-08-13T01:22:01",
     "stats": {
       "total_count": 11,
       "total_distance": 154.63,
@@ -238,12 +409,44 @@
       },
       "longest_ride_km": 31.64,
       "longest_run_km": 4.74,
+      "longest_activity_km": 31.64,
       "hardest_session": {
         "date": "2号",
         "type": "骑行",
         "hr": 122,
         "zone": "仅按平均心率排序"
       },
+      "average_distance_per_activity": 14.06,
+      "average_duration_minutes": 49,
+      "primary_sport": "骑行",
+      "primary_sport_share": 0.545,
+      "sport_variety": 3,
+      "sport_metrics": {
+        "骑行": {
+          "count": 6,
+          "average_distance": 23.64,
+          "average_duration_minutes": 64,
+          "average_heartrate": 115,
+          "pace_seconds_per_km": 163
+        },
+        "步行": {
+          "count": 4,
+          "average_distance": 2.92,
+          "average_duration_minutes": 37,
+          "average_heartrate": 100,
+          "pace_seconds_per_km": 754
+        },
+        "跑步": {
+          "count": 1,
+          "average_distance": 1.12,
+          "average_duration_minutes": 11,
+          "average_heartrate": 117,
+          "pace_seconds_per_km": 580
+        }
+      },
+      "repeated_route_groups": 2,
+      "repeated_route_sessions": 4,
+      "max_route_visits": 2,
       "favorite_time": "晚上",
       "avg_hr": {
         "步行": "100bpm",
@@ -253,7 +456,7 @@
       "max_streak_days": 5,
       "active_days_count": 10
     },
-    "ai_comment": "本月以骑行为主，步行、跑步作为补充，记录多出现在晚上。与上月同期相比，运动次数和活跃天数都增加，出勤在月内铺得更开。",
+    "ai_comment": "与上月同期相比，出勤更频繁，平均单次距离却更短，本月更像由多次日常运动逐步铺开。这个月的辨识度落在高频日常，而不是依靠少数长距离记录撑起总量。骑行贯穿本月，步行、跑步穿插其间，记录多出现在晚上，月内面貌不只由总量决定。",
     "comparison_basis": "上月同期（截至12号）"
   }
 }
