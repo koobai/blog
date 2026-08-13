@@ -187,25 +187,44 @@ document.addEventListener('DOMContentLoaded', () => {
     return remaining;
   };
 
-  const coordinatesForActualDistance = (route, targetDistanceKm) => {
+  const routePassCount = (route, run) => {
+    const referenceMeters = Number(route.reference_meters);
+    const elevationMeters = Number(run.total_elevation_gain);
+    if (Number.isFinite(referenceMeters) && referenceMeters > 0
+      && Number.isFinite(elevationMeters) && elevationMeters > 0) {
+      return elevationMeters / referenceMeters;
+    }
+
+    const referenceKm = Number(route.reference_km);
+    const distanceKm = Number(run.distance);
+    if (Number.isFinite(referenceKm) && referenceKm > 0
+      && Number.isFinite(distanceKm) && distanceKm > 0) {
+      return distanceKm / referenceKm;
+    }
+    return 0;
+  };
+
+  // 地点路线只画一次真实公共道路。未满一趟时按比例截取；超过一趟后
+  // 不再原路叠画，而是交给线宽表达本次完成的趟数。
+  const coordinatesForRunRoute = (route, run) => {
     const baseCoordinates = decodePolyline(route.geometry || '');
-    const target = Number(targetDistanceKm);
-    if (baseCoordinates.length < 2 || !Number.isFinite(target) || target <= 0) return [];
+    const passCount = routePassCount(route, run);
+    if (baseCoordinates.length < 2 || !Number.isFinite(passCount) || passCount <= 0) return [];
+    if (passCount >= 1) return baseCoordinates;
 
     const output = [baseCoordinates[0]];
-    let remaining = target;
-    let forward = true;
-    let passCount = 0;
-    const maxPasses = 1000;
-
-    while (remaining > 0.000_001 && passCount < maxPasses) {
-      const segment = forward ? baseCoordinates : [...baseCoordinates].reverse();
-      // 环线每圈回到起点；线性路线则正向、反向交替，始终沿同一真实道路。
-      remaining = appendCoordinatesUntilDistance(output, segment, remaining);
-      if (route.path_type !== 'loop') forward = !forward;
-      passCount += 1;
-    }
+    const baseDistanceKm = baseCoordinates.slice(1).reduce(
+      (total, coordinate, index) => total + coordinateDistanceKm(baseCoordinates[index], coordinate),
+      0
+    );
+    appendCoordinatesUntilDistance(output, baseCoordinates, baseDistanceKm * passCount);
     return output;
+  };
+
+  const singleRouteLineWidth = (route, run) => {
+    const passCount = routePassCount(route, run);
+    // 1 趟约 4px，4～5 趟约 6～7px；超过 6 趟后封顶，避免压住地图。
+    return 3.4 + Math.min(Math.max(passCount, 0.5), 6) * 0.65;
   };
 
   /* ========================================================================
@@ -319,10 +338,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const landmarkFeatures = [...landmarkGroups.entries()]
       .map(([key, groupRuns]) => {
-        const run = [...groupRuns].sort((left, right) => Number(right.distance) - Number(left.distance))[0];
-        const landmarkRoute = getLandmarkRouteForRun(run);
+        const landmarkRoute = LANDMARK_ROUTES_BY_KEY.get(key) || null;
         if (!landmarkRoute) return null;
-        const coordinates = coordinatesForActualDistance(landmarkRoute, run.distance);
+        const run = [...groupRuns].sort(
+          (left, right) => routePassCount(landmarkRoute, right) - routePassCount(landmarkRoute, left)
+        )[0];
+        const coordinates = coordinatesForRunRoute(landmarkRoute, run);
         if (coordinates.length < 2) return null;
         return {
           type: 'Feature',
@@ -437,7 +458,11 @@ document.addEventListener('DOMContentLoaded', () => {
         type: 'line', 
         source: 'highlight-run-source', 
         layout: { 'line-join': 'round', 'line-cap': 'round' }, 
-        paint: { 'line-color': colorRules, 'line-width': 4, 'line-opacity': 1 } 
+        paint: {
+          'line-color': colorRules,
+          'line-width': ['coalesce', ['get', 'line_width'], 4],
+          'line-opacity': 1
+        }
       });
     }
 
@@ -459,9 +484,22 @@ document.addEventListener('DOMContentLoaded', () => {
         paint: {
           'line-color': 'rgba(255, 255, 255, 0.72)',
           'line-width': [
-            'case',
-            ['==', ['get', 'mode'], 'single'], 6,
-            ['interpolate', ['linear'], ['get', 'visits'], 1, 2.8, 3, 4, 6, 5.5, 12, 7.2, 24, 9.2]
+            'interpolate', ['linear'], ['zoom'],
+            8.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 6,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.4, 3, 2.8, 6, 3.4, 12, 4.2, 24, 5.2]
+            ],
+            11.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 6,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.5, 3, 3.1, 6, 4, 12, 5.1, 24, 6.3]
+            ],
+            14.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 6,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.8, 3, 4, 6, 5.5, 12, 7.2, 24, 9.2]
+            ]
           ],
           'line-opacity': 0.82
         }
@@ -479,14 +517,27 @@ document.addEventListener('DOMContentLoaded', () => {
         paint: {
           'line-color': colorRules,
           'line-width': [
-            'case',
-            ['==', ['get', 'mode'], 'single'], 4,
-            ['interpolate', ['linear'], ['get', 'visits'], 1, 1.2, 3, 2.2, 6, 3.6, 12, 5.2, 24, 7.2]
+            'interpolate', ['linear'], ['zoom'],
+            8.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 4,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 1.2, 3, 1.6, 6, 2.1, 12, 2.8, 24, 3.8]
+            ],
+            11.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 4,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 1, 3, 1.6, 6, 2.5, 12, 3.6, 24, 4.8]
+            ],
+            14.5, [
+              'case',
+              ['==', ['get', 'mode'], 'single'], 4,
+              ['interpolate', ['linear'], ['get', 'visits'], 1, 1.2, 3, 2.2, 6, 3.6, 12, 5.2, 24, 7.2]
+            ]
           ],
           'line-opacity': [
             'case',
             ['==', ['get', 'mode'], 'single'], 0.92,
-            ['interpolate', ['linear'], ['get', 'visits'], 1, 0.42, 3, 0.58, 6, 0.72, 12, 0.84, 24, 0.94]
+            ['interpolate', ['linear'], ['get', 'visits'], 1, 0.62, 3, 0.7, 6, 0.78, 12, 0.87, 24, 0.94]
           ]
         }
       });
@@ -602,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? getLandmarkRouteForRun(runData)
         : null;
       const landmarkCoordinates = landmarkRoute
-        ? coordinatesForActualDistance(landmarkRoute, runData.distance)
+        ? coordinatesForRunRoute(landmarkRoute, runData)
         : [];
       // 后续地图交互只认“当前显示的轨迹”：公开记录使用本人轨迹，
       // 隐私记录使用标题地点代表路线，两者共享完全相同的镜头与交互逻辑。
@@ -796,7 +847,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: 'FeatureCollection', 
           features: [{ 
             type: 'Feature', 
-            properties: { type: runData.type }, 
+            properties: {
+              type: runData.type,
+              line_width: landmarkRoute ? singleRouteLineWidth(landmarkRoute, runData) : 4
+            },
             geometry: { type: 'LineString', coordinates: displayCoordinates }
           }] 
         });
