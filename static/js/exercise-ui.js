@@ -508,7 +508,30 @@
       }).join('');
       const currentMonthStr = `${engine.displayYear}-${String(this.calMonthIndex + 1).padStart(2, '0')}`;
       const insightData = window.KoobaiRun.monthlyInsights ? window.KoobaiRun.monthlyInsights[currentMonthStr] : null;
-      const aiComment = insightData ? insightData.ai_comment : '';
+      // ai_comment 只用于兼容首次 DeepSeek 迁移前的旧月报；新结构使用 status_text / coach_report。
+      const aiComment = insightData ? (insightData.status_text || insightData.ai_comment || '') : '';
+      const coachReport = insightData && insightData.coach_report ? insightData.coach_report : null;
+      const reportLabel = insightData && insightData.report_label ? insightData.report_label : '';
+      let monthlyCoachHtml = '';
+
+      if (coachReport) {
+        const reportParts = [
+          coachReport.verdict,
+          coachReport.analysis,
+          coachReport.next_plan,
+          coachReport.uncertainty
+        ].filter(Boolean);
+        monthlyCoachHtml = `
+          ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
+          <div class="monthly-coach-report">
+            ${reportParts.map(part => `<p>${escapeHtml(part)}</p>`).join('')}
+          </div>`;
+      } else if (aiComment) {
+        monthlyCoachHtml = `
+          ${reportLabel ? `<div class="monthly-coach-label">${escapeHtml(reportLabel)}</div>` : ''}
+          <div class="ai-comment-content">${escapeHtml(aiComment)}</div>`;
+      }
+
       const energySummary = engine.monthlyData.energySummary;
       let monthlyEnergyHtml = '';
 
@@ -527,7 +550,7 @@
       }
       
       // 有 AI 点评或真实消耗总结时，都可以进入月度点评视图。
-      const aiBtnHtml = (aiComment || monthlyEnergyHtml) ? `
+      const aiBtnHtml = (monthlyCoachHtml || monthlyEnergyHtml) ? `
         <button class="ai-toggle-btn ${this.showAiInsight ? 'active' : ''}" onclick="window.KoobaiRun.ui.toggleAiInsight()">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
         </button>
@@ -636,7 +659,7 @@
               </div>
               
               <div class="ai-insight-view" style="display: ${aiViewDisplay};">
-                ${aiComment ? `<div class="ai-comment-content">${aiComment}</div>` : ''}
+                ${monthlyCoachHtml}
                 ${monthlyEnergyHtml}
               </div>
             </div>

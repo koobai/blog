@@ -1182,16 +1182,6 @@ body:has(.menu-checkbox:checked) {
   html[data-theme="dark"] .routeStamp {
     color: var(--text-info-dark-color); }
 
-.routeStampComment {
-  color: var(--text-content-color);
-  font-size: 0.85rem;
-  line-height: 1.65; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .routeStampComment {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .routeStampComment {
-    color: var(--text-content-dark-color); }
-
 .routeStampNote {
   align-self: center;
   color: var(--text-info-color);
@@ -1203,9 +1193,6 @@ body:has(.menu-checkbox:checked) {
       color: var(--text-info-dark-color); } }
   html[data-theme="dark"] .routeStampNote {
     color: var(--text-info-dark-color); }
-
-.routeStampNote + .routeStampComment {
-  margin-top: 12px; }
 
 @keyframes routeStampArrive {
   from {
@@ -1670,6 +1657,33 @@ body:has(.menu-checkbox:checked) {
         html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .ai-comment-content {
           color: var(--text-content-dark-color); } }
       html[data-theme="dark"] .bento-calendar-board .ai-insight-view .ai-comment-content {
+        color: var(--text-content-dark-color); }
+    .bento-calendar-board .ai-insight-view .monthly-coach-label {
+      margin-bottom: 8px;
+      color: var(--text-info-color);
+      font-size: 0.78rem;
+      line-height: 1.4; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-coach-label {
+          color: var(--text-info-dark-color); } }
+      html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-coach-label {
+        color: var(--text-info-dark-color); }
+    .bento-calendar-board .ai-insight-view .monthly-coach-report {
+      color: var(--text-content-color);
+      font-size: 1rem;
+      line-height: 1.8;
+      text-align: justify; }
+      .bento-calendar-board .ai-insight-view .monthly-coach-report p {
+        margin: 0 0 10px; }
+        .bento-calendar-board .ai-insight-view .monthly-coach-report p:last-child {
+          margin-bottom: 0; }
+      @media (min-width: 768px) {
+        .bento-calendar-board .ai-insight-view .monthly-coach-report {
+          font-size: 0.9rem; } }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-coach-report {
+          color: var(--text-content-dark-color); } }
+      html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-coach-report {
         color: var(--text-content-dark-color); }
     .bento-calendar-board .ai-insight-view .monthly-energy-summary {
       margin-top: 16px; }
@@ -2420,34 +2434,6 @@ body:has(.menu-checkbox:checked) {
           color: #fff; }
           html[data-theme="dark"] #map-wrapper.show-poster-mode .poster-view .poster-actions button:hover {
             background: rgba(0, 0, 0, 0.2); }
-
-/* AI 标题样式微调 */
-.poster-ai-title {
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-size: 1.1rem !important;
-  color: var(--text-content-color); }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .poster-ai-title {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .poster-ai-title {
-    color: var(--text-content-dark-color); }
-
-/* AI 短评正文样式 */
-.poster-ai-comment {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--text-content-color);
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-ideograph;
-  word-break: break-word;
-  overflow-wrap: break-word; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .poster-ai-comment {
-      color: var(--text-content-dark-color); } }
-  html[data-theme="dark"] .poster-ai-comment {
-    color: var(--text-content-dark-color); }
 
 .index-card {
   display: grid;
