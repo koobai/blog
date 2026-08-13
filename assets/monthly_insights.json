@@ -1,7 +1,7 @@
 {
   "2026-03": {
     "month_str": "2026-03",
-    "last_update": "2026-08-12T10:59:41",
+    "last_update": "2026-08-13T00:41:20",
     "stats": {
       "total_count": 23,
       "total_distance": 225.52,
@@ -34,12 +34,12 @@
       "max_streak_days": 14,
       "active_days_count": 22
     },
-    "ai_comment": "这个月相比上个月，自然月期间的运动次数增加了，总运动距离也增加了，活跃天数多了，运动总时长也更长了。其中有骑行、步行和跑步。",
-    "ai_comment_version": 3
+    "ai_comment": "从运动构成看，本月重心落在步行，另有骑行、跑步补足月内记录。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-02": {
     "month_str": "2026-02",
-    "last_update": "2026-08-12T10:59:39",
+    "last_update": "2026-08-13T00:41:19",
     "stats": {
       "total_count": 6,
       "total_distance": 45.18,
@@ -69,12 +69,12 @@
       "max_streak_days": 3,
       "active_days_count": 5
     },
-    "ai_comment": "本月骑行和步行总次数较上月减少，活跃天数较上月减少，总距离较上月增加，总用时较上月增加。",
-    "ai_comment_version": 3
+    "ai_comment": "步行构成本月主要运动内容，同时穿插骑行，晚上是最常出现的时段。这是目前第一份可靠月报，先作为后续自然月比较的基线。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-04": {
     "month_str": "2026-04",
-    "last_update": "2026-08-12T10:59:42",
+    "last_update": "2026-08-13T00:41:21",
     "stats": {
       "total_count": 9,
       "total_distance": 107.52,
@@ -107,12 +107,12 @@
       "max_streak_days": 3,
       "active_days_count": 9
     },
-    "ai_comment": "这个月相比上个月，运动次数减少了，累计锻炼天数变少了，总运动距离缩短了，整体运动时长也变短了。具体来看，步行、骑行和跑步的参与情况有所下降。",
-    "ai_comment_version": 3
+    "ai_comment": "骑行构成本月主要运动内容，同时穿插步行、跑步，晚上是最常出现的时段。与上月相比，总里程和总用时都减少，本月的运动分量相对收缩。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-05": {
     "month_str": "2026-05",
-    "last_update": "2026-08-12T10:59:44",
+    "last_update": "2026-08-13T00:41:22",
     "stats": {
       "total_count": 12,
       "total_distance": 178.02,
@@ -142,12 +142,12 @@
       "max_streak_days": 6,
       "active_days_count": 11
     },
-    "ai_comment": "这个月与上个月相比，运动次数、总距离、活跃天数和运动时长都有所增加。参与的运动包括骑行和步行。",
-    "ai_comment_version": 3
+    "ai_comment": "本月以骑行为主，步行作为补充，记录多出现在晚上。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-06": {
     "month_str": "2026-06",
-    "last_update": "2026-08-12T10:59:45",
+    "last_update": "2026-08-13T00:41:24",
     "stats": {
       "total_count": 10,
       "total_distance": 146.11,
@@ -177,12 +177,12 @@
       "max_streak_days": 3,
       "active_days_count": 10
     },
-    "ai_comment": "这个月相比上个月，运动次数减少了，活跃天数变少了，总距离缩短了，运动总时长也减少了。具体来看，骑行和步行是本月参与的运动项目。",
-    "ai_comment_version": 3
+    "ai_comment": "从运动构成看，本月重心落在骑行，另有步行补足月内记录。与上月相比，总里程和总用时都减少，本月的运动分量相对收缩。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-07": {
     "month_str": "2026-07",
-    "last_update": "2026-08-12T10:59:48",
+    "last_update": "2026-08-13T00:41:25",
     "stats": {
       "total_count": 18,
       "total_distance": 271.53,
@@ -215,12 +215,12 @@
       "max_streak_days": 4,
       "active_days_count": 17
     },
-    "ai_comment": "这个月的骑行、步行和徒步运动相比上个月，运动次数、活跃天数、总距离和运动时长都有所增加。",
-    "ai_comment_version": 3
+    "ai_comment": "骑行构成本月主要运动内容，同时穿插徒步、步行，晚上是最常出现的时段。与上月相比，总里程和总用时都增加，本月留下了更充足的运动分量。",
+    "comparison_basis": "上一个自然月"
   },
   "2026-08": {
     "month_str": "2026-08",
-    "last_update": "2026-08-12T15:49:41",
+    "last_update": "2026-08-13T00:41:26",
     "stats": {
       "total_count": 11,
       "total_distance": 154.63,
@@ -253,7 +253,7 @@
       "max_streak_days": 5,
       "active_days_count": 10
     },
-    "ai_comment": "这个月与上月同期相比，运动次数、总距离和活跃天数都更高，运动时间也更长。",
-    "ai_comment_version": 3
+    "ai_comment": "本月以骑行为主，步行、跑步作为补充，记录多出现在晚上。与上月同期相比，运动次数和活跃天数都增加，出勤在月内铺得更开。",
+    "comparison_basis": "上月同期（截至12号）"
   }
 }
