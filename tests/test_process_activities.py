@@ -12,7 +12,7 @@ class FoodConversionContractTests(unittest.TestCase):
         self.assertEqual(43, chocolate['kcal'])
 
     def test_food_titles_use_the_new_contract(self):
-        self.assertEqual(5, process_activities.FOOD_TITLE_VERSION)
+        self.assertEqual(6, process_activities.FOOD_TITLE_VERSION)
         self.assertEqual(0.12, process_activities.MAX_FOOD_RELATIVE_ERROR)
 
     def test_current_calorie_range_has_a_natural_food_candidate(self):
@@ -27,6 +27,11 @@ class FoodConversionContractTests(unittest.TestCase):
                 process_activities.MAX_FOOD_RELATIVE_ERROR,
                 f'{calories} kcal has no food conversion within tolerance'
             )
+
+    def test_very_low_calories_use_an_accurate_half_portion(self):
+        title, key = process_activities.generate_energy_title(24, 1)
+        self.assertEqual('燃掉一块半方糖', title)
+        self.assertEqual('sugar_cube', key)
 
 
 if __name__ == '__main__':

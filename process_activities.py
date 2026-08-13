@@ -83,7 +83,7 @@ FOOD_EQUIVALENTS = [
     {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
 ]
 MAX_FOOD_RELATIVE_ERROR = 0.12
-FOOD_TITLE_VERSION = 5
+FOOD_TITLE_VERSION = 6
 
 # 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
 # preferred_groups 是“软归类”：首选类型会有更高概率，其他运动仍可以偶尔抽到。
@@ -125,6 +125,15 @@ def format_food_count(count):
     """小数量使用更自然的中文，大数量继续支持任意整数。"""
     return CHINESE_COUNTS.get(count, str(count))
 
+def format_food_quantity(count, unit, name):
+    """默认使用整数；极低热量无合适整数时才允许半份表达。"""
+    whole = int(count)
+    if abs(count - whole) < 0.01:
+        return f"{format_food_count(whole)}{unit}{name}"
+    if whole == 0:
+        return f"半{unit}{name}"
+    return f"{format_food_count(whole)}{unit}半{name}"
+
 def generate_energy_title(calories, run_id, recent_food_keys=None):
     """按实际消耗选择一个自然、稳定且尽量不重复的食物换算。"""
     try:
@@ -152,7 +161,18 @@ def generate_energy_title(calories, run_id, recent_food_keys=None):
     if natural:
         eligible = natural
     elif not eligible:
-        eligible = sorted(candidates, key=lambda candidate: candidate[0])[:4]
+        half_candidates = []
+        for food in FOOD_EQUIVALENTS:
+            count = max(0.5, round(calories / food['kcal'] * 2) / 2)
+            relative_error = abs(count * food['kcal'] - calories) / calories
+            half_candidates.append((relative_error, food, count))
+        half_candidates.sort(key=lambda candidate: (candidate[0], candidate[1]['key']))
+        if half_candidates[0][0] <= MAX_FOOD_RELATIVE_ERROR:
+            # 半份只作为低热量边界兜底，并固定选取误差最小的一项。
+            eligible = [half_candidates[0]]
+        else:
+            # 极端数据仍取最接近的一项，不再从多个高误差候选中随机。
+            eligible = [min(candidates, key=lambda candidate: (candidate[0], candidate[1]['key']))]
 
     non_repeating = [candidate for candidate in eligible if candidate[1]['key'] not in recent_food_keys]
     if non_repeating:
@@ -162,7 +182,11 @@ def generate_energy_title(calories, run_id, recent_food_keys=None):
     digest = hashlib.sha256(f"{run_id}:{calories}:food-title".encode('utf-8')).hexdigest()
     selected_index = int(digest[:8], 16) % len(eligible)
     _, selected_food, selected_count = eligible[selected_index]
-    food_text = f"{format_food_count(selected_count)}{selected_food['unit']}{selected_food['name']}"
+    food_text = format_food_quantity(
+        selected_count,
+        selected_food['unit'],
+        selected_food['name']
+    )
     energy_title = f"燃掉{food_text}"
     return energy_title, selected_food['key']
 

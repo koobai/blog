@@ -708,7 +708,11 @@ def deepseek_error(response):
 
 def request_deepseek_report(api_key, facts, correction=None):
     evidence_json = json.dumps(facts, ensure_ascii=False, indent=2)
-    correction_text = f'\n上一次未通过程序校验：{correction}。请只修正该问题。' if correction else ''
+    correction_text = (
+        f'\n上一次未通过程序校验：{correction}。请重写完整 JSON，并重点修正该问题；'
+        'next_plan 必须压缩在 80～180 个中文字符内。'
+        if correction else ''
+    )
     system_prompt = (
         '你是个人运动博客的月度教练。程序已经完成全部计算；只能使用输入中的证据，'
         '不得补充常识推测、医学判断、天气、身体感受或不存在的训练目标。'
@@ -727,6 +731,7 @@ def request_deepseek_report(api_key, facts, correction=None):
 6. 使用公开旁观视角，不出现“你、您、博主”。不写“继续保持、加油”，不把平均心率变化等同于心肺能力、恢复或减脂成果。
 7. style_avoidance 只是近期月报的表达参考，不是运动事实；避免复用相同开头、句式和收束。
 8. evidence_ids 列出实际使用的三至五个证据 id。
+9. 严格控制篇幅：verdict 35～90 个中文字符，analysis 120～300 个中文字符，next_plan 80～180 个中文字符；不要贴近程序允许的长度上限。
 {correction_text}
 
 只返回以下 JSON 结构：
