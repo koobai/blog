@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (map.getSource('landmark-routes')) {
       map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features: [] });
     }
-    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+    ['landmark-routes-core'].forEach(layerId => {
       if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
     });
   };
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!map.getSource('landmark-routes') || !mapWrapper) return;
 
     map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features });
-    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+    ['landmark-routes-core'].forEach(layerId => {
       if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
     });
     if (map.getLayer('runs-core')) {
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (map.getSource('landmark-routes')) {
       map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features: [] });
     }
-    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+    ['landmark-routes-core'].forEach(layerId => {
       if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
     });
     focusAnonymousBackdrop();
@@ -476,42 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
       map.addSource('landmark-routes', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] }
-      });
-
-      map.addLayer({
-        id: 'landmark-routes-casing',
-        type: 'line',
-        source: 'landmark-routes',
-        layout: {
-          visibility: 'none',
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          // 浅色底图用白色描边分离道路；暗黑底图改用深色描边，避免年度总览泛白。
-          'line-color': isDarkMapTheme()
-            ? 'rgba(4, 5, 7, 0.68)'
-            : 'rgba(255, 255, 255, 0.72)',
-          'line-width': [
-            'interpolate', ['linear'], ['zoom'],
-            8.5, [
-              'case',
-              ['==', ['get', 'mode'], 'single'], 6,
-              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.4, 3, 2.8, 6, 3.4, 12, 4.2, 24, 5.2]
-            ],
-            11.5, [
-              'case',
-              ['==', ['get', 'mode'], 'single'], 6,
-              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.5, 3, 3.1, 6, 4, 12, 5.1, 24, 6.3]
-            ],
-            14.5, [
-              'case',
-              ['==', ['get', 'mode'], 'single'], 6,
-              ['interpolate', ['linear'], ['get', 'visits'], 1, 2.8, 3, 4, 6, 5.5, 12, 7.2, 24, 9.2]
-            ]
-          ],
-          'line-opacity': isDarkMapTheme() ? 0.64 : 0.82
-        }
       });
 
       map.addLayer({
