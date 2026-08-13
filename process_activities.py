@@ -22,6 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
 MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
+LANDMARK_ROUTE_FILE = os.path.join(TARGET_DIR, 'landmark_route_library.json')
 PUBLISH_START_DATE = datetime(2026, 1, 1)
 
 ACTIVITY_TYPE_CN = {
@@ -115,6 +116,47 @@ ELEVATION_EQUIVALENTS = [
 
 ELEVATION_ACTIVITY_TYPES = {'StairStepper'}
 DISTANCE_TITLE_VERSION = 6
+
+
+def validate_landmark_route_library(activities=None):
+    with open(LANDMARK_ROUTE_FILE, 'r', encoding='utf-8') as route_file:
+        route_library = json.load(route_file)
+
+    expected_keys = {
+        item['key'] for item in DISTANCE_EQUIVALENTS + ELEVATION_EQUIVALENTS
+    }
+    route_keys = [item.get('key') for item in route_library]
+    actual_keys = set(route_keys)
+    duplicate_keys = sorted({key for key in route_keys if route_keys.count(key) > 1})
+    missing_keys = sorted(expected_keys - actual_keys)
+    extra_keys = sorted(actual_keys - expected_keys)
+    invalid_routes = sorted(
+        item.get('key', '<unknown>')
+        for item in route_library
+        if not item.get('geometry') or item.get('path_type') not in {'line', 'loop'}
+    )
+
+    activity_keys = {
+        item.get('distance_title_key') for item in (activities or [])
+        if item.get('distance_title_key')
+    }
+    missing_activity_keys = sorted(activity_keys - actual_keys)
+
+    problems = []
+    if duplicate_keys:
+        problems.append(f"重复 key：{', '.join(duplicate_keys)}")
+    if missing_keys:
+        problems.append(f"标题库缺少路线：{', '.join(missing_keys)}")
+    if extra_keys:
+        problems.append(f"路线库存在无效地点：{', '.join(extra_keys)}")
+    if invalid_routes:
+        problems.append(f"路线几何无效：{', '.join(invalid_routes)}")
+    if missing_activity_keys:
+        problems.append(f"现有记录无法匹配路线：{', '.join(missing_activity_keys)}")
+    if problems:
+        raise RuntimeError('；'.join(problems))
+
+    print(f"🗺️ 标题地点路线库校验通过：{len(route_library)} 个地点完整对应。")
 
 CHINESE_COUNTS = {
     1: '一', 2: '两', 3: '三', 4: '四', 5: '五',
@@ -425,6 +467,7 @@ def assign_route_groups(activities):
 if __name__ == '__main__':
     print(f"🎯 正在扫描本地运动库: {FILE_NAME}")
     all_local_data = load_local_data()
+    validate_landmark_route_library(all_local_data)
     local_data = [
         item for item in all_local_data
         if parse_time(item.get('start_date_local', '')) >= PUBLISH_START_DATE
@@ -434,7 +477,7 @@ if __name__ == '__main__':
     if removed_before_publish_date:
         print(f"🧹 已移除 2026 年以前的 {removed_before_publish_date} 条记录。")
 
-    # 🧭 App 会用未裁剪原始轨迹生成分组；旧数据由脚本按同一套严格阈值补齐。
+    # 🧭 App 只用可公开轨迹生成分组；旧的公开数据由脚本按同一套严格阈值补齐。
     if assign_route_groups(local_data):
         needs_save = True
 

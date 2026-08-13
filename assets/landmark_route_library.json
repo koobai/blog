@@ -1,0 +1,222 @@
+[
+  {
+    "key": "track",
+    "name": "操场",
+    "unit": "圈",
+    "reference_km": 0.4,
+    "path_type": "loop",
+    "costing": "pedestrian",
+    "distance_km": 0.404,
+    "geometry": "ozvwD}ve|UG?G@GBGBGDGDCFCFCHCF?HCHBH?HBHBFBFBFFFFBFDF@F@F?vC?F?JAFAFEDCDGBGFGBG?IBI?I?ICI?GCIGGCGEEEEGCGCKAG?wC?",
+    "source": "representative public stadium track aligned to OpenStreetMap way 1160421821"
+  },
+  {
+    "key": "bai_causeway",
+    "name": "白堤",
+    "unit": "趟",
+    "reference_km": 1,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 2.259,
+    "geometry": "{_twDgch|UY]SXMOKNGFCDEDEEo@q@{BsCiEmDoDsCeLeJcCyBo@k@oDwCSOA?_@U@G?SAQSgAq@eCIWW_Am@eBcCiLWk@Oq@Q{@AYF]`@i@\\OTGt@ETAx@I`Da@x@Ev@STETMDEDOBa@?u@GaFAQEwDCcBLM\\S",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "qiantang_bridge",
+    "name": "钱塘江大桥",
+    "unit": "趟",
+    "reference_km": 1.453,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 3.737,
+    "geometry": "__jwDo_g|UAF@HTj@Rn@?z@?h@EXBNAPKV@PJTTRZ\\PFJHHRLJLFHTXXZTBx@?P?PCjA?JS`@P`@yAVdAdAVH\\An@YlIeDbU}I`_@kOrCiAPOJMJQF]Ce@Qu@Ok@Cg@AmAFqBUBM@CFmARG@EEMKUAQBKPI@QM]Be@NEDCDAGSoAu@mFSFNfAT|Ab@dCF^PjANbA\\|A\\xAPfAPn@ZlAF^`@jCTrBTlANn@Tz@ZdAbAbClAtCh@hAVd@HLTb@RIbC}@|F_C",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "hubin_pedestrian_street",
+    "name": "湖滨步行街",
+    "unit": "趟",
+    "reference_km": 2,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 2.545,
+    "geometry": "c}uwDk`k|U^FT}AJBd@RLDVNNFTHz@VJBt@Lr@HB@`@B`@@`@BPDVQ`Au@nAaAHITWLMrBoAd@[`@Yv@e@RIn@Od@EJA`@Cn@??c@AkATWl@AAiA?C?GAI?SN?pGOL?P?VCB?`FGzBCfBCvFIPAjFEnBCzDOR?rAClEINARCN?nEMr@AlBEfAAl@AGcDzDQ[gEAS",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "su_causeway",
+    "name": "苏堤",
+    "unit": "趟",
+    "reference_km": 2.8,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 4.043,
+    "geometry": "cjuwD}hg|U??OZUd@YVWb@Oj@FTPx@HRd@dALb@Vx@hAf@t@d@v@r@`ArAj@VnART@\\D\\DTHRJr@R|@^x@p@Xd@RXEb@A`@Hj@Th@DVQb@QXE\\F^?Zv@x@p@d@dA`@p@Xp@^`@f@`AjALFZRTRRTJLr@t@`@Jf@Db@NF[?wAAm@PaALu@NeACcAbBc@PG|A_@l@M|JoBz@QLElD}@fFqA|HgBx@Sh@KVEtXoF~A[`ASVEzGyAhB_@PE|IcCn@Q~@]xHyDp@a@fBgA`Bs@hD_Bp@UDUHEDORKPI",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "yang_causeway",
+    "name": "杨公堤",
+    "unit": "趟",
+    "reference_km": 3.4,
+    "path_type": "line",
+    "costing": "bicycle",
+    "distance_km": 4.54,
+    "geometry": "giuwDczd|Un@_@XEjBcAPWNEGeEp@R\\Jh@Jj@B`IWj@@f@JbF`BtBZ\\GnEeBjBBjDC|FKN?RAp@AfBMn@Gr@EPArHg@LAbEWrAS|Cs@DAhCq@~@SVGfDw@|@Ul@QzB]`@DTFRFNFD@^T~D|EdFhGnAl@zAR|AQd@Op@WvBsAh@o@DEFGt@}@fHqLZi@lAoBrBkDpAcBrBuA|FwDj@lEAj@Op@A`AZhCP|ALt@Zd@BFjCrCRDHg@L]Vc@`@[HGr@e@z@o@|@o@rBuALINj@]NLl@",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "wentao_riverside",
+    "name": "闻涛沿江线",
+    "unit": "趟",
+    "reference_km": 4.4,
+    "path_type": "line",
+    "costing": "bicycle",
+    "distance_km": 6.416,
+    "geometry": "ewmwDysl|Us@JBUAw@CMGMwAyAiBkBs@u@SQMOKMU_@ISEQEWK}AI_AOmBeFj@QBI@[MIEIKOQCO?YJ]H]HUnLgA`BG^AvBMf@C`@A`@?b@@l@FbHr@tAPb@_@NOTWHGL?FAdC{A`@O^O\\QrBy@`Dy@jACz@c@jMsHtLwG`V{MxJoF\\S~NcIlAQn@U~@i@hAo@nBkAjCuADJLX~@|BrBlFn@`BBDL\\JZVj@l@dBVt@`BlEvD~JFVVKnCkAzFaCxAk@|CwAJCTK`@MVKJCrA]dDo@z@Q~@QrCm@vA]b@KlI_BpFWnEIx@fUHbK",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "jiuxi_baita",
+    "name": "九溪白塔线",
+    "unit": "趟",
+    "reference_km": 7,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 3.956,
+    "geometry": "muhwDw_b|UnAMTAPGNMNMVKVOLKPWLSPMl@UPKNO\\i@NWRU^Yh@a@PSV_@NQJETGfAQfAQdAMl@AN@JDPRJNHFHAL?rDW|@Sl@UNUB[?_@?QFQh@m@j@}@Ve@CG?G?I@IDGFEFCF?H@JI^Yg@gAGOEGg@sAQm@y@eCgAoCi@wA_@{@s@qA{@sA{AwAaB{BsAkBgAsB_DeGm@{@qDaDWWyGqJoKkW[?]RSAQMsAkBYa@gBiCk@iAOi@_AqCQq@Mc@KSSMS?}A@Y?i@GBkA?Q?QCy@CmAAUAUa@kICOC]S{BK_AMy@Ss@Ow@Gi@?y@Hy@?w@Qq@Sq@",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "imperial_city_route",
+    "name": "皇城根线",
+    "unit": "趟",
+    "reference_km": 8,
+    "path_type": "loop",
+    "costing": "pedestrian",
+    "distance_km": 7.18,
+    "geometry": "igqwDctm|Uh@LObAEZKx@SdBSlBGd@APCTGb@TBFX`@~ABR|Ff@bFb@bL~@tDZF?pDSbBHxCJ`@BD?LNdAL`APzA\\VHXHr@Rp@R\\LNBR@P?RCTEVIVM^SJVL\\?N~Az@RHFD_AbCM\\tA|@Df@VCFAAICo@Ce@AQ@U\\?^Fx@d@h@Rd@FXBN@X?HAb@Gh@GXCJAFADATEZED?HjBD`AB^BVFTJTLLVRPTLXB\\NITELA^j@TLLDTAPEJANALHDHFPJVHl@FZHNHL@HHNE\\KPETI`@?L?MHa@DUJQD]IOAIIMIOG[Im@KWGQEIMIO@K@QDU@MEUM_@k@M@UDOHC]MYQUWSMMKUGUCWC_@EaAIkBE?[DUDE@G@K@YBi@Fc@FI@Y?OAYCe@Gi@Sy@e@_@G]?D[@QDWPwAR_BZqBFYDc@CYLs@fCcDBCfCcD?EI_@CQCc@Cy@AOAS?GK_CE_@Ei@CUVQz@[f@ORKb@WHKv@s@PQH@H@DBNHHBJA??Ra@LK@ME[SY_@UOK[a@S]Wg@Ma@Mk@Ks@Ca@AiAFq@LeAR_Ao@SaB}@y@]eD_BgBcAEs@Gl@Gj@E^cARw@KMCLBv@JXD`@DKl@e@fEGj@{Ck@cEu@{E{@wAWgEw@QEeCg@{@Wo@Yu@e@eBaAoIuEKVo@rA{BhCw@lBYx@Yz@w@jCiBfGw@|Co@zB[nAeA~BOv@ENCNi@M",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "jiangnan_avenue",
+    "name": "江南大道",
+    "unit": "趟",
+    "reference_km": 9,
+    "path_type": "line",
+    "costing": "bicycle",
+    "distance_km": 10.152,
+    "geometry": "a{gwDo_j|U{BLmANBoCBwAGoAUwF@OBe@hACrBIpAEt@CjAEzAGtAEZALAIq@{@sGCSK_A_A{He@qCg@aCUkASiAi@kCG[I]Om@CM_AgCgAuDkAuDOa@w@kCqB}G}@qCIWmA{Da@sAWy@]cAeAgD_@sAGSiBsF_@kAUy@m@uB]_Aa@iA]mAnCkAzFaCxAk@|CwAJCTK`@MVKM[MYk@aBk@sBYy@[s@Uq@GSSi@oFaRc@cAs@oAO]EWIOEMCGYcAIQEIKa@eAyCWeAKw@Ci@E[U_AsBsE[o@sAaEoAiDuAeEMa@SYuCqH[u@Qs@u@cBMK_A_CwA_D}@yBc@eA}@uByBkFSa@a@m@_BcEWe@wBaFU}@GGUe@o@gBSc@g@cAuEyKiCuGOYSa@k@iAkGcNQ_@u@{AuDkIO]cA}BeDsHEGKSQ][o@IS_DkHaFiKc@_AeJiS[SKWDo@oCsGKSs@}AIs@_@w@_BiD_AsBaC_GYeAUkAKk@CEEIICm@JM?IK_AuBEUIW@o@Ja@PUz@c@PGj@LNIfDcC~EuCt@[NGVKtAg@fASt@OvASJARCHq@Ag@Am@@UAM?mCCaL@MByED_A",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "west_lake",
+    "name": "西湖",
+    "unit": "圈",
+    "reference_km": 10,
+    "path_type": "loop",
+    "costing": "bicycle",
+    "distance_km": 13.847,
+    "geometry": "_iuwDazg|UHPJEH@x@o@TQn@q@HIw@sAQo@e@_BSw@@Eb@Ya@eB_A}A{AeCQUCKEKC[@s@BmAEUi@{AEMSwAEc@CUMuA?U?o@Nm@BEv@iA@G?SAQSgAq@eCIWW_Am@eBcCiLWk@Kw@Ok@C_@DSFMPIVGx@UnB]pCg@hAElAO@?XSVc@AwACiFAGMiHEyEEqDr@Iz@EfCIN?~FK^AlGE\\A?KJ[?GA_@EmCCgBEkBCkEdF|@p@NhAX`AVr@PpFAJpF@rD?D?RAJItBEb@G`@IPAL?NLLPF@BZ^P`@h@fAbAlBl@f@LJ|BfBXTHDh@HPB|AD|AKVA`CQxAGJ?T?N?v@PVP`Ar@h@ZVJtDrAVHx@XhAf@lAp@d@Vx@f@n@`@l@^bA|@d@`@VHRDjFi@jAEVAnCMh@C~DQ~Br@|BhAFHzAjBd@n@jAr@NFPFdARd@H|B`@z@v@VVXVNHpAj@PDvAVvBUfCWt@AfBEfAIjB^xAf@pAb@d@RfBr@pElBZ_B[~AGXADG`@E\\ADCFQFo@Eo@E_@CSFSBYAa@A_@BQ@UHYJUT[NWHa@HEDEHALAHIDK@Q?YEWA[C@RD^JxA?t@?PE`@E\\i@|BCdA@~@PnBLlAB^Ft@LxA`@|DRlBDjA@b@@v@HbATnAXt@JZHRj@zALXfApC~@hChAzCTp@\\jA^jADNbCvHyDfCYPcC|AyE|CsChBWNeC`B{BvAoBvAc@l@o@z@uBhDuAvBiIpMWXa@h@g@j@sBnAqAn@uARmASwA}@Eh@D|@E}@Di@sGcIyBoCa@u@][c@@YBe@TyBf@m@NKBsFrAUDGB_@HmBb@_@H_ATC?EBwAVqATmDVqBLoHd@uCRw@BuGLkD?kBAIE{AcBPe@Jq@EmA?y@@[@MDg@@KDWD]BMBMDOF[?wAAm@PaALu@NeACcAu@iGAIEUs@wEGWeBkC{I{Is@mAe@s@QOm@_@KAOKOSOe@Q_AOy@CK[gA_@gA[{@KWa@iAS[g@]IGQK]SSQa@g@_AeACCIHo@p@UPy@n@IAKDIQ",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "jingshan_trail",
+    "name": "径山古道",
+    "unit": "趟",
+    "reference_km": 10,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 12.573,
+    "geometry": "o`lxDslqzUtH~CwApGQGY?ODSPOZCd@FXLTHHq@j@{@`AoDlEmE~DyDtCmEvDmG~EsHbFkC~AgBjAYRiAhAg@x@u@fCg@zB{@zDUbAmD`Ee@\\{E~EyE`FkFnFiCpCqCpF{BvFcAdEIR_AxAQTC?KTaCvDoFrGuDfFyBzC}H~JaB~AoD`CuAdAi@`@MJqAxAWXaA~@c@`@{AvAQZQb@In@Df@@bAa@xAu@pBiAjCoBhC}A`B]\\YZo@n@[ZYl@s@rAiBtF[`BRn@j@lBn@hEAfAcBbFa@~AV|HCbQHrF@n@J~FSrF?jA@xAApAYd@MRsCxCa@r@{@~AYf@S`@iChFiArDW`BEXGXC`@I~@Zd@d@t@d@f@^XjCh@tCb@zBl@jBl@h@^j@f@dClC`@b@NPnCvCjAzALN|@jAdCdDlClDTXLP|AnBdBlBTNZRp@d@k@j@Np@Ht@Lv@Rp@Nv@Rv@Xv@GZD?L@ZTPNPZJTZd@@TDf@\\rEnAzBX^d@p@fA|AfAtAlBtAr@f@`@f@Vp@nAtGN|@VpAlAfEL`@Ct@Jd@DZGj@Ql@Sh@Cb@DJDJHHL@^En@IP?P?RPHVLTRJPNBJ@PId@Qf@?JBLJJLBT?JDHJB`@DRHNZLNFFLNt@D^H\\FLHFHFPFv@At@Gb@Hf@ZTDt@MLAPDRLJLJHJ@T?NEL@l@R`@PFJDLAT_@~@c@dAK^CT@ZDJNBNGv@YZAVQX_@\\Wh@K\\b@\\^|Ab@hDn@fC`BpCzB`ArBrAlCP\\HNZFRAd@W`@?~AHfAd@v@QXQx@^h@j@b@h@^d@`@^b@HXHNBHL@FF@BC@G@MDEF@JJF`@H\\JXD\\BNB^?FABEAEIIIG@?JBJ@b@N^LNBNGJCLAHBHHDVD`@HTFFR@l@@TBVBNHT@ZAX@VAPERENIDC?CEASACC?CDEHEACG@SEQGMG@AFAHADELEHAFARBh@AV",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "chaoshan_loop",
+    "name": "超山环线",
+    "unit": "圈",
+    "reference_km": 10.7,
+    "path_type": "loop",
+    "costing": "bicycle",
+    "distance_km": 13.085,
+    "geometry": "qf{xDipt|UCSCIg@uBo@gCGWIc@q@_DgAiFMm@GYu@yDEWAKAKAKQmGIwBCs@zDcBhAk@rBeAzDkBh@WvDaBtAo@^Qw@uAGY?i@`@wCVi@~@m@JY?Si@qH?Mz@GdAIlBTh@Bb@?tA{A`BXP[\\a@zBu@jGsDh@NjFbCrAj@nBiEB[GyA{@oK_AwK~@vKnDFdWZP{B`@iCl@yCPe@Vy@`AwBpA}BZCd@HPZJt@ZZt@Jn@@fACv@UtA_@jBD`BPvALfB?fBWl@Gf@Dr@XrAz@JFAdAC^Er@Nz@Lv@KTg@`AOb@M\\E^?h@Gl@_@t@Yl@Sb@QNWVAP?TAXGVMJSVO?]MSQY[CIJQTa@JUBYIOYBYPQN[POJKTB~@Ph@Rl@Pn@JVt@f@VNWOu@g@KWQo@Sm@Qi@C_AJUNKZQPOXQXCHNCXKTU`@KPBHXZRP\\LN?RWLKFW@Y?U@QVWPORc@Xm@^u@Fm@?i@D_@L]Nc@f@aAJUXhBh@`Al@NhANnAjA`@xA?j@OzARzAv@vBxAzBl@\\n@QVYt@gAv@}@ZCZ\\XzAr@h@dBxAXj@hEfAUvENpA|@pA`B~BRbCN|BDdBH`C@j@LbE?X?R_@|AqDhDg@d@_@ZoBjBW^U^g@~AaAjDSr@e@|Au@`AMNuErEy@zACRQnAMpBATMrBS~CUlAEPe@hByCxFsCrDs@NwALNy@?yAKMSH_@Qy@o@f@e@?m@[sAWk@]EYLXM\\DVj@ZrA?l@g@d@x@n@^PRIJL?xAOx@g@DQBgAVs@RYFuHlBu@JuAPu@M}D_Ao@Oc@QwH{CKKg@e@{F_GkAq@s@]cC}BeBgAmAU}@_@_@{@_@kAc@}@y@q@{J}Em@w@Mo@i@aI}Bd@mCt@{@ZiE`ByAn@cL`EaHjCeCdAGBBHBR",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "shili_langdang",
+    "name": "十里琅珰",
+    "unit": "趟",
+    "reference_km": 12,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 6.517,
+    "geometry": "yumwDoo~{UKCACAW?G?UASB?p@HrA`@l@LZMn@]h@LNCZACw@EYA_@AMOO?KK]Ce@@]@OMa@ScCVyAFaBJOAQIMEMOa@Ue@WYM[_@e@U[Qm@?MCKGECCAIAE_@eACi@_@uB?SJYPYLc@Fq@@O@MDkB@i@Bw@Fc@@K@EDQ@AX_@Zc@XYh@k@h@o@BQ?KXIf@QNMTSb@UTIZKHENELGTOh@YJGZCHCZEVQt@SNGd@UXCN?h@CVAZBTFNBr@?\\E`@?PBNBHFJHFFJRVZJHPHNFL@NAPCVE`@M\\IZIVEP@d@Bj@FR?n@CRAP?NBXFNCPGHAZADAP@b@AN@b@L`@N~@j@NBHAJEJKPS^m@\\e@JODGFMR[Te@FO?EPq@HOJONWLMLOJGFAD@H@FFFJDJ?RAp@Hd@H^FJDDJDJBTDJANCRMj@g@@A\\Yj@s@PKTI@AJ?LBHFHBF?RCl@STM\\Y\\e@f@s@l@y@RSPKd@_@|@y@`@_@HKPSd@i@PYHYJe@@EDMFMHG[Gs@K?i@J]KQUCo@n@q@Pc@B{@l@y@\\]`@aA\\`A]\\a@x@]z@m@b@Cp@Qn@o@TBJPK\\?h@r@JZFJCT?\\At@Or@]TORQ@I@UAQIo@Cs@VUJGTEPAn@@p@@^?XBR?b@BPD`@NVLVH`@B\\IXK`@KTIb@MPENAr@AP@LBXLXFZFTDVHXBl@?\\C`@K`@Of@W^S\\OVOHK`@IVGVEVE^Cj@Av@BP?PAZCTEXI^O`@U\\[d@i@`@m@NSFIFGNKTGZGzAOTAPGNMNMVKVOLKPWLSPMl@UPKNO\\i@NWRU^Yh@a@PSV_@NQJETGfAQfAQdAMl@AN@JDPRJNHFHAL?rDW|@Sl@UJl@DLTt@^lAZbBT~@XjAN`AAp@?jAAdA?d@@TBf@iAf@]PMPLP[bAHrAIbAD\\",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "yuhangtang_river",
+    "name": "余杭塘河",
+    "unit": "趟",
+    "reference_km": 15.73,
+    "path_type": "line",
+    "costing": "bicycle",
+    "distance_km": 18.756,
+    "geometry": "yj|wD}sg|U_@qECWImBGqAIsBXKp@Yb@SlEmBhAe@VMj@WlCkAhCiA|BmAHEl@hBL\\f@`B\\fA`@nAh@hBbB`GDTThBH~AFxL?h@D~C?jB?PEnA@p@CX?XFbCHzDDTJ|D@bFJd@L\\NxGHdEEb@@L?XFxCL|@DtAL|HD\\C\\B~@Cj@BlAJn@?N@LJnFAT@b@BfAB^BrAGpADzBJr@Dn@RfIJxEBbCD~DBh@@XBj@DrA@f@Ap@@z@@JFl@Bp@LxG@JB`BPALhGPl@XpOBZHhD@j@FbDEpEDXJv@BpADfE@nBX`LF|GJlGBhAJxFDl@?PAv@o@lTGdCSzHAn@OjHCrAQ?E~E?rD?n@?z@?t@?~BKpA?Z?hAKjAUrCN~J?|ADzE?b@BtE?|@BfEG|@DrHNfAF`@Lv@?`TBh@?hA?n@Ef@@hD?~HCXGf@BtLcGAWDGPET?fCFn@qEBBpC?h@BzE@`@DfH@fB?f@BdEGz@Qp@S`@KTMTW\\sAxAa@f@Yb@Wv@SbAOhAk@hEmAxIlAyI~BpAfAj@dCrAvAv@@@jAl@h@X\\XXZTZ\\\\h@^ZLj@Lj@DV@RFBfDBhB?f@A~M?hDBhEDlEDzAJnDF~AHpBFbAB^PrBVbBHj@H\\Lp@XtALr@Hn@VpBdAxF\\rBRlALx@RlAf@|CVtAbAdGJr@t@hF@LNv@VdBjAlGt@hFJp@`@|@HPTd@Pz@Jf@ZtAdBhJ\\`CVxA`CdNVhAd@lCTnA`ArFNv@Hh@Fz@d@hCVbBTp@xClP`@vB^pBAjAn@lDdA~FFZFH|@`FLf@xAtIVbBNx@NnAx@lG@LVjBbAfJBb@D\\ZzCn@tFLlABNNxA~@`MVzDXpFDbA@b@wD~@mFbA@XPzEJpBHxBBp@@HB`@XvH@N|@|^@V_@DsFd@s@FI@}Gn@YBY@c@HeFt@S@KB}@PUFUBQB}EbAo@eC",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "dajingshan_greenway",
+    "name": "大径山绿道",
+    "unit": "趟",
+    "reference_km": 18,
+    "path_type": "loop",
+    "costing": "bicycle",
+    "distance_km": 33.764,
+    "geometry": "o`lxDslqzUkDwAsJyDqH{CiDsAoAOyA\\e@jA_AtEo@WiBs@wBmAgAmAo@yBIq@}Ac@y@i@w@Wi@]MM}@w@uAFe@{BIOKOg@Mo@F[FUXSHu@V_@B]`@Uh@_@bCMt@SfACXz@v@FTUF]ZK\\OVWTSFMRO^Mb@KFg@CS@_BTMJ_@n@]b@CL?`@F\\J^NV@LERc@x@i@x@O^CTKLW\\E^KR]x@O`@KHy@^WLQZa@p@SFIUu@q@Sc@{@d@]n@IBUK{@aA{AaAMGQBc@tC{@|AOz@If@o@dE?tALlDIrBc@tF_@v@gHxM]l@iIpO_@^AECECCE?E?C@CDCD?D_@Ku@UWK]MsCs@_DSq@@aDl@qAlAo@v@oB|D[n@OXGLGLa@Xs@JgCCUJOl@EjA[`@cAh@wBxAs@Li@^]Zb@nBNr@^bB@l@D`CXhCx@bGVpBNhA^bCd@tCR~A\\t@|@bA^x@HfAMxA}@`Ek@pCKd@Kh@RZv@fA^f@~J|Lb@z@HPBD^bA@JFJDHf@x@P\\T^Pb@r@hADf@@bAa@xAu@pBiAjCoBhC}A`B]\\YZo@n@[ZYl@s@rAiBtF[`BRn@j@lBn@hEAfAcBbFa@~AV|HCbQHrF@n@J~FSrF?jA@xAApAYd@MRsCxCa@r@{@~AYf@S`@iChFiArDW`BEXGXC`@I~@KNURqBvBILm@l@yAf@gATsCVYA}BKo@G_Ao@mBEUEs@a@kBe@oAMoA@wATqBb@u@^q@FmASa@TIL@ZPb@Fh@?fAXz@X`B@t@KpAUlA]nAg@~@_AlAAXc@d@URKVG\\@j@LjANl@R^p@rAv@tAx@|AVp@^hAr@l@j@z@`@z@Vx@Xr@Tv@Ar@Mr@ChAJ|@Lt@ZbAVbAJv@J|@??K}@Kw@WcA[cAMu@K}@BiALs@@s@Uw@Ys@Wy@a@{@k@{@s@m@_@iAWq@y@}Aw@uAq@sAS_@Om@MkAAk@F]JWTSb@e@@Y~@mAf@_A\\oATmAJqAAu@YaBY{@?gAGi@Qc@A[HM`@UlARp@Gt@_@pBc@vAUnAAnALjBd@r@`@TDlBD~@n@n@F|BJX@rCWfAUxAg@l@m@HMf@z@~@fAv@n@jA|@lH`GHF|BbAr@X\\f@X^|@j@dA`@~@TZ^CzABbAr@Hf@LjAv@jAv@nAv@\\Ld@Jd@@\\C|BMVtANrBVhBxEC|@ZNp@Ht@Lv@Rp@Nv@Rv@Xv@GZD?L@ZTPNPZJTZd@@TDf@\\rEnAzBX^d@p@fA|AfAtAlBtAr@f@`@f@Vp@nAtGN|@VpAlAfEL`@Ct@Jd@DZGj@Ql@Sh@Cb@DJDJHHL@^En@IP?P?RPHVLTRJPNBJ@PId@Qf@?JBLJJLBT?JDHJB`@DRHNZLNFFLNt@D^H\\FLHFHFPFv@At@Gb@Hf@ZTDt@MLAPDRLJLJHJ@T?NEL@l@R`@PFJDLAT_@~@c@dAK^CT@ZDJNBNGv@YZAVQX_@\\Wh@K\\b@\\^|Ab@hDn@fC`BpCzB`ArBrAlCP\\Yl@Sn@IXKNMDIAm@?WGMAGBIDOJ{C|EQZCL@LHPHPJDJCXeAHIh@a@`A_A`@}@PKd@NNPXFTId@Yz@]PAPD|@b@f@vA`@j@^Z`@DHRCPBQISa@E_@[a@k@g@wA}@c@QEQ@{@\\e@XUHYGOQe@OQJa@|@aA~@i@`@IHYdAKBKEIQIQAMBMP[zC}ENKHEFCL@VFl@?H@LEJOHYRo@Xm@HNZFRAd@W`@?~AHfAd@v@QXQHG`@wAZi@XSdDqANa@PoBAu@RqAbCmCt@gAp@aAVKZCxA^x@BNIHGFS@_@OkAGc@MiA@WJMPEZNVCZWt@oAZEn@BNCJMJi@@o@BSHMdAw@bAaCJyARw@h@y@h@Yx@Q~A@RQ@[M}@HoAV{Bd@_A|@w@h@CjCxBZn@Nx@^Lb@QJe@?oDZmBr@cB|A}AFWMm@QUwA]}@KCYLOvBO`Dm@fBuAjCiAZMPIb@i@fCqF@g@Ia@[]aCWg@Qy@gAu@aBc@_@yBmATo@S{AYcAU]GU@OLOXO^Gn@KZQhAw@^i@LUFKHEj@In@Ev@@d@Ib@WRQDo@R?h@Gx@U|@]f@u@Zi@~BgDZi@X[l@c@tEoBnBoAh@o@Za@xB}AhC}Eh@_@`@I`@@X@^Ax@QlAa@xBiAfASjGs@e@gAa@aAWwABi@f@mAX}Aj@}ANaA^_DBw@Cq@M_BCe@@]JYLSjB}@x@_Bp@cCdCqEhC_E~FqErCQ~@cBdB{@lA}Ad@_@u@m@KQy@c@iAKk@WgAy@c@g@a@UWaAIw@_@a@MwAo@aEKo@F}@LgAFg@Ry@JiAIg@q@Uu@IEGEc@u@uHeG?i@?sA?aA`@`Aa@GcA@uCHoAXkBr@sCd@kD?[GWMMWGuAOqAUgA_@sBk@YMeCgBYQYUI]Zm@Ps@|@eHb@{A`CcH`AiDtDsDr@u@Zq@TsACqA@kBGiE@eD?OAmBA}@IoMMeX?c@?[?mAKw@{@cF_BwNIsAHeAFo@?kBRwEHmGvAqMa@EyCOu@Qu@[cAg@eAg@OIiAi@eFaCiKkDg@Qm@Ue@OkAOcCQeCKiIYqBIuAG{@CmABiANqEd@kARk@?g@E_AWkC_AuAe@cA[g@Ow@QHY?[IYMUOIvAqGuH_D",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "gaoting_trail",
+    "name": "皋亭山步道",
+    "unit": "趟",
+    "reference_km": 30,
+    "path_type": "loop",
+    "costing": "pedestrian",
+    "distance_km": 28.664,
+    "geometry": "ucnxDwkv|URJAc@~A[Ba@e@c@n@c@RAYkBnAHQe@b@BFq@EeAt@CAe@TRMq@h@`@YaBrAp@rBhAxBBnBu@N_CxB}C`BsBGMKa@Ks@Ge@@WBQH]DO?MASOi@K_@?I?KDIFEVKFE@I?IAOQu@Ww@IKOIOEY@YHSDKAKGMM]o@EM?MBIJKLKJKJUJg@BMAMEUMYAI@MFMb@YRQJMDK@S?g@Ba@CYIMY]UYU[Ma@Yq@Ig@O_@Yk@GSCUCkA@SDMFUTc@Zo@~@aBhAiBkFaFCOK_@_@s@}@qAc@a@^aB\\eA{@u@NI}CkCc@_@gA}@}@}@o@y@m@kAY_AgCcIUs@g@cAu@aAk@k@q@c@eEyDkBgCgA}A{BqAwDmBUMMUNWj@u@PWmB}G[w@Q]s@gAoAmBQ_@Qa@Ug@Oe@[eAGSGWEWI_@Ea@Ga@CYC[O}CkDjBqAr@GBOc@}QjJR^e@VmIlDaCp@qAn@o@ZiIvFwNxJqKhH}@l@{A~@q@\\_@J_AR{@HiADuACk@?E^UvAa@|BKZ}ErMoDzJaAlCgAxCk@|AS`AKh@cA`GOdDBf@FxCPrGH~BTpI\\bLBt@b@rNR~Dx@rEpA|E~C~HdD`GLPnBjCvAhBz@z@nAjA|HpGpE|DxDdDvCxCnAtApEpEXV`FjEWf@iD`KYU]SS?IDUz@T{@HER?\\RXThDaKm@i@iEwDuBwB{A}A{AgBmCsCkDuCaFcEwHiGqFsG}BoCiAqBuAaCeDkIuAgFy@{ECe@QwDCs@M}DAk@M}Db@ACu@]cLUqII_CQsGGyCCg@NeDbAaGbA@tCs@pBe@pBg@lBe@v@Or@KhAStLuFnA]|GCfEEdEhNbB}@bC}@nFiCx@hBj@Qd@W\\_@Xi@p@_ArAcCp@sA`@s@bBwAn@{@^}@Q[EUNW|C}FJQ\\m@h@m@`AeAx@qAh@yAZgAh@MjAc@nAq@hAk@f@QDATE`A?dBhBRG\\ULAHBPRLDn@ANGNWJq@Ds@?o@CW@MFES_AKy@Ai@He@^U~@i@^IXM`@Wb@_@HQH_@De@MUNWj@u@PWLQJAzE{@zI_B|Ba@p@M~Ds@^Ib@ItB_@b@GHLPPFHb@\\\\Rj@Tf@Ln@Hp@@f@EZEHCFAZI`@S`@U`@_@\\a@BCJQJQDKFKBGPg@Je@Fe@Di@@k@Am@?CC]NEpDq@r@MpAWdDm@PEtGiArPyCpAUBEXa@RYTTvMpMfGhGdEhE^b@tA`BbAnAJN^l@T\\BBdBlD`BdEdApDp@fCp@~Db@~DTjCJnCL|D@ZDt@Bj@VtIXlGXxCFNx@fGd@|BvArFDN~@rDfAfG~A|GvB~Ix@hDHZZpA\\xAl@fBx@~BjB`FjAvCxAhCTXYHmEdC[VsA~AwAzBs@fA[h@}CxFI^XDx@hE`@|J|@zDs@P@NAOr@Q}@{Da@}Jy@iEYEYEmDe@o@Qk@Qo@_@k@c@k@s@m@}@Ss@[gAoAgFK_@wAqF]iAsAeDSWu@cAoAsAgD{CgCkCk@i@aD{CK^m@p@}CxCqBtB{@yBiCoGsA|@QLu@f@k@^sA`Aa@h@uAr@_Bv@w@N}ARSMGB]J}AZwGdCwARo@@[?e@GAGWoAQ{@I[GOOOSO_@UMIOOOYc@eAEQAWBSHSHWDQ?YCUEYO[OSOOIMaBrByB|CO~BoBt@yBCsBiAsAq@X`Bi@a@Lp@US@d@u@BDdAGp@c@CPd@oAIXjBS@o@b@d@b@C`@_BZ@b@SK",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "qingshan_lake_greenway",
+    "name": "青山湖绿道",
+    "unit": "圈",
+    "reference_km": 42.195,
+    "path_type": "loop",
+    "costing": "bicycle",
+    "distance_km": 56.945,
+    "geometry": "{kxwD}cvyUlIuNnJdOjSp[l@v@r@j@p@`@t@^z@Vn@JpGd@lFZpBLdBJr@JtAX`AVp@L`@D@^|@El@Cj@G`@Af@@r@Bx@B`@B\\CzRiBhA~QrYeDLlAzFzY\\pBp@vDpAzGjBdIhCxMmRhM{I~BmB`CqCnAOb@DTId@cBzCmBj@gEtA_@LkKlEeKfPm@`BQ`Dp@n@pD~BJ`H\\tDk@zCgC|G_E`EmB~@_HvFsEr@q@~@u@vDYr@m@\\uFdDqEfE_@u@qAcCpAbC^t@pEgEtFeDl@]Xs@t@wDp@_ArEs@~GwFlB_A~DaEfC}Gj@{C]uDKaHqD_Cq@o@PaDl@aBdKgPjKmE^MfEuAlBk@bB{CHe@EUNc@pCoAlBaCzI_ClRiMJGfCkAdDtEHJbS`WvFjH~BxCtIzKnDrE`R~PDrA@`@E`Ah@dF@Tl@vMAtAu@pFApBA`AMdBUrAUvD??TwDTsALeB@aA@qBt@qF@uAm@wMAUi@eFDaAAa@EsAt@RfBK|CQ?OmCc_@iB}TI}@S_BaA}CSwAQyDBmHMwDIaBA_B]aEOaC]eBk@}AsEuHl@y@`DcEHQNMRWISKSrAeFhD}K~AeFhBkCNeCDQFY`@wB\\eAB_@@[EyDCkCIyBfCeAzCmAVKHEdJ{Ef@OPELEgFiTiBwHESi@}BQu@Gg@G{@A}@Dy@x@uFN_AHk@\\_BVaADKPe@fAcCl@oAvAwCz@wBJU^}@T]jCwDTYl@y@tHmGvIaNp@oBZ_CAaU?kF|BQnCK|CS@rb@?hQShEY~CQhB{@|F[~CuB~PO`BKlBGxB?|C@vCDvDBvBJpKBtBHbGTlCuBx@uJnC_EqP[uAeCeK_A}Ck@yAgAaCW_@GIOWmDeAUCGAYBe@NOHKD]P_@RaAd@UDWBOBUDI@u@Bg@A}CM}G]]BuAsHCOo@_DQ_AcBoPO@{IlAkGv@_BRsA@qA_@iA}@eBkA[WOZYQi@[UMU?[Fk@PO?OEKQIQEC@ODi@@c@FWVm@RYTOVGJMTk@JI\\KHKr@wBAUJMFOb@yAZyBT{BNuC@w@NuEEkCMmEQcBs@gFcAkDwBwF}@sBm@yAg@w@iB}B}AiAmBaAkBe@}BQqFGmDGqD_@iCe@aDgAyFyBcBu@uBsBoAcBY}@gBeHUyAeAwK]{Bs@qCw@wDKyA?kAPaA`@{@T{@Bo@Qq@]m@WUUCYIKSKo@?SL[HCkC{EaA{B}ByDc@m@iC{DW_@iBwBsBaCq@aAWm@OMOAM@GDI]m@_CI[yB_J]yB]cCUmBQyAq@sIaAiNQ}BIgBEo@QgCIsBAiBCeCCw@BmAd@sSP}JBkAHgAL{F@m@DoEJcDPaDFmAj@iJF_BH}A`AwO`Cq_@b@yERuFBq@t@cUNkGjCRZqBbAoCp@yFHoAEo@Mw@tBoAj@y@RDdAGVCr@?d@PhBzAnApAfBfCTd@LTJRrAnAh@v@PXb@`@RR~@TdB^xJ|Az@R~@b@nBhAbAv@n@n@x@hARi@NYVSVONWFU`ATb@JZB`@Ad@p@t@lAvB~BpOtONT\\Nj@\\dBeAxAy@RMj@Sl@GfAD|A^zB|Az@~@f@dALFr@DH~@I_As@EMGg@eA{@_A{B}A}A_@gAEm@Fk@RSLyAx@eBdAk@]]OOUqOuOwB_Cu@mAe@q@a@@[Cc@KaAUGTOVWNWROXSh@y@iAo@o@cAw@oBiA_Ac@{@SyJ}AeB_@_AUSSc@a@QYi@w@sAoAKSMUUe@gBgCoAqAiB{Ae@Qs@?WBeAFSEk@x@uBnALv@Dn@InAq@xFcAnC[pBkCS_BOEvAYbMATM|DGhBMpDGdBEfASvF]hG}@nMe@`HE|@o@hJIpAQ~C]CUAWBw@^_@@WDUJu@f@s@h@WHi@BQFULSVENSPOBWD_@PWPs@z@a@`@cCxBs@t@i@\\YHYJc@Ty@`@WNQDkCX[DWH}AlAOJS@gCEQ?iAO{Cu@WCe@@kCA]GQEa@[i@[UW_@a@[Wa@O_@EWBUDo@Na@H[F[Hw@ZkCl@W@OCKGCICKOc@MWKIUGYC_@Dw@\\]Tm@R[DQ@k@AuAA[@_@a@w@KO??[Gw@IgAHfAFv@?ZN?v@J^`@ZAtA@j@@PAZEl@S\\Uv@]^EXBTFJHLVNb@BJBHJFNBVAjCm@v@[ZIZG`@In@OTEVC^D`@NZV^`@TVh@Z`@ZPD\\FjC@d@AVBzCt@hANP?fCDRANK|AmAVIZEjCYPEVOx@a@b@UXKXIh@]r@u@bCyB`@a@r@{@VQ^QVENCRQ\\SVMTC\\ATERGdAc@`Am@TUHSv@_@VCT@\\BQjCg@bHItACtAAbA_@fKGtECjAOtHOxH[bKGpAGbFA~AAfC@z@JxCHxBrAtQ`AhNRfBTxBTfBVrAh@dCjC|KPjAdC|Jb@~A^vB`@xCXbCNlBDp@L|CDvC@TFrKHhFHzBP~BVpAp@|CrAfD`ApAHHbB~BxBvChBbCnB~B`E`FiBzAoBtACb@aHlFDL@DbCfLy@X{FfA}CF}K[aIQq@?eJQyE`@uCP_FZgNGoDIiDPuBn@wHxEoEfCuBf@UFDd@d@vGNvAHlA?z@Ep@APQpBq@pGOxAKdBMfBBbFHbBDbATnDLbBPrB\\fDd@pEp@lGlB`HvCrEmItN",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "leifeng_pagoda",
+    "name": "雷峰塔",
+    "unit": "座",
+    "reference_meters": 71,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 0.256,
+    "geometry": "muowDcyh|UJdAB^UBOWc@Lm@WOJIFKQEGCCKQEGSg@IAwAE",
+    "source": "OpenStreetMap via Valhalla"
+  },
+  {
+    "key": "north_peak",
+    "name": "北高峰",
+    "unit": "座",
+    "reference_meters": 314,
+    "path_type": "line",
+    "costing": "pedestrian",
+    "distance_km": 2.385,
+    "geometry": "kfqwDyk`|UGHG\\EAOB_@LIBQHg@Ra@NYL[L]J]JcAXKD_ALq@HI@k@BkAJO@c@?UCo@Q_@Yo@o@Og@m@i@]WYOSKWYQMS_@MOEGEEcB{CUe@[UGB_@PSJi@V_@`@Yr@Q\\MZcAjBaAhBg@p@IJk@vAYt@ILIXE\\CRIPKJGLAPA`@YVa@HINQ|AaAxA{@PyAxAa@^Yt@QNYDw@~@BRZ|@Fn@n@vAHj@Kl@ERIp@Sp@?VER?`@A\\ANA`@SnA?XHNNLFVHNLLLPl@`@XFPHZBVHRGP@^\\DTd@VNPL?LCTFPJDPNBFCHNHHN@HFd@H",
+    "source": "OpenStreetMap via Valhalla"
+  }
+]

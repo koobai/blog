@@ -141,56 +141,72 @@ document.addEventListener('DOMContentLoaded', () => {
     return coordinates;
   };
 
-  // 4. 匿名轨迹工具。年度总览不再使用任何真实地理位置，而是把每条路线
-  // 归一化后按“同路分组”组成一张活动版图。私人路线只读取 App 生成的 route_shape。
-  const stableHash = (value) => {
-    let hash = 2166136261;
-    for (const char of String(value ?? '')) {
-      hash ^= char.charCodeAt(0);
-      hash = Math.imul(hash, 16777619);
+  // 4. 标题地点路线。隐私记录只根据 distance_title_key 选取杭州真实道路，
+  // 再按本次实际距离截取、循环或往返；本人原始轮廓完全不参与绘制。
+  const LANDMARK_ROUTE_LIBRARY = Array.isArray(window.KoobaiRun.landmarkRoutes)
+    ? window.KoobaiRun.landmarkRoutes
+    : [];
+  const LANDMARK_ROUTES_BY_KEY = new Map(
+    LANDMARK_ROUTE_LIBRARY.map(route => [route.key, route])
+  );
+  const LANDMARK_MAP_CENTER = [120.1551, 30.2741];
+
+  const getLandmarkRouteForRun = (run) => (
+    LANDMARK_ROUTES_BY_KEY.get(run.distance_title_key) || null
+  );
+
+  const coordinateDistanceKm = (from, to) => {
+    const earthRadiusKm = 6371;
+    const toRadians = value => value * Math.PI / 180;
+    const latitudeDelta = toRadians(to[1] - from[1]);
+    const longitudeDelta = toRadians(to[0] - from[0]);
+    const value = Math.sin(latitudeDelta / 2) ** 2
+      + Math.cos(toRadians(from[1])) * Math.cos(toRadians(to[1]))
+      * Math.sin(longitudeDelta / 2) ** 2;
+    return 2 * earthRadiusKm * Math.asin(Math.sqrt(value));
+  };
+
+  const appendCoordinatesUntilDistance = (output, coordinates, distanceLeftKm) => {
+    let remaining = distanceLeftKm;
+    for (let index = 1; index < coordinates.length && remaining > 0; index += 1) {
+      const start = output[output.length - 1];
+      const end = coordinates[index];
+      const segmentDistance = coordinateDistanceKm(start, end);
+      if (segmentDistance <= remaining + 0.000_001) {
+        output.push(end);
+        remaining -= segmentDistance;
+        continue;
+      }
+      const ratio = segmentDistance > 0 ? remaining / segmentDistance : 0;
+      output.push([
+        start[0] + (end[0] - start[0]) * ratio,
+        start[1] + (end[1] - start[1]) * ratio
+      ]);
+      remaining = 0;
     }
-    return hash >>> 0;
+    return remaining;
   };
 
-  const normalizeAnonymousCoordinates = (coordinates, seedKey) => {
-    if (!Array.isArray(coordinates) || coordinates.length < 2) return [];
-    const xs = coordinates.map(coord => Number(coord[0])).filter(Number.isFinite);
-    const ys = coordinates.map(coord => Number(coord[1])).filter(Number.isFinite);
-    if (xs.length < 2 || ys.length < 2) return [];
+  const coordinatesForActualDistance = (route, targetDistanceKm) => {
+    const baseCoordinates = decodePolyline(route.geometry || '');
+    const target = Number(targetDistanceKm);
+    if (baseCoordinates.length < 2 || !Number.isFinite(target) || target <= 0) return [];
 
-    const minX = Math.min(...xs), maxX = Math.max(...xs);
-    const minY = Math.min(...ys), maxY = Math.max(...ys);
-    const span = Math.max(maxX - minX, maxY - minY);
-    if (!Number.isFinite(span) || span <= 0) return [];
+    const output = [baseCoordinates[0]];
+    let remaining = target;
+    let forward = true;
+    let passCount = 0;
+    const maxPasses = 1000;
 
-    const seed = stableHash(seedKey);
-    const angle = (seed % 360) * Math.PI / 180;
-    const mirror = ((seed >>> 9) & 1) === 0 ? 1 : -1;
-    const xScale = 0.84 + ((seed >>> 10) % 25) / 100;
-    const yScale = 0.84 + ((seed >>> 16) % 25) / 100;
-    const phaseX = ((seed >>> 21) % 628) / 100;
-    const phaseY = ((seed >>> 5) % 628) / 100;
-    const centerX = (minX + maxX) / 2;
-    const centerY = (minY + maxY) / 2;
-
-    return coordinates.map(coord => {
-      const x = ((coord[0] - centerX) / span) * mirror;
-      const y = (coord[1] - centerY) / span;
-      const rotatedX = (x * Math.cos(angle) - y * Math.sin(angle)) * xScale;
-      const rotatedY = (x * Math.sin(angle) + y * Math.cos(angle)) * yScale;
-      return [
-        rotatedX + Math.sin(rotatedY * 7 + phaseX) * 0.035,
-        rotatedY + Math.sin(rotatedX * 8 + phaseY) * 0.035
-      ];
-    });
+    while (remaining > 0.000_001 && passCount < maxPasses) {
+      const segment = forward ? baseCoordinates : [...baseCoordinates].reverse();
+      // 环线每圈回到起点；线性路线则正向、反向交替，始终沿同一真实道路。
+      remaining = appendCoordinatesUntilDistance(output, segment, remaining);
+      if (route.path_type !== 'loop') forward = !forward;
+      passCount += 1;
+    }
+    return output;
   };
-
-  const coordinatesToPath = (coordinates, centerX, centerY, scale, jitterX = 0, jitterY = 0) =>
-    coordinates.map((coord, index) => {
-      const x = centerX + coord[0] * scale + jitterX;
-      const y = centerY - coord[1] * scale + jitterY;
-      return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
-    }).join(' ');
 
   /* ========================================================================
      板块 4：全局状态与图层渲染核心
@@ -200,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeRunId = null;
   let animationRef = null;
   let flyToTimeout = null;
+  let hasPlayedInitialOverview = false;
   let isUserInteracting = false;
   ['mousedown', 'touchstart', 'dragstart'].forEach(e => map.on(e, () => isUserInteracting = true));
   ['mouseup', 'touchend', 'dragend'].forEach(e => map.on(e, () => isUserInteracting = false));
@@ -227,94 +244,139 @@ document.addEventListener('DOMContentLoaded', () => {
       anonymousOverlay.hidden = true;
       anonymousOverlay.innerHTML = '';
     }
+    if (map.getSource('landmark-routes')) {
+      map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features: [] });
+    }
+    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+      if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
+    });
   };
 
-  const anonymousCoordinatesForRun = (run) => {
-    const isPrivate = run.route_status === 'privacy_hidden';
-    const encoded = isPrivate ? (run.route_shape || '') : (run.summary_polyline || '');
-    if (!encoded) return [];
-    const decoded = decodePolyline(encoded);
-    const groupKey = run.route_group_id || `route-${run.run_id}`;
-    return normalizeAnonymousCoordinates(decoded, `${groupKey}:overview-v1`);
+  const focusAnonymousBackdrop = () => {
+    map.jumpTo({
+      center: LANDMARK_MAP_CENTER,
+      zoom: 11,
+      pitch: 0,
+      bearing: 0
+    });
   };
 
-  const showAnnualRouteOverview = (targetYear) => {
-    if (!anonymousOverlay || !mapWrapper) return;
+  const showAnonymousFeatures = (features, padding = 42, publicFeatures = [], animate = false) => {
+    if (!map.getSource('landmark-routes') || !mapWrapper) return;
 
-    const routes = window.KoobaiRun.data.filter(run => {
-      if (!run.start_date_local?.startsWith(targetYear) || run.is_indoor === true) return false;
-      if (run.route_status === 'privacy_hidden') return Boolean(run.route_shape);
-      return run.route_status === 'available' && Boolean(run.summary_polyline);
+    map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features });
+    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+      if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
     });
+    if (map.getLayer('runs-core')) {
+      map.setPaintProperty('runs-core', 'line-opacity', publicFeatures.length > 0 ? 0.8 : 0);
+    }
+    if (map.getSource('highlight-run-source')) {
+      map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
+    }
 
-    const grouped = new Map();
-    routes.forEach(run => {
-      const key = run.route_group_id || `route-${run.run_id}`;
-      if (!grouped.has(key)) grouped.set(key, []);
-      grouped.get(key).push(run);
+    const bounds = new mapboxgl.LngLatBounds();
+    features.forEach(feature => {
+      feature.geometry.coordinates.forEach(coordinate => bounds.extend(coordinate));
     });
-
-    const groups = Array.from(grouped.entries())
-      .sort((left, right) => right[1].length - left[1].length || left[0].localeCompare(right[0]));
-    const paths = [];
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-    const groupScale = Math.max(105, Math.min(210, 410 / Math.sqrt(Math.max(groups.length, 1))));
-
-    groups.forEach(([groupKey, groupRuns], groupIndex) => {
-      const radius = groupIndex === 0 ? 0 : 58 + Math.sqrt(groupIndex) * 72;
-      const angle = groupIndex * goldenAngle;
-      const centerX = 500 + Math.cos(angle) * Math.min(radius * 1.2, 380);
-      const centerY = 305 + Math.sin(angle) * Math.min(radius * 0.72, 220);
-      const densityScale = groupScale * (1 + Math.min(groupRuns.length - 1, 5) * 0.035);
-
-      groupRuns.forEach((run, runIndex) => {
-        const coordinates = anonymousCoordinatesForRun(run);
-        if (coordinates.length < 2) return;
-        const jitterSeed = stableHash(`${run.run_id}:overview-jitter`);
-        const jitterX = ((jitterSeed % 17) - 8) * Math.min(runIndex, 2) * 0.45;
-        const jitterY = (((jitterSeed >>> 8) % 17) - 8) * Math.min(runIndex, 2) * 0.45;
-        const color = getColor(run.type);
-        const path = coordinatesToPath(
-          coordinates,
-          centerX,
-          centerY,
-          densityScale,
-          jitterX,
-          jitterY
-        );
-        paths.push(`<path d="${path}" stroke="${color}" />`);
+    publicFeatures.forEach(feature => {
+      feature.geometry.coordinates.forEach(coordinate => bounds.extend(coordinate));
+    });
+    if (!bounds.isEmpty()) {
+      map.fitBounds(bounds, {
+        padding,
+        pitch: 0,
+        bearing: 0,
+        duration: animate ? 2000 : 0,
+        essential: true
       });
-    });
+    } else {
+      focusAnonymousBackdrop();
+    }
 
-    anonymousOverlay.innerHTML = `
-      <svg class="anonymousRouteCanvas annualRouteCanvas" viewBox="0 0 1000 610" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <g class="annualRouteLines">${paths.join('')}</g>
-      </svg>
-    `;
-    anonymousOverlay.hidden = false;
+    if (anonymousOverlay) {
+      anonymousOverlay.hidden = true;
+      anonymousOverlay.innerHTML = '';
+    }
     mapWrapper.classList.add('show-anonymous-map');
   };
 
-  const showSingleAnonymousRoute = (run, coordinates) => {
-    if (!anonymousOverlay || !mapWrapper) return;
-    const normalized = normalizeAnonymousCoordinates(
-      coordinates,
-      `${run.route_group_id || run.run_id}:single-v1`
-    );
-    const path = coordinatesToPath(normalized, 500, 285, 510);
-    anonymousOverlay.innerHTML = `
-      <svg class="anonymousRouteCanvas singleRouteCanvas" viewBox="0 0 1000 610" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <path d="${path}" stroke="${getColor(run.type)}" />
-      </svg>
-    `;
-    anonymousOverlay.hidden = false;
-    mapWrapper.classList.add('show-anonymous-map');
+  const showAnnualRouteOverview = (targetYear, animate = false) => {
+    if (!mapWrapper) return;
+
+    const routes = window.KoobaiRun.data.filter(run => (
+      run.start_date_local?.startsWith(targetYear) && run.is_indoor !== true
+    ));
+
+    const landmarkGroups = new Map();
+    routes.forEach(run => {
+      if (run.route_status !== 'privacy_hidden') return;
+      const key = run.distance_title_key;
+      if (!key) return;
+      if (!landmarkGroups.has(key)) landmarkGroups.set(key, []);
+      landmarkGroups.get(key).push(run);
+    });
+
+    const landmarkFeatures = [...landmarkGroups.entries()]
+      .map(([key, groupRuns]) => {
+        const run = [...groupRuns].sort((left, right) => Number(right.distance) - Number(left.distance))[0];
+        const landmarkRoute = getLandmarkRouteForRun(run);
+        if (!landmarkRoute) return null;
+        const coordinates = coordinatesForActualDistance(landmarkRoute, run.distance);
+        if (coordinates.length < 2) return null;
+        return {
+          type: 'Feature',
+          properties: {
+            id: Number(run.run_id),
+            landmark: key,
+            type: run.type,
+            visits: groupRuns.length,
+            mode: 'annual'
+          },
+          geometry: { type: 'LineString', coordinates }
+        };
+      })
+      .filter(Boolean)
+      .sort((left, right) => left.properties.visits - right.properties.visits);
+
+    const publicFeatures = routes
+      .filter(run => run.route_status === 'available' && run.summary_polyline)
+      .map(run => {
+        const coordinates = run._decodedCoords || decodePolyline(run.summary_polyline);
+        run._decodedCoords = coordinates;
+        if (coordinates.length < 2) return null;
+        const routeCenter = coordinates[Math.floor(coordinates.length / 2)];
+        // 年度图保持在路线最密集的杭州主区域；远途公开轨迹仍可点开单独查看。
+        if (coordinateDistanceKm(LANDMARK_MAP_CENTER, routeCenter) > 120) return null;
+        return {
+          type: 'Feature',
+          properties: { id: Number(run.run_id), type: run.type },
+          geometry: { type: 'LineString', coordinates }
+        };
+      })
+      .filter(Boolean);
+
+    if (map.getSource('all-runs')) {
+      map.getSource('all-runs').setData({ type: 'FeatureCollection', features: publicFeatures });
+    }
+    if (map.getLayer('runs-core')) {
+      map.setPaintProperty('runs-core', 'line-opacity', publicFeatures.length > 0 ? 0.8 : 0);
+    }
+
+    showAnonymousFeatures(landmarkFeatures, 34, publicFeatures, animate);
   };
 
   const showEmptyAnonymousMap = () => {
     if (!anonymousOverlay || !mapWrapper) return;
     anonymousOverlay.innerHTML = '';
-    anonymousOverlay.hidden = false;
+    if (map.getSource('landmark-routes')) {
+      map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features: [] });
+    }
+    ['landmark-routes-casing', 'landmark-routes-core'].forEach(layerId => {
+      if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
+    });
+    focusAnonymousBackdrop();
+    anonymousOverlay.hidden = true;
     mapWrapper.classList.add('show-anonymous-map');
   };
 
@@ -355,8 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (flyToTimeout) clearTimeout(flyToTimeout);
   };
 
-  // 注入自定义地形与轨迹图层
-  // 注入自定义地形与轨迹图层
+  // 注入本人公开轨迹与标题地点代表路线图层。
   const injectCustomLayers = () => {
     // 核心轨迹线：背景浅色轨迹(all-runs) 与 前景高亮轨迹(highlight-run-source)
     if (!map.getSource('all-runs')) {
@@ -379,43 +440,70 @@ document.addEventListener('DOMContentLoaded', () => {
         paint: { 'line-color': colorRules, 'line-width': 4, 'line-opacity': 1 } 
       });
     }
+
+    if (!map.getSource('landmark-routes')) {
+      map.addSource('landmark-routes', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] }
+      });
+
+      map.addLayer({
+        id: 'landmark-routes-casing',
+        type: 'line',
+        source: 'landmark-routes',
+        layout: {
+          visibility: 'none',
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': 'rgba(255, 255, 255, 0.72)',
+          'line-width': [
+            'case',
+            ['==', ['get', 'mode'], 'single'], 6,
+            ['interpolate', ['linear'], ['get', 'visits'], 1, 2.8, 3, 4, 6, 5.5, 12, 7.2, 24, 9.2]
+          ],
+          'line-opacity': 0.82
+        }
+      });
+
+      map.addLayer({
+        id: 'landmark-routes-core',
+        type: 'line',
+        source: 'landmark-routes',
+        layout: {
+          visibility: 'none',
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': colorRules,
+          'line-width': [
+            'case',
+            ['==', ['get', 'mode'], 'single'], 4,
+            ['interpolate', ['linear'], ['get', 'visits'], 1, 1.2, 3, 2.2, 6, 3.6, 12, 5.2, 24, 7.2]
+          ],
+          'line-opacity': [
+            'case',
+            ['==', ['get', 'mode'], 'single'], 0.92,
+            ['interpolate', ['linear'], ['get', 'visits'], 1, 0.42, 3, 0.58, 6, 0.72, 12, 0.84, 24, 0.94]
+          ]
+        }
+      });
+    }
   };
 
   // 根据选中的年份，提取数据并重绘底图所有轨迹
-  const renderDataByYear = (targetYear) => {
+  const renderDataByYear = (targetYear, animate = false) => {
     hideRouteStamp();
     activeRunId = null; 
     currentYear = targetYear; 
     resetState();
-    showAnnualRouteOverview(targetYear);
+    showAnnualRouteOverview(targetYear, animate);
     
     if (!map.getSource('all-runs')) return;
     
-    const features = []; 
-
-    // 遍历筛选属于当前年份的数据
-    window.KoobaiRun.data.forEach(run => {
-      if (!run.start_date_local?.startsWith(targetYear) || !run.summary_polyline) return;
-      
-      // 缓存解码后的坐标，避免重复消耗 CPU
-      if (!run._decodedCoords) {
-        run._decodedCoords = decodePolyline(run.summary_polyline);
-      }
-      const coords = run._decodedCoords;
-
-      if (coords.length === 0) return;
-      
-      features.push({ 
-        type: 'Feature', 
-        properties: { id: Number(run.run_id), type: run.type }, 
-        geometry: { type: 'LineString', coordinates: coords } 
-      });
-    });
-
-    // 更新数据源
-    map.getSource('all-runs').setData({ type: 'FeatureCollection', features });
     map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
-    map.setPaintProperty('runs-core', 'line-opacity', 0.8);
   }; 
 
   // 地图加载完毕后初始化
@@ -429,7 +517,24 @@ document.addEventListener('DOMContentLoaded', () => {
       if (statsPanel) statsPanel.style.display = 'none';
     }
     
-    renderDataByYear(currentYear); 
+    if (!hasPlayedInitialOverview) {
+      // 先停在更大的杭州区域，等底图瓦片真正显示后再缩放到年度轨迹。
+      // 否则动画会在地图仍然空白时悄悄播完，用户看不到入场效果。
+      map.jumpTo({
+        center: LANDMARK_MAP_CENTER,
+        zoom: 7.8,
+        pitch: 0,
+        bearing: 0
+      });
+      map.once('idle', () => {
+        if (hasPlayedInitialOverview) return;
+        hasPlayedInitialOverview = true;
+        renderDataByYear(currentYear, true);
+      });
+      return;
+    }
+
+    renderDataByYear(currentYear);
   });
 
   // 🚀 监听 UI 层派发的年份切换全局事件
@@ -468,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 再次点击同一条路线，相当于“取消选中”，恢复全览状态
       if (normalizeId(activeRunId) === runId) {
-        renderDataByYear(currentYear);
+        renderDataByYear(currentYear, true);
         if (window.KoobaiRun.ui) window.KoobaiRun.ui.highlightRunInUI(null); 
         if (statsPanel) statsPanel.style.display = 'none'; 
         
@@ -491,15 +596,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 🚀 挪动与新增：提前解析坐标和边界，为 2D/3D 视角无缝切换做准备
       const polyline = runData.summary_polyline || '';
-      const coords = runData._decodedCoords || decodePolyline(polyline);
-      const abstractCoords = decodePolyline(runData.route_shape || '');
-      const hasRealTrack = runData.route_status === 'available' && coords.length >= 2;
-      const hasAbstractTrack = runData.route_status === 'privacy_hidden' && abstractCoords.length >= 2;
+      const realCoordinates = runData._decodedCoords || decodePolyline(polyline);
+      const hasRealTrack = runData.route_status === 'available' && realCoordinates.length >= 2;
+      const landmarkRoute = runData.route_status === 'privacy_hidden'
+        ? getLandmarkRouteForRun(runData)
+        : null;
+      const landmarkCoordinates = landmarkRoute
+        ? coordinatesForActualDistance(landmarkRoute, runData.distance)
+        : [];
+      // 后续地图交互只认“当前显示的轨迹”：公开记录使用本人轨迹，
+      // 隐私记录使用标题地点代表路线，两者共享完全相同的镜头与交互逻辑。
+      const displayCoordinates = hasRealTrack ? realCoordinates : landmarkCoordinates;
+      const hasDisplayTrack = displayCoordinates.length >= 2;
       
       let bounds = null, center = null;
-      if (hasRealTrack) {
+      if (hasDisplayTrack) {
         bounds = new mapboxgl.LngLatBounds();
-        coords.forEach(c => bounds.extend(c));
+        displayCoordinates.forEach(c => bounds.extend(c));
         center = bounds.getCenter();
       }
 
@@ -592,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.appendChild(mask);
           }
 
-          if (hasRealTrack && bounds) {
+          if (hasDisplayTrack && bounds) {
             const h = wrapper.clientHeight;
             const w = wrapper.clientWidth;
             
@@ -671,12 +784,8 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       }
-      if (!hasRealTrack) {
-        if (hasAbstractTrack) {
-          showSingleAnonymousRoute(runData, abstractCoords);
-        } else {
-          showEmptyAnonymousMap();
-        }
+      if (!hasDisplayTrack) {
+        showEmptyAnonymousMap();
         showRouteStamp(runData);
         return;
       }
@@ -688,7 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
           features: [{ 
             type: 'Feature', 
             properties: { type: runData.type }, 
-            geometry: { type: 'LineString', coordinates: coords } 
+            geometry: { type: 'LineString', coordinates: displayCoordinates }
           }] 
         });
       }
