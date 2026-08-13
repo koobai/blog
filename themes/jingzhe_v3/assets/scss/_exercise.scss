@@ -1,6 +1,15 @@
 /* =========================================
    3. Bento 核心布局与地图 (Bento & Map)
 ========================================= */
+.exercise-privacy-note {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  font-weight: 400;
+  opacity: 0.58;
+}
+
 .bento-hero {
   display: flex;
   gap: 10px;
