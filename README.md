@@ -1,26 +1,31 @@
 # 惊蛰 Jingzhe
 
-惊蛰是一套基于 Hugo、GitHub Actions 与可选 Serverless 服务构建的个人数字生活发布系统。它不仅用于发布长篇文章，还把短动态、网页写作、评论互动、观影同步、隐私友好的运动可视化与 AI 月度复盘组织在同一个 Git 仓库中。
+[简体中文](README.md) | [English](README_EN.md)
+
+> **长文写随笔，短话发唠叨；记折腾、看影视、动起来——唠叨日常，也记录每一次改变。**
+
+惊蛰是一套用来记录工作、生活与各种折腾的开源个人博客系统。你可以随手发几句日常唠叨，认真写一篇随笔，留下技术折腾与备忘；也可以整理看过的电影和剧集，记录减肥路上的每一次运动与变化，再让 AI 帮你完成月度复盘。
+
+它基于 Hugo、GitHub Actions 与可选 Serverless 服务构建，文章和生活数据统一保存在自己的 Git 仓库中。你可以从一个干净的静态博客开始，也可以按需增加网页写作、评论点赞、影视同步、运动可视化和 AI 总结。
 
 本仓库同时是 [Koobai](https://koobai.com) 的真实生产站点、惊蛰的完整演示和可复用开源实现。Core 初始化工具可生成不包含 Koobai 真实内容与生产服务的最小站点；Publisher、Social、Life Data 和 AI Coach 可以按需启用。
 
 ## 项目特点
 
-- 长篇随笔与短动态按时间统一展示。
-- 完整自研的惊蛰 v3 Hugo 主题。
-- 浅色、深色与跟随系统三种外观模式。
-- 自定义全文 RSS、Section JSON、Sitemap 与 Web App Manifest。
-- 浏览器内写随笔、写唠叨、Markdown 预览、图片压缩上传与 GitHub 写回。
-- 评论、多层回复、点赞、表情与 Cloudflare Turnstile。
-- 豆瓣观影记录增量同步与电影票式展示。
-- 多种运动类型、Mapbox 轨迹、月历、心率区间、成就与运动海报。
-- 隐私运动使用公共地标路线表达，避免公开原始轨迹。
-- AI 月中/月末运动复盘，包含证据约束、隐私过滤与状态冻结。
-- GitHub Actions 自动测试、数据处理、构建和 Cloudflare Pages 部署。
+- **生活时间线**：随笔、唠叨和折腾备忘统一展示，并通过标签与分类组织内容。
+- **自研 Hugo 主题**：响应式设计，支持浅色、深色、跟随系统和图片灯箱。
+- **轻量写作后台**：解决静态博客不能在线发文的痛点，打开浏览器即可写随笔、发唠叨、预览 Markdown、保存草稿、上传图片并发布到 GitHub。
+- **内容自己掌控**：文章与公开生活数据保存在自己的 Git 仓库，并生成全文 RSS、JSON、Sitemap 和 Web App Manifest。
+- **评论与互动**：支持评论、多层回复、点赞、表情和管理，并通过 Cloudflare Turnstile 降低滥用。
+- **观影记录**：增量同步豆瓣数据，以电影票形式展示评分、短评和观看时间。
+- **运动与隐私**：提供运动统计、月历、心率、Mapbox 轨迹、成就和海报，并用公共地标路线保护隐私运动。
+- **AI 运动复盘**：生成月中与月末总结，只向模型发送经过过滤的聚合数据。
+- **按需组合功能**：Core 静态博客无需 Worker，写作、互动、生活数据和 AI 能力均可独立启用。
+- **AI 与自动化友好**：支持直接交给 AI 初始化和部署，并通过 GitHub Actions 完成测试、同步、处理、构建与发布。
 
-完整功能边界见[功能与安装层级](docs/features/overview.md)。
+完整功能边界见[功能与安装层级](docs/features.md)。
 
-> **想快速部署？直接交给 AI：** 把本仓库地址和[可复制的部署指令](docs/ai/quick-start.md#可直接复制给-ai-的指令)发给支持读取 GitHub 仓库的 AI。它会先确认站点信息、功能层级和部署平台，从安全的 Core 开始，本地验证通过后再询问是否操作 GitHub 或 Cloudflare。
+> **想快速部署？直接交给 AI：** 把本仓库地址和[可复制的部署指令](docs/quick-start.md#可直接复制给-ai-的指令)发给支持读取 GitHub 仓库的 AI。它会先确认站点信息、功能层级和部署平台，从安全的 Core 开始，本地验证通过后再询问是否操作 GitHub 或 Cloudflare。
 
 ## 功能层级
 
@@ -54,7 +59,7 @@ flowchart LR
     CF --> V
 ```
 
-详细说明见[架构总览](docs/architecture/overview.md)。
+详细说明见[架构与模块契约](docs/architecture.md)。
 
 ## 本地查看参考站点
 
@@ -166,7 +171,7 @@ jingzhe/                   # Python 共享契约加载器
 - GitHub Actions 依赖的提交信息和 Secrets 名称不擅自改变。
 - 豆瓣、原生 App、运动处理、AI 月报和 Cloudflare Pages 流程继续运行。
 
-完整约束见[生产兼容基线](docs/architecture/compatibility.md)。
+完整约束见[生产兼容基线](docs/compatibility.md)。
 
 ## AI 协作
 
@@ -178,23 +183,21 @@ AI 编程助手在修改仓库前必须先阅读 [AGENTS.md](AGENTS.md)。该文
 - 不同类型改动必须运行的检查。
 - Worker 的最小权限、Secret、隐私和生产迁移边界。
 
-第一次使用建议从 [AI 快速开始](docs/ai/quick-start.md) 进入；维护和二次开发规则见 [AI 安装与维护协议](docs/ai/setup-protocol.md)。
+第一次使用建议从 [AI 快速开始](docs/quick-start.md) 进入；维护和二次开发规则见 [AI 安装与维护协议](docs/ai-protocol.md)。
 
 ## 文档
 
 - [文档入口](docs/README.md)
-- [AI 快速开始](docs/ai/quick-start.md)
-- [架构总览](docs/architecture/overview.md)
-- [前端与数据模块契约](docs/architecture/modules.md)
-- [生产兼容基线](docs/architecture/compatibility.md)
-- [功能与安装层级](docs/features/overview.md)
-- [隐私与外部数据边界](docs/privacy/overview.md)
-- [AI 安装与维护协议](docs/ai/setup-protocol.md)
+- [AI 快速开始](docs/quick-start.md)
+- [架构与模块契约](docs/architecture.md)
+- [生产兼容基线](docs/compatibility.md)
+- [功能与安装层级](docs/features.md)
+- [隐私与外部数据边界](docs/privacy.md)
+- [AI 安装与维护协议](docs/ai-protocol.md)
 - [AI 工具链](docs/tooling.md)
 - [配置、Profile 与 Core 初始化](docs/configuration.md)
 - [部署说明](docs/deployment.md)
-- [Worker 安全与部署边界](docs/security/workers.md)
-- [Worker 部署入口](workers/README.md)
+- [Worker 部署与安全边界](workers/README.md)
 
 ## 授权
 

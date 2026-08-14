@@ -26,7 +26,7 @@
 - 运动轨迹、精确坐标与 AI payload。
 - GitHub Actions 与 Cloudflare Secrets。
 
-安全设计和部署要求见 `docs/security/workers.md` 与 `docs/privacy/overview.md`。
+安全设计和部署要求见 [Worker 部署入口](workers/README.md) 与 [隐私边界](docs/privacy.md)。
 
 ## 响应原则
 

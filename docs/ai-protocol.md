@@ -7,8 +7,8 @@
 ## AI 开始前必须读取
 
 1. 根目录 `AGENTS.md`。
-2. `docs/architecture/compatibility.md`。
-3. `docs/features/overview.md`。
+2. `docs/compatibility.md`。
+3. `docs/features.md`。
 4. 与本次任务对应的功能文档。
 
 不得通过全仓库替换 `koobai`、域名或服务地址来完成通用安装。

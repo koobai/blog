@@ -4,18 +4,16 @@
 
 ## 当前文档
 
-- [AI 快速开始](ai/quick-start.md)：把仓库交给 AI 安装或部署。
-- [功能与安装层级](features/overview.md)
+- [AI 快速开始](quick-start.md)：把仓库交给 AI 安装或部署。
+- [功能与安装层级](features.md)
 - [配置、Profile 与 Core 初始化](configuration.md)
 - [部署说明](deployment.md)
 - [AI 工具链](tooling.md)
-- [AI 安装与维护协议](ai/setup-protocol.md)
-- [架构总览](architecture/overview.md)
-- [前端与数据模块契约](architecture/modules.md)
-- [生产兼容基线](architecture/compatibility.md)
-- [隐私与外部数据边界](privacy/overview.md)
-- [Worker 安全与部署边界](security/workers.md)
-- [四个 Worker 的部署入口](../workers/README.md)
+- [AI 安装与维护协议](ai-protocol.md)
+- [架构与模块契约](architecture.md)
+- [生产兼容基线](compatibility.md)
+- [隐私与外部数据边界](privacy.md)
+- [四个 Worker 的部署与安全边界](../workers/README.md)
 - [授权与内容边界](../CONTENT_LICENSE.md)
 
 ## 当前状态

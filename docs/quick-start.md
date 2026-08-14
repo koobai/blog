@@ -11,6 +11,8 @@
 
 不确定时选择 Core。它不依赖 Worker、数据库、地图或模型 API，以后仍可逐项增加功能。
 
+<a id="copy-ready-ai-prompt"></a>
+
 ## 可直接复制给 AI 的指令
 
 将下面整段与本仓库地址一起发送给 AI：
@@ -18,7 +20,7 @@
 ```text
 请帮我安装并部署这个惊蛰博客项目。
 
-1. 先完整阅读 README.md、AGENTS.md、docs/ai/quick-start.md、docs/features/overview.md、docs/configuration.md 和 docs/deployment.md，不要通过全仓库替换 koobai 或域名来安装。
+1. 先完整阅读 README.md、AGENTS.md、docs/quick-start.md、docs/features.md、docs/configuration.md 和 docs/deployment.md，不要通过全仓库替换 koobai 或域名来安装。
 2. 先询问我：站点名称、作者、简介、域名、部署平台、需要的功能 Profile，以及是否迁移已有 Hugo 内容。没有明确选择时使用 Core。
 3. 先运行 python3 tools/jingzhe.py doctor --json；然后使用 init 在仓库外一个不存在的新目录生成站点。不要复制根仓库的 content/、assets/、Koobai 品牌或生产服务配置。
 4. 修改新站点的通用配置并运行 Hugo 严格构建。交付前运行适用的 validate/check、站内链接和隐私检查。
@@ -51,8 +53,8 @@ hugo server
 |---|---|
 | 浏览器写文章、传图片、云草稿 | `workers/README.md`、`workers/publisher/README.md`、`workers/drafts/README.md` |
 | 评论与点赞 | `workers/README.md`、`workers/comments/README.md`、`workers/likes/README.md` |
-| 观影、运动、地图 | `docs/features/overview.md`、`docs/privacy/overview.md`、`docs/configuration.md` |
-| AI 运动月报 | `docs/features/overview.md`、`docs/privacy/overview.md`、`docs/architecture/modules.md` |
-| 修改现有 Koobai 生产仓库 | `AGENTS.md`、`docs/architecture/compatibility.md` |
+| 观影、运动、地图 | `docs/features.md`、`docs/privacy.md`、`docs/configuration.md` |
+| AI 运动月报 | `docs/features.md`、`docs/privacy.md`、`docs/architecture.md` |
+| 修改现有 Koobai 生产仓库 | `AGENTS.md`、`docs/compatibility.md` |
 
 完整功能不是“一键无确认部署”：GitHub Token、Cloudflare D1/R2、Turnstile、Mapbox 和模型 API 都属于用户自己的外部资源。AI 可以协助创建和配置，但必须在外部写入前获得授权。

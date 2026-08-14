@@ -10,6 +10,7 @@ LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 def documentation_files():
     roots = [
         ROOT / "README.md",
+        ROOT / "README_EN.md",
         ROOT / "AGENTS.md",
         ROOT / "CONTRIBUTING.md",
         ROOT / "SECURITY.md",
@@ -42,10 +43,10 @@ class DocumentationTests(unittest.TestCase):
         introduction = readme[:feature_end]
 
         self.assertIn("直接交给 AI", introduction)
-        self.assertIn("docs/ai/quick-start.md", introduction)
+        self.assertIn("docs/quick-start.md", introduction)
 
     def test_ai_prompt_preserves_external_authorization_boundary(self):
-        guide = (ROOT / "docs/ai/quick-start.md").read_text(encoding="utf-8")
+        guide = (ROOT / "docs/quick-start.md").read_text(encoding="utf-8")
 
         self.assertIn("AGENTS.md", guide)
         self.assertIn("不要复制根仓库的 content/、assets/", guide)

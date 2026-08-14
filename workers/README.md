@@ -9,6 +9,21 @@
 | [`comments/`](comments/README.md) | 评论、回复、通知和管理删除 | `TURNSTILE_SECRET_KEY`、`ADMIN_PASSWORD`、可选 Resend/Bark | D1 `DB` |
 | [`likes/`](likes/README.md) | 点赞计数、去重和 Turnstile | `TURNSTILE_SECRET_KEY`、`LIKE_SALT`、可选 Bark | D1 `DB` |
 
+分开部署是安全边界，不只是代码分类：Publisher 可以改写仓库和图片桶；Drafts 保存未发布内容；Comments 接触邮箱；Likes 只需要不可逆访客哈希。合并后任一公开接口被攻破，都可能扩大到不相关的高权限资源。
+
+CORS 只限制浏览器跨域调用，不是身份认证。Publisher 和 Drafts 仍依赖 `x-admin-token`；生产环境可在不改变前端契约的前提下增加 Cloudflare Access、速率限制和日志告警。
+
+## 配置边界
+
+| Worker | Secrets | Vars / Bindings |
+|---|---|---|
+| Publisher | `ADMIN_TOKEN`、`GH_TOKEN` | `GITHUB_OWNER`、`GITHUB_REPO`、`IMAGE_BASE_URL`、`ALLOWED_ORIGINS`、`R2_BUCKET` |
+| Drafts | `ADMIN_TOKEN` | `ALLOWED_ORIGINS`、D1 `DB` |
+| Comments | `TURNSTILE_SECRET_KEY`、`ADMIN_PASSWORD`；可选 `RESEND_API_KEY`、`BARK_URL` | 站点品牌变量、`ALLOWED_ORIGINS`、D1 `DB` |
+| Likes | `TURNSTILE_SECRET_KEY`、`LIKE_SALT`；可选 `BARK_URL` | `SITE_URL`、`ALLOWED_ORIGINS`、D1 `DB` |
+
+Secret 只能通过 `wrangler secret put`、`wrangler deploy --secrets-file` 或未提交的 `.dev.vars` 注入。`wrangler.example.toml` 只保存公开配置和明显无效的占位 ID。
+
 ## 前置条件
 
 - Node.js 当前 LTS。
@@ -59,6 +74,16 @@ Hugo 回填位置：
 | Comments | `services.social.commentsApi`、`turnstileSiteKey` |
 | Likes | `services.social.likesApi`、`likesSubmitUrl`、`turnstileSiteKey` |
 
-API 路由和字段见 [OpenAPI](openapi.yaml)，权限与迁移要求见 [Worker 安全说明](../docs/security/workers.md)。仓库不会自动部署 Worker，也不会自动切换 Koobai 的生产 URL。
+## 已实现的保护
+
+- Publisher 只代理指定仓库的 GitHub API，图片路径只允许 `memos/`、`article/` 或 `apps/`。
+- Comments 公开响应使用字段白名单，邮箱只在 Worker 内用于头像哈希和回复通知；父评论必须属于同一页面。
+- Likes 缺少 `LIKE_SALT` 时拒绝写入，不使用公开默认盐。
+- 数据库内部错误只进入服务端日志，对外返回通用错误。
+- 四个 Worker 都按 `ALLOWED_ORIGINS` 拒绝未知浏览器 Origin。
+
+Comments 新响应返回 `avatar_hash`，不再返回邮箱；现有前端同时兼容旧响应中的 `email`，因此可先更新前端再切换 Worker，不改变评论 URL、提交字段、LocalStorage Key 或管理员操作方式。
+
+API 路由和字段见 [OpenAPI](openapi.yaml)。仓库不会自动部署 Worker，也不会自动切换 Koobai 的生产 URL；正式迁移应先使用测试域名和测试数据库，再逐个切换并保留回滚版本。
 
 Wrangler 命令应以 Cloudflare 当前官方文档为准：[D1 migrations](https://developers.cloudflare.com/d1/wrangler-commands/)、[R2 buckets](https://developers.cloudflare.com/r2/buckets/create-buckets/)、[Worker Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)。
