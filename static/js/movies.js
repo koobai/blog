@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   'use strict';
-  
+
+  const INITIAL_VISIBLE = 16; // 与模板中的首屏可见数量保持一致
   const BATCH_SIZE = 32; // 每次加载的数量
   const btnLoadMore = document.getElementById('btn-load-more');
-  
+
   if (!btnLoadMore) return;
 
   const allMovies = document.querySelectorAll('.review-card');
-  
-  let currentIndex = BATCH_SIZE;
+
+  let currentIndex = INITIAL_VISIBLE;
 
   btnLoadMore.addEventListener('click', () => {
     // 保留了静默的防错拦截，去除了所有的 console 打印

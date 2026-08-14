@@ -1,0 +1,295 @@
+openapi: 3.1.0
+info:
+  title: Jingzhe Worker APIs
+  version: 0.1.0
+  description: Four independently deployed Workers. Example hosts must be replaced by each installation.
+tags:
+  - name: Publisher
+  - name: Drafts
+  - name: Comments
+  - name: Likes
+paths:
+  /api/github:
+    get:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Proxy a GET to the configured GitHub repository
+      security: [{ AdminToken: [] }]
+      parameters:
+        - $ref: '#/components/parameters/GitHubTarget'
+      responses:
+        '200': { description: GitHub response }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { description: Target repository rejected }
+    put:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Create or update repository content
+      security: [{ AdminToken: [] }]
+      parameters:
+        - $ref: '#/components/parameters/GitHubTarget'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        '200': { description: GitHub response }
+        '201': { description: GitHub response }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/upload:
+    post:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Upload an image to the configured R2 bucket
+      security: [{ AdminToken: [] }]
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema: { type: string, pattern: '^(memos|article|apps)/' }
+      requestBody:
+        required: true
+        content:
+          image/webp:
+            schema: { type: string, format: binary }
+      responses:
+        '200':
+          description: Uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, url]
+                properties:
+                  success: { type: boolean, const: true }
+                  url: { type: string, format: uri }
+        '400': { description: Invalid path }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/drafts:
+    get:
+      tags: [Drafts]
+      servers: [{ url: "https://drafts.example.org" }]
+      summary: List cloud drafts
+      security: [{ AdminToken: [] }]
+      responses:
+        '200':
+          description: Draft list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Draft' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Drafts]
+      servers: [{ url: "https://drafts.example.org" }]
+      summary: Create or replace a cloud draft
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DraftInput' }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { description: Invalid draft }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    delete:
+      tags: [Drafts]
+      servers: [{ url: "https://drafts.example.org" }]
+      summary: Delete a cloud draft
+      security: [{ AdminToken: [] }]
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/comments:
+    get:
+      tags: [Comments]
+      servers: [{ url: "https://comments.example.org" }]
+      summary: List public comments without email addresses
+      parameters:
+        - in: query
+          name: url
+          required: true
+          schema: { type: string, pattern: '^/' }
+      responses:
+        '200':
+          description: Public comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/PublicComment' }
+    delete:
+      tags: [Comments]
+      servers: [{ url: "https://comments.example.org" }]
+      summary: Delete a comment with the admin password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id, password]
+              properties:
+                id: { type: integer }
+                password: { type: string, writeOnly: true }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/comments/submit:
+    post:
+      tags: [Comments]
+      servers: [{ url: "https://comments.example.org" }]
+      summary: Submit a comment
+      security: [{ Turnstile: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CommentInput' }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { description: Invalid comment }
+        '403': { description: Turnstile or anti-spam rejection }
+  /api/verify:
+    post:
+      tags: [Comments]
+      servers: [{ url: "https://comments.example.org" }]
+      summary: Verify the comment administrator password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                password: { type: string, writeOnly: true }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/likes:
+    get:
+      tags: [Likes]
+      servers: [{ url: "https://likes.example.org" }]
+      summary: Get like counts
+      responses:
+        '200':
+          description: Counts by page path
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [counts, myLikes]
+                properties:
+                  counts:
+                    type: object
+                    additionalProperties: { type: integer, minimum: 0 }
+                  myLikes:
+                    type: array
+                    items: { type: string }
+  /api/likes/submit:
+    post:
+      tags: [Likes]
+      servers: [{ url: "https://likes.example.org" }]
+      summary: Submit one like
+      security: [{ Turnstile: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string, pattern: '^/' }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '403': { description: Turnstile rejection }
+        '409': { description: Already liked }
+components:
+  securitySchemes:
+    AdminToken:
+      type: apiKey
+      in: header
+      name: x-admin-token
+    Turnstile:
+      type: apiKey
+      in: header
+      name: CF-Turnstile-Response
+  parameters:
+    GitHubTarget:
+      in: header
+      name: x-target-url
+      required: true
+      schema: { type: string, format: uri }
+  responses:
+    Success:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success]
+            properties:
+              success: { type: boolean, const: true }
+    Unauthorized:
+      description: Authentication failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: { type: string }
+  schemas:
+    Draft:
+      type: object
+      required: [id, date, content, images, locationName, lat, lng, url]
+      properties:
+        id: { type: string }
+        date: { type: string }
+        content: { type: string }
+        images: { type: array, items: { type: string } }
+        locationName: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        url: { type: string }
+    DraftInput:
+      type: object
+      required: [id, content]
+      properties:
+        id: { type: [string, integer] }
+        content: { type: string, maxLength: 200000 }
+        location_name: { type: string, maxLength: 100 }
+        lat: { type: number }
+        lng: { type: number }
+    PublicComment:
+      type: object
+      required: [id, url, author, content, created_at, avatar_hash]
+      properties:
+        id: { type: integer }
+        url: { type: string }
+        author: { type: string }
+        website: { type: [string, 'null'] }
+        content: { type: string }
+        parent_id: { type: [integer, 'null'] }
+        created_at: { type: string }
+        avatar_hash: { type: string, pattern: '^[a-f0-9]{64}$' }
+      additionalProperties: false
+    CommentInput:
+      type: object
+      required: [url, author, email, content]
+      properties:
+        url: { type: string, pattern: '^/' }
+        author: { type: string, maxLength: 10 }
+        email: { type: string, format: email, maxLength: 30, writeOnly: true }
+        website: { type: string, maxLength: 30 }
+        content: { type: string, maxLength: 500 }
+        parent_id: { type: [integer, string, 'null'] }

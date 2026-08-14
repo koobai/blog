@@ -1,6 +1,6 @@
 {{- $list := slice -}}
-{{- /* 获取所有随笔，按时间倒序排列 */ -}}
-{{- $pages := where site.RegularPages "Type" "posts" -}}
+{{- /* 仅获取当前分区的页面，避免所有分区都返回 posts 数据 */ -}}
+{{- $pages := .RegularPages -}}
 {{- range $pages.ByDate.Reverse -}}
 
   {{- /* 提取封面图并转化为绝对路径（带有 https 的完整链接） */ -}}

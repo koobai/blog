@@ -42,6 +42,6 @@
   </div>
 {{ end }}
 <script src="/js/laodao.js?v=20260329a" defer></script>
-{{ partial "comments.html" . }}
+{{ if partial "jingzhe/feature-enabled.html" "social" }}{{ partial "comments.html" . }}{{ end }}
 
 {{ end }}

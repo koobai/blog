@@ -1,0 +1,64 @@
+profile = "core"
+description = ""
+contentTypeName = "posts"
+addDot = false
+RSSNoContent = false
+
+[author]
+  name = ""
+  email = ""
+
+[brand]
+  name = "惊蛰"
+  footerName = "惊蛰"
+  footerTagline = ""
+  favicon = ""
+  appleTouchIcon = ""
+  avatar = ""
+  avatarAlt = ""
+  webAppTitle = "惊蛰"
+  manifestPath = "/manifest.webmanifest"
+
+[repository]
+  owner = ""
+  name = ""
+  branch = "main"
+  url = ""
+
+[assets]
+  fontRegularUrl = ""
+  fontBoldUrl = ""
+
+[features]
+  core = true
+  publisher = false
+  social = false
+  movies = false
+  exercise = false
+  aiCoach = false
+  externalShop = false
+
+[services.social]
+  commentsApi = ""
+  likesApi = ""
+  likesSubmitUrl = ""
+  turnstileSiteKey = ""
+  turnstileScriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+  adminEmail = ""
+  avatarBaseUrl = "https://weavatar.com/avatar"
+
+[services.publisher]
+  workerUrl = ""
+  draftUrl = ""
+  imageBaseUrl = ""
+
+[services.exercise]
+  mapboxToken = ""
+  mapboxApiOrigin = "https://api.mapbox.com"
+  mapboxEventsOrigin = "https://events.mapbox.com"
+  mapboxCssUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.css"
+  mapboxJsUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.js"
+
+[about]
+  repositoryUrl = ""
+  photos = []

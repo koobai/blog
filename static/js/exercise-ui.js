@@ -11,34 +11,21 @@
   /* ========================================================================
      板块 1：全局配置与枚举字典
   ======================================================================== */
-  window.KoobaiRun.SPORT_COLORS = {
-    'Run': '#F58200', 'TrailRun': '#F58200', 'Treadmill': '#F58200', 'VirtualRun': '#F58200',
-    'Ride': '#32D74B', 'EBikeRide': '#32D74B', 'VirtualRide': '#32D74B', 
-    'Walk': '#DF40C4', 'Hike': '#DF40C4',
-    'Swim': '#0BAEE6', 'WaterSport': '#0BAEE6',
-    'StairStepper': '#AF52DE'
-  };
+  const EXERCISE_CONTRACT = window.KoobaiRun.contract;
+  window.KoobaiRun.SPORT_COLORS = Object.fromEntries(
+    Object.entries(EXERCISE_CONTRACT.sports).map(([type, values]) => [type, values.color])
+  );
 
-  const RIDE_TYPES = new Set(['Ride', 'VirtualRide', 'EBikeRide']);
-  const WALK_TYPES = new Set(['Walk', 'Hike']);
-  const RUN_TYPES = new Set(['Run', 'TrailRun', 'Treadmill', 'VirtualRun', 'Trail Run']);
+  const RIDE_TYPES = new Set(EXERCISE_CONTRACT.groups.ride);
+  const WALK_TYPES = new Set(EXERCISE_CONTRACT.groups.walk);
+  const RUN_TYPES = new Set(EXERCISE_CONTRACT.groups.run);
   const RUN_WALK_TYPES = new Set([...RUN_TYPES, ...WALK_TYPES]);
-  const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || '#14C759';
+  const colorFromType = (type) => window.KoobaiRun.SPORT_COLORS[type] || EXERCISE_CONTRACT.fallbackColor;
 
   // 月度总量只从热量较高的食物中选择，避免出现几百块方糖之类难以阅读的结果。
-  const MONTHLY_FOOD_EQUIVALENTS = [
-    { key: 'cola', name: '可乐', unit: '罐', kcal: 139 },
-    { key: 'beer', name: '啤酒', unit: '瓶', kcal: 139 },
-    { key: 'rice', name: '米饭', unit: '碗', kcal: 180 },
-    { key: 'ice_cream_cone', name: '甜筒', unit: '支', kcal: 200 },
-    { key: 'egg_tart', name: '蛋挞', unit: '个', kcal: 220 },
-    { key: 'fried_chicken', name: '炸鸡', unit: '块', kcal: 250 },
-    { key: 'burger', name: '汉堡', unit: '个', kcal: 250 },
-    { key: 'pizza', name: '披萨', unit: '片', kcal: 280 },
-    { key: 'fries', name: '薯条', unit: '份', kcal: 300 },
-    { key: 'milk_tea', name: '奶茶', unit: '杯', kcal: 450 },
-    { key: 'instant_noodles', name: '泡面', unit: '包', kcal: 470 }
-  ];
+  const MONTHLY_FOOD_EQUIVALENTS = EXERCISE_CONTRACT.foods
+    .filter(food => food.monthly)
+    .map(({ monthly, ...food }) => food);
 
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'

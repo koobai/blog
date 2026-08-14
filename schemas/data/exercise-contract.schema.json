@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/data/exercise-contract.schema.json",
+  "title": "Jingzhe exercise contract",
+  "type": "object",
+  "required": ["version", "fallbackColor", "sports", "groups", "foods"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "fallbackColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "sports": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "displayName", "color", "fallbackTitle"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "displayName": { "type": "string", "minLength": 1 },
+          "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+          "distanceVerb": { "type": "string" },
+          "distanceGroup": { "type": "string" },
+          "fallbackTitle": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "groups": {
+      "type": "object",
+      "required": ["ride", "run", "walk", "summaryRunWalk", "displayRunWalk"],
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" },
+        "uniqueItems": true
+      }
+    },
+    "foods": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "unit", "kcal", "monthly"],
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "minLength": 1 },
+          "kcal": { "type": "number", "exclusiveMinimum": 0 },
+          "monthly": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

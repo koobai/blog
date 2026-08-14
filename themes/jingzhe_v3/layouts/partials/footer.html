@@ -2,15 +2,17 @@
   <div class="site-footer-inner">
     
     <p class="footer-info">
-      &copy; {{ now.Year }} <a href="{{ site.Home.RelPermalink }}">空白Koobai</a>.
+      &copy; {{ now.Year }} <a href="{{ site.Home.RelPermalink }}">{{ site.Params.brand.footerName | default site.Title }}</a>.
       由 <a href="https://gohugo.io/" target="_blank" rel="noopener"> Hugo </a> 提供强力驱动,
       <a href="https://www.cloudflare.com/" target="_blank" rel="noopener">Cloudflare</a> 提供存储/加速, ChatGPT & Gemini 疯狂手搓代码支持.
     </p>
-    
-    <p class="footer-info">∞ 折腾的乐趣在于无限折腾 ∞</p>
+
+    {{ with site.Params.brand.footerTagline }}<p class="footer-info">{{ . }}</p>{{ end }}
 
   </div>
 </footer>
 
 <script src="/js/view-image.min.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+{{ if partial "jingzhe/feature-enabled.html" "social" }}
+  {{ with site.Params.services.social.turnstileScriptUrl }}<script src="{{ . }}" defer></script>{{ end }}
+{{ end }}

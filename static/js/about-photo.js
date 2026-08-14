@@ -1,10 +1,10 @@
 //头部背景图随机显示
 (function() {
-  const data = [
-    { text: '拍摄于杭州西湖', image: 'https://img.koobai.com/about.webp' },
-    { text: '拍摄于北京长城', image: 'https://img.koobai.com/about-beij.webp' },
-    { text: '拍摄于杭州千岛湖', image: 'https://img.koobai.com/about-qdh.webp' }
-  ];
+  const data = Array.isArray(window.JINGZHE_ABOUT_PHOTOS)
+    ? window.JINGZHE_ABOUT_PHOTOS
+    : [];
+
+  if (data.length === 0) return;
 
   const random = data[Math.floor(Math.random() * data.length)];
   const img = document.querySelector('.about-img img');

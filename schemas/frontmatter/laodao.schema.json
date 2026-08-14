@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe laodao front matter",
+  "type": "object",
+  "required": ["date"],
+  "properties": {
+    "date": {"type": "string", "minLength": 1},
+    "laodaotags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "device": {"type": "string"},
+    "location": {"type": "string"},
+    "latlng": {"type": "string", "pattern": "^-?[0-9]+(?:\\.[0-9]+)?,-?[0-9]+(?:\\.[0-9]+)?$"},
+    "draft": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

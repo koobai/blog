@@ -1,0 +1,67 @@
+profile = "full"
+
+[brand]
+  name = "空白Koobai"
+  footerName = "空白Koobai"
+  footerTagline = "∞ 折腾的乐趣在于无限折腾 ∞"
+  favicon = "https://img.koobai.com/koobai.png"
+  appleTouchIcon = "https://img.koobai.com/icon_1024.png"
+  avatar = "https://img.koobai.com/koobai.webp"
+  avatarAlt = "koobai"
+  webAppTitle = "Koobai"
+  manifestPath = "/suju/ios.json"
+
+[repository]
+  owner = "koobai"
+  name = "blog"
+  branch = "main"
+  url = "https://github.com/koobai/blog"
+
+[assets]
+  fontRegularUrl = "https://img.koobai.com/fonts/GeistMono-Regular.woff2?v=20260402-1"
+  fontBoldUrl = "https://img.koobai.com/fonts/GeistMono-Bold.woff2?v=20260402-1"
+
+[features]
+  core = true
+  publisher = true
+  social = true
+  movies = true
+  exercise = true
+  aiCoach = true
+  externalShop = true
+
+[services.social]
+  commentsApi = "https://comments.koobai.com/api"
+  likesApi = "https://likes.koobai.com/api/likes"
+  likesSubmitUrl = "https://likes.koobai.com/api/likes/submit"
+  turnstileSiteKey = "0x4AAAAAACw0z9xeBryoGaUA"
+  turnstileScriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+  adminEmail = "hi@koobai.com"
+  avatarBaseUrl = "https://weavatar.com/avatar"
+
+[services.publisher]
+  workerUrl = "https://newlaodao.koobai.com"
+  draftUrl = "https://laodaodraft.koobai.com"
+  imageBaseUrl = "https://img.koobai.com"
+
+[services.exercise]
+  mapboxToken = "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw"
+  mapboxApiOrigin = "https://api.mapbox.com"
+  mapboxEventsOrigin = "https://events.mapbox.com"
+  mapboxCssUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.css"
+  mapboxJsUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.js"
+
+[about]
+  repositoryUrl = "https://github.com/koobai/blog"
+
+  [[about.photos]]
+    text = "拍摄于杭州西湖"
+    image = "https://img.koobai.com/about.webp"
+
+  [[about.photos]]
+    text = "拍摄于北京长城"
+    image = "https://img.koobai.com/about-beij.webp"
+
+  [[about.photos]]
+    text = "拍摄于杭州千岛湖"
+    image = "https://img.koobai.com/about-qdh.webp"

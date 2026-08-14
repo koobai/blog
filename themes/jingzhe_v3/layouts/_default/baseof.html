@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{ site.Language.LanguageCode | default "zh-CN" }}">
 
 <head>
   <meta charset="utf-8">
@@ -9,16 +9,15 @@
   <title>{{ block "title" . }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
   
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="/suju/ios.json">
-  
-  <link rel="icon" href="https://img.koobai.com/koobai.png">
+  {{ with site.Params.brand.manifestPath }}<link rel="manifest" href="{{ . }}">{{ end }}
+  {{ with site.Params.brand.favicon }}<link rel="icon" href="{{ . }}">{{ end }}
   
   <meta name="theme-color" content="#fffdfa" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1c1c1e" media="(prefers-color-scheme: dark)">
   
-  <link rel="apple-touch-icon" href="https://img.koobai.com/icon_1024.png">
+  {{ with site.Params.brand.appleTouchIcon }}<link rel="apple-touch-icon" href="{{ . }}">{{ end }}
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Koobai">
+  <meta name="apple-mobile-web-app-title" content="{{ site.Params.brand.webAppTitle | default site.Title }}">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   {{ with site.Home.OutputFormats.Get "RSS" }}
@@ -47,6 +46,8 @@
     {{ $style = $style | minify | fingerprint }}
   {{ end }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+  {{ partial "jingzhe/runtime-config.html" . }}
 
   {{ $themeJs := resources.Get "js/theme.js" }}
   {{ if not hugo.IsServer }}

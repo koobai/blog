@@ -1,0 +1,55 @@
+name: Bug 报告
+description: 报告可复现的问题，不要提交 Secret 或个人数据
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: 安全漏洞请按 SECURITY.md 私下报告，不要使用公开 Issue。
+  - type: input
+    id: version
+    attributes:
+      label: 版本或 Commit
+      placeholder: v3.0.0 或 commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响模块
+      options:
+        - Core / Hugo
+        - Publisher / 网页写作
+        - Comments / Likes
+        - Movies
+        - Exercise
+        - AI Coach
+        - Tooling / CI
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 使用合成数据，说明最小步骤、期望结果和实际结果。
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境
+      placeholder: Hugo、Node、Python、浏览器和操作系统版本
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: 已运行的检查
+      placeholder: python3 tools/jingzhe.py check
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我已移除 Token、密码、邮箱、精确位置和真实数据库内容。
+          required: true

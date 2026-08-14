@@ -1,0 +1,11 @@
+{
+  "production": [
+    "/apps",
+    "/apps/",
+    "/archives",
+    "/hardware",
+    "/hardware/",
+    "/memos/"
+  ],
+  "core": []
+}

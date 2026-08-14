@@ -1,0 +1,8 @@
+{
+  "name": "@jingzhe/worker-likes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/index.js"
+  }
+}

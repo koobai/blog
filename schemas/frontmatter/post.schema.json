@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe post front matter",
+  "type": "object",
+  "required": ["title", "date"],
+  "properties": {
+    "title": {"type": "string", "minLength": 1},
+    "date": {"type": "string", "minLength": 1},
+    "slug": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "image": {"type": "string"},
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "draft": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

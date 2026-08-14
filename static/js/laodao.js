@@ -1,10 +1,16 @@
+const KOOBAI_LIKES_RUNTIME = window.JINGZHE_CONFIG || {};
+const KOOBAI_LIKES_CONFIG = (KOOBAI_LIKES_RUNTIME.services && KOOBAI_LIKES_RUNTIME.services.social) || {};
+const KOOBAI_LIKES_API_BASE = KOOBAI_LIKES_CONFIG.likesapi || '';
+const KOOBAI_LIKES_SUBMIT_URL = KOOBAI_LIKES_CONFIG.likessubmiturl || '';
+const KOOBAI_LIKES_TURNSTILE_SITE_KEY = KOOBAI_LIKES_CONFIG.turnstilesitekey || '';
+
 let cachedLikesData = null;
 
 async function getLikesData() {
   if (cachedLikesData) return cachedLikesData;
-  const LIKE_API_BASE = 'https://likes.koobai.com/api/likes';
+  if (!KOOBAI_LIKES_API_BASE) return { counts: {}, myLikes: [] };
   try {
-    const res = await fetch(LIKE_API_BASE);
+    const res = await fetch(KOOBAI_LIKES_API_BASE);
     if (res.ok) cachedLikesData = await res.json();
   } catch (e) { console.error('获取赞失败', e); }
   return cachedLikesData || { counts: {}, myLikes: [] };
@@ -88,7 +94,7 @@ async function initLikes() {
             
             // 召唤隐形盾牌
             const wId = turnstile.render(div, {
-              sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+              sitekey: KOOBAI_LIKES_TURNSTILE_SITE_KEY,
               size: 'invisible',
               action: 'like_laodao',
               callback: t => { 
@@ -107,7 +113,8 @@ async function initLikes() {
           if (!token) return;
 
           // 带着刚拿到的热乎通行证发给服务器
-          await fetch('https://likes.koobai.com/api/likes/submit', {
+          if (!KOOBAI_LIKES_SUBMIT_URL) return;
+          await fetch(KOOBAI_LIKES_SUBMIT_URL, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json', 

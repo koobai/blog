@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe processed activities",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["run_id", "name", "type", "distance", "moving_time", "start_date_local", "route_status"],
+    "properties": {
+      "run_id": {"type": ["integer", "string"]},
+      "name": {"type": "string"},
+      "type": {"type": "string", "minLength": 1},
+      "distance": {"type": "number", "minimum": 0},
+      "moving_time": {"type": "string"},
+      "pace_num": {"type": "string"},
+      "pace_unit": {"type": "string"},
+      "average_heartrate": {"type": "number", "minimum": 0},
+      "total_elevation_gain": {"type": "number"},
+      "calories": {"type": "number", "minimum": 0},
+      "start_date_local": {"type": "string", "minLength": 1},
+      "start_date_utc": {"type": "string"},
+      "route_status": {"enum": ["available", "privacy_hidden", "unavailable", "indoor"]},
+      "is_indoor": {"type": "boolean"},
+      "summary_polyline": {"type": "string"},
+      "energy_title": {"type": "string"},
+      "food_key": {"type": "string"},
+      "distance_title": {"type": "string"},
+      "distance_title_key": {"type": "string"}
+    },
+    "additionalProperties": true
+  }
+}

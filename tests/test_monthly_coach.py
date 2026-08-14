@@ -56,6 +56,30 @@ class MonthlyCoachStateTests(unittest.TestCase):
         with open(self.path, 'r', encoding='utf-8') as file:
             return json.load(file)
 
+    def test_state_machine_accepts_an_injected_report_provider(self):
+        class FakeProvider:
+            model = 'fake-provider-v1'
+
+            def __init__(self):
+                self.calls = []
+
+            def generate(self, facts):
+                self.calls.append(facts)
+                return report_for(facts)
+
+        provider = FakeProvider()
+        monthly_coach.update_monthly_insights(
+            self.activities,
+            self.path,
+            now=datetime(2026, 9, 1, 12),
+            report_provider=provider
+        )
+
+        data = self.read()
+        self.assertEqual(2, len(provider.calls))
+        self.assertEqual('fake-provider-v1', data['2026-07']['model'])
+        self.assertEqual('fake-provider-v1', data['2026-08']['model'])
+
     @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
     def test_accumulating_midmonth_freeze_and_final_transition(self, generate):
         monthly_coach.update_monthly_insights(

@@ -1,0 +1,16 @@
+baseURL = "https://koobai.com"
+title = "空白Koobai"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "唠叨"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "Goods"
+    name = "店铺"
+    url = "https://qiszy.taobao.com"
+    weight = 6
+    params = { new_window = true, feature = "externalShop" }

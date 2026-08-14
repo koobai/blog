@@ -1,5 +1,8 @@
 {{ $url := .Destination }}
-{{ $isInternal := or (strings.Contains $url "koobai.com") (strings.HasPrefix $url "/") (strings.HasPrefix $url "#") }}
+{{ $siteHost := (urls.Parse site.BaseURL).Host }}
+{{ $targetHost := (urls.Parse $url).Host }}
+{{ $isSameHost := or (eq $targetHost $siteHost) (and $targetHost (strings.HasSuffix $targetHost (printf ".%s" $siteHost))) }}
+{{ $isInternal := or $isSameHost (strings.HasPrefix $url "/") (strings.HasPrefix $url "#") }}
 <a href="{{ $url | safeURL }}"
     {{ if not $isInternal }} 
         target="_blank" 

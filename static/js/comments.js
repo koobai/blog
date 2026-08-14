@@ -1,6 +1,13 @@
 // ==========================
 // 🚀 1. 现代事件代理：处理手风琴点击
 // ==========================
+const KOOBAI_COMMENTS_RUNTIME = window.JINGZHE_CONFIG || {};
+const KOOBAI_COMMENTS_CONFIG = (KOOBAI_COMMENTS_RUNTIME.services && KOOBAI_COMMENTS_RUNTIME.services.social) || {};
+const KOOBAI_COMMENTS_API_BASE = KOOBAI_COMMENTS_CONFIG.commentsapi || '';
+const KOOBAI_COMMENTS_ADMIN_EMAIL = KOOBAI_COMMENTS_CONFIG.adminemail || '';
+const KOOBAI_COMMENTS_TURNSTILE_SITE_KEY = KOOBAI_COMMENTS_CONFIG.turnstilesitekey || '';
+const KOOBAI_COMMENTS_AVATAR_BASE_URL = KOOBAI_COMMENTS_CONFIG.avatarbaseurl || 'https://weavatar.com/avatar';
+
 document.addEventListener('click', (e) => {
   const trigger = e.target.closest('.koobai-comment-trigger');
   if (!trigger) return;
@@ -40,12 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let cmtTokenResolve = null;
   let cmtTokenReject = null;
   const initCmtTurnstile = setInterval(() => {
+    if (!KOOBAI_COMMENTS_TURNSTILE_SITE_KEY) {
+      clearInterval(initCmtTurnstile);
+      return;
+    }
     if (window.turnstile) {
       clearInterval(initCmtTurnstile);
       const div = document.createElement('div');
       document.body.appendChild(div);
       cmtTurnstileId = turnstile.render(div, {
-        sitekey: '0x4AAAAAACw0z9xeBryoGaUA',
+        sitekey: KOOBAI_COMMENTS_TURNSTILE_SITE_KEY,
         size: 'invisible',
         callback: (t) => { if (cmtTokenResolve) cmtTokenResolve(t); },
         'error-callback': () => { if (cmtTokenReject) cmtTokenReject(new Error('人机验证超时，刷新重试。')); }
@@ -53,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 200);
 
-  const API_BASE = "https://comments.koobai.com/api"; 
-  const ADMIN_EMAIL = "hi@koobai.com";
+  const API_BASE = KOOBAI_COMMENTS_API_BASE;
+  const ADMIN_EMAIL = KOOBAI_COMMENTS_ADMIN_EMAIL;
   const PAGE_SIZE = 12;
 
   let adminPass = localStorage.getItem('koobai_admin_pass');
@@ -94,19 +105,31 @@ document.addEventListener('DOMContentLoaded', () => {
     return (yyyy === currentYear) ? `${mm}-${dd} ${hh}:${min}` : `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   }
 
-  // 🚀 优化：Gravatar 缓存机制
+  // Worker 新版只返回 avatar_hash；email 分支只用于兼容尚未迁移的旧 Worker。
   const avatarCache = new Map();
-  async function getGravatarUrlCached(email) {
-    const key = email.trim().toLowerCase();
+  function getAvatarKey(comment) {
+    if (comment.avatar_hash) return `hash:${comment.avatar_hash}`;
+    if (comment.email) return `email:${comment.email.trim().toLowerCase()}`;
+    return `comment:${comment.id}`;
+  }
+
+  async function getAvatarUrlCached(comment) {
+    const key = getAvatarKey(comment);
     if (avatarCache.has(key)) return avatarCache.get(key);
-    
-    const encoder = new TextEncoder();
-    const data = encoder.encode(key);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-    const url = `https://weavatar.com/avatar/${hashHex}?s=50&d=mp`;
-    
+
+    let url = `${KOOBAI_COMMENTS_AVATAR_BASE_URL}/?d=mp`;
+    if (comment.avatar_hash) {
+      url = `${KOOBAI_COMMENTS_AVATAR_BASE_URL}/${comment.avatar_hash}?s=50&d=mp`;
+    } else if (comment.email) {
+      const email = comment.email.trim().toLowerCase();
+      const encoder = new TextEncoder();
+      const data = encoder.encode(email);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+      url = `${KOOBAI_COMMENTS_AVATAR_BASE_URL}/${hashHex}?s=50&d=mp`;
+    }
     avatarCache.set(key, url);
+    comment.avatar_url = url;
     return url;
   }
 
@@ -161,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function generateHtmlSync(nodeList) {
     let html = '';
     for (const node of nodeList) {
-      const avatarUrl = avatarCache.get(node.email.trim().toLowerCase()) || 'https://weavatar.com/avatar/?d=mp';
+      const avatarUrl = node.avatar_url || avatarCache.get(getAvatarKey(node)) || `${KOOBAI_COMMENTS_AVATAR_BASE_URL}/?d=mp`;
       // 使用 safeUrl 防止 XSS
       const authorHtml = node.website ? `<a href="${safeUrl(node.website)}" target="_blank" rel="nofollow" class="cmt-author">${escapeHTML(node.author)}</a>` : `<span class="cmt-author">${escapeHTML(node.author)}</span>`;
       const targetHtml = node.showTarget ? `<span class="reply-arrow">▸</span><span class="cmt-target">${escapeHTML(node.replyToName)}</span>` : '';
@@ -193,8 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBatch.length === 0) return;
     
     // 🚀 优化：渲染前，先批量并发获取本批次所有未缓存的头像
-    const uniqueEmails = [...new Set(nextBatch.map(c => c.email))];
-    await Promise.all(uniqueEmails.map(getGravatarUrlCached));
+    await Promise.all(nextBatch.map(getAvatarUrlCached));
 
     // 头像全部就绪，瞬间同步组装 DOM
     const html = generateHtmlSync(nextBatch);
@@ -211,8 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (comments.length === 0) { listDom.innerHTML = ''; return; }
     
     // 🚀 优化：渲染前一次性并发处理这棵树里所有相关联的人的头像（包括子评论）
-    const allUniqueEmails = [...new Set(comments.map(c => c.email))];
-    await Promise.all(allUniqueEmails.map(getGravatarUrlCached));
+    await Promise.all(comments.map(getAvatarUrlCached));
 
     const { roots, childrenMap } = buildFlatTree(comments);
     roots.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -363,4 +384,4 @@ document.addEventListener('DOMContentLoaded', () => {
           mainCardTrigger.click();
       }
   }
-}); 
+});

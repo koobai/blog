@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+from jingzhe.exercise_contract import RIDE_TYPES, RUN_WALK_TYPES, SPORT_NAMES
 
 REPORT_VERSION = 6
 MODEL = 'deepseek-v4-flash'
@@ -18,25 +19,6 @@ MID_MONTH_DAY = 16
 MIN_MID_MONTH_SESSIONS = 6
 MIN_MID_MONTH_ACTIVE_DAYS = 5
 GOAL = '稳定减脂优先，兼顾骑行耐力与日常运动习惯，不以竞速和极限成绩为目标'
-
-SPORT_NAMES = {
-    'Run': '跑步',
-    'TrailRun': '山野跑',
-    'Treadmill': '跑步机',
-    'VirtualRun': '线上跑',
-    'Ride': '骑行',
-    'VirtualRide': '虚拟骑',
-    'EBikeRide': '电助力骑',
-    'Walk': '步行',
-    'Hike': '徒步',
-    'StairStepper': '爬楼梯',
-    'Swim': '游泳',
-    'WaterSport': '水上运动'
-}
-
-RIDE_TYPES = {'Ride', 'VirtualRide', 'EBikeRide'}
-RUN_WALK_TYPES = {'Run', 'TrailRun', 'Treadmill', 'VirtualRun', 'Walk', 'Hike'}
-
 
 def duration_seconds(value):
     if isinstance(value, (int, float)):
@@ -786,15 +768,29 @@ def generate_report(api_key, facts):
     }
 
 
+class DeepSeekReportProvider:
+    """Default adapter; the state machine only depends on generate() and model."""
+
+    model = MODEL
+
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def generate(self, facts):
+        return generate_report(self.api_key, facts)
+
+
 def update_monthly_insights(
     activities,
     output_path,
     api_key=None,
-    now=None
+    now=None,
+    report_provider=None
 ):
     # GitHub Actions 使用 UTC；月中和月末边界必须按博客所在的杭州时区判断。
     now = now or datetime.now(ZoneInfo('Asia/Shanghai'))
     api_key = api_key or os.getenv('DEEPSEEK_API_KEY')
+    provider = report_provider or (DeepSeekReportProvider(api_key) if api_key else None)
     grouped = group_by_month(activities)
     try:
         with open(output_path, 'r', encoding='utf-8') as file:
@@ -943,11 +939,11 @@ def update_monthly_insights(
         report_data_hash = old_entry.get('report_data_hash') if (frozen_midmonth or frozen_final) else current_hash
         report_as_of = old_entry.get('report_as_of') if (frozen_midmonth or frozen_final) else f'{month_key}-{report_cutoff_day:02d}'
 
-        if report is None and api_key:
+        if report is None and provider:
             print(f"🧠 {month_key} 正在生成{'月中报告' if phase == 'midmonth' else '最终报告'}...")
-            report = generate_report(api_key, facts)
+            report = provider.generate(facts)
             if report is not None:
-                report_model = MODEL
+                report_model = getattr(provider, 'model', MODEL)
         elif report is None:
             print(f'⏸️ {month_key} 等待 DEEPSEEK_API_KEY，保留现有月报。')
 

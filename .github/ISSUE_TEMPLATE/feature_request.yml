@@ -1,0 +1,38 @@
+name: 功能建议
+description: 建议兼容现有生产流程的新能力
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 先说明使用场景，而不仅是实现方案。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+    validations:
+      required: true
+  - type: dropdown
+    id: profile
+    attributes:
+      label: 所属 Profile
+      options:
+        - Core
+        - Publisher
+        - Social
+        - Life Data
+        - AI Coach
+        - 不确定
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: 兼容与隐私影响
+      description: 是否影响 URL、LocalStorage、Worker、Actions、内容格式、Secret 或个人数据？
+    validations:
+      required: true

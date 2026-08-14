@@ -1,0 +1,33 @@
+baseURL = "https://example.org/"
+languageCode = "zh-cn"
+title = "惊蛰"
+theme = "jingzhe_v3"
+
+enableRobotsTXT = true
+hasCJKLanguage = true
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.120.0"
+
+[permalinks]
+  posts = "/:slug/"
+
+[markup]
+  [markup.highlight]
+    guessSyntax = true
+    lineNos = false
+    noClasses = false
+
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  laodaotag = "laodaotags"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS", "JSON"]

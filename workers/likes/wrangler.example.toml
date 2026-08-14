@@ -1,0 +1,13 @@
+name = "jingzhe-likes"
+main = "src/index.js"
+compatibility_date = "2026-08-14"
+
+[vars]
+ALLOWED_ORIGINS = "https://example.org,http://localhost:1313,http://127.0.0.1:1313"
+SITE_URL = "https://example.org"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jingzhe-likes"
+database_id = "replace-with-d1-database-id"
+migrations_dir = "migrations"

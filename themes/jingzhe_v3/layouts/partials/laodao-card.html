@@ -47,6 +47,7 @@
     {{ end }}
   </div>
 
+  {{ if partial "jingzhe/feature-enabled.html" "social" }}
   <div class="laodao-footer">
     <div class="laodao-tags">   
    {{/* {{ range (.GetTerms "laodaotags") }}
@@ -67,6 +68,6 @@
       </span>
     </div>
   </div>
-  
   <div class="laodao-comment-container"></div>
+  {{ end }}
 </div>

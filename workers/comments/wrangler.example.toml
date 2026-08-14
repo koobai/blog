@@ -1,0 +1,18 @@
+name = "jingzhe-comments"
+main = "src/index.js"
+compatibility_date = "2026-08-14"
+
+[vars]
+ALLOWED_ORIGINS = "https://example.org,http://localhost:1313,http://127.0.0.1:1313"
+SITE_URL = "https://example.org"
+SITE_NAME = "My Jingzhe Blog"
+ADMIN_EMAILS = "owner@example.org"
+APP_SCHEME = ""
+RESEND_FROM = "My Blog <comments@example.org>"
+RESEND_SUBJECT = "有人回复了您的评论"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jingzhe-comments"
+database_id = "replace-with-d1-database-id"
+migrations_dir = "migrations"

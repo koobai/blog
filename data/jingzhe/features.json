@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "profiles": {
+    "core": ["core"],
+    "publisher": ["core", "publisher"],
+    "social": ["core", "social"],
+    "life-data": ["core", "movies", "exercise"],
+    "ai-coach": ["core", "exercise", "aiCoach"],
+    "full": ["core", "publisher", "social", "movies", "exercise", "aiCoach", "externalShop"]
+  },
+  "features": [
+    {
+      "id": "core",
+      "profile": "core",
+      "default": true,
+      "configPath": "params.features.core",
+      "publicConfig": ["baseURL", "title", "params.brand", "params.author"],
+      "requiredSecrets": [],
+      "requiredData": [],
+      "degradation": "Core 是必选静态能力，不依赖 Worker。",
+      "checks": ["hugo --minify --panicOnWarning"],
+      "privacyImpact": "只发布用户明确放入 content 的公开内容。"
+    },
+    {
+      "id": "publisher",
+      "profile": "publisher",
+      "default": false,
+      "configPath": "params.features.publisher",
+      "publicConfig": ["params.repository", "params.services.publisher"],
+      "requiredSecrets": ["Publisher Worker 中的 GitHub 写入凭据和管理员认证 Secret"],
+      "requiredData": [],
+      "degradation": "关闭后不提供浏览器管理页面，仍可使用本地 Markdown 或 GitHub 编辑。",
+      "checks": ["Publisher Worker 合约测试", "网页写作回归"],
+      "privacyImpact": "拥有仓库写权限，必须与公开互动服务隔离。"
+    },
+    {
+      "id": "social",
+      "profile": "social",
+      "default": false,
+      "configPath": "params.features.social",
+      "publicConfig": ["params.services.social.commentsApi", "params.services.social.likesApi", "params.services.social.turnstileSiteKey"],
+      "requiredSecrets": ["Comments/Likes Worker 的 Turnstile Secret Key", "评论管理员凭据", "Likes 访客哈希盐"],
+      "requiredData": [],
+      "degradation": "关闭后不渲染评论、点赞和 Turnstile，不影响正文与分页。",
+      "checks": ["评论与点赞合约测试", "Turnstile 成功与失败路径"],
+      "privacyImpact": "可能处理评论邮箱；公开响应不得返回真实邮箱。"
+    },
+    {
+      "id": "movies",
+      "profile": "life-data",
+      "default": false,
+      "configPath": "params.features.movies",
+      "publicConfig": [],
+      "requiredSecrets": ["可选的豆瓣同步凭据"],
+      "requiredData": ["assets/movie.json"],
+      "schema": "schemas/data/movie.schema.json",
+      "degradation": "关闭后不创建观影入口；Core 构建不读取观影数据。",
+      "checks": ["观影 JSON Schema", "Hugo 页面构建"],
+      "privacyImpact": "观影记录和短评是公开数据。"
+    },
+    {
+      "id": "exercise",
+      "profile": "life-data",
+      "default": false,
+      "configPath": "params.features.exercise",
+      "publicConfig": ["params.services.exercise.mapboxToken"],
+      "requiredSecrets": [],
+      "requiredData": ["assets/activities.json", "assets/landmark_route_library.json", "assets/monthly_insights.json", "data/jingzhe/exercise.json"],
+      "schema": "schemas/data/activities.schema.json",
+      "degradation": "关闭后不创建运动入口，也不加载 Mapbox 和运动脚本。",
+      "checks": ["运动数据 Schema", "隐私契约测试", "Hugo 页面构建"],
+      "privacyImpact": "公开轨迹与隐私替代路线必须明确区分；精确坐标不得默认公开。"
+    },
+    {
+      "id": "aiCoach",
+      "profile": "ai-coach",
+      "default": false,
+      "configPath": "params.features.aiCoach",
+      "publicConfig": [],
+      "requiredSecrets": ["模型 API Key"],
+      "requiredData": ["assets/activities.json", "assets/monthly_insights.json"],
+      "schema": "schemas/data/monthly-insights.schema.json",
+      "degradation": "关闭后保留确定性运动统计，不调用模型。",
+      "checks": ["月报状态机测试", "模型 payload 隐私测试"],
+      "privacyImpact": "模型只能接收聚合证据，不得接收轨迹、坐标、来源 ID 或身份字段。"
+    },
+    {
+      "id": "externalShop",
+      "profile": "full",
+      "default": false,
+      "configPath": "params.features.externalShop",
+      "publicConfig": ["menu.main.Goods"],
+      "requiredSecrets": [],
+      "requiredData": [],
+      "degradation": "关闭后隐藏外部店铺菜单。",
+      "checks": ["菜单构建检查"],
+      "privacyImpact": "访问外部链接时适用目标站点的隐私政策。"
+    }
+  ]
+}

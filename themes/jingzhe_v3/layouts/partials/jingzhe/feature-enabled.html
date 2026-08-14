@@ -1,0 +1,3 @@
+{{- $featureName := lower (string .) -}}
+{{- $features := site.Params.features | default dict -}}
+{{- return (eq (index $features $featureName) true) -}}

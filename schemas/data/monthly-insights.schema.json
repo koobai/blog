@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe monthly insights",
+  "type": "object",
+  "patternProperties": {
+    "^[0-9]{4}-(0[1-9]|1[0-2])$": {
+      "type": "object",
+      "required": ["month_str", "stats", "report_phase"],
+      "properties": {
+        "month_str": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+        "stats": {"type": "object"},
+        "report_phase": {"type": "string"},
+        "report_as_of": {"type": "string"},
+        "status_text": {"type": "string"},
+        "coach_report": {
+          "type": "object",
+          "properties": {
+            "verdict": {"type": "string"},
+            "analysis": {"type": "string"},
+            "next_plan": {"type": "string"},
+            "evidence_ids": {"type": "array", "items": {"type": "string"}}
+          },
+          "additionalProperties": false
+        },
+        "report_version": {"type": "integer", "minimum": 1},
+        "report_data_hash": {"type": "string"},
+        "source_data_hash": {"type": "string"},
+        "model": {"type": "string"},
+        "comparison_basis": {"type": "string"},
+        "last_update": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

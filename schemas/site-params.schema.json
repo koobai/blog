@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe site params",
+  "type": "object",
+  "required": ["profile", "brand", "features"],
+  "properties": {
+    "profile": {"enum": ["core", "publisher", "social", "life-data", "ai-coach", "full"]},
+    "description": {"type": "string"},
+    "brand": {
+      "type": "object",
+      "required": ["name", "footerName", "webAppTitle", "manifestPath"],
+      "additionalProperties": true
+    },
+    "features": {
+      "type": "object",
+      "required": ["core"],
+      "properties": {
+        "core": {"const": true},
+        "publisher": {"type": "boolean"},
+        "social": {"type": "boolean"},
+        "movies": {"type": "boolean"},
+        "exercise": {"type": "boolean"},
+        "aiCoach": {"type": "boolean"},
+        "externalShop": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "repository": {"type": "object"},
+    "services": {"type": "object"}
+  },
+  "additionalProperties": true
+}

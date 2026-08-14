@@ -1,8 +1,17 @@
 {{ define "body_classes" }}page-exercise{{ end }}
 
 {{ define "main" }}
-<link rel="dns-prefetch" href="//api.mapbox.com">
-<link rel="dns-prefetch" href="//events.mapbox.com">
+{{- $exerciseConfig := site.Params.services.exercise | default dict -}}
+{{- $mapboxApiOrigin := default "https://api.mapbox.com" (index $exerciseConfig "mapboxapiorigin") -}}
+{{- $mapboxEventsOrigin := default "https://events.mapbox.com" (index $exerciseConfig "mapboxeventsorigin") -}}
+{{- $mapboxCssUrl := default "https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" (index $exerciseConfig "mapboxcssurl") -}}
+{{- $mapboxJsUrl := default "https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js" (index $exerciseConfig "mapboxjsurl") -}}
+{{- $mapboxToken := default "" (index $exerciseConfig "mapboxtoken") -}}
+{{- $exerciseContract := hugo.Data.jingzhe.exercise -}}
+{{- $sportContract := index $exerciseContract "sports" -}}
+{{- $exerciseGroups := index $exerciseContract "groups" -}}
+<link rel="dns-prefetch" href="{{ $mapboxApiOrigin }}">
+<link rel="dns-prefetch" href="{{ $mapboxEventsOrigin }}">
 
 {{- /* ============================================================
      板块 1：底层数据引擎与业务逻辑运算 (Hugo 编译期执行)
@@ -24,27 +33,22 @@
 {{ end }}
 
 {{ $activities := slice }}
-{{ $themeMap := dict
-  "Ride"         (dict "color" "#32D74B") 
-  "VirtualRide"  (dict "color" "#32D74B")
-  "EBikeRide"    (dict "color" "#32D74B")
-  "Run"          (dict "color" "#F58200")
-  "TrailRun"     (dict "color" "#F58200")
-  "Treadmill"    (dict "color" "#F58200")
-  "VirtualRun"   (dict "color" "#F58200")  
-  "Walk"         (dict "color" "#DF40C4")
-  "Hike"         (dict "color" "#DF40C4")
-  "Swim"         (dict "color" "#0BAEE6")
-  "WaterSport"   (dict "color" "#0BAEE6")
-  "StairStepper" (dict "color" "#AF52DE")
-}}
-{{ $defaultTheme := dict "color" "#32D74B" }}
-{{ $foodIconKeys := slice "sugar_cube" "chocolate" "cookie" "banana" "cola" "beer" "rice" "ice_cream_cone" "egg_tart" "fried_chicken" "burger" "pizza" "fries" "milk_tea" "instant_noodles" }}
+{{ $themeMap := dict }}
+{{ $typeMap := dict }}
+{{ $fallbackTitleMap := dict }}
+{{ range $type, $values := $sportContract }}
+  {{ $themeMap = merge $themeMap (dict $type (dict "color" (index $values "color"))) }}
+  {{ $typeMap = merge $typeMap (dict $type (index $values "displayName")) }}
+  {{ $fallbackTitleMap = merge $fallbackTitleMap (dict $type (index $values "fallbackTitle")) }}
+{{ end }}
+{{ $defaultTheme := dict "color" (index $exerciseContract "fallbackColor") }}
+{{ $foodIconKeys := slice }}
+{{ range (index $exerciseContract "foods") }}
+  {{ $foodIconKeys = $foodIconKeys | append (index . "key") }}
+{{ end }}
 
 {{ range $rawActivities }}
-  {{ $typeMap := dict "Run" "跑步" "TrailRun" "山野跑" "Treadmill" "跑步机" "VirtualRun" "线上跑" "Ride" "骑行" "EBikeRide" "电助力骑" "VirtualRide" "虚拟骑" "Walk" "步行" "Hike" "徒步" "Swim" "游泳" "WaterSport" "水上浪" "StairStepper" "爬楼梯" }}
   {{ $typeStr := default "运动" (index $typeMap .type) }}
-  {{ $fallbackTitleMap := dict "Run" "跑起来" "TrailRun" "跑起来" "Treadmill" "跑起来" "VirtualRun" "跑起来" "Ride" "骑起来" "EBikeRide" "骑起来" "VirtualRide" "骑起来" "Walk" "走起来" "Hike" "走起来" "Swim" "游起来" "WaterSport" "游起来" "StairStepper" "爬起来" }}
   {{ $fallbackTitle := default "动起来" (index $fallbackTitleMap .type) }}
   
   {{/* App 明确给出室内状态；空轨迹不再被误判为室内运动。 */}}
@@ -77,8 +81,8 @@
 
 {{- /* 2. 排序与极值勋章计算 */ -}}
 {{ $sortedActivities := sort $activities "start_date_local" "desc" }}
-{{ $rideTypes := slice "Ride" "VirtualRide" "EBikeRide" }}
-{{ $rwTypes := slice "Run" "TrailRun" "Treadmill" "VirtualRun" "Trail Run" "Walk" "Hike" }}
+{{ $rideTypes := index $exerciseGroups "ride" }}
+{{ $rwTypes := index $exerciseGroups "displayRunWalk" }}
 
 {{ $years := slice }}
 {{ $lightweightRuns := slice }} 
@@ -184,10 +188,10 @@
      板块 3：客户端脚本配置与依赖注入
 ============================================================ */ -}}
 
-<link rel="preconnect" href="https://api.mapbox.com" crossorigin>
-<link rel="preconnect" href="https://events.mapbox.com" crossorigin>
-<link href="https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.css" rel="stylesheet" />
-<script defer src="https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.js"></script>
+<link rel="preconnect" href="{{ $mapboxApiOrigin }}" crossorigin>
+<link rel="preconnect" href="{{ $mapboxEventsOrigin }}" crossorigin>
+<link href="{{ $mapboxCssUrl }}" rel="stylesheet" />
+<script defer src="{{ $mapboxJsUrl }}"></script>
 
 <script>
   window.KoobaiRun = {
@@ -195,7 +199,8 @@
     monthlyInsights: {{ $monthlyInsights | jsonify | safeJS }},
     landmarkRoutes: {{ $landmarkRouteLibrary | jsonify | safeJS }},
     availableYears: {{ $years | jsonify | safeJS }},
-    config: { MAPBOX_TOKEN: "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw" },
+    contract: {{ $exerciseContract | jsonify | safeJS }},
+    config: { MAPBOX_TOKEN: {{ $mapboxToken | jsonify | safeJS }} },
     ui: null, map: null
   };
 </script>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe movie data",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "title", "rating", "create_time"],
+    "properties": {
+      "id": {"type": ["string", "number"]},
+      "type": {"type": "string"},
+      "title": {"type": "string", "minLength": 1},
+      "year": {"type": ["string", "number"]},
+      "rating": {"type": "number", "minimum": 0, "maximum": 5},
+      "comment": {"type": "string"},
+      "link": {"type": "string"},
+      "create_time": {"type": "string", "minLength": 1},
+      "color_scheme": {
+        "type": "object",
+        "properties": {
+          "primary_color_light": {"type": "string"},
+          "primary_color_dark": {"type": "string"},
+          "secondary_color": {"type": "string"},
+          "is_dark": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "additionalProperties": true
+  }
+}

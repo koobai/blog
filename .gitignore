@@ -14,3 +14,10 @@ resources/
 
 # 临时文件
 *.log
+
+# Cloudflare Worker 本地私密配置与缓存
+workers/**/.dev.vars
+workers/**/.env
+workers/**/.env.*
+workers/**/.wrangler/
+workers/**/wrangler.toml

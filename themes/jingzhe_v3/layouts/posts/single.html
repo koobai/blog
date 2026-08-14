@@ -33,7 +33,7 @@
   </button>
 
 <div class="article-comments">
-    {{ partial "comments.html" . }}
+    {{ if partial "jingzhe/feature-enabled.html" "social" }}{{ partial "comments.html" . }}{{ end }}
   </div>
 
 </article> 

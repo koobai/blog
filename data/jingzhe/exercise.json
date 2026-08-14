@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fallbackColor": "#14C759",
+  "sports": {
+    "Run": { "name": "跑步", "displayName": "跑步", "color": "#F58200", "distanceVerb": "跑了", "distanceGroup": "run", "fallbackTitle": "跑起来" },
+    "TrailRun": { "name": "山野跑", "displayName": "山野跑", "color": "#F58200", "distanceVerb": "跑了", "distanceGroup": "run", "fallbackTitle": "跑起来" },
+    "Treadmill": { "name": "跑步机", "displayName": "跑步机", "color": "#F58200", "distanceVerb": "跑了", "distanceGroup": "run", "fallbackTitle": "跑起来" },
+    "VirtualRun": { "name": "线上跑", "displayName": "线上跑", "color": "#F58200", "distanceVerb": "跑了", "distanceGroup": "run", "fallbackTitle": "跑起来" },
+    "Ride": { "name": "骑行", "displayName": "骑行", "color": "#32D74B", "distanceVerb": "骑了", "distanceGroup": "ride", "fallbackTitle": "骑起来" },
+    "VirtualRide": { "name": "虚拟骑", "displayName": "虚拟骑", "color": "#32D74B", "distanceVerb": "骑了", "distanceGroup": "ride", "fallbackTitle": "骑起来" },
+    "EBikeRide": { "name": "电助力骑", "displayName": "电助力骑", "color": "#32D74B", "distanceVerb": "骑了", "distanceGroup": "ride", "fallbackTitle": "骑起来" },
+    "Walk": { "name": "步行", "displayName": "步行", "color": "#DF40C4", "distanceVerb": "走了", "distanceGroup": "walk", "fallbackTitle": "走起来" },
+    "Hike": { "name": "徒步", "displayName": "徒步", "color": "#DF40C4", "distanceVerb": "走了", "distanceGroup": "hike", "fallbackTitle": "走起来" },
+    "Swim": { "name": "游泳", "displayName": "游泳", "color": "#0BAEE6", "fallbackTitle": "游起来" },
+    "WaterSport": { "name": "水上运动", "displayName": "水上浪", "color": "#0BAEE6", "fallbackTitle": "游起来" },
+    "StairStepper": { "name": "爬楼梯", "displayName": "爬楼梯", "color": "#AF52DE", "distanceVerb": "爬了", "fallbackTitle": "爬起来" }
+  },
+  "groups": {
+    "ride": ["Ride", "VirtualRide", "EBikeRide"],
+    "run": ["Run", "TrailRun", "Treadmill", "VirtualRun", "Trail Run"],
+    "walk": ["Walk", "Hike"],
+    "summaryRunWalk": ["Run", "TrailRun", "Treadmill", "VirtualRun", "Walk", "Hike"],
+    "displayRunWalk": ["Run", "TrailRun", "Treadmill", "VirtualRun", "Trail Run", "Walk", "Hike"]
+  },
+  "foods": [
+    { "key": "sugar_cube", "name": "方糖", "unit": "块", "kcal": 16, "monthly": false },
+    { "key": "chocolate", "name": "巧克力", "unit": "块", "kcal": 43, "monthly": false },
+    { "key": "cookie", "name": "曲奇", "unit": "块", "kcal": 45, "monthly": false },
+    { "key": "banana", "name": "香蕉", "unit": "根", "kcal": 90, "monthly": false },
+    { "key": "cola", "name": "可乐", "unit": "罐", "kcal": 139, "monthly": true },
+    { "key": "beer", "name": "啤酒", "unit": "瓶", "kcal": 139, "monthly": true },
+    { "key": "rice", "name": "米饭", "unit": "碗", "kcal": 180, "monthly": true },
+    { "key": "ice_cream_cone", "name": "甜筒", "unit": "支", "kcal": 200, "monthly": true },
+    { "key": "egg_tart", "name": "蛋挞", "unit": "个", "kcal": 220, "monthly": true },
+    { "key": "fried_chicken", "name": "炸鸡", "unit": "块", "kcal": 250, "monthly": true },
+    { "key": "burger", "name": "汉堡", "unit": "个", "kcal": 250, "monthly": true },
+    { "key": "pizza", "name": "披萨", "unit": "片", "kcal": 280, "monthly": true },
+    { "key": "fries", "name": "薯条", "unit": "份", "kcal": 300, "monthly": true },
+    { "key": "milk_tea", "name": "奶茶", "unit": "杯", "kcal": 450, "monthly": true },
+    { "key": "instant_noodles", "name": "泡面", "unit": "包", "kcal": 470, "monthly": true }
+  ]
+}

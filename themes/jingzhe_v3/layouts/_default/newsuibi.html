@@ -1,8 +1,9 @@
 {{ define "body_classes" }}page-bowen-admin{{ end }}
 {{ define "main" }}
 
-<script src="/js/coco-message.min.js" defer></script>
+<script src="/js/jingzhe-message.js" defer></script>
 <script src="/js/marked.min.js"></script>
+<script src="/js/editor-core.js"></script>
 
 <div id="loginOverlay" style="display: none;">
     <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
@@ -73,8 +74,16 @@
 
 </div>
 
+{{- $publisherConfig := site.Params.services.publisher | default dict -}}
+{{- $repositoryConfig := site.Params.repository | default dict -}}
 <script>
-    const CONFIG = { workerUrl: "https://newlaodao.koobai.com", owner: "koobai", repo: "blog", branch: "main", upyunDomain: "https://img.koobai.com" };
+    const CONFIG = {
+        workerUrl: {{ default "" (index $publisherConfig "workerurl") | jsonify | safeJS }},
+        owner: {{ default "" (index $repositoryConfig "owner") | jsonify | safeJS }},
+        repo: {{ default "" (index $repositoryConfig "name") | jsonify | safeJS }},
+        branch: {{ default "main" (index $repositoryConfig "branch") | jsonify | safeJS }},
+        upyunDomain: {{ default "" (index $publisherConfig "imagebaseurl") | jsonify | safeJS }}
+    };
     const CACHE_KEY = 'koobai_article_draft'; 
 
     let isPreviewMode = false;
@@ -87,10 +96,10 @@
     let filteredTags = [];
     let currentTagIndex = -1;
 
-    const $ = id => document.getElementById(id);
-    const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
-    const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
-    const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
+    const $ = JingzheEditor.byId;
+    const getAdminToken = JingzheEditor.getAdminToken;
+    const utf8_to_b64 = JingzheEditor.utf8ToBase64;
+    const b64_to_utf8 = JingzheEditor.base64ToUtf8;
 
     // 🚀 终极优化 2：全局彻底缓存高频访问的 DOM 节点
     const postTagsEl = $('postTags');
@@ -111,24 +120,13 @@
         };
     }
 
-    async function secureFetch(url, options = {}) {
-        options.headers = { ...options.headers, 'x-admin-token': getAdminToken() };
-        const res = await fetch(url, options);
-        if (res.status === 401) throw new Error("401"); 
-        return res;
-    }
+    const secureFetch = JingzheEditor.secureFetch;
 
     // 抓取随笔专属标签库
     async function fetchAllTags() {
         if (cachedTags.length > 0) return;
         try {
-            const res = await fetch('/tags/index.xml?t=' + Date.now());
-            if (res.ok) {
-                const text = await res.text();
-                const xmlDoc = new DOMParser().parseFromString(text, "text/xml");
-                const titles = Array.from(xmlDoc.querySelectorAll("item title")).map(t => t.textContent);
-                cachedTags = [...new Set(titles)]; 
-            }
+            cachedTags = await JingzheEditor.fetchTagTitles('/tags/index.xml');
         } catch(e) {
             console.log("长文标签拉取失败", e);
         }
@@ -151,16 +149,15 @@
         draftTimer = setTimeout(() => {
             // 直接读取缓存好的节点，快如闪电
             const draft = { title: postTitleEl.value, filename: postFilenameEl.value, slug: postSlugEl.value, tags: postTagsEl.value, desc: postDescEl.value, content: postContentEl.value };
-            localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
+            JingzheEditor.saveDraft(CACHE_KEY, draft);
         }, 1000);
     }
 
     function loadDraft() {
         if (window.STATE.sha) return;
-        const saved = localStorage.getItem(CACHE_KEY);
-        if (saved) {
+        const draft = JingzheEditor.loadDraft(CACHE_KEY);
+        if (draft) {
             try {
-                const draft = JSON.parse(saved);
                 if (draft.title) postTitleEl.value = draft.title;
                 if (draft.filename) postFilenameEl.value = draft.filename;
                 if (draft.slug) postSlugEl.value = draft.slug;
@@ -237,31 +234,13 @@
         const previewArea = $('previewContent'); const btn = $('modeToggleBtn');
         isPreviewMode = !isPreviewMode;
         if (isPreviewMode) {
-            postContentEl.style.display = 'none'; previewArea.innerHTML = marked.parse(postContentEl.value || '*空空如也*'); previewArea.style.display = 'block';
+            postContentEl.style.display = 'none'; previewArea.innerHTML = JingzheEditor.renderMarkdown(marked, postContentEl.value); previewArea.style.display = 'block';
             btn.style.color = "var(--text-highlight-color)"; btn.style.opacity = "1";
         } else {
             previewArea.style.display = 'none'; postContentEl.style.display = 'block';
             btn.style.color = ""; btn.style.opacity = "0.5";
         }
     }
-
-    const compressImage = (file) => new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = (e) => {
-            const img = new Image(); img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas'); 
-                let { width, height } = img; 
-                const MAX = 1500; 
-                if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } } 
-                else { if (height > MAX) { width *= MAX / height; height = MAX; } }
-                
-                canvas.width = width; canvas.height = height; 
-                canvas.getContext('2d').drawImage(img, 0, 0, width, height); 
-                canvas.toBlob(resolve, 'image/webp', 0.75); 
-            }; img.onerror = reject;
-        }; reader.onerror = reject;
-    });
 
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
@@ -270,10 +249,8 @@
         for (let file of files) {
             if (!file.type.startsWith('image/')) continue;
             try {
-                const webpBlob = await compressImage(file);
-                const fileName = `article/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.webp`;
-                await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: webpBlob });
-                wrapText('![', `](${CONFIG.upyunDomain}/${fileName})\n`, ''); 
+                const uploaded = await JingzheEditor.uploadImage(file, CONFIG, 'article');
+                wrapText('![', `](${uploaded.url})\n`, '');
             } catch (err) { 
                 if (typeof uploadMsg === 'function') uploadMsg();
                 if (err.message === "401") return logout(); return cocoMessage.error("图片上传失败"); 
@@ -325,7 +302,7 @@
     }
 
     async function fetchRecent() {
-        const commitsUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=content/posts&per_page=3&sha=${CONFIG.branch}`;
+        const commitsUrl = JingzheEditor.commitsUrl(CONFIG, 'content/posts');
         try {
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commitsUrl } });
             if (!res.ok) { cocoMessage.warning("暂无提交记录"); return false; }
@@ -347,7 +324,7 @@
             hasFetchedRecent = true; 
             
             const filenameOnly = latestFile.filename.split('/').pop();
-            const fileUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${latestFile.filename}?ref=${CONFIG.branch}`);
+            const fileUrl = JingzheEditor.contentsUrl(CONFIG, latestFile.filename, true);
             
             $('recentList').innerHTML = `
             <div class="laodao-card admin-recent-card" onclick="fetchAndLoadForEdit('${latestFile.filename}', '${fileUrl}')">
@@ -462,9 +439,9 @@
     async function verifyToken() {
         const token = $('adminTokenInput').value.trim();
         if (!token) return cocoMessage.warning("请输入密钥");
-        localStorage.setItem("koobai_admin_token", token);
+        JingzheEditor.setAdminToken(token);
         try {
-            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': JingzheEditor.repositoryUrl(CONFIG) } });
             $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
             cocoMessage.success("验证成功"); 
             fetchAllTags();
@@ -475,7 +452,7 @@
     }
 
     function logout(reload = true) {
-        localStorage.removeItem("koobai_admin_token");
+        JingzheEditor.clearAdminToken();
         reload ? location.reload() : ($('loginOverlay').style.display = 'flex', $('adminPanel').style.display = 'none');
     }
 
@@ -522,7 +499,7 @@
 
         const finalMD = frontmatter + contentVal; 
         const path = window.STATE.path ? window.STATE.path : `content/posts/${safeFilename}.md`;
-        const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
+        const targetUrl = JingzheEditor.contentsUrl(CONFIG, path);
         
         try {
             // 🚀 核心防 422 优化：修改旧文章前，精准拉取当前分支下该文件的最新 SHA
@@ -558,7 +535,7 @@
             cocoMessage.success(window.STATE.sha ? "修改成功！" : "发布成功！"); 
             
             // 发布成功后清理缓存和状态
-            if (!window.STATE.sha) localStorage.removeItem(CACHE_KEY); 
+            if (!window.STATE.sha) JingzheEditor.removeDraft(CACHE_KEY);
             if ($('recentListWrap').style.display === 'block') { hasFetchedRecent = false; fetchRecent(); }
             
             cancelEdit(false);

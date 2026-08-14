@@ -8,6 +8,12 @@ from datetime import datetime
 
 import requests
 
+from jingzhe.exercise_contract import (
+    ACTIVITY_DISTANCE_GROUPS,
+    ACTIVITY_DISTANCE_VERBS,
+    ACTIVITY_TYPE_CN,
+    FOOD_EQUIVALENTS,
+)
 from monthly_coach import update_monthly_insights as update_monthly_coach_insights
 
 # ==========================================
@@ -33,64 +39,7 @@ MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
 LANDMARK_ROUTE_FILE = os.path.join(TARGET_DIR, 'landmark_route_library.json')
 PUBLISH_START_DATE = datetime(2026, 1, 1)
 
-ACTIVITY_TYPE_CN = {
-    'Run': '跑步',
-    'TrailRun': '山野跑',
-    'Treadmill': '跑步机',
-    'VirtualRun': '线上跑',
-    'Ride': '骑行',
-    'VirtualRide': '虚拟骑',
-    'EBikeRide': '电助力骑',
-    'Walk': '步行',
-    'Hike': '徒步',
-    'StairStepper': '爬楼梯',
-    'Swim': '游泳',
-    'WaterSport': '水上运动'
-}
-
-ACTIVITY_DISTANCE_VERBS = {
-    'Run': '跑了',
-    'TrailRun': '跑了',
-    'Treadmill': '跑了',
-    'VirtualRun': '跑了',
-    'Ride': '骑了',
-    'VirtualRide': '骑了',
-    'EBikeRide': '骑了',
-    'Walk': '走了',
-    'Hike': '走了',
-    'StairStepper': '爬了'
-}
-
-ACTIVITY_DISTANCE_GROUPS = {
-    'Run': 'run',
-    'TrailRun': 'run',
-    'Treadmill': 'run',
-    'VirtualRun': 'run',
-    'Ride': 'ride',
-    'VirtualRide': 'ride',
-    'EBikeRide': 'ride',
-    'Walk': 'walk',
-    'Hike': 'hike'
-}
-
-# 趣味能量换算表。数值只用于挑选自然的整数标题，不作为营养建议展示。
-FOOD_EQUIVALENTS = [
-    {'key': 'sugar_cube', 'name': '方糖', 'unit': '块', 'kcal': 16},
-    {'key': 'chocolate', 'name': '巧克力', 'unit': '块', 'kcal': 43},
-    {'key': 'cookie', 'name': '曲奇', 'unit': '块', 'kcal': 45},
-    {'key': 'banana', 'name': '香蕉', 'unit': '根', 'kcal': 90},
-    {'key': 'cola', 'name': '可乐', 'unit': '罐', 'kcal': 139},
-    {'key': 'beer', 'name': '啤酒', 'unit': '瓶', 'kcal': 139},
-    {'key': 'rice', 'name': '米饭', 'unit': '碗', 'kcal': 180},
-    {'key': 'ice_cream_cone', 'name': '甜筒', 'unit': '支', 'kcal': 200},
-    {'key': 'egg_tart', 'name': '蛋挞', 'unit': '个', 'kcal': 220},
-    {'key': 'fried_chicken', 'name': '炸鸡', 'unit': '块', 'kcal': 250},
-    {'key': 'burger', 'name': '汉堡', 'unit': '个', 'kcal': 250},
-    {'key': 'pizza', 'name': '披萨', 'unit': '片', 'kcal': 280},
-    {'key': 'fries', 'name': '薯条', 'unit': '份', 'kcal': 300},
-    {'key': 'milk_tea', 'name': '奶茶', 'unit': '杯', 'kcal': 450},
-    {'key': 'instant_noodles', 'name': '泡面', 'unit': '包', 'kcal': 470}
-]
+# 趣味能量换算、运动中文名和距离分组统一来自 data/jingzhe/exercise.json。
 MAX_FOOD_RELATIVE_ERROR = 0.12
 FOOD_TITLE_VERSION = 6
 

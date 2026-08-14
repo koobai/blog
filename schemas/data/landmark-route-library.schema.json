@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jingzhe landmark route library",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["key", "name", "distance_km", "geometry", "source"],
+    "properties": {
+      "key": {"type": "string", "minLength": 1},
+      "name": {"type": "string", "minLength": 1},
+      "unit": {"type": "string"},
+      "reference_km": {"type": "number", "minimum": 0},
+      "path_type": {"type": "string"},
+      "costing": {"type": "string"},
+      "distance_km": {"type": "number", "minimum": 0},
+      "geometry": {"type": "string"},
+      "source": {"type": "string"}
+    },
+    "additionalProperties": false
+  }
+}

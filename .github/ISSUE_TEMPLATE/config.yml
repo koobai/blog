@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞
+    url: https://github.com/koobai/blog/security
+    about: 请使用 Private vulnerability reporting，不要公开漏洞或 Secret。

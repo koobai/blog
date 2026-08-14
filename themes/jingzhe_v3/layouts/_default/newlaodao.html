@@ -1,8 +1,9 @@
 {{ define "body_classes" }}page-laodao-admin{{ end }}
 {{ define "main" }}
 
-<script src="/js/coco-message.min.js" defer></script>
+<script src="/js/jingzhe-message.js" defer></script>
 <script src="/js/marked.min.js"></script>
+<script src="/js/editor-core.js"></script>
 
 <div id="loginOverlay" style="display: none;">
     <input type="password" id="adminTokenInput" class="admin-login-input" placeholder="输入密钥">
@@ -65,12 +66,16 @@
     </div>
 </div>
 
+{{- $publisherConfig := site.Params.services.publisher | default dict -}}
+{{- $repositoryConfig := site.Params.repository | default dict -}}
 <script>
     const CONFIG = {
-        workerUrl: "https://newlaodao.koobai.com",
-        draftUrl: "https://laodaodraft.koobai.com",
-        owner: "koobai", repo: "blog", branch: "main",
-        upyunDomain: "https://img.koobai.com",
+        workerUrl: {{ default "" (index $publisherConfig "workerurl") | jsonify | safeJS }},
+        draftUrl: {{ default "" (index $publisherConfig "drafturl") | jsonify | safeJS }},
+        owner: {{ default "" (index $repositoryConfig "owner") | jsonify | safeJS }},
+        repo: {{ default "" (index $repositoryConfig "name") | jsonify | safeJS }},
+        branch: {{ default "main" (index $repositoryConfig "branch") | jsonify | safeJS }},
+        upyunDomain: {{ default "" (index $publisherConfig "imagebaseurl") | jsonify | safeJS }},
     };
 
     const CACHE_KEY = 'koobai_laodao_draft';
@@ -87,11 +92,11 @@
     // 初始化 Markdown 解析器
     marked.use({ breaks: true, gfm: true });
 
-    const $ = id => document.getElementById(id);
+    const $ = JingzheEditor.byId;
     const contentEl = $('content'); 
-    const getAdminToken = () => localStorage.getItem("koobai_admin_token") || "";
-    const utf8_to_b64 = str => btoa(Array.from(new TextEncoder().encode(str), byte => String.fromCodePoint(byte)).join(''));
-    const b64_to_utf8 = str => new TextDecoder().decode(Uint8Array.from(atob(str), c => c.charCodeAt(0)));
+    const getAdminToken = JingzheEditor.getAdminToken;
+    const utf8_to_b64 = JingzheEditor.utf8ToBase64;
+    const b64_to_utf8 = JingzheEditor.base64ToUtf8;
 
     // ==========================================
     // 💡 核心功能：极简且完美的预览渲染逻辑
@@ -122,7 +127,7 @@
             });
 
             // 3. ✨ 核心：解析纯净的 Markdown，并像 Hugo 一样强力剔除可能多出来的空 <p> 段落
-            let finalTextHtml = marked.parse(rawMarkdown.trim());
+            let finalTextHtml = JingzheEditor.renderMarkdown(marked, rawMarkdown, { trim: true, allowEmpty: true });
             finalTextHtml = finalTextHtml.replace(/<p>\s*(?:<br\s*\/?>)?\s*<\/p>/gi, '');
 
             // 4. 组装图库和标签
@@ -161,28 +166,22 @@
         };
     }
 
-    async function secureFetch(url, options = {}) {
-        options.headers = { ...options.headers, 'x-admin-token': getAdminToken() };
-        const res = await fetch(url, options);
-        if (res.status === 401) throw new Error("401"); 
-        return res;
-    }
+    const secureFetch = JingzheEditor.secureFetch;
 
     function scheduleSaveDraft() {
         if (STATE.sha) return; 
         clearTimeout(draftTimer);
         draftTimer = setTimeout(() => {
             const draft = { content: contentEl.value, location: STATE.location };
-            localStorage.setItem(CACHE_KEY, JSON.stringify(draft));
+            JingzheEditor.saveDraft(CACHE_KEY, draft);
         }, 800);
     }
 
     function loadDraft() {
         if (STATE.sha) return;
-        const saved = localStorage.getItem(CACHE_KEY);
-        if (saved) {
+        const draft = JingzheEditor.loadDraft(CACHE_KEY);
+        if (draft) {
             try {
-                const draft = JSON.parse(saved);
                 if (draft.content) { contentEl.value = draft.content; contentEl.dispatchEvent(new Event('input')); }
                 if (draft.location) { STATE.location = draft.location; renderLocation(); }
             } catch(e) {}
@@ -192,13 +191,7 @@
     async function fetchAllTags() {
         if (cachedTags.length > 0) return;
         try {
-            const res = await fetch('/laodaotags/index.xml?t=' + Date.now());
-            if (res.ok) {
-                const text = await res.text();
-                const xmlDoc = new DOMParser().parseFromString(text, "text/xml");
-                const titles = Array.from(xmlDoc.querySelectorAll("item title")).map(t => t.textContent);
-                cachedTags = [...new Set(titles)]; 
-            }
+            cachedTags = await JingzheEditor.fetchTagTitles('/laodaotags/index.xml');
         } catch(e) {}
     }
 
@@ -215,9 +208,9 @@
     async function verifyToken() {
         const token = $('adminTokenInput').value.trim();
         if (!token) return cocoMessage.warning("请输入密钥");
-        localStorage.setItem("koobai_admin_token", token);
+        JingzheEditor.setAdminToken(token);
         try {
-            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}` } }); 
+            await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': JingzheEditor.repositoryUrl(CONFIG) } });
             $('loginOverlay').style.display = 'none'; $('adminPanel').style.display = 'block';
             cocoMessage.success("验证成功"); fetchAllTags(); loadDraft(); contentEl.focus();
         } catch (e) {
@@ -226,7 +219,7 @@
     }
 
     function logout(reload = true) {
-        localStorage.removeItem("koobai_admin_token");
+        JingzheEditor.clearAdminToken();
         reload ? location.reload() : ($('loginOverlay').style.display = 'flex', $('adminPanel').style.display = 'none');
     }
 
@@ -299,22 +292,6 @@
         STATE.location = null; renderLocation(); scheduleSaveDraft();
     }
 
-    const compressImage = (file) => new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = (e) => {
-            const img = new Image(); img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let { width, height } = img; const MAX = 1500;
-                if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } } 
-                else { if (height > MAX) { width *= MAX / height; height = MAX; } }
-                canvas.width = width; canvas.height = height;
-                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                canvas.toBlob(resolve, 'image/webp', 0.75);
-            }; img.onerror = reject;
-        }; reader.onerror = reject;
-    });
-
     $('imageInput').addEventListener('change', async function(e) {
         const files = e.target.files; if (!files.length) return;
         if (isPreviewMode) togglePreviewMode();
@@ -323,10 +300,8 @@
         for (let file of files) {
             if (!file.type.startsWith('image/')) continue;
             try {
-                const webpBlob = await compressImage(file);
-                const fileName = `memos/${Date.now()}_${Math.random().toString(36).substr(2, 6)}.webp`;
-                await secureFetch(`${CONFIG.workerUrl}/api/upload?name=${fileName}`, { method: 'POST', body: webpBlob });
-                insertText(`\n![img](${CONFIG.upyunDomain}/${fileName})`);
+                const uploaded = await JingzheEditor.uploadImage(file, CONFIG, 'memos');
+                insertText(`\n![img](${uploaded.url})`);
             } catch (err) { 
                 if (typeof uploadMsg === 'function') uploadMsg();
                 if (err.message === "401") return (cocoMessage.error("登录状态失效"), logout()); 
@@ -361,7 +336,7 @@
 
         const finalMD = frontmatter + contentVal + '\n';
         const path = STATE.path || `content/laodao/${year}/${month}/${year}${month}${day}-${hour}${min}${sec}.md`;
-        const targetUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`);
+        const targetUrl = JingzheEditor.contentsUrl(CONFIG, path);
         
         try {
             if (STATE.sha || STATE.path) {
@@ -385,7 +360,7 @@
             
             if (typeof pubMsg === 'function') pubMsg();
             cocoMessage.success("唠叨成功！搞定！"); 
-            if (!STATE.sha) localStorage.removeItem(CACHE_KEY); 
+            if (!STATE.sha) JingzheEditor.removeDraft(CACHE_KEY);
             if (STATE.draftId) {
                 await deleteCloudDraft(STATE.draftId, true);
             }
@@ -416,7 +391,7 @@
     }
 
     async function fetchRecent() {
-        const commitsUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=content/laodao&per_page=3&sha=${CONFIG.branch}`;
+        const commitsUrl = JingzheEditor.commitsUrl(CONFIG, 'content/laodao');
         try {
             const res = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': commitsUrl } });
             if (!res.ok) { cocoMessage.warning("暂无提交记录"); $('recentList').innerHTML = ''; return false; }
@@ -435,7 +410,7 @@
             if (!latestFile) { cocoMessage.warning("近期没有唠叨被修改"); $('recentList').innerHTML = ''; return false; }
 
             hasFetchedRecent = true; 
-            const fileUrl = encodeURI(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${latestFile.filename}?ref=${CONFIG.branch}`);
+            const fileUrl = JingzheEditor.contentsUrl(CONFIG, latestFile.filename, true);
             const fRes = await secureFetch(`${CONFIG.workerUrl}/api/github`, { headers: { 'x-target-url': fileUrl } });
             const json = await fRes.json(); 
             
@@ -647,7 +622,7 @@
         $('submitBtn').innerText = "唠叨一下"; $('cancelBtn').style.display = 'none';
         $('saveDraftBtn').style.display = 'inline-block';
         if (STATE.emoji) { STATE.emoji.remove(); STATE.emoji = null; }
-        localStorage.removeItem(CACHE_KEY); 
+        JingzheEditor.removeDraft(CACHE_KEY);
         
         if (showMsg) cocoMessage.info("已取消");
     }
