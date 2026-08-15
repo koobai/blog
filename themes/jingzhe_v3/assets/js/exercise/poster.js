@@ -62,6 +62,7 @@
             <div class="poster-stat-block"><span class="statLabel">用时</span><span class="statVal">${runTime}</span></div>
             <div class="poster-stat-block"><span class="statLabel">${isRide ? '均速' : '配速'}</span><span class="statVal">${paceNum}<small>${paceUnit}</small></span></div>
             <div class="poster-stat-block"><span class="statLabel">心率</span><span class="statVal">${heartRate}</span></div>
+            <div class="poster-stat-block"><span class="statLabel">千卡</span><span class="statVal">${calories}</span></div>
           </div>
           <div class="poster-watermark">${displayTime}</div>
           <div class="poster-title">${smartName}</div>

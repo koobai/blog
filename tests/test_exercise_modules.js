@@ -125,6 +125,7 @@ const poster = modules.poster.buildPanelHtml({
 }, model);
 assert.match(poster.html, /本月最长/);
 assert.match(poster.html, /保存海报/);
+assert.match(poster.html, /<span class="statLabel">千卡<\/span><span class="statVal">320<\/span>/);
 assert.equal(modules.poster.cleanPosterPrefix('../Koobai 运动'), 'Koobai');
 
 const calendar = { innerHTML: '' };
