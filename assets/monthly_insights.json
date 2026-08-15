@@ -611,18 +611,18 @@
   "2026-08": {
     "month_str": "2026-08",
     "stats": {
-      "total_count": 12,
-      "total_distance": 160.09,
-      "total_duration_minutes": 605,
-      "total_calories": 3944,
-      "total_elevation_gain": 389,
+      "total_count": 13,
+      "total_distance": 164.83,
+      "total_duration_minutes": 658,
+      "total_calories": 4191,
+      "total_elevation_gain": 420,
       "sports_count": {
-        "步行": 5,
+        "步行": 6,
         "骑行": 6,
         "跑步": 1
       },
       "sports_distance": {
-        "步行": 17.13,
+        "步行": 21.87,
         "骑行": 141.84,
         "跑步": 1.12
       },
@@ -642,25 +642,25 @@
         "hr": 122,
         "zone": "仅按平均心率排序"
       },
-      "average_distance_per_activity": 13.34,
-      "average_duration_minutes": 50,
+      "average_distance_per_activity": 12.68,
+      "average_duration_minutes": 51,
       "primary_sport": "骑行",
       "primary_sport_type": "Ride",
-      "primary_sport_share": 0.5,
+      "primary_sport_share": 0.462,
       "sport_variety": 3,
       "sport_metrics": {
         "步行": {
           "type": "Walk",
-          "count": 5,
-          "average_distance": 3.4,
-          "median_distance": 4.6,
-          "average_duration_minutes": 42,
-          "median_duration_minutes": 59,
-          "average_heartrate": 100,
+          "count": 6,
+          "average_distance": 3.6,
+          "median_distance": 4.7,
+          "average_duration_minutes": 44,
+          "median_duration_minutes": 56,
+          "average_heartrate": 101,
           "median_heartrate": 103,
-          "pace_seconds_per_km": 751,
-          "median_pace_seconds_per_km": 757,
-          "heart_rate_samples": 5
+          "pace_seconds_per_km": 737,
+          "median_pace_seconds_per_km": 720,
+          "heart_rate_samples": 6
         },
         "骑行": {
           "type": "Ride",
@@ -692,14 +692,14 @@
       "favorite_time": "晚上",
       "max_streak_days": 5,
       "longest_gap_days": 1,
-      "active_days_count": 11,
+      "active_days_count": 12,
       "indoor_count": 0,
-      "outdoor_count": 12
+      "outdoor_count": 13
     },
     "report_phase": "accumulating",
     "status_text": "还在热身，继续动起来，月报稍后见。",
     "comparison_basis": "等待月中样本",
     "source_data_hash": "7aadf27ee2824c2c2b05037102bcc5f1fb2a7051a637c2d35464ba18b5837436",
-    "last_update": "2026-08-15T17:51:36"
+    "last_update": "2026-08-16T00:29:49"
   }
 }
