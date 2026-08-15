@@ -79,7 +79,7 @@ AI 必须先说明采用哪条路径、将复制哪些程序文件以及哪些�
 ### 5. 选择数据入口
 
 - 手工导入：按 [`exercise-sync-store-v1`](../schemas/data/exercise-sync-store-v1.schema.json) 维护 `data/exercise/activities.json`，不需要 Worker。
-- 自动同步：按 [`workers/activity-sync/README.md`](../workers/activity-sync/README.md) 部署每个站点自己的 Activity Sync Gateway。Gateway 使用独立 `SYNC_TOKEN` 和最小权限 `GH_TOKEN`，固定写入目标仓库的 `data/exercise/activities.json`；Gateway URL 与 Token 只配置在 App/连接器，不写入 Hugo 参数，也不提供项目公共接口地址。
+- 自动同步：按 [`workers/activity-sync/README.md`](../workers/activity-sync/README.md) 部署每个站点自己的运动同步网关（Activity Sync Gateway）。网关使用独立 `SYNC_TOKEN` 和最小权限 `GH_TOKEN`，固定写入目标仓库的 `data/exercise/activities.json`；网关 URL 与 Token 只配置在 App/连接器，不写入 Hugo 参数，也不提供项目公共接口地址。
 
 数据源适配器必须在上传前决定 `route_status`。只有 `available` 可以携带真实 `summary_polyline`；`privacy_hidden`、`unavailable` 和 `pending` 都不得上传真实轨迹，Gateway 只负责验证，不能替用户判断隐私。
 

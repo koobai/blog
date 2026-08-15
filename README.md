@@ -27,7 +27,7 @@
 
 > **想快速部署？直接交给 AI：** 把本仓库地址和[可复制的部署指令](docs/quick-start.md#可直接复制给-ai-的指令)发给支持读取 GitHub 仓库的 AI。它会先确认站点信息、功能层级和部署平台，从安全的 Core 开始，本地验证通过后再询问是否操作 GitHub 或 Cloudflare。
 
-如果还需要自动同步运动数据，可以直接补充一句：`帮我部署惊蛰博客和 Activity Sync Worker，并把我的 Keep/Health Connect 数据转换成 exercise-sync-v1 协议进行同步。`
+如果还需要自动同步运动数据，可以直接补充一句：`帮我部署惊蛰博客和运动同步网关（Activity Sync Worker），并把我的 Keep/Health Connect 数据转换成 exercise-sync-v1 协议进行同步。`
 
 ## 功能层级
 
@@ -38,7 +38,7 @@
 | Core | 文章、唠叨、主题、标签、RSS、JSON | Hugo Extended |
 | Publisher | 网页写作、图片上传、GitHub 写回、草稿 | 管理端 Worker、GitHub 凭据、图片存储 |
 | Social | 评论、回复、点赞、Turnstile | Comments/Likes Worker 与 D1 |
-| Life Data | 豆瓣同步、运动统计、地图与隐私路线 | Python、Mapbox、数据来源；自动运动同步可选 Activity Sync Worker |
+| Life Data | 豆瓣同步、运动统计、地图与隐私路线 | Python、Mapbox、数据来源；自动运动同步可选运动同步网关（Activity Sync Worker） |
 | AI Coach | 月中/月末 AI 运动复盘 | 模型 API 与隐私配置 |
 
 当前生产站点使用 Full Profile，并由 [koobai.com](https://koobai.com) 作为唯一在线演示。Core Profile 不依赖 Worker，由初始化工具在新目录按需生成，不维护第二套演示站。
@@ -51,7 +51,7 @@ flowchart LR
     B["网页写作"] --> W["发布 Worker"]
     W --> R
     C["豆瓣同步"] --> R
-    D["原生 App / 数据源连接器"] --> ASW["Activity Sync Gateway"]
+    D["原生 App / 数据源连接器"] --> ASW["运动同步网关"]
     ASW --> R
     R --> P["运动处理与 AI 月报"]
     P --> R

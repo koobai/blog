@@ -32,7 +32,7 @@
 如果还需要从自己的运动数据源自动同步，可将下面这句与上述指令一起发送：
 
 ```text
-帮我部署惊蛰博客和 Activity Sync Worker，并把我的 Keep/Health Connect 数据转换成 exercise-sync-v1 协议进行同步。
+帮我部署惊蛰博客和运动同步网关（Activity Sync Worker），并把我的 Keep/Health Connect 数据转换成 exercise-sync-v1 协议进行同步。
 ```
 
 AI 应先确认你实际使用的数据源、可用的导出或读取方式以及隐私轨迹规则；项目提供同步协议、Gateway 和博客处理链，不提供公共 Gateway 地址，也不会代替用户取得第三方平台数据。

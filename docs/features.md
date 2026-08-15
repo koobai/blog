@@ -74,7 +74,7 @@
 - 公开轨迹与隐私替代路线。
 - 运动成就和 WebP 海报。
 
-依赖：Python、Mapbox、观影或运动数据来源。如需从 App 或外部平台自动写入运动事实，另部署不依赖 D1/R2 的 Activity Sync Worker；手工维护数据时不强制使用。
+依赖：Python、Mapbox、观影或运动数据来源。如需从 App 或外部平台自动写入运动事实，另部署不依赖 D1/R2 的运动同步网关（Activity Sync Worker）；手工维护数据时不强制使用。
 
 未启用时：对应菜单和页面隐藏；Core 不受影响。
 
@@ -101,7 +101,7 @@
 | Publisher | 已实现，生产仍使用 Koobai Worker | Publisher/Drafts 源码、示例配置和迁移已完成；生产切换由用户决定 |
 | Social | 已实现，生产仍使用 Koobai Worker | Comments/Likes 源码与隐私修复已完成；前端兼容新旧响应 |
 | Movies | 已实现 | 使用功能开关、Schema 与自己的观影数据 |
-| Exercise | 已实现 | 使用功能开关、Schema、自己的运动数据和 Mapbox 公开参数；自动同步可自建 Activity Sync Gateway |
+| Exercise | 已实现 | 使用功能开关、Schema、自己的运动数据和 Mapbox 公开参数；自动同步可自建运动同步网关 |
 | AI Coach | 已实现 DeepSeek | Provider 可注入；证据、隐私过滤和状态机不依赖具体模型客户端 |
 
 ## 机器可读功能注册表

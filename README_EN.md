@@ -27,7 +27,7 @@ See [Features and installation profiles](docs/features.md) for the complete capa
 
 > **Want the fastest setup? Give it to an AI coding agent.** Send the repository URL together with the [copy-ready setup prompt](docs/quick-start.md#copy-ready-ai-prompt) to an agent that can read GitHub repositories. It will confirm your site identity, feature profile, and hosting platform, start with the safe Core profile, verify everything locally, and ask before changing GitHub or Cloudflare resources.
 
-For automatic exercise ingestion, add: `Deploy Jingzhe and its Activity Sync Worker, then adapt my Keep or Health Connect data to the exercise-sync-v1 protocol and synchronize it.`
+For automatic exercise ingestion, add: `Deploy Jingzhe and its exercise sync gateway (Activity Sync Worker), then adapt my Keep or Health Connect data to the exercise-sync-v1 protocol and synchronize it.`
 
 The detailed documentation is currently maintained in Chinese. Modern coding agents can read it directly and communicate with you in English.
 
@@ -40,7 +40,7 @@ Optional modules enhance the site progressively. A missing optional service neve
 | Core | Posts, short updates, theme, tags, RSS, and JSON | Hugo Extended |
 | Publisher | Browser writing, image upload, GitHub publishing, and drafts | Publisher/Drafts Workers, GitHub credentials, and image storage |
 | Social | Comments, replies, likes, and Turnstile | Comments/Likes Workers and D1 |
-| Life Data | Movie sync, exercise statistics, maps, and privacy routes | Python, Mapbox, and personal data sources; optional Activity Sync Worker for automatic ingestion |
+| Life Data | Movie sync, exercise statistics, maps, and privacy routes | Python, Mapbox, and personal data sources; optional exercise sync gateway (Activity Sync Worker) for automatic ingestion |
 | AI Coach | Mid-month and end-of-month exercise reviews | Model API and privacy configuration |
 
 The production site uses the Full Profile, with [koobai.com](https://koobai.com) as the only live demo. Core does not require any Worker and is generated into a new directory; the repository does not maintain a second demo site.
@@ -53,7 +53,7 @@ flowchart LR
     B["Browser editor"] --> W["Publisher Worker"]
     W --> R
     C["Movie sync"] --> R
-    D["Native apps / source connectors"] --> ASW["Activity Sync Gateway"]
+    D["Native apps / source connectors"] --> ASW["Exercise sync gateway"]
     ASW --> R
     R --> P["Exercise processing / AI reports"]
     P --> R

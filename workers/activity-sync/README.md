@@ -1,6 +1,6 @@
-# Activity Sync Gateway
+# 运动同步网关（Activity Sync Gateway）
 
-这个 Worker 是运动数据源与博客之间唯一的写入入口。Laodao App、Keep 连接器或其他数据源适配器只调用同一套 v1 协议；Worker 严格校验协议，并强制“非公开状态不得携带真实轨迹”，然后把原始事实合并到 `data/exercise/activities.json`。它不会猜测一条路线是否私密；这个判断必须在数据离开来源前完成。博客页面和月报仍由现有 GitHub Actions 处理。
+运动同步网关是运动数据源与博客之间的统一接收和合并入口，技术上由一个独立的 Cloudflare Worker 实现。Laodao App、Keep 连接器或其他数据源适配器只调用同一套 v1 协议；网关严格校验协议，并强制“非公开状态不得携带真实轨迹”，然后把原始事实合并到 `data/exercise/activities.json`。它不会猜测一条路线是否私密；这个判断必须在数据离开来源前完成。博客页面和月报仍由现有 GitHub Actions 处理。
 
 它不需要 D1、R2、用户账户或公共服务地址。每个部署者在自己的 Cloudflare 和 GitHub 仓库中运行一份。
 
