@@ -696,10 +696,26 @@
       "indoor_count": 0,
       "outdoor_count": 13
     },
-    "report_phase": "accumulating",
-    "status_text": "还在热身，继续动起来，月报稍后见。",
-    "comparison_basis": "等待月中样本",
-    "source_data_hash": "7aadf27ee2824c2c2b05037102bcc5f1fb2a7051a637c2d35464ba18b5837436",
-    "last_update": "2026-08-16T00:29:49"
+    "report_phase": "midmonth",
+    "report_as_of": "2026-08-15",
+    "coach_report": {
+      "verdict": "本阶段运动量大幅提升，出勤从6次增至13次，骑行单次平均23.6公里、最长31.6公里，节奏略慢且心率中位数下降，负荷上移但强度可控。",
+      "analysis": "出勤与总量同步翻倍，是本阶段最显著的变化；骑行单次距离和最长距离均增加约三成，说明耐力训练量在主动上移。但可比骑行的典型节奏由22.9降至22.0公里/小时，心率中位数由120降至113，显示增加的分量并未伴随强度失控，反而留出了节奏余量。结构上新增步行与跑步，但骑行仍占主位，这种搭配适合减脂优先下的耐力积累，也提示下阶段需防止负荷叠加过快。",
+      "next_plan": "未来两周保持每周3次骑行、2次步行或跑步；骑行中1次25～30公里，其余15～20公里，节奏不高于23公里/小时，心率中位数不高于115。连续运动不超过4天。核对：14天活跃日≥10天，骑行至少6次且总距离≥110公里，可比骑行次数≥4次。",
+      "evidence_ids": [
+        "volume",
+        "consistency",
+        "endurance",
+        "quality",
+        "event_longest_session"
+      ]
+    },
+    "report_version": 6,
+    "report_data_hash": "98fbd87ca305387b8731f73f3a060554656211af5986c7a721fa569deb599009",
+    "source_data_hash": "6960be2e2f76a9dcbd4444a8b81d5f1860c7558dfd1ea19cba145a6e06ef819c",
+    "midmonth_source_hash": "6960be2e2f76a9dcbd4444a8b81d5f1860c7558dfd1ea19cba145a6e06ef819c",
+    "model": "deepseek-v4-flash",
+    "comparison_basis": "上月同期",
+    "last_update": "2026-08-16T04:14:02"
   }
 }
