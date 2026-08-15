@@ -15,7 +15,7 @@
 - **生活时间线**：随笔、唠叨和折腾备忘统一展示，并通过标签与分类组织内容。
 - **自研 Hugo 主题**：响应式设计，支持浅色、深色、跟随系统和图片灯箱。
 - **轻量写作后台**：解决静态博客不能在线发文的痛点，打开浏览器即可写随笔、发唠叨、预览 Markdown、保存草稿、上传图片并发布到 GitHub。
-- **内容自己掌控**：文章与公开生活数据保存在自己的 Git 仓库，并生成全文 RSS、JSON、Sitemap 和 Web App Manifest。
+- **内容自己掌控**：文章与公开生活数据保存在自己的 Git 仓库，并生成全文 RSS、JSON、Sitemap、Web App Manifest 和完整分享元数据。
 - **评论与互动**：支持评论、多层回复、点赞、表情和管理，并通过 Cloudflare Turnstile 降低滥用。
 - **观影记录**：增量同步豆瓣数据，以电影票形式展示评分、短评和观看时间。
 - **运动与隐私**：提供运动统计、月历、心率、Mapbox 轨迹、成就和海报，并用公共地标路线保护隐私运动。
@@ -66,7 +66,7 @@ flowchart LR
 ### 前置条件
 
 - Git
-- Hugo Extended 0.120.0 或更高版本
+- Hugo Extended 0.158.0 或更高版本
 - Python 3.9 或更高版本仅用于运动处理和相关测试
 
 ### 运行
@@ -156,7 +156,7 @@ config/                    # 通用、生产与开发配置
 schemas/                   # Front Matter、参数和 JSON Schema
 data/jingzhe/features.json # 机器可读功能注册表
 jingzhe/                   # Python 共享契约加载器
-.github/workflows/         # 同步、处理和部署工作流
+.github/workflows/         # 测试、同步、处理、构建和部署工作流
 ```
 
 ## 生产兼容原则

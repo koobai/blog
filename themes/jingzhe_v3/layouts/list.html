@@ -1,6 +1,7 @@
 {{ define "body_classes" }}page-blog-tag{{ end }}
 
 {{ define "main" }}
+{{ $socialEnabled := partial "jingzhe/feature-enabled.html" "social" }}
 <div id="index-card-timeline" class="index-card tag-list">
    {{ $paginator := .Paginate .Pages 26 }}
     {{ range .Paginator.Pages }}
@@ -22,7 +23,7 @@
 
       {{/* ---------------- 【B. 唠叨动态】 ---------------- */}}
       {{ else if eq .Type "laodao" }}
-        {{ partial "laodao-card.html" . }}
+        {{ partialCached "laodao-card.html" . .RelPermalink $socialEnabled }}
       {{ end }}
 
     {{ end }}
@@ -36,5 +37,5 @@
 {{ end }}
 
 <script src="/js/laodao.js?v=20260311a" defer></script>
-{{ if partial "jingzhe/feature-enabled.html" "social" }}{{ partial "comments.html" . }}{{ end }}
+{{ if $socialEnabled }}{{ partial "comments.html" . }}{{ end }}
 {{ end }}

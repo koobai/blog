@@ -4,7 +4,7 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["run_id", "name", "type", "distance", "moving_time", "start_date_local", "route_status"],
+    "required": ["run_id", "name", "type", "distance", "moving_time", "start_date_local", "route_status", "display_name", "sport_display_name", "card_achievement", "calendar_achievements"],
     "properties": {
       "run_id": {"type": ["integer", "string"]},
       "name": {"type": "string"},
@@ -24,7 +24,33 @@
       "energy_title": {"type": "string"},
       "food_key": {"type": "string"},
       "distance_title": {"type": "string"},
-      "distance_title_key": {"type": "string"}
+      "distance_title_key": {"type": "string"},
+      "display_name": {"type": "string"},
+      "sport_display_name": {"type": "string"},
+      "card_achievement": {
+        "type": ["object", "null"],
+        "properties": {
+          "group": {"enum": ["ride", "run_walk"]},
+          "level": {"enum": ["year", "month"]},
+          "label": {"type": "string"}
+        },
+        "required": ["group", "level", "label"],
+        "additionalProperties": false
+      },
+      "calendar_achievements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "group": {"enum": ["ride", "run_walk"]},
+            "group_label": {"type": "string"},
+            "level": {"enum": ["year", "month"]},
+            "label": {"type": "string"}
+          },
+          "required": ["group", "group_label", "level", "label"],
+          "additionalProperties": false
+        }
+      }
     },
     "additionalProperties": true
   }

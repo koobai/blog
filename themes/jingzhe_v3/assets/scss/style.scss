@@ -32,15 +32,23 @@ $breakpoints: (
 @import "single";
 @import "intro";
 @import "mobile";
+{{ if partial "jingzhe/feature-enabled.html" "movies" }}
 @import "movies";
+{{ end }}
 @import "about";
 @import "list";
+{{ if partial "jingzhe/feature-enabled.html" "exercise" }}
 @import "exercise";
+{{ end }}
 @import "laodao";
+{{ if partial "jingzhe/feature-enabled.html" "publisher" }}
 @import "newlaodao";
 @import "newsuibi";
+{{ end }}
 @import "syntax";
+{{ if partial "jingzhe/feature-enabled.html" "social" }}
 @import "comments";
+{{ end }}
 
 // ==========================================
 // 3. 字体定义

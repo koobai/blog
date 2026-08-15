@@ -5,7 +5,7 @@
 ## 开始之前
 
 1. 阅读 `README.md`、`AGENTS.md` 和与改动相关的 `docs/` 文档。
-2. 使用 Hugo Extended 0.120.0+、Python 3.9+ 和当前 Node.js LTS。
+2. 使用 Hugo Extended 0.158.0+、Python 3.9+ 和当前 Node.js LTS。
 3. 从独立分支开始，不提交 `.dev.vars`、真实 Token、邮箱、轨迹或生产数据库导出。
 
 ## 本地验证

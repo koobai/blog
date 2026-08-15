@@ -6,7 +6,7 @@
 
 | 项目 | 值 |
 |---|---|
-| 运行时 | Hugo Extended 0.120.0+ |
+| 运行时 | Hugo Extended 0.158.0+ |
 | 工作目录 | Core 生成目录根部 |
 | 构建命令 | `hugo --minify --panicOnWarning` |
 | 输出目录 | `public/` |
@@ -14,6 +14,8 @@
 | 必需外部服务 | 无 |
 
 Cloudflare Pages、GitHub Pages、Netlify、Vercel 或普通静态服务器都可以托管 `public/`。平台配置、登录、仓库关联、DNS 和正式部署属于外部写操作，AI 执行前应取得授权。
+
+根仓库的 GitHub Actions 有意使用 Hugo `latest`，持续跟随 Hugo 新版本。每次提交前应运行统一严格检查；如果新版引入弃用警告或不兼容变化，先完成适配再发布，不把工作流固定到旧版本。
 
 ## 部署前检查
 

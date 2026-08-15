@@ -12,7 +12,10 @@ from jingzhe.exercise_contract import (
     ACTIVITY_DISTANCE_GROUPS,
     ACTIVITY_DISTANCE_VERBS,
     ACTIVITY_TYPE_CN,
+    DISPLAY_RUN_WALK_TYPES,
     FOOD_EQUIVALENTS,
+    RIDE_TYPES,
+    SPORTS,
 )
 from monthly_coach import update_monthly_insights as update_monthly_coach_insights
 
@@ -24,7 +27,14 @@ NOMINATIM_BASE_URL = os.getenv(
     'NOMINATIM_BASE_URL',
     'https://nominatim.openstreetmap.org'
 ).rstrip('/')
-NOMINATIM_USER_AGENT = 'KoobaiExerciseBlog/1.0 (https://koobai.com/exercise/)'
+NOMINATIM_USER_AGENT = os.getenv(
+    'NOMINATIM_USER_AGENT',
+    'KoobaiExerciseBlog/1.0 (https://koobai.com/exercise/)'
+).strip()
+NOMINATIM_REFERER = os.getenv(
+    'NOMINATIM_REFERER',
+    'https://koobai.com/exercise/'
+).strip()
 
 if not DEEPSEEK_API_KEY:
     print("ℹ️ 未提供 DEEPSEEK_API_KEY：运动数据照常处理，月报保留现有内容。")
@@ -43,32 +53,37 @@ PUBLISH_START_DATE = datetime(2026, 1, 1)
 MAX_FOOD_RELATIVE_ERROR = 0.12
 FOOD_TITLE_VERSION = 6
 
-# 杭州距离语言：普通运动（包括徒步）按距离换算，只有爬楼按累计爬升换算。
-# preferred_groups 是“软归类”：首选类型会有更高概率，其他运动仍可以偶尔抽到。
-DISTANCE_EQUIVALENTS = [
-    {'key': 'track', 'name': '操场', 'unit': '圈', 'km': 0.4, 'min_km': 0.2, 'max_km': 4.8, 'max_count': 12, 'preferred_groups': ('run', 'walk')},
-    {'key': 'bai_causeway', 'name': '白堤', 'unit': '趟', 'km': 1.0, 'min_km': 0.6, 'max_km': 5.5, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
-    {'key': 'qiantang_bridge', 'name': '钱塘江大桥', 'unit': '趟', 'km': 1.453, 'min_km': 1.2, 'max_km': 8.5, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
-    {'key': 'hubin_pedestrian_street', 'name': '湖滨步行街', 'unit': '趟', 'km': 2.0, 'min_km': 1.5, 'max_km': 10.0, 'max_count': 5, 'preferred_groups': ('run', 'walk')},
-    {'key': 'su_causeway', 'name': '苏堤', 'unit': '趟', 'km': 2.8, 'min_km': 2.3, 'max_km': 16.8, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
-    {'key': 'yang_causeway', 'name': '杨公堤', 'unit': '趟', 'km': 3.4, 'min_km': 2.8, 'max_km': 20.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
-    {'key': 'wentao_riverside', 'name': '闻涛沿江线', 'unit': '趟', 'km': 4.4, 'min_km': 3.5, 'max_km': 26.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
-    {'key': 'jiuxi_baita', 'name': '九溪白塔线', 'unit': '趟', 'km': 7.0, 'min_km': 5.2, 'max_km': 35.0, 'max_count': 5, 'preferred_groups': ('run', 'walk', 'hike')},
-    {'key': 'imperial_city_route', 'name': '皇城根线', 'unit': '趟', 'km': 8.0, 'min_km': 6.0, 'max_km': 40.0, 'max_count': 5, 'preferred_groups': ('run', 'walk', 'hike')},
-    {'key': 'jiangnan_avenue', 'name': '江南大道', 'unit': '趟', 'km': 9.0, 'min_km': 6.7, 'max_km': 45.0, 'max_count': 5, 'preferred_groups': ('ride', 'run', 'walk')},
-    {'key': 'west_lake', 'name': '西湖', 'unit': '圈', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
-    {'key': 'jingshan_trail', 'name': '径山古道', 'unit': '趟', 'km': 10.0, 'min_km': 7.5, 'max_km': 60.0, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
-    {'key': 'chaoshan_loop', 'name': '超山环线', 'unit': '圈', 'km': 10.7, 'min_km': 8.0, 'max_km': 64.2, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
-    {'key': 'shili_langdang', 'name': '十里琅珰', 'unit': '趟', 'km': 12.0, 'min_km': 9.0, 'max_km': 72.0, 'max_count': 6, 'preferred_groups': ('run', 'walk', 'hike')},
-    {'key': 'yuhangtang_river', 'name': '余杭塘河', 'unit': '趟', 'km': 15.73, 'min_km': 11.8, 'max_km': 94.4, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk')},
-    {'key': 'dajingshan_greenway', 'name': '大径山绿道', 'unit': '趟', 'km': 18.0, 'min_km': 13.5, 'max_km': 108.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'hike')},
-    {'key': 'gaoting_trail', 'name': '皋亭山步道', 'unit': '趟', 'km': 30.0, 'min_km': 22.5, 'max_km': 180.0, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'walk', 'hike')},
-    {'key': 'qingshan_lake_greenway', 'name': '青山湖绿道', 'unit': '圈', 'km': 42.195, 'min_km': 31.6, 'max_km': 253.2, 'max_count': 6, 'preferred_groups': ('ride', 'run', 'hike')}
-]
+def load_landmark_route_library():
+    """地标几何、名称和选择规则只从同一份 JSON 加载。"""
+    with open(LANDMARK_ROUTE_FILE, 'r', encoding='utf-8') as route_file:
+        return json.load(route_file)
 
+
+LANDMARK_ROUTE_LIBRARY = load_landmark_route_library()
+DISTANCE_EQUIVALENTS = [
+    {
+        'key': item['key'],
+        'name': item['name'],
+        'unit': item['unit'],
+        'km': item['reference_km'],
+        'min_km': item['min_km'],
+        'max_km': item['max_km'],
+        'max_count': item['max_count'],
+        'preferred_groups': tuple(item['preferred_groups'])
+    }
+    for item in LANDMARK_ROUTE_LIBRARY
+    if item.get('kind') == 'distance'
+]
 ELEVATION_EQUIVALENTS = [
-    {'key': 'leifeng_pagoda', 'name': '雷峰塔', 'unit': '座', 'meters': 71.0, 'max_count': 4},
-    {'key': 'north_peak', 'name': '北高峰', 'unit': '座', 'meters': 314.0, 'max_count': 6}
+    {
+        'key': item['key'],
+        'name': item['name'],
+        'unit': item['unit'],
+        'meters': item['reference_meters'],
+        'max_count': item['max_count']
+    }
+    for item in LANDMARK_ROUTE_LIBRARY
+    if item.get('kind') == 'elevation'
 ]
 
 ELEVATION_ACTIVITY_TYPES = {'StairStepper'}
@@ -103,21 +118,30 @@ DEFAULT_ACTIVITY_NAMES = {'Run', 'Ride', 'Walk', 'StairStepper', 'Workout', ''}
 
 
 def validate_landmark_route_library(activities=None):
-    with open(LANDMARK_ROUTE_FILE, 'r', encoding='utf-8') as route_file:
-        route_library = json.load(route_file)
-
-    expected_keys = {
-        item['key'] for item in DISTANCE_EQUIVALENTS + ELEVATION_EQUIVALENTS
-    }
+    route_library = load_landmark_route_library()
     route_keys = [item.get('key') for item in route_library]
     actual_keys = set(route_keys)
     duplicate_keys = sorted({key for key in route_keys if route_keys.count(key) > 1})
-    missing_keys = sorted(expected_keys - actual_keys)
-    extra_keys = sorted(actual_keys - expected_keys)
     invalid_routes = sorted(
         item.get('key', '<unknown>')
         for item in route_library
         if not item.get('geometry') or item.get('path_type') not in {'line', 'loop'}
+    )
+    invalid_rules = sorted(
+        item.get('key', '<unknown>')
+        for item in route_library
+        if (
+            item.get('kind') == 'distance' and (
+                not isinstance(item.get('reference_km'), (int, float)) or
+                not isinstance(item.get('min_km'), (int, float)) or
+                not isinstance(item.get('max_km'), (int, float)) or
+                item.get('min_km', 0) > item.get('max_km', 0) or
+                not item.get('preferred_groups')
+            )
+        ) or (
+            item.get('kind') == 'elevation' and
+            not isinstance(item.get('reference_meters'), (int, float))
+        ) or item.get('kind') not in {'distance', 'elevation'}
     )
 
     activity_keys = {
@@ -129,12 +153,10 @@ def validate_landmark_route_library(activities=None):
     problems = []
     if duplicate_keys:
         problems.append(f"重复 key：{', '.join(duplicate_keys)}")
-    if missing_keys:
-        problems.append(f"标题库缺少路线：{', '.join(missing_keys)}")
-    if extra_keys:
-        problems.append(f"路线库存在无效地点：{', '.join(extra_keys)}")
     if invalid_routes:
         problems.append(f"路线几何无效：{', '.join(invalid_routes)}")
+    if invalid_rules:
+        problems.append(f"路线选择规则无效：{', '.join(invalid_rules)}")
     if missing_activity_keys:
         problems.append(f"现有记录无法匹配路线：{', '.join(missing_activity_keys)}")
     if problems:
@@ -401,6 +423,138 @@ def is_default_activity_name(value):
     name = value if isinstance(value, str) else ''
     return name in DEFAULT_ACTIVITY_NAMES or bool(DEFAULT_ACTIVITY_NAME_PATTERN.match(name))
 
+
+def activity_display_fields(activity):
+    """把运动名称与类型文案在数据处理阶段一次确定。"""
+    activity_type = activity.get('type')
+    sport = SPORTS.get(activity_type, {})
+    sport_display_name = sport.get('displayName') or sport.get('name') or '运动'
+    if activity_type in {'Run', 'Ride'} and activity.get('is_indoor') is True:
+        sport_display_name = f'室内{sport_display_name}'
+
+    original_name = activity.get('name') or ''
+    display_name = original_name
+    if is_default_activity_name(original_name):
+        fallback_title = sport.get('fallbackTitle') or '动起来'
+        if activity.get('route_status') == 'available':
+            display_name = activity.get('route_title') or fallback_title
+        else:
+            display_name = activity.get('distance_title') or fallback_title
+
+    return display_name, sport_display_name
+
+
+def _distance_value(activity):
+    try:
+        return float(activity.get('distance') or 0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _achievement_group(activity_type):
+    if activity_type in RIDE_TYPES:
+        return 'ride'
+    if activity_type in DISPLAY_RUN_WALK_TYPES:
+        return 'run_walk'
+    return None
+
+
+def _calendar_achievement(group, level):
+    return {
+        'group': group,
+        'group_label': '骑行' if group == 'ride' else '跑走',
+        'level': level,
+        'label': '年度最远' if level == 'year' else '月度最远'
+    }
+
+
+def apply_activity_display_fields(activities):
+    """
+    为页面、日历和海报生成稳定展示字段。
+
+    列表卡片沿用“单次最远”；日历沿用“单日累计最远”，
+    两种现有语义在处理层明确区分，展示层不再重复判断。
+    """
+    sorted_activities = sorted(
+        activities,
+        key=lambda item: item.get('start_date_local') or '',
+        reverse=True
+    )
+    card_maxima = {}
+    daily_totals = {}
+
+    for activity in sorted_activities:
+        start = activity.get('start_date_local') or ''
+        if len(start) < 10:
+            continue
+        group = _achievement_group(activity.get('type'))
+        distance = _distance_value(activity)
+        if not group or distance <= 0:
+            continue
+
+        year = start[:4]
+        month = start[:7]
+        date = start[:10]
+        for period, value in (('year', year), ('month', month)):
+            key = (period, value, group)
+            if distance > card_maxima.get(key, (0, None))[0]:
+                card_maxima[key] = (distance, str(activity.get('run_id')))
+        daily_totals[(date, group)] = daily_totals.get((date, group), 0) + distance
+
+    daily_maxima = {}
+    for (date, group), distance in daily_totals.items():
+        year = date[:4]
+        month = date[:7]
+        for period, value in (('year', year), ('month', month)):
+            key = (period, value, group)
+            if distance > daily_maxima.get(key, (0, None))[0]:
+                daily_maxima[key] = (distance, date)
+
+    changed = False
+    for activity in activities:
+        display_name, sport_display_name = activity_display_fields(activity)
+        start = activity.get('start_date_local') or ''
+        run_id = str(activity.get('run_id'))
+        group = _achievement_group(activity.get('type'))
+        card_achievement = None
+        calendar_achievements = []
+
+        if len(start) >= 10:
+            year = start[:4]
+            month = start[:7]
+            date = start[:10]
+            if group and _distance_value(activity) > 0:
+                if card_maxima.get(('year', year, group), (0, None))[1] == run_id:
+                    card_achievement = {
+                        'group': group,
+                        'level': 'year',
+                        'label': '年度单次最远'
+                    }
+                elif card_maxima.get(('month', month, group), (0, None))[1] == run_id:
+                    card_achievement = {
+                        'group': group,
+                        'level': 'month',
+                        'label': '月度单次最远'
+                    }
+
+            for achievement_group in ('ride', 'run_walk'):
+                if daily_maxima.get(('year', year, achievement_group), (0, None))[1] == date:
+                    calendar_achievements.append(_calendar_achievement(achievement_group, 'year'))
+                elif daily_maxima.get(('month', month, achievement_group), (0, None))[1] == date:
+                    calendar_achievements.append(_calendar_achievement(achievement_group, 'month'))
+
+        fields = {
+            'display_name': display_name,
+            'sport_display_name': sport_display_name,
+            'card_achievement': card_achievement,
+            'calendar_achievements': calendar_achievements
+        }
+        for key, value in fields.items():
+            if key not in activity or activity.get(key) != value:
+                activity[key] = value
+                changed = True
+    return changed
+
 def is_scenic_place(name):
     if not name or any(word in name for word in PRIVATE_OR_TRIVIAL_PLACE_WORDS):
         return False
@@ -481,7 +635,7 @@ def reverse_route_observations(sampled, session=None, attempts=2, min_interval=1
                     },
                     headers={
                         'User-Agent': NOMINATIM_USER_AGENT,
-                        'Referer': 'https://koobai.com/exercise/'
+                        **({'Referer': NOMINATIM_REFERER} if NOMINATIM_REFERER else {})
                     },
                     timeout=20
                 )
@@ -677,6 +831,9 @@ if __name__ == '__main__':
 
         if item.get('distance_title_key'):
             recent_landmark_keys.append(item['distance_title_key'])
+
+    if apply_activity_display_fields(local_data):
+        needs_save = True
 
     if needs_save:
         with open(FILE_NAME, 'w', encoding='utf-8') as f:

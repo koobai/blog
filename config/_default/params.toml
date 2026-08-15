@@ -58,7 +58,14 @@ RSSNoContent = false
   mapboxEventsOrigin = "https://events.mapbox.com"
   mapboxCssUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.css"
   mapboxJsUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.js"
+  mapboxLightStyle = "mapbox://styles/mapbox/streets-v12"
+  mapboxDarkStyle = "mapbox://styles/mapbox/dark-v11"
+  mapCenter = [0.0, 0.0]
+  posterFilePrefix = "JingzheExercise"
+
+[services.rss]
+  followFeedId = ""
+  followUserId = ""
 
 [about]
-  repositoryUrl = ""
   photos = []

@@ -1,5 +1,8 @@
 profile = "full"
 
+[author]
+  name = "Koobai"
+
 [brand]
   name = "空白Koobai"
   footerName = "空白Koobai"
@@ -50,10 +53,16 @@ profile = "full"
   mapboxEventsOrigin = "https://events.mapbox.com"
   mapboxCssUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.css"
   mapboxJsUrl = "https://lib.baomitu.com/mapbox-gl/3.2.0/mapbox-gl.js"
+  mapboxLightStyle = "mapbox://styles/koobai/cmma9983i00f101qwezj0f77f"
+  mapboxDarkStyle = "mapbox://styles/koobai/cmma8mwce001v01sge7e0dx1w"
+  mapCenter = [120.1551, 30.2741]
+  posterFilePrefix = "KoobaiRun"
+
+[services.rss]
+  followFeedId = "52982633250295857"
+  followUserId = "58707550957768704"
 
 [about]
-  repositoryUrl = "https://github.com/koobai/blog"
-
   [[about.photos]]
     text = "拍摄于杭州西湖"
     image = "https://img.koobai.com/about.webp"

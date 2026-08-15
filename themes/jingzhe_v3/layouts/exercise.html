@@ -7,14 +7,17 @@
 {{- $mapboxCssUrl := default "https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" (index $exerciseConfig "mapboxcssurl") -}}
 {{- $mapboxJsUrl := default "https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js" (index $exerciseConfig "mapboxjsurl") -}}
 {{- $mapboxToken := default "" (index $exerciseConfig "mapboxtoken") -}}
+{{- $mapboxLightStyle := default "mapbox://styles/mapbox/streets-v12" (index $exerciseConfig "mapboxlightstyle") -}}
+{{- $mapboxDarkStyle := default "mapbox://styles/mapbox/dark-v11" (index $exerciseConfig "mapboxdarkstyle") -}}
+{{- $mapCenter := default (slice 0.0 0.0) (index $exerciseConfig "mapcenter") -}}
+{{- $posterFilePrefix := default "JingzheExercise" (index $exerciseConfig "posterfileprefix") -}}
 {{- $exerciseContract := hugo.Data.jingzhe.exercise -}}
 {{- $sportContract := index $exerciseContract "sports" -}}
-{{- $exerciseGroups := index $exerciseContract "groups" -}}
 <link rel="dns-prefetch" href="{{ $mapboxApiOrigin }}">
 <link rel="dns-prefetch" href="{{ $mapboxEventsOrigin }}">
 
 {{- /* ============================================================
-     板块 1：底层数据引擎与业务逻辑运算 (Hugo 编译期执行)
+     板块 1：读取处理后数据并组装页面轻量契约
 ============================================================ */ -}}
 
 {{- /* 1. 读取并清洗 JSON 数据 */ -}}
@@ -32,14 +35,9 @@
   {{ $landmarkRouteLibrary = $landmarkRouteLibraryRaw | unmarshal }}
 {{ end }}
 
-{{ $activities := slice }}
 {{ $themeMap := dict }}
-{{ $typeMap := dict }}
-{{ $fallbackTitleMap := dict }}
 {{ range $type, $values := $sportContract }}
   {{ $themeMap = merge $themeMap (dict $type (dict "color" (index $values "color"))) }}
-  {{ $typeMap = merge $typeMap (dict $type (index $values "displayName")) }}
-  {{ $fallbackTitleMap = merge $fallbackTitleMap (dict $type (index $values "fallbackTitle")) }}
 {{ end }}
 {{ $defaultTheme := dict "color" (index $exerciseContract "fallbackColor") }}
 {{ $foodIconKeys := slice }}
@@ -47,70 +45,19 @@
   {{ $foodIconKeys = $foodIconKeys | append (index . "key") }}
 {{ end }}
 
-{{ range $rawActivities }}
-  {{ $typeStr := default "运动" (index $typeMap .type) }}
-  {{ $fallbackTitle := default "动起来" (index $fallbackTitleMap .type) }}
-  
-  {{/* App 明确给出室内状态；空轨迹不再被误判为室内运动。 */}}
-  {{ $isExplicitIndoor := false }}
-  {{ with .is_indoor }}{{ $isExplicitIndoor = . }}{{ end }}
-  {{ if and (in (slice "Run" "Ride") .type) $isExplicitIndoor }}
-    {{ $typeStr = printf "室内%s" $typeStr }}
-  {{ end }}
-  
-  {{ $finalName := .name }}
-  {{ $pattern := "^(晨间|上午|午间|午后|下午|傍晚|晚间|夜间|凌晨|清晨|Morning|Afternoon|Evening|Night|Lunch).*(跑步|骑行|行走|徒步|游泳|运动|爬楼梯|Run|Ride|Walk|Swim|Hike|Treadmill|VirtualRun|StairStepper)$" }}
-  
-  {{/* 🧠 核心判断：扫一下是不是健康数据源自动生成的流水线名字 */}}
-  {{ $isDefaultName := or (findRE $pattern .name) (in (slice "Run" "Ride" "Walk" "StairStepper" "Workout" "") .name) }}
-
-  {{ if $isDefaultName }}
-    {{/* 公开轨迹使用真实地点；隐私与室内记录继续使用趣味距离参照。 */}}
-    {{ if eq .route_status "available" }}
-      {{ $finalName = default $fallbackTitle .route_title }}
-    {{ else }}
-      {{ $finalName = default $fallbackTitle .distance_title }}
-    {{ end }}
-  {{ else }}
-    {{/* 如果不是流水线名字 -> 说明是你自己手打的自定义名字，坚决保留！ */}}
-    {{ $finalName = .name }}
-  {{ end }}
-  
-  {{ $activities = $activities | append (merge . (dict "smart_name" $finalName "fallback_name" $typeStr)) }}
-{{ end }}
-
-{{- /* 2. 排序与极值勋章计算 */ -}}
-{{ $sortedActivities := sort $activities "start_date_local" "desc" }}
-{{ $rideTypes := index $exerciseGroups "ride" }}
-{{ $rwTypes := index $exerciseGroups "displayRunWalk" }}
+{{- /* 2. 排序并生成不含同步身份的浏览器数据 */ -}}
+{{ $sortedActivities := sort $rawActivities "start_date_local" "desc" }}
 
 {{ $years := slice }}
-{{ $lightweightRuns := slice }} 
-{{ $s := newScratch }}
-
-{{ $latestYear := "" }}
-{{ if gt (len $sortedActivities) 0 }}
-  {{ $latestYear = substr (index $sortedActivities 0).start_date_local 0 4 }}
-{{ end }}
+{{ $lightweightRuns := slice }}
 
 {{ range $sortedActivities }}
   {{ $y := substr .start_date_local 0 4 }}
   {{ $m := substr .start_date_local 5 2 }}
-  {{ $ym := printf "%s-%s" $y $m }}
-  
   {{ $years = $years | append $y }}
-  {{ if eq $y $latestYear }}{{ $s.Add "latestMonths" (slice $m) }}{{ end }}
-  
-  {{ $runData := dict "run_id" .run_id "name" .smart_name "fallback_name" .fallback_name "energy_title" .energy_title "food_key" (default "" .food_key) "distance_title" (default "" .distance_title) "distance_title_key" (default "" .distance_title_key) "type" .type "distance" .distance "total_elevation_gain" .total_elevation_gain "calories" .calories "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" (default "" .summary_polyline) "route_status" .route_status "is_indoor" (default false .is_indoor) }}
+
+  {{ $runData := dict "run_id" .run_id "display_name" .display_name "sport_display_name" .sport_display_name "card_achievement" .card_achievement "calendar_achievements" .calendar_achievements "energy_title" .energy_title "food_key" (default "" .food_key) "distance_title" (default "" .distance_title) "distance_title_key" (default "" .distance_title_key) "type" .type "distance" .distance "total_elevation_gain" .total_elevation_gain "calories" .calories "moving_time" .moving_time "pace_num" .pace_num "pace_unit" .pace_unit "average_heartrate" .average_heartrate "start_date_local" .start_date_local "summary_polyline" (default "" .summary_polyline) "route_status" .route_status "is_indoor" (default false .is_indoor) }}
   {{ $lightweightRuns = $lightweightRuns | append $runData }}
-  
-  {{ if in $rideTypes .type }}
-    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideY_%s" $y))) }}{{ $s.Set (printf "maxRideY_%s" $y) .distance }}{{ $s.Set (printf "maxRideY_id_%s" $y) .run_id }}{{ end }}
-    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRideM_%s" $ym))) }}{{ $s.Set (printf "maxRideM_%s" $ym) .distance }}{{ $s.Set (printf "maxRideM_id_%s" $ym) .run_id }}{{ end }}
-  {{ else if in $rwTypes .type }}
-    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRwY_%s" $y))) }}{{ $s.Set (printf "maxRwY_%s" $y) .distance }}{{ $s.Set (printf "maxRwY_id_%s" $y) .run_id }}{{ end }}
-    {{ if gt .distance (default 0.0 ($s.Get (printf "maxRwM_%s" $ym))) }}{{ $s.Set (printf "maxRwM_%s" $ym) .distance }}{{ $s.Set (printf "maxRwM_id_%s" $ym) .run_id }}{{ end }}
-  {{ end }}
 {{ end }}
 {{ $years = sort ($years | uniq) "value" "desc" }}
 
@@ -121,7 +68,7 @@
 {{ partial "exercise-food-icons.html" . }}
 <div class="exercise-container">
   <div class="pagetitle">
-    2025 年检查出来二型糖尿病，经过饮食及运动结合，已减重二十多斤。但随着不运动及饮食的不控制，体重开始反弹～今年的目标体重 130-140斤。
+    {{ .Params.intro }}
     <small class="exercise-privacy-note">(隐私保护：部分轨迹借杭州景点路线呈现)</small>
   </div>
 
@@ -138,16 +85,11 @@
         {{ range $index, $run := $sortedActivities }}
           {{ $y := substr .start_date_local 0 4 }}
           {{ $m := substr .start_date_local 5 2 }}
-          {{ $ym := printf "%s-%s" $y $m }}
           
           {{ $theme := default $defaultTheme (index $themeMap .type) }}
-          {{ $isRideY := eq .run_id ($s.Get (printf "maxRideY_id_%s" $y)) }}
-          {{ $isRideM := eq .run_id ($s.Get (printf "maxRideM_id_%s" $ym)) }}
-          {{ $isRwY := eq .run_id ($s.Get (printf "maxRwY_id_%s" $y)) }}
-          {{ $isRwM := eq .run_id ($s.Get (printf "maxRwM_id_%s" $ym)) }}
-          
-          {{ $isGold := or $isRideY $isRwY }}
-          {{ $hasAchieve := or $isGold $isRideM $isRwM }}
+          {{ $achievement := .card_achievement }}
+          {{ $hasAchieve := ne $achievement nil }}
+          {{ $isGold := and $hasAchieve (eq (index $achievement "level") "year") }}
           {{ $energyTitle := default "" $run.energy_title }}
           {{ $foodKey := default "" $run.food_key }}
           {{ $hasFoodIcon := and $energyTitle (in $foodIconKeys $foodKey) }}
@@ -164,7 +106,7 @@
                 </button>
               {{ end }}
               <div class="leftInfo">
-                <div class="runName {{ if $isGold }}is-gold-text{{ else if $hasAchieve }}is-silver-text{{ end }}">{{ $run.smart_name }}</div>
+                <div class="runName {{ if $isGold }}is-gold-text{{ else if $hasAchieve }}is-silver-text{{ end }}">{{ $run.display_name }}</div>
                 <div class="runDistance" style="color: {{ $theme.color }}">
                   {{ if gt $run.distance 0 }}{{ printf "%.2f" $run.distance }}<span class="distUnit">km</span>{{ else }}{{ $run.moving_time }}{{ end }}
                 </div>
@@ -174,11 +116,6 @@
                 <time class="runDate" datetime="{{ $runTime.Format "2006-01-02T15:04:05Z07:00" }}">{{ $runTime.Format "01-02 15:04" }}</time>
               </div>
             </div>
-
-
-           {{ if $hasAchieve }}
-              <div class="map-achieve-data" data-text="{{ if $isGold }}年度单次最远{{ else }}月度单次最远{{ end }}" style="display: none;"></div>
-            {{ end }}
             </div>
         {{ end }}
       </div>
@@ -200,13 +137,19 @@
     landmarkRoutes: {{ $landmarkRouteLibrary | jsonify | safeJS }},
     availableYears: {{ $years | jsonify | safeJS }},
     contract: {{ $exerciseContract | jsonify | safeJS }},
-    config: { MAPBOX_TOKEN: {{ $mapboxToken | jsonify | safeJS }} },
+    config: {
+      MAPBOX_TOKEN: {{ $mapboxToken | jsonify | safeJS }},
+      MAP_STYLE_LIGHT: {{ $mapboxLightStyle | jsonify | safeJS }},
+      MAP_STYLE_DARK: {{ $mapboxDarkStyle | jsonify | safeJS }},
+      MAP_CENTER: {{ $mapCenter | jsonify | safeJS }},
+      POSTER_FILE_PREFIX: {{ $posterFilePrefix | jsonify | safeJS }}
+    },
     ui: null, map: null
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260813d"></script>
-<script defer src="/js/exercise-map.js?v=20260813q"></script>
+<script defer src="/js/exercise-ui.js?v=20260815a"></script>
+<script defer src="/js/exercise-map.js?v=20260815a"></script>
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

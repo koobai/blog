@@ -34,6 +34,74 @@ class FoodConversionContractTests(unittest.TestCase):
         self.assertEqual('sugar_cube', key)
 
 
+class LandmarkRouteContractTests(unittest.TestCase):
+    def test_route_library_is_the_single_source_for_selection_rules(self):
+        library = process_activities.load_landmark_route_library()
+        self.assertEqual(20, len(library))
+        self.assertEqual(
+            {item['key'] for item in library if item['kind'] == 'distance'},
+            {item['key'] for item in process_activities.DISTANCE_EQUIVALENTS}
+        )
+        self.assertEqual(
+            {item['key'] for item in library if item['kind'] == 'elevation'},
+            {item['key'] for item in process_activities.ELEVATION_EQUIVALENTS}
+        )
+        process_activities.validate_landmark_route_library([])
+
+
+class ActivityDisplayContractTests(unittest.TestCase):
+    def test_display_names_preserve_custom_names_and_resolve_defaults(self):
+        custom = {
+            'name': '岳麓山夜骑', 'type': 'Ride', 'route_status': 'available',
+            'route_title': '骑过长沙 · 湘江中路'
+        }
+        private = {
+            'name': '晚间行走', 'type': 'Walk', 'route_status': 'privacy_hidden',
+            'distance_title': '走了两趟白堤'
+        }
+        indoor = {
+            'name': 'Morning Run', 'type': 'Run', 'route_status': 'indoor',
+            'is_indoor': True
+        }
+
+        self.assertEqual(('岳麓山夜骑', '骑行'), process_activities.activity_display_fields(custom))
+        self.assertEqual(('走了两趟白堤', '步行'), process_activities.activity_display_fields(private))
+        self.assertEqual(('跑起来', '室内跑步'), process_activities.activity_display_fields(indoor))
+
+    def test_achievement_fields_are_stable_and_keep_existing_semantics(self):
+        activities = [
+            {'run_id': 1, 'name': 'Run', 'type': 'Run', 'distance': 5,
+             'start_date_local': '2026-01-01T08:00:00', 'route_status': 'privacy_hidden'},
+            {'run_id': 2, 'name': 'Run', 'type': 'Run', 'distance': 10,
+             'start_date_local': '2026-01-02T08:00:00', 'route_status': 'privacy_hidden'},
+            {'run_id': 3, 'name': 'Run', 'type': 'Run', 'distance': 6,
+             'start_date_local': '2026-02-01T08:00:00', 'route_status': 'privacy_hidden'},
+            {'run_id': 4, 'name': 'Ride', 'type': 'Ride', 'distance': 20,
+             'start_date_local': '2026-01-01T09:00:00', 'route_status': 'privacy_hidden'},
+            {'run_id': 5, 'name': 'Swim', 'type': 'Swim', 'distance': 1,
+             'start_date_local': '2026-01-01T07:00:00', 'route_status': 'indoor'}
+        ]
+
+        self.assertTrue(process_activities.apply_activity_display_fields(activities))
+        by_id = {item['run_id']: item for item in activities}
+        self.assertEqual('year', by_id[2]['card_achievement']['level'])
+        self.assertEqual('month', by_id[3]['card_achievement']['level'])
+        self.assertEqual('year', by_id[4]['card_achievement']['level'])
+        self.assertEqual(
+            {'ride'},
+            {item['group'] for item in by_id[1]['calendar_achievements']}
+        )
+        self.assertEqual(
+            {'ride'},
+            {item['group'] for item in by_id[5]['calendar_achievements']}
+        )
+        self.assertEqual(
+            {'run_walk'},
+            {item['group'] for item in by_id[2]['calendar_achievements']}
+        )
+        self.assertFalse(process_activities.apply_activity_display_fields(activities))
+
+
 class PublicRouteTitleTests(unittest.TestCase):
     class _FakeResponse:
         status_code = 200

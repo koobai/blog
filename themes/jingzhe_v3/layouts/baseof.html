@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.LanguageCode | default "zh-CN" }}">
+<html lang="{{ site.Language.Locale | default "zh-CN" }}">
 
 <head>
   <meta charset="utf-8">
@@ -26,18 +26,7 @@
   <link rel="canonical" href="{{ .Permalink }}" />
 
   {{ block "meta_tags" . }}
-    <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
-    
-    <meta property="og:title" content="{{ .Title }}"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="{{ .Permalink }}"/>
-    <meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
-    {{ if .Params.image }}<meta property="og:image" content="{{ .Params.image | absURL }}"/>{{ end }}
-    
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="{{ .Title }}"/>
-    <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}"/>
-    {{ if .Params.image }}<meta name="twitter:image" content="{{ .Params.image | absURL }}"/>{{ end }}
+    {{ partial "seo.html" . }}
   {{ end }}
 
   {{ $options := dict "targetPath" "css/style.css" "enableSourceMap" hugo.IsServer }}
@@ -46,8 +35,6 @@
     {{ $style = $style | minify | fingerprint }}
   {{ end }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-
-  {{ partial "jingzhe/runtime-config.html" . }}
 
   {{ $themeJs := resources.Get "js/theme.js" }}
   {{ if not hugo.IsServer }}

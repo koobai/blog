@@ -24,7 +24,7 @@
     {{- end }}
     
     <generator>Hugo -- gohugo.io</generator>
-    {{- with site.LanguageCode }}<language>{{.}}</language>{{end}}
+    {{- with site.Language.Locale }}<language>{{.}}</language>{{end}}
     
     {{- with site.Params.author.email }}
     <managingEditor>{{.}}{{ with site.Params.author.name }} ({{.}}){{end}}</managingEditor>
@@ -82,10 +82,15 @@
       {{- end }}
     {{ end }}
 
+    {{- $rssService := site.Params.services.rss | default dict -}}
+    {{- $followFeedID := index $rssService "followfeedid" | default "" -}}
+    {{- $followUserID := index $rssService "followuserid" | default "" -}}
+    {{- if and $followFeedID $followUserID }}
     <follow_challenge>
-      <feedId>52982633250295857</feedId>
-      <userId>58707550957768704</userId>
+      <feedId>{{ $followFeedID }}</feedId>
+      <userId>{{ $followUserID }}</userId>
     </follow_challenge>
+    {{- end }}
 
   </channel>
 </rss>

@@ -10,7 +10,7 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 
 | 组件 | 当前职责 | 事实来源 |
 |---|---|---|
-| Hugo | 页面、RSS、JSON、Sitemap 和静态资源生成 | `config/`、`content/`、`themes/`、`static/` |
+| Hugo | 页面、SEO/分享元数据、RSS、JSON、Sitemap 和静态资源生成 | `config/`、`content/`、`themes/`、`static/` |
 | 惊蛰 v3 | 布局、响应式设计、深浅主题和功能页面 | `themes/jingzhe_v3/` |
 | 网页编辑器 | 写随笔、写唠叨、图片上传、草稿和 GitHub 写回 | `newlaodao.html`、`newsuibi.html` |
 | 观影同步 | 从豆瓣增量写入 `movie.json` | `sync_movies.py`、`douban.yml` |
@@ -140,11 +140,13 @@ flowchart TD
 
 三个消费者使用同一文件：
 
-1. Hugo 的 `exercise.html` 在构建期生成卡片名称、颜色和浏览器配置。
+1. `process_activities.py` 在数据处理期生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
 2. `static/js/exercise-ui.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
 3. `jingzhe/exercise_contract.py` 为 `process_activities.py` 与 `monthly_coach.py` 提供 Python 常量。
 
 `schemas/data/exercise-contract.schema.json` 描述公开结构，`jingzhe.py validate` 额外检查颜色、分组引用和食物 Key 唯一性。
+
+`assets/landmark_route_library.json` 是公共地标的唯一数据源，同时包含路线几何、距离/爬升参照和选择范围。Python 处理器与浏览器地图从同一份 JSON 读取，不再分别维护地标列表。
 
 ### AI Provider 边界
 

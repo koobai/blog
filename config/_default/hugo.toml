@@ -1,5 +1,5 @@
 baseURL = "https://example.org/"
-languageCode = "zh-cn"
+locale = "zh-CN"
 title = "惊蛰"
 theme = "jingzhe_v3"
 
@@ -9,7 +9,7 @@ hasCJKLanguage = true
 [module]
   [module.hugoVersion]
     extended = true
-    min = "0.120.0"
+    min = "0.158.0"
 
 [permalinks]
   posts = "/:slug/"
@@ -27,6 +27,20 @@ hasCJKLanguage = true
   category = "categories"
   tag = "tags"
   laodaotag = "laodaotags"
+
+[related]
+  includeNewer = true
+  threshold = 80
+  toLower = true
+
+  [[related.indices]]
+    name = "laodaotags"
+    weight = 100
+
+  [[related.indices]]
+    name = "date"
+    pattern = "200601"
+    weight = 10
 
 [outputs]
   home = ["HTML", "RSS"]

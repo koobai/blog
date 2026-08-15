@@ -16,12 +16,14 @@ jobs:
         token: ${{ secrets.PAT }}
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
         
     # 1. 运行轻量化抓取脚本（已移除图片处理依赖和 TMDB 密钥）
     - name: Fetch Movie Data
+      env:
+        DOUBAN_ID: ${{ vars.DOUBAN_ID || 'jnnsu' }}
       run: python sync_movies.py
 
     # 2. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净

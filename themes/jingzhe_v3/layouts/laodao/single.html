@@ -2,22 +2,24 @@
 {{ define "title" }}唠叨 - {{ .Date.Format "2006-01-02 15:04" }}{{ end }}
 
 {{ define "main" }}
+{{ $socialEnabled := partial "jingzhe/feature-enabled.html" "social" }}
 
 <div class="index-card laodao-main-card">
-  {{ partial "laodao-card.html" . }}
+  {{ partialCached "laodao-card.html" . .RelPermalink $socialEnabled }}
 </div>
 
 <div class="laodao-single-random">
-  随机唠叨碎片
+  更多唠叨碎片
 </div>
 
 <div class="index-card">
   {{ $allLaodao := where .Site.RegularPages "Section" "laodao" }}
   {{ $otherLaodao := $allLaodao | complement (slice .) }}
-  {{ $randomLaodao := first 10 (shuffle $otherLaodao) }}
+  {{ $relatedLaodao := where (.Site.RegularPages.Related .) "Section" "laodao" }}
+  {{ $recommendedLaodao := first 5 (union $relatedLaodao $otherLaodao.ByDate.Reverse) }}
   
-  {{ range $randomLaodao }}
-    {{ partial "laodao-card.html" . }}
+  {{ range $recommendedLaodao }}
+    {{ partialCached "laodao-card.html" . .RelPermalink $socialEnabled }}
   {{ end }}
 </div>
 <script src="/js/laodao.js?v=20260329a" defer></script>
@@ -25,5 +27,5 @@
   <a href="/laodao/" class="laodao-more-b">看全部唠叨 ...</a>
 </div>
 
-{{ if partial "jingzhe/feature-enabled.html" "social" }}{{ partial "comments.html" . }}{{ end }}
+{{ if $socialEnabled }}{{ partial "comments.html" . }}{{ end }}
 {{ end }}

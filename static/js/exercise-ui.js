@@ -69,8 +69,8 @@
       foodCount: selected.count,
       strongestDay: Number(strongestRun.start_date_local?.slice(8, 10)) || null,
       strongestTitle: strongestRun.energy_title
-        || strongestRun.name
-        || strongestRun.fallback_name
+        || strongestRun.display_name
+        || strongestRun.sport_display_name
         || ''
     };
   };
@@ -237,7 +237,6 @@
       const filteredRuns = this.allRuns.filter(r => r.start_date_local?.startsWith(this.currentYear));
       
       const monthMap = new Map();
-      const dateStats = new Map();
       const datesSet = new Set();
       
       let totalDist = 0, rideDist = 0, runDist = 0;
@@ -271,27 +270,11 @@
         const currentWeek = Math.max(0, Math.min(totalWeeks - 1, Math.floor((utcDayTimestamp - firstDayUTC) / 86400000 / 7)));
         weekData[currentWeek] += distNum;
 
-        if (!dateStats.has(dateStr)) dateStats.set(dateStr, { rideDist: 0, rwDist: 0, month });
         if (RIDE_TYPES.has(r.type)) { 
           rideDist += distNum; 
-          dateStats.get(dateStr).rideDist += distNum; 
         } else if (RUN_WALK_TYPES.has(r.type)) { 
           runDist += distNum; 
-          dateStats.get(dateStr).rwDist += distNum; 
         }
-      });
-
-      // 2. 计算极值 (年度/月度最远)
-      let calRideYMax = 0, calRideYDate = null;
-      let calRwYMax = 0, calRwYDate = null;
-      const calRideMDate = new Map(), calRideMMax = new Map();
-      const calRwMDate = new Map(), calRwMMax = new Map();
-
-      dateStats.forEach((stats, date) => {
-        if (stats.rideDist > calRideYMax) { calRideYMax = stats.rideDist; calRideYDate = date; }
-        if (stats.rideDist > (calRideMMax.get(stats.month) || 0)) { calRideMMax.set(stats.month, stats.rideDist); calRideMDate.set(stats.month, date); }
-        if (stats.rwDist > calRwYMax) { calRwYMax = stats.rwDist; calRwYDate = date; }
-        if (stats.rwDist > (calRwMMax.get(stats.month) || 0)) { calRwMMax.set(stats.month, stats.rwDist); calRwMDate.set(stats.month, date); }
       });
 
       // 平滑处理折线图数据
@@ -348,9 +331,7 @@
         availableMonthsArr: Array.from(new Set(filteredRuns.map(r => r.start_date_local.slice(5, 7)))).sort().reverse(),
         globalData: { 
           stats: { totalDist, rideDist, runDist, activeDays: datesSet.size },
-          sparklineData, sparklineMax: Math.max(...sparklineData, 1), 
-          calRideYDate, calRideMDates: new Set(calRideMDate.values()), 
-          calRwYDate, calRwMDates: new Set(calRwMDate.values()) 
+          sparklineData, sparklineMax: Math.max(...sparklineData, 1)
         },
         monthlyData: { 
           runsByDate: currentMonthData.runsByDate, 
@@ -447,20 +428,17 @@
               
             return `
               <div class="ttItem">
-                <span class="ttName">${r.name}</span>
+                <span class="ttName">${r.display_name}</span>
                 <span class="ttNum" style="color: ${colorFromType(r.type)}">${numDisplay}</span>
               </div>
             `;
           }).join('');
           
-          // 成就判定
-          const isRideY = dateStr === engine.globalData.calRideYDate;
-          const isRwY = dateStr === engine.globalData.calRwYDate;
-          const isRideM = !isRideY && engine.globalData.calRideMDates.has(dateStr);
-          const isRwM = !isRwY && engine.globalData.calRwMDates.has(dateStr);
-          
-          const isGold = isRideY || isRwY;
-          hasAchieve = isGold || isRideM || isRwM;
+          const achievements = Array.isArray(primaryRun.calendar_achievements)
+            ? primaryRun.calendar_achievements
+            : [];
+          const isGold = achievements.some(achievement => achievement.level === 'year');
+          hasAchieve = achievements.length > 0;
 
           if (hasAchieve) {
             const dotClass = isGold ? 'is-gold-dot' : 'is-silver-dot';
@@ -468,11 +446,12 @@
           }
           
           // 组装成就标签
-          let aHtml = '';
-          if (isRideY) aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">骑行</span></div>`;
-          else if (isRideM) aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">骑行</span></div>`;
-          if (isRwY) aHtml += `<div class="ttAchieveRow"><span>年度最远</span><span class="titleTag">跑走</span></div>`;
-          else if (isRwM) aHtml += `<div class="ttAchieveRow"><span>月度最远</span><span class="titleTag">跑走</span></div>`;
+          const aHtml = achievements.map(achievement => `
+            <div class="ttAchieveRow">
+              <span>${escapeHtml(achievement.label)}</span>
+              <span class="titleTag">${escapeHtml(achievement.group_label)}</span>
+            </div>
+          `).join('');
 
           tooltipHtml = `
             <div class="runTooltip">

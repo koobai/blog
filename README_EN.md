@@ -15,7 +15,7 @@ This repository is both the production source of [Koobai](https://koobai.com), t
 - **Life timeline:** present essays, short updates, and technical notes together, organized with tags and categories.
 - **Custom Hugo theme:** responsive design with light, dark, and system modes, plus an image lightbox.
 - **Lightweight writing dashboard:** solve the static-blog publishing gap by writing essays and updates, previewing Markdown, saving drafts, uploading images, and publishing to GitHub from a browser.
-- **Content under your control:** keep writing and public life data in your own Git repository, with full-text RSS, JSON, sitemap, and Web App Manifest outputs.
+- **Content under your control:** keep writing and public life data in your own Git repository, with full-text RSS, JSON, sitemap, Web App Manifest, and complete sharing metadata.
 - **Social interactions:** add comments, nested replies, likes, emoji, moderation, and Cloudflare Turnstile protection.
 - **Movie log:** synchronize Douban records incrementally and present ratings, notes, and viewing dates as ticket-style cards.
 - **Exercise with privacy:** combine statistics, calendars, heart rate, Mapbox tracks, achievements, and posters with landmark-based substitutes for private routes.
@@ -68,7 +68,7 @@ See [Architecture and module contracts](docs/architecture.md) for data flows, mo
 Requirements:
 
 - Git
-- Hugo Extended 0.120.0 or later
+- Hugo Extended 0.158.0 or later
 - Python 3.9 or later only for exercise processing and related tests
 
 ```bash

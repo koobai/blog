@@ -1,8 +1,8 @@
 # Changelog
 
-本项目的显著变化记录在此。当前仓库尚未发布版本 Tag；下面内容是本地 `v3.0.0` 发布候选，不代表已经推送或正式发布。
+本项目的显著变化记录在此。当前仓库尚未发布版本 Tag；下面汇总 `v3.0.0` 的未发布变更，不代表已经创建正式版本。
 
-## [Unreleased] - v3.0.0 本地发布候选
+## [Unreleased] - v3.0.0
 
 ### Added
 
@@ -17,10 +17,15 @@
 - CI 质量门禁、Starter 构建工作流和开源协作模板。
 - 分层 MIT/内容/品牌授权文件和完整第三方许可证副本。
 - README 顶部 AI 快速部署入口、可复制安装指令和平台无关的部署契约。
+- 集中式 SEO/分享元数据，兼容现有 `image` 与 Hugo `images`，并为随笔、唠叨和独立页面生成对应 JSON-LD。
 
 ### Changed
 
 - Koobai 专属身份和公开服务地址从通用默认配置中分离。
+- Hugo 模板迁移到当前目录和命名体系；可选功能样式、运行时配置与第三方脚本按功能和页面作用域生成。
+- 唠叨推荐改为稳定的相关内容与近期内容，并复用缓存后的卡片渲染。
+- 运动展示名称、成就字段和地标选择规则统一在处理阶段与单一数据源中生成，模板和浏览器不再重复业务判断。
+- GitHub Actions 的基础 Action 版本保持一致，Hugo 工作流继续跟随 `latest`。
 - 评论前端同时兼容旧 `email` 与新 `avatar_hash` 响应。
 - Worker 的生产域名、仓库、管理员邮箱和品牌值改为部署变量。
 - Publisher 的 GitHub 代理改为精确仓库边界校验。
@@ -41,7 +46,12 @@
 - Koobai 当前 GitHub、原生 App、豆瓣、运动、AI 月报和 Cloudflare Pages 流程无需改变。
 - `koobai.com` 继续作为唯一在线演示；没有新增第二个演示站。
 
+### Removed
+
+- 停止跟踪 Hugo 构建锁、资源缓存和 Obsidian 本机工作区状态。
+- 删除已经确认停用的手动 UpYun 整站部署工作流；浏览器写作的图片上传与图片域名配置保持不变。
+
 ### Not released yet
 
-- 尚未 Commit、Push、创建 Tag 或 GitHub Release。
+- 尚未创建版本 Tag 或 GitHub Release。
 - 尚未部署或切换任何 Cloudflare Worker。

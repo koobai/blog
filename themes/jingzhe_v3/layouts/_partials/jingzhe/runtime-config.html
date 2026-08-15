@@ -1,0 +1,3 @@
+{{- $socialConfig := site.Params.services.social | default dict -}}
+{{- $runtimeConfig := dict "services" (dict "social" $socialConfig) -}}
+<script>window.JINGZHE_CONFIG = {{ $runtimeConfig | jsonify | safeJS }};</script>

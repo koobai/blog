@@ -45,7 +45,9 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 - GitHub 仓库公开 owner/name/branch。
 - Worker 的公开请求地址。
 - Mapbox Public Token。
+- Mapbox 浅色/深色样式、默认中心和海报文件名前缀。
 - Turnstile Site Key。
+- 可选的 Follow RSS `feedId` 与 `userId`。
 
 不得进入 Hugo 配置的值：
 
@@ -55,6 +57,15 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 - 数据库、对象存储和模型 API Secret。
 
 私密值只能放在 GitHub Secrets、Worker Secrets 或本地环境变量中。
+
+## 生活数据自动化参数
+
+豆瓣 ID 和 Nominatim 请求标识都不是 Secret，但属于具体站点身份，不写在可复用主题中：
+
+- `sync_movies.py` 优先从 `DOUBAN_ID` 环境变量读取账号。Production 工作流优先使用 GitHub Actions Variable `DOUBAN_ID`，脚本和工作流都保留当前站点回退值，因此 Koobai 原有的本地与 Actions 同步无需新增 Secret 或改变命令。
+- `process_activities.py` 优先从 `NOMINATIM_USER_AGENT` 和 `NOMINATIM_REFERER` 读取公开地理编码请求标识；脚本保留当前 Production 回退，工作流也已显式提供同一站点值。
+
+其他使用者应替换为自己的账号与可识别的站点地址，不直接沿用 Koobai Production 标识。
 
 ## Core 初始化隔离
 
@@ -71,6 +82,18 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 - `archetypes/laodao.md`：新唠叨模板。
 
 Schema 用于新内容提示和验证，不用于批量改写历史文件。
+
+## SEO 与分享卡片
+
+主题会在构建时统一生成页面描述、Canonical、Open Graph、X/Twitter Cards 和 JSON-LD：
+
+- 随笔和唠叨按文章处理，自动带上发布时间、修改时间和标签。
+- 独立页面与列表按网站页面处理，不会误标为文章。
+- `description` 为空时，单篇内容使用正文摘要，其他页面回退到站点首页说明。
+- 现有 `image` 字段继续作为封面和分享图；同时兼容 Hugo 常见的 `images` 列表，不要求改写历史内容。
+- 没有分享图时使用普通摘要卡片，只有存在图片时才声明大图卡片。
+
+站点作者可以通过 `params.author.name` 配置；配置后会进入文章结构化数据。SEO 适配只改变生成页面的 `<head>`，不改变正文、URL、评论或点赞标识。
 
 ## 当前构建命令
 

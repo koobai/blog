@@ -3,6 +3,7 @@
 
 {{ define "main" }}
  {{/* 分页，默认 25 条一页 */}}
+{{ $socialEnabled := partial "jingzhe/feature-enabled.html" "social" }}
 <div id="index-card-timeline" class="index-card">
   {{ $stream := where site.RegularPages "Type" "in" (slice "posts" "laodao") }}
   {{ $paginator := .Paginate $stream.ByDate.Reverse 25 }}
@@ -31,7 +32,7 @@
       </div>
        {{/* 唠叨 */}}
     {{ else if eq .Type "laodao" }}
-      {{ partial "laodao-card.html" . }}
+      {{ partialCached "laodao-card.html" . .RelPermalink $socialEnabled }}
     {{ end }}
   {{ end }}
 </div>
@@ -42,6 +43,6 @@
   </div>
 {{ end }}
 <script src="/js/laodao.js?v=20260329a" defer></script>
-{{ if partial "jingzhe/feature-enabled.html" "social" }}{{ partial "comments.html" . }}{{ end }}
+{{ if $socialEnabled }}{{ partial "comments.html" . }}{{ end }}
 
 {{ end }}

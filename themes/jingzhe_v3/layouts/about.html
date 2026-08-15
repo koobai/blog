@@ -1,0 +1,15 @@
+{{ define "body_classes" }}page-about{{ end }}
+{{- define "main" }}
+<div class="pagetitle">{{ .Params.intro }}</div>
+
+<div class="about-img">
+  {{/* alt 留空是合理的，因为 JS 会动态填充，或者纯装饰 */}}
+  <img src=""  alt="" />
+  <div class="about-img-text">Hello</div>
+  <div class="about-img-intro"></div>
+</div>
+{{ .Content }}
+
+<script>window.JINGZHE_ABOUT_PHOTOS = {{ site.Params.about.photos | default (slice) | jsonify | safeJS }};</script>
+<script src="/js/about-photo.js?v=20260131" defer></script>
+{{- end }}

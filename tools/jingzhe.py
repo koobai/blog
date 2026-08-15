@@ -27,19 +27,20 @@ from urllib.parse import unquote, urljoin, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 SUPPORTED_PROFILES = ("core",)
+MINIMUM_HUGO_VERSION = (0, 158, 0)
 TEXT_SUFFIXES = {
     ".css", ".html", ".js", ".json", ".md", ".py", ".scss",
     ".toml", ".txt", ".webmanifest", ".xml", ".yaml", ".yml",
 }
 SKIP_PARTS = {".git", "public", "resources", "__pycache__"}
 CORE_EXCLUDED_LAYOUTS = {
-    "layouts/_default/about.html",
-    "layouts/_default/exercise.html",
-    "layouts/_default/movies.html",
-    "layouts/_default/newlaodao.html",
-    "layouts/_default/newsuibi.html",
-    "layouts/partials/comments.html",
-    "layouts/partials/exercise-food-icons.html",
+    "layouts/about.html",
+    "layouts/exercise.html",
+    "layouts/movies.html",
+    "layouts/newlaodao.html",
+    "layouts/newsuibi.html",
+    "layouts/_partials/comments.html",
+    "layouts/_partials/exercise-food-icons.html",
 }
 STARTER_BANNED_MARKERS = {
     "koobai.com": "production domain",
@@ -132,6 +133,17 @@ def load_json(path: Path) -> object:
         return json.load(handle)
 
 
+def parse_hugo_version(value: str) -> Optional[Tuple[int, int, int]]:
+    match = re.search(r"\bv?(\d+)\.(\d+)\.(\d+)\b", value)
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups())
+
+
+def format_version(version: Tuple[int, int, int]) -> str:
+    return ".".join(str(part) for part in version)
+
+
 def resolved_config(environment: str) -> Tuple[Optional[dict], str]:
     result = run_command(
         ["hugo", "config", "--environment", environment, "--format", "json"],
@@ -200,6 +212,23 @@ def command_doctor(args: argparse.Namespace) -> dict:
         versions["hugo"] = version.stdout.strip().splitlines()[0] if version.stdout else ""
         extended = "extended" in version.stdout.lower()
         add_check(checks, "hugo.extended", extended, "Hugo Extended 已启用" if extended else "需要 Hugo Extended")
+        detected = parse_hugo_version(version.stdout)
+        minimum_label = format_version(MINIMUM_HUGO_VERSION)
+        minimum_ok = detected is not None and detected >= MINIMUM_HUGO_VERSION
+        add_check(
+            checks,
+            "hugo.minimum",
+            minimum_ok,
+            (
+                "Hugo {} 满足最低版本 {}".format(format_version(detected), minimum_label)
+                if minimum_ok and detected
+                else "需要 Hugo {} 或更高版本".format(minimum_label)
+            ),
+            detail={
+                "minimum": minimum_label,
+                "detected": format_version(detected) if detected else None,
+            },
+        )
 
     config, error = resolved_config(args.environment)
     if config is None:
@@ -239,7 +268,11 @@ def command_doctor(args: argparse.Namespace) -> dict:
 def validate_activity_items(items: object) -> List[str]:
     if not isinstance(items, list):
         return ["根节点必须是数组"]
-    required = {"run_id", "name", "type", "distance", "moving_time", "start_date_local", "route_status"}
+    required = {
+        "run_id", "name", "type", "distance", "moving_time", "start_date_local",
+        "route_status", "display_name", "sport_display_name", "card_achievement",
+        "calendar_achievements"
+    }
     allowed_status = {"available", "privacy_hidden", "unavailable", "indoor"}
     errors: List[str] = []
     for index, item in enumerate(items):

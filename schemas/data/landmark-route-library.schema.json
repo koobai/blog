@@ -4,12 +4,22 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["key", "name", "distance_km", "geometry", "source"],
+    "required": ["key", "name", "unit", "kind", "max_count", "distance_km", "geometry", "source"],
     "properties": {
       "key": {"type": "string", "minLength": 1},
       "name": {"type": "string", "minLength": 1},
       "unit": {"type": "string"},
+      "kind": {"enum": ["distance", "elevation"]},
       "reference_km": {"type": "number", "minimum": 0},
+      "reference_meters": {"type": "number", "minimum": 0},
+      "min_km": {"type": "number", "minimum": 0},
+      "max_km": {"type": "number", "minimum": 0},
+      "max_count": {"type": "integer", "minimum": 1},
+      "preferred_groups": {
+        "type": "array",
+        "items": {"enum": ["ride", "run", "walk", "hike"]},
+        "uniqueItems": true
+      },
       "path_type": {"type": "string"},
       "costing": {"type": "string"},
       "distance_km": {"type": "number", "minimum": 0},

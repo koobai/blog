@@ -71,6 +71,9 @@ jobs:
         env:
           # DeepSeek 只接收程序汇总后的月度证据，不接收轨迹与坐标。
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 公开地理编码服务要求请求标识应用和联系页面。
+          NOMINATIM_USER_AGENT: KoobaiExerciseBlog/1.0 (https://koobai.com/exercise/)
+          NOMINATIM_REFERER: https://koobai.com/exercise/
         run: python process_activities.py
 
       - name: Commit and Push changes

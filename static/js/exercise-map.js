@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
      板块 1：基础配置与 Mapbox 初始化
   ======================================================================== */
 
-  mapboxgl.accessToken = window.KoobaiRun.config.MAPBOX_TOKEN;
+  const mapConfig = window.KoobaiRun.config || {};
+  mapboxgl.accessToken = mapConfig.MAPBOX_TOKEN;
+  const configuredMapCenter = Array.isArray(mapConfig.MAP_CENTER) && mapConfig.MAP_CENTER.length === 2
+    ? mapConfig.MAP_CENTER.map(Number)
+    : [0, 0];
 
   // 1. 统一判断当前主题，供底图和自定义轨迹图层共同使用。
   const isDarkMapTheme = () => {
@@ -30,15 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. 动态获取当前主题样式 URL。
   const getMapStyleUrl = () => {
     return isDarkMapTheme()
-      ? 'mapbox://styles/koobai/cmma8mwce001v01sge7e0dx1w' // 暗黑版
-      : 'mapbox://styles/koobai/cmma9983i00f101qwezj0f77f'; // 浅色版
+      ? mapConfig.MAP_STYLE_DARK
+      : mapConfig.MAP_STYLE_LIGHT;
   };
 
   // 3. 初始化地图实例
   const map = new mapboxgl.Map({
     container: 'mapbox-container', 
     style: getMapStyleUrl(), 
-    center: [120.1551, 30.2741], 
+    center: configuredMapCenter,
     zoom: 11, 
     pitch: 0, 
     bearing: 0, 
@@ -152,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const LANDMARK_ROUTES_BY_KEY = new Map(
     LANDMARK_ROUTE_LIBRARY.map(route => [route.key, route])
   );
-  const LANDMARK_MAP_CENTER = [120.1551, 30.2741];
+  const LANDMARK_MAP_CENTER = configuredMapCenter;
 
   const getLandmarkRouteForRun = (run) => (
     LANDMARK_ROUTES_BY_KEY.get(run.distance_title_key) || null
@@ -649,19 +653,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const color = getColor(runData.type);
         const isRide = ['Ride', 'VirtualRide', 'EBikeRide'].includes(runData.type);
         const displayTime = runData.start_date_local.substring(5, 16).replace('T', ' ');
-        const smartName = runData.name;
-        const sportTypeName = runData.fallback_name || '运动';
+        const smartName = runData.display_name;
+        const sportTypeName = runData.sport_display_name || '运动';
 
         let achievementTagsHtml = '';
-        const sourceCard = document.querySelector(`.runCard[data-run-id="${runId}"]`);
-        if (sourceCard) {
-          const achieveNode = sourceCard.querySelector('.map-achieve-data');
-          if (achieveNode) {
-            const achieveText = achieveNode.getAttribute('data-text');
-            if (achieveText) {
-              achievementTagsHtml = `<span class="map-achievement-tag">${achieveText}</span>`;
-            }
-          }
+        if (runData.card_achievement?.label) {
+          achievementTagsHtml = `<span class="map-achievement-tag">${escapeHtml(runData.card_achievement.label)}</span>`;
         }
 
         // 1. 纯净的 HTML 结构（已去除标题旁的分享图标）
@@ -787,7 +784,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }).then(function (canvas) {
               const webpDataUrl = canvas.toDataURL('image/webp', 0.92);
               const link = document.createElement('a');
-              link.download = `KoobaiRun_${displayTime.replace(/[\/\s:]/g, '')}.webp`;
+              const posterPrefix = String(mapConfig.POSTER_FILE_PREFIX || 'JingzheExercise')
+                .replace(/[^a-zA-Z0-9_-]/g, '') || 'JingzheExercise';
+              link.download = `${posterPrefix}_${displayTime.replace(/[\/\s:]/g, '')}.webp`;
               link.href = webpDataUrl;
               link.click();
               

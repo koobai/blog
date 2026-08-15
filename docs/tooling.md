@@ -62,6 +62,8 @@ python3 tools/jingzhe.py check
 - Python 单元测试。
 - 代码、配置、工作流和 Starter 的高置信度 Secret 扫描。
 
+`tests/` 是上述兼容与隐私契约的测试源码，不是 Hugo 生成目录。`check` 会自动发现全部 `test_*.py`、`test_*.js` 和 `test_*.mjs`；增加或删除测试文件时无需手工维护一份重复清单。测试不会复制进 Core Starter，也不会进入生成的网站。
+
 生产站已经停用但仍存在于历史内容中的路径记录在 `data/jingzhe/linkcheck_allowlist.json`。这不是重新启用旧链接，也不会修改旧文章。
 
 ## init
@@ -93,7 +95,7 @@ GitHub 的 `Build Core Starter` 工作流只支持手动触发并上传构建产
 
 ## Pull Request CI
 
-`.github/workflows/quality.yml` 在 Pull Request 上运行统一 `check`。它具有只读仓库权限，不部署、不提交文件，也不使用 Koobai 的生产 Secrets。原有 `githubblog.yml`、数据同步和 UpYun 工作流没有改变。
+`.github/workflows/quality.yml` 在 Pull Request 上运行统一 `check`。它具有只读仓库权限，不部署、不提交文件，也不使用 Koobai 的生产 Secrets。正式站仍由 `githubblog.yml` 部署到 Cloudflare Pages；数据同步与月报继续使用各自独立的工作流。
 
 ## JSON 输出
 

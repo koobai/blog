@@ -1,0 +1,155 @@
+{{- $title := .Title | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- $isLaodao := and .IsPage (eq .Section "laodao") -}}
+{{- $isArticle := and .IsPage (or (eq .Section "posts") $isLaodao) -}}
+{{- if $isLaodao -}}
+  {{- $title = printf "唠叨 · %s" (.Date.Format "2006-01-02 15:04") -}}
+{{- else if not $title -}}
+  {{- $title = site.Title | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- end -}}
+
+{{- $siteDescription := site.Params.description | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- if not $siteDescription -}}
+  {{- $siteDescription = site.Home.Params.description | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- end -}}
+
+{{- $description := .Params.description | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- if and (not $description) .IsPage -}}
+  {{- $description = .Summary | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = $siteDescription -}}
+{{- end -}}
+{{- $description = $description | truncate 180 -}}
+
+{{- $images := slice -}}
+{{- with .Params.images -}}
+  {{- if reflect.IsSlice . -}}
+    {{- range . -}}
+      {{- with strings.TrimSpace (printf "%v" .) -}}
+        {{- $images = $images | append (. | absURL) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with strings.TrimSpace (printf "%v" .) -}}
+      {{- $images = $images | append (. | absURL) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with .Params.image -}}
+  {{- with strings.TrimSpace (printf "%v" .) -}}
+    {{- $images = $images | append (. | absURL) -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq (len $images) 0 -}}
+  {{- with site.Params.images -}}
+    {{- if reflect.IsSlice . -}}
+      {{- range . -}}
+        {{- with strings.TrimSpace (printf "%v" .) -}}
+          {{- $images = $images | append (. | absURL) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- with strings.TrimSpace (printf "%v" .) -}}
+        {{- $images = $images | append (. | absURL) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $images = uniq $images -}}
+
+{{- $tags := slice -}}
+{{- with .Params.tags -}}
+  {{- range . -}}
+    {{- with strings.TrimSpace (printf "%v" .) -}}
+      {{- $tags = $tags | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with .Params.laodaotags -}}
+  {{- range . -}}
+    {{- with strings.TrimSpace (printf "%v" .) -}}
+      {{- $tags = $tags | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $tags = uniq $tags -}}
+
+{{- with $description }}
+  <meta name="description" content="{{ . }}">
+{{- end }}
+
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:type" content="{{ cond $isArticle "article" "website" }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:locale" content="{{ replace site.Language.Locale "-" "_" }}">
+{{- with $description }}
+  <meta property="og:description" content="{{ . }}">
+{{- end }}
+{{- range $images }}
+  <meta property="og:image" content="{{ . }}">
+{{- end }}
+{{- with index $images 0 }}
+  <meta property="og:image:alt" content="{{ $title }}">
+{{- end }}
+{{- if $isArticle }}
+  <meta property="article:section" content="{{ .Section }}">
+  {{- if not .PublishDate.IsZero }}
+    <meta property="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05-07:00" }}">
+  {{- end }}
+  {{- if not .Lastmod.IsZero }}
+    <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">
+  {{- end }}
+  {{- range $tags }}
+    <meta property="article:tag" content="{{ . }}">
+  {{- end }}
+{{- end }}
+
+<meta name="twitter:card" content="{{ cond (gt (len $images) 0) "summary_large_image" "summary" }}">
+<meta name="twitter:title" content="{{ $title }}">
+{{- with $description }}
+  <meta name="twitter:description" content="{{ . }}">
+{{- end }}
+{{- with index $images 0 }}
+  <meta name="twitter:image" content="{{ . }}">
+  <meta name="twitter:image:alt" content="{{ $title }}">
+{{- end }}
+
+{{- $schemaType := "WebPage" -}}
+{{- if .IsHome -}}
+  {{- $schemaType = "WebSite" -}}
+{{- else if $isArticle -}}
+  {{- $schemaType = "BlogPosting" -}}
+{{- end -}}
+{{- $schema := dict
+  "@context" "https://schema.org"
+  "@type" $schemaType
+  "url" .Permalink
+  "name" $title
+  "inLanguage" site.Language.Locale
+-}}
+{{- with $description -}}
+  {{- $schema = merge $schema (dict "description" .) -}}
+{{- end -}}
+{{- if gt (len $images) 0 -}}
+  {{- $schema = merge $schema (dict "image" $images) -}}
+{{- end -}}
+{{- if not .IsHome -}}
+  {{- $schema = merge $schema (dict "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.Home.Permalink)) -}}
+{{- end -}}
+{{- if $isArticle -}}
+  {{- $schema = merge $schema (dict "headline" $title "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)) -}}
+  {{- if not .PublishDate.IsZero -}}
+    {{- $schema = merge $schema (dict "datePublished" (.PublishDate.Format "2006-01-02T15:04:05-07:00")) -}}
+  {{- end -}}
+  {{- if not .Lastmod.IsZero -}}
+    {{- $schema = merge $schema (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05-07:00")) -}}
+  {{- end -}}
+  {{- with $tags -}}
+    {{- $schema = merge $schema (dict "keywords" .) -}}
+  {{- end -}}
+  {{- with site.Params.author.name -}}
+    {{- $schema = merge $schema (dict "author" (dict "@type" "Person" "name" .)) -}}
+  {{- end -}}
+{{- end }}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>

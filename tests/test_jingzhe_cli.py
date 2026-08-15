@@ -7,6 +7,15 @@ from tools import jingzhe
 
 
 class JingzheCliTests(unittest.TestCase):
+    def test_hugo_version_parser_handles_extended_build(self):
+        value = "hugo v0.165.0+extended+withdeploy darwin/arm64"
+
+        self.assertEqual(jingzhe.parse_hugo_version(value), (0, 165, 0))
+        self.assertGreaterEqual(jingzhe.parse_hugo_version(value), jingzhe.MINIMUM_HUGO_VERSION)
+
+    def test_hugo_version_parser_rejects_unknown_output(self):
+        self.assertIsNone(jingzhe.parse_hugo_version("hugo development build"))
+
     def test_replace_section_setting_preserves_following_sections(self):
         source = '[author]\nname = "old"\n\n[brand]\nname = "brand"\n'
         result = jingzhe.replace_section_setting(source, "author", "name", "new")

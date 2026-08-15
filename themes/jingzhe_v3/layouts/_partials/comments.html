@@ -1,3 +1,6 @@
+{{ partialCached "jingzhe/runtime-config.html" . "social" }}
+{{ with site.Params.services.social.turnstileScriptUrl }}<script src="{{ . }}" defer></script>{{ end }}
+
 <div id="custom-comment-system" class="koobai-comments" style="display: none;">
   <div id="form-placeholder">
     <div class="comment-form-wrap" id="main-form-wrap">

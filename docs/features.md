@@ -21,7 +21,7 @@
 - 深浅主题。
 - 响应式布局。
 - 图片灯箱与 Markdown 渲染钩子。
-- RSS、JSON、Sitemap 和 Manifest。
+- RSS、JSON、Sitemap、Manifest 和 SEO/分享元数据。
 
 依赖：Hugo Extended。
 

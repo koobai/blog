@@ -5,11 +5,11 @@ import re
 import time
 import random
 
-# ====== 核心配置区 ======
-DOUBAN_ID = "jnnsu" # 你的豆瓣 ID
-# ========================
+DOUBAN_ID = os.getenv('DOUBAN_ID', 'jnnsu').strip()
 
 if __name__ == "__main__":
+    if not DOUBAN_ID:
+        raise SystemExit("❌ 缺少 DOUBAN_ID：请在环境变量或 GitHub Actions Variables 中配置豆瓣 ID。")
     # 1. 加载本地已有数据
     local_file = 'assets/movie.json'
     os.makedirs(os.path.dirname(local_file), exist_ok=True)

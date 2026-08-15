@@ -31,8 +31,8 @@
 - `themes/jingzhe_v3/assets/`：主题 SCSS 与 Hugo Pipes 资源。
 - `static/js/`：浏览器交互逻辑。
 - `static/js/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
-- `assets/*.json`：观影、运动、地标路线和月报数据。
-- `process_activities.py`：运动数据加工与隐私路线处理。
+- `assets/*.json`：观影、处理后运动、地标路线和月报数据；`landmark_route_library.json` 是地标几何与选择规则的单一数据源。
+- `process_activities.py`：运动数据加工、展示名称/成就字段与隐私路线处理。
 - `monthly_coach.py`：运动月报统计、证据、模型调用与状态机。
 - `sync_movies.py`：豆瓣观影数据同步。
 - `tests/`：Python、浏览器脚本、Worker、文档和隐私契约测试。
@@ -177,7 +177,7 @@ node tests/test_workers.mjs
 - 通用 Core 默认配置和 Koobai Production/Development 配置已经分离；后续改动必须保持环境边界。
 - 可选功能通过配置开关控制。
 - 在线编辑器公共原语已进入 `editor-core.js`；页面专属 UI 继续留在各自模板。
-- 运动类型、颜色和换算数据已使用 `data/jingzhe/exercise.json` 作为单一来源。
+- 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。
 - 评论点赞 Worker 与高权限发布 Worker 保持安全边界。
 

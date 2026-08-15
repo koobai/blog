@@ -13,6 +13,3 @@
 </footer>
 
 <script src="/js/view-image.min.js"></script>
-{{ if partial "jingzhe/feature-enabled.html" "social" }}
-  {{ with site.Params.services.social.turnstileScriptUrl }}<script src="{{ . }}" defer></script>{{ end }}
-{{ end }}
