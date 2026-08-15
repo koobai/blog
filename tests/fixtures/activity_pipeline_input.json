@@ -1,0 +1,65 @@
+[
+  {
+    "run_id" : 4,
+    "name" : "StairStepper",
+    "type" : "StairStepper",
+    "distance" : 0,
+    "moving_time" : "00:20:00",
+    "calories" : 100,
+    "total_elevation_gain" : 100,
+    "start_date_local" : "2026-02-02T08:00:00",
+    "route_status" : "indoor",
+    "is_indoor" : true
+  },
+  {
+    "run_id" : 3,
+    "name" : "岳麓山夜骑",
+    "type" : "Ride",
+    "distance" : 20,
+    "moving_time" : "01:00:00",
+    "calories" : 300,
+    "total_elevation_gain" : 80,
+    "start_date_local" : "2026-02-01T19:00:00",
+    "route_status" : "available",
+    "route_title" : "旧标题",
+    "route_title_version" : 1,
+    "distance_title" : "旧距离"
+  },
+  {
+    "run_id" : 2,
+    "name" : "Morning Ride",
+    "type" : "Ride",
+    "distance" : 15,
+    "moving_time" : "00:45:00",
+    "calories" : 250,
+    "total_elevation_gain" : 50,
+    "start_date_local" : "2026-01-02T08:00:00",
+    "route_status" : "available",
+    "summary_polyline" : "abc",
+    "distance_title" : "旧距离"
+  },
+  {
+    "run_id" : 1,
+    "name" : "Morning Run",
+    "type" : "Run",
+    "distance" : 5,
+    "moving_time" : "00:30:00",
+    "calories" : 24,
+    "total_elevation_gain" : 10,
+    "start_date_local" : "2026-01-01T08:00:00",
+    "route_status" : "privacy_hidden",
+    "route_title" : "不应保留",
+    "route_title_version" : 1
+  },
+  {
+    "run_id" : 0,
+    "name" : "Run",
+    "type" : "Run",
+    "distance" : 3,
+    "moving_time" : "00:20:00",
+    "calories" : 100,
+    "total_elevation_gain" : 0,
+    "start_date_local" : "2025-12-31T08:00:00",
+    "route_status" : "privacy_hidden"
+  }
+]

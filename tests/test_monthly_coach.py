@@ -303,6 +303,36 @@ class MonthlyCoachStateTests(unittest.TestCase):
         generate.assert_not_called()
 
     @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
+    def test_unchanged_frozen_final_keeps_last_update_and_file_exact(self, generate):
+        august = [
+            activity(f'2026-08-{day:02d}T19:00:00', 10 + day / 10)
+            for day in (1, 3, 5, 7, 9, 11)
+        ]
+        monthly_coach.update_monthly_insights(
+            august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 1, 4)
+        )
+        first_entry = self.read()['2026-08']
+        with open(self.path, 'r', encoding='utf-8') as file:
+            first_file = file.read()
+
+        generate.reset_mock()
+        changed = monthly_coach.update_monthly_insights(
+            august,
+            self.path,
+            api_key='test-key',
+            now=datetime(2026, 9, 10, 20)
+        )
+
+        self.assertFalse(changed)
+        self.assertEqual(first_entry['last_update'], self.read()['2026-08']['last_update'])
+        with open(self.path, 'r', encoding='utf-8') as file:
+            self.assertEqual(first_file, file.read())
+        generate.assert_not_called()
+
+    @patch('monthly_coach.generate_report', side_effect=lambda _key, facts: report_for(facts))
     def test_existing_final_without_source_hash_only_records_baseline(self, generate):
         august = [
             activity(f'2026-08-{day:02d}T19:00:00')

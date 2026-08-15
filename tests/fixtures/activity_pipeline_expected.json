@@ -1,0 +1,117 @@
+[
+  {
+    "run_id" : 4,
+    "name" : "StairStepper",
+    "type" : "StairStepper",
+    "distance" : 0,
+    "moving_time" : "00:20:00",
+    "calories" : 100,
+    "total_elevation_gain" : 100,
+    "start_date_local" : "2026-02-02T08:00:00",
+    "route_status" : "indoor",
+    "is_indoor" : true,
+    "energy_title" : "燃掉一根香蕉",
+    "food_key" : "banana",
+    "food_title_version" : 6,
+    "distance_title" : "爬了一座雷峰塔",
+    "distance_title_key" : "leifeng_pagoda",
+    "distance_title_version" : 6,
+    "display_name" : "爬了一座雷峰塔",
+    "sport_display_name" : "爬楼梯",
+    "card_achievement" : null,
+    "calendar_achievements" : []
+  },
+  {
+    "run_id" : 3,
+    "name" : "岳麓山夜骑",
+    "type" : "Ride",
+    "distance" : 20,
+    "moving_time" : "01:00:00",
+    "calories" : 300,
+    "total_elevation_gain" : 80,
+    "start_date_local" : "2026-02-01T19:00:00",
+    "route_status" : "available",
+    "energy_title" : "燃掉一份薯条",
+    "food_key" : "fries",
+    "food_title_version" : 6,
+    "display_name" : "岳麓山夜骑",
+    "sport_display_name" : "骑行",
+    "card_achievement" : {
+      "group" : "ride",
+      "level" : "year",
+      "label" : "年度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "ride",
+        "group_label" : "骑行",
+        "level" : "year",
+        "label" : "年度最远"
+      }
+    ]
+  },
+  {
+    "run_id" : 2,
+    "name" : "Morning Ride",
+    "type" : "Ride",
+    "distance" : 15,
+    "moving_time" : "00:45:00",
+    "calories" : 250,
+    "total_elevation_gain" : 50,
+    "start_date_local" : "2026-01-02T08:00:00",
+    "route_status" : "available",
+    "summary_polyline" : "abc",
+    "energy_title" : "燃掉六块巧克力",
+    "food_key" : "chocolate",
+    "food_title_version" : 6,
+    "route_title" : "骑过长沙 · 湘江中路",
+    "route_title_version" : 1,
+    "display_name" : "骑过长沙 · 湘江中路",
+    "sport_display_name" : "骑行",
+    "card_achievement" : {
+      "group" : "ride",
+      "level" : "month",
+      "label" : "月度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "ride",
+        "group_label" : "骑行",
+        "level" : "month",
+        "label" : "月度最远"
+      }
+    ]
+  },
+  {
+    "run_id" : 1,
+    "name" : "Morning Run",
+    "type" : "Run",
+    "distance" : 5,
+    "moving_time" : "00:30:00",
+    "calories" : 24,
+    "total_elevation_gain" : 10,
+    "start_date_local" : "2026-01-01T08:00:00",
+    "route_status" : "privacy_hidden",
+    "energy_title" : "燃掉一块半方糖",
+    "food_key" : "sugar_cube",
+    "food_title_version" : 6,
+    "distance_title" : "跑了五趟白堤",
+    "distance_title_key" : "bai_causeway",
+    "distance_title_version" : 6,
+    "display_name" : "跑了五趟白堤",
+    "sport_display_name" : "跑步",
+    "card_achievement" : {
+      "group" : "run_walk",
+      "level" : "year",
+      "label" : "年度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "run_walk",
+        "group_label" : "跑走",
+        "level" : "year",
+        "label" : "年度最远"
+      }
+    ]
+  }
+]

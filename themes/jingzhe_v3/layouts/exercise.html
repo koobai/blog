@@ -148,26 +148,17 @@
   };
 </script>
 
-{{ partial "jingzhe/script.html" (dict "path" "js/pages/exercise-ui.js" "defer" true) }}
-{{ partial "jingzhe/script.html" (dict "path" "js/pages/exercise-map.js" "defer" true) }}
 <script defer src="/js/html-to-image.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const bentoHero = document.getElementById('bento-hero');
-    const mapWrapper = document.getElementById('map-wrapper');
-    if (bentoHero && mapWrapper) {
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            const isSticky = bentoHero.getBoundingClientRect().bottom < 80; 
-            mapWrapper.classList.toggle('sticky-map', isSticky);
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
-    }
-  });
-</script>
+{{ partial "jingzhe/bundle-script.html" (dict
+  "paths" (slice
+    "js/exercise/model.js"
+    "js/exercise/routes.js"
+    "js/exercise/poster.js"
+    "js/exercise/ui.js"
+    "js/exercise/mapbox-adapter.js"
+    "js/exercise/controller.js"
+  )
+  "targetPath" "js/exercise.js"
+  "defer" true
+) }}
 {{ end }}

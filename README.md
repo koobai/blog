@@ -113,10 +113,10 @@ JavaScript 语法检查：
 
 ```bash
 node --check themes/jingzhe_v3/assets/js/pages/comments.js
-node --check themes/jingzhe_v3/assets/js/pages/exercise-map.js
-node --check themes/jingzhe_v3/assets/js/pages/exercise-ui.js
+node --check themes/jingzhe_v3/assets/js/exercise/*.js
 node --check themes/jingzhe_v3/assets/js/pages/laodao.js
 node --check themes/jingzhe_v3/assets/js/pages/movies.js
+node tests/test_exercise_modules.js
 ```
 
 Worker 行为测试：
@@ -155,7 +155,7 @@ workers/                   # 四个独立 Worker、Wrangler 示例、D1 迁移�
 config/                    # 通用、生产与开发配置
 schemas/                   # Front Matter、参数和 JSON Schema
 data/jingzhe/features.json # 机器可读功能注册表
-jingzhe/                   # Python 共享契约加载器
+jingzhe/                   # 运动处理、月报与共享契约模块
 .github/workflows/         # 测试、同步、处理、构建和部署工作流
 ```
 

@@ -18,7 +18,7 @@
       "calories": {"type": "number", "minimum": 0},
       "start_date_local": {"type": "string", "minLength": 1},
       "start_date_utc": {"type": "string"},
-      "route_status": {"enum": ["available", "privacy_hidden", "unavailable", "indoor"]},
+      "route_status": {"enum": ["available", "privacy_hidden", "unavailable", "pending", "indoor"]},
       "is_indoor": {"type": "boolean"},
       "summary_polyline": {"type": "string"},
       "energy_title": {"type": "string"},
@@ -52,6 +52,17 @@
         }
       }
     },
+    "allOf": [
+      {
+        "if": {
+          "properties": {"route_status": {"not": {"const": "available"}}},
+          "required": ["route_status"]
+        },
+        "then": {
+          "properties": {"summary_polyline": {"maxLength": 0}}
+        }
+      }
+    ],
     "additionalProperties": true
   }
 }

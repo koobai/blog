@@ -1,0 +1,9 @@
+{{- $resources := slice -}}
+{{- range .paths -}}
+  {{- $resources = $resources | append (resources.Get .) -}}
+{{- end -}}
+{{- $bundle := $resources | resources.Concat .targetPath -}}
+{{- if not hugo.IsServer -}}
+  {{- $bundle = $bundle | minify | fingerprint -}}
+{{- end -}}
+<script src="{{ $bundle.RelPermalink }}"{{ if .defer }} defer{{ end }}></script>

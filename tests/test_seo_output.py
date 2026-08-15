@@ -173,7 +173,7 @@ class SeoOutputTests(unittest.TestCase):
         pages = {
             "index.html": ("likes-core", "laodao"),
             "movies/index.html": ("movies",),
-            "exercise/index.html": ("exercise-ui", "exercise-map"),
+            "exercise/index.html": ("exercise",),
             "newlaodao/index.html": ("jingzhe-message", "editor-core", "editor-laodao"),
             "newsuibi/index.html": ("jingzhe-message", "editor-core", "editor-post"),
         }
@@ -188,8 +188,7 @@ class SeoOutputTests(unittest.TestCase):
             "about-photo.js",
             "comments.js",
             "editor-core.js",
-            "exercise-map.js",
-            "exercise-ui.js",
+            "exercise.js",
             "jingzhe-message.js",
             "laodao.js",
             "likes-core.js",

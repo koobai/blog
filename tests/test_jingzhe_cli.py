@@ -29,6 +29,43 @@ class JingzheCliTests(unittest.TestCase):
         self.assertTrue(any("缺少" in error for error in errors))
         self.assertTrue(any("route_status" in error for error in errors))
 
+    def test_activity_validator_accepts_pending_without_a_track(self):
+        item = {
+            "run_id": 1,
+            "name": "Run",
+            "type": "Run",
+            "distance": 5,
+            "moving_time": "00:30:00",
+            "start_date_local": "2026-08-15T07:30:00",
+            "route_status": "pending",
+            "display_name": "跑起来",
+            "sport_display_name": "跑步",
+            "card_achievement": None,
+            "calendar_achievements": [],
+        }
+
+        self.assertEqual(jingzhe.validate_activity_items([item]), [])
+
+    def test_activity_validator_rejects_a_non_public_track(self):
+        item = {
+            "run_id": 1,
+            "name": "Run",
+            "type": "Run",
+            "distance": 5,
+            "moving_time": "00:30:00",
+            "start_date_local": "2026-08-15T07:30:00",
+            "route_status": "pending",
+            "summary_polyline": "must-not-be-public",
+            "display_name": "跑起来",
+            "sport_display_name": "跑步",
+            "card_achievement": None,
+            "calendar_achievements": [],
+        }
+
+        errors = jingzhe.validate_activity_items([item])
+
+        self.assertTrue(any("summary_polyline" in error for error in errors))
+
     def test_movie_validator_accepts_rating_boundaries(self):
         items = [
             {"id": "one", "title": "A", "rating": 0, "create_time": "2026-01-01"},

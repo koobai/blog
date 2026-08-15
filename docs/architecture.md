@@ -12,10 +12,10 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 |---|---|---|
 | Hugo | 页面、SEO/分享元数据、RSS、JSON、Sitemap 和静态资源生成 | `config/`、`content/`、`themes/`、`static/` |
 | 惊蛰 v3 | 布局、响应式设计、深浅主题和功能页面 | `themes/jingzhe_v3/` |
-| 网页编辑器 | 写随笔、写唠叨、图片上传、草稿和 GitHub 写回 | `newlaodao.html`、`newsuibi.html` |
+| 网页编辑器 | 写随笔、写唠叨、图片上传、草稿和 GitHub 写回 | 写作模板与 `assets/js/pages/editor-*.js` |
 | 观影同步 | 从豆瓣合并新增/更新记录并原子写入 `movie.json` | `sync_movies.py`、`douban.yml` |
-| 运动管线 | 数据清洗、隐私路线、趣味标题和月报触发 | `process_activities.py` |
-| AI 月报 | 聚合证据、模型调用、校验和状态冻结 | `monthly_coach.py` |
+| 运动管线 | 数据清洗、隐私路线、趣味标题和月报触发 | `process_activities.py` → `jingzhe/activity_processing.py`、`public_routes.py` |
+| AI 月报 | 聚合证据、模型调用、校验和状态冻结 | `monthly_coach.py` → `jingzhe/monthly_stats.py`、`monthly_reports.py` |
 | 动态服务 | 评论、点赞、发布、图片和云草稿 | `workers/` 中四个独立 Cloudflare Worker |
 | GitHub Actions | 同步、测试、处理、构建和部署 | `.github/workflows/` |
 
@@ -138,7 +138,7 @@ flowchart TD
 
 ### 项目 JavaScript 管线
 
-项目自有页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，由 `jingzhe/script.html` 统一加载。开发服务器直接提供可读源码，Production 会通过 Hugo Pipes 自动压缩并生成内容指纹；模板不再维护手写 `?v=` 缓存版本号。
+普通页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，由 `jingzhe/script.html` 统一加载。运动页面按数据模型、日历 UI、隐私路线、Mapbox、海报和控制器拆分在 `assets/js/exercise/`，再由 `jingzhe/bundle-script.html` 合并为一个脚本。开发服务器提供可读源码，Production 通过 Hugo Pipes 自动压缩并生成内容指纹；职责拆分不会增加浏览器请求，也不需要手写 `?v=` 缓存版本号。
 
 按上游许可证原样保留的 `marked`、`ViewImage` 和 `html-to-image` 位于 `static/js/`。这些第三方文件不与项目源码混合改写，引用与许可证由契约测试和 `THIRD_PARTY_NOTICES.md` 共同约束。
 
@@ -154,13 +154,17 @@ flowchart TD
 
 三个消费者使用同一文件：
 
-1. `process_activities.py` 在数据处理期生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
-2. `themes/jingzhe_v3/assets/js/pages/exercise-ui.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
+1. `process_activities.py` 保留为自动化兼容入口，`jingzhe/activity_processing.py` 在数据处理期生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
+2. `themes/jingzhe_v3/assets/js/exercise/model.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
 3. `jingzhe/exercise_contract.py` 为 `process_activities.py` 与 `monthly_coach.py` 提供 Python 常量。
 
 `schemas/data/exercise-contract.schema.json` 描述公开结构，`jingzhe.py validate` 额外检查颜色、分组引用和食物 Key 唯一性。
 
 `assets/landmark_route_library.json` 是公共地标的唯一数据源，同时包含路线几何、距离/爬升参照和选择范围。Python 处理器与浏览器地图从同一份 JSON 读取，不再分别维护地标列表。
+
+根目录的 `process_activities.py` 与 `monthly_coach.py` 继续作为 Actions、命令行和既有 Python 调用方的稳定入口。确定性运动处理、公共地标请求、月度统计证据和报告状态机分别位于 `jingzhe/` 中；拆分没有改变工作流命令、环境变量、JSON 格式或外部服务。
+
+原生 App 上传的字段和路线状态由 `tests/fixtures/laodao_app_activity_upload.json` 提供合成样本，并通过 `tests/test_app_blog_contract.py` 贯穿处理器、Schema、隐私规则和月报数据指纹。App 或博客任一侧调整这份 JSON 契约时，都应同步更新样本并通过该测试；Fixture 不包含真实 HealthKit 身份、位置或轨迹。
 
 ### AI Provider 边界
 

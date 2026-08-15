@@ -275,7 +275,7 @@ def validate_activity_items(items: object) -> List[str]:
         "route_status", "display_name", "sport_display_name", "card_achievement",
         "calendar_achievements"
     }
-    allowed_status = {"available", "privacy_hidden", "unavailable", "indoor"}
+    allowed_status = {"available", "privacy_hidden", "unavailable", "pending", "indoor"}
     errors: List[str] = []
     for index, item in enumerate(items):
         if not isinstance(item, dict):
@@ -286,6 +286,8 @@ def validate_activity_items(items: object) -> List[str]:
             errors.append("第 {} 项缺少 {}".format(index, ", ".join(missing)))
         if item.get("route_status") not in allowed_status:
             errors.append("第 {} 项 route_status 无效".format(index))
+        if item.get("route_status") != "available" and item.get("summary_polyline"):
+            errors.append("第 {} 项非公开轨迹状态不得包含 summary_polyline".format(index))
     return errors
 
 

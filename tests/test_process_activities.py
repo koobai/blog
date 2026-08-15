@@ -1,6 +1,48 @@
+import copy
+import json
+import os
+import tempfile
 import unittest
+from pathlib import Path
 
 import process_activities
+
+
+FIXTURES = Path(__file__).parent / 'fixtures'
+
+
+class ActivityPipelineCharacterizationTests(unittest.TestCase):
+    def test_fixture_output_and_serialization_remain_exact(self):
+        with (FIXTURES / 'activity_pipeline_input.json').open(encoding='utf-8') as file:
+            source = json.load(file)
+        expected_path = FIXTURES / 'activity_pipeline_expected.json'
+        with expected_path.open(encoding='utf-8') as file:
+            expected = json.load(file)
+
+        route_calls = []
+
+        def resolve_public_route(activity):
+            route_calls.append(activity['run_id'])
+            return '骑过长沙 · 湘江中路'
+
+        actual, changed = process_activities.process_activity_data(
+            copy.deepcopy(source),
+            public_route_resolver=resolve_public_route,
+            logger=lambda _message: None
+        )
+        self.assertTrue(changed)
+        self.assertEqual([2], route_calls)
+        self.assertEqual(expected, actual)
+
+        handle, output_path = tempfile.mkstemp(suffix='.json')
+        os.close(handle)
+        try:
+            process_activities.write_activity_data(actual, output_path)
+            with open(output_path, encoding='utf-8') as file:
+                rendered = file.read()
+            self.assertEqual(expected_path.read_text(encoding='utf-8').rstrip('\n'), rendered)
+        finally:
+            os.unlink(output_path)
 
 
 class FoodConversionContractTests(unittest.TestCase):

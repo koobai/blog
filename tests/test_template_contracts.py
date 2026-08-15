@@ -143,12 +143,19 @@ class ThemePipelineTests(unittest.TestCase):
         page_names = {
             path.name for path in (ROOT / 'themes/jingzhe_v3/assets/js/pages').glob('*.js')
         }
+        exercise_names = {
+            path.name for path in (ROOT / 'themes/jingzhe_v3/assets/js/exercise').glob('*.js')
+        }
         self.assertEqual(
             sorted(name for name in vendor_names if name not in combined),
             [],
         )
         self.assertEqual(
             sorted(name for name in page_names if name not in combined),
+            [],
+        )
+        self.assertEqual(
+            sorted(name for name in exercise_names if name not in combined),
             [],
         )
         self.assertNotIn('?v=', combined)
@@ -180,14 +187,19 @@ class ProductionSeparationTests(unittest.TestCase):
         rss = (ROOT / 'themes/jingzhe_v3/layouts/home.rss.xml').read_text(encoding='utf-8')
         exercise = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
         exercise_map = (
-            ROOT / 'themes/jingzhe_v3/assets/js/pages/exercise-map.js'
+            ROOT / 'themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js'
+        ).read_text(encoding='utf-8')
+        exercise_poster = (
+            ROOT / 'themes/jingzhe_v3/assets/js/exercise/poster.js'
         ).read_text(encoding='utf-8')
 
         self.assertIn('followfeedid', rss)
         self.assertNotIn('52982633250295857', rss)
         for field in ('MAP_STYLE_LIGHT', 'MAP_STYLE_DARK', 'MAP_CENTER', 'POSTER_FILE_PREFIX'):
             self.assertIn(field, exercise)
+        for field in ('MAP_STYLE_LIGHT', 'MAP_STYLE_DARK', 'MAP_CENTER'):
             self.assertIn(field, exercise_map)
+        self.assertIn('POSTER_FILE_PREFIX', exercise_poster)
         self.assertNotIn('mapbox://styles/koobai', exercise_map)
         self.assertNotIn('[120.1551, 30.2741]', exercise_map)
 
@@ -196,7 +208,7 @@ class ExerciseDisplayPipelineTests(unittest.TestCase):
     def test_template_consumes_processed_display_fields(self):
         template = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
         exercise_ui = (
-            ROOT / 'themes/jingzhe_v3/assets/js/pages/exercise-ui.js'
+            ROOT / 'themes/jingzhe_v3/assets/js/exercise/ui.js'
         ).read_text(encoding='utf-8')
 
         for field in ('display_name', 'sport_display_name', 'card_achievement', 'calendar_achievements'):
@@ -209,6 +221,14 @@ class ExerciseDisplayPipelineTests(unittest.TestCase):
     def test_browser_payload_does_not_include_sync_identity(self):
         template = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
         self.assertNotIn('source_id', template)
+
+    def test_private_routes_never_read_their_original_polyline(self):
+        routes = (
+            ROOT / 'themes/jingzhe_v3/assets/js/exercise/routes.js'
+        ).read_text(encoding='utf-8')
+
+        self.assertIn("run.route_status === 'available' && run.summary_polyline", routes)
+        self.assertIn('Privacy invariant', routes)
 
 
 if __name__ == '__main__':

@@ -29,13 +29,15 @@
 - `content/pages/`：独立页面和管理入口。
 - `themes/jingzhe_v3/layouts/`：Hugo 模板。
 - `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
-- `themes/jingzhe_v3/assets/js/pages/`：项目自有页面交互脚本，经 Hugo Pipes 指纹化输出。
+- `themes/jingzhe_v3/assets/js/pages/`：普通页面交互脚本，经 Hugo Pipes 指纹化输出。
+- `themes/jingzhe_v3/assets/js/exercise/`：运动数据模型、日历 UI、隐私路线、Mapbox、海报与兼容控制器；构建时合并为一个脚本。
 - `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
 - `static/js/`：按上游许可证原样保留的第三方浏览器脚本。
 - `assets/*.json`：观影、处理后运动、地标路线和月报数据；`landmark_route_library.json` 是地标几何与选择规则的单一数据源。
-- `process_activities.py`：运动数据加工、展示名称/成就字段与隐私路线处理。
-- `monthly_coach.py`：运动月报统计、证据、模型调用与状态机。
+- `process_activities.py`、`monthly_coach.py`：Actions 和旧调用方保持不变的兼容入口。
+- `jingzhe/activity_processing.py`、`public_routes.py`：运动数据加工、展示字段和隐私公共路线。
+- `jingzhe/monthly_stats.py`、`monthly_reports.py`：月报统计证据、模型调用、校验与冻结状态机。
 - `sync_movies.py`：豆瓣观影数据同步。
 - `tests/`：Python、浏览器脚本、Worker、文档和隐私契约测试。
 - `workers/`：Publisher、Drafts、Comments、Likes 四个独立 Cloudflare Worker，以及示例配置、D1 迁移和 OpenAPI。
@@ -95,6 +97,7 @@
 - 不得把私密轨迹、精确坐标、Polyline、`source_id` 或个人身份字段发送给模型。
 - 隐私运动不得重新使用原始轨迹绘图。
 - 公开轨迹与隐私替代路线必须继续明确区分。
+- 修改 App 上传字段或 `route_status` 时，必须同步 Schema、合成 Fixture 与 `tests/test_app_blog_contract.py`。
 - 月报必须基于程序生成的聚合证据，不得把模型当作医疗诊断工具。
 - 修改隐私逻辑时必须增加或更新相应测试。
 
@@ -148,14 +151,19 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 ```bash
 node --check themes/jingzhe_v3/assets/js/pages/about-photo.js
 node --check themes/jingzhe_v3/assets/js/pages/comments.js
-node --check themes/jingzhe_v3/assets/js/pages/exercise-map.js
-node --check themes/jingzhe_v3/assets/js/pages/exercise-ui.js
+node --check themes/jingzhe_v3/assets/js/exercise/model.js
+node --check themes/jingzhe_v3/assets/js/exercise/routes.js
+node --check themes/jingzhe_v3/assets/js/exercise/poster.js
+node --check themes/jingzhe_v3/assets/js/exercise/ui.js
+node --check themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js
+node --check themes/jingzhe_v3/assets/js/exercise/controller.js
 node --check themes/jingzhe_v3/assets/js/pages/laodao.js
 node --check themes/jingzhe_v3/assets/js/pages/movies.js
 node --check themes/jingzhe_v3/assets/js/theme.js
 node tests/test_editor_core.js
 node tests/test_editor_pages.js
 node tests/test_exercise_contract.js
+node tests/test_exercise_modules.js
 node tests/test_jingzhe_message.js
 node tests/test_likes_core.js
 node tests/test_workers.mjs

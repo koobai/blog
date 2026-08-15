@@ -17,7 +17,7 @@ This repository is both the production source of [Koobai](https://koobai.com), t
 - **Lightweight writing dashboard:** solve the static-blog publishing gap by writing essays and updates, previewing Markdown, saving drafts, uploading images, and publishing to GitHub from a browser.
 - **Content under your control:** keep writing and public life data in your own Git repository, with full-text RSS, JSON, sitemap, Web App Manifest, and complete sharing metadata.
 - **Social interactions:** add comments, nested replies, likes, emoji, moderation, and Cloudflare Turnstile protection.
-- **Movie log:** synchronize Douban records incrementally and present ratings, notes, and viewing dates as ticket-style cards.
+- **Movie log:** synchronize new and updated Douban records and present ratings, notes, and viewing dates as ticket-style cards.
 - **Exercise with privacy:** combine statistics, calendars, heart rate, Mapbox tracks, achievements, and posters with landmark-based substitutes for private routes.
 - **AI exercise reviews:** generate mid-month and end-of-month summaries from filtered aggregate evidence only.
 - **Modular by design:** Core needs no Worker; publishing, social, life data, and AI capabilities can be enabled independently.
@@ -113,9 +113,11 @@ See [AI tooling](docs/tooling.md) for JSON output, initialization, and Starter p
 ```text
 content/                    Long-form posts, short updates, and pages
 assets/                     Production movie, exercise, route, and report data
-themes/jingzhe_v3/          Production Hugo theme
+themes/jingzhe_v3/          Production theme and fingerprinted first-party scripts
+static/js/                  Vendored third-party browser scripts
 config/                     Shared, production, and development configuration
 data/jingzhe/               Machine-readable feature and exercise contracts
+jingzhe/                    Exercise processing, reports, and shared Python contracts
 schemas/                    Front Matter, configuration, and JSON schemas
 tools/                      Initialization, diagnostics, and validation CLI
 workers/                    Four independently deployable Cloudflare Workers
