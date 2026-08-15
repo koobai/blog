@@ -11,5 +11,5 @@
 {{ .Content }}
 
 <script>window.JINGZHE_ABOUT_PHOTOS = {{ site.Params.about.photos | default (slice) | jsonify | safeJS }};</script>
-<script src="/js/about-photo.js?v=20260131" defer></script>
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/about-photo.js" "defer" true) }}
 {{- end }}

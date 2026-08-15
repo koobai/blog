@@ -13,7 +13,7 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 | Hugo | 页面、SEO/分享元数据、RSS、JSON、Sitemap 和静态资源生成 | `config/`、`content/`、`themes/`、`static/` |
 | 惊蛰 v3 | 布局、响应式设计、深浅主题和功能页面 | `themes/jingzhe_v3/` |
 | 网页编辑器 | 写随笔、写唠叨、图片上传、草稿和 GitHub 写回 | `newlaodao.html`、`newsuibi.html` |
-| 观影同步 | 从豆瓣增量写入 `movie.json` | `sync_movies.py`、`douban.yml` |
+| 观影同步 | 从豆瓣合并新增/更新记录并原子写入 `movie.json` | `sync_movies.py`、`douban.yml` |
 | 运动管线 | 数据清洗、隐私路线、趣味标题和月报触发 | `process_activities.py` |
 | AI 月报 | 聚合证据、模型调用、校验和状态冻结 | `monthly_coach.py` |
 | 动态服务 | 评论、点赞、发布、图片和云草稿 | `workers/` 中四个独立 Cloudflare Worker |
@@ -77,6 +77,8 @@ flowchart TD
 - AI 月报以 `assets/monthly_insights.json` 为事实来源。
 - `public/` 和 `resources/` 是生成结果，不是事实来源。
 
+观影同步会读取完整远端分页，以豆瓣 ID 更新评分、短评等已有记录，同时保留远端暂时未返回的本地历史项。只有最终数组实际变化时才原子替换 `assets/movie.json`；网络、HTTP、JSON 或响应结构失败会退出非零且不覆盖现有数据。
+
 ## 生产环境与通用发行版
 
 当前仓库首先服务 Koobai 的生产站点，同时提供两个明确分离的视图：
@@ -103,7 +105,7 @@ flowchart TD
 
 ### 在线编辑器 Core
 
-`static/js/editor-core.js` 被 `/newlaodao` 和 `/newsuibi` 同步加载，集中提供：
+`themes/jingzhe_v3/assets/js/pages/editor-core.js` 被 `/newlaodao` 和 `/newsuibi` 同步加载，集中提供：
 
 - 固定的管理员 Token LocalStorage 访问。
 - UTF-8 与 Base64 转换。
@@ -114,7 +116,7 @@ flowchart TD
 - Markdown 预览入口。
 - GitHub Repository、Commits 和 Contents URL 构造。
 
-页面仍保留各自不同的 UI、Front Matter、唠叨位置、云草稿、文章摘要和标签交互。共享模块不决定业务内容格式。
+`editor-laodao.js` 与 `editor-post.js` 分别承载页面 UI、Front Matter、唠叨位置、云草稿、文章摘要和标签交互；Hugo 模板只保留 HTML 与公开配置注入。共享模块不决定业务内容格式。
 
 不可变兼容项：
 
@@ -134,6 +136,12 @@ flowchart TD
 
 该管线只依赖 Hugo 0.158.0 起内置的原生 CSS 构建能力，不需要 LibSass、Dart Sass、Node 或 npm；普通 `hugo server`、严格构建和现有 GitHub Actions 命令均保持不变。
 
+### 项目 JavaScript 管线
+
+项目自有页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，由 `jingzhe/script.html` 统一加载。开发服务器直接提供可读源码，Production 会通过 Hugo Pipes 自动压缩并生成内容指纹；模板不再维护手写 `?v=` 缓存版本号。
+
+按上游许可证原样保留的 `marked`、`ViewImage` 和 `html-to-image` 位于 `static/js/`。这些第三方文件不与项目源码混合改写，引用与许可证由契约测试和 `THIRD_PARTY_NOTICES.md` 共同约束。
+
 ### 运动单一数据源
 
 `data/jingzhe/exercise.json` 是运动展示与处理枚举的唯一数据源，包含：
@@ -147,7 +155,7 @@ flowchart TD
 三个消费者使用同一文件：
 
 1. `process_activities.py` 在数据处理期生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
-2. `static/js/exercise-ui.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
+2. `themes/jingzhe_v3/assets/js/pages/exercise-ui.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
 3. `jingzhe/exercise_contract.py` 为 `process_activities.py` 与 `monthly_coach.py` 提供 Python 常量。
 
 `schemas/data/exercise-contract.schema.json` 描述公开结构，`jingzhe.py validate` 额外检查颜色、分组引用和食物 Key 唯一性。

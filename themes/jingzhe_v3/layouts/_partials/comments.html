@@ -37,4 +37,4 @@
   window.KOOBAI_IS_POST = {{ if eq .Type "posts" }}true{{ else }}false{{ end }};
   window.KOOBAI_CURRENT_URL = "{{ .RelPermalink }}";
 </script>
-<script src="/js/comments.js?v=20260329a" defer></script>
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/comments.js" "defer" true) }}

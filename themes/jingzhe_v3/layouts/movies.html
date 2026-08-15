@@ -60,5 +60,5 @@
   <div id="btn-load-more" class="movie-btn-more">看更多...</div>
 {{ end }}
 
-<script src="/js/movies.js" defer></script>
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/movies.js" "defer" true) }}
 {{ end }}

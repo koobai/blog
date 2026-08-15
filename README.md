@@ -112,11 +112,11 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 JavaScript 语法检查：
 
 ```bash
-node --check static/js/comments.js
-node --check static/js/exercise-map.js
-node --check static/js/exercise-ui.js
-node --check static/js/laodao.js
-node --check static/js/movies.js
+node --check themes/jingzhe_v3/assets/js/pages/comments.js
+node --check themes/jingzhe_v3/assets/js/pages/exercise-map.js
+node --check themes/jingzhe_v3/assets/js/pages/exercise-ui.js
+node --check themes/jingzhe_v3/assets/js/pages/laodao.js
+node --check themes/jingzhe_v3/assets/js/pages/movies.js
 ```
 
 Worker 行为测试：
@@ -149,8 +149,8 @@ assets/
 ├── landmark_route_library.json
 └── monthly_insights.json  # 月度统计与 AI 报告
 
-themes/jingzhe_v3/         # 当前生产主题
-static/js/                 # 页面交互脚本
+themes/jingzhe_v3/         # 当前生产主题及可指纹化的项目自有脚本
+static/js/                 # 按许可证原样保留的第三方浏览器脚本
 workers/                   # 四个独立 Worker、Wrangler 示例、D1 迁移与 OpenAPI
 config/                    # 通用、生产与开发配置
 schemas/                   # Front Matter、参数和 JSON Schema

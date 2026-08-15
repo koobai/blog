@@ -111,14 +111,27 @@ export default {
         const visitorHash = await getVisitorHash(request, env.LIKE_SALT);
 
         try {
-          await env.DB.prepare('INSERT INTO likes (url, ip_hash) VALUES (?, ?)')
-            .bind(body.url, visitorHash).run();
-          await env.DB.prepare(`
-            INSERT INTO likes_count (url, total_count) VALUES (?, 1)
-            ON CONFLICT(url) DO UPDATE SET total_count = total_count + 1
-          `).bind(body.url).run();
-        } catch (_error) {
-          return json({ error: 'Already liked' }, 409, headers);
+          await env.DB.batch([
+            env.DB.prepare('INSERT INTO likes (url, ip_hash) VALUES (?, ?)')
+              .bind(body.url, visitorHash),
+            env.DB.prepare(`
+              INSERT INTO likes_count (url, total_count) VALUES (?, 1)
+              ON CONFLICT(url) DO UPDATE SET total_count = total_count + 1
+            `).bind(body.url)
+          ]);
+        } catch (error) {
+          const existing = await env.DB.prepare(
+            'SELECT 1 AS present FROM likes WHERE url = ? AND ip_hash = ? LIMIT 1'
+          ).bind(body.url, visitorHash).first();
+          if (existing) {
+            await env.DB.prepare(`
+              INSERT INTO likes_count (url, total_count) VALUES (?, 1)
+              ON CONFLICT(url) DO UPDATE SET total_count = MAX(total_count, 1)
+            `).bind(body.url).run();
+            return json({ error: 'Already liked' }, 409, headers);
+          }
+          console.error('Like transaction failed:', error);
+          return json({ error: '点赞服务暂时不可用' }, 500, headers);
         }
 
         if (env.BARK_URL) {

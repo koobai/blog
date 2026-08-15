@@ -8,7 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 class EditorCompatibilityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.core = (ROOT / 'static/js/editor-core.js').read_text(encoding='utf-8')
+        cls.core = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/editor-core.js'
+        ).read_text(encoding='utf-8')
+        cls.laodao_page = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/editor-laodao.js'
+        ).read_text(encoding='utf-8')
+        cls.post_page = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/editor-post.js'
+        ).read_text(encoding='utf-8')
         cls.laodao = (
             ROOT / 'themes/jingzhe_v3/layouts/newlaodao.html'
         ).read_text(encoding='utf-8')
@@ -18,35 +26,47 @@ class EditorCompatibilityTests(unittest.TestCase):
 
     def test_local_storage_keys_are_unchanged(self):
         self.assertIn("'koobai_admin_token'", self.core)
-        self.assertIn("'koobai_laodao_draft'", self.laodao)
-        self.assertIn("'koobai_article_draft'", self.post)
+        self.assertIn("'koobai_laodao_draft'", self.laodao_page)
+        self.assertIn("'koobai_article_draft'", self.post_page)
 
     def test_worker_auth_header_and_routes_are_unchanged(self):
         self.assertIn("'x-admin-token': getAdminToken()", self.core)
-        for source in (self.laodao, self.post):
+        for source in (self.laodao_page, self.post_page):
             self.assertIn('`${CONFIG.workerUrl}/api/github`', source)
             self.assertIn("method: 'PUT'", source)
             self.assertIn("'Content-Type': 'application/json'", source)
         self.assertIn('`${config.workerUrl}/api/upload?name=${filename}`', self.core)
 
     def test_repository_paths_and_commit_messages_are_unchanged(self):
-        self.assertIn('`content/laodao/${year}/${month}/${year}${month}${day}-${hour}${min}${sec}.md`', self.laodao)
-        self.assertIn('STATE.sha ? "唠叨修改" : "唠叨一下"', self.laodao)
-        self.assertIn('`content/posts/${safeFilename}.md`', self.post)
-        self.assertIn('`修改随笔: ${title}`', self.post)
-        self.assertIn('`新一篇随笔: ${title}`', self.post)
+        self.assertIn('`content/laodao/${year}/${month}/${year}${month}${day}-${hour}${min}${sec}.md`', self.laodao_page)
+        self.assertIn('STATE.sha ? "唠叨修改" : "唠叨一下"', self.laodao_page)
+        self.assertIn('`content/posts/${safeFilename}.md`', self.post_page)
+        self.assertIn('`修改随笔: ${title}`', self.post_page)
+        self.assertIn('`新一篇随笔: ${title}`', self.post_page)
 
     def test_front_matter_fields_are_still_emitted(self):
+        self.assertIn('JingzheEditor.buildLaodaoMarkdown', self.laodao_page)
         for field in ('date:', 'laodaotags:', 'location:', 'latlng:', 'device:'):
-            self.assertIn(field, self.laodao)
+            self.assertIn(field, self.core)
+        self.assertIn('JingzheEditor.buildPostMarkdown', self.post_page)
         for field in ('title:', 'date:', 'slug:', 'image:', 'description:', 'tags:'):
-            self.assertIn(field, self.post)
+            self.assertIn(field, self.core)
+
+    def test_editor_paths_are_validated_and_dirty_state_is_tracked(self):
+        self.assertIn('JingzheEditor.validateFilename', self.post_page)
+        self.assertIn('JingzheEditor.validateSlug', self.post_page)
+        for source in (self.laodao_page, self.post_page):
+            self.assertIn('JingzheEditor.createDirtyTracker()', source)
+            self.assertIn('dirtyState.mark()', source)
+            self.assertIn('dirtyState.clear()', source)
 
 
 class WorkerPrivacyCompatibilityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.frontend = (ROOT / 'static/js/comments.js').read_text(encoding='utf-8')
+        cls.frontend = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/comments.js'
+        ).read_text(encoding='utf-8')
         cls.comments_worker = (
             ROOT / 'workers/comments/src/index.js'
         ).read_text(encoding='utf-8')
@@ -114,6 +134,25 @@ class ThemePipelineTests(unittest.TestCase):
         self.assertFalse((assets / 'scss').exists())
         self.assertGreater(len(list((assets / 'css').glob('*.css'))), 1)
 
+    def test_all_local_javascript_sources_are_referenced(self):
+        layouts = ROOT / 'themes/jingzhe_v3/layouts'
+        combined = '\n'.join(
+            path.read_text(encoding='utf-8') for path in layouts.rglob('*.html')
+        )
+        vendor_names = {path.name for path in (ROOT / 'static/js').glob('*.js')}
+        page_names = {
+            path.name for path in (ROOT / 'themes/jingzhe_v3/assets/js/pages').glob('*.js')
+        }
+        self.assertEqual(
+            sorted(name for name in vendor_names if name not in combined),
+            [],
+        )
+        self.assertEqual(
+            sorted(name for name in page_names if name not in combined),
+            [],
+        )
+        self.assertNotIn('?v=', combined)
+
     def test_laodao_recommendations_are_deterministic_and_cached(self):
         single = (ROOT / 'themes/jingzhe_v3/layouts/laodao/single.html').read_text(encoding='utf-8')
         home = (ROOT / 'themes/jingzhe_v3/layouts/home.html').read_text(encoding='utf-8')
@@ -140,7 +179,9 @@ class ProductionSeparationTests(unittest.TestCase):
     def test_production_service_identity_is_injected_from_config(self):
         rss = (ROOT / 'themes/jingzhe_v3/layouts/home.rss.xml').read_text(encoding='utf-8')
         exercise = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
-        exercise_map = (ROOT / 'static/js/exercise-map.js').read_text(encoding='utf-8')
+        exercise_map = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/exercise-map.js'
+        ).read_text(encoding='utf-8')
 
         self.assertIn('followfeedid', rss)
         self.assertNotIn('52982633250295857', rss)
@@ -154,7 +195,9 @@ class ProductionSeparationTests(unittest.TestCase):
 class ExerciseDisplayPipelineTests(unittest.TestCase):
     def test_template_consumes_processed_display_fields(self):
         template = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
-        exercise_ui = (ROOT / 'static/js/exercise-ui.js').read_text(encoding='utf-8')
+        exercise_ui = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/exercise-ui.js'
+        ).read_text(encoding='utf-8')
 
         for field in ('display_name', 'sport_display_name', 'card_achievement', 'calendar_achievements'):
             self.assertIn(field, template)

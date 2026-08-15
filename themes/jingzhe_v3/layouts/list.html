@@ -36,6 +36,7 @@
   </div>
 {{ end }}
 
-<script src="/js/laodao.js?v=20260311a" defer></script>
+{{ if $socialEnabled }}{{ partial "jingzhe/script.html" (dict "path" "js/pages/likes-core.js" "defer" true) }}{{ end }}
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/laodao.js" "defer" true) }}
 {{ if $socialEnabled }}{{ partial "comments.html" . }}{{ end }}
 {{ end }}

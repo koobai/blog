@@ -29,8 +29,10 @@
 - `content/pages/`：独立页面和管理入口。
 - `themes/jingzhe_v3/layouts/`：Hugo 模板。
 - `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
-- `static/js/`：浏览器交互逻辑。
-- `static/js/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
+- `themes/jingzhe_v3/assets/js/pages/`：项目自有页面交互脚本，经 Hugo Pipes 指纹化输出。
+- `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
+- `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
+- `static/js/`：按上游许可证原样保留的第三方浏览器脚本。
 - `assets/*.json`：观影、处理后运动、地标路线和月报数据；`landmark_route_library.json` 是地标几何与选择规则的单一数据源。
 - `process_activities.py`：运动数据加工、展示名称/成就字段与隐私路线处理。
 - `monthly_coach.py`：运动月报统计、证据、模型调用与状态机。
@@ -144,16 +146,18 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 主要 JavaScript 语法：
 
 ```bash
-node --check static/js/about-photo.js
-node --check static/js/comments.js
-node --check static/js/exercise-map.js
-node --check static/js/exercise-ui.js
-node --check static/js/laodao.js
-node --check static/js/movies.js
+node --check themes/jingzhe_v3/assets/js/pages/about-photo.js
+node --check themes/jingzhe_v3/assets/js/pages/comments.js
+node --check themes/jingzhe_v3/assets/js/pages/exercise-map.js
+node --check themes/jingzhe_v3/assets/js/pages/exercise-ui.js
+node --check themes/jingzhe_v3/assets/js/pages/laodao.js
+node --check themes/jingzhe_v3/assets/js/pages/movies.js
 node --check themes/jingzhe_v3/assets/js/theme.js
 node tests/test_editor_core.js
+node tests/test_editor_pages.js
 node tests/test_exercise_contract.js
 node tests/test_jingzhe_message.js
+node tests/test_likes_core.js
 node tests/test_workers.mjs
 ```
 
@@ -164,6 +168,7 @@ node tests/test_workers.mjs
 - 修改在线编辑器：运行 `node tests/test_editor_core.js` 和 Python 模板契约测试，保留所有 LocalStorage、Header、路径和 payload。
 - 修改运动枚举、颜色或食物换算：只改 `data/jingzhe/exercise.json`，运行 Python/Node 全部契约测试。
 - 修改运动处理或月报：运行全部 Python 测试。
+- 修改豆瓣同步：运行 `python3 -m unittest tests.test_sync_movies`，确认失败不覆盖数据、`HAS_NEW_DATA` 和固定提交信息不变。
 - 修改工作流：复核触发路径、Secrets、提交信息判断和自循环保护。
 - 修改内容路径、Slug 或链接：执行构建后站内链接检查。
 - 修改动态服务调用：在测试服务验证，不直接以生产接口试错。
@@ -177,7 +182,7 @@ node tests/test_workers.mjs
 - 通用 Core 默认配置和 Koobai Production/Development 配置已经分离；后续改动必须保持环境边界。
 - 可选功能通过配置开关控制。
 - 主题样式使用原生 CSS 与 Hugo `css.Build`；`assets/css/style.css` 负责按功能组合本地分片，不依赖 LibSass、Dart Sass、Node 或 npm。
-- 在线编辑器公共原语已进入 `editor-core.js`；页面专属 UI 继续留在各自模板。
+- 在线编辑器公共原语位于 `editor-core.js`；页面专属行为进入 `editor-laodao.js` 与 `editor-post.js`，模板只保留 HTML 和公开配置注入。
 - 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。
 - 评论点赞 Worker 与高权限发布 Worker 保持安全边界。

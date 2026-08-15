@@ -148,8 +148,8 @@
   };
 </script>
 
-<script defer src="/js/exercise-ui.js?v=20260815a"></script>
-<script defer src="/js/exercise-map.js?v=20260815a"></script>
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/exercise-ui.js" "defer" true) }}
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/exercise-map.js" "defer" true) }}
 <script defer src="/js/html-to-image.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

@@ -1,0 +1,5 @@
+{{- $resource := resources.Get .path -}}
+{{- if not hugo.IsServer -}}
+  {{- $resource = $resource | minify | fingerprint -}}
+{{- end -}}
+<script src="{{ $resource.RelPermalink }}"{{ if .defer }} defer{{ end }}></script>

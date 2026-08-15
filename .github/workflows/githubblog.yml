@@ -1,5 +1,8 @@
 name: Githubblog
 
+permissions:
+  contents: read
+
 concurrency:
   group: githubblog-${{ github.ref }}
   cancel-in-progress: true
@@ -27,12 +30,32 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
+      - name: Validate Production Contracts
+        id: check
+        run: python3 tools/jingzhe.py check --skip-tests
+
       - name: Build
-        run: hugo --minify
+        id: build
+        run: hugo --minify --panicOnWarning
 
       - name: Deploy to Cloudflare Pages
+        id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: pages deploy ./public --project-name=koobaiblog --commit-dirty=true
+
+      - name: Write Job Summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## 惊蛰站点发布"
+            echo ""
+            echo "| 阶段 | 结果 |"
+            echo "| --- | --- |"
+            echo "| Production/Core 门禁 | ${{ steps.check.outcome }} |"
+            echo "| Hugo 严格构建 | ${{ steps.build.outcome }} |"
+            echo "| Cloudflare Pages | ${{ steps.deploy.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"

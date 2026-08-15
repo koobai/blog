@@ -7,6 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   
   <title>{{ block "title" . }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
+  {{ if in (slice "newlaodao" "newsuibi") .Layout }}
+    <meta name="robots" content="noindex, nofollow, noarchive">
+  {{ end }}
   
   <meta name="mobile-web-app-capable" content="yes">
   {{ with site.Params.brand.manifestPath }}<link rel="manifest" href="{{ . }}">{{ end }}

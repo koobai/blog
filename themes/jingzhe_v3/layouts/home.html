@@ -42,7 +42,8 @@
     <button id="laoda-more-btn" data-next-url="{{ $paginator.Next.URL }}" class="laodao-more-b">看更多 ...</button>
   </div>
 {{ end }}
-<script src="/js/laodao.js?v=20260329a" defer></script>
+{{ if $socialEnabled }}{{ partial "jingzhe/script.html" (dict "path" "js/pages/likes-core.js" "defer" true) }}{{ end }}
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/laodao.js" "defer" true) }}
 {{ if $socialEnabled }}{{ partial "comments.html" . }}{{ end }}
 
 {{ end }}

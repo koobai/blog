@@ -22,7 +22,8 @@
     {{ partialCached "laodao-card.html" . .RelPermalink $socialEnabled }}
   {{ end }}
 </div>
-<script src="/js/laodao.js?v=20260329a" defer></script>
+{{ if $socialEnabled }}{{ partial "jingzhe/script.html" (dict "path" "js/pages/likes-core.js" "defer" true) }}{{ end }}
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/laodao.js" "defer" true) }}
 <div class="laodao-more">
   <a href="/laodao/" class="laodao-more-b">看全部唠叨 ...</a>
 </div>

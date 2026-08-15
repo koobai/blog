@@ -66,6 +66,7 @@ def run_command(
     cwd: Path = ROOT,
     env: Optional[Dict[str, str]] = None,
     timeout: int = 180,
+    input_text: Optional[str] = None,
 ) -> subprocess.CompletedProcess:
     merged_env = os.environ.copy()
     if env:
@@ -77,6 +78,7 @@ def run_command(
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
+        input=input_text,
         timeout=timeout,
         check=False,
     )
@@ -491,6 +493,60 @@ class LinkCollector(HTMLParser):
                 self.links.append(value)
 
 
+class InlineScriptCollector(HTMLParser):
+    """Collect executable inline JavaScript while ignoring JSON data scripts."""
+
+    JAVASCRIPT_TYPES = {"", "text/javascript", "application/javascript", "module"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=False)
+        self._collecting = False
+        self._parts: List[str] = []
+        self.scripts: List[Tuple[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
+        if tag.lower() != "script":
+            return
+        values = {name.lower(): (value or "") for name, value in attrs}
+        script_type = values.get("type", "").strip().lower()
+        self._collecting = "src" not in values and script_type in self.JAVASCRIPT_TYPES
+        self._parts = []
+        if self._collecting:
+            self._script_type = script_type
+
+    def handle_data(self, data: str) -> None:
+        if self._collecting:
+            self._parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() != "script" or not self._collecting:
+            return
+        source = "".join(self._parts).strip()
+        if source:
+            self.scripts.append((self._script_type, source))
+        self._collecting = False
+        self._parts = []
+
+
+def check_inline_javascript(output_root: Path) -> List[dict]:
+    failures: List[dict] = []
+    for path in sorted(output_root.rglob("*.html")):
+        collector = InlineScriptCollector()
+        collector.feed(path.read_text(encoding="utf-8", errors="ignore"))
+        for index, (script_type, source) in enumerate(collector.scripts, start=1):
+            command = ["node", "--check", "-"]
+            if script_type == "module":
+                command = ["node", "--input-type=module", "--check", "-"]
+            result = run_command(command, input_text=source, timeout=60)
+            if result.returncode != 0:
+                failures.append({
+                    "file": str(path.relative_to(output_root)),
+                    "script": index,
+                    "error": result.stdout.strip()[-500:],
+                })
+    return failures
+
+
 def output_path_exists(root: Path, url_path: str) -> bool:
     path = unquote(url_path)
     if path.endswith("/"):
@@ -578,7 +634,7 @@ def js_source_files() -> List[Path]:
     result: List[Path] = []
     for source_root in roots:
         if source_root.exists():
-            result.extend(sorted(source_root.glob("*.js")))
+            result.extend(sorted(source_root.rglob("*.js")))
     workers_root = ROOT / "workers"
     if workers_root.exists():
         result.extend(sorted(workers_root.glob("*/src/*.js")))
@@ -609,6 +665,15 @@ def command_check(args: argparse.Namespace) -> dict:
                     "production 内部链接与资源有效" if not missing else "production 存在 {} 个失效路径".format(len(missing)),
                     detail={"missing": missing} if missing else None,
                 )
+                if shutil.which("node"):
+                    inline_failures = check_inline_javascript(output)
+                    add_check(
+                        checks,
+                        "javascript.inline",
+                        not inline_failures,
+                        "Production 渲染后的内联 JavaScript 语法有效" if not inline_failures else "Production 内联 JavaScript 语法失败：{}".format(len(inline_failures)),
+                        detail={"failures": inline_failures} if inline_failures else None,
+                    )
 
         with tempfile.TemporaryDirectory(prefix="jingzhe-check-core-") as temp:
             core_site = Path(temp) / "site"
@@ -756,7 +821,6 @@ def write_core_fixture(output: Path) -> None:
 
     static_js = output / "static/js"
     static_js.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(ROOT / "static/js/laodao.js", static_js / "laodao.js")
     shutil.copy2(ROOT / "static/js/view-image.min.js", static_js / "view-image.min.js")
 
     manifest = {

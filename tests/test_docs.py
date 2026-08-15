@@ -85,6 +85,50 @@ class DocumentationTests(unittest.TestCase):
         )
         self.assertNotIn("unittest discover", workflow)
 
+    def test_deploy_workflow_has_a_strict_predeploy_gate(self):
+        workflow = (ROOT / ".github/workflows/githubblog.yml").read_text(encoding="utf-8")
+        validate = "python3 tools/jingzhe.py check --skip-tests"
+        build = "hugo --minify --panicOnWarning"
+        deploy = "pages deploy ./public"
+        self.assertIn(validate, workflow)
+        self.assertIn(build, workflow)
+        self.assertLess(workflow.index(validate), workflow.index(build))
+        self.assertLess(workflow.index(build), workflow.index(deploy))
+
+    def test_exercise_workflow_guards_are_stable(self):
+        deploy = (ROOT / ".github/workflows/githubblog.yml").read_text(encoding="utf-8")
+        process = (ROOT / ".github/workflows/process-activities.yml").read_text(encoding="utf-8")
+        self.assertIn("Auto-sync Dongqilai", deploy)
+        self.assertIn("assets/activities.json", process)
+        self.assertIn("Auto-generate monthly coaching report", process)
+
+    def test_sync_workflows_publish_human_readable_summaries(self):
+        for relative in ("douban.yml", "process-activities.yml", "githubblog.yml"):
+            workflow = (ROOT / ".github/workflows" / relative).read_text(encoding="utf-8")
+            self.assertIn("GITHUB_STEP_SUMMARY", workflow, relative)
+            self.assertIn("if: always()", workflow, relative)
+
+    def test_douban_dispatch_and_commit_contracts_are_unchanged(self):
+        workflow = (ROOT / ".github/workflows/douban.yml").read_text(encoding="utf-8")
+        script = (ROOT / "sync_movies.py").read_text(encoding="utf-8")
+        self.assertIn("types: [douban-sync]", workflow)
+        self.assertIn("message: 'chore: sync new movies data'", workflow)
+        self.assertIn("if: env.HAS_NEW_DATA == 'true'", workflow)
+        self.assertIn('handle.write("HAS_NEW_DATA={}', script)
+
+    def test_editor_templates_only_inject_config_and_load_page_modules(self):
+        for template_name, module_name in (
+            ("newlaodao.html", "editor-laodao.js"),
+            ("newsuibi.html", "editor-post.js"),
+        ):
+            template = (
+                ROOT / "themes/jingzhe_v3/layouts" / template_name
+            ).read_text(encoding="utf-8")
+            self.assertIn("window.JINGZHE_EDITOR_CONFIG", template)
+            self.assertIn(module_name, template)
+            self.assertNotIn("function publishPost", template)
+            self.assertLess(len(template.splitlines()), 120)
+
 
 if __name__ == "__main__":
     unittest.main()

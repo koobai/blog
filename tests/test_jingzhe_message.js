@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("node:assert/strict");
-const message = require("../static/js/jingzhe-message.js");
+const message = require("../themes/jingzhe_v3/assets/js/pages/jingzhe-message.js");
 
 assert.equal(typeof message, "function");
 for (const method of ["info", "success", "warning", "error", "loading", "destroyAll", "config"]) {

@@ -1,4 +1,9 @@
 name: douban
+
+concurrency:
+  group: douban-sync
+  cancel-in-progress: false
+
 on: 
   workflow_dispatch:
   repository_dispatch:
@@ -6,8 +11,9 @@ on:
 
 jobs:
   douban:
-    name: Self-hosted Douban Sync
+    name: Douban Sync
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
     
     - name: Checkout
@@ -20,16 +26,35 @@ jobs:
       with:
         python-version: '3.x'
         
-    # 1. 运行轻量化抓取脚本（已移除图片处理依赖和 TMDB 密钥）
+    # 1. 拉取完整分页并合并新增/更新记录；失败时不覆盖本地数据。
     - name: Fetch Movie Data
+      id: fetch
       env:
         DOUBAN_ID: ${{ vars.DOUBAN_ID || 'jnnsu' }}
       run: python sync_movies.py
 
-    # 2. 提交代码：只在 JSON 发生变化时提交，保持 Git 干净
+    # 2. 只在 JSON 实际变化时提交，保持 Git 干净。
     - name: Commit
+      id: commit
       if: env.HAS_NEW_DATA == 'true'
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: sync new movies data'
         add: './assets/movie.json'
+
+    - name: Write Job Summary
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo "## 豆瓣观影同步"
+          echo ""
+          echo "| 项目 | 结果 |"
+          echo "| --- | --- |"
+          echo "| 抓取 | ${{ steps.fetch.outcome }} |"
+          echo "| 新增 | ${MOVIES_NEW_COUNT:-0} |"
+          echo "| 更新 | ${MOVIES_UPDATED_COUNT:-0} |"
+          echo "| 总数 | ${MOVIES_TOTAL_COUNT:-未知} |"
+          echo "| 数据变化 | ${HAS_NEW_DATA:-unknown} |"
+          echo "| 提交 | ${{ steps.commit.outcome }} |"
+        } >> "$GITHUB_STEP_SUMMARY"

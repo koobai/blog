@@ -83,6 +83,19 @@ class JingzheCliTests(unittest.TestCase):
             self.assertTrue(jingzhe.output_path_exists(root, "/app.js"))
             self.assertFalse(jingzhe.output_path_exists(root, "/missing/"))
 
+    def test_inline_script_collector_ignores_json_and_collects_javascript(self):
+        collector = jingzhe.InlineScriptCollector()
+        collector.feed(
+            '<script type="application/ld+json">{"name":"site"}</script>'
+            '<script>const value = 1;</script>'
+            '<script src="/app.js"></script>'
+            '<script type="module">export const ready = true;</script>'
+        )
+        self.assertEqual(
+            collector.scripts,
+            [("", "const value = 1;"), ("module", "export const ready = true;")],
+        )
+
     def test_starter_marker_scan_covers_theme_source(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

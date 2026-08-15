@@ -63,10 +63,12 @@ jobs:
         run: pip install requests
 
       - name: Verify Exercise Processing and Monthly Reports
+        id: verify
         if: steps.monthly_window.outputs.should_run == 'true'
         run: python -m unittest tests.test_exercise_contract tests.test_process_activities tests.test_monthly_coach
 
       - name: Process Activities and Reports
+        id: process_data
         if: steps.monthly_window.outputs.should_run == 'true'
         env:
           # DeepSeek 只接收程序汇总后的月度证据，不接收轨迹与坐标。
@@ -77,9 +79,32 @@ jobs:
         run: python process_activities.py
 
       - name: Commit and Push changes
+        id: commit
         if: steps.monthly_window.outputs.should_run == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add assets/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-generate monthly coaching report" && git push)
+          if git diff --staged --quiet; then
+            echo "ACTIVITY_HAS_CHANGES=false" >> "$GITHUB_ENV"
+          else
+            echo "ACTIVITY_HAS_CHANGES=true" >> "$GITHUB_ENV"
+            git commit -m "🤖 Auto-generate monthly coaching report"
+            git push
+          fi
+
+      - name: Write Job Summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## 运动处理与月报"
+            echo ""
+            echo "| 项目 | 结果 |"
+            echo "| --- | --- |"
+            echo "| 北京时间窗口 | ${{ steps.monthly_window.outputs.should_run || 'unknown' }} |"
+            echo "| 契约测试 | ${{ steps.verify.outcome }} |"
+            echo "| 数据处理 | ${{ steps.process_data.outcome }} |"
+            echo "| 数据变化 | ${ACTIVITY_HAS_CHANGES:-unknown} |"
+            echo "| 提交推送 | ${{ steps.commit.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"

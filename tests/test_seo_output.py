@@ -14,6 +14,7 @@ class HeadMetadataParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.meta = []
         self.links = []
+        self.scripts = []
         self.schemas = []
         self._schema_chunks = None
 
@@ -25,6 +26,8 @@ class HeadMetadataParser(HTMLParser):
             self.links.append(values)
         elif tag == "script" and values.get("type") == "application/ld+json":
             self._schema_chunks = []
+        elif tag == "script" and values.get("src"):
+            self.scripts.append(values.get("src"))
 
     def handle_data(self, data):
         if self._schema_chunks is not None:
@@ -158,6 +161,41 @@ class SeoOutputTests(unittest.TestCase):
             self.assertEqual("website", parser.named_meta("property", "og:type")[0]["content"])
             self.assertEqual("WebPage", parser.schemas[0]["@type"])
             self.assertTrue(parser.named_meta("name", "description")[0]["content"])
+
+    def test_admin_pages_are_noindex_without_changing_content_front_matter(self):
+        for relative in ("newlaodao/index.html", "newsuibi/index.html"):
+            parser = self.parse(relative)
+            robots = parser.named_meta("name", "robots")
+            self.assertEqual(1, len(robots), relative)
+            self.assertEqual("noindex, nofollow, noarchive", robots[0]["content"])
+
+    def test_project_javascript_uses_fingerprinted_hugo_resources(self):
+        pages = {
+            "index.html": ("likes-core", "laodao"),
+            "movies/index.html": ("movies",),
+            "exercise/index.html": ("exercise-ui", "exercise-map"),
+            "newlaodao/index.html": ("jingzhe-message", "editor-core", "editor-laodao"),
+            "newsuibi/index.html": ("jingzhe-message", "editor-core", "editor-post"),
+        }
+        for relative, names in pages.items():
+            parser = self.parse(relative)
+            for name in names:
+                matches = [src for src in parser.scripts if f"/{name}.min." in src]
+                self.assertEqual(1, len(matches), f"{relative}: {name}")
+                self.assertRegex(matches[0], r"\.[0-9a-f]{64}\.js$")
+                self.assertNotIn("?v=", matches[0])
+        for name in (
+            "about-photo.js",
+            "comments.js",
+            "editor-core.js",
+            "exercise-map.js",
+            "exercise-ui.js",
+            "jingzhe-message.js",
+            "laodao.js",
+            "likes-core.js",
+            "movies.js",
+        ):
+            self.assertFalse((self.output / "js" / name).exists(), name)
 
 
 if __name__ == "__main__":

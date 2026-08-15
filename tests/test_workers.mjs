@@ -132,6 +132,81 @@ async function testLikesReadContract() {
   });
 }
 
+async function testLikesSubmitIsAtomicAndDistinguishesDuplicates() {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async target => {
+    assert.equal(target, 'https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  };
+
+  let repairRuns = 0;
+  const makeRequest = () => new Request('https://likes.example.org/api/likes/submit', {
+    method: 'POST',
+    headers: {
+      Origin: origin,
+      'Content-Type': 'application/json',
+      'CF-Turnstile-Response': 'local-turnstile-token',
+      'CF-Connecting-IP': '192.0.2.1'
+    },
+    body: JSON.stringify({ url: '/hello/' })
+  });
+  const makeEnv = ({ batchError = null, existing = null } = {}) => ({
+    ALLOWED_ORIGINS: origin,
+    TURNSTILE_SECRET_KEY: 'local-turnstile-secret',
+    LIKE_SALT: 'local-like-salt',
+    DB: {
+      prepare(sql) {
+        return {
+          bind(...values) {
+            return {
+              sql,
+              values,
+              first: async () => existing,
+              run: async () => {
+                assert.match(sql, /MAX\(total_count, 1\)/);
+                repairRuns += 1;
+                return { success: true };
+              }
+            };
+          }
+        };
+      },
+      async batch(statements) {
+        assert.equal(statements.length, 2);
+        assert.match(statements[0].sql, /INSERT INTO likes /);
+        assert.match(statements[1].sql, /INSERT INTO likes_count/);
+        if (batchError) throw batchError;
+        return [{ success: true }, { success: true }];
+      }
+    }
+  });
+
+  try {
+    const created = await likesWorker.fetch(makeRequest(), makeEnv());
+    assert.equal(created.status, 200);
+    assert.deepEqual(await responseJson(created), { success: true });
+
+    const duplicate = await likesWorker.fetch(
+      makeRequest(),
+      makeEnv({ batchError: new Error('UNIQUE constraint failed'), existing: { present: 1 } })
+    );
+    assert.equal(duplicate.status, 409);
+    assert.deepEqual(await responseJson(duplicate), { error: 'Already liked' });
+    assert.equal(repairRuns, 1);
+
+    const databaseFailure = await likesWorker.fetch(
+      makeRequest(),
+      makeEnv({ batchError: new Error('database unavailable'), existing: null })
+    );
+    assert.equal(databaseFailure.status, 500);
+    assert.deepEqual(await responseJson(databaseFailure), { error: '点赞服务暂时不可用' });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
 async function testPublisherRepositoryBoundary() {
   const env = {
     ALLOWED_ORIGINS: origin,
@@ -181,5 +256,6 @@ await testCommentsHideEmail();
 await testCommentsRejectForeignOrigin();
 await testDraftAuthenticationAndShape();
 await testLikesReadContract();
+await testLikesSubmitIsAtomicAndDistinguishesDuplicates();
 await testPublisherRepositoryBoundary();
 console.log('worker contract tests: ok');

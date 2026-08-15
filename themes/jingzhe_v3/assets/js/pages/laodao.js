@@ -16,6 +16,42 @@ async function getLikesData() {
   return cachedLikesData || { counts: {}, myLikes: [] };
 }
 
+function getLikeVerificationToken() {
+  return new Promise(resolve => {
+    if (!KOOBAI_LIKES_TURNSTILE_SITE_KEY || typeof turnstile === 'undefined') {
+      resolve(null);
+      return;
+    }
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    let widgetId = null;
+    let settled = false;
+    const finish = token => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      if (widgetId !== null) turnstile.remove(widgetId);
+      container.remove();
+      resolve(token || null);
+    };
+    const timeoutId = setTimeout(() => finish(null), 10000);
+
+    try {
+      widgetId = turnstile.render(container, {
+        sitekey: KOOBAI_LIKES_TURNSTILE_SITE_KEY,
+        size: 'invisible',
+        action: 'like_laodao',
+        callback: token => finish(token),
+        'error-callback': () => finish(null),
+        'timeout-callback': () => finish(null)
+      });
+    } catch (_error) {
+      finish(null);
+    }
+  });
+}
+
 async function initLikes() {
   const triggers = document.querySelectorAll('.koobai-like-trigger:not(.initialized)');
   if (triggers.length === 0) return;
@@ -29,7 +65,8 @@ async function initLikes() {
     const url = trigger.getAttribute('data-url');
     const tooltip = trigger.querySelector('.koobai-tooltip');
 
-    let count = likesMap[url] || 0;
+    let count = Number(likesMap[url]) || 0;
+    let pending = false;
     let isLikedLocally = false;
     try {
       isLikedLocally = !!localStorage.getItem(`liked_${url}`);
@@ -49,31 +86,36 @@ async function initLikes() {
         tooltip.textContent = isLiked ? (count === 1 ? '你悄悄点了个赞' : `你和其他 ${count - 1} 人悄悄点赞`) : `${count} 人悄悄点赞`;
       }
     };
+    let tooltipTimer = null;
+    const showTemporaryTooltip = (message, duration, restoreText = true) => {
+      clearTimeout(tooltipTimer);
+      if (message !== null) tooltip.textContent = message;
+      tooltip.classList.add('force-show');
+      tooltipTimer = setTimeout(() => {
+        if (restoreText) updateText();
+        tooltip.classList.remove('force-show');
+      }, duration);
+    };
     updateText();
 
-    trigger.addEventListener('click', () => {
-      // 🚀 优化 4：直接用 JS 变量 isLiked 判断，极速且优雅
+    trigger.addEventListener('click', async () => {
       if (isLiked) {
-        tooltip.textContent = '已悄悄记下你的赞';
-        tooltip.classList.add('force-show');
-        setTimeout(() => { updateText(); tooltip.classList.remove('force-show'); }, 1500);
+        showTemporaryTooltip('已悄悄记下你的赞', 1500);
         return;
       }
+      if (pending) return;
 
+      const previousCount = count;
+      const optimisticState = JingzheLikes.applyOptimisticLike(previousCount);
+      pending = true;
+      isLiked = optimisticState.liked;
+      count = optimisticState.count;
       trigger.classList.add('liked', 'animating');
-      isLiked = true; // 同步更新局部状态
-      count++;
-      try { localStorage.setItem(`liked_${url}`, 'true'); } catch (e) {}
-      
-      // 🚀 优化 3：同步更新全局缓存，确保“加载更多”或其他地方调用时数据绝对一致！
-      if (cachedLikesData) {
-        cachedLikesData.counts[url] = count;
-        if (!cachedLikesData.myLikes.includes(url)) {
-          cachedLikesData.myLikes.push(url);
-        }
+      if (optimisticState.persist) {
+        try { localStorage.setItem(`liked_${url}`, 'true'); } catch (_error) {}
       }
-
       updateText();
+      showTemporaryTooltip(null, 800, false);
 
       const bubble = document.createElement('span');
       bubble.className = 'koobai-floating-plus';
@@ -81,51 +123,47 @@ async function initLikes() {
       trigger.appendChild(bubble);
       setTimeout(() => bubble.remove(), 800);
 
-      // 后台带 Turnstile 隐形验证的静默发送 (懒加载极速版)
-      (async () => {
-        try {
-          const token = await new Promise(resolve => {
-            // 如果没加载出来，直接放行返回 null (防止点赞卡死)
-            if (typeof turnstile === 'undefined') return resolve(null);
-            
-            // 现搭舞台
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-            
-            // 召唤隐形盾牌
-            const wId = turnstile.render(div, {
-              sitekey: KOOBAI_LIKES_TURNSTILE_SITE_KEY,
-              size: 'invisible',
-              action: 'like_laodao',
-              callback: t => { 
-                resolve(t); 
-                turnstile.remove(wId); 
-                div.remove(); 
-              },
-              'error-callback': () => { 
-                resolve(null); 
-                turnstile.remove(wId); 
-                div.remove(); 
-              }
-            });
-          });
-          
-          if (!token) return;
+      try {
+        const token = await getLikeVerificationToken();
+        const result = await JingzheLikes.submitLike({
+          url,
+          token,
+          submitUrl: KOOBAI_LIKES_SUBMIT_URL
+        });
 
-          // 带着刚拿到的热乎通行证发给服务器
-          if (!KOOBAI_LIKES_SUBMIT_URL) return;
-          await fetch(KOOBAI_LIKES_SUBMIT_URL, {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json', 
-              'CF-Turnstile-Response': token 
-            },
-            body: JSON.stringify({ url })
-          });
-        } catch(e) { 
-          console.error("Turnstile 拦截:", e); 
+        const nextState = JingzheLikes.applyLikeResult(previousCount, result);
+        if (!nextState.liked) {
+          isLiked = false;
+          count = previousCount;
+          trigger.classList.remove('liked');
+          try { localStorage.removeItem(`liked_${url}`); } catch (_error) {}
+          showTemporaryTooltip('点赞失败，点击重试', 1800);
+          return;
         }
-      })();
+
+        count = nextState.count;
+        isLiked = true;
+        trigger.classList.add('liked');
+
+        if (cachedLikesData) {
+          cachedLikesData.counts = cachedLikesData.counts || {};
+          cachedLikesData.myLikes = cachedLikesData.myLikes || [];
+          cachedLikesData.counts[url] = count;
+          if (!cachedLikesData.myLikes.includes(url)) cachedLikesData.myLikes.push(url);
+        }
+
+        updateText();
+      } catch (error) {
+        console.error('点赞提交失败:', error);
+        isLiked = false;
+        count = previousCount;
+        trigger.classList.remove('liked');
+        try { localStorage.removeItem(`liked_${url}`); } catch (_error) {}
+        showTemporaryTooltip('点赞失败，点击重试', 1800);
+      } finally {
+        pending = false;
+        trigger.classList.remove('animating');
+      }
     });
   });
 }
