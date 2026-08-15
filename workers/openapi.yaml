@@ -1,13 +1,14 @@
 openapi: 3.1.0
 info:
   title: Jingzhe Worker APIs
-  version: 0.1.0
-  description: Four independently deployed Workers. Example hosts must be replaced by each installation.
+  version: 0.2.0
+  description: Five independently deployed Workers. Example hosts must be replaced by each installation.
 tags:
   - name: Publisher
   - name: Drafts
   - name: Comments
   - name: Likes
+  - name: Activity Sync
 paths:
   /api/github:
     get:
@@ -214,6 +215,34 @@ paths:
         '200': { $ref: '#/components/responses/Success' }
         '403': { description: Turnstile rejection }
         '409': { description: Already liked }
+  /v1/activities/sync:
+    post:
+      tags: [Activity Sync]
+      servers: [{ url: "https://activity-sync.example.org" }]
+      summary: Merge source-neutral activity facts into the configured repository
+      description: >-
+        snapshot atomically replaces one source; delta applies explicit upserts and deletes.
+        Identity is source plus external_id. Non-public route statuses must not include a polyline.
+      security: [{ SyncToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/data/exercise-sync-v1.schema.json'
+      responses:
+        '200':
+          description: Synchronized, including no-change requests
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ActivitySyncResponse' }
+        '400': { $ref: '#/components/responses/ActivitySyncError' }
+        '401': { $ref: '#/components/responses/ActivitySyncError' }
+        '403': { $ref: '#/components/responses/ActivitySyncError' }
+        '409': { $ref: '#/components/responses/ActivitySyncError' }
+        '413': { $ref: '#/components/responses/ActivitySyncError' }
+        '500': { $ref: '#/components/responses/ActivitySyncError' }
+        '502': { $ref: '#/components/responses/ActivitySyncError' }
 components:
   securitySchemes:
     AdminToken:
@@ -224,6 +253,9 @@ components:
       type: apiKey
       in: header
       name: CF-Turnstile-Response
+    SyncToken:
+      type: http
+      scheme: bearer
   parameters:
     GitHubTarget:
       in: header
@@ -248,7 +280,47 @@ components:
             type: object
             properties:
               error: { type: string }
+    ActivitySyncError:
+      description: Activity Sync rejected or could not safely persist the request
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error:
+                type: object
+                required: [code, message]
+                properties:
+                  code: { type: string }
+                  message: { type: string }
+                  details:
+                    type: array
+                    items: { type: string }
   schemas:
+    ActivitySyncResponse:
+      type: object
+      required: [success, changed, schema_version, source, mode, request_id, counts, commit]
+      properties:
+        success: { type: boolean, const: true }
+        changed: { type: boolean }
+        schema_version: { type: integer, const: 1 }
+        source: { type: string }
+        mode: { enum: [snapshot, delta] }
+        request_id: { type: [string, 'null'] }
+        counts:
+          type: object
+          required: [created, updated, deleted, total]
+          properties:
+            created: { type: integer, minimum: 0 }
+            updated: { type: integer, minimum: 0 }
+            deleted: { type: integer, minimum: 0 }
+            total: { type: integer, minimum: 0 }
+        commit:
+          type: [object, 'null']
+          properties:
+            sha: { type: [string, 'null'] }
+            url: { type: [string, 'null'], format: uri }
     Draft:
       type: object
       required: [id, date, content, images, locationName, lat, lng, url]

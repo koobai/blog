@@ -16,7 +16,7 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 | 观影同步 | 从豆瓣合并新增/更新记录并原子写入 `movie.json` | `sync_movies.py`、`douban.yml` |
 | 运动管线 | 数据清洗、隐私路线、趣味标题和月报触发 | `process_activities.py` → `jingzhe/activity_processing.py`、`public_routes.py` |
 | AI 月报 | 聚合证据、模型调用、校验和状态冻结 | `monthly_coach.py` → `jingzhe/monthly_stats.py`、`monthly_reports.py` |
-| 动态服务 | 评论、点赞、发布、图片和云草稿 | `workers/` 中四个独立 Cloudflare Worker |
+| 动态服务 | 评论、点赞、发布、图片、云草稿和运动事实同步 | `workers/` 中五个独立 Cloudflare Worker |
 | GitHub Actions | 同步、测试、处理、构建和部署 | `.github/workflows/` |
 
 ## 数据流
@@ -29,7 +29,8 @@ flowchart TD
     PW --> R
     DB["豆瓣"] --> DA["Douban Action"]
     DA --> R
-    APP["原生 App / 快捷指令"] --> R
+    APP["原生 App / 数据源连接器"] --> ASW["Activity Sync Gateway"]
+    ASW --> R
     R --> AP["Activity Pipeline"]
     AP --> MC["Monthly Coach"]
     AP --> R
@@ -41,6 +42,10 @@ flowchart TD
     VISITOR <--> LW["Likes Worker"]
     CF --> VISITOR
 ```
+
+运动自动化使用文件路径作为稳定边界：Activity Sync 只提交 `data/exercise/activities.json`；运动处理工作流只监听该文件，并且只提交 `assets/activities.json` 与 `assets/monthly_insights.json`；站点部署工作流忽略仅有原始事实的提交，等待处理产物提交后再构建。`Auto-sync activity facts` 和 `Auto-generate monthly coaching report` 保留为可读的历史标记，不承担唯一的流程判断职责。
+
+处理工作流继续使用现有 `PAT` 推送生成产物，因为该推送需要触发后续部署。若处理期间只有普通内容推进了 `main`，生成提交会安全 rebase 后重试；若原始事实本身已更新，旧运行不发布过期产物，由新运行接管。缺少可选 `DEEPSEEK_API_KEY` 时，只跳过新的 AI 文本生成，确定性运动处理、统计和发布链不停止。
 
 ## Worker-independent 能力与动态增强
 
@@ -66,6 +71,7 @@ flowchart TD
 - 图片上传。
 - 云草稿。
 - GitHub 内容写回。
+- 运动数据源同步。
 
 动态增强不可成为 Core 构建的强制依赖。服务缺失时功能必须隐藏或降级，而不是导致构建失败。
 
@@ -73,7 +79,7 @@ flowchart TD
 
 - 文章与唠叨以 Markdown 为事实来源。
 - 观影以 `assets/movie.json` 为事实来源。
-- 运动展示以处理后的 `assets/activities.json` 为事实来源。
+- 运动输入以 `data/exercise/activities.json` 为唯一事实来源；页面只读取处理后的 `assets/activities.json`。
 - AI 月报以 `assets/monthly_insights.json` 为事实来源。
 - `public/` 和 `resources/` 是生成结果，不是事实来源。
 
@@ -90,14 +96,15 @@ flowchart TD
 
 ## Worker 服务边界
 
-动态服务按实际数据与权限拆为四个独立部署单元：
+动态服务按实际数据与权限拆为五个独立部署单元：
 
 1. Publisher：管理员认证、GitHub 写回和 R2 图片上传。
 2. Drafts：管理员云草稿与独立 D1。
 3. Comments：公开评论、回复通知、管理删除与独立 D1。
 4. Likes：公开点赞、访客去重与独立 D1。
+5. Activity Sync：验证统一运动协议，仅合并并写入仓库中的原始运动事实。
 
-高权限 Publisher 不与公开互动接口共享 GitHub/R2 凭据，Comments 也不与 Likes 共享邮箱数据库。完整边界见 [Worker 说明](../workers/README.md)。
+Publisher 和 Activity Sync 使用各自独立、范围不同的 GitHub 凭据；公开互动接口不接触仓库写权限，Comments 也不与 Likes 共享邮箱数据库。完整边界见 [Worker 说明](../workers/README.md)。
 
 ## 前端与数据模块契约
 
@@ -154,7 +161,7 @@ flowchart TD
 
 三个消费者使用同一文件：
 
-1. `process_activities.py` 保留为自动化兼容入口，`jingzhe/activity_processing.py` 在数据处理期生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
+1. `process_activities.py` 保留为稳定自动化入口，`jingzhe/activity_store.py` 将来源事实转成处理模型，`jingzhe/activity_processing.py` 生成展示名称、运动类型文案和成就字段；Hugo 只负责展示。
 2. `themes/jingzhe_v3/assets/js/exercise/model.js` 使用注入的契约处理颜色、类型聚合和月度能量文案。
 3. `jingzhe/exercise_contract.py` 为 `process_activities.py` 与 `monthly_coach.py` 提供 Python 常量。
 
@@ -164,7 +171,7 @@ flowchart TD
 
 根目录的 `process_activities.py` 与 `monthly_coach.py` 继续作为 Actions、命令行和既有 Python 调用方的稳定入口。确定性运动处理、公共地标请求、月度统计证据和报告状态机分别位于 `jingzhe/` 中；拆分没有改变工作流命令、环境变量、JSON 格式或外部服务。
 
-原生 App 上传的字段和路线状态由 `tests/fixtures/laodao_app_activity_upload.json` 提供合成样本，并通过 `tests/test_app_blog_contract.py` 贯穿处理器、Schema、隐私规则和月报数据指纹。App 或博客任一侧调整这份 JSON 契约时，都应同步更新样本并通过该测试；Fixture 不包含真实 HealthKit 身份、位置或轨迹。
+App、来源适配器与同步网关使用 `schemas/data/exercise-sync-v1.schema.json`。`tests/fixtures/exercise_sync_v1.json` 和 `tests/test_exercise_sync_contract.py` 使用合成数据验证来源身份、字段单位、隐私状态和来源切换；处理后的 `assets/activities.json` 不再是 App 接口。
 
 ### AI Provider 边界
 

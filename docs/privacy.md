@@ -14,6 +14,7 @@
 | 图片链接 | Markdown、模板和 JSON | 公开 | Starter 使用合成或可再分发资源 |
 | 观影记录 | `assets/movie.json` | 公开 | Schema 校验、使用者自己的数据与可选同步 |
 | 运动统计 | `assets/activities.json` | 公开 | Schema、字段最小化与隐私测试 |
+| 原始运动事实 | `data/exercise/activities.json` | 仓库内数据源 | App 端隐私判断、Gateway 校验、不得直接注入浏览器 |
 | 公开运动轨迹 | `summary_polyline` | 公开 | 必须由用户明确选择公开 |
 | 隐私运动 | 地标替代路线 | 公开替代结果 | 原始轨迹不得参与公开绘制 |
 | AI 月报 | `assets/monthly_insights.json` | 公开 | 模型只接收聚合证据 |
@@ -27,7 +28,7 @@
 - 地标路线可根据真实距离截取或以线宽表达次数，但不得使用原始轮廓。
 - 住宅、小区、公司、学校、酒店等私密或琐碎地点不能作为公开地点标题。
 - 发给 AI 的证据不能包含精确坐标、Polyline、路线 ID、`source_id` 或活动身份字段。
-- `source_id` 只在处理后的仓库数据中保留为同步去重键；Hugo 注入给浏览器的轻量数据和 AI payload 均不包含它。
+- 原始 `external_id` 和处理后的 `source_id` 只用于仓库内幂等与缓存；Hugo 注入给浏览器的轻量数据和 AI payload 均不包含它们。
 - 修改上述逻辑时必须增加测试。
 
 ## AI 数据边界

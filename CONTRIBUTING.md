@@ -34,7 +34,7 @@ python3 tools/jingzhe.py init --output ../jingzhe-check --title "Jingzhe Check"
 - 不批量改写 `content/` 的旧文章、Slug、Front Matter 或停用链接。
 - 不把真实 `assets/` 数据复制为示例 fixture。
 - 不手工编辑 `public/`、`resources/` 或 Hugo 构建锁文件。
-- 不把四个 Worker 合并为共享全部 Secrets 的服务。
+- 不把五个 Worker 合并为共享全部 Secrets 的服务。
 - 新配置必须提供空值或明显无效的示例，并说明公开变量与 Secret 的区别。
 - 需要迁移生产接口时，先提供兼容层、测试环境和回滚方式。
 

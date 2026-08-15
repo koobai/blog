@@ -5,6 +5,12 @@ import re
 from datetime import datetime
 
 
+from jingzhe.activity_store import (
+    RAW_ACTIVITY_FILE,
+    load_processed_activities,
+    load_raw_activity_store,
+    materialize_activity_store,
+)
 from jingzhe.exercise_contract import (
     ACTIVITY_DISTANCE_GROUPS,
     ACTIVITY_DISTANCE_VERBS,
@@ -46,6 +52,7 @@ if not DEEPSEEK_API_KEY:
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
+RAW_FILE_NAME = str(RAW_ACTIVITY_FILE)
 MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
 LANDMARK_ROUTE_FILE = os.path.join(TARGET_DIR, 'landmark_route_library.json')
 PUBLISH_START_DATE = datetime(2026, 1, 1)
@@ -308,16 +315,12 @@ def generate_distance_title(activity_type, distance, elevation, run_id, recent_k
     )
     return f"{distance_verb}{format_landmark_count(count, landmark['unit'], landmark['name'])}", landmark['key']
 
-def load_local_data():
-    if os.path.exists(FILE_NAME):
-        with open(FILE_NAME, 'r', encoding='utf-8') as f:
-            try:
-                data = json.load(f) or []
-                data.sort(key=lambda x: parse_time(x.get('start_date_local', '')), reverse=True)
-                return data
-            except json.JSONDecodeError as error:
-                raise RuntimeError(f"activities.json 格式错误: {error}") from error
-    return []
+def load_activity_input():
+    """Materialize the only source of truth with the current output as cache."""
+    raw_store = load_raw_activity_store()
+    existing_output = load_processed_activities()
+    activities = materialize_activity_store(raw_store, existing_output)
+    return activities, activities != existing_output
 
 def parse_time(time_str):
     try:
@@ -596,10 +599,11 @@ def write_activity_data(activities, output_path=FILE_NAME):
 
 
 def main():
-    print(f"🎯 正在扫描本地运动库: {FILE_NAME}")
-    all_local_data = load_local_data()
+    print(f"🎯 正在扫描原始运动事实: {RAW_FILE_NAME}")
+    all_local_data, output_changed = load_activity_input()
     validate_landmark_route_library(all_local_data)
-    local_data, needs_save = process_activity_data(all_local_data)
+    local_data, processor_changed = process_activity_data(all_local_data)
+    needs_save = output_changed or processor_changed
 
     if needs_save:
         write_activity_data(local_data)

@@ -151,7 +151,7 @@ assets/
 
 themes/jingzhe_v3/         # 当前生产主题及可指纹化的项目自有脚本
 static/js/                 # 按许可证原样保留的第三方浏览器脚本
-workers/                   # 四个独立 Worker、Wrangler 示例、D1 迁移与 OpenAPI
+workers/                   # 五个独立 Worker、Wrangler 示例、D1 迁移与 OpenAPI
 config/                    # 通用、生产与开发配置
 schemas/                   # Front Matter、参数和 JSON Schema
 data/jingzhe/features.json # 机器可读功能注册表

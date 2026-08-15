@@ -12,11 +12,12 @@ on:
   push:
     branches:
       - main  # 监听源码主分支
+    # 原始运动事实必须先由 process-activities.yml 生成稳定展示产物。
+    paths-ignore:
+      - 'data/exercise/activities.json'
 
 jobs:
   deploy:
-    # App 推送的是尚未补齐展示字段的原始运动数据；等待 AI 工作流提交最终 JSON 后再部署。
-    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Auto-sync Dongqilai')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,0 +1,8 @@
+{
+  "name": "@jingzhe/worker-activity-sync",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/index.js"
+  }
+}

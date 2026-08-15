@@ -13,7 +13,7 @@
 - [架构与模块契约](architecture.md)
 - [生产兼容基线](compatibility.md)
 - [隐私与外部数据边界](privacy.md)
-- [四个 Worker 的部署与安全边界](../workers/README.md)
+- [五个 Worker 的部署与安全边界](../workers/README.md)
 - [授权与内容边界](../CONTENT_LICENSE.md)
 
 ## 当前状态

@@ -12,7 +12,7 @@
 
 ## 当前状态
 
-仓库同时承载 Koobai Production 和可复用的 Core/可选服务源码。当前生产代码包含 Koobai 专属配置；Core 初始化、统一检查和四个 Worker 开源部署包已经可用。任何 GitHub、Cloudflare 或生产服务的外部写操作仍需项目所有者单独授权。
+仓库同时承载 Koobai Production 和可复用的 Core/可选服务源码。当前生产代码包含 Koobai 专属配置；Core 初始化、统一检查和五个 Worker 开源部署包已经可用。任何 GitHub、Cloudflare 或生产服务的外部写操作仍需项目所有者单独授权。
 
 ## 源文件地图
 
@@ -21,6 +21,7 @@
 - `config/development/`：保持 `hugo server` 与生产参考站一致的本地覆盖。
 - `data/jingzhe/features.json`：机器可读功能注册表。
 - `data/jingzhe/exercise.json`：运动名称、颜色、分组和食物换算的跨语言单一来源。
+- `data/exercise/activities.json`：来源无关的原始运动事实；只由同步网关写入，只由处理器读取。
 - `jingzhe/exercise_contract.py`：Python 运动契约加载器，不得复制一套常量。
 - `schemas/`：Front Matter、站点参数与公开 JSON Schema。
 - `archetypes/`：新文章和新唠叨模板。
@@ -34,13 +35,13 @@
 - `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
 - `static/js/`：按上游许可证原样保留的第三方浏览器脚本。
-- `assets/*.json`：观影、处理后运动、地标路线和月报数据；`landmark_route_library.json` 是地标几何与选择规则的单一数据源。
+- `assets/*.json`：观影、处理后运动、地标路线和月报数据；App 与同步网关不得读写处理后的 `activities.json`。
 - `process_activities.py`、`monthly_coach.py`：Actions 和旧调用方保持不变的兼容入口。
 - `jingzhe/activity_processing.py`、`public_routes.py`：运动数据加工、展示字段和隐私公共路线。
 - `jingzhe/monthly_stats.py`、`monthly_reports.py`：月报统计证据、模型调用、校验与冻结状态机。
 - `sync_movies.py`：豆瓣观影数据同步。
 - `tests/`：Python、浏览器脚本、Worker、文档和隐私契约测试。
-- `workers/`：Publisher、Drafts、Comments、Likes 四个独立 Cloudflare Worker，以及示例配置、D1 迁移和 OpenAPI。
+- `workers/`：Publisher、Drafts、Comments、Likes、Activity Sync 五个独立 Cloudflare Worker，以及示例配置、D1 迁移和 OpenAPI。
 - `.github/workflows/`：同步、处理、构建与部署流程。
 - `docs/`：安装、架构、功能、配置、隐私和 AI 协作文档。
 
@@ -80,14 +81,16 @@
 
 ### Actions 与自动化
 
-- 不得随意改变 `Auto-sync Dongqilai`、`Auto-generate monthly coaching report` 等被工作流判断使用的提交信息。
+- 不得随意改变 `Auto-sync activity facts`、`Auto-generate monthly coaching report` 等用于自动化识别和排障的提交信息。
+- 运动处理工作流只监听 `main` 的原始事实文件，只能提交两个生成产物；部署工作流必须忽略仅包含原始事实的提交。
 - 不得未经迁移同时更改现有 GitHub Secrets 名称。
 - 不得让原始运动数据提交绕过现有处理步骤直接触发生产部署。
 - 不得破坏豆瓣同步、运动处理和 Cloudflare Pages 部署。
 
 ### 动态服务
 
-- Worker 源码位于 `workers/`，四个目录是独立最小权限边界，不得合并 Secrets。
+- Worker 源码位于 `workers/`，五个目录是独立最小权限边界，不得合并 Secrets。
+- Activity Sync 只能写入环境中固定的 `data/exercise/activities.json`，不得接受客户端提供的仓库、分支或路径。
 - Worker 路由、方法、Header、请求与响应字段变更必须先提供兼容层和测试环境。
 - 当前生产 URL 不因源码入库而自动迁移；部署、域名切换和回滚由项目所有者决定。
 - Comments 公开响应不得包含真实邮箱；只允许返回服务端生成的头像哈希。
@@ -97,7 +100,7 @@
 - 不得把私密轨迹、精确坐标、Polyline、`source_id` 或个人身份字段发送给模型。
 - 隐私运动不得重新使用原始轨迹绘图。
 - 公开轨迹与隐私替代路线必须继续明确区分。
-- 修改 App 上传字段或 `route_status` 时，必须同步 Schema、合成 Fixture 与 `tests/test_app_blog_contract.py`。
+- 修改 App/Gateway 上传字段或 `route_status` 时，必须同步 Schema、合成 Fixture 与 `tests/test_exercise_sync_contract.py`。
 - 月报必须基于程序生成的聚合证据，不得把模型当作医疗诊断工具。
 - 修改隐私逻辑时必须增加或更新相应测试。
 
@@ -167,6 +170,7 @@ node tests/test_exercise_modules.js
 node tests/test_jingzhe_message.js
 node tests/test_likes_core.js
 node tests/test_workers.mjs
+node tests/test_activity_sync_worker.mjs
 ```
 
 ## 按修改类型验证
@@ -180,7 +184,7 @@ node tests/test_workers.mjs
 - 修改工作流：复核触发路径、Secrets、提交信息判断和自循环保护。
 - 修改内容路径、Slug 或链接：执行构建后站内链接检查。
 - 修改动态服务调用：在测试服务验证，不直接以生产接口试错。
-- 修改 Worker：运行 `node tests/test_workers.mjs`、对应语法检查和统一 `check`，并复核 Secret/Binding 文档。
+- 修改 Worker：运行 `node tests/test_workers.mjs`、适用的独立 Worker 测试、对应语法检查和统一 `check`，并复核 Secret/Binding 文档。
 - 修改隐私逻辑：增加隐私契约测试并检查对外 JSON 与模型 payload。
 
 常规修改后应优先运行 `python3 tools/jingzhe.py check`；需要机器可读结果时追加 `--json`。Schema 只用于描述、新内容和明确的数据契约，不得据此批量重写历史内容。命令契约见 `docs/tooling.md`。
@@ -193,7 +197,7 @@ node tests/test_workers.mjs
 - 在线编辑器公共原语位于 `editor-core.js`；页面专属行为进入 `editor-laodao.js` 与 `editor-post.js`，模板只保留 HTML 和公开配置注入。
 - 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。
-- 评论点赞 Worker 与高权限发布 Worker 保持安全边界。
+- 评论点赞、运动同步 Worker 与高权限发布 Worker 保持安全边界。
 
 这些边界已经建立，不代表可以跳过兼容测试直接重写。
 

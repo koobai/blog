@@ -120,7 +120,7 @@ data/jingzhe/               Machine-readable feature and exercise contracts
 jingzhe/                    Exercise processing, reports, and shared Python contracts
 schemas/                    Front Matter, configuration, and JSON schemas
 tools/                      Initialization, diagnostics, and validation CLI
-workers/                    Four independently deployable Cloudflare Workers
+workers/                    Five independently deployable Cloudflare Workers
 .github/workflows/          Sync, processing, testing, and deployment workflows
 ```
 

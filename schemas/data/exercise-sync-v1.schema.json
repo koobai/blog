@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jingzhe.example/schemas/data/exercise-sync-v1.schema.json",
+  "title": "Jingzhe Exercise Sync API v1 input",
+  "description": "Canonical source-owned exercise facts accepted by a self-hosted Jingzhe sync gateway.",
+  "type": "object",
+  "required": ["schema_version", "source", "mode"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Breaking changes use a new schema version."
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$",
+      "description": "Stable upstream provider namespace that owns external_id, such as apple_health, keep or strava."
+    },
+    "producer": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$",
+      "description": "Optional diagnostic identifier for the client or connector that produced this request, such as laodao_app. It is not part of activity identity."
+    },
+    "mode": {
+      "enum": ["snapshot", "delta"],
+      "description": "snapshot replaces the complete declared source; delta applies only explicit upserts and deletes."
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional caller-generated correlation and diagnostic identifier. It is returned to the caller but is not persisted."
+    },
+    "upsert": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {"$ref": "#/$defs/activity"},
+      "description": "Activities to create or update by source plus external_id; in snapshot mode this is the complete source snapshot."
+    },
+    "delete": {
+      "type": "array",
+      "maxItems": 500,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "description": "Explicit external_id values to delete from this source in delta mode. Delta omission never deletes history."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"mode": {"const": "snapshot"}},
+        "required": ["mode"]
+      },
+      "then": {
+        "required": ["upsert"],
+        "not": {"required": ["delete"]}
+      },
+      "else": {
+        "anyOf": [
+          {
+            "required": ["upsert"],
+            "properties": {"upsert": {"minItems": 1}}
+          },
+          {
+            "required": ["delete"],
+            "properties": {"delete": {"minItems": 1}}
+          }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "activity": {
+      "type": "object",
+      "required": [
+        "external_id",
+        "type",
+        "started_at",
+        "duration_seconds",
+        "distance_km",
+        "is_indoor",
+        "route_status"
+      ],
+      "properties": {
+        "external_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Stable activity identifier inside the declared upstream source namespace."
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional source or user supplied activity name."
+        },
+        "type": {
+          "enum": [
+            "Run",
+            "TrailRun",
+            "Treadmill",
+            "VirtualRun",
+            "Ride",
+            "VirtualRide",
+            "EBikeRide",
+            "Walk",
+            "Hike",
+            "Swim",
+            "WaterSport",
+            "StairStepper"
+          ],
+          "description": "Canonical sport key from data/jingzhe/exercise.json."
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 timestamp with Z or an explicit UTC offset."
+        },
+        "duration_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 604800,
+          "description": "Moving duration in whole seconds."
+        },
+        "distance_km": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Distance in kilometres."
+        },
+        "average_heartrate_bpm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 300,
+          "description": "Optional average heart rate in beats per minute."
+        },
+        "elevation_gain_m": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional total elevation gain in metres."
+        },
+        "calories_kcal": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional active energy in kilocalories."
+        },
+        "is_indoor": {
+          "type": "boolean",
+          "description": "Indoor activities cannot include a route and may be unavailable or temporarily pending."
+        },
+        "route_status": {
+          "enum": ["available", "privacy_hidden", "unavailable", "pending"],
+          "description": "The source adapter decides privacy before upload. Only available may include a real route."
+        },
+        "summary_polyline": {
+          "type": "string",
+          "maxLength": 500000,
+          "description": "Google encoded polyline with precision 5; allowed only for available routes."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"route_status": {"const": "available"}},
+            "required": ["route_status"]
+          },
+          "then": {
+            "required": ["summary_polyline"],
+            "properties": {"summary_polyline": {"minLength": 1}}
+          },
+          "else": {
+            "properties": {"summary_polyline": {"maxLength": 0}}
+          }
+        },
+        {
+          "if": {
+            "properties": {"is_indoor": {"const": true}},
+            "required": ["is_indoor"]
+          },
+          "then": {
+            "properties": {
+              "route_status": {"enum": ["unavailable", "pending"]},
+              "summary_polyline": {"maxLength": 0}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "x-jingzhe-contract": {
+    "identity": ["source", "external_id"],
+    "producer_participates_in_identity": false,
+    "source_semantics": "source is the upstream provider namespace that owns external_id; producer is only the sending app or connector.",
+    "source_switch": "Records from different source namespaces are distinct. Never fuzzy-deduplicate by time, distance, heart rate or route; use an explicit cutoff or migration mapping when changing providers.",
+    "sync_modes": {
+      "snapshot": "Atomically replaces the declared source and may be empty.",
+      "delta": "Applies explicit upserts and deletes; omission never deletes history."
+    },
+    "privacy_decision_owner": "source_adapter",
+    "privacy_boundary": "The adapter must remove the real polyline before sending privacy_hidden. The gateway validates this invariant but cannot infer whether an available route should have been private.",
+    "adapter_owned_activity_fields": [
+      "external_id",
+      "name",
+      "type",
+      "started_at",
+      "duration_seconds",
+      "distance_km",
+      "average_heartrate_bpm",
+      "elevation_gain_m",
+      "calories_kcal",
+      "is_indoor",
+      "route_status",
+      "summary_polyline"
+    ],
+    "gateway_owned_output_fields": [
+      "run_id",
+      "source_id",
+      "start_date_local",
+      "start_date_utc",
+      "moving_time"
+    ],
+    "processor_owned_output_fields": [
+      "pace_num",
+      "pace_unit",
+      "energy_title",
+      "food_key",
+      "food_title_version",
+      "distance_title",
+      "distance_title_key",
+      "distance_title_version",
+      "route_title",
+      "route_title_version",
+      "display_name",
+      "sport_display_name",
+      "card_achievement",
+      "calendar_achievements"
+    ],
+    "compatibility": "Existing required fields, identity, units and semantics are immutable in v1; breaking changes require schema_version 2."
+  }
+}

@@ -1,0 +1,11 @@
+name = "jingzhe-activity-sync"
+main = "src/index.js"
+compatibility_date = "2026-08-15"
+
+[vars]
+ALLOWED_ORIGINS = "https://example.org"
+GITHUB_OWNER = "your-github-owner"
+GITHUB_REPO = "your-blog-repo"
+GITHUB_BRANCH = "main"
+GITHUB_ACTIVITY_PATH = "data/exercise/activities.json"
+GITHUB_USER_AGENT = "Jingzhe-Activity-Sync-Worker"

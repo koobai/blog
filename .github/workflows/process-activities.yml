@@ -1,5 +1,8 @@
 name: Process Activities and Monthly Reports
 
+permissions:
+  contents: read
+
 concurrency:
   group: monthly-coach-${{ github.ref }}
   cancel-in-progress: true
@@ -13,17 +16,17 @@ on:
     - cron: '0 20 28-29 2 *'
     # UTC 15 日 20:00 = 北京时间每月 16 日 04:00，检查是否生成月中报告。
     - cron: '0 20 15 * *'
-  # App 同步运动数据时触发；仅修改处理代码不会自动调用月报 API。
+  # Activity Sync Gateway 写入原始事实时触发；生成产物不会再次触发本工作流。
   push:
+    branches:
+      - main
     paths:
-      - 'assets/activities.json'
+      - 'data/exercise/activities.json'
   # 保留手动触发，方便你随时在网页端手动运行
   workflow_dispatch:
 
 jobs:
   process:
-    # 月报写回会再次触发 push；跳过自动生成提交，避免工作流自循环。
-    if: github.event_name != 'push' || !contains(github.event.head_commit.message, 'Auto-generate monthly coaching report')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -49,7 +52,10 @@ jobs:
         if: steps.monthly_window.outputs.should_run == 'true'
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }} 
+          # 必须保留独立 PAT：它推送的处理结果需要继续触发部署工作流。
+          token: ${{ secrets.PAT }}
+          # push、schedule 与网页手动触发都处理同一条生产主链。
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -65,9 +71,15 @@ jobs:
       - name: Verify Exercise Processing and Monthly Reports
         id: verify
         if: steps.monthly_window.outputs.should_run == 'true'
-        run: python -m unittest tests.test_exercise_contract tests.test_process_activities tests.test_monthly_coach
+        run: >-
+          python -m unittest
+          tests.test_exercise_contract
+          tests.test_exercise_sync_contract
+          tests.test_activity_store
+          tests.test_process_activities
+          tests.test_monthly_coach
 
-      - name: Process Activities and Reports
+      - name: Materialize Activities and Optional Monthly Reports
         id: process_data
         if: steps.monthly_window.outputs.should_run == 'true'
         env:
@@ -78,19 +90,45 @@ jobs:
           NOMINATIM_REFERER: https://koobai.com/exercise/
         run: python process_activities.py
 
-      - name: Commit and Push changes
+      - name: Commit Processed Assets
         id: commit
         if: steps.monthly_window.outputs.should_run == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add assets/
+          git add assets/activities.json assets/monthly_insights.json
           if git diff --staged --quiet; then
             echo "ACTIVITY_HAS_CHANGES=false" >> "$GITHUB_ENV"
+            echo "ACTIVITY_CHANGED_FILES=none" >> "$GITHUB_ENV"
+            echo "ACTIVITY_PUSH_RESULT=no_changes" >> "$GITHUB_ENV"
           else
             echo "ACTIVITY_HAS_CHANGES=true" >> "$GITHUB_ENV"
+            changed_files="$(git diff --staged --name-only | tr '\n' ',' | sed 's/,$//')"
+            echo "ACTIVITY_CHANGED_FILES=$changed_files" >> "$GITHUB_ENV"
+            input_blob="$(git rev-parse HEAD:data/exercise/activities.json)"
             git commit -m "🤖 Auto-generate monthly coaching report"
-            git push
+
+            # 普通文章可能在处理期间推进 main。原始事实未变时安全 rebase；
+            # 原始事实已经更新时让位给该次推送触发的新运行，不发布过期产物。
+            for attempt in 1 2 3; do
+              git fetch origin main:refs/remotes/origin/main
+              remote_blob="$(git rev-parse origin/main:data/exercise/activities.json)"
+              if [[ "$remote_blob" != "$input_blob" ]]; then
+                echo "ACTIVITY_PUSH_RESULT=superseded_by_new_facts" >> "$GITHUB_ENV"
+                exit 0
+              fi
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "ACTIVITY_PUSH_RESULT=rebase_conflict" >> "$GITHUB_ENV"
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                echo "ACTIVITY_PUSH_RESULT=pushed" >> "$GITHUB_ENV"
+                exit 0
+              fi
+            done
+            echo "ACTIVITY_PUSH_RESULT=push_failed" >> "$GITHUB_ENV"
+            exit 1
           fi
 
       - name: Write Job Summary
@@ -102,9 +140,13 @@ jobs:
             echo ""
             echo "| 项目 | 结果 |"
             echo "| --- | --- |"
+            echo "| 触发方式 | ${{ github.event_name }} |"
+            echo "| 输入提交 | ${{ github.sha }} |"
             echo "| 北京时间窗口 | ${{ steps.monthly_window.outputs.should_run || 'unknown' }} |"
             echo "| 契约测试 | ${{ steps.verify.outcome }} |"
             echo "| 数据处理 | ${{ steps.process_data.outcome }} |"
             echo "| 数据变化 | ${ACTIVITY_HAS_CHANGES:-unknown} |"
-            echo "| 提交推送 | ${{ steps.commit.outcome }} |"
+            echo "| 变化文件 | ${ACTIVITY_CHANGED_FILES:-unknown} |"
+            echo "| 推送结果 | ${ACTIVITY_PUSH_RESULT:-unknown} |"
+            echo "| 提交步骤 | ${{ steps.commit.outcome }} |"
           } >> "$GITHUB_STEP_SUMMARY"

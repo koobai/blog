@@ -24,7 +24,7 @@
 2. 先询问我：站点名称、作者、简介、域名、部署平台、需要的功能 Profile，以及是否迁移已有 Hugo 内容。没有明确选择时使用 Core。
 3. 先运行 python3 tools/jingzhe.py doctor --json；然后使用 init 在仓库外一个不存在的新目录生成站点。不要复制根仓库的 content/、assets/、Koobai 品牌或生产服务配置。
 4. 修改新站点的通用配置并运行 Hugo 严格构建。交付前运行适用的 validate/check、站内链接和隐私检查。
-5. 如果我选择 Publisher、Social、Life Data 或 AI Coach，再读取对应文档，只询问该功能真正需要的公开配置和 Secret。四个 Worker 必须保持独立权限。
+5. 如果我选择 Publisher、Social、Life Data 或 AI Coach，再读取对应文档，只询问该功能真正需要的公开配置和 Secret。五个 Worker 必须保持独立权限。
 6. 在登录账户、创建云资源、写入 GitHub、部署 Worker、修改 DNS 或改变生产状态前，先说明影响并单独征得我的同意。
 7. 最后告诉我：创建或修改了哪些文件、哪些功能已启用、哪些 Secret 仍需配置、运行了哪些测试，以及访问地址。
 ```
@@ -53,6 +53,7 @@ hugo server
 |---|---|
 | 浏览器写文章、传图片、云草稿 | `workers/README.md`、`workers/publisher/README.md`、`workers/drafts/README.md` |
 | 评论与点赞 | `workers/README.md`、`workers/comments/README.md`、`workers/likes/README.md` |
+| 从 App 或其他来源同步运动 | `workers/README.md`、`workers/activity-sync/README.md`、`schemas/data/exercise-sync-v1.schema.json` |
 | 观影、运动、地图 | `docs/features.md`、`docs/privacy.md`、`docs/configuration.md` |
 | AI 运动月报 | `docs/features.md`、`docs/privacy.md`、`docs/architecture.md` |
 | 修改现有 Koobai 生产仓库 | `AGENTS.md`、`docs/compatibility.md` |

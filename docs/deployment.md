@@ -31,7 +31,7 @@ hugo --minify --panicOnWarning
 
 ## 可选功能
 
-- Publisher、Drafts、Comments 和 Likes：先按 [`workers/README.md`](../workers/README.md) 在测试域名部署，再回填公开 URL。
+- Publisher、Drafts、Comments、Likes 和 Activity Sync：先按 [`workers/README.md`](../workers/README.md) 在测试域名部署，再回填公开 URL 或 App 私有配置。
 - Movies/Exercise：提供符合 `schemas/data/` 的自己的数据；不要复制 Koobai 的生产 `assets/`。
 - Exercise：Mapbox Token 是浏览器公开参数，但应限制允许的 URL；原始隐私轨迹不得进入公开数据。
 - AI Coach：模型 API Key 只能存放在部署平台 Secret 中，模型只能接收聚合证据。

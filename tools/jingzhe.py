@@ -26,6 +26,8 @@ from urllib.parse import unquote, urljoin, urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 SUPPORTED_PROFILES = ("core",)
 MINIMUM_HUGO_VERSION = (0, 158, 0)
 TEXT_SUFFIXES = {
@@ -379,6 +381,7 @@ def validation_checks() -> List[dict]:
         ROOT / "data/jingzhe/exercise.json",
         ROOT / "data/jingzhe/features.json",
         ROOT / "data/jingzhe/linkcheck_allowlist.json",
+        ROOT / "data/exercise/activities.json",
     ]
     json_errors: List[str] = []
     for path in json_paths:
@@ -425,7 +428,7 @@ def validation_checks() -> List[dict]:
     same_instance = prod_params.read_bytes() == dev_params.read_bytes() and prod_hugo.read_bytes() == dev_hugo.read_bytes()
     add_check(checks, "config.instance-sync", same_instance, "Production 与 Development 公开配置一致" if same_instance else "Production 与 Development 配置发生漂移")
 
-    worker_names = ("publisher", "drafts", "comments", "likes")
+    worker_names = ("publisher", "drafts", "comments", "likes", "activity-sync")
     worker_files = [ROOT / "workers/openapi.yaml", ROOT / "workers/README.md"]
     for worker in worker_names:
         base = ROOT / "workers" / worker
@@ -446,7 +449,7 @@ def validation_checks() -> List[dict]:
         checks,
         "workers.artifacts",
         not missing_worker_files,
-        "四个 Worker 的源码、示例配置、契约和迁移完整" if not missing_worker_files else "Worker 文件缺失：{}".format(", ".join(missing_worker_files)),
+        "五个 Worker 的源码、示例配置、契约和迁移完整" if not missing_worker_files else "Worker 文件缺失：{}".format(", ".join(missing_worker_files)),
     )
     migration_errors: List[str] = []
     for path in sorted((ROOT / "workers").glob("*/migrations/*.sql")):
@@ -471,6 +474,16 @@ def validation_checks() -> List[dict]:
     for check_id, path, validator in data_checks:
         errors = validator(load_json(path))
         add_check(checks, "data.{}".format(check_id), not errors, "{} 结构有效".format(path.relative_to(ROOT)) if not errors else "{}: {}".format(path.relative_to(ROOT), "; ".join(errors[:5])))
+
+    from jingzhe.activity_store import validate_raw_activity_store
+    raw_activity_path = ROOT / "data/exercise/activities.json"
+    raw_activity_errors = validate_raw_activity_store(load_json(raw_activity_path))
+    add_check(
+        checks,
+        "data.production.activity-facts",
+        not raw_activity_errors,
+        "{} 原始事实结构有效".format(raw_activity_path.relative_to(ROOT)) if not raw_activity_errors else "{}: {}".format(raw_activity_path.relative_to(ROOT), "; ".join(raw_activity_errors[:5])),
+    )
 
     return checks
 

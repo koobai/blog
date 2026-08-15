@@ -50,7 +50,7 @@
 - `main` 分支推送继续触发生产构建。
 - 原始运动数据提交继续先经过处理工作流。
 - 月报自动提交不得造成工作流自循环。
-- `Auto-sync Dongqilai` 等提交信息判断继续有效。
+- `Auto-sync activity facts` 等原始事实提交标记继续用于历史识别和排障；实际触发边界由文件路径保证。
 - `Auto-generate monthly coaching report` 等提交信息判断继续有效。
 - 现有 GitHub Secrets 在明确迁移前继续生效。
 - Cloudflare Pages 生产项目和域名不在文档阶段改变。

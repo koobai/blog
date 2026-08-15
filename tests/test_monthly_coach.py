@@ -56,6 +56,23 @@ class MonthlyCoachStateTests(unittest.TestCase):
         with open(self.path, 'r', encoding='utf-8') as file:
             return json.load(file)
 
+    @patch('monthly_coach.generate_report')
+    def test_missing_ai_key_keeps_deterministic_statistics_running(self, generate):
+        with patch.dict(os.environ, {'DEEPSEEK_API_KEY': ''}):
+            changed = monthly_coach.update_monthly_insights(
+                self.activities,
+                self.path,
+                api_key=None,
+                now=datetime(2026, 8, 10, 20)
+            )
+
+        self.assertTrue(changed)
+        data = self.read()
+        self.assertEqual('accumulating', data['2026-08']['report_phase'])
+        self.assertEqual(10, data['2026-08']['stats']['total_count'])
+        self.assertNotIn('coach_report', data['2026-08'])
+        generate.assert_not_called()
+
     def test_state_machine_accepts_an_injected_report_provider(self):
         class FakeProvider:
             model = 'fake-provider-v1'

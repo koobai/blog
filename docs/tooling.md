@@ -41,7 +41,7 @@ python3 tools/jingzhe.py validate --json
 - JSON Schema 和功能注册表可解析。
 - Production 与 Development 配置可解析且公开实例配置没有漂移。
 - 已启用功能的公开参数完整。
-- 四个 Worker 的源码、示例配置、OpenAPI 与 D1 迁移文件完整。
+- 五个 Worker 的源码、示例配置、OpenAPI 与 D1 迁移文件完整。
 - 观影、运动和月报数据满足当前结构约束。
 
 校验只读取历史内容和数据，不会批量格式化或回写文件。

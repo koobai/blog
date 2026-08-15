@@ -79,8 +79,11 @@ class DocumentationTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/process-activities.yml").read_text(encoding="utf-8")
 
         self.assertIn(
-            "python -m unittest tests.test_exercise_contract "
-            "tests.test_process_activities tests.test_monthly_coach",
+            "tests.test_exercise_contract\n"
+            "          tests.test_exercise_sync_contract\n"
+            "          tests.test_activity_store\n"
+            "          tests.test_process_activities\n"
+            "          tests.test_monthly_coach",
             workflow,
         )
         self.assertNotIn("unittest discover", workflow)
@@ -98,9 +101,33 @@ class DocumentationTests(unittest.TestCase):
     def test_exercise_workflow_guards_are_stable(self):
         deploy = (ROOT / ".github/workflows/githubblog.yml").read_text(encoding="utf-8")
         process = (ROOT / ".github/workflows/process-activities.yml").read_text(encoding="utf-8")
-        self.assertIn("Auto-sync Dongqilai", deploy)
-        self.assertIn("assets/activities.json", process)
+        gateway = (ROOT / "workers/activity-sync/src/index.js").read_text(encoding="utf-8")
+
+        self.assertIn("const COMMIT_MARKER = 'Auto-sync activity facts'", gateway)
+        self.assertIn("branches:\n      - main", process)
+        self.assertIn("- 'data/exercise/activities.json'", process)
+        self.assertIn("paths-ignore:\n      - 'data/exercise/activities.json'", deploy)
+        self.assertNotIn("contains(github.event.head_commit.message", deploy)
+        self.assertIn(
+            "git add assets/activities.json assets/monthly_insights.json",
+            process,
+        )
+        self.assertNotIn("git add assets/\n", process)
+        self.assertNotIn("git add data/exercise/activities.json", process)
         self.assertIn("Auto-generate monthly coaching report", process)
+        self.assertIn("token: ${{ secrets.PAT }}", process)
+        self.assertIn("ref: main", process)
+        self.assertIn("workflow_dispatch:", process)
+        self.assertIn("schedule:", process)
+        self.assertIn("cancel-in-progress: true", process)
+        self.assertNotIn("if: secrets.DEEPSEEK_API_KEY", process)
+        self.assertIn("ACTIVITY_CHANGED_FILES", process)
+        self.assertIn("git fetch origin main:refs/remotes/origin/main", process)
+        self.assertIn("git rev-parse origin/main:data/exercise/activities.json", process)
+        self.assertIn("git rebase origin/main", process)
+        self.assertIn("for attempt in 1 2 3", process)
+        self.assertIn("superseded_by_new_facts", process)
+        self.assertIn("ACTIVITY_PUSH_RESULT", process)
 
     def test_sync_workflows_publish_human_readable_summaries(self):
         for relative in ("douban.yml", "process-activities.yml", "githubblog.yml"):
