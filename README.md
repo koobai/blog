@@ -36,7 +36,7 @@
 | Core | 文章、唠叨、主题、标签、RSS、JSON | Hugo Extended |
 | Publisher | 网页写作、图片上传、GitHub 写回、草稿 | 管理端 Worker、GitHub 凭据、图片存储 |
 | Social | 评论、回复、点赞、Turnstile | Comments/Likes Worker 与 D1 |
-| Life Data | 豆瓣同步、运动统计、地图与隐私路线 | Python、Mapbox、数据来源 |
+| Life Data | 豆瓣同步、运动统计、地图与隐私路线 | Python、Mapbox、数据来源；自动运动同步可选 Activity Sync Worker |
 | AI Coach | 月中/月末 AI 运动复盘 | 模型 API 与隐私配置 |
 
 当前生产站点使用 Full Profile，并由 [koobai.com](https://koobai.com) 作为唯一在线演示。Core Profile 不依赖 Worker，由初始化工具在新目录按需生成，不维护第二套演示站。
@@ -49,7 +49,8 @@ flowchart LR
     B["网页写作"] --> W["发布 Worker"]
     W --> R
     C["豆瓣同步"] --> R
-    D["原生 App / 快捷指令"] --> R
+    D["原生 App / 数据源连接器"] --> ASW["Activity Sync Gateway"]
+    ASW --> R
     R --> P["运动处理与 AI 月报"]
     P --> R
     R --> H["Hugo + 惊蛰 v3"]
@@ -145,9 +146,12 @@ content/
 
 assets/
 ├── movie.json             # 观影数据
-├── activities.json        # 运动数据
+├── activities.json        # 处理后的运动展示数据
 ├── landmark_route_library.json
 └── monthly_insights.json  # 月度统计与 AI 报告
+
+data/exercise/
+└── activities.json        # 来源无关的原始运动事实
 
 themes/jingzhe_v3/         # 当前生产主题及可指纹化的项目自有脚本
 static/js/                 # 按许可证原样保留的第三方浏览器脚本

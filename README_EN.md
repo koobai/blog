@@ -38,7 +38,7 @@ Optional modules enhance the site progressively. A missing optional service neve
 | Core | Posts, short updates, theme, tags, RSS, and JSON | Hugo Extended |
 | Publisher | Browser writing, image upload, GitHub publishing, and drafts | Publisher/Drafts Workers, GitHub credentials, and image storage |
 | Social | Comments, replies, likes, and Turnstile | Comments/Likes Workers and D1 |
-| Life Data | Movie sync, exercise statistics, maps, and privacy routes | Python, Mapbox, and personal data sources |
+| Life Data | Movie sync, exercise statistics, maps, and privacy routes | Python, Mapbox, and personal data sources; optional Activity Sync Worker for automatic ingestion |
 | AI Coach | Mid-month and end-of-month exercise reviews | Model API and privacy configuration |
 
 The production site uses the Full Profile, with [koobai.com](https://koobai.com) as the only live demo. Core does not require any Worker and is generated into a new directory; the repository does not maintain a second demo site.
@@ -51,7 +51,8 @@ flowchart LR
     B["Browser editor"] --> W["Publisher Worker"]
     W --> R
     C["Movie sync"] --> R
-    D["Native apps / shortcuts"] --> R
+    D["Native apps / source connectors"] --> ASW["Activity Sync Gateway"]
+    ASW --> R
     R --> P["Exercise processing / AI reports"]
     P --> R
     R --> H["Hugo + Jingzhe v3"]
@@ -112,7 +113,8 @@ See [AI tooling](docs/tooling.md) for JSON output, initialization, and Starter p
 
 ```text
 content/                    Long-form posts, short updates, and pages
-assets/                     Production movie, exercise, route, and report data
+assets/                     Production movie data and generated exercise, route, and report data
+data/exercise/              Source-neutral raw exercise facts
 themes/jingzhe_v3/          Production theme and fingerprinted first-party scripts
 static/js/                  Vendored third-party browser scripts
 config/                     Shared, production, and development configuration

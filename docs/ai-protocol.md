@@ -54,6 +54,13 @@ AI 运行统一的 `doctor` 命令，确认：
 
 只有用户启用相应功能后，才继续询问 Mapbox、评论、GitHub 写回、图片存储或模型配置。
 
+选择 Life Data 或 AI Coach 时，AI 还必须确认运动数据采用哪一种入口：
+
+- 手工维护来源事实：不部署 Activity Sync Gateway。
+- App 或外部平台自动同步：每个站点部署自己的 Gateway，并把私有 URL 与 `SYNC_TOKEN` 只交给 App/连接器。
+
+两种入口最终都只写 `data/exercise/activities.json`，页面不直接读取 App 数据。完整安装与验收步骤以 [`deployment.md`](deployment.md#部署动起来页面) 为准。
+
 ### 第四步：生成新目录
 
 初始化工具优先在指定输出目录创建新站点，而不是破坏性修改参考仓库：
@@ -118,6 +125,7 @@ AI 不应依赖不稳定的日志文本推断失败原因。
 ## 当前能力边界
 
 - Core 初始化 CLI 只写入不存在的新目录；Full Profile 不自动复制为新站点。
+- Core 初始化结果不包含运动页面和处理自动化；仅设置 `params.features.exercise = true` 不等于完成安装。AI 必须按部署清单补齐程序模块、用户自己的数据、Actions 和可选 Gateway。
 - Worker 源码和部署契约位于 `workers/`，但工具不会创建 Cloudflare 账户资源、写入 Secret 或部署服务。
 - 生产公开服务地址集中在 `config/production/` 与 `config/development/`；现有 Koobai URL 不会被示例配置自动替换。
 - 当前仓库包含真实个人内容和数据，Starter 不复制这些文件。
