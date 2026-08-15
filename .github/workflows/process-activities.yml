@@ -62,9 +62,9 @@ jobs:
         if: steps.monthly_window.outputs.should_run == 'true'
         run: pip install requests
 
-      - name: Verify Monthly Report State Machine
+      - name: Verify Exercise Processing and Monthly Reports
         if: steps.monthly_window.outputs.should_run == 'true'
-        run: python -m unittest discover -s tests -p 'test_*.py'
+        run: python -m unittest tests.test_exercise_contract tests.test_process_activities tests.test_monthly_coach
 
       - name: Process Activities and Reports
         if: steps.monthly_window.outputs.should_run == 'true'

@@ -75,6 +75,16 @@ class DocumentationTests(unittest.TestCase):
             self.assertIn("0.158.0", text, relative)
             self.assertNotIn("0.120.0", text, relative)
 
+    def test_exercise_workflow_keeps_runtime_tests_scoped(self):
+        workflow = (ROOT / ".github/workflows/process-activities.yml").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "python -m unittest tests.test_exercise_contract "
+            "tests.test_process_activities tests.test_monthly_coach",
+            workflow,
+        )
+        self.assertNotIn("unittest discover", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
