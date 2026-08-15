@@ -50,12 +50,14 @@ flowchart TD
 ### 运动同步完整逻辑
 
 1. 数据源适配器读取 Apple Health、Keep 或其他来源，在数据离开设备前决定路线是 `available`、`privacy_hidden`、`unavailable` 还是 `pending`。非公开状态不得携带真实 Polyline。
-2. 新数据源首次使用 `snapshot` 提交该 `source` 的完整事实，日常使用 `delta` 显式增删改。活动身份固定为 `source + external_id`，更换发送 App 不会改变身份。
+2. 活动身份固定为 `source + external_id`，更换发送 App 不会改变身份。手机等设备本地视图首次接入和日常更新都使用 `delta`；只有掌握某个来源权威全集的连接器才允许用 `snapshot` 替换来源。
 3. App 或连接器只向自己部署的 Activity Sync Gateway 发送 v1 请求和 `SYNC_TOKEN`，不持有 GitHub Token，也不知道博客资产路径。
 4. Gateway 完成认证、严格字段/单位/隐私校验和 GitHub SHA 冲突重试，然后只合并 `data/exercise/activities.json`。相同请求返回 `changed=false`，不创建提交。
 5. 原始事实真实变化时，该单一文件提交只触发运动处理工作流。处理器生成 `assets/activities.json` 中的展示名、配速、趣味标题、成就和隐私替代路线，并更新 `assets/monthly_insights.json`。
 6. AI 月报不会因每条新运动反复重写：1～15 日只累计统计；16 日达到样本门槛后生成一次月中报告；16 日后的新运动只更新统计。若迟到数据改变了 1～15 日的事实，月中报告修正一次。下月 1 日生成上月终稿；关闭月份真有迟到或修正数据时，只重写受影响月份一次。相同数据重复同步不调用 AI。
 7. 处理产物提交才触发 Hugo 严格构建和 Cloudflare Pages 发布。因此原始事实不会作为半成品直接上线，处理失败也不影响上一版站点。
+
+多设备使用同一来源时，每台设备只 upsert 当前看得到的记录，并且只转发来源明确报告的删除 ID；某台设备暂时没看到一条记录不能解释为删除。Android/Health Connect、Apple Health 和 Keep 等不同平台使用各自稳定的 `source`，Gateway 不做时间或距离模糊去重。
 
 `data/exercise/activities.json` 是不面向浏览器的原始事实；`assets/activities.json` 是 Hugo 和月报处理使用的生成产物。后者保留原路径以维持页面与历史处理契约，但已不是 App 同步接口。
 

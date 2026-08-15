@@ -221,8 +221,9 @@ paths:
       servers: [{ url: "https://activity-sync.example.org" }]
       summary: Merge source-neutral activity facts into the configured repository
       description: >-
-        snapshot atomically replaces one source; delta applies explicit upserts and deletes.
-        Identity is source plus external_id. Non-public route statuses must not include a polyline.
+        snapshot atomically replaces one authoritative complete source; delta applies explicit
+        upserts and deletes and is required for device-local views. Identity is source plus
+        external_id. Non-public route statuses must not include a polyline.
       security: [{ SyncToken: [] }]
       requestBody:
         required: true

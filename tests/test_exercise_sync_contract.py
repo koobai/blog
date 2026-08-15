@@ -60,6 +60,7 @@ class ExerciseSyncV1ContractTests(unittest.TestCase):
         self.assertEqual(ACTIVITY_FIELDS, set(metadata['adapter_owned_activity_fields']))
         self.assertEqual('source_adapter', metadata['privacy_decision_owner'])
         self.assertIn('Never fuzzy-deduplicate', metadata['source_switch'])
+        self.assertIn('device', metadata['multi_device_source'].lower())
         self.assertTrue(
             {'run_id', 'source_id'}.issubset(metadata['gateway_owned_output_fields'])
         )
@@ -205,7 +206,7 @@ class ExerciseSyncV1ContractTests(unittest.TestCase):
             'schema_version': 1,
             'source': 'apple_health',
             'producer': 'laodao_app',
-            'mode': 'snapshot',
+            'mode': 'delta',
             'upsert': [app_record_to_v1(record) for record in records],
         }
         self.assertEqual([], validate_exercise_sync_payload(payload))

@@ -292,6 +292,46 @@ async function testShaConflictReloadsAndPreservesConcurrentData() {
   });
 }
 
+function testMultipleDevicesAndPlatformsMergeWithoutReplacingSharedFacts() {
+  const phoneA = activity('iphone-a-workout', {
+    started_at: '2026-08-15T20:00:00+08:00'
+  });
+  const phoneB = activity('iphone-b-workout', {
+    started_at: '2026-08-17T20:00:00+08:00'
+  });
+  const initial = store({ apple_health: [phoneA] });
+
+  // 新手机当前只看得到自己的记录，也必须使用 delta；没看到 phone A 不能解释为删除。
+  const secondPhone = applySyncPayload(initial, payload({
+    producer: 'laodao_app_second_phone',
+    mode: 'delta',
+    upsert: [phoneB]
+  }));
+  assert.equal(secondPhone.changed, true);
+  assert.deepEqual(
+    new Set(secondPhone.store.sources.apple_health.map(item => item.external_id)),
+    new Set(['iphone-a-workout', 'iphone-b-workout'])
+  );
+
+  // iCloud 稍后把同一对象带到另一台手机；相同 UUID 重复 upsert 不产生新提交。
+  const repeated = applySyncPayload(secondPhone.store, payload({
+    producer: 'laodao_app_second_phone',
+    mode: 'delta',
+    upsert: [phoneA]
+  }));
+  assert.equal(repeated.changed, false);
+
+  // Android/Health Connect 使用独立 source，自然与 Apple Health 并存。
+  const android = applySyncPayload(secondPhone.store, payload({
+    source: 'health_connect',
+    producer: 'laodao_android',
+    mode: 'delta',
+    upsert: [activity('android-workout')]
+  }));
+  assert.equal(android.store.sources.apple_health.length, 2);
+  assert.equal(android.store.sources.health_connect.length, 1);
+}
+
 async function testInvalidStorageAndGitHubFailuresNeverOverwrite() {
   let putCalls = 0;
   await withMockFetch(async (_target, options = {}) => {
@@ -330,6 +370,7 @@ await testAuthenticationOriginAndPrivacyRejectBeforeGitHub();
 await testSnapshotCreatesCanonicalStore();
 await testDeltaMergesAndNoChangeSkipsCommit();
 await testShaConflictReloadsAndPreservesConcurrentData();
+testMultipleDevicesAndPlatformsMergeWithoutReplacingSharedFacts();
 await testInvalidStorageAndGitHubFailuresNeverOverwrite();
 await testSnapshotCanClearOnlyOneSource();
 console.log('activity sync worker tests: ok');

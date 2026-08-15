@@ -18,7 +18,7 @@ Activity Sync 不是博客页面的必需后端，而是可选的写入边界。
 ## 完整数据流
 
 1. 数据源适配器生成来源事实，并在发送前去除私密轨迹。
-2. 首次接入使用 `snapshot`，日常更新使用 `delta`。
+2. 手机等只拥有设备本地视图的客户端，首次接入和日常更新都使用 `delta`；只有能够证明自己掌握某个 `source` 完整全集的连接器才能使用 `snapshot`。
 3. Gateway 校验和合并原始事实；数据不变时返回 `changed=false`，不写 GitHub。
 4. 真实变化只写 `data/exercise/activities.json`，触发运动处理 Actions。
 5. Actions 生成 `assets/activities.json` 和 `assets/monthly_insights.json`，不回写原始事实。
@@ -42,7 +42,7 @@ Content-Type: application/json
 
 请求结构以 [`../../schemas/data/exercise-sync-v1.schema.json`](../../schemas/data/exercise-sync-v1.schema.json) 为准：
 
-- `snapshot` 原子替换一个 `source` 的完整数据；显式传入空 `upsert` 可清空该来源。
+- `snapshot` 原子替换一个 `source` 的完整数据；显式传入空 `upsert` 可清空该来源。它只适合权威全集导出，不适合新手机或暂未完成云同步的设备。
 - `delta` 只执行明确的 `upsert` 和 `delete`；遗漏记录不会删除历史。
 - 唯一标识始终是 `source + external_id`；`producer` 仅用于诊断，不写入仓库。
 - 是否隐藏轨迹由数据源适配器决定。`privacy_hidden`、`unavailable`、`pending` 均不得上传真实 `summary_polyline`，Gateway 会拒绝违规请求。
@@ -63,6 +63,13 @@ Content-Type: application/json
 ```
 
 重复发送同一数据返回 `changed: false` 且不会创建无意义提交。并发写入使用 GitHub 文件 SHA 自动重读、合并和重试；连续冲突返回 `409 concurrent_update`。
+
+## 多设备与多平台
+
+- 多台 iPhone 共享 `apple_health` 来源，使用 HealthKit 对象 UUID 作为同一来源内的 `external_id`。每台设备的首次全量读取也只做 `delta upsert`，没有看到另一台设备的记录不代表删除。
+- Android/Health Connect 使用独立来源，例如 `health_connect`；Keep 使用 `keep`。不同来源自然并存，不进行时间、距离或轨迹模糊去重。
+- 只有来源明确报告删除的 ID 才进入 `delta.delete`。设备重装、权限暂缺、云同步延迟和本地查询缺失都不能推断删除。
+- 多台设备同时写入时，Gateway 在 GitHub SHA 冲突后重新读取并合并，避免后一台覆盖前一台。
 
 ## 配置
 

@@ -23,7 +23,7 @@
     },
     "mode": {
       "enum": ["snapshot", "delta"],
-      "description": "snapshot replaces the complete declared source; delta applies only explicit upserts and deletes."
+      "description": "snapshot replaces the complete declared source and is only safe for a connector authoritative for that whole source; delta applies only explicit upserts and deletes and is required for device-local views."
     },
     "request_id": {
       "type": "string",
@@ -197,9 +197,10 @@
     "source_semantics": "source is the upstream provider namespace that owns external_id; producer is only the sending app or connector.",
     "source_switch": "Records from different source namespaces are distinct. Never fuzzy-deduplicate by time, distance, heart rate or route; use an explicit cutoff or migration mapping when changing providers.",
     "sync_modes": {
-      "snapshot": "Atomically replaces the declared source and may be empty.",
-      "delta": "Applies explicit upserts and deletes; omission never deletes history."
+      "snapshot": "Atomically replaces the declared source and may be empty; only an authoritative full-source export may use it.",
+      "delta": "Applies explicit upserts and deletes; omission never deletes history. New phones and other device-local clients must use delta even for their first full read."
     },
+    "multi_device_source": "Multiple devices may share one provider namespace. A device must upsert what it can currently see and delete only provider-confirmed deleted IDs; absence from one device is never deletion evidence.",
     "privacy_decision_owner": "source_adapter",
     "privacy_boundary": "The adapter must remove the real polyline before sending privacy_hidden. The gateway validates this invariant but cannot infer whether an available route should have been private.",
     "adapter_owned_activity_fields": [
