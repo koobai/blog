@@ -27,6 +27,8 @@ See [Features and installation profiles](docs/features.md) for the complete capa
 
 > **Want the fastest setup? Give it to an AI coding agent.** Send the repository URL together with the [copy-ready setup prompt](docs/quick-start.md#copy-ready-ai-prompt) to an agent that can read GitHub repositories. It will confirm your site identity, feature profile, and hosting platform, start with the safe Core profile, verify everything locally, and ask before changing GitHub or Cloudflare resources.
 
+For automatic exercise ingestion, add: `Deploy Jingzhe and its Activity Sync Worker, then adapt my Keep or Health Connect data to the exercise-sync-v1 protocol and synchronize it.`
+
 The detailed documentation is currently maintained in Chinese. Modern coding agents can read it directly and communicate with you in English.
 
 ## Feature Profiles

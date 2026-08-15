@@ -27,6 +27,8 @@
 
 > **想快速部署？直接交给 AI：** 把本仓库地址和[可复制的部署指令](docs/quick-start.md#可直接复制给-ai-的指令)发给支持读取 GitHub 仓库的 AI。它会先确认站点信息、功能层级和部署平台，从安全的 Core 开始，本地验证通过后再询问是否操作 GitHub 或 Cloudflare。
 
+如果还需要自动同步运动数据，可以直接补充一句：`帮我部署惊蛰博客和 Activity Sync Worker，并把我的 Keep/Health Connect 数据转换成 exercise-sync-v1 协议进行同步。`
+
 ## 功能层级
 
 惊蛰提供五种逐步增强的使用层级。未配置的可选模块不会阻止核心博客运行。
