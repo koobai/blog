@@ -28,7 +28,7 @@
 - `content/laodao/YYYY/MM/`：短动态。
 - `content/pages/`：独立页面和管理入口。
 - `themes/jingzhe_v3/layouts/`：Hugo 模板。
-- `themes/jingzhe_v3/assets/`：主题 SCSS 与 Hugo Pipes 资源。
+- `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
 - `static/js/`：浏览器交互逻辑。
 - `static/js/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `assets/*.json`：观影、处理后运动、地标路线和月报数据；`landmark_route_library.json` 是地标几何与选择规则的单一数据源。
@@ -50,7 +50,7 @@
 - `.hugo_build_lock`
 - `__pycache__/`
 
-若生成结果需要变化，应修改对应模板、SCSS、JavaScript、配置或数据源，然后重新构建。
+若生成结果需要变化，应修改对应模板、原生 CSS、JavaScript、配置或数据源，然后重新构建。
 
 ## 生产兼容契约
 
@@ -159,7 +159,7 @@ node tests/test_workers.mjs
 
 ## 按修改类型验证
 
-- 修改 Hugo 模板或 SCSS：运行 Hugo 严格生产构建。
+- 修改 Hugo 模板或 CSS：运行 Hugo 严格生产构建。
 - 修改普通 JavaScript：运行对应 `node --check` 和 Hugo 构建。
 - 修改在线编辑器：运行 `node tests/test_editor_core.js` 和 Python 模板契约测试，保留所有 LocalStorage、Header、路径和 payload。
 - 修改运动枚举、颜色或食物换算：只改 `data/jingzhe/exercise.json`，运行 Python/Node 全部契约测试。
@@ -176,6 +176,7 @@ node tests/test_workers.mjs
 
 - 通用 Core 默认配置和 Koobai Production/Development 配置已经分离；后续改动必须保持环境边界。
 - 可选功能通过配置开关控制。
+- 主题样式使用原生 CSS 与 Hugo `css.Build`；`assets/css/style.css` 负责按功能组合本地分片，不依赖 LibSass、Dart Sass、Node 或 npm。
 - 在线编辑器公共原语已进入 `editor-core.js`；页面专属 UI 继续留在各自模板。
 - 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。

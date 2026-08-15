@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .page-laodao-admin .site-footer-wrapper,
 .page-laodao-admin .floating-header {
   display: none;
@@ -15,10 +16,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
 
-  @include dark {
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) #loginOverlay {
     background-color: var(--background-dark-body-color);
   }
+}
+
+html[data-theme="dark"] #loginOverlay {
+  background-color: var(--background-dark-body-color);
 }
 
 .admin-login-input {
@@ -29,12 +36,20 @@
   outline: none;
   background: #ffffff;
   border: 1px solid #eeebe6;
+}
 
-  @include dark {
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-login-input {
     background: rgba(28, 28, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: #fff;
   }
+}
+
+html[data-theme="dark"] .admin-login-input {
+  background: rgba(28, 28, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 .admin-login-btn {
@@ -53,7 +68,10 @@
   margin: 0 auto;
   padding: 15px;
   box-sizing: border-box;
-  @include breakpoint("medium") {
+}
+
+@media (min-width: 768px) {
+  .admin-immersive-wrapper {
     margin: 20vh auto 10vh;
     padding: 0;
     box-sizing: border-box;
@@ -61,12 +79,9 @@
 }
 
 /* 3. 发布框通用组件 */
-.admin-publish-card {
-  &:has(.admin-textarea:placeholder-shown) #submitBtn,
-  &:has(.admin-textarea:placeholder-shown) #saveDraftBtn {
-    opacity: 0.2;
-    cursor: not-allowed;
-  }
+.admin-publish-card:has(.admin-textarea:placeholder-shown) #submitBtn, .admin-publish-card:has(.admin-textarea:placeholder-shown) #saveDraftBtn {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 
 .admin-textarea {
@@ -97,17 +112,28 @@
   padding-top: 15px;
   padding-bottom: 10px;
   margin-top: -15px;
-  @include breakpoint("medium") {
+}
+
+@media (min-width: 768px) {
+  .page-laodao-admin .admin-publish-footer {
     position: static;
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 0;
     background: transparent;
   }
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-laodao-admin .admin-publish-footer {
     background: var(--background-dark-body-color);
   }
 }
+
+html[data-theme="dark"] .page-laodao-admin .admin-publish-footer {
+  background: var(--background-dark-body-color);
+}
+
 .page-laodao-admin #editorWrap {
   margin-top: 15px;
 }
@@ -122,7 +148,11 @@
 .admin-toolbar .admin-icon-link,
 .admin-toolbar .admin-icon-emoji {
   display: none;
-  @include breakpoint("medium") {
+}
+
+@media (min-width: 768px) {
+  .admin-toolbar .admin-icon-link,
+.admin-toolbar .admin-icon-emoji {
     display: flex;
   }
 }
@@ -132,29 +162,48 @@
   display: flex;
   align-items: center;
   color: var(--text-info-color);
-  transition:
-    color 0.2s,
-    opacity 0.2s;
+  transition: color 0.2s, opacity 0.2s;
   opacity: 0.4;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-icon-btn {
     color: var(--text-info-dark-color);
     opacity: 0.6;
   }
-  &:hover {
-    color: var(--text-highlight-color);
+}
+
+html[data-theme="dark"] .admin-icon-btn {
+  color: var(--text-info-dark-color);
+  opacity: 0.6;
+}
+
+.admin-icon-btn:hover {
+  color: var(--text-highlight-color);
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-icon-btn:hover {
+    color: var(--text-highlight-dark-color);
     opacity: 1;
-    @include dark {
-      color: var(--text-highlight-dark-color);
-      opacity: 1;
-    }
   }
-  svg {
-    width: 24px;
-    height: 24px;
-    @include breakpoint("medium") {
-      width: 22px;
-      height: 22px;
-    }
+}
+
+html[data-theme="dark"] .admin-icon-btn:hover {
+  color: var(--text-highlight-dark-color);
+  opacity: 1;
+}
+
+.admin-icon-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 768px) {
+  .admin-icon-btn svg {
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -172,24 +221,36 @@
   border: none;
   font-size: 1.05em;
   cursor: pointer;
+}
 
-  @include dark {
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-btn {
     color: var(--text-highlight-dark-color);
   }
+}
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+html[data-theme="dark"] .admin-btn {
+  color: var(--text-highlight-dark-color);
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .admin-btn-cancel {
   color: var(--text-info-color);
   font-weight: normal;
+}
 
-  @include dark {
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-btn-cancel {
     color: var(--text-info-dark-color);
   }
+}
+
+html[data-theme="dark"] .admin-btn-cancel {
+  color: var(--text-info-dark-color);
 }
 
 /* 6. 列表区样式 */
@@ -197,10 +258,12 @@
   display: none;
   margin-top: 20px;
 }
+
 #recentList {
   display: grid;
   gap: 15px;
 }
+
 .admin-recent-card {
   cursor: pointer;
   transition: border-color 0.2s;
@@ -208,13 +271,22 @@
   padding: 0;
   background-color: transparent;
   opacity: 0.6;
-  &:hover {
-    opacity: 1;
-  }
-  @include dark {
+}
+
+.admin-recent-card:hover {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-recent-card {
     background-color: transparent;
     border: 1px solid transparent;
   }
+}
+
+html[data-theme="dark"] .admin-recent-card {
+  background-color: transparent;
+  border: 1px solid transparent;
 }
 
 .admin-recent-content {
@@ -239,28 +311,39 @@
   cursor: pointer;
   text-align: center;
   transition: transform 0.1s;
+}
 
-  &:hover {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
+.emoji-item:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
 }
 
 /* 标签补全 */
 .tag-selector-dropdown {
-  display: none; /* 默认隐藏，JS 触发时会强行改为 grid */
-  grid-template-columns: repeat(4, 1fr); /* 强制一行 4 列 */
-  gap: 4px; /* 标签的横纵间距 */
+  display: none;
+  /* 默认隐藏，JS 触发时会强行改为 grid */
+  grid-template-columns: repeat(4, 1fr);
+  /* 强制一行 4 列 */
+  gap: 4px;
+  /* 标签的横纵间距 */
   margin-top: 10px;
   padding: 10px;
   border-radius: 16px;
   max-width: 420px;
   background: var(--background-card-color);
   border: 1px solid var(--background-card-border-color);
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .tag-selector-dropdown {
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
+}
+
+html[data-theme="dark"] .tag-selector-dropdown {
+  background: var(--background-card-dark-color);
+  border: 1px solid var(--background-card-border-dark-color);
 }
 
 /* 单个标签样式 */
@@ -274,9 +357,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.2s ease;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .tag-selector-dropdown .tag-item {
     color: var(--text-info-dark-color);
   }
+}
+
+html[data-theme="dark"] .tag-selector-dropdown .tag-item {
+  color: var(--text-info-dark-color);
 }
 
 /* 鼠标悬浮和键盘选中状态的高亮 */
@@ -285,10 +375,18 @@
   background: var(--background-body-color);
   border-radius: 8px;
   color: var(--text-content-color) !important;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .tag-selector-dropdown .tag-item:hover, html:not([data-theme="light"]) .tag-selector-dropdown .tag-item.active {
     background: var(--background-dark-body-color);
     color: var(--text-content-dark-color) !important;
   }
+}
+
+html[data-theme="dark"] .tag-selector-dropdown .tag-item:hover, html[data-theme="dark"] .tag-selector-dropdown .tag-item.active {
+  background: var(--background-dark-body-color);
+  color: var(--text-content-dark-color) !important;
 }
 
 /* ==================================
@@ -306,27 +404,36 @@
   background: var(--background-card-color);
   color: var(--text-content-color);
   border: 1px solid var(--background-card-border-color);
-  @include dark {
+  /* 嵌套文字样式 */
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-location-chip {
     color: var(--text-content-dark-color);
     background: var(--background-card-dark-color);
     border: 1px solid var(--background-card-border-dark-color);
   }
-  svg {
-    cursor: pointer;
-  }
-
-  /* 嵌套文字样式 */
-  .admin-location-text {
-    margin: 0 6px;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
-// 云端草稿
+html[data-theme="dark"] .admin-location-chip {
+  color: var(--text-content-dark-color);
+  background: var(--background-card-dark-color);
+  border: 1px solid var(--background-card-border-dark-color);
+}
+
+.admin-location-chip svg {
+  cursor: pointer;
+}
+
+.admin-location-chip .admin-location-text {
+  margin: 0 6px;
+  cursor: pointer;
+}
+
+.admin-location-chip .admin-location-text:hover {
+  text-decoration: underline;
+}
+
 .draft-item-wrapper {
   display: flex;
   gap: 15px;
@@ -339,22 +446,38 @@
   font-size: 0.85rem;
   color: var(--text-info-color);
   opacity: 0.8;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .draft-delete-btn {
     color: var(--text-info-dark-color);
   }
-  &:hover {
-    color: #ef4444;
-  }
+}
+
+html[data-theme="dark"] .draft-delete-btn {
+  color: var(--text-info-dark-color);
+}
+
+.draft-delete-btn:hover {
+  color: #ef4444;
 }
 
 /* 右侧内容区 */
 .draft-content-text {
   cursor: pointer;
   color: var(--text-info-color);
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .draft-content-text {
     color: var(--text-info-dark-color);
   }
-  &:hover {
-    opacity: 0.6;
-  }
+}
+
+html[data-theme="dark"] .draft-content-text {
+  color: var(--text-info-dark-color);
+}
+
+.draft-content-text:hover {
+  opacity: 0.6;
 }

@@ -85,7 +85,7 @@ class ThemePipelineTests(unittest.TestCase):
         cls.base = (ROOT / 'themes/jingzhe_v3/layouts/baseof.html').read_text(encoding='utf-8')
         cls.footer = (ROOT / 'themes/jingzhe_v3/layouts/_partials/footer.html').read_text(encoding='utf-8')
         cls.comments = (ROOT / 'themes/jingzhe_v3/layouts/_partials/comments.html').read_text(encoding='utf-8')
-        cls.styles = (ROOT / 'themes/jingzhe_v3/assets/scss/style.scss').read_text(encoding='utf-8')
+        cls.styles = (ROOT / 'themes/jingzhe_v3/assets/css/style.css').read_text(encoding='utf-8')
 
     def test_social_runtime_and_turnstile_are_scoped_to_comments(self):
         self.assertNotIn('jingzhe/runtime-config.html', self.base)
@@ -95,15 +95,24 @@ class ThemePipelineTests(unittest.TestCase):
 
     def test_optional_styles_are_guarded_by_feature_flags(self):
         expected = {
-            'movies': '@import "movies";',
-            'exercise': '@import "exercise";',
-            'publisher': '@import "newlaodao";',
-            'social': '@import "comments";',
+            'movies': '@import "movies.css";',
+            'exercise': '@import "exercise.css";',
+            'publisher': '@import "newlaodao.css";',
+            'social': '@import "comments.css";',
         }
         for feature, stylesheet_import in expected.items():
             guard = 'partial "jingzhe/feature-enabled.html" "{}"'.format(feature)
             self.assertIn(guard, self.styles)
             self.assertIn(stylesheet_import, self.styles)
+
+    def test_native_css_pipeline_does_not_require_sass(self):
+        assets = ROOT / 'themes/jingzhe_v3/assets'
+
+        self.assertIn('css.Build', self.base)
+        self.assertNotIn('toCSS', self.base)
+        self.assertIn('resources.Get "css/style.css"', self.base)
+        self.assertFalse((assets / 'scss').exists())
+        self.assertGreater(len(list((assets / 'css').glob('*.css'))), 1)
 
     def test_laodao_recommendations_are_deterministic_and_cached(self):
         single = (ROOT / 'themes/jingzhe_v3/layouts/laodao/single.html').read_text(encoding='utf-8')

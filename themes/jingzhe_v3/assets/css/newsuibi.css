@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .page-bowen-admin .site-footer-wrapper,
 .page-bowen-admin .floating-header {
   display: none;
@@ -7,7 +8,10 @@
   max-width: 800px;
   margin-bottom: 100px;
   margin: 30px auto 40px;
-  @include breakpoint("medium") {
+}
+
+@media (min-width: 768px) {
+  .page-bowen-admin .admin-immersive-wrapper {
     margin: 5vh auto 160px;
   }
 }
@@ -21,14 +25,17 @@
   align-items: center;
   visibility: visible;
 }
+
 .page-bowen-admin .write-header-container {
   display: block;
 }
+
 .write-header {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
+
 .write-input {
   width: 100%;
   border: none;
@@ -37,19 +44,30 @@
   color: inherit;
   font-family: inherit;
 }
+
 .write-title {
   font-size: 1.1rem;
 }
+
 .write-meta {
   font-size: 1rem;
   opacity: 0.4;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .write-meta {
     opacity: 0.6;
   }
 }
+
+html[data-theme="dark"] .write-meta {
+  opacity: 0.6;
+}
+
 .write-meta:focus {
   opacity: 1;
 }
+
 .write-textarea {
   resize: none !important;
   overflow-y: hidden;
@@ -62,19 +80,24 @@
   top: 0;
   z-index: 90;
   padding: 15px 0;
-  transition:
-    background 0.3s,
-    backdrop-filter 0.3s,
-    padding 0.3s;
+  transition: background 0.3s, backdrop-filter 0.3s, padding 0.3s;
 }
+
 .admin-publish-bar.is-sticky {
   background: var(--background-card-color);
   padding: 15px 20px;
   border-radius: 16px;
   border-top-color: transparent;
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .admin-publish-bar.is-sticky {
     background: var(--background-card-dark-color);
   }
+}
+
+html[data-theme="dark"] .admin-publish-bar.is-sticky {
+  background: var(--background-card-dark-color);
 }
 
 /* 4. 正文核心编辑器高度撑开 */
@@ -83,6 +106,7 @@
   font-size: 1.1rem;
   line-height: 1.8;
 }
+
 .preview-container {
   min-height: 300px;
   animation: fadeIn 0.3s ease;

@@ -1,0 +1,393 @@
+@charset "UTF-8";
+.page-blog-single .wrapper,
+.page-bowen-admin .wrapper {
+  padding: 0 20px;
+}
+
+.page-blog-single .article-header,
+.page-bowen-admin .article-header {
+  margin: 0 0 15px 0;
+}
+
+.page-blog-single .article-header .article-title,
+.page-bowen-admin .article-header .article-title {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  margin: 0 0 15px 0;
+}
+
+@media (min-width: 768px) {
+  .page-blog-single .article-header .article-title,
+.page-bowen-admin .article-header .article-title {
+    font-size: 1.8rem;
+  }
+}
+
+.page-blog-single .article-header .article-cover-img,
+.page-bowen-admin .article-header .article-cover-img {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.page-blog-single .article-content,
+.page-bowen-admin .article-content {
+  font-size: 1.1rem;
+  color: var(--text-content-color);
+  margin-bottom: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content, html:not([data-theme="light"]) .page-bowen-admin .article-content {
+    color: var(--text-content-dark-color);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content, html[data-theme="dark"] .page-bowen-admin .article-content {
+  color: var(--text-content-dark-color);
+}
+
+.page-blog-single .article-content p,
+.page-bowen-admin .article-content p {
+  font-size: inherit;
+  line-height: 1.7;
+  margin: 0 0 15px 0;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-ideograph;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.page-blog-single .article-content p:empty,
+.page-bowen-admin .article-content p:empty {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .page-blog-single .article-content p,
+.page-bowen-admin .article-content p {
+    line-height: 1.8;
+  }
+}
+
+.page-blog-single .article-content h2,
+.page-blog-single .article-content h3,
+.page-blog-single .article-content h4,
+.page-bowen-admin .article-content h2,
+.page-bowen-admin .article-content h3,
+.page-bowen-admin .article-content h4 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.6;
+  margin: 15px 0 5px 0;
+  color: var(--text-highlight-color);
+  letter-spacing: 0.5px;
+  scroll-margin-top: 80px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content h2, html:not([data-theme="light"]) .page-blog-single .article-content h3, html:not([data-theme="light"]) .page-blog-single .article-content h4, html:not([data-theme="light"]) .page-bowen-admin .article-content h2, html:not([data-theme="light"]) .page-bowen-admin .article-content h3, html:not([data-theme="light"]) .page-bowen-admin .article-content h4 {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content h2, html[data-theme="dark"] .page-blog-single .article-content h3, html[data-theme="dark"] .page-blog-single .article-content h4, html[data-theme="dark"] .page-bowen-admin .article-content h2, html[data-theme="dark"] .page-bowen-admin .article-content h3, html[data-theme="dark"] .page-bowen-admin .article-content h4 {
+  color: var(--text-highlight-dark-color);
+}
+
+.page-blog-single .article-content strong,
+.page-bowen-admin .article-content strong {
+  color: var(--text-highlight-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content strong, html:not([data-theme="light"]) .page-bowen-admin .article-content strong {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content strong, html[data-theme="dark"] .page-bowen-admin .article-content strong {
+  color: var(--text-highlight-dark-color);
+}
+
+.page-blog-single .article-content ul,
+.page-blog-single .article-content ol,
+.page-bowen-admin .article-content ul,
+.page-bowen-admin .article-content ol {
+  margin: 15px 0;
+  padding-inline-start: 2em;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.page-blog-single .article-content ul li,
+.page-blog-single .article-content ol li,
+.page-bowen-admin .article-content ul li,
+.page-bowen-admin .article-content ol li {
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+  text-align: justify;
+}
+
+@media (min-width: 768px) {
+  .page-blog-single .article-content ul li,
+.page-blog-single .article-content ol li,
+.page-bowen-admin .article-content ul li,
+.page-bowen-admin .article-content ol li {
+    line-height: 1.8;
+  }
+}
+
+.page-blog-single .article-content ul li,
+.page-bowen-admin .article-content ul li {
+  list-style: disc;
+}
+
+.page-blog-single .article-content ol li,
+.page-bowen-admin .article-content ol li {
+  list-style: decimal;
+}
+
+.page-blog-single .article-content .footnotes ol li,
+.page-bowen-admin .article-content .footnotes ol li {
+  list-style: decimal;
+}
+
+.page-blog-single .article-content a,
+.page-bowen-admin .article-content a {
+  color: inherit;
+  text-decoration: underline;
+  word-wrap: break-word;
+  word-break: break-all;
+  margin: 0 2px;
+  transition: opacity 0.3s ease;
+}
+
+@media (hover: hover) {
+  .page-blog-single .article-content a:hover,
+.page-bowen-admin .article-content a:hover {
+    opacity: 0.6;
+  }
+}
+
+.page-blog-single .article-content blockquote,
+.page-bowen-admin .article-content blockquote {
+  border-left: 4px solid var(--text-info-color);
+  margin: 25px 0;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content blockquote, html:not([data-theme="light"]) .page-bowen-admin .article-content blockquote {
+    border-left-color: #666;
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content blockquote, html[data-theme="dark"] .page-bowen-admin .article-content blockquote {
+  border-left-color: #666;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.page-blog-single .article-content blockquote p,
+.page-bowen-admin .article-content blockquote p {
+  font-size: 1.05rem;
+  display: inline;
+  color: var(--text-info-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content blockquote p, html:not([data-theme="light"]) .page-bowen-admin .article-content blockquote p {
+    color: var(--text-info-dark-color);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content blockquote p, html[data-theme="dark"] .page-bowen-admin .article-content blockquote p {
+  color: var(--text-info-dark-color);
+}
+
+.page-blog-single .article-content img,
+.page-bowen-admin .article-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 15px 0;
+  border-radius: 12px;
+  cursor: zoom-in;
+  display: block;
+}
+
+.page-blog-single .article-content figure,
+.page-blog-single .article-content .post-figure,
+.page-bowen-admin .article-content figure,
+.page-bowen-admin .article-content .post-figure {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.page-blog-single .article-content figure img,
+.page-blog-single .article-content .post-figure img,
+.page-bowen-admin .article-content figure img,
+.page-bowen-admin .article-content .post-figure img {
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.page-blog-single .article-content figure figcaption,
+.page-blog-single .article-content figure .post-figcaption,
+.page-blog-single .article-content .post-figure figcaption,
+.page-blog-single .article-content .post-figure .post-figcaption,
+.page-bowen-admin .article-content figure figcaption,
+.page-bowen-admin .article-content figure .post-figcaption,
+.page-bowen-admin .article-content .post-figure figcaption,
+.page-bowen-admin .article-content .post-figure .post-figcaption {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--text-info-color);
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .article-content figure figcaption, html:not([data-theme="light"]) .page-blog-single .article-content figure .post-figcaption, html:not([data-theme="light"]) .page-blog-single .article-content .post-figure figcaption, html:not([data-theme="light"]) .page-blog-single .article-content .post-figure .post-figcaption, html:not([data-theme="light"]) .page-bowen-admin .article-content figure figcaption, html:not([data-theme="light"]) .page-bowen-admin .article-content figure .post-figcaption, html:not([data-theme="light"]) .page-bowen-admin .article-content .post-figure figcaption, html:not([data-theme="light"]) .page-bowen-admin .article-content .post-figure .post-figcaption {
+    color: var(--text-info-dark-color);
+  }
+}
+
+html[data-theme="dark"] .page-blog-single .article-content figure figcaption, html[data-theme="dark"] .page-blog-single .article-content figure .post-figcaption, html[data-theme="dark"] .page-blog-single .article-content .post-figure figcaption, html[data-theme="dark"] .page-blog-single .article-content .post-figure .post-figcaption, html[data-theme="dark"] .page-bowen-admin .article-content figure figcaption, html[data-theme="dark"] .page-bowen-admin .article-content figure .post-figcaption, html[data-theme="dark"] .page-bowen-admin .article-content .post-figure figcaption, html[data-theme="dark"] .page-bowen-admin .article-content .post-figure .post-figcaption {
+  color: var(--text-info-dark-color);
+}
+
+.page-blog-single .article-content figure figcaption::before,
+.page-blog-single .article-content figure .post-figcaption::before,
+.page-blog-single .article-content .post-figure figcaption::before,
+.page-blog-single .article-content .post-figure .post-figcaption::before,
+.page-bowen-admin .article-content figure figcaption::before,
+.page-bowen-admin .article-content figure .post-figcaption::before,
+.page-bowen-admin .article-content .post-figure figcaption::before,
+.page-bowen-admin .article-content .post-figure .post-figcaption::before {
+  content: "▲";
+  font-size: 0.85rem;
+  margin-right: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.page-blog-single .article-content figure figcaption h4,
+.page-blog-single .article-content figure .post-figcaption h4,
+.page-blog-single .article-content .post-figure figcaption h4,
+.page-blog-single .article-content .post-figure .post-figcaption h4,
+.page-bowen-admin .article-content figure figcaption h4,
+.page-bowen-admin .article-content figure .post-figcaption h4,
+.page-bowen-admin .article-content .post-figure figcaption h4,
+.page-bowen-admin .article-content .post-figure .post-figcaption h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.page-blog-single .article-content figure figcaption p,
+.page-blog-single .article-content figure .post-figcaption p,
+.page-blog-single .article-content .post-figure figcaption p,
+.page-blog-single .article-content .post-figure .post-figcaption p,
+.page-bowen-admin .article-content figure figcaption p,
+.page-bowen-admin .article-content figure .post-figcaption p,
+.page-bowen-admin .article-content .post-figure figcaption p,
+.page-bowen-admin .article-content .post-figure .post-figcaption p {
+  margin: 0;
+  display: inline;
+}
+
+.page-blog-single .btn-back,
+.page-bowen-admin .btn-back {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .page-blog-single .btn-back,
+.page-bowen-admin .btn-back {
+    display: flex;
+    position: fixed;
+    right: calc(50% - 400px);
+    bottom: 53px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 30px rgba(0, 0, 0, 0.06);
+    transform: translateX(-50%) translateZ(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .page-blog-single .btn-back svg,
+.page-bowen-admin .btn-back svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-info-color);
+    transition: color 0.3s ease;
+  }
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  .page-blog-single .btn-back:hover svg,
+.page-bowen-admin .btn-back:hover svg {
+    color: var(--text-highlight-color);
+  }
+}
+
+@media (min-width: 768px) and (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-blog-single .btn-back, html:not([data-theme="light"]) .page-bowen-admin .btn-back {
+    background: rgba(28, 28, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+  html:not([data-theme="light"]) .page-blog-single .btn-back svg, html:not([data-theme="light"]) .page-bowen-admin .btn-back svg {
+    color: var(--text-info-dark-color);
+  }
+}
+
+@media (min-width: 768px) and (prefers-color-scheme: dark) and (hover: hover) {
+  html:not([data-theme="light"]) .page-blog-single .btn-back:hover, html:not([data-theme="light"]) .page-bowen-admin .btn-back:hover {
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 15px 35px rgba(0, 0, 0, 0.6);
+  }
+  html:not([data-theme="light"]) .page-blog-single .btn-back:hover svg, html:not([data-theme="light"]) .page-bowen-admin .btn-back:hover svg {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+@media (min-width: 768px) {
+  html[data-theme="dark"] .page-blog-single .btn-back, html[data-theme="dark"] .page-bowen-admin .btn-back {
+    background: rgba(28, 28, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+  html[data-theme="dark"] .page-blog-single .btn-back svg, html[data-theme="dark"] .page-bowen-admin .btn-back svg {
+    color: var(--text-info-dark-color);
+  }
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  html[data-theme="dark"] .page-blog-single .btn-back:hover, html[data-theme="dark"] .page-bowen-admin .btn-back:hover {
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 15px 35px rgba(0, 0, 0, 0.6);
+  }
+  html[data-theme="dark"] .page-blog-single .btn-back:hover svg, html[data-theme="dark"] .page-bowen-admin .btn-back:hover svg {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+.page-blog-single .article-comments,
+.page-bowen-admin .article-comments {
+  margin-top: 30px;
+}

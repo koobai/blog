@@ -128,6 +128,12 @@ flowchart TD
 
 这些契约由 Python 源码测试和 Node 浏览器原语测试共同保护。
 
+### 主题样式管线
+
+主题样式位于 `themes/jingzhe_v3/assets/css/`。入口 `style.css` 在 Hugo 构建期根据功能开关选择本地分片，再由 Hugo `css.Build` 打包为一个同步加载、可指纹化的 CSS 文件。Core 不包含关闭功能的样式，Full Production 仍一次加载完整样式，不会增加请求或产生延迟加载闪烁。
+
+该管线只依赖 Hugo 0.158.0 起内置的原生 CSS 构建能力，不需要 LibSass、Dart Sass、Node 或 npm；普通 `hugo server`、严格构建和现有 GitHub Actions 命令均保持不变。
+
 ### 运动单一数据源
 
 `data/jingzhe/exercise.json` 是运动展示与处理枚举的唯一数据源，包含：

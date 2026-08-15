@@ -29,8 +29,8 @@
     {{ partial "seo.html" . }}
   {{ end }}
 
-  {{ $options := dict "targetPath" "css/style.css" "enableSourceMap" hugo.IsServer }}
-  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS $options }}
+  {{ $options := dict "targetPath" "css/style.css" "sourceMap" (cond hugo.IsServer "linked" "none") }}
+  {{ $style := resources.Get "css/style.css" | resources.ExecuteAsTemplate "css/style.css" . | css.Build $options }}
   {{ if not hugo.IsServer }}
     {{ $style = $style | minify | fingerprint }}
   {{ end }}

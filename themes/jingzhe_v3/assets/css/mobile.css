@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .menu-checkbox {
   display: none;
 }
@@ -9,25 +10,38 @@
   margin-right: 12px;
   cursor: pointer;
   color: var(--text-content-color);
-  z-index: 1000; /* 必须在最高层 */
+  z-index: 1000;
+  /* 必须在最高层 */
   position: relative;
+}
 
-  @include breakpoint("medium") {
+@media (min-width: 768px) {
+  .hamburger-trigger {
     display: none;
   }
 }
+
 .icon-menu,
 .icon-close {
   width: 32px;
   height: 32px;
   color: var(--text-highlight-color);
-  @include dark {
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .icon-menu, html:not([data-theme="light"]) .icon-close {
     color: var(--text-highlight-dark-color);
   }
 }
+
+html[data-theme="dark"] .icon-menu, html[data-theme="dark"] .icon-close {
+  color: var(--text-highlight-dark-color);
+}
+
 .icon-close {
   display: none;
 }
+
 /* 3. 菜单核心容器 (默认隐藏) */
 .menu-main-mobile {
   position: fixed;
@@ -37,53 +51,47 @@
   height: 100dvh;
   background: var(--background-dark-body-color);
   z-index: 90;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   opacity: 0;
   visibility: hidden;
   transform: scale(0.96);
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    width: 100%;
-    display: grid;
-    gap: 36px;
+.menu-main-mobile ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  display: grid;
+  gap: 36px;
+}
 
-    li {
-      a {
-        display: inline-block;
-        font-size: 1.4rem;
-        color: var(--text-content-dark-color);
-        text-decoration: none;
-        transition: opacity 0.2s;
+.menu-main-mobile ul li a {
+  display: inline-block;
+  font-size: 1.4rem;
+  color: var(--text-content-dark-color);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
 
-        &:active {
-          opacity: 0.4;
-        }
-      }
-    }
-  }
+.menu-main-mobile ul li a:active {
+  opacity: 0.4;
 }
 
 /* =========================================
    ✨ 核心魔法：当 Checkbox 被选中时的状态联动
    ========================================= */
-
 /* 魔法 1：切换图标 (隐藏汉堡，显示叉叉) */
-.menu-checkbox:checked + .hamburger-trigger {
-  .icon-menu {
-    display: none;
-  }
-  .icon-close {
-    display: block !important;
-  }
+.menu-checkbox:checked + .hamburger-trigger .icon-menu {
+  display: none;
+}
+
+.menu-checkbox:checked + .hamburger-trigger .icon-close {
+  display: block !important;
 }
 
 /* 魔法 2：展开菜单 (利用 body:has 跨层级控制) */

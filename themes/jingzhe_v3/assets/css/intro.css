@@ -1,0 +1,53 @@
+.intro h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.intro h2 {
+  font-size: 50px;
+  line-height: 56px;
+}
+
+@media (min-width: 768px) {
+  .intro h2 {
+    width: 80%;
+  }
+}
+
+.intro p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+@media (min-width: 768px) {
+  .intro p {
+    width: 100%;
+    font-size: 1.1rem;
+    line-height: 32px;
+  }
+}
+
+.intro .article_title {
+  font-size: 1.8rem;
+  line-height: 35px;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+.intro .read-more {
+  font-size: 1.1rem;
+  line-height: 26px;
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .intro .read-more {
+    font-size: 1.1rem;
+    line-height: 32px;
+  }
+}
+
+.intro img {
+  max-width: 100%;
+  cursor: zoom-in;
+}
