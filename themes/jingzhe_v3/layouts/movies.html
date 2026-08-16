@@ -2,7 +2,7 @@
 
 {{ define "main" }}
 <div class="pagetitle">
-  自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下为已观看或正在追的过程中～～。观后感/星星颗数为个人主观。
+  自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一季剧集一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。
 </div>
 
 {{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
@@ -47,7 +47,7 @@
               <time>{{ if eq $movieTime.Year now.Year }}{{ $movieTime.Format "01-02" }}{{ else }}{{ $movieTime.Format "2006-01-02" }}{{ end }}</time>
             {{ end }}
           </div>
-          <div class="rc-barcode">REF:{{ $movie.id }}</div>
+          <div class="rc-barcode">NO. {{ $movie.id }}</div>
         </div>
       </div>
     </div>
@@ -55,7 +55,11 @@
 </div>
 
 {{ if gt (len $movies) 16 }}
-  <button id="btn-load-more" class="movie-btn-more" type="button" aria-controls="movie-list" hidden>看更多...</button>
+  <button id="btn-load-more" class="movie-btn-more" type="button"
+          aria-controls="movie-list" aria-live="polite" hidden>
+    <span class="movie-btn-more-label">再翻一叠</span>
+    <span class="movie-btn-more-progress" aria-hidden="true"></span>
+  </button>
 {{ end }}
 
 {{ partial "jingzhe/script.html" (dict "path" "js/pages/movies.js" "defer" true) }}

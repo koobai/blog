@@ -347,28 +347,52 @@ html[data-theme="dark"] .rc-barcode {
 
 .movie-btn-more {
   appearance: none;
+  position: relative;
   background: transparent;
   cursor: pointer;
   color: var(--text-highlight-color);
-  border-radius: 50px;
-  padding: 10px 40px;
+  border-radius: 10px;
+  padding: 11px 20px;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   border: 1px solid var(--text-highlight-color);
-  margin-top: 20px;
-  margin-bottom: 15px;
-  display: block;
-  width: fit-content;
+  margin: 24px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-width: 210px;
   overflow-anchor: none;
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .movie-btn-more[hidden] {
   display: none;
 }
 
-.movie-btn-more:hover {
-  opacity: 0.6;
+.movie-btn-more::before,
+.movie-btn-more::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--background-body-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.movie-btn-more::before {
+  left: -7px;
+}
+
+.movie-btn-more::after {
+  right: -7px;
+}
+
+.movie-btn-more:not(:disabled):hover {
+  opacity: 0.72;
 }
 
 .movie-btn-more:focus-visible {
@@ -376,14 +400,53 @@ html[data-theme="dark"] .rc-barcode {
   outline-offset: 3px;
 }
 
+.movie-btn-more-label {
+  font-weight: 600;
+}
+
+.movie-btn-more-progress {
+  padding-left: 11px;
+  border-left: 1px dashed currentColor;
+  font-family: "GeistMono", monospace;
+  font-size: 0.72rem;
+  opacity: 0.62;
+}
+
+.movie-btn-more.is-complete {
+  cursor: default;
+  color: var(--text-info-color);
+  border-color: currentColor;
+  border-style: dashed;
+}
+
 @media (prefers-color-scheme: dark) {
   html:not([data-theme="light"]) .movie-btn-more {
     color: var(--text-highlight-dark-color);
     border-color: var(--text-highlight-dark-color);
+  }
+
+  html:not([data-theme="light"]) .movie-btn-more::before,
+  html:not([data-theme="light"]) .movie-btn-more::after {
+    background-color: var(--background-dark-body-color);
+  }
+
+  html:not([data-theme="light"]) .movie-btn-more.is-complete {
+    color: var(--text-info-dark-color);
+    border-color: currentColor;
   }
 }
 
 html[data-theme="dark"] .movie-btn-more {
   color: var(--text-highlight-dark-color);
   border-color: var(--text-highlight-dark-color);
+}
+
+html[data-theme="dark"] .movie-btn-more::before,
+html[data-theme="dark"] .movie-btn-more::after {
+  background-color: var(--background-dark-body-color);
+}
+
+html[data-theme="dark"] .movie-btn-more.is-complete {
+  color: var(--text-info-dark-color);
+  border-color: currentColor;
 }

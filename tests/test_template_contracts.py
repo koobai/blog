@@ -187,8 +187,14 @@ class MoviesLayoutTests(unittest.TestCase):
 
     def test_movies_remain_available_without_javascript(self):
         self.assertNotIn('{{ if ge $index 16 }}is-hidden{{ end }}', self.template)
-        self.assertIn('aria-controls="movie-list" hidden', self.template)
+        self.assertIn('aria-controls="movie-list" aria-live="polite" hidden', self.template)
         self.assertIn("movie.classList.toggle('is-hidden'", self.script)
+        self.assertIn('class="movie-btn-more-label">再翻一叠</span>', self.template)
+        self.assertIn('class="movie-btn-more-progress"', self.template)
+        self.assertIn("btnLoadMore.disabled = isComplete", self.script)
+        self.assertIn("isComplete ? '票夹见底' : '再翻一叠'", self.script)
+        self.assertIn('`${currentIndex} / ${allMovies.length}`', self.script)
+        self.assertIn('.movie-btn-more.is-complete', self.styles)
 
     def test_masonry_uses_native_layout_with_a_local_fallback(self):
         self.assertIn('@supports (display: grid-lanes)', self.styles)
@@ -215,7 +221,8 @@ class MoviesLayoutTests(unittest.TestCase):
         self.assertNotIn('content: "★★★★★"', self.styles)
 
     def test_ticket_details_are_css_only_and_keep_the_markup_compact(self):
-        self.assertIn('REF:{{ $movie.id }}', self.template)
+        self.assertIn('NO. {{ $movie.id }}', self.template)
+        self.assertNotIn('REF:{{ $movie.id }}', self.template)
         self.assertNotIn('.ticket-body::before', self.styles)
         self.assertIn('"1" "劝退"', self.template)
         self.assertIn('"2" "平平"', self.template)

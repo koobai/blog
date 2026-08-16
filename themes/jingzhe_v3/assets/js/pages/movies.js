@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const DESKTOP_QUERY = '(min-width: 768px)';
   const layout = document.querySelector('.ticket-layout');
   const btnLoadMore = document.getElementById('btn-load-more');
+  const btnLoadMoreLabel = btnLoadMore?.querySelector('.movie-btn-more-label');
+  const btnLoadMoreProgress = btnLoadMore?.querySelector('.movie-btn-more-progress');
 
   if (!layout) return;
 
@@ -77,7 +79,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (btnLoadMore) {
-      btnLoadMore.hidden = currentIndex >= allMovies.length;
+      const isComplete = currentIndex >= allMovies.length;
+
+      btnLoadMore.hidden = false;
+      btnLoadMore.disabled = isComplete;
+      btnLoadMore.classList.toggle('is-complete', isComplete);
+
+      if (btnLoadMoreLabel) {
+        btnLoadMoreLabel.textContent = isComplete ? '票夹见底' : '再翻一叠';
+      }
+
+      if (btnLoadMoreProgress) {
+        btnLoadMoreProgress.textContent = isComplete
+          ? `共 ${allMovies.length} 张`
+          : `${currentIndex} / ${allMovies.length}`;
+      }
+
+      btnLoadMore.setAttribute(
+        'aria-label',
+        isComplete
+          ? `票夹见底，共 ${allMovies.length} 张票根`
+          : `再翻一叠，已展开 ${currentIndex} 张，共 ${allMovies.length} 张票根`
+      );
     }
   };
 
