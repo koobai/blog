@@ -172,6 +172,86 @@ class ThemePipelineTests(unittest.TestCase):
             self.assertIn('partialCached "laodao-card.html"', source)
 
 
+class MoviesLayoutTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.template = (
+            ROOT / 'themes/jingzhe_v3/layouts/movies.html'
+        ).read_text(encoding='utf-8')
+        cls.styles = (
+            ROOT / 'themes/jingzhe_v3/assets/css/movies.css'
+        ).read_text(encoding='utf-8')
+        cls.script = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/movies.js'
+        ).read_text(encoding='utf-8')
+
+    def test_movies_remain_available_without_javascript(self):
+        self.assertNotIn('{{ if ge $index 16 }}is-hidden{{ end }}', self.template)
+        self.assertIn('aria-controls="movie-list" hidden', self.template)
+        self.assertIn("movie.classList.toggle('is-hidden'", self.script)
+
+    def test_masonry_uses_native_layout_with_a_local_fallback(self):
+        self.assertIn('@supports (display: grid-lanes)', self.styles)
+        self.assertIn('.ticket-layout.is-js-masonry', self.styles)
+        self.assertIn("CSS.supports('display', 'grid-lanes')", self.script)
+        self.assertIn("layout.classList.add('is-js-masonry')", self.script)
+        self.assertIn('const column = index % 2', self.script)
+        self.assertIn('.ticket-item:nth-child(odd)', self.styles)
+        self.assertIn('.ticket-item:nth-child(even)', self.styles)
+        self.assertIn('requestAnimationFrame(layoutMasonry)', self.script)
+        self.assertIn('new ResizeObserver', self.script)
+        self.assertIn("window.scrollTo({ top: scrollTop, behavior: 'auto' })", self.script)
+        self.assertIn('overflow-anchor: none', self.styles)
+
+    def test_movie_ratings_use_one_accessible_css_element(self):
+        self.assertNotIn('icon-star-', self.template)
+        self.assertNotIn('<svg class=', self.template)
+        self.assertIn('class="rc-stars" role="img"', self.template)
+        self.assertIn('aria-label="评分 {{ $rating }} 星，满分 5 星"', self.template)
+        self.assertIn('--movie-rating-width:', self.template)
+        self.assertIn('.rc-stars::after', self.styles)
+        self.assertIn('--movie-star-shape: url("data:image/svg+xml,', self.styles)
+        self.assertIn('mask-repeat: repeat-x', self.styles)
+        self.assertNotIn('content: "★★★★★"', self.styles)
+
+    def test_ticket_details_are_css_only_and_keep_the_markup_compact(self):
+        self.assertIn('REF:{{ $movie.id }}', self.template)
+        self.assertNotIn('.ticket-body::before', self.styles)
+        self.assertIn('"1" "劝退"', self.template)
+        self.assertIn('"2" "平平"', self.template)
+        self.assertIn('"3" "尚可"', self.template)
+        self.assertIn('"4" "推荐"', self.template)
+        self.assertIn('"5" "必看"', self.template)
+        self.assertIn('data-cert="{{ . }}"', self.template)
+        self.assertNotIn('data-cert-en', self.template)
+        self.assertNotIn('"MUST"', self.template)
+        self.assertIn('.ticket-body[data-cert]::after', self.styles)
+        self.assertIn('content: attr(data-cert) / ""', self.styles)
+        self.assertIn('font-size: 0.56rem', self.styles)
+        self.assertIn('padding: 5px 7px', self.styles)
+        self.assertIn('white-space: nowrap', self.styles)
+        self.assertIn('--stamp-rotate: {{ sub (mod $barcodeSeed 13) 7 }}deg', self.template)
+        self.assertIn('rotate(var(--stamp-rotate, -7deg))', self.styles)
+        self.assertIn('var(--stamp-opacity, 17%)', self.styles)
+        self.assertIn('var(--stamp-dark-opacity, 24%)', self.styles)
+        self.assertIn('--stamp-opacity: {{ add 15 (mod $barcodeSeed 5) }}%', self.template)
+        self.assertIn('--stamp-dark-opacity: {{ add 22 (mod $barcodeSeed 5) }}%', self.template)
+        self.assertIn('var(--movie-main-dark-color, var(--text-highlight-dark-color)) 55%, white', self.styles)
+        self.assertIn('color-mix(in srgb, currentColor 58%, transparent)', self.styles)
+        self.assertIn('z-index: 2', self.styles)
+        self.assertNotIn('.ticket-item:hover', self.styles)
+        self.assertNotIn('content: "DATE"', self.styles)
+        self.assertIn('white-space: nowrap', self.styles)
+        self.assertIn('circle at left bottom', self.styles)
+        self.assertIn('circle at left top', self.styles)
+        self.assertNotIn('.ticket-stub::before', self.styles)
+        self.assertIn('--bc-a: {{ add 1 (mod $barcodeSeed 2) }}px', self.template)
+        self.assertIn('--bc-s:', self.template)
+        self.assertIn('--bc-x:', self.template)
+        self.assertIn('repeating-linear-gradient', self.styles)
+        self.assertEqual(self.styles.count('color: #ad9258;'), 2)
+
+
 class ProductionSeparationTests(unittest.TestCase):
     def test_personal_page_copy_lives_in_content_not_theme(self):
         about = (ROOT / 'themes/jingzhe_v3/layouts/about.html').read_text(encoding='utf-8')

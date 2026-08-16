@@ -5,20 +5,19 @@
   自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一集电视一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。以下为已观看或正在追的过程中～～。观后感/星星颗数为个人主观。
 </div>
 
-<svg aria-hidden="true" style="display: none;">
-  <symbol id="icon-star-filled" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/>
-  </symbol>
-  <symbol id="icon-star-empty" viewBox="0 0 24 24">
-    <path fill="none" stroke="currentColor" stroke-width="1.5" d="M10.788 3.102c.495-1.003 1.926-1.003 2.421 0l2.358 4.778l5.273.766c1.107.16 1.549 1.522.748 2.303l-3.816 3.719l.901 5.25c.19 1.104-.968 1.945-1.959 1.424l-4.716-2.48l-4.715 2.48c-.99.52-2.148-.32-1.96-1.423l.901-5.251l-3.815-3.72c-.801-.78-.359-2.141.748-2.302L8.43 7.88z"/>
-  </symbol>
-</svg>
-
 {{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
+{{ $movieCertifications := dict
+  "1" "劝退"
+  "2" "平平"
+  "3" "尚可"
+  "4" "推荐"
+  "5" "必看"
+}}
   
-<div class="ticket-layout">
+<div id="movie-list" class="ticket-layout">
  {{ range $index, $movie := $movies }}
     {{ $rating := int (default 0 $movie.rating) }}
+    {{ $certification := index $movieCertifications (printf "%d" $rating) }}
     {{ $movieTime := "" }}{{ if $movie.create_time }}{{ $movieTime = time (printf "%s+08:00" $movie.create_time) }}{{ end }}
     
     {{ $mainColor := "" }}{{ $mainDarkColor := "" }} 
@@ -26,22 +25,21 @@
       {{ if .primary_color_light }}{{ $mainColor = printf "#%s" .primary_color_light }}{{ end }}
       {{ if .primary_color_dark }}{{ $mainDarkColor = printf "#%s" .primary_color_dark }}{{ end }}
     {{ end }}
+
+    {{ $barcodeSeed := int $movie.id }}
     
-    <div class="review-card ticket-item {{ if ge $index 16 }}is-hidden{{ end }}" 
-         style="--movie-main-color: {{ $mainColor | safeCSS }}; --movie-main-dark-color: {{ $mainDarkColor | safeCSS }};">
+    <div class="review-card ticket-item"
+         style="--movie-main-color: {{ $mainColor | safeCSS }}; --movie-main-dark-color: {{ $mainDarkColor | safeCSS }}; --stamp-rotate: {{ sub (mod $barcodeSeed 13) 7 }}deg; --stamp-right: {{ add 20 (mod $barcodeSeed 7) }}px; --stamp-bottom: {{ add 10 (mod $barcodeSeed 6) }}px; --stamp-opacity: {{ add 15 (mod $barcodeSeed 5) }}%; --stamp-dark-opacity: {{ add 22 (mod $barcodeSeed 5) }}%; --bc-a: {{ add 1 (mod $barcodeSeed 2) }}px; --bc-s: {{ mod $barcodeSeed 3 }}px; --bc-p: {{ add 5 (mod $barcodeSeed 5) }}px; --bc-o: {{ mod $barcodeSeed 7 }}px; --bc-q: {{ add 12 (mod $barcodeSeed 11) }}px; --bc-x: {{ mod $barcodeSeed 13 }}px;">
       
-      <div class="ticket-body">
+      <div class="ticket-body"{{ with $certification }} data-cert="{{ . }}"{{ end }}>
         <div class="rc-comment">{{ if $movie.comment }}{{ $movie.comment }}{{ else }}静静欣赏，沉浸其中...{{ end }}</div>
       </div>
 
       <div class="ticket-stub">
         <div class="rc-meta">
           <div class="rc-title"><a href="{{ $movie.link }}" target="_blank">{{ $movie.title }}</a></div>
-          <div class="rc-stars">
-            {{ range seq 5 }}
-              <svg class="{{ if le . $rating }}star-filled{{ else }}star-empty{{ end }}"><use href="#icon-{{ if le . $rating }}star-filled{{ else }}star-empty{{ end }}"></use></svg>
-            {{ end }}
-          </div>
+          <span class="rc-stars" role="img" aria-label="评分 {{ $rating }} 星，满分 5 星"
+                style="--movie-rating-width: {{ mul $rating 20 }}%;"></span>
         </div>
         <div class="ticket-footer">
           <div class="rc-time">
@@ -49,7 +47,7 @@
               <time>{{ if eq $movieTime.Year now.Year }}{{ $movieTime.Format "01-02" }}{{ else }}{{ $movieTime.Format "2006-01-02" }}{{ end }}</time>
             {{ end }}
           </div>
-          <div class="rc-barcode">ID:{{ $movie.id }}</div>
+          <div class="rc-barcode">REF:{{ $movie.id }}</div>
         </div>
       </div>
     </div>
@@ -57,7 +55,7 @@
 </div>
 
 {{ if gt (len $movies) 16 }}
-  <div id="btn-load-more" class="movie-btn-more">看更多...</div>
+  <button id="btn-load-more" class="movie-btn-more" type="button" aria-controls="movie-list" hidden>看更多...</button>
 {{ end }}
 
 {{ partial "jingzhe/script.html" (dict "path" "js/pages/movies.js" "defer" true) }}
