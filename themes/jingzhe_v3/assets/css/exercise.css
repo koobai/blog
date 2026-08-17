@@ -799,6 +799,25 @@ html[data-theme="dark"] .runDetailCard {
   cursor: pointer;
 }
 
+.bento-calendar-board .dayCellAction {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bento-calendar-board .dayCellAction:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .bento-calendar-board .dayCell.hasRun:hover {
   background: rgba(0, 0, 0, 0.04) !important;
 }
@@ -819,10 +838,16 @@ html[data-theme="dark"] .bento-calendar-board .dayCell.hasRun:hover {
 
 .bento-calendar-board .dayCell .dateNum {
   z-index: 1;
+  pointer-events: none;
+}
+
+.bento-calendar-board .dayCell .multiDot {
+  pointer-events: none;
 }
 
 @media (min-width: 768px) {
-  .bento-calendar-board .dayCell:hover .runTooltip {
+  .bento-calendar-board .dayCell:hover .runTooltip,
+  .bento-calendar-board .dayCell:focus-within .runTooltip {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
@@ -1028,13 +1053,35 @@ html[data-theme="dark"] .runCard:hover {
   z-index: 101;
 }
 
+.runCardAction {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.runCardAction:focus-visible {
+  outline: 2px solid var(--text-info-color);
+  outline-offset: 2px;
+}
+
 .cardContent {
+  position: relative;
+  z-index: 2;
   flex: 1;
   min-width: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  pointer-events: none;
 }
 
 .leftInfo {
@@ -1065,11 +1112,13 @@ html[data-theme="dark"] .runCard:hover {
   border: 0;
   border-radius: 50%;
   position: relative;
+  z-index: 3;
   display: grid;
   place-items: center;
   background: color-mix(in srgb, var(--text-info-color), transparent 88%);
   color: var(--text-info-color);
   cursor: default;
+  pointer-events: auto;
 }
 
 .foodIconTrigger::after {
@@ -1256,6 +1305,10 @@ html[data-theme="dark"] .runTooltip {
 .zoneCol .runTooltip {
   left: 50%;
   transform: translateX(-50%);
+}
+
+.dayCell .runTooltip {
+  pointer-events: none;
 }
 
 /* 边缘防溢出 */

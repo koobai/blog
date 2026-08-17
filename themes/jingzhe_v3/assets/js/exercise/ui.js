@@ -5,7 +5,7 @@
 
   modules.createUI = (runtime, model) => {
     const colorFromType = model.colorFromType;
-      const escapeHtml = model.escapeHtml;
+    const escapeHtml = model.escapeHtml;
 
     class UIEngine {
       constructor(allRuns) {
@@ -23,10 +23,39 @@
 
         // 缓存底部 DOM 卡片
         this.cachedRunCards = document.querySelectorAll('.runCard');
+        this.interactionRoot = document.querySelector('.exercise-container');
+        this.bindInteractions();
         this.setSmartMonth();
       }
 
-  // 👇 新增：翻转 AI 视图的交互函数
+      bindInteractions() {
+        if (!this.interactionRoot) return;
+
+        this.interactionRoot.addEventListener('click', event => {
+          const control = event.target.closest?.('[data-exercise-action]');
+          if (!control || !this.interactionRoot.contains(control)) return;
+
+          const direction = Number.parseInt(control.dataset.direction, 10);
+          switch (control.dataset.exerciseAction) {
+            case 'fly-to-run':
+              runtime.map?.flyTo(control.dataset.runId);
+              break;
+            case 'change-year':
+              if (direction === -1 || direction === 1) this.changeYearBy(direction);
+              break;
+            case 'change-month':
+              if (direction === -1 || direction === 1) this.setCalMonth(direction);
+              break;
+            case 'toggle-ai':
+              this.toggleAiInsight();
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
+      // 翻转 AI 视图
       toggleAiInsight() {
         this.showAiInsight = !this.showAiInsight;
         const gridView = document.querySelector('.calendar-grid-view');
@@ -49,6 +78,7 @@
             if (footer) footer.style.display = 'block';
             if (bottomCharts) bottomCharts.style.display = 'flex';
           }
+          btn.setAttribute('aria-pressed', String(this.showAiInsight));
         }
       }
 
@@ -281,8 +311,13 @@
 
           return `
               <div class="dayCell ${hasRun ? 'hasRun' : ''} ${hasAchieve ? 'maxDay' : ''}"
-                   data-run-id="${hasRun ? primaryRun.run_id : ''}"
-                   ${hasRun ? `onclick="window.KoobaiRun.map.flyTo('${primaryRun.run_id}')" style="cursor: pointer;"` : ''}>
+                   data-run-id="${hasRun ? primaryRun.run_id : ''}">
+                ${hasRun ? `
+                  <button class="dayCellAction"
+                          type="button"
+                          data-exercise-action="fly-to-run"
+                          data-run-id="${primaryRun.run_id}"
+                          aria-label="${escapeHtml(`查看 ${dateStr} ${primaryRun.display_name}的运动详情与轨迹`)}"></button>` : ''}
                 <span class="dateNum" style="${dateStyle}">${day}</span>
                 ${iconDom}
                 ${tooltipHtml}
@@ -336,8 +371,13 @@
 
         // 有 AI 点评或真实消耗总结时，都可以进入月度点评视图。
         const aiBtnHtml = (monthlyCoachHtml || monthlyEnergyHtml) ? `
-          <button class="ai-toggle-btn ${this.showAiInsight ? 'active' : ''}" onclick="window.KoobaiRun.ui.toggleAiInsight()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+          <button class="ai-toggle-btn ${this.showAiInsight ? 'active' : ''}"
+                  type="button"
+                  data-exercise-action="toggle-ai"
+                  aria-label="切换月度点评"
+                  aria-pressed="${this.showAiInsight}"
+                  aria-controls="exercise-calendar-view exercise-ai-insight-view">
+            <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5 .5L9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
           </button>
         ` : '';
 
@@ -395,12 +435,12 @@
             <div class="globalSection">
               ${sparklineSvg}
               <div class="globalTitle monthNav">
-                <button onclick="window.KoobaiRun.ui.changeYearBy(-1)" ${disablePrevY ? 'disabled' : ''}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
+                <button type="button" data-exercise-action="change-year" data-direction="-1" aria-label="查看更早年度" ${disablePrevY ? 'disabled' : ''}>
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
                 </button>
                 <span>${engine.displayYear} 年度总里程</span>
-                <button onclick="window.KoobaiRun.ui.changeYearBy(1)" ${disableNextY ? 'disabled' : ''}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+                <button type="button" data-exercise-action="change-year" data-direction="1" aria-label="查看更新年度" ${disableNextY ? 'disabled' : ''}>
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
               </div>
               <div class="globalMainStat">
@@ -426,24 +466,24 @@
             <div class="calendarSection">
               <div class="monthHeader">
                 <div class="monthNav" style="position: relative;">
-                  <button onclick="window.KoobaiRun.ui.setCalMonth(-1)" ${this.calMonthIndex === 0 ? 'disabled' : ''}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
+                  <button type="button" data-exercise-action="change-month" data-direction="-1" aria-label="查看上个月" ${this.calMonthIndex === 0 ? 'disabled' : ''}>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6" /></svg>
                   </button>
                   <span>${currentMonthStr}</span>
-                  <button onclick="window.KoobaiRun.ui.setCalMonth(1)" ${this.calMonthIndex === 11 ? 'disabled' : ''}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+                  <button type="button" data-exercise-action="change-month" data-direction="1" aria-label="查看下个月" ${this.calMonthIndex === 11 ? 'disabled' : ''}>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
                   ${aiBtnHtml}
                 </div>
               </div>
 
               <div class="cal-content-wrapper">
-                <div class="calendar-grid-view" style="display: ${gridViewDisplay};">
+                <div class="calendar-grid-view" id="exercise-calendar-view" style="display: ${gridViewDisplay};">
                   <div class="weekdays"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div>
                   <div class="grid">${gridHtml}</div>
                 </div>
 
-                <div class="ai-insight-view" style="display: ${aiViewDisplay};">
+                <div class="ai-insight-view" id="exercise-ai-insight-view" style="display: ${aiViewDisplay};">
                   ${monthlyCoachHtml}
                   ${monthlyEnergyHtml}
                 </div>

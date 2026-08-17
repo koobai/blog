@@ -93,15 +93,20 @@
           {{ $energyTitle := default "" $run.energy_title }}
           {{ $foodKey := default "" $run.food_key }}
           {{ $hasFoodIcon := and $energyTitle (in $foodIconKeys $foodKey) }}
+          {{ $runTime := time $run.start_date_local }}
+          {{ $runId := printf "%.0f" .run_id }}
           
           <div class="runCard item-year-{{ $y }} item-month-{{ $m }}" 
-               data-run-id="{{ printf "%.0f" .run_id }}" 
-               onclick="window.KoobaiRun.map.flyTo('{{ printf "%.0f" .run_id }}')" 
-               style="cursor: pointer; {{ if ne $y (index $years 0) }}display: none;{{ end }}">
-                
+               data-run-id="{{ $runId }}"{{ if ne $y (index $years 0) }}
+               style="display: none;"{{ end }}>
+            <button class="runCardAction"
+                    type="button"
+                    data-exercise-action="fly-to-run"
+                    data-run-id="{{ $runId }}"
+                    aria-label="查看 {{ $runTime.Format "2006年01月02日 15:04" }} {{ $run.display_name }}的运动详情与轨迹"></button>
             <div class="cardContent">
               {{ if $hasFoodIcon }}
-                <button class="foodIconTrigger" type="button" aria-label="{{ $energyTitle }}" data-energy-title="{{ $energyTitle }}" onclick="event.stopPropagation();">
+                <button class="foodIconTrigger" type="button" aria-label="{{ $energyTitle }}" data-energy-title="{{ $energyTitle }}">
                   <svg class="foodIcon" aria-hidden="true" focusable="false"><use href="#food-icon-{{ $foodKey }}"></use></svg>
                 </button>
               {{ end }}
@@ -112,7 +117,6 @@
                 </div>
               </div>
               <div class="rightInfo">
-                {{ $runTime := time $run.start_date_local }}
                 <time class="runDate" datetime="{{ $runTime.Format "2006-01-02T15:04:05Z07:00" }}">{{ $runTime.Format "01-02 15:04" }}</time>
               </div>
             </div>

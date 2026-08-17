@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -125,16 +126,33 @@ const poster = modules.poster.buildPanelHtml({
 }, model);
 assert.match(poster.html, /本月最长/);
 assert.match(poster.html, /保存海报/);
+assert.match(poster.html, /aria-label="预览运动海报"/);
+assert.match(poster.html, /aria-label="生成并保存运动海报"/);
+assert.match(poster.html, /aria-label="退出海报预览"/);
 assert.match(poster.html, /<span class="statLabel">千卡<\/span><span class="statVal">320<\/span>/);
 assert.equal(modules.poster.cleanPosterPrefix('../Koobai 运动'), 'Koobai');
 
 const calendar = { innerHTML: '' };
+let delegatedClick = null;
+const interactionRoot = {
+  addEventListener(type, handler) {
+    if (type === 'click') delegatedClick = handler;
+  },
+  contains: () => true
+};
 document.getElementById = id => id === 'calendar-board-container' ? calendar : null;
+document.querySelector = selector => selector === '.exercise-container' ? interactionRoot : null;
+let selectedRunId = null;
 window.KoobaiRun = {
   availableYears: [2026],
   monthlyInsights: {},
   data: sampleRuns,
-  contract
+  contract,
+  map: {
+    flyTo(runId) {
+      selectedRunId = runId;
+    }
+  }
 };
 const ui = modules.createUI(window.KoobaiRun, model);
 assert.equal(ui.currentYear, '2026');
@@ -142,6 +160,41 @@ assert.equal(ui.calMonthIndex, 7);
 assert.match(calendar.innerHTML, /2026 年度总里程/);
 assert.match(calendar.innerHTML, /2026-08/);
 assert.match(calendar.innerHTML, /晨跑/);
+assert.match(calendar.innerHTML, /aria-label="查看更早年度"/);
+assert.match(calendar.innerHTML, /aria-label="查看上个月"/);
+assert.match(calendar.innerHTML, /aria-label="切换月度点评"/);
+assert.match(calendar.innerHTML, /aria-pressed="false"/);
+assert.match(calendar.innerHTML, /class="dayCellAction"/);
+assert.doesNotMatch(calendar.innerHTML, /onclick=/);
+assert.equal(typeof delegatedClick, 'function');
+
+delegatedClick({
+  target: {
+    closest: () => ({
+      dataset: { exerciseAction: 'fly-to-run', runId: '101' }
+    })
+  }
+});
+assert.equal(selectedRunId, '101');
+
+delegatedClick({
+  target: {
+    closest: () => ({
+      dataset: { exerciseAction: 'change-month', direction: '-1' }
+    })
+  }
+});
+assert.equal(ui.calMonthIndex, 6);
+assert.match(calendar.innerHTML, /2026-07/);
+
+const exerciseTemplateSource = fs.readFileSync(path.join(
+  ROOT,
+  'themes/jingzhe_v3/layouts/exercise.html'
+), 'utf8');
+const exerciseUiSource = fs.readFileSync(exerciseAsset('ui.js'), 'utf8');
+assert.doesNotMatch(exerciseTemplateSource, /onclick=/);
+assert.doesNotMatch(exerciseUiSource, /onclick=/);
+assert.match(exerciseTemplateSource, /class="runCardAction"/);
 
 let uiCreated = false;
 let mapCreated = false;
