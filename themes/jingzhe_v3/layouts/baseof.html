@@ -48,7 +48,7 @@
 
 <body class='page {{ block "body_classes" . }}{{ end }}'>
   
-  {{ partialCached "mobile.html" . }}
+  {{ partial "mobile.html" . }}
   
   <div id="wrapper" class="wrapper">
     {{ partial "header.html" . }}   
@@ -58,11 +58,11 @@
 
   {{ partialCached "footer.html" . }}
   
-  {{ $js := resources.Get "js/scripts.js" }}
-  {{ if not hugo.IsServer }}
-    {{ $js = $js | minify | fingerprint }}
-  {{ end }}
-  <script src="{{ $js.RelPermalink }}" defer></script>
+  {{ partial "jingzhe/bundle-script.html" (dict
+    "paths" (slice "js/nav-motion.js" "js/scripts.js")
+    "targetPath" "js/site.js"
+    "defer" true
+  ) }}
 
   {{ block "footer_js" . }}{{ end }} 
 </body>

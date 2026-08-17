@@ -1,109 +1,265 @@
 @charset "UTF-8";
-.menu-checkbox {
+
+.mobile-dock {
   display: none;
 }
 
-/* 2. 触发器图标样式 */
-.hamburger-trigger {
-  display: flex;
-  align-items: center;
-  margin-right: 12px;
-  cursor: pointer;
-  color: var(--text-content-color);
-  z-index: 1000;
-  /* 必须在最高层 */
-  position: relative;
-}
-
-@media (min-width: 768px) {
-  .hamburger-trigger {
+@media (max-width: 767px) {
+  .floating-header {
     display: none;
   }
-}
 
-.icon-menu,
-.icon-close {
-  width: 32px;
-  height: 32px;
-  color: var(--text-highlight-color);
-}
+  .mobile-dock {
+    --mobile-expanded-width: min(calc(100vw - 16px), 360px);
+    --mobile-dock-width: min(calc(100vw - 16px), 360px);
+    --mobile-dock-height: 76px;
+    --mobile-dock-radius: 25px;
+    --mobile-current-offset: 0px;
+    --mobile-current-y-offset: -6.125px;
+    --mobile-trigger-opacity: 0;
+    --mobile-label-opacity: 1;
+    --mobile-label-shift: 0px;
+    --mobile-items-opacity: 1;
+    --mobile-items-scale: 1;
+    --mobile-panel-opacity: 1;
+    position: fixed;
+    z-index: 120;
+    left: 50%;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    width: var(--mobile-dock-width);
+    height: var(--mobile-dock-height);
+    display: block;
+    overflow: hidden;
+    color: var(--text-content-color);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    border-radius: var(--mobile-dock-radius);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.76), 0 10px 30px rgba(0, 0, 0, 0.14);
+    transform: translateX(-50%);
+    transform-origin: center bottom;
+    contain: layout paint;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .icon-menu, html:not([data-theme="light"]) .icon-close {
+  .mobile-dock-trigger {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    color: var(--text-highlight-color);
+    background: transparent;
+    border: 0;
+    border-radius: inherit;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mobile-dock.is-trigger-active .mobile-dock-trigger {
+    pointer-events: auto;
+  }
+
+  .mobile-dock-current-icon,
+  .mobile-dock-current-icon svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
+
+  .mobile-dock-current-icon {
+    opacity: var(--mobile-trigger-opacity);
+    transform: translate3d(var(--mobile-current-offset), var(--mobile-current-y-offset), 0);
+    will-change: transform, opacity;
+  }
+
+  .mobile-dock-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: var(--mobile-expanded-width);
+    padding: 5px 6px;
+    pointer-events: none;
+    opacity: var(--mobile-panel-opacity);
+    transform: translateX(-50%);
+  }
+
+  .mobile-dock.is-panel-active .mobile-dock-panel {
+    pointer-events: auto;
+  }
+
+  .mobile-dock-list {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    list-style: none;
+  }
+
+  .mobile-dock-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .mobile-dock-item a {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    padding: 4px 2px 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #333;
+    border-radius: 18px;
+    text-decoration: none;
+    transition: color 0.16s ease, transform 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-dock-item a:active {
+    transform: scale(0.92);
+  }
+
+  .mobile-dock-item.is-active a {
+    color: var(--text-highlight-color);
+  }
+
+  .mobile-dock-item-icon,
+  .mobile-dock-item-icon svg,
+  .mobile-dock-avatar {
+    display: block;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .mobile-dock-item-icon,
+  .mobile-dock-avatar {
+    opacity: var(--mobile-items-opacity);
+    transform: scale(var(--mobile-items-scale));
+  }
+
+  .mobile-dock.has-menu-current .mobile-dock-item.is-active .mobile-dock-item-icon {
+    opacity: 0;
+  }
+
+  .mobile-dock-avatar {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .mobile-dock-avatar-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--text-highlight-color);
+    background: rgba(127, 127, 127, 0.12);
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+
+  .mobile-dock-avatar img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .mobile-dock-about.is-avatar-missing .mobile-dock-avatar img {
+    display: none;
+  }
+
+  .mobile-dock-item-label {
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.64rem;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    opacity: var(--mobile-label-opacity);
+    transform: translateY(var(--mobile-label-shift));
+  }
+
+  .mobile-dock.is-motion-active .mobile-dock-item-icon,
+  .mobile-dock.is-motion-active .mobile-dock-avatar,
+  .mobile-dock.is-motion-active .mobile-dock-item-label {
+    will-change: transform, opacity;
+  }
+
+  .mobile-dock-trigger:focus-visible,
+  .mobile-dock-item a:focus-visible {
+    outline: 2px solid var(--text-highlight-color);
+    outline-offset: -3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .mobile-dock {
+      color: var(--text-content-dark-color);
+      background: rgba(28, 28, 30, 0.86);
+      border-color: rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 14px 38px rgba(0, 0, 0, 0.42);
+    }
+
+    html:not([data-theme="light"]) .mobile-dock-item a {
+      color: #7c7c82;
+    }
+
+    html:not([data-theme="light"]) .mobile-dock-trigger,
+    html:not([data-theme="light"]) .mobile-dock-item.is-active a,
+    html:not([data-theme="light"]) .mobile-dock-avatar-fallback {
+      color: var(--text-highlight-dark-color);
+    }
+  }
+
+  html[data-theme="dark"] .mobile-dock {
+    color: var(--text-content-dark-color);
+    background: rgba(28, 28, 30, 0.86);
+    border-color: rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 14px 38px rgba(0, 0, 0, 0.42);
+  }
+
+  html[data-theme="dark"] .mobile-dock-item a {
+    color: #7c7c82;
+  }
+
+  html[data-theme="dark"] .mobile-dock-trigger,
+  html[data-theme="dark"] .mobile-dock-item.is-active a,
+  html[data-theme="dark"] .mobile-dock-avatar-fallback {
     color: var(--text-highlight-dark-color);
   }
 }
 
-html[data-theme="dark"] .icon-menu, html[data-theme="dark"] .icon-close {
-  color: var(--text-highlight-dark-color);
+@media (max-width: 340px) {
+  .mobile-dock {
+    --mobile-expanded-width: calc(100vw - 12px);
+    --mobile-dock-width: calc(100vw - 12px);
+  }
 }
 
-.icon-close {
-  display: none;
+@media (min-width: 768px) {
+  .mobile-dock {
+    display: none !important;
+  }
 }
 
-/* 3. 菜单核心容器 (默认隐藏) */
-.menu-main-mobile {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100dvh;
-  background: var(--background-dark-body-color);
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.96);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.menu-main-mobile ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  width: 100%;
-  display: grid;
-  gap: 36px;
-}
-
-.menu-main-mobile ul li a {
-  display: inline-block;
-  font-size: 1.4rem;
-  color: var(--text-content-dark-color);
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.menu-main-mobile ul li a:active {
-  opacity: 0.4;
-}
-
-/* =========================================
-   ✨ 核心魔法：当 Checkbox 被选中时的状态联动
-   ========================================= */
-/* 魔法 1：切换图标 (隐藏汉堡，显示叉叉) */
-.menu-checkbox:checked + .hamburger-trigger .icon-menu {
-  display: none;
-}
-
-.menu-checkbox:checked + .hamburger-trigger .icon-close {
-  display: block !important;
-}
-
-/* 魔法 2：展开菜单 (利用 body:has 跨层级控制) */
-body:has(.menu-checkbox:checked) .menu-main-mobile {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-}
-
-/* 魔法 3：锁定滚动 (完美防穿透) */
-body:has(.menu-checkbox:checked) {
-  overflow: hidden !important;
-  overscroll-behavior: none;
-  touch-action: none;
+@media (prefers-reduced-motion: reduce) {
+  .mobile-dock-item a {
+    transition-duration: 0.01ms !important;
+  }
 }
