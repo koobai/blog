@@ -328,8 +328,12 @@ html[data-theme="dark"] .page-blog-single .article-content figure figcaption, ht
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 30px rgba(0, 0, 0, 0.06);
-    transform: translateX(-50%) translateZ(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: translate3d(var(--reading-back-x, 0px), var(--reading-back-y, 0px), 0) translateX(-50%);
+    transition: box-shadow 0.3s ease;
+  }
+  .page-blog-single .btn-back.is-nav-motion-active,
+.page-bowen-admin .btn-back.is-nav-motion-active {
+    will-change: transform;
   }
   .page-blog-single .btn-back svg,
 .page-bowen-admin .btn-back svg {

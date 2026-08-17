@@ -8,6 +8,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   const actions = header?.querySelector('.header-actions');
   const compactTrigger = header?.querySelector('.compact-nav-trigger');
   const compactIcon = header?.querySelector('.compact-nav-icon');
+  const backButton = document.querySelector('.btn-back');
 
   if (!header || !nav || !actions || !compactTrigger || !compactIcon) return;
 
@@ -37,6 +38,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   const ICON_TRAVEL_END = 0.82;
   const ICON_FLOW_FOLLOW = 0.5;
   const HOVER_THRESHOLD = 0.72;
+  const BACK_COMPACT_GAP = 40;
 
   let fullMetrics;
   let currentVisual;
@@ -60,12 +62,14 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   function beginMotion() {
     window.clearTimeout(motionIdleTimer);
     header.classList.add('is-motion-active');
+    backButton?.classList.add('is-nav-motion-active');
   }
 
   function settleMotion(delay = 140) {
     window.clearTimeout(motionIdleTimer);
     motionIdleTimer = window.setTimeout(() => {
       header.classList.remove('is-motion-active');
+      backButton?.classList.remove('is-nav-motion-active');
     }, delay);
   }
 
@@ -89,6 +93,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
     const firstLink = menuItems[0]?.querySelector('a');
     const firstLabel = menuItems[0]?.querySelector('.menu-name');
     const activeIconRect = activeMenuIcon?.getBoundingClientRect();
+    const backButtonRect = backButton?.getBoundingClientRect();
     const headerCenterX = rect.left + rect.width / 2;
     const headerCenterY = rect.top + rect.height / 2;
     fullMetrics = {
@@ -102,7 +107,15 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
         ? activeIconRect.left + activeIconRect.width / 2 - rect.left - (parseFloat(style.paddingLeft) || 0)
         : rect.width / 2,
       activeIconOffsetX: activeIconRect ? activeIconRect.left + activeIconRect.width / 2 - headerCenterX : 0,
-      activeIconOffsetY: activeIconRect ? activeIconRect.top + activeIconRect.height / 2 - headerCenterY : 0
+      activeIconOffsetY: activeIconRect ? activeIconRect.top + activeIconRect.height / 2 - headerCenterY : 0,
+      headerBottom: parseFloat(style.bottom) || 0,
+      backButton: backButtonRect ? {
+        width: backButtonRect.width,
+        height: backButtonRect.height,
+        centerOffsetX: backButtonRect.left + backButtonRect.width / 2 - headerCenterX,
+        edgeGap: Math.max(backButtonRect.left - rect.right, 0),
+        bottom: Math.max(window.innerHeight - backButtonRect.bottom, 0)
+      } : null
     };
   }
 
@@ -174,6 +187,17 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
       -maxIconOffsetY,
       maxIconOffsetY
     );
+    let backShiftX = 0;
+    let backShiftY = 0;
+    if (fullMetrics.backButton) {
+      const backGap = lerp(fullMetrics.backButton.edgeGap, BACK_COMPACT_GAP, widthProgress);
+      const backCenterOffsetX = width / 2 + backGap + fullMetrics.backButton.width / 2;
+      const compactBackBottom = fullMetrics.headerBottom
+        + (COMPACT_HEIGHT - fullMetrics.backButton.height) / 2;
+      const backBottom = lerp(fullMetrics.backButton.bottom, compactBackBottom, heightProgress);
+      backShiftX = backCenterOffsetX - fullMetrics.backButton.centerOffsetX;
+      backShiftY = fullMetrics.backButton.bottom - backBottom;
+    }
 
     return {
       progress,
@@ -190,7 +214,9 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
       activeItemOpacity: 1 - iconHandoffProgress,
       compactOpacity: iconHandoffProgress,
       iconOffsetX,
-      iconOffsetY
+      iconOffsetY,
+      backShiftX,
+      backShiftY
     };
   }
 
@@ -258,6 +284,10 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
     setStyleProperty(header, '--reading-nav-compact-opacity', visual.compactOpacity.toFixed(4));
     setStyleProperty(header, '--reading-nav-icon-x', `${visual.iconOffsetX.toFixed(3)}px`);
     setStyleProperty(header, '--reading-nav-icon-y', `${visual.iconOffsetY.toFixed(3)}px`);
+    if (backButton) {
+      setStyleProperty(backButton, '--reading-back-x', `${visual.backShiftX.toFixed(3)}px`);
+      setStyleProperty(backButton, '--reading-back-y', `${visual.backShiftY.toFixed(3)}px`);
+    }
     applyItemVisuals(visual);
     syncInteractivity(visual);
   }
@@ -276,6 +306,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
       'is-reading-compact-interactive',
       'is-motion-active'
     );
+    backButton?.classList.remove('is-nav-motion-active');
     [
       '--reading-nav-width',
       '--reading-nav-height',
@@ -291,6 +322,10 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
     ].forEach((property) => removeStyleProperty(header, property));
     menuItems.forEach((item) => removeStyleProperty(item, 'opacity'));
     actionItems.forEach((item) => removeStyleProperty(item, 'opacity'));
+    if (backButton) {
+      removeStyleProperty(backButton, '--reading-back-x');
+      removeStyleProperty(backButton, '--reading-back-y');
+    }
     setFullContentInteractive(true);
     compactInteractiveState = false;
     compactTrigger.setAttribute('aria-hidden', 'true');
@@ -489,8 +524,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   const currentIcon = trigger?.querySelector('.mobile-dock-current-icon');
   const panel = dock?.querySelector('.mobile-dock-panel');
   const dockItems = [...(dock?.querySelectorAll('.mobile-dock-item') || [])];
-  const aboutItem = dock?.querySelector('.mobile-dock-about');
-  const avatarImage = aboutItem?.querySelector('img');
+  const avatarImages = [...(dock?.querySelectorAll('.mobile-dock-avatar img, .mobile-dock-current-avatar img') || [])];
 
   if (!dock || !trigger || !currentIcon || !panel) return;
 
@@ -544,7 +578,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
 
   function getExpandedWidth() {
     const sideSpace = window.innerWidth <= 340 ? 12 : 16;
-    return Math.max(260, Math.min(window.innerWidth - sideSpace, 360));
+    return Math.max(260, Math.min(window.innerWidth - sideSpace, 320));
   }
 
   function getMaxScroll() {
@@ -656,8 +690,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   }
 
   function markAvatarAvailability() {
-    if (!avatarImage || !aboutItem) return;
-    aboutItem.classList.toggle('is-avatar-missing', !avatarImage.naturalWidth);
+    dock.classList.toggle('is-avatar-missing', !avatarImages.some((image) => image.naturalWidth));
   }
 
   function animateTo(target, { duration = 320, onComplete } = {}) {
@@ -821,10 +854,12 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
     contentObserver.observe(document.body);
   }
 
-  if (avatarImage) {
-    avatarImage.addEventListener('load', markAvatarAvailability);
-    avatarImage.addEventListener('error', markAvatarAvailability);
-    if (avatarImage.complete) markAvatarAvailability();
+  if (avatarImages.length) {
+    avatarImages.forEach((image) => {
+      image.addEventListener('load', markAvatarAvailability);
+      image.addEventListener('error', markAvatarAvailability);
+    });
+    if (avatarImages.every((image) => image.complete)) markAvatarAvailability();
   }
 
   resolveCurrentMenu();

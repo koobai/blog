@@ -13,4 +13,4 @@ title = "空白Koobai"
     name = "店铺"
     url = "https://qiszy.taobao.com"
     weight = 6
-    params = { new_window = true, feature = "externalShop" }
+    params = { new_window = true, feature = "externalShop", mobile_hidden = true }
