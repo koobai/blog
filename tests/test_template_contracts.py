@@ -120,13 +120,31 @@ class ThemePipelineTests(unittest.TestCase):
         cls.post_single = (ROOT / 'themes/jingzhe_v3/layouts/posts/single.html').read_text(encoding='utf-8')
         cls.site_script = (ROOT / 'themes/jingzhe_v3/assets/js/scripts.js').read_text(encoding='utf-8')
         cls.theme_script = (ROOT / 'themes/jingzhe_v3/assets/js/theme.js').read_text(encoding='utf-8')
+        cls.comments_frontend = (
+            ROOT / 'themes/jingzhe_v3/assets/js/pages/comments.js'
+        ).read_text(encoding='utf-8')
         cls.styles = (ROOT / 'themes/jingzhe_v3/assets/css/style.css').read_text(encoding='utf-8')
 
     def test_social_runtime_and_turnstile_are_scoped_to_comments(self):
         self.assertNotIn('jingzhe/runtime-config.html', self.base)
         self.assertNotIn('turnstileScriptUrl', self.footer)
         self.assertIn('jingzhe/runtime-config.html', self.comments)
-        self.assertIn('turnstileScriptUrl', self.comments)
+        self.assertNotIn('site.Params.services.social.turnstileScriptUrl', self.comments)
+        self.assertIn('turnstilescripturl', self.comments_frontend)
+        self.assertIn('document.createElement(\'script\')', self.comments_frontend)
+        self.assertNotIn('setInterval(', self.comments_frontend)
+
+    def test_turnstile_prepares_on_any_comment_form_interaction(self):
+        self.assertIn("formEl.addEventListener('focusin', prepareCommentVerification", self.comments_frontend)
+        self.assertIn("formEl.addEventListener('pointerdown', prepareCommentVerification", self.comments_frontend)
+        self.assertIn('await getCommentVerificationToken()', self.comments_frontend)
+
+    def test_comment_submit_shortcut_preserves_native_submission(self):
+        self.assertIn('title="⌘/Ctrl + Enter"', self.comments)
+        self.assertIn('aria-keyshortcuts="Meta+Enter Control+Enter"', self.comments)
+        self.assertIn("e.key === 'Enter' && (e.metaKey || e.ctrlKey)", self.comments_frontend)
+        self.assertIn('e.isComposing || e.keyCode === 229', self.comments_frontend)
+        self.assertIn('formEl.requestSubmit()', self.comments_frontend)
 
     def test_optional_styles_are_guarded_by_feature_flags(self):
         expected = {

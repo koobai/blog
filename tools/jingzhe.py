@@ -161,6 +161,21 @@ def resolved_config(environment: str) -> Tuple[Optional[dict], str]:
         return None, "Hugo config JSON 无法解析：{}".format(exc)
 
 
+def normalized_instance_params(path: Path) -> str:
+    """Ignore the one intentional Production/Development reader difference."""
+    section = ""
+    normalized: List[str] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("[") and stripped.endswith("]"):
+            section = stripped[1:-1]
+        if section == "services.images" and stripped.startswith("enabled ="):
+            normalized.append("  enabled = <environment-specific>")
+        else:
+            normalized.append(line)
+    return "\n".join(normalized)
+
+
 def feature_enabled(config: dict, name: str) -> bool:
     features = config.get("params", {}).get("features", {})
     return bool(features.get(name.lower(), False))
@@ -425,8 +440,8 @@ def validation_checks() -> List[dict]:
     dev_params = ROOT / "config/development/params.toml"
     prod_hugo = ROOT / "config/production/hugo.toml"
     dev_hugo = ROOT / "config/development/hugo.toml"
-    same_instance = prod_params.read_bytes() == dev_params.read_bytes() and prod_hugo.read_bytes() == dev_hugo.read_bytes()
-    add_check(checks, "config.instance-sync", same_instance, "Production 与 Development 公开配置一致" if same_instance else "Production 与 Development 配置发生漂移")
+    same_instance = normalized_instance_params(prod_params) == normalized_instance_params(dev_params) and prod_hugo.read_bytes() == dev_hugo.read_bytes()
+    add_check(checks, "config.instance-sync", same_instance, "Production 与 Development 除图片转换开关外一致" if same_instance else "Production 与 Development 配置发生漂移")
 
     worker_names = ("publisher", "drafts", "comments", "likes", "activity-sync")
     worker_files = [ROOT / "workers/openapi.yaml", ROOT / "workers/README.md"]

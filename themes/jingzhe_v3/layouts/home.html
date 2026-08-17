@@ -21,8 +21,12 @@
         <div class="index-post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
          <div class="posts-description">{{ .Params.description }}</div>   
          {{ if .Params.image }}
+        {{ $image := partial "jingzhe/responsive-image.html" (dict "src" .Params.image) }}
         <a href="{{ .RelPermalink }}" class="index-post-img-wrap">
-          <img loading="lazy" decoding="async" src="{{ .Params.image | relURL }}" alt="{{ .Title }}" />
+          <img loading="lazy" decoding="async" src="{{ $image.original | safeURL }}"
+               {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+               sizes="(min-width: 840px) 252px, (min-width: 768px) 30vw, 50vw"{{ end }}
+               alt="{{ .Title }}" />
         </a> 
         {{ end }}
       </div>

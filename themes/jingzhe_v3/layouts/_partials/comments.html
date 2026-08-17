@@ -1,5 +1,4 @@
 {{ partialCached "jingzhe/runtime-config.html" . "social" }}
-{{ with site.Params.services.social.turnstileScriptUrl }}<script src="{{ . }}" defer></script>{{ end }}
 
 <div id="custom-comment-system" class="koobai-comments" style="display: none;">
   <div id="form-placeholder">
@@ -24,7 +23,7 @@
             </div>
             <span id="cmt-status-msg"></span>
           </div>
-          <button type="submit" id="cmt-submit-btn">写好了</button>
+          <button type="submit" id="cmt-submit-btn" title="⌘/Ctrl + Enter" aria-keyshortcuts="Meta+Enter Control+Enter">写好了</button>
         </div>
       </form>
     </div>

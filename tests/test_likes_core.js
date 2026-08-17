@@ -75,6 +75,10 @@ async function run() {
     frontend.indexOf('applyOptimisticLike(previousCount)') < frontend.indexOf('await getLikeVerificationToken()'),
     'optimistic feedback must happen before Turnstile and network work'
   );
+  assert.ok(
+    frontend.includes('await window.JingzheTurnstile.ensureReady()'),
+    'likes must reuse the shared lazy Turnstile loader'
+  );
 
   console.log('likes-core contracts: ok');
 }

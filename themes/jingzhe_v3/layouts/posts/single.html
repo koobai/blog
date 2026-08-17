@@ -6,7 +6,11 @@
   <header class="article-header">
     <h1 class="article-title">{{ .Title }}</h1>
     {{ with .Params.image }}
-    <img src="{{ . | relURL }}" class="article-cover-img" alt="{{ $.Title }}" fetchpriority="high" decoding="async" />
+    {{ $image := partial "jingzhe/responsive-image.html" (dict "src" .) }}
+    <img src="{{ $image.original | safeURL }}"
+         {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+         sizes="(min-width: 840px) 800px, calc(100vw - 40px)"{{ end }}
+         class="article-cover-img" alt="{{ $.Title }}" fetchpriority="high" decoding="async" />
     {{ end }}
   </header>
 

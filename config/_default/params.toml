@@ -52,6 +52,14 @@ RSSNoContent = false
   draftUrl = ""
   imageBaseUrl = ""
 
+[services.images]
+  enabled = false
+  sourceOrigin = ""
+  deliveryOrigin = ""
+  smallWidth = 640
+  largeWidth = 960
+  quality = 75
+
 [services.exercise]
   mapboxToken = ""
   mapboxApiOrigin = "https://api.mapbox.com"

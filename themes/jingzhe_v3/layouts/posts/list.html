@@ -23,12 +23,19 @@
       </header>     
 
       {{ with .Params.image }}
+      {{ $image := partial "jingzhe/responsive-image.html" (dict "src" .) }}
       <div class="post-cover">
         <a href="{{ $page.RelPermalink }}">
           {{ if eq $index 0 }}
-            <img fetchpriority="high" decoding="async" src="{{ . | relURL }}" alt="{{ $page.Title }}" />
+            <img fetchpriority="high" decoding="async" src="{{ $image.original | safeURL }}"
+                 {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+                 sizes="(min-width: 840px) 800px, calc(100vw - 40px)"{{ end }}
+                 alt="{{ $page.Title }}" />
           {{ else }}
-            <img loading="lazy" decoding="async" src="{{ . | relURL }}" alt="{{ $page.Title }}" />
+            <img loading="lazy" decoding="async" src="{{ $image.original | safeURL }}"
+                 {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+                 sizes="(min-width: 840px) 800px, calc(100vw - 40px)"{{ end }}
+                 alt="{{ $page.Title }}" />
           {{ end }}
         </a>          
       </div>

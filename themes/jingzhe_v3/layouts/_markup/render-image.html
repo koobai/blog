@@ -1,8 +1,14 @@
+{{ $image := partial "jingzhe/responsive-image.html" (dict "src" .Destination) }}
 {{ if eq .Page.Type "laodao" }}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" class="laodao-photo" loading="lazy" decoding="async" />
+  <img src="{{ $image.original | safeURL }}"
+       {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+       sizes="(min-width: 840px) 252px, (min-width: 768px) 30vw, 50vw"{{ end }}
+       alt="{{ .Text }}" class="laodao-photo" loading="lazy" decoding="async" />
 {{ else }}
   <figure class="post-figure">
-    <img src="{{ .Destination | safeURL }}" 
+    <img src="{{ $image.original | safeURL }}"
+         {{ if $image.enabled }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+         sizes="(min-width: 840px) 800px, calc(100vw - 40px)"{{ end }}
          alt="{{ .Text }}" 
          {{ with .Title }}title="{{ . }}"{{ end }} 
          loading="lazy" 

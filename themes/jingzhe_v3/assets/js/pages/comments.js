@@ -6,7 +6,71 @@ const KOOBAI_COMMENTS_CONFIG = (KOOBAI_COMMENTS_RUNTIME.services && KOOBAI_COMME
 const KOOBAI_COMMENTS_API_BASE = KOOBAI_COMMENTS_CONFIG.commentsapi || '';
 const KOOBAI_COMMENTS_ADMIN_EMAIL = KOOBAI_COMMENTS_CONFIG.adminemail || '';
 const KOOBAI_COMMENTS_TURNSTILE_SITE_KEY = KOOBAI_COMMENTS_CONFIG.turnstilesitekey || '';
+const KOOBAI_COMMENTS_TURNSTILE_SCRIPT_URL = KOOBAI_COMMENTS_CONFIG.turnstilescripturl || '';
 const KOOBAI_COMMENTS_AVATAR_BASE_URL = KOOBAI_COMMENTS_CONFIG.avatarbaseurl || 'https://weavatar.com/avatar';
+
+// 评论和点赞共用同一份按需加载状态，避免重复请求 Turnstile。
+if (!window.JingzheTurnstile) {
+  window.JingzheTurnstile = (() => {
+    let loadPromise = null;
+    const scriptId = 'jingzhe-turnstile-api';
+
+    function ensureReady() {
+      if (window.turnstile) return Promise.resolve(window.turnstile);
+      if (!KOOBAI_COMMENTS_TURNSTILE_SCRIPT_URL) {
+        return Promise.reject(new Error('人机验证未配置。'));
+      }
+      if (loadPromise) return loadPromise;
+
+      loadPromise = new Promise((resolve, reject) => {
+        let script = document.getElementById(scriptId);
+        const isNewScript = !script;
+        if (!script) {
+          script = document.createElement('script');
+          script.id = scriptId;
+          script.src = KOOBAI_COMMENTS_TURNSTILE_SCRIPT_URL;
+          script.async = true;
+          script.defer = true;
+        }
+
+        let settled = false;
+        const finish = (error) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          script.removeEventListener('load', handleLoad);
+          script.removeEventListener('error', handleError);
+          if (error) {
+            script.remove();
+            reject(error);
+          } else {
+            resolve(window.turnstile);
+          }
+        };
+        const handleLoad = () => {
+          if (window.turnstile) finish();
+          else finish(new Error('人机验证加载失败，请稍后重试。'));
+        };
+        const handleError = () => finish(new Error('人机验证加载失败，请检查网络后重试。'));
+        const timeoutId = setTimeout(
+          () => finish(new Error('人机验证加载超时，请检查网络后重试。')),
+          15000
+        );
+
+        script.addEventListener('load', handleLoad, { once: true });
+        script.addEventListener('error', handleError, { once: true });
+        if (isNewScript) document.head.appendChild(script);
+      }).catch((error) => {
+        loadPromise = null;
+        throw error;
+      });
+
+      return loadPromise;
+    }
+
+    return { ensureReady };
+  })();
+}
 
 document.addEventListener('click', (e) => {
   const trigger = e.target.closest('.koobai-comment-trigger');
@@ -49,25 +113,75 @@ document.addEventListener('click', (e) => {
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
   let cmtTurnstileId = null;
-  let cmtTokenResolve = null;
-  let cmtTokenReject = null;
-  const initCmtTurnstile = setInterval(() => {
+  let cmtTurnstileApi = null;
+  let cmtTurnstileContainer = null;
+  let cmtWidgetPromise = null;
+  let cmtTokenRequest = null;
+
+  function settleCommentToken(error, token) {
+    if (!cmtTokenRequest) return;
+    const request = cmtTokenRequest;
+    cmtTokenRequest = null;
+    clearTimeout(request.timeoutId);
+    if (error) request.reject(error);
+    else request.resolve(token);
+  }
+
+  function ensureCommentTurnstile() {
+    if (cmtTurnstileId !== null) return Promise.resolve(cmtTurnstileId);
+    if (cmtWidgetPromise) return cmtWidgetPromise;
     if (!KOOBAI_COMMENTS_TURNSTILE_SITE_KEY) {
-      clearInterval(initCmtTurnstile);
-      return;
+      return Promise.reject(new Error('人机验证未配置。'));
     }
-    if (window.turnstile) {
-      clearInterval(initCmtTurnstile);
-      const div = document.createElement('div');
-      document.body.appendChild(div);
-      cmtTurnstileId = turnstile.render(div, {
+
+    cmtWidgetPromise = window.JingzheTurnstile.ensureReady().then((api) => {
+      cmtTurnstileApi = api;
+      if (cmtTurnstileId !== null) return cmtTurnstileId;
+
+      cmtTurnstileContainer = document.createElement('div');
+      document.body.appendChild(cmtTurnstileContainer);
+      cmtTurnstileId = api.render(cmtTurnstileContainer, {
         sitekey: KOOBAI_COMMENTS_TURNSTILE_SITE_KEY,
         size: 'invisible',
-        callback: (t) => { if (cmtTokenResolve) cmtTokenResolve(t); },
-        'error-callback': () => { if (cmtTokenReject) cmtTokenReject(new Error('人机验证超时，刷新重试。')); }
+        execution: 'execute',
+        action: 'submit_comment',
+        callback: (token) => settleCommentToken(null, token),
+        'error-callback': () => settleCommentToken(new Error('人机验证失败，请稍后重试。')),
+        'timeout-callback': () => settleCommentToken(new Error('人机验证超时，请重试。')),
+        'expired-callback': () => settleCommentToken(new Error('人机验证已过期，请重试。'))
       });
-    }
-  }, 200);
+      return cmtTurnstileId;
+    }).catch((error) => {
+      cmtWidgetPromise = null;
+      if (cmtTurnstileId === null && cmtTurnstileContainer) {
+        cmtTurnstileContainer.remove();
+        cmtTurnstileContainer = null;
+      }
+      throw error;
+    });
+
+    return cmtWidgetPromise;
+  }
+
+  async function getCommentVerificationToken() {
+    const widgetId = await ensureCommentTurnstile();
+    return new Promise((resolve, reject) => {
+      cmtTokenRequest = {
+        resolve,
+        reject,
+        timeoutId: setTimeout(
+          () => settleCommentToken(new Error('人机验证超时，请重试。')),
+          15000
+        )
+      };
+
+      try {
+        cmtTurnstileApi.execute(widgetId);
+      } catch (_error) {
+        settleCommentToken(new Error('人机验证启动失败，请稍后重试。'));
+      }
+    });
+  }
 
   const API_BASE = KOOBAI_COMMENTS_API_BASE;
   const ADMIN_EMAIL = KOOBAI_COMMENTS_ADMIN_EMAIL;
@@ -283,6 +397,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formEl = document.getElementById('comment-form');
   if (formEl) {
+      const prepareCommentVerification = () => {
+        ensureCommentTurnstile().catch(() => {});
+      };
+      formEl.addEventListener('focusin', prepareCommentVerification, { once: true });
+      formEl.addEventListener('pointerdown', prepareCommentVerification, { once: true });
+
+      formEl.addEventListener('keydown', (e) => {
+        const isShortcut = e.key === 'Enter' && (e.metaKey || e.ctrlKey);
+        const isTextField = e.target.matches('input, textarea');
+        if (!isShortcut || !isTextField || e.isComposing || e.keyCode === 229) return;
+
+        const submitButton = document.getElementById('cmt-submit-btn');
+        if (submitButton.disabled) return;
+        e.preventDefault();
+        formEl.requestSubmit();
+      });
+
       formEl.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('cmt-submit-btn'), msgDom = document.getElementById('cmt-status-msg');
@@ -301,13 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
        try {
-          // 🚀 终极极速版：向已经预加载好的盾牌秒拿 Token
-          const token = await new Promise((resolve, reject) => {
-            if (!window.turnstile || cmtTurnstileId === null) return reject(new Error('人机验证初始化中，请稍后再试。'));
-            cmtTokenResolve = resolve;
-            cmtTokenReject = reject;
-            turnstile.execute(cmtTurnstileId, { action: 'submit_comment' });
-          });
+          const token = await getCommentVerificationToken();
           
           const res = await fetch(`${API_BASE}/comments/submit`, {
             method: 'POST', 
@@ -318,8 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify(payload) 
           });
 
-          turnstile.reset(cmtTurnstileId);
-
           if (res.ok) {
             msgDom.innerText = '发送成功！'; msgDom.className = 'status-success'; 
             localStorage.setItem('koobai_user', JSON.stringify({ author: payload.author, email: payload.email, website: payload.website }));
@@ -329,12 +452,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // 如果后端 Worker 拦截了，提示文字就会在这里被精准展示出来
             msgDom.innerText = err.error || '发送失败。'; msgDom.className = 'status-error'; 
           }
-        } catch (err) { 
-          // 优雅捕获网络错误和验证超时
-          msgDom.innerText = err.message === '人机验证超时，刷新重试。' ? err.message : '网络错误。'; 
+        } catch (err) {
+          msgDom.innerText = err.message && err.message.startsWith('人机验证') ? err.message : '网络错误。';
           msgDom.className = 'status-error'; 
         } 
-        finally { 
+        finally {
+          if (cmtTurnstileApi && cmtTurnstileId !== null) {
+            cmtTurnstileApi.reset(cmtTurnstileId);
+          }
           btn.disabled = false; 
           setTimeout(() => { msgDom.innerText = ''; msgDom.className = ''; }, 3000); 
         }

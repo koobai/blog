@@ -47,6 +47,14 @@ profile = "full"
   draftUrl = "https://laodaodraft.koobai.com"
   imageBaseUrl = "https://img.koobai.com"
 
+[services.images]
+  enabled = true
+  sourceOrigin = "https://img.koobai.com"
+  deliveryOrigin = "https://img.koobai.com"
+  smallWidth = 640
+  largeWidth = 960
+  quality = 75
+
 [services.exercise]
   mapboxToken = "pk.eyJ1Ijoia29vYmFpIiwiYSI6ImNsZzYybDcwajA5ZXYzc3A4ZnJvcW0wMHcifQ._bpJ1Gmu8hZsfxuoimTAcw"
   mapboxApiOrigin = "https://api.mapbox.com"

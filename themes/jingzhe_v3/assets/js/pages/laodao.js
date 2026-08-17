@@ -16,13 +16,17 @@ async function getLikesData() {
   return cachedLikesData || { counts: {}, myLikes: [] };
 }
 
-function getLikeVerificationToken() {
-  return new Promise(resolve => {
-    if (!KOOBAI_LIKES_TURNSTILE_SITE_KEY || typeof turnstile === 'undefined') {
-      resolve(null);
-      return;
-    }
+async function getLikeVerificationToken() {
+  if (!KOOBAI_LIKES_TURNSTILE_SITE_KEY || !window.JingzheTurnstile) return null;
 
+  let turnstileApi;
+  try {
+    turnstileApi = await window.JingzheTurnstile.ensureReady();
+  } catch (_error) {
+    return null;
+  }
+
+  return new Promise(resolve => {
     const container = document.createElement('div');
     document.body.appendChild(container);
     let widgetId = null;
@@ -31,14 +35,14 @@ function getLikeVerificationToken() {
       if (settled) return;
       settled = true;
       clearTimeout(timeoutId);
-      if (widgetId !== null) turnstile.remove(widgetId);
+      if (widgetId !== null) turnstileApi.remove(widgetId);
       container.remove();
       resolve(token || null);
     };
     const timeoutId = setTimeout(() => finish(null), 10000);
 
     try {
-      widgetId = turnstile.render(container, {
+      widgetId = turnstileApi.render(container, {
         sitekey: KOOBAI_LIKES_TURNSTILE_SITE_KEY,
         size: 'invisible',
         action: 'like_laodao',
