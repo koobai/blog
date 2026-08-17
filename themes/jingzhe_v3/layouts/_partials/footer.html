@@ -12,4 +12,8 @@
   </div>
 </footer>
 
+{{ $postType := default "posts" site.Params.contentTypeName }}
+{{ $needsImageViewer := or .IsHome (eq .Type "laodao") (and .IsPage (eq .Type $postType)) (eq .Layout "about") }}
+{{ if $needsImageViewer }}
 <script src="/js/view-image.min.js"></script>
+{{ end }}

@@ -20,11 +20,16 @@ document.addEventListener('click', (e) => {
 
   if (targetContainer.contains(systemDom) && systemDom.style.display !== 'none') {
       systemDom.style.display = 'none';
+      trigger.setAttribute('aria-expanded', 'false');
       return;
   }
 
+  document.querySelectorAll('.koobai-comment-trigger[aria-expanded="true"]').forEach(item => {
+    if (item !== trigger) item.setAttribute('aria-expanded', 'false');
+  });
   systemDom.style.display = 'block';
   targetContainer.appendChild(systemDom);
+  trigger.setAttribute('aria-expanded', 'true');
 
   // 🚀 优化：强制去除 URL 参数，防止 SEO 污染
   const rawUrl = trigger.getAttribute('data-url');
@@ -197,8 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="cmt-meta">${authorHtml} ${targetHtml} <span class="cmt-date">${formatDate(node.created_at)}</span></div>
               <p class="cmt-text">${escapeHTML(node.content)}</p>
               <div class="cmt-actions">
-                <button type="button" class="cmt-btn" onclick="replyTo(${node.id}, '${escapeHTML(node.author).replace(/'/g, "\\'")}')">回复</button>
-                <button type="button" class="cmt-btn delete" onclick="deleteCmt(${node.id})">删除</button>
+                <button type="button" class="cmt-btn" data-comment-action="reply" data-comment-id="${node.id}" data-comment-author="${escapeHTML(node.author)}">回复</button>
+                <button type="button" class="cmt-btn delete" data-comment-action="delete" data-comment-id="${node.id}">删除</button>
               </div>
             </div>
           </div>
@@ -224,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentRenderedCount += nextBatch.length;
     
     if (currentRenderedCount < allRoots.length) {
-      listDom.insertAdjacentHTML('beforeend', `<div id="load-more-cmt-btn"><button type="button" onclick="loadMoreComments()" class="load-more-btn">加载更多</button></div>`);
+      listDom.insertAdjacentHTML('beforeend', `<div id="load-more-cmt-btn"><button type="button" class="load-more-btn" data-comment-action="load-more">加载更多</button></div>`);
     }
   };
 
@@ -358,10 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
       emojiPanel = document.createElement('div');
       emojiPanel.className = 'emoji-selector';
       emojiPanel.innerHTML = window.emojisData.map(e => `<div class="emoji-item" title="${e.text}">${e.icon}</div>`).join('');
-      emojiPanel.onclick = (ev) => {
+      emojiPanel.addEventListener('click', (ev) => {
         ev.stopPropagation(); const item = ev.target.closest('.emoji-item');
         if (item) insertTextToTextarea(item.innerText);
-      };
+      });
       emojiBtn.closest('.form-actions').after(emojiPanel);
     });
   }
@@ -371,6 +376,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================
   const systemDom = document.getElementById('custom-comment-system');
   if (!systemDom) return;
+
+  systemDom.addEventListener('click', (event) => {
+    const actionButton = event.target.closest('[data-comment-action]');
+    if (!actionButton) return;
+
+    const action = actionButton.dataset.commentAction;
+    const commentId = Number.parseInt(actionButton.dataset.commentId || '', 10);
+
+    if (action === 'reply' && Number.isInteger(commentId)) {
+      window.replyTo(commentId, actionButton.dataset.commentAuthor || '');
+    } else if (action === 'delete' && Number.isInteger(commentId)) {
+      window.deleteCmt(commentId);
+    } else if (action === 'load-more') {
+      window.loadMoreComments();
+    } else if (action === 'cancel-reply') {
+      window.cancelReply();
+    }
+  });
 
   if (document.querySelector('.article-comments')) {
       systemDom.style.display = 'block';

@@ -69,18 +69,6 @@
   display: none !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ticket-body,
-  html:not([data-theme="light"]) .ticket-stub {
-    background-color: var(--background-card-dark-color);
-  }
-}
-
-html[data-theme="dark"] .ticket-body,
-html[data-theme="dark"] .ticket-stub {
-  background-color: var(--background-card-dark-color);
-}
-
 .ticket-body {
   padding: 30px 30px 20px;
   flex-grow: 1;
@@ -145,16 +133,6 @@ html[data-theme="dark"] .ticket-body[data-cert]::after {
   text-align: justify;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .rc-comment {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .rc-comment {
-  color: var(--text-content-dark-color);
-}
-
 .ticket-stub {
   padding: 20px 30px 20px;
   position: relative;
@@ -163,23 +141,13 @@ html[data-theme="dark"] .rc-comment {
   align-items: flex-end;
   gap: 18px;
   border-radius: 0 0 16px 16px;
-  border-top: 2px dashed rgba(0, 0, 0, 0.06);
+  border-top: 2px dashed var(--theme-ticket-divider);
   -webkit-mask:
     radial-gradient(circle at left top, transparent 0 11px, #000 12px) left top / 51% 100% no-repeat,
     radial-gradient(circle at right top, transparent 0 11px, #000 12px) right top / 51% 100% no-repeat;
   mask:
     radial-gradient(circle at left top, transparent 0 11px, #000 12px) left top / 51% 100% no-repeat,
     radial-gradient(circle at right top, transparent 0 11px, #000 12px) right top / 51% 100% no-repeat;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ticket-stub {
-    border-top-color: rgba(255, 255, 255, 0.04);
-  }
-}
-
-html[data-theme="dark"] .ticket-stub {
-  border-top-color: rgba(255, 255, 255, 0.04);
 }
 
 .rc-meta {
@@ -244,7 +212,7 @@ html[data-theme="dark"] .rc-title a {
 .rc-stars::before {
   color: var(--text-info-color);
   width: 100%;
-  opacity: 0.3;
+  opacity: var(--theme-movie-star-empty-opacity);
 }
 
 .rc-stars::after {
@@ -257,19 +225,10 @@ html[data-theme="dark"] .rc-title a {
   html:not([data-theme="light"]) .rc-stars::after {
     color: #ad9258;
   }
-  html:not([data-theme="light"]) .rc-stars::before {
-    color: var(--text-info-dark-color);
-    opacity: 0.5;
-  }
 }
 
 html[data-theme="dark"] .rc-stars::after {
   color: #ad9258;
-}
-
-html[data-theme="dark"] .rc-stars::before {
-  color: var(--text-info-dark-color);
-  opacity: 0.5;
 }
 
 .ticket-footer {
@@ -289,16 +248,6 @@ html[data-theme="dark"] .rc-stars::before {
   display: inline-block;
   font-family: "GeistMono", monospace;
   white-space: nowrap;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .rc-time {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .rc-time {
-  color: var(--text-info-dark-color);
 }
 
 .rc-barcode {
@@ -333,16 +282,6 @@ html[data-theme="dark"] .rc-time {
       transparent calc(var(--bc-o, 2px) + 1px) calc(var(--bc-q, 15px) - 4px)
     );
   background-position: var(--bc-s, 0) 0, var(--bc-x, 0) 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .rc-barcode {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .rc-barcode {
-  color: var(--text-info-dark-color);
 }
 
 .movie-btn-more {
@@ -417,36 +356,4 @@ html[data-theme="dark"] .rc-barcode {
   color: var(--text-info-color);
   border-color: currentColor;
   border-style: dashed;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .movie-btn-more {
-    color: var(--text-highlight-dark-color);
-    border-color: var(--text-highlight-dark-color);
-  }
-
-  html:not([data-theme="light"]) .movie-btn-more::before,
-  html:not([data-theme="light"]) .movie-btn-more::after {
-    background-color: var(--background-dark-body-color);
-  }
-
-  html:not([data-theme="light"]) .movie-btn-more.is-complete {
-    color: var(--text-info-dark-color);
-    border-color: currentColor;
-  }
-}
-
-html[data-theme="dark"] .movie-btn-more {
-  color: var(--text-highlight-dark-color);
-  border-color: var(--text-highlight-dark-color);
-}
-
-html[data-theme="dark"] .movie-btn-more::before,
-html[data-theme="dark"] .movie-btn-more::after {
-  background-color: var(--background-dark-body-color);
-}
-
-html[data-theme="dark"] .movie-btn-more.is-complete {
-  color: var(--text-info-dark-color);
-  border-color: currentColor;
 }

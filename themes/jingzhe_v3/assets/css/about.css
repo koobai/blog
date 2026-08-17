@@ -6,17 +6,7 @@
   margin: auto;
   padding-bottom: 20px;
   text-align: center;
-  color: var(--text-info-dark-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .pagetitle {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .pagetitle {
-  color: var(--text-content-dark-color);
+  color: var(--theme-page-intro-color);
 }
 
 .page-about .wrapper {
@@ -72,16 +62,6 @@ html[data-theme="dark"] .pagetitle {
 
 .about-text a {
   color: var(--text-highlight-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .about-text a {
-    color: var(--text-highlight-dark-color);
-  }
-}
-
-html[data-theme="dark"] .about-text a {
-  color: var(--text-highlight-dark-color);
 }
 
 @media (min-width: 768px) {

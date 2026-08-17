@@ -42,16 +42,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #mapbox-container {
-    background: var(--background-card-dark-color);
-  }
-}
-
-html[data-theme="dark"] #mapbox-container {
-  background: var(--background-card-dark-color);
-}
-
 /* 匿名路线旧画布仅作无脚本兜底；正常状态由标题地点代表路线图层负责。 */
 .anonymousRouteOverlay {
   position: absolute;
@@ -131,18 +121,6 @@ html[data-theme="dark"] .anonymousRouteOverlay {
   background: var(--background-card-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-card-map {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-card-map {
-  background: var(--background-card-dark-color);
-  border: 1px solid var(--background-card-border-dark-color);
-}
-
 /* 无公开轨迹时，用运动消耗内容替代空白地图。 */
 .routeStampOverlay {
   position: absolute;
@@ -188,32 +166,12 @@ html[data-theme="dark"] .routeStampOverlay {
   animation: routeStampArrive 0.5s ease-out both;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .routeStamp {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .routeStamp {
-  color: var(--text-info-dark-color);
-}
-
 .routeStampNote {
   align-self: center;
   color: var(--text-content-color);
   font-size: 0.85rem;
   line-height: 1.35;
   text-align: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .routeStampNote {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .routeStampNote {
-  color: var(--text-content-dark-color);
 }
 
 @keyframes routeStampArrive {
@@ -323,16 +281,6 @@ html[data-theme="dark"] .runDetailCard {
   width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDetailCard .detailName {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDetailCard .detailName {
-  color: var(--text-info-dark-color);
-}
-
 .runDetailCard .detailName .nameLeft {
   display: flex;
   align-items: center;
@@ -343,16 +291,6 @@ html[data-theme="dark"] .runDetailCard .detailName {
 .runDetailCard .detailDate {
   color: var(--text-info-color);
   line-height: 1;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDetailCard .detailDate {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDetailCard .detailDate {
-  color: var(--text-info-dark-color);
 }
 
 .runDetailCard .map-achievement-tag {
@@ -398,28 +336,8 @@ html[data-theme="dark"] .runDetailCard .detailDate {
   height: 14px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDetailCard .panel-share-btn {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDetailCard .panel-share-btn {
-  color: var(--text-info-dark-color);
-}
-
 .runDetailCard .panel-share-btn:hover {
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDetailCard .panel-share-btn:hover {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDetailCard .panel-share-btn:hover {
-  color: var(--text-content-dark-color);
 }
 
 .detailStatsRow {
@@ -438,45 +356,15 @@ html[data-theme="dark"] .runDetailCard .panel-share-btn:hover {
   font-size: 0.65rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .detailStatBlock .statLabel {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .detailStatBlock .statLabel {
-  color: var(--text-info-dark-color);
-}
-
 .detailStatBlock .statVal {
   font-size: 0.85rem;
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .detailStatBlock .statVal {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .detailStatBlock .statVal {
-  color: var(--text-content-dark-color);
 }
 
 .detailStatBlock small {
   font-size: 0.65rem;
   color: var(--text-info-color);
   margin-left: 2px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .detailStatBlock small {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .detailStatBlock small {
-  color: var(--text-info-dark-color);
 }
 
 @keyframes slideUpFade {
@@ -555,18 +443,6 @@ html[data-theme="dark"] .detailStatBlock small {
   padding: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection, html:not([data-theme="light"]) .bento-calendar-board .calendarSection, html:not([data-theme="light"]) .bento-calendar-board .insightCard {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection, html[data-theme="dark"] .bento-calendar-board .calendarSection, html[data-theme="dark"] .bento-calendar-board .insightCard {
-  background: var(--background-card-dark-color);
-  border: 1px solid var(--background-card-border-dark-color);
-}
-
 @media (min-width: 768px) {
   .bento-calendar-board .globalSection,
 .bento-calendar-board .monthlyInsights {
@@ -606,16 +482,6 @@ html[data-theme="dark"] .bento-calendar-board .globalSection, html[data-theme="d
   position: relative;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection .globalTitle {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection .globalTitle {
-  color: var(--text-info-dark-color);
-}
-
 .bento-calendar-board .globalSection .globalMainStat {
   display: flex;
   align-items: baseline;
@@ -634,16 +500,6 @@ html[data-theme="dark"] .bento-calendar-board .globalSection .globalTitle {
 .bento-calendar-board .globalSection .globalMainStat .unit {
   font-size: 0.85rem;
   color: var(--text-info-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection .globalMainStat .unit {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection .globalMainStat .unit {
-  color: var(--text-info-dark-color);
 }
 
 .bento-calendar-board .globalSection .metricsRow {
@@ -666,45 +522,15 @@ html[data-theme="dark"] .bento-calendar-board .globalSection .globalMainStat .un
   color: var(--text-info-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection .metricBlock .metricLabel {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection .metricBlock .metricLabel {
-  color: var(--text-info-dark-color);
-}
-
 .bento-calendar-board .globalSection .metricBlock .metricValue {
   font-size: 1rem;
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection .metricBlock .metricValue {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection .metricBlock .metricValue {
-  color: var(--text-content-dark-color);
 }
 
 .bento-calendar-board .globalSection .metricBlock .metricValue small {
   font-size: 0.65rem;
   color: var(--text-info-color);
   margin-left: 3px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .globalSection .metricBlock .metricValue small {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .globalSection .metricBlock .metricValue small {
-  color: var(--text-info-dark-color);
 }
 
 .bento-calendar-board .globalSection .sparkline {
@@ -767,16 +593,6 @@ html[data-theme="dark"] .bento-calendar-board .globalSection .metricBlock .metri
   text-align: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .monthNav span {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .monthNav span {
-  color: var(--text-info-dark-color);
-}
-
 @media (min-width: 768px) {
   .bento-calendar-board .monthNav span {
     font-size: 0.85rem;
@@ -795,16 +611,6 @@ html[data-theme="dark"] .bento-calendar-board .monthNav span {
   transition: color 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .monthNav button {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .monthNav button {
-  color: var(--text-info-dark-color);
-}
-
 .bento-calendar-board .monthNav button svg {
   width: 16px;
   height: 16px;
@@ -813,16 +619,6 @@ html[data-theme="dark"] .bento-calendar-board .monthNav button {
 .bento-calendar-board .monthNav button:hover:not(:disabled) {
   background: transparent;
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .monthNav button:hover:not(:disabled) {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .monthNav button:hover:not(:disabled) {
-  color: var(--text-content-dark-color);
 }
 
 .bento-calendar-board .monthNav button:disabled {
@@ -894,16 +690,6 @@ html[data-theme="dark"] .bento-calendar-board .monthNav button:hover:not(:disabl
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-summary-text {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-summary-text {
-  color: var(--text-content-dark-color);
-}
-
 .bento-calendar-board .ai-insight-view .monthly-coach-report {
   color: var(--text-content-color);
   font-size: 1rem;
@@ -925,16 +711,6 @@ html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-summary-
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-coach-report {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-coach-report {
-  color: var(--text-content-dark-color);
-}
-
 .bento-calendar-board .ai-insight-view .monthly-energy-summary {
   margin-top: 16px;
 }
@@ -950,16 +726,6 @@ html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-coach-re
   color: var(--text-info-color);
   font-size: 0.78rem;
   line-height: 1.4;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .ai-insight-view .monthly-data-cutoff {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-data-cutoff {
-  color: var(--text-info-dark-color);
 }
 
 @keyframes insightFadeIn {
@@ -980,16 +746,6 @@ html[data-theme="dark"] .bento-calendar-board .ai-insight-view .monthly-data-cut
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-info-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .weekdays {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .weekdays {
-  color: var(--text-info-dark-color);
 }
 
 @media (min-width: 768px) {
@@ -1029,16 +785,6 @@ html[data-theme="dark"] .bento-calendar-board .weekdays {
   position: relative;
   font-size: 1rem;
   color: var(--text-info-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .dayCell {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .dayCell {
-  color: var(--text-info-dark-color);
 }
 
 @media (min-width: 768px) {
@@ -1089,30 +835,10 @@ html[data-theme="dark"] .bento-calendar-board .dayCell.hasRun:hover {
   text-align: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .monthFooter {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .monthFooter {
-  color: var(--text-info-dark-color);
-}
-
 .bento-calendar-board .monthFooter span {
   font-weight: 700;
   color: var(--text-content-color);
   margin: 0 1px 0 1px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .monthFooter span {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .monthFooter span {
-  color: var(--text-content-dark-color);
 }
 
 .bento-calendar-board .monthFooter .dot {
@@ -1146,16 +872,6 @@ html[data-theme="dark"] .bento-calendar-board .monthFooter span {
   margin-bottom: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .insightHeader {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .insightHeader {
-  color: var(--text-info-dark-color);
-}
-
 .bento-calendar-board .punchCard {
   display: flex;
   gap: 4px;
@@ -1174,16 +890,6 @@ html[data-theme="dark"] .bento-calendar-board .insightHeader {
   border-radius: 2px;
   transition: all 0.2s ease;
   background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .punchCard .barWrapper .punchHole {
-    background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .punchCard .barWrapper .punchHole {
-  background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
 }
 
 .bento-calendar-board .punchCard .barWrapper:hover .punchHole {
@@ -1219,16 +925,6 @@ html[data-theme="dark"] .bento-calendar-board .punchCard .barWrapper .punchHole 
   background-color: color-mix(in srgb, var(--text-info-color), transparent 80%);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .zoneChart .zoneCol .zoneBar {
-    background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .zoneChart .zoneCol .zoneBar {
-  background-color: color-mix(in srgb, var(--text-info-dark-color), transparent 80%);
-}
-
 .bento-calendar-board .zoneChart .zoneCol:hover .runTooltip {
   opacity: 1;
   visibility: visible;
@@ -1245,16 +941,6 @@ html[data-theme="dark"] .bento-calendar-board .zoneChart .zoneCol .zoneBar {
   font-size: 0.55rem;
   color: var(--text-info-color);
   opacity: 0.6;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .bento-calendar-board .insightLabels span {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .bento-calendar-board .insightLabels span {
-  color: var(--text-info-dark-color);
 }
 
 .bento-calendar-board .timeLabels {
@@ -1319,18 +1005,6 @@ html[data-theme="dark"] .bento-calendar-board .insightLabels span {
   transition: all 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runCard {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runCard {
-  background: var(--background-card-dark-color);
-  border: 1px solid var(--background-card-border-dark-color);
-}
-
 .runCard:hover {
   /* 食物提示框需要越过吸顶地图（z-index: 99）。 */
   z-index: 101;
@@ -1380,16 +1054,6 @@ html[data-theme="dark"] .runCard:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runName {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runName {
-  color: var(--text-info-dark-color);
 }
 
 .foodIconTrigger {
@@ -1511,30 +1175,10 @@ html[data-theme="dark"] .foodIconTrigger::after {
   color: var(--text-info-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDistance .distUnit {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDistance .distUnit {
-  color: var(--text-info-dark-color);
-}
-
 .runDate {
   color: var(--text-info-color);
   font-size: 0.85rem;
   white-space: nowrap;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDate {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .runDate {
-  color: var(--text-info-dark-color);
 }
 
 /* =========================================
@@ -1549,16 +1193,6 @@ html[data-theme="dark"] .runDate {
   background: var(--text-info-color);
   border-radius: 50%;
   opacity: 0.5;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .multiDot {
-    background: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .multiDot {
-  background: var(--text-info-dark-color);
 }
 
 /* 金银牌背景 */
@@ -1683,16 +1317,6 @@ html[data-theme="dark"] .runTooltip {
   font-size: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .punchCard .runTooltip .ttName, html:not([data-theme="light"]) .zoneChart .runTooltip .ttName {
-    color: var(--text-info-dark-color) !important;
-  }
-}
-
-html[data-theme="dark"] .punchCard .runTooltip .ttName, html[data-theme="dark"] .zoneChart .runTooltip .ttName {
-  color: var(--text-info-dark-color) !important;
-}
-
 .punchCard .runTooltip .ttNum,
 .zoneChart .runTooltip .ttNum {
   text-align: left;
@@ -1702,45 +1326,15 @@ html[data-theme="dark"] .punchCard .runTooltip .ttName, html[data-theme="dark"] 
   color: var(--text-info-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ttItem .ttNum .ttUnit {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .ttItem .ttNum .ttUnit {
-  color: var(--text-info-dark-color);
-}
-
 .ttName {
   color: var(--text-info-color);
   font-size: 0.8rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ttName {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .ttName {
-  color: var(--text-info-dark-color);
 }
 
 .ttNum {
   color: var(--text-content-color);
   font-size: 0.85rem;
   text-align: right;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ttNum {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .ttNum {
-  color: var(--text-content-dark-color);
 }
 
 .ttDayRunList {
@@ -1774,16 +1368,6 @@ html[data-theme="dark"] .ttAchievement {
   align-items: center;
   font-size: 0.85rem;
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .ttAchieveRow {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .ttAchieveRow {
-  color: var(--text-content-dark-color);
 }
 
 .titleTag {

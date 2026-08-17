@@ -44,7 +44,7 @@
         <div class="ticket-footer">
           <div class="rc-time">
             {{ if $movieTime }}
-              <time>{{ if eq $movieTime.Year now.Year }}{{ $movieTime.Format "01-02" }}{{ else }}{{ $movieTime.Format "2006-01-02" }}{{ end }}</time>
+              <time>{{ partial "jingzhe/date.html" $movieTime }}</time>
             {{ end }}
           </div>
           <div class="rc-barcode">NO. {{ $movie.id }}</div>

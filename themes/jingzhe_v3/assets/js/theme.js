@@ -15,7 +15,9 @@
         }
 
         document.querySelectorAll('.theme-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.mode === mode);
+            const isActive = item.dataset.mode === mode;
+            item.classList.toggle('active', isActive);
+            item.setAttribute('aria-pressed', String(isActive));
         });
     };
 
@@ -23,6 +25,11 @@
     apply(saved);
 
     document.addEventListener('DOMContentLoaded', () => apply(saved));
+
+    document.addEventListener('click', event => {
+        const item = event.target.closest('.theme-item');
+        if (item) apply(item.dataset.mode, true);
+    });
 
     window.setTheme = (mode) => apply(mode, true);
 })();

@@ -56,7 +56,7 @@
     {{ block "main" . }}{{ end }}
   </div>
 
-  {{ partialCached "footer.html" . }}
+  {{ partialCached "footer.html" . .Kind .Type .Layout }}
   
   {{ partial "jingzhe/bundle-script.html" (dict
     "paths" (slice "js/nav-motion.js" "js/scripts.js")

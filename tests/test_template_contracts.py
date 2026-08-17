@@ -67,6 +67,9 @@ class WorkerPrivacyCompatibilityTests(unittest.TestCase):
         cls.frontend = (
             ROOT / 'themes/jingzhe_v3/assets/js/pages/comments.js'
         ).read_text(encoding='utf-8')
+        cls.comments_partial = (
+            ROOT / 'themes/jingzhe_v3/layouts/_partials/comments.html'
+        ).read_text(encoding='utf-8')
         cls.comments_worker = (
             ROOT / 'workers/comments/src/index.js'
         ).read_text(encoding='utf-8')
@@ -78,6 +81,13 @@ class WorkerPrivacyCompatibilityTests(unittest.TestCase):
         self.assertIn('comment.avatar_hash', self.frontend)
         self.assertIn('comment.email', self.frontend)
         self.assertIn("localStorage.setItem('koobai_user'", self.frontend)
+
+    def test_public_comment_actions_use_delegated_events(self):
+        combined = self.comments_partial + self.frontend
+        self.assertNotIn('onclick=', combined)
+        for action in ('reply', 'delete', 'load-more', 'cancel-reply'):
+            self.assertIn(f'data-comment-action="{action}"', combined)
+        self.assertIn("closest('[data-comment-action]')", self.frontend)
 
     def test_public_comment_mapper_does_not_return_email_field(self):
         start = self.comments_worker.index('async function publicComment(row)')
@@ -105,6 +115,11 @@ class ThemePipelineTests(unittest.TestCase):
         cls.base = (ROOT / 'themes/jingzhe_v3/layouts/baseof.html').read_text(encoding='utf-8')
         cls.footer = (ROOT / 'themes/jingzhe_v3/layouts/_partials/footer.html').read_text(encoding='utf-8')
         cls.comments = (ROOT / 'themes/jingzhe_v3/layouts/_partials/comments.html').read_text(encoding='utf-8')
+        cls.header = (ROOT / 'themes/jingzhe_v3/layouts/_partials/header.html').read_text(encoding='utf-8')
+        cls.laodao_card = (ROOT / 'themes/jingzhe_v3/layouts/_partials/laodao-card.html').read_text(encoding='utf-8')
+        cls.post_single = (ROOT / 'themes/jingzhe_v3/layouts/posts/single.html').read_text(encoding='utf-8')
+        cls.site_script = (ROOT / 'themes/jingzhe_v3/assets/js/scripts.js').read_text(encoding='utf-8')
+        cls.theme_script = (ROOT / 'themes/jingzhe_v3/assets/js/theme.js').read_text(encoding='utf-8')
         cls.styles = (ROOT / 'themes/jingzhe_v3/assets/css/style.css').read_text(encoding='utf-8')
 
     def test_social_runtime_and_turnstile_are_scoped_to_comments(self):
@@ -133,6 +148,41 @@ class ThemePipelineTests(unittest.TestCase):
         self.assertIn('resources.Get "css/style.css"', self.base)
         self.assertFalse((assets / 'scss').exists())
         self.assertGreater(len(list((assets / 'css').glob('*.css'))), 1)
+
+    def test_reader_interactions_use_native_buttons(self):
+        for mode in ('light', 'dark', 'auto'):
+            self.assertIn(
+                f'<button type="button" class="theme-item" data-mode="{mode}">',
+                self.header,
+            )
+        self.assertNotIn('<span class="theme-item"', self.header)
+        self.assertIn('class="theme-dropdown-button"', self.header)
+        self.assertIn('class="koobai-like-trigger"', self.laodao_card)
+        self.assertIn('class="koobai-comment-trigger"', self.laodao_card)
+        self.assertNotIn('<span class="koobai-like-trigger"', self.laodao_card)
+        self.assertNotIn('<span class="koobai-comment-trigger"', self.laodao_card)
+        self.assertIn("event.target.closest('.theme-item')", self.theme_script)
+
+    def test_each_laodao_gallery_is_its_own_image_viewer_group(self):
+        self.assertIn('class="laodao-gallery" view-image', self.laodao_card)
+
+    def test_laodao_date_link_is_relative_to_the_current_site(self):
+        self.assertIn('<a href="{{ .RelPermalink }}">', self.laodao_card)
+        self.assertNotIn('<a href="{{ .Permalink }}">', self.laodao_card)
+
+    def test_article_back_button_uses_a_script_listener(self):
+        self.assertNotIn('onclick=', self.post_single)
+        self.assertIn('data-fallback-url="{{ site.Home.RelPermalink }}"', self.post_single)
+        self.assertIn("backButton?.addEventListener('click'", self.site_script)
+        self.assertIn("backButton.dataset.fallbackUrl || '/'", self.site_script)
+
+    def test_image_viewer_is_scoped_and_cached_by_page_shape(self):
+        self.assertIn('$needsImageViewer', self.footer)
+        self.assertIn('(eq .Type "laodao")', self.footer)
+        self.assertIn('(and .IsPage (eq .Type $postType))', self.footer)
+        self.assertIn('(eq .Layout "about")', self.footer)
+        self.assertIn('{{ if $needsImageViewer }}', self.footer)
+        self.assertIn('partialCached "footer.html" . .Kind .Type .Layout', self.base)
 
     def test_all_local_javascript_sources_are_referenced(self):
         layouts = ROOT / 'themes/jingzhe_v3/layouts'
@@ -170,6 +220,26 @@ class ThemePipelineTests(unittest.TestCase):
         self.assertIn('first 5', single)
         for source in (single, home, listing):
             self.assertIn('partialCached "laodao-card.html"', source)
+
+
+class DatePresentationTests(unittest.TestCase):
+    def test_public_dates_share_one_partial(self):
+        layouts = ROOT / 'themes/jingzhe_v3/layouts'
+        date_partial = (layouts / '_partials/jingzhe/date.html').read_text(encoding='utf-8')
+        self.assertIn('$date.Format "01-02"', date_partial)
+        self.assertIn('$date.Format "2006-01-02"', date_partial)
+
+        expected_uses = {
+            'home.html': 1,
+            'list.html': 1,
+            'posts/list.html': 2,
+            'posts/single.html': 1,
+            '_partials/laodao-card.html': 1,
+            'movies.html': 1,
+        }
+        for relative_path, expected_count in expected_uses.items():
+            source = (layouts / relative_path).read_text(encoding='utf-8')
+            self.assertEqual(source.count('partial "jingzhe/date.html"'), expected_count)
 
 
 class MoviesLayoutTests(unittest.TestCase):

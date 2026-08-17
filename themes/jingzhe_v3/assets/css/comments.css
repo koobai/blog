@@ -4,18 +4,8 @@
   padding: 10px 15px;
   border-radius: 16px;
   margin-bottom: 0;
-  border: 1px solid #eae8e5;
+  border: 1px solid var(--theme-comment-form-border);
   margin-top: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .comment-form-wrap {
-    border: 1px solid #28282b;
-  }
-}
-
-html[data-theme="dark"] .comment-form-wrap {
-  border: 1px solid #28282b;
 }
 
 #comments-list:not(:empty) {
@@ -48,18 +38,6 @@ html[data-theme="dark"] .comment-form-wrap {
   font-size: 0.95rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .form-row input {
-    border: none;
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .form-row input {
-  border: none;
-  color: var(--text-content-dark-color);
-}
-
 textarea#cmt-content {
   width: 100%;
   box-sizing: border-box;
@@ -76,31 +54,11 @@ textarea#cmt-content {
   line-height: 1.65;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) textarea#cmt-content {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] textarea#cmt-content {
-  color: var(--text-content-dark-color);
-}
-
 .form-row input::placeholder,
 textarea#cmt-content::placeholder {
   color: var(--text-info-color);
   opacity: 0.8;
   transition: color 0.2s;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .form-row input::placeholder, html:not([data-theme="light"]) textarea#cmt-content::placeholder {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .form-row input::placeholder, html[data-theme="dark"] textarea#cmt-content::placeholder {
-  color: var(--text-info-dark-color);
 }
 
 /* 当输入框获得焦点时，让提示文字变得更淡，体验更好 */
@@ -124,16 +82,6 @@ textarea#cmt-content:focus::placeholder {
   transition: opacity 0.2s;
   outline: none;
   font-size: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #cmt-submit-btn {
-    color: var(--text-highlight-dark-color);
-  }
-}
-
-html[data-theme="dark"] #cmt-submit-btn {
-  color: var(--text-highlight-dark-color);
 }
 
 #cmt-submit-btn:hover {
@@ -166,42 +114,12 @@ html[data-theme="dark"] #cmt-submit-btn {
   color: var(--text-info-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #cmt-status-msg.status-loading {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] #cmt-status-msg.status-loading {
-  color: var(--text-info-dark-color);
-}
-
 #cmt-status-msg.status-success {
   color: var(--text-highlight-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #cmt-status-msg.status-success {
-    color: var(--text-highlight-dark-color);
-  }
-}
-
-html[data-theme="dark"] #cmt-status-msg.status-success {
-  color: var(--text-highlight-dark-color);
-}
-
 #cmt-status-msg.status-error {
-  color: #ff4d4f;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #cmt-status-msg.status-error {
-    color: #ff7875;
-  }
-}
-
-html[data-theme="dark"] #cmt-status-msg.status-error {
-  color: #ff7875;
+  color: var(--theme-status-error);
 }
 
 /* ==========================
@@ -217,29 +135,9 @@ html[data-theme="dark"] #cmt-status-msg.status-error {
   /* 取消回复按钮 */
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .reply-badge {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .reply-badge {
-  color: var(--text-info-dark-color);
-}
-
 .reply-badge strong {
   color: var(--text-info-color);
   font-weight: normal;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .reply-badge strong {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .reply-badge strong {
-  color: var(--text-info-dark-color);
 }
 
 .reply-badge .cancel-reply-btn {
@@ -253,16 +151,6 @@ html[data-theme="dark"] .reply-badge strong {
   opacity: 0.7;
   transition: opacity 0.2s;
   outline: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .reply-badge .cancel-reply-btn {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .reply-badge .cancel-reply-btn {
-  color: var(--text-info-dark-color);
 }
 
 .reply-badge .cancel-reply-btn:hover {
@@ -289,16 +177,6 @@ html[data-theme="dark"] .reply-badge .cancel-reply-btn {
   margin-top: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-avatar {
-    background: var(--background-card-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-avatar {
-  background: var(--background-card-dark-color);
-}
-
 .cmt-main {
   flex: 1;
 }
@@ -316,44 +194,14 @@ html[data-theme="dark"] .cmt-avatar {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-author {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-author {
-  color: var(--text-info-dark-color);
-}
-
 .reply-arrow {
   color: var(--text-info-color);
   font-size: 0.75rem;
   margin: 0 2px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .reply-arrow {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .reply-arrow {
-  color: var(--text-info-dark-color);
-}
-
 .cmt-target {
   color: var(--text-info-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-target {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-target {
-  color: var(--text-info-dark-color);
 }
 
 .cmt-date {
@@ -362,32 +210,12 @@ html[data-theme="dark"] .cmt-target {
   margin-left: 5px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-date {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-date {
-  color: var(--text-info-dark-color);
-}
-
 .cmt-text {
   font-size: 1rem;
   line-height: 1.65;
   color: var(--text-content-color);
   word-break: break-all;
   margin: 2px 0 4px 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-text {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-text {
-  color: var(--text-content-dark-color);
 }
 
 .cmt-actions {
@@ -407,44 +235,14 @@ html[data-theme="dark"] .cmt-text {
   /* 去除蓝框 */
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-btn {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-btn {
-  color: var(--text-info-dark-color);
-}
-
 .cmt-btn:hover {
   color: var(--text-content-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-btn:hover {
-    color: var(--text-content-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-btn:hover {
-  color: var(--text-content-dark-color);
 }
 
 /* 🚀 删除按钮的上帝模式切换 */
 .cmt-btn.delete {
   color: var(--text-info-color);
   display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-btn.delete {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-btn.delete {
-  color: var(--text-info-dark-color);
 }
 
 .admin-mode .cmt-btn.delete {
@@ -488,18 +286,6 @@ html[data-theme="dark"] .cmt-btn.delete {
   /* 去除蓝框 */
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .load-more-btn {
-    border: 1px solid var(--text-highlight-dark-color);
-    color: var(--text-highlight-dark-color);
-  }
-}
-
-html[data-theme="dark"] .load-more-btn {
-  border: 1px solid var(--text-highlight-dark-color);
-  color: var(--text-highlight-dark-color);
-}
-
 .load-more-btn:hover {
   opacity: 0.6;
 }
@@ -518,16 +304,6 @@ html[data-theme="dark"] .load-more-btn {
   outline: none;
   /* 去除蓝框 */
   opacity: 0.6;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .cmt-emoji-btn {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .cmt-emoji-btn {
-  color: var(--text-info-dark-color);
 }
 
 .cmt-emoji-btn:hover {

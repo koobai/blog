@@ -43,12 +43,14 @@
     </div>
 
     <div class="action-item theme-dropdown-trigger">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 17a4 4 0 0 1-8 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2Z"/><path d="M16.7 13H19a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7m0-4h.01"/><path d="m11 8l2.3-2.3a2.4 2.4 0 0 1 3.404.004L18.6 7.6a2.4 2.4 0 0 1 .026 3.434L9.9 19.8"/></g></svg>
+      <button type="button" class="theme-dropdown-button" aria-label="切换主题" aria-haspopup="true">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 17a4 4 0 0 1-8 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2Z"/><path d="M16.7 13H19a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7m0-4h.01"/><path d="m11 8l2.3-2.3a2.4 2.4 0 0 1 3.404.004L18.6 7.6a2.4 2.4 0 0 1 .026 3.434L9.9 19.8"/></g></svg>
+      </button>
       <div class="dropdown-panel">
         <div class="theme-options">
-          <span class="theme-item" data-mode="light" onclick="setTheme('light')">浅色</span>
-          <span class="theme-item" data-mode="dark" onclick="setTheme('dark')">深色</span>
-          <span class="theme-item" data-mode="auto" onclick="setTheme('auto')">自动</span>
+          <button type="button" class="theme-item" data-mode="light">浅色</button>
+          <button type="button" class="theme-item" data-mode="dark">深色</button>
+          <button type="button" class="theme-item" data-mode="auto">自动</button>
         </div>
       </div>
     </div>

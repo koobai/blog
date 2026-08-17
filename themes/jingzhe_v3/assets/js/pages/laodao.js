@@ -78,6 +78,7 @@ async function initLikes() {
       trigger.classList.add('liked');
       count = Math.max(count, 1);
     }
+    trigger.setAttribute('aria-pressed', String(isLiked));
 
     const updateText = () => {
       if (count === 0) {
@@ -111,6 +112,7 @@ async function initLikes() {
       isLiked = optimisticState.liked;
       count = optimisticState.count;
       trigger.classList.add('liked', 'animating');
+      trigger.setAttribute('aria-pressed', 'true');
       if (optimisticState.persist) {
         try { localStorage.setItem(`liked_${url}`, 'true'); } catch (_error) {}
       }
@@ -136,6 +138,7 @@ async function initLikes() {
           isLiked = false;
           count = previousCount;
           trigger.classList.remove('liked');
+          trigger.setAttribute('aria-pressed', 'false');
           try { localStorage.removeItem(`liked_${url}`); } catch (_error) {}
           showTemporaryTooltip('点赞失败，点击重试', 1800);
           return;
@@ -158,6 +161,7 @@ async function initLikes() {
         isLiked = false;
         count = previousCount;
         trigger.classList.remove('liked');
+        trigger.setAttribute('aria-pressed', 'false');
         try { localStorage.removeItem(`liked_${url}`); } catch (_error) {}
         showTemporaryTooltip('点赞失败，点击重试', 1800);
       } finally {

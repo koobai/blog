@@ -18,45 +18,22 @@
   justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) #loginOverlay {
-    background-color: var(--background-dark-body-color);
-  }
-}
-
-html[data-theme="dark"] #loginOverlay {
-  background-color: var(--background-dark-body-color);
-}
-
 .admin-login-input {
   padding: 16px;
   width: 240px;
   margin-bottom: 15px;
   border-radius: 99px;
   outline: none;
-  background: #ffffff;
-  border: 1px solid #eeebe6;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-login-input {
-    background: rgba(28, 28, 30, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #fff;
-  }
-}
-
-html[data-theme="dark"] .admin-login-input {
-  background: rgba(28, 28, 30, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: var(--theme-admin-input-background);
+  border: 1px solid var(--theme-admin-input-border);
+  color: var(--theme-admin-input-color);
 }
 
 .admin-login-btn {
   padding: 10px 24px;
   cursor: pointer;
   background: var(--text-highlight-color);
-  color: var(--background-card-color);
+  color: var(--palette-background-card-light);
   border: none;
   border-radius: 20px;
   font-weight: bold;
@@ -120,18 +97,8 @@ html[data-theme="dark"] .admin-login-input {
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 0;
-    background: transparent;
+    background: var(--theme-admin-footer-desktop-background);
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .page-laodao-admin .admin-publish-footer {
-    background: var(--background-dark-body-color);
-  }
-}
-
-html[data-theme="dark"] .page-laodao-admin .admin-publish-footer {
-  background: var(--background-dark-body-color);
 }
 
 .page-laodao-admin #editorWrap {
@@ -163,35 +130,11 @@ html[data-theme="dark"] .page-laodao-admin .admin-publish-footer {
   align-items: center;
   color: var(--text-info-color);
   transition: color 0.2s, opacity 0.2s;
-  opacity: 0.4;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-icon-btn {
-    color: var(--text-info-dark-color);
-    opacity: 0.6;
-  }
-}
-
-html[data-theme="dark"] .admin-icon-btn {
-  color: var(--text-info-dark-color);
-  opacity: 0.6;
+  opacity: var(--theme-editor-muted-opacity);
 }
 
 .admin-icon-btn:hover {
   color: var(--text-highlight-color);
-  opacity: 1;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-icon-btn:hover {
-    color: var(--text-highlight-dark-color);
-    opacity: 1;
-  }
-}
-
-html[data-theme="dark"] .admin-icon-btn:hover {
-  color: var(--text-highlight-dark-color);
   opacity: 1;
 }
 
@@ -223,16 +166,6 @@ html[data-theme="dark"] .admin-icon-btn:hover {
   cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-btn {
-    color: var(--text-highlight-dark-color);
-  }
-}
-
-html[data-theme="dark"] .admin-btn {
-  color: var(--text-highlight-dark-color);
-}
-
 .admin-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -241,16 +174,6 @@ html[data-theme="dark"] .admin-btn {
 .admin-btn-cancel {
   color: var(--text-info-color);
   font-weight: normal;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-btn-cancel {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .admin-btn-cancel {
-  color: var(--text-info-dark-color);
 }
 
 /* 6. 列表区样式 */
@@ -275,18 +198,6 @@ html[data-theme="dark"] .admin-btn-cancel {
 
 .admin-recent-card:hover {
   opacity: 1;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-recent-card {
-    background-color: transparent;
-    border: 1px solid transparent;
-  }
-}
-
-html[data-theme="dark"] .admin-recent-card {
-  background-color: transparent;
-  border: 1px solid transparent;
 }
 
 .admin-recent-content {
@@ -334,18 +245,6 @@ html[data-theme="dark"] .admin-recent-card {
   border: 1px solid var(--background-card-border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .tag-selector-dropdown {
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-html[data-theme="dark"] .tag-selector-dropdown {
-  background: var(--background-card-dark-color);
-  border: 1px solid var(--background-card-border-dark-color);
-}
-
 /* 单个标签样式 */
 .tag-selector-dropdown .tag-item {
   padding: 4px 10px;
@@ -359,34 +258,12 @@ html[data-theme="dark"] .tag-selector-dropdown {
   transition: all 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .tag-selector-dropdown .tag-item {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .tag-selector-dropdown .tag-item {
-  color: var(--text-info-dark-color);
-}
-
 /* 鼠标悬浮和键盘选中状态的高亮 */
 .tag-selector-dropdown .tag-item:hover,
 .tag-selector-dropdown .tag-item.active {
   background: var(--background-body-color);
   border-radius: 8px;
   color: var(--text-content-color) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .tag-selector-dropdown .tag-item:hover, html:not([data-theme="light"]) .tag-selector-dropdown .tag-item.active {
-    background: var(--background-dark-body-color);
-    color: var(--text-content-dark-color) !important;
-  }
-}
-
-html[data-theme="dark"] .tag-selector-dropdown .tag-item:hover, html[data-theme="dark"] .tag-selector-dropdown .tag-item.active {
-  background: var(--background-dark-body-color);
-  color: var(--text-content-dark-color) !important;
 }
 
 /* ==================================
@@ -405,20 +282,6 @@ html[data-theme="dark"] .tag-selector-dropdown .tag-item:hover, html[data-theme=
   color: var(--text-content-color);
   border: 1px solid var(--background-card-border-color);
   /* 嵌套文字样式 */
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-location-chip {
-    color: var(--text-content-dark-color);
-    background: var(--background-card-dark-color);
-    border: 1px solid var(--background-card-border-dark-color);
-  }
-}
-
-html[data-theme="dark"] .admin-location-chip {
-  color: var(--text-content-dark-color);
-  background: var(--background-card-dark-color);
-  border: 1px solid var(--background-card-border-dark-color);
 }
 
 .admin-location-chip svg {
@@ -448,16 +311,6 @@ html[data-theme="dark"] .admin-location-chip {
   opacity: 0.8;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .draft-delete-btn {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .draft-delete-btn {
-  color: var(--text-info-dark-color);
-}
-
 .draft-delete-btn:hover {
   color: #ef4444;
 }
@@ -466,16 +319,6 @@ html[data-theme="dark"] .draft-delete-btn {
 .draft-content-text {
   cursor: pointer;
   color: var(--text-info-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .draft-content-text {
-    color: var(--text-info-dark-color);
-  }
-}
-
-html[data-theme="dark"] .draft-content-text {
-  color: var(--text-info-dark-color);
 }
 
 .draft-content-text:hover {

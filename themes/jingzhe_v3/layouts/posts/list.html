@@ -36,11 +36,7 @@
       <div class="post-summary">{{ .Params.description }}</div>    
       <footer class="post-meta">
            <time class="archive-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-            {{ if eq .Date.Year now.Year }}
-              {{ .Date.Format "01-02" }}
-            {{ else }}
-              {{ .Date.Format "2006-01-02" }}
-            {{ end }}
+            {{ partial "jingzhe/date.html" .Date }}
           </time>
       </footer>
     </article>
@@ -52,11 +48,7 @@
     <article class="secondary-post-card"> 
         <h3 class="archive-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
          <time class="archive-time" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-            {{ if eq .Date.Year now.Year }}
-              {{ .Date.Format "01-02" }}
-            {{ else }}
-              {{ .Date.Format "2006-01-02" }}
-            {{ end }}
+            {{ partial "jingzhe/date.html" .Date }}
           </time>
     </article>
     {{ end }}

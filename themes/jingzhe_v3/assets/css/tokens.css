@@ -3,17 +3,166 @@
     "GeistMono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
-  --background-body-color: #f2f0eb;
-  --background-dark-body-color: #151516;
-  --background-card-color: #fffdfa;
-  --background-card-dark-color: #1c1c1e;
-  --background-card-border-color: #fffdfa;
-  --background-card-border-dark-color: rgba(255, 255, 255, 0.03);
-  --text-content-color: #222;
-  --text-content-dark-color: #98989d;
-  --text-highlight-color: #994d61;
-  --text-highlight-dark-color: #c3aacc;
-  --text-info-color: #adaba6;
-  --text-info-dark-color: #5c5c62;
+
+  /* Stable palette values. The non-dark names below remain the public
+     compatibility tokens, but now resolve to the active theme. */
+  --palette-background-body-light: #f2f0eb;
+  --palette-background-body-dark: #151516;
+  --palette-background-card-light: #fffdfa;
+  --palette-background-card-dark: #1c1c1e;
+  --palette-background-card-border-light: #fffdfa;
+  --palette-background-card-border-dark: rgba(255, 255, 255, 0.03);
+  --palette-text-content-light: #222;
+  --palette-text-content-dark: #98989d;
+  --palette-text-highlight-light: #994d61;
+  --palette-text-highlight-dark: #c3aacc;
+  --palette-text-info-light: #adaba6;
+  --palette-text-info-dark: #5c5c62;
+
+  /* Active semantic tokens. Existing names are intentionally preserved for
+     editor scripts, historical content and theme compatibility. */
+  --background-body-color: var(--palette-background-body-light);
+  --background-dark-body-color: var(--palette-background-body-dark);
+  --background-card-color: var(--palette-background-card-light);
+  --background-card-dark-color: var(--palette-background-card-dark);
+  --background-card-border-color: var(--palette-background-card-border-light);
+  --background-card-border-dark-color: var(--palette-background-card-border-dark);
+  --text-content-color: var(--palette-text-content-light);
+  --text-content-dark-color: var(--palette-text-content-dark);
+  --text-highlight-color: var(--palette-text-highlight-light);
+  --text-highlight-dark-color: var(--palette-text-highlight-dark);
+  --text-info-color: var(--palette-text-info-light);
+  --text-info-dark-color: var(--palette-text-info-dark);
   --exercise-text-highlight-color: #32d74b;
+
+  /* Component surfaces that change with the active theme. */
+  --theme-glass-background: rgba(255, 255, 255, 0.5);
+  --theme-glass-border: rgba(0, 0, 0, 0.09);
+  --theme-glass-filter: blur(20px) saturate(180%);
+  --theme-glass-box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  --theme-glass-box-shadow-wide:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 8px 30px rgba(0, 0, 0, 0.06);
+  --theme-nav-item-color: #333;
+  --theme-dropdown-background: #fff;
+  --theme-dropdown-border: #eeebe6;
+  --theme-selection-background: #f7dcd0;
+  --theme-image-filter: none;
+  --theme-subtle-fill: rgba(0, 0, 0, 0.02);
+  --theme-footer-border: rgba(0, 0, 0, 0.04);
+  --theme-page-intro-color: var(--palette-text-info-dark);
+  --theme-mobile-dock-background: rgba(255, 255, 255, 0.82);
+  --theme-mobile-dock-border: rgba(0, 0, 0, 0.09);
+  --theme-mobile-dock-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
+    0 10px 30px rgba(0, 0, 0, 0.14);
+  --theme-tooltip-background: rgba(0, 0, 0, 0.55);
+  --theme-tooltip-color: #fff;
+  --theme-blockquote-border: var(--text-info-color);
+  --theme-blockquote-background: rgba(0, 0, 0, 0.03);
+  --theme-glass-box-shadow-hover: var(--theme-glass-box-shadow-wide);
+  --theme-comment-form-border: #eae8e5;
+  --theme-status-error: #ff4d4f;
+  --theme-editor-muted-opacity: 0.4;
+  --theme-admin-input-background: #fff;
+  --theme-admin-input-border: #eeebe6;
+  --theme-admin-input-color: var(--palette-text-content-light);
+  --theme-admin-footer-desktop-background: transparent;
+  --theme-ticket-divider: rgba(0, 0, 0, 0.06);
+  --theme-movie-star-empty-opacity: 0.3;
+}
+
+html[data-theme="dark"] {
+  --background-body-color: var(--palette-background-body-dark);
+  --background-card-color: var(--palette-background-card-dark);
+  --background-card-border-color: var(--palette-background-card-border-dark);
+  --text-content-color: var(--palette-text-content-dark);
+  --text-highlight-color: var(--palette-text-highlight-dark);
+  --text-info-color: var(--palette-text-info-dark);
+  --theme-glass-background: rgba(28, 28, 30, 0.6);
+  --theme-glass-border: rgba(255, 255, 255, 0.08);
+  --theme-glass-filter: blur(30px) saturate(200%);
+  --theme-glass-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  --theme-glass-box-shadow-wide:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 25px rgba(0, 0, 0, 0.4);
+  --theme-nav-item-color: #7c7c82;
+  --theme-dropdown-background: rgba(28, 28, 30, 0.95);
+  --theme-dropdown-border: rgba(255, 255, 255, 0.08);
+  --theme-selection-background: #000;
+  --theme-image-filter: brightness(0.8) contrast(1.2);
+  --theme-subtle-fill: rgba(255, 255, 255, 0.02);
+  --theme-footer-border: rgba(255, 255, 255, 0.05);
+  --theme-page-intro-color: var(--palette-text-content-dark);
+  --theme-mobile-dock-background: rgba(28, 28, 30, 0.86);
+  --theme-mobile-dock-border: rgba(255, 255, 255, 0.09);
+  --theme-mobile-dock-shadow:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 38px rgba(0, 0, 0, 0.42);
+  --theme-tooltip-background: rgba(0, 0, 0, 0.85);
+  --theme-tooltip-color: var(--palette-text-content-dark);
+  --theme-blockquote-border: #666;
+  --theme-blockquote-background: rgba(255, 255, 255, 0.03);
+  --theme-comment-form-border: #28282b;
+  --theme-status-error: #ff7875;
+  --theme-editor-muted-opacity: 0.6;
+  --theme-admin-input-background: rgba(28, 28, 30, 0.95);
+  --theme-admin-input-border: rgba(255, 255, 255, 0.08);
+  --theme-admin-input-color: #fff;
+  --theme-admin-footer-desktop-background: var(--background-body-color);
+  --theme-ticket-divider: rgba(255, 255, 255, 0.04);
+  --theme-movie-star-empty-opacity: 0.5;
+  --theme-glass-box-shadow-hover:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --background-body-color: var(--palette-background-body-dark);
+    --background-card-color: var(--palette-background-card-dark);
+    --background-card-border-color: var(--palette-background-card-border-dark);
+    --text-content-color: var(--palette-text-content-dark);
+    --text-highlight-color: var(--palette-text-highlight-dark);
+    --text-info-color: var(--palette-text-info-dark);
+    --theme-glass-background: rgba(28, 28, 30, 0.6);
+    --theme-glass-border: rgba(255, 255, 255, 0.08);
+    --theme-glass-filter: blur(30px) saturate(200%);
+    --theme-glass-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    --theme-glass-box-shadow-wide:
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+      0 10px 25px rgba(0, 0, 0, 0.4);
+    --theme-nav-item-color: #7c7c82;
+    --theme-dropdown-background: rgba(28, 28, 30, 0.95);
+    --theme-dropdown-border: rgba(255, 255, 255, 0.08);
+    --theme-selection-background: #000;
+    --theme-image-filter: brightness(0.8) contrast(1.2);
+    --theme-subtle-fill: rgba(255, 255, 255, 0.02);
+    --theme-footer-border: rgba(255, 255, 255, 0.05);
+    --theme-page-intro-color: var(--palette-text-content-dark);
+    --theme-mobile-dock-background: rgba(28, 28, 30, 0.86);
+    --theme-mobile-dock-border: rgba(255, 255, 255, 0.09);
+    --theme-mobile-dock-shadow:
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+      0 14px 38px rgba(0, 0, 0, 0.42);
+    --theme-tooltip-background: rgba(0, 0, 0, 0.85);
+    --theme-tooltip-color: var(--palette-text-content-dark);
+    --theme-blockquote-border: #666;
+    --theme-blockquote-background: rgba(255, 255, 255, 0.03);
+    --theme-comment-form-border: #28282b;
+    --theme-status-error: #ff7875;
+    --theme-editor-muted-opacity: 0.6;
+    --theme-admin-input-background: rgba(28, 28, 30, 0.95);
+    --theme-admin-input-border: rgba(255, 255, 255, 0.08);
+    --theme-admin-input-color: #fff;
+    --theme-admin-footer-desktop-background: var(--background-body-color);
+    --theme-ticket-divider: rgba(255, 255, 255, 0.04);
+    --theme-movie-star-empty-opacity: 0.5;
+    --theme-glass-box-shadow-hover:
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+      0 15px 35px rgba(0, 0, 0, 0.6);
+  }
 }

@@ -1,0 +1,6 @@
+{{- $date := . -}}
+{{- if eq $date.Year now.Year -}}
+  {{- $date.Format "01-02" -}}
+{{- else -}}
+  {{- $date.Format "2006-01-02" -}}
+{{- end -}}

@@ -1,12 +1,8 @@
 <div class="card-timeline laodao-card">
   
   <div class="laodao-time">
-    <a href="{{ .Permalink }}">
-        {{ if eq .Date.Year now.Year }}
-          {{ .Date.Format "01-02 15:04" }}
-        {{ else }}
-          {{ .Date.Format "2006-01-02 15:04" }}
-        {{ end }}
+    <a href="{{ .RelPermalink }}">
+        {{ partial "jingzhe/date.html" .Date }} {{ .Date.Format "15:04" }}
     </a>
 
     {{ if .Params.device }}
@@ -41,7 +37,7 @@
   <div class="laodao-content datacont">
     {{ $cleanContent }}
     {{ if $images }}
-      <div class="laodao-gallery">
+      <div class="laodao-gallery" view-image>
         {{ range $images }}{{ . | safeHTML }}{{ end }}
       </div>
     {{ end }}
@@ -54,18 +50,18 @@
   <a href="{{ .RelPermalink }}" class="laodao-tag">#{{ .LinkTitle }}</a>
   {{ end }} 
    */}}
-      <span class="koobai-like-trigger" data-url="{{ .RelPermalink }}">       
+      <button type="button" class="koobai-like-trigger" data-url="{{ .RelPermalink }}" aria-label="点赞" aria-pressed="false">
         <svg class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
         </svg>    
         <span class="koobai-tooltip"></span>
-      </span>
+      </button>
     </div>
   
     <div class="laodao-comment">
-      <span class="koobai-comment-trigger" data-url="{{ .RelPermalink }}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"></path><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"></path></svg>
-      </span>
+      <button type="button" class="koobai-comment-trigger" data-url="{{ .RelPermalink }}" aria-label="查看评论" aria-expanded="false">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 0-8-4.873L3 21l4.873-1c1.236.639 2.64 1 4.127 1"></path><path stroke-width="3" d="M7.5 12h.01v.01H7.5zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12zm4.5 0h.01v.01H12z"></path></svg>
+      </button>
     </div>
   </div>
   <div class="laodao-comment-container"></div>

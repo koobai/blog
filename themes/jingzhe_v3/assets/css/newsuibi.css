@@ -51,17 +51,7 @@
 
 .write-meta {
   font-size: 1rem;
-  opacity: 0.4;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .write-meta {
-    opacity: 0.6;
-  }
-}
-
-html[data-theme="dark"] .write-meta {
-  opacity: 0.6;
+  opacity: var(--theme-editor-muted-opacity);
 }
 
 .write-meta:focus {
@@ -88,16 +78,6 @@ html[data-theme="dark"] .write-meta {
   padding: 15px 20px;
   border-radius: 16px;
   border-top-color: transparent;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .admin-publish-bar.is-sticky {
-    background: var(--background-card-dark-color);
-  }
-}
-
-html[data-theme="dark"] .admin-publish-bar.is-sticky {
-  background: var(--background-card-dark-color);
 }
 
 /* 4. 正文核心编辑器高度撑开 */

@@ -10,6 +10,15 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
   const compactIcon = header?.querySelector('.compact-nav-icon');
   const backButton = document.querySelector('.btn-back');
 
+  backButton?.addEventListener('click', () => {
+    const referrer = document.referrer;
+    if (referrer && referrer.includes(window.location.host)) {
+      history.back();
+      return;
+    }
+    window.location.href = backButton.dataset.fallbackUrl || '/';
+  });
+
   if (!header || !nav || !actions || !compactTrigger || !compactIcon) return;
 
   const menuItems = [...nav.querySelectorAll('.menu-item')];
