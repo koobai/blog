@@ -1,0 +1,5 @@
+{{- $page := .page -}}
+{{- $item := .item -}}
+{{- $active := or ($page.IsMenuCurrent "main" $item) ($page.HasMenuCurrent "main" $item) -}}
+{{- $active = or $active (eq ($item.URL | relLangURL) ($page.RelPermalink | relLangURL)) -}}
+{{- return $active -}}

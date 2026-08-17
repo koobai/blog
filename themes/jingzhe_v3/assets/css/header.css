@@ -67,9 +67,105 @@ html[data-theme="dark"] .floating-header {
   display: none;
 }
 
+.compact-nav-trigger {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .main-nav-menu {
     display: flex;
+  }
+
+  .compact-nav-trigger {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 0;
+    color: var(--text-highlight-color);
+    background: none;
+    border: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .compact-nav-trigger:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -5px;
+  }
+
+  .compact-nav-icon,
+  .compact-nav-icon svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
+
+  .floating-header.is-reading-nav .compact-nav-icon {
+    transform: translate3d(var(--reading-nav-icon-x), var(--reading-nav-icon-y), 0);
+  }
+
+  .floating-header.is-reading-nav {
+    width: var(--reading-nav-width);
+    height: var(--reading-nav-height);
+    padding: var(--reading-nav-padding-y) var(--reading-nav-padding-x);
+    opacity: var(--reading-nav-shell-opacity);
+  }
+
+  .floating-header.is-reading-nav.is-motion-active {
+    will-change: width, height, padding, opacity;
+  }
+
+  .floating-header.is-reading-nav.is-motion-active .compact-nav-icon {
+    will-change: transform;
+  }
+
+  .floating-header.is-reading-nav.is-reading-content-locked {
+    overflow: hidden;
+  }
+
+  .floating-header.is-reading-nav .main-nav-menu .menu-item a {
+    gap: var(--reading-nav-item-gap);
+  }
+
+  .floating-header.is-reading-nav .menu-name {
+    opacity: var(--reading-nav-label-opacity);
+    max-height: var(--reading-nav-label-height);
+    overflow: hidden;
+  }
+
+  .floating-header.is-reading-nav .compact-nav-trigger {
+    opacity: var(--reading-nav-compact-opacity);
+  }
+
+  .floating-header.is-reading-content-locked .main-nav-menu,
+  .floating-header.is-reading-content-locked .header-actions {
+    pointer-events: none;
+  }
+
+  .floating-header.is-reading-compact-interactive .compact-nav-trigger {
+    pointer-events: auto;
+  }
+
+}
+
+@media (prefers-color-scheme: dark) and (min-width: 768px) {
+  html:not([data-theme="light"]) .compact-nav-trigger {
+    color: var(--text-highlight-dark-color);
+  }
+}
+
+@media (min-width: 768px) {
+  html[data-theme="dark"] .compact-nav-trigger {
+    color: var(--text-highlight-dark-color);
   }
 }
 

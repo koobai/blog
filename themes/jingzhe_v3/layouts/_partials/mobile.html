@@ -1,12 +1,70 @@
-<div id="menu-main-mobile" class="menu-main-mobile">
-    <ul class="menu">
-        {{ range site.Menus.main }}
-            {{ if not .HasChildren }}
-                <li>
-                    <a href="{{ .URL | absLangURL }}">{{ .Name }}</a>
-                </li>
-            {{ end }}
-            
+{{ $currentPage := . }}
+{{ $currentIdentifier := "" }}
+{{ $currentName := "导航" }}
+{{ range site.Menus.main }}
+  {{ $featureName := default "" .Params.feature }}
+  {{ $showMenuItem := or (not $featureName) (partial "jingzhe/feature-enabled.html" $featureName) }}
+  {{ if $showMenuItem }}
+    {{ $active := partial "jingzhe/menu-active.html" (dict "page" $currentPage "item" .) }}
+    {{ if $active }}
+      {{ $currentIdentifier = .Identifier }}
+      {{ $currentName = .Name }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $aboutURL := "/about/" | relLangURL }}
+{{ $aboutPages := where site.RegularPages "RelPermalink" $aboutURL }}
+{{ $hasAbout := gt (len $aboutPages) 0 }}
+{{ $aboutActive := and $hasAbout (eq $currentPage.RelPermalink $aboutURL) }}
+{{ if $aboutActive }}{{ $currentName = "我" }}{{ end }}
+
+<div class="mobile-dock" data-current-identifier="{{ $currentIdentifier }}">
+  <button type="button"
+          class="mobile-dock-trigger"
+          aria-label="主导航，当前页面：{{ $currentName }}"
+          aria-controls="mobile-dock-panel"
+          aria-expanded="true"
+          tabindex="-1">
+    <span class="mobile-dock-current-icon" aria-hidden="true">
+      {{ if $currentIdentifier }}
+        {{ partial "jingzhe/nav-icon.html" $currentIdentifier }}
+      {{ else }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/></svg>
+      {{ end }}
+    </span>
+  </button>
+
+  <nav id="mobile-dock-panel" class="mobile-dock-panel" aria-label="手机端主导航" aria-hidden="false">
+    <ul class="mobile-dock-list">
+      {{ range site.Menus.main }}
+        {{ $featureName := default "" .Params.feature }}
+        {{ $showMenuItem := or (not $featureName) (partial "jingzhe/feature-enabled.html" $featureName) }}
+        {{ if and $showMenuItem (not .HasChildren) }}
+          {{ $active := partial "jingzhe/menu-active.html" (dict "page" $currentPage "item" .) }}
+          <li class="mobile-dock-item{{ if $active }} is-active{{ end }}" data-menu-identifier="{{ .Identifier }}">
+            <a href="{{ .URL }}"
+               {{ if .Params.new_window }}target="_blank" rel="noopener noreferrer"{{ end }}
+               {{ if $active }}aria-current="page"{{ end }}>
+              <span class="mobile-dock-item-icon" aria-hidden="true">
+                {{ partial "jingzhe/nav-icon.html" .Identifier }}
+              </span>
+              <span class="mobile-dock-item-label">{{ .Name }}</span>
+            </a>
+          </li>
         {{ end }}
+      {{ end }}
+
+      {{ if $hasAbout }}
+        <li class="mobile-dock-item mobile-dock-about{{ if $aboutActive }} is-active{{ end }}">
+          <a href="{{ $aboutURL }}" {{ if $aboutActive }}aria-current="page"{{ end }}>
+            <span class="mobile-dock-avatar" aria-hidden="true">
+              <span class="mobile-dock-avatar-fallback">K</span>
+              {{ with site.Params.brand.avatar }}<img src="{{ . }}" alt="">{{ end }}
+            </span>
+            <span class="mobile-dock-item-label">我</span>
+          </a>
+        </li>
+      {{ end }}
     </ul>
+  </nav>
 </div>
