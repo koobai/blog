@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Jingzhe Worker APIs
-  version: 0.2.0
+  version: 0.3.0
   description: Five independently deployed Workers. Example hosts must be replaced by each installation.
 tags:
   - name: Publisher
@@ -66,6 +66,85 @@ paths:
                   success: { type: boolean, const: true }
                   url: { type: string, format: uri }
         '400': { description: Invalid path }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/laodao/detail:
+    get:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Read one legacy laodao Markdown file for editing
+      security: [{ AdminToken: [] }]
+      parameters: [{ $ref: '#/components/parameters/ContentPath' }]
+      responses:
+        '200': { description: Laodao detail compatible with the existing App }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/laodao/publish:
+    post:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Create or update laodao while preserving the deployed App contract
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LaodaoPublish' }
+      responses:
+        '200': { $ref: '#/components/responses/PublishResult' }
+        '400': { description: Invalid content or path }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/laodao/delete:
+    post:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Idempotently delete one laodao Markdown file
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ContentPathInput' }
+      responses:
+        '200': { $ref: '#/components/responses/PublishResult' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/zouguo/detail:
+    get:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Read one standalone zouguo Markdown file for editing
+      security: [{ AdminToken: [] }]
+      parameters: [{ $ref: '#/components/parameters/ContentPath' }]
+      responses:
+        '200': { description: Markdown, path and GitHub SHA }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/zouguo/publish:
+    post:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Idempotently create or update standalone zouguo Markdown
+      description: New records require requestId or the Idempotency-Key header. Repeating the same request never creates a second file.
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ZouguoPublish' }
+      responses:
+        '200': { $ref: '#/components/responses/PublishResult' }
+        '400': { description: Invalid content, place or path }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/app/zouguo/delete:
+    post:
+      tags: [Publisher]
+      servers: [{ url: "https://publisher.example.org" }]
+      summary: Idempotently delete one standalone zouguo Markdown file
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ContentPathInput' }
+      responses:
+        '200': { $ref: '#/components/responses/PublishResult' }
         '401': { $ref: '#/components/responses/Unauthorized' }
   /api/drafts:
     get:
@@ -263,6 +342,11 @@ components:
       name: x-target-url
       required: true
       schema: { type: string, format: uri }
+    ContentPath:
+      in: query
+      name: path
+      required: true
+      schema: { type: string, pattern: '^content/(laodao|zouguo)/' }
   responses:
     Success:
       description: Success
@@ -281,6 +365,18 @@ components:
             type: object
             properties:
               error: { type: string }
+    PublishResult:
+      description: GitHub content mutation result; changed is false for an idempotent replay or already-deleted path
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, path, changed]
+            properties:
+              success: { type: boolean, const: true }
+              path: { type: string }
+              sha: { type: string }
+              changed: { type: boolean }
     ActivitySyncError:
       description: Activity Sync rejected or could not safely persist the request
       content:
@@ -324,10 +420,12 @@ components:
             url: { type: [string, 'null'], format: uri }
     Draft:
       type: object
-      required: [id, date, content, images, locationName, lat, lng, url]
+      required: [id, kind, date, payload, content, images, locationName, lat, lng, url]
       properties:
         id: { type: string }
+        kind: { enum: [laodao, zouguo] }
         date: { type: string }
+        payload: { type: object, additionalProperties: true }
         content: { type: string }
         images: { type: array, items: { type: string } }
         locationName: { type: string }
@@ -336,13 +434,63 @@ components:
         url: { type: string }
     DraftInput:
       type: object
-      required: [id, content]
+      required: [id]
       properties:
         id: { type: [string, integer] }
+        kind: { enum: [laodao, zouguo], default: laodao }
+        payload: { type: object, additionalProperties: true }
         content: { type: string, maxLength: 200000 }
         location_name: { type: string, maxLength: 100 }
         lat: { type: number }
         lng: { type: number }
+    ContentPathInput:
+      type: object
+      required: [path]
+      properties:
+        path: { type: string, pattern: '^content/(laodao|zouguo)/' }
+    LaodaoPublish:
+      type: object
+      required: [content, date]
+      properties:
+        content: { type: string, maxLength: 200000 }
+        images: { type: array, maxItems: 20, items: { type: string, format: uri } }
+        locationName: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        date: { type: string, format: date-time }
+        device: { type: string }
+        path: { type: string }
+        sha: { type: string }
+    ZouguoPublish:
+      type: object
+      required: [content, occurredAt, images, place]
+      properties:
+        requestId: { type: string, pattern: '^[a-z0-9][a-z0-9._:-]{0,199}$' }
+        title: { type: string, maxLength: 200 }
+        content: { type: string, maxLength: 200000 }
+        occurredAt: { type: string, format: date-time }
+        publishedAt: { type: string, format: date-time }
+        images: { type: array, maxItems: 20, items: { type: string, format: uri } }
+        place: { $ref: '#/components/schemas/ZouguoPlace' }
+        path: { type: string, pattern: '^content/zouguo/' }
+    ZouguoPlace:
+      type: object
+      required: [id, name, longitude, latitude, precision, privacy, countryCode]
+      properties:
+        id: { type: string, pattern: '^[a-z0-9][a-z0-9._:-]{0,199}$' }
+        name: { type: string, maxLength: 200 }
+        longitude: { type: number, minimum: -180, maximum: 180 }
+        latitude: { type: number, minimum: -90, maximum: 90 }
+        precision: { enum: [exact, poi, locality, region, approximate] }
+        privacy: { enum: [public, reduced] }
+        country: { type: string }
+        countryCode: { type: string, pattern: '^[A-Z]{2}$' }
+        region: { type: string }
+        regionCode: { type: string }
+        locality: { type: string }
+        localityCode: { type: string }
+        provider: { type: string }
+        providerId: { type: string }
     PublicComment:
       type: object
       required: [id, url, author, content, created_at, avatar_hash]

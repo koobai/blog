@@ -77,6 +77,8 @@ async function testDraftAuthenticationAndShape() {
           all: async () => ({
             results: [{
               id: 'draft-1',
+              kind: 'laodao',
+              payload_json: '{}',
               content: '未发布内容',
               location_name: '杭州',
               lat: 30.2,
@@ -101,7 +103,16 @@ async function testDraftAuthenticationAndShape() {
   const drafts = await responseJson(authorized);
   assert.deepEqual(drafts[0], {
     id: 'draft-1',
+    kind: 'laodao',
     date: '2026-08-14 12:00:00',
+    payload: {
+      content: '未发布内容',
+      images: [],
+      locationName: '杭州',
+      lat: 30.2,
+      lng: 120.1,
+      url: ''
+    },
     content: '未发布内容',
     images: [],
     locationName: '杭州',
@@ -109,6 +120,55 @@ async function testDraftAuthenticationAndShape() {
     lng: 120.1,
     url: ''
   });
+}
+
+async function testUnifiedZouguoDraftPreservesPayload() {
+  let boundValues = null;
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    DB: {
+      prepare(sql) {
+        assert.match(sql, /INSERT OR REPLACE INTO laodao_drafts/);
+        return {
+          bind(...values) {
+            boundValues = values;
+            return { run: async () => ({ success: true }) };
+          }
+        };
+      }
+    }
+  };
+  const payload = {
+    content: '雨停了。',
+    images: ['https://img.example.org/zouguo/1.webp', 'https://img.example.org/zouguo/2.webp'],
+    occurredAt: '2026-08-18T18:20:00+08:00',
+    place: {
+      id: 'jp-tokyo-river',
+      name: '东京 · 河边',
+      longitude: 139.6917,
+      latitude: 35.6895
+    }
+  };
+  const response = await draftsWorker.fetch(new Request('https://drafts.example.org/api/drafts', {
+    method: 'POST',
+    headers: {
+      Origin: origin,
+      'x-admin-token': 'local-test-token',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: 'zouguo-draft-1', kind: 'zouguo', payload })
+  }), env);
+  assert.equal(response.status, 200);
+  assert.deepEqual(await responseJson(response), {
+    success: true,
+    id: 'zouguo-draft-1',
+    kind: 'zouguo'
+  });
+  assert.equal(boundValues[0], 'zouguo-draft-1');
+  assert.equal(boundValues[1], 'zouguo');
+  assert.deepEqual(JSON.parse(boundValues[2]), payload);
+  assert.deepEqual(JSON.parse(boundValues[2]).images, payload.images, 'image order must be stable');
 }
 
 async function testLikesReadContract() {
@@ -252,10 +312,190 @@ async function testPublisherRepositoryBoundary() {
   }
 }
 
+async function testPublisherZouguoIsIdempotentAndUsesSafePath() {
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    GH_TOKEN: 'local-github-token',
+    GITHUB_OWNER: 'koobai',
+    GITHUB_REPO: 'blog',
+    GITHUB_BRANCH: 'main'
+  };
+  const originalFetch = globalThis.fetch;
+  let stored = null;
+  let putCalls = 0;
+  globalThis.fetch = async (target, options = {}) => {
+    assert.match(String(target), /^https:\/\/api\.github\.com\/repos\/koobai\/blog\/contents\/content\/zouguo\//);
+    if (!options.method || options.method === 'GET') {
+      if (!stored) return new Response(JSON.stringify({ message: 'Not Found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+      return new Response(JSON.stringify(stored), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    assert.equal(options.method, 'PUT');
+    putCalls += 1;
+    const body = JSON.parse(options.body);
+    stored = { sha: 'sha-zouguo-1', content: body.content };
+    return new Response(JSON.stringify({ content: { sha: stored.sha } }), { status: 201, headers: { 'Content-Type': 'application/json' } });
+  };
+
+  const body = {
+    requestId: 'ios-request-123',
+    content: '傍晚走到河边。',
+    occurredAt: '2026-08-18T18:20:00+08:00',
+    publishedAt: '2026-08-20T08:00:00+08:00',
+    images: ['https://img.example.org/zouguo/first.webp', 'https://img.example.org/zouguo/second.webp'],
+    place: {
+      id: 'jp-tokyo-river',
+      name: '东京 · 河边',
+      longitude: 139.6917,
+      latitude: 35.6895,
+      precision: 'locality',
+      privacy: 'reduced',
+      country: '日本',
+      countryCode: 'JP',
+      locality: '东京'
+    }
+  };
+  const makeRequest = () => new Request('https://publisher.example.org/api/app/zouguo/publish', {
+    method: 'POST',
+    headers: {
+      Origin: origin,
+      'x-admin-token': 'local-test-token',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  try {
+    const created = await publisherWorker.fetch(makeRequest(), env);
+    assert.equal(created.status, 200);
+    const createdBody = await responseJson(created);
+    assert.equal(createdBody.changed, true);
+    assert.equal(createdBody.path, 'content/zouguo/20260818-102000-ios-request-123.md');
+
+    const markdown = Buffer.from(stored.content, 'base64').toString('utf8');
+    assert.match(markdown, /type: "zouguo"/);
+    assert.match(markdown, /country_code: "JP"/);
+    assert.ok(markdown.indexOf('first.webp') < markdown.indexOf('second.webp'));
+
+    const repeated = await publisherWorker.fetch(makeRequest(), env);
+    assert.equal(repeated.status, 200);
+    assert.equal((await responseJson(repeated)).changed, false);
+    assert.equal(putCalls, 1, 'repeated request must not create or update another file');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+async function testPublisherRejectsUnsafeZouguoPathBeforeGitHub() {
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    GH_TOKEN: 'local-github-token',
+    GITHUB_OWNER: 'koobai',
+    GITHUB_REPO: 'blog'
+  };
+  const originalFetch = globalThis.fetch;
+  let fetchCalls = 0;
+  globalThis.fetch = async () => { fetchCalls += 1; throw new Error('must not reach GitHub'); };
+  try {
+    const response = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/delete', {
+      method: 'POST',
+      headers: {
+        Origin: origin,
+        'x-admin-token': 'local-test-token',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ path: 'content/zouguo/../../config.toml' })
+    }), env);
+    assert.equal(response.status, 400);
+    assert.equal(fetchCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+async function testLegacyLaodaoCanCreateUpdateReadAndDelete() {
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    GH_TOKEN: 'local-github-token',
+    GITHUB_OWNER: 'koobai',
+    GITHUB_REPO: 'blog'
+  };
+  const originalFetch = globalThis.fetch;
+  let stored = null;
+  globalThis.fetch = async (_target, options = {}) => {
+    if (!options.method || options.method === 'GET') {
+      if (!stored) return new Response(JSON.stringify({ message: 'Not Found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+      return new Response(JSON.stringify(stored), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    if (options.method === 'PUT') {
+      const body = JSON.parse(options.body);
+      stored = { sha: `sha-${Date.now()}`, content: body.content };
+      return new Response(JSON.stringify({ content: { sha: stored.sha } }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    assert.equal(options.method, 'DELETE');
+    stored = null;
+    return new Response(JSON.stringify({ commit: { sha: 'delete-sha' } }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  };
+  const headers = {
+    Origin: origin,
+    'x-admin-token': 'local-test-token',
+    'Content-Type': 'application/json'
+  };
+  const path = 'content/laodao/2026/08/20260818-102000.md';
+  const requestBody = content => ({
+    content,
+    images: ['https://img.example.org/memos/one.webp'],
+    locationName: '杭州',
+    lat: 30.2,
+    lng: 120.1,
+    date: '2026-08-18T18:20:00+08:00',
+    device: 'iPhone',
+    ...(stored ? { path } : {})
+  });
+
+  try {
+    const created = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/laodao/publish', {
+      method: 'POST', headers, body: JSON.stringify(requestBody('旧 App 新建'))
+    }), env);
+    assert.equal(created.status, 200);
+    assert.equal((await responseJson(created)).path, path);
+
+    const updated = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/laodao/publish', {
+      method: 'POST', headers, body: JSON.stringify(requestBody('旧 App 修改'))
+    }), env);
+    assert.equal(updated.status, 200);
+    assert.equal((await responseJson(updated)).changed, true);
+
+    const detail = await publisherWorker.fetch(new Request(`https://publisher.example.org/api/app/laodao/detail?path=${encodeURIComponent(path)}`, {
+      headers: { Origin: origin, 'x-admin-token': 'local-test-token' }
+    }), env);
+    assert.equal(detail.status, 200);
+    const detailBody = await responseJson(detail);
+    assert.match(detailBody.content, /旧 App 修改/);
+    assert.equal(detailBody.locationName, '杭州');
+    assert.equal(detailBody.device, 'iPhone');
+
+    const deleted = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/laodao/delete', {
+      method: 'POST', headers, body: JSON.stringify({ path })
+    }), env);
+    assert.equal(deleted.status, 200);
+    assert.equal((await responseJson(deleted)).changed, true);
+    assert.equal(stored, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
 await testCommentsHideEmail();
 await testCommentsRejectForeignOrigin();
 await testDraftAuthenticationAndShape();
+await testUnifiedZouguoDraftPreservesPayload();
 await testLikesReadContract();
 await testLikesSubmitIsAtomicAndDistinguishesDuplicates();
 await testPublisherRepositoryBoundary();
+await testPublisherZouguoIsIdempotentAndUsesSafePath();
+await testPublisherRejectsUnsafeZouguoPathBeforeGitHub();
+await testLegacyLaodaoCanCreateUpdateReadAndDelete();
 console.log('worker contract tests: ok');

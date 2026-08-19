@@ -6,6 +6,7 @@ compatibility_date = "2026-08-14"
 ALLOWED_ORIGINS = "https://example.org,http://localhost:1313,http://127.0.0.1:1313"
 GITHUB_OWNER = "your-github-owner"
 GITHUB_REPO = "your-blog-repo"
+GITHUB_BRANCH = "main"
 GITHUB_USER_AGENT = "Jingzhe-Publisher-Worker"
 IMAGE_BASE_URL = "https://images.example.org"
 

@@ -456,6 +456,7 @@ def validation_checks() -> List[dict]:
         ])
     worker_files.extend([
         ROOT / "workers/drafts/migrations/0001_initial.sql",
+        ROOT / "workers/drafts/migrations/0002_unified_drafts.sql",
         ROOT / "workers/comments/migrations/0001_initial.sql",
         ROOT / "workers/likes/migrations/0001_initial.sql",
     ])
@@ -467,18 +468,21 @@ def validation_checks() -> List[dict]:
         "五个 Worker 的源码、示例配置、契约和迁移完整" if not missing_worker_files else "Worker 文件缺失：{}".format(", ".join(missing_worker_files)),
     )
     migration_errors: List[str] = []
-    for path in sorted((ROOT / "workers").glob("*/migrations/*.sql")):
+    migration_directories = sorted((ROOT / "workers").glob("*/migrations"))
+    for directory in migration_directories:
+        connection = sqlite3.connect(":memory:")
         try:
-            connection = sqlite3.connect(":memory:")
-            connection.executescript(path.read_text(encoding="utf-8"))
-            connection.close()
+            for path in sorted(directory.glob("*.sql")):
+                connection.executescript(path.read_text(encoding="utf-8"))
         except (OSError, sqlite3.Error) as exc:
-            migration_errors.append("{}: {}".format(path.relative_to(ROOT), exc))
+            migration_errors.append("{}: {}".format(directory.relative_to(ROOT), exc))
+        finally:
+            connection.close()
     add_check(
         checks,
         "workers.migrations",
         not migration_errors,
-        "三套 D1 初始迁移可执行" if not migration_errors else "D1 迁移失败：{}".format("; ".join(migration_errors)),
+        "三套 D1 迁移链可按顺序执行" if not migration_errors else "D1 迁移失败：{}".format("; ".join(migration_errors)),
     )
 
     data_checks = [

@@ -1,6 +1,6 @@
 # Drafts Worker
 
-只保存管理员唠叨云草稿，不拥有 GitHub 或 R2 权限。
+只保存管理员云草稿，不拥有 GitHub 或 R2 权限。`kind` 区分 `laodao` 与 `zouguo`，完整编辑状态放在 `payload_json`；正式内容仍只来自 Markdown。
 
 ## Bindings
 
@@ -17,7 +17,7 @@ npx wrangler d1 migrations apply DB --local
 npx wrangler dev
 ```
 
-接口继续使用 `x-admin-token` 和 `/api/drafts`，兼容现有前端。
+接口继续使用 `x-admin-token` 和 `/api/drafts`，兼容现有唠叨字段。旧请求未传 `kind` 时按 `laodao` 保存；迁移 `0002_unified_drafts.sql` 将现有标量字段无损写入 JSON payload。走过草稿可完整保存文字、实际经过时间、地点和图片顺序。
 
 ## 远程部署
 
@@ -37,4 +37,4 @@ npx wrangler deploy --secrets-file .env.production
 draftUrl = "https://drafts.example.org"
 ```
 
-生产切换前验证草稿列表、保存、覆盖、删除、错误 Token 和未知 Origin。
+生产切换前依次应用全部迁移，再验证旧唠叨草稿读取、两类草稿保存/覆盖/删除、图片顺序、错误 Token 和未知 Origin。本阶段不自动执行远程迁移。

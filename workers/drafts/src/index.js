@@ -1,3 +1,6 @@
+const MAX_DRAFT_BYTES = 200000;
+const DRAFT_KINDS = new Set(['laodao', 'zouguo']);
+
 function allowedOrigins(env) {
   return String(env.ALLOWED_ORIGINS || '')
     .split(',')
@@ -23,10 +26,79 @@ function json(value, status, headers) {
   });
 }
 
-function validDraft(value) {
-  if (!value || value.id === undefined || typeof value.content !== 'string') return false;
+function validTimestamp(value) {
+  return typeof value === 'string'
+    && /(?:Z|[+-]\d{2}:\d{2})$/.test(value)
+    && Number.isFinite(Date.parse(value));
+}
+
+function legacyPayload(value) {
+  return {
+    content: String(value.content || ''),
+    images: Array.isArray(value.images) ? value.images : [],
+    locationName: String(value.locationName || value.location_name || ''),
+    lat: Number(value.lat || 0),
+    lng: Number(value.lng || 0),
+    url: String(value.url || '')
+  };
+}
+
+function parsePayload(row) {
+  try {
+    const parsed = JSON.parse(row.payload_json || '{}');
+    if (parsed && typeof parsed === 'object' && Object.keys(parsed).length) return parsed;
+  } catch (_error) {
+    // A migrated legacy row still has enough scalar columns to recover safely.
+  }
+  return legacyPayload(row);
+}
+
+function validImages(images) {
+  return Array.isArray(images)
+    && images.length <= 20
+    && images.every(value => typeof value === 'string' && /^https?:\/\//.test(value) && value.length <= 1000);
+}
+
+function normalizeDraft(value) {
+  if (!value || value.id === undefined) throw new Error('缺少草稿 ID');
   const id = String(value.id);
-  return id.length > 0 && id.length <= 100 && value.content.length <= 200000;
+  const kind = String(value.kind || 'laodao');
+  if (!id || id.length > 100) throw new Error('草稿 ID 无效');
+  if (!DRAFT_KINDS.has(kind)) throw new Error('草稿 kind 无效');
+
+  const payload = value.payload && typeof value.payload === 'object'
+    ? structuredClone(value.payload)
+    : legacyPayload(value);
+  if (typeof payload.content !== 'string') throw new Error('草稿 content 无效');
+  if (!validImages(payload.images || [])) throw new Error('草稿 images 无效');
+
+  if (kind === 'zouguo') {
+    if (!validTimestamp(payload.occurredAt)) throw new Error('走过草稿 occurredAt 无效');
+    const place = payload.place;
+    if (!place || typeof place !== 'object'
+      || !place.id || !place.name
+      || !Number.isFinite(Number(place.longitude))
+      || !Number.isFinite(Number(place.latitude))) {
+      throw new Error('走过草稿 place 无效');
+    }
+  }
+
+  const payloadJson = JSON.stringify(payload);
+  if (payloadJson.length > MAX_DRAFT_BYTES) throw new Error('草稿过大');
+  return { id, kind, payload, payloadJson };
+}
+
+function draftResponse(row) {
+  const kind = DRAFT_KINDS.has(row.kind) ? row.kind : 'laodao';
+  const payload = parsePayload(row);
+  const legacy = legacyPayload(payload);
+  return {
+    id: row.id,
+    kind,
+    date: row.created_at,
+    payload,
+    ...legacy
+  };
 }
 
 export default {
@@ -50,35 +122,28 @@ export default {
     try {
       if (request.method === 'GET') {
         const { results } = await env.DB.prepare(
-          'SELECT id, content, location_name, lat, lng, created_at FROM laodao_drafts ORDER BY created_at DESC'
+          'SELECT id, kind, payload_json, content, location_name, lat, lng, created_at FROM laodao_drafts ORDER BY created_at DESC'
         ).all();
-        const drafts = results.map(row => ({
-          id: row.id,
-          date: row.created_at,
-          content: row.content,
-          images: [],
-          locationName: row.location_name || '',
-          lat: row.lat || 0,
-          lng: row.lng || 0,
-          url: ''
-        }));
-        return json(drafts, 200, headers);
+        return json(results.map(draftResponse), 200, headers);
       }
 
       if (request.method === 'POST') {
-        const body = await request.json();
-        if (!validDraft(body)) return json({ error: '草稿字段无效' }, 400, headers);
+        const draft = normalizeDraft(await request.json());
+        const legacy = legacyPayload(draft.payload);
         await env.DB.prepare(`
-          INSERT OR REPLACE INTO laodao_drafts (id, content, location_name, lat, lng, created_at)
-          VALUES (?, ?, ?, ?, ?, datetime('now', '+8 hours'))
+          INSERT OR REPLACE INTO laodao_drafts
+            (id, kind, payload_json, content, location_name, lat, lng, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now', '+8 hours'))
         `).bind(
-          String(body.id),
-          body.content,
-          String(body.location_name || '').slice(0, 100),
-          Number(body.lat || 0),
-          Number(body.lng || 0)
+          draft.id,
+          draft.kind,
+          draft.payloadJson,
+          legacy.content,
+          legacy.locationName.slice(0, 100),
+          legacy.lat,
+          legacy.lng
         ).run();
-        return json({ success: true }, 200, headers);
+        return json({ success: true, id: draft.id, kind: draft.kind }, 200, headers);
       }
 
       if (request.method === 'DELETE') {
@@ -88,8 +153,10 @@ export default {
         return json({ success: true }, 200, headers);
       }
     } catch (error) {
-      console.error('Draft operation failed:', error);
-      return json({ error: '草稿服务暂时不可用' }, 500, headers);
+      const message = String(error?.message || error || '草稿服务暂时不可用');
+      const clientError = /无效|缺少|过大/.test(message);
+      if (!clientError) console.error('Draft operation failed:', error);
+      return json({ error: clientError ? message : '草稿服务暂时不可用' }, clientError ? 400 : 500, headers);
     }
 
     return json({ error: 'Method Not Allowed' }, 405, headers);
