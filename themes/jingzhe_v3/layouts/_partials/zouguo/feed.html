@@ -1,0 +1,45 @@
+{{- $items := slice -}}
+{{- range .RegularPages -}}
+  {{- $block := index .Params "zouguo" -}}
+  {{- $placeParams := index $block "place" -}}
+  {{- $occurredAt := (time.AsTime (index $block "occurred_at")).Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- $publishedAt := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- $sourceID := .File.ContentBaseName -}}
+  {{- $rawWithoutImages := replaceRE `!\[[^\]]*\]\([^)]*\)` "" .RawContent -}}
+  {{- $summary := strings.TrimSpace (plainify (markdownify $rawWithoutImages)) -}}
+  {{- $images := slice -}}
+  {{- range findRESubmatch `!\[([^\]]*)\]\(([^)[:space:]]+)(?:[[:space:]]+"[^"]*")?\)` .RawContent -}}
+    {{- $images = $images | append (dict "url" (index . 2) "alt" (index . 1)) -}}
+  {{- end -}}
+  {{- $place := dict
+    "id" (index $placeParams "id")
+    "name" (index $placeParams "name")
+    "longitude" (index $placeParams "longitude")
+    "latitude" (index $placeParams "latitude")
+    "precision" (index $placeParams "precision")
+    "country" (default "" (index $placeParams "country"))
+    "countryCode" (index $placeParams "country_code")
+    "region" (default "" (index $placeParams "region"))
+    "regionCode" (default "" (index $placeParams "region_code"))
+    "locality" (default "" (index $placeParams "locality"))
+    "localityCode" (default "" (index $placeParams "locality_code"))
+  -}}
+  {{- $source := dict "type" "zouguo" "id" $sourceID "url" .RelPermalink -}}
+  {{- $title := default (index $placeParams "name") .Title -}}
+  {{- $items = $items | append (dict
+    "id" (printf "zouguo:%s" $sourceID)
+    "source" $source
+    "title" $title
+    "summary" $summary
+    "occurredAt" $occurredAt
+    "publishedAt" $publishedAt
+    "place" $place
+    "images" $images
+  ) -}}
+{{- end -}}
+{{- $items = sort $items "occurredAt" "desc" -}}
+{{- return (dict
+  "schemaVersion" 1
+  "generatedAt" (now.Format "2006-01-02T15:04:05Z07:00")
+  "items" $items
+) -}}

@@ -13,6 +13,7 @@
 - [架构与模块契约](architecture.md)
 - [走过功能 10 步路线图](zouguo-roadmap.md)
 - [走过数据契约](zouguo-data-contract.md)
+- [走过独立内容管线](zouguo-content-pipeline.md)
 - [生产兼容基线](compatibility.md)
 - [隐私与外部数据边界](privacy.md)
 - [五个 Worker 的部署与安全边界](../workers/README.md)

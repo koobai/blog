@@ -1,0 +1,1 @@
+{{- partial "zouguo/feed.html" . | jsonify -}}

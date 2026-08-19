@@ -10,16 +10,21 @@
 {{- $mapboxLightStyle := "mapbox://styles/koobai/cmszypnux006s01py2irsdxj0" -}}
 {{- $mapboxDarkStyle := "mapbox://styles/koobai/cmszwuvo9006i01pyh583gzcv" -}}
 {{- $boundaryResource := resources.FromString "data/zouguo-boundaries.json" (hugo.Data.jingzhe.zouguo_boundaries | jsonify) | fingerprint "sha256" -}}
-{{- $items := slice -}}
-{{- with hugo.Data.jingzhe.zouguo_prototype.items -}}
-  {{- $items = . -}}
-{{- end -}}
+{{- $feed := partial "zouguo/feed.html" . -}}
+{{- $items := $feed.items -}}
 {{- $currentYear := now.Format "2006" -}}
 {{- $cityScratch := newScratch -}}
+{{- $yearScratch := newScratch -}}
+{{- $years := slice -}}
 {{- range $items -}}
-  {{- $cityKey := printf "%v:%v" .countryCode .cityCode -}}
+  {{- $year := (time.AsTime .occurredAt).Format "2006" -}}
+  {{- if not ($yearScratch.Get $year) -}}
+    {{- $yearScratch.Set $year true -}}
+    {{- $years = $years | append $year -}}
+  {{- end -}}
+  {{- $cityKey := printf "%v:%v" .place.countryCode .place.localityCode -}}
   {{- $cityScratch.SetInMap "cities" $cityKey true -}}
-  {{- $cityScratch.SetInMap "countries" (printf "%v" .countryCode) true -}}
+  {{- $cityScratch.SetInMap "countries" (printf "%v" .place.countryCode) true -}}
   {{- $cityScratch.Add "photos" (len .images) -}}
 {{- end -}}
 
@@ -75,9 +80,9 @@
       <div class="zouguo-timeline-toolbar">
         <div class="zouguo-year-filters" role="group" aria-label="按年份筛选">
           <button type="button" class="zouguo-year-filter is-active" data-year="all" aria-pressed="true">全部</button>
-          <button type="button" class="zouguo-year-filter" data-year="2026" aria-pressed="false">2026</button>
-          <button type="button" class="zouguo-year-filter" data-year="2025" aria-pressed="false">2025</button>
-          <button type="button" class="zouguo-year-filter" data-year="2024" aria-pressed="false">2024</button>
+          {{- range $years -}}
+            <button type="button" class="zouguo-year-filter" data-year="{{ . }}" aria-pressed="false">{{ . }}</button>
+          {{- end -}}
         </div>
         <button type="button" class="zouguo-random-button" id="zouguo-random">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
@@ -87,32 +92,38 @@
 
       <div class="zouguo-timeline-scroll" id="zouguo-timeline-scroll">
         {{- range $index, $item := $items -}}
+          {{- $occurred := time.AsTime $item.occurredAt -}}
+          {{- $year := $occurred.Format "2006" -}}
+          {{- $date := $occurred.Format "2006-01-02" -}}
+          {{- $dateLabel := $occurred.Format "01月02日" -}}
+          {{- $placeName := $item.place.name -}}
+          {{- $region := default $item.place.country $item.place.region -}}
           {{- $hasImages := gt (len $item.images) 0 -}}
           <article class="zouguo-entry{{ if not $hasImages }} is-text-only{{ end }}"
                    data-zouguo-id="{{ $item.id }}"
-                   data-year="{{ $item.year }}"
+                   data-year="{{ $year }}"
                    tabindex="0"
-                   aria-label="查看 {{ $item.place }} 的走过">
+                   aria-label="查看 {{ $placeName }} 的走过">
             <header class="zouguo-entry-header">
-              <h3>{{ $item.place }}</h3>
+              <h3>{{ $placeName }}</h3>
               <div class="zouguo-entry-meta">
-                <time datetime="{{ $item.date }}"
+                <time datetime="{{ $date }}"
                       data-zouguo-date
-                      data-zouguo-year="{{ $item.year }}"
-                      data-date-label="{{ $item.dateLabel }}">{{ if ne $item.year $currentYear }}{{ $item.year }} · {{ end }}{{ $item.dateLabel }}</time>
-                <span class="zouguo-entry-region">{{ if not $hasImages }}文字走过 · {{ end }}{{ $item.region }}</span>
+                      data-zouguo-year="{{ $year }}"
+                      data-date-label="{{ $dateLabel }}">{{ if ne $year $currentYear }}{{ $year }} · {{ end }}{{ $dateLabel }}</time>
+                <span class="zouguo-entry-region">{{ if not $hasImages }}文字走过 · {{ end }}{{ $region }}</span>
               </div>
             </header>
             {{- if $hasImages -}}
               <button type="button"
                       class="zouguo-entry-gallery{{ if eq (len $item.images) 1 }} is-single{{ else if eq (len $item.images) 2 }} is-pair{{ else }} is-multiple{{ end }}"
                       data-entry-gallery
-                      aria-label="查看 {{ $item.place }} 的 {{ len $item.images }} 张照片">
+                      aria-label="查看 {{ $placeName }} 的 {{ len $item.images }} 张照片">
                 {{- range $imageIndex, $image := $item.images -}}
                   {{- if lt $imageIndex 3 -}}
                     <span class="zouguo-entry-photo{{ if eq $imageIndex 0 }} is-primary{{ else if eq $imageIndex 1 }} is-secondary{{ else }} is-tertiary{{ end }}"
                           data-image-index="{{ $imageIndex }}">
-                      <img src="{{ $image }}" alt="{{ $item.place }}的合成示例插画" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}">
+                      <img src="{{ $image.url }}" alt="{{ default (printf "%s的图片" $placeName) $image.alt }}" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}">
                     </span>
                   {{- end -}}
                 {{- end -}}
@@ -121,7 +132,7 @@
                 {{- end -}}
               </button>
             {{- end -}}
-            <p class="zouguo-entry-note">{{ $item.text }}</p>
+            <p class="zouguo-entry-note">{{ $item.summary }}</p>
           </article>
         {{- end -}}
       </div>
@@ -144,7 +155,7 @@
     </button>
   </div>
 
-  <script id="zouguo-prototype-data" type="application/json">{{ dict "items" $items | jsonify | safeJS }}</script>
+  <script id="zouguo-feed-data" type="application/json">{{ $feed | jsonify | safeJS }}</script>
 </main>
 
 <script defer src="/js/view-image.min.js"></script>

@@ -2,7 +2,7 @@
   'use strict';
 
   const root = document.getElementById('zouguo-app');
-  const dataNode = document.getElementById('zouguo-prototype-data');
+  const dataNode = document.getElementById('zouguo-feed-data');
   const boundaryDataUrl = root?.dataset.boundaryUrl || '';
   if (!root || !dataNode) return;
 
@@ -14,7 +14,38 @@
     return;
   }
 
-  const items = Array.isArray(payload.items) ? payload.items : [];
+  const boundaryCountryCodes = {
+    CN: '100000',
+    AE: 'ARE',
+    KW: 'KWT'
+  };
+  const normalizeFeedItem = item => {
+    const place = item?.place && typeof item.place === 'object' ? item.place : {};
+    const occurredAt = String(item?.occurredAt || item?.date || '');
+    const date = occurredAt.slice(0, 10);
+    const dateParts = date.split('-');
+    const images = Array.isArray(item?.images)
+      ? item.images.map(image => typeof image === 'string' ? image : image?.url).filter(Boolean)
+      : [];
+    const countryCode = String(place.countryCode || item?.countryCode || '');
+
+    return Object.assign({}, item, {
+      year: dateParts[0] || '',
+      date,
+      dateLabel: dateParts.length === 3 ? `${dateParts[1]}月${dateParts[2]}日` : date,
+      place: place.name || item?.place || '',
+      locationId: place.id || item?.locationId || item?.id,
+      locationName: place.name || item?.locationName || item?.place || '',
+      region: place.region || place.country || item?.region || '',
+      countryCode: boundaryCountryCodes[countryCode] || countryCode,
+      provinceCode: place.regionCode || item?.provinceCode || '',
+      cityCode: place.localityCode || item?.cityCode || '',
+      coordinates: [Number(place.longitude), Number(place.latitude)],
+      text: typeof item?.summary === 'string' ? item.summary : String(item?.text || ''),
+      images
+    });
+  };
+  const items = Array.isArray(payload.items) ? payload.items.map(normalizeFeedItem) : [];
   const itemsById = new Map(items.map(item => [item.id, item]));
   const itemLocationIds = new Map();
   const locationMap = new Map();

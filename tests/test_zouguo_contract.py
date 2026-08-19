@@ -94,10 +94,11 @@ class ZouguoContractTests(unittest.TestCase):
             self.assertEqual(['zouguo'], condition['then']['required'])
 
     def test_route_archetype_and_content_directory_use_zouguo(self):
-        page = (ROOT / 'content/pages/走过.md').read_text(encoding='utf-8')
+        page = (ROOT / 'content/zouguo/_index.md').read_text(encoding='utf-8')
         archetype = (ROOT / 'archetypes/zouguo.md').read_text(encoding='utf-8')
-        self.assertIn('url: "/zouguo/"', page)
+        self.assertIn('title: "走过"', page)
         self.assertIn('type: "zouguo"', page)
+        self.assertIn('  - JSON', page)
         self.assertIn('type: "zouguo"', archetype)
         self.assertIn('zouguo:', archetype)
         self.assertTrue((ROOT / 'content/zouguo').is_dir())
