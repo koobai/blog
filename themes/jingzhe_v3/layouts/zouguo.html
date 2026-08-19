@@ -1,0 +1,153 @@
+{{ define "title" }}走过 - {{ site.Title }}{{ end }}
+{{ define "body_classes" }}page-zouguo{{ end }}
+
+{{ define "main" }}
+{{- $mapConfig := site.Params.services.exercise | default dict -}}
+{{- $mapboxApiOrigin := "https://api.mapbox.com" -}}
+{{- $mapboxCssUrl := "https://api.mapbox.com/mapbox-gl-js/v3.26.0/mapbox-gl.css" -}}
+{{- $mapboxJsUrl := "https://api.mapbox.com/mapbox-gl-js/v3.26.0/mapbox-gl.js" -}}
+{{- $mapboxToken := default "" (index $mapConfig "mapboxtoken") -}}
+{{- $mapboxLightStyle := "mapbox://styles/koobai/cmszypnux006s01py2irsdxj0" -}}
+{{- $mapboxDarkStyle := "mapbox://styles/koobai/cmszwuvo9006i01pyh583gzcv" -}}
+{{- $boundaryResource := resources.FromString "data/zouguo-boundaries.json" (hugo.Data.jingzhe.zouguo_boundaries | jsonify) | fingerprint "sha256" -}}
+{{- $items := slice -}}
+{{- with hugo.Data.jingzhe.zouguo_prototype.items -}}
+  {{- $items = . -}}
+{{- end -}}
+{{- $currentYear := now.Format "2006" -}}
+{{- $cityScratch := newScratch -}}
+{{- range $items -}}
+  {{- $cityKey := printf "%v:%v" .countryCode .cityCode -}}
+  {{- $cityScratch.SetInMap "cities" $cityKey true -}}
+  {{- $cityScratch.SetInMap "countries" (printf "%v" .countryCode) true -}}
+  {{- $cityScratch.Add "photos" (len .images) -}}
+{{- end -}}
+
+<link rel="dns-prefetch" href="{{ $mapboxApiOrigin }}">
+<link rel="preconnect" href="{{ $mapboxApiOrigin }}" crossorigin>
+<link rel="stylesheet" href="{{ $mapboxCssUrl }}">
+
+<main class="zouguo-page"
+      id="zouguo-app"
+      data-mapbox-token="{{ $mapboxToken }}"
+      data-map-style-light="{{ $mapboxLightStyle }}"
+      data-map-style-dark="{{ $mapboxDarkStyle }}"
+      data-boundary-url="{{ $boundaryResource.RelPermalink }}">
+  <header class="zouguo-hero">
+    <p class="zouguo-hero-line">我们经过的地方，留下的片刻。</p>
+    <div class="zouguo-hero-meta" aria-label="走过统计">
+      <span><strong>{{ len $items }}</strong> 个片段</span>
+      <span><strong>{{ len ($cityScratch.Get "cities") }}</strong> 座城市</span>
+      <span><strong>{{ len ($cityScratch.Get "countries") }}</strong> 个国家/地区</span>
+      <span><strong>{{ $cityScratch.Get "photos" }}</strong> 张照片</span>
+    </div>
+  </header>
+
+  <div class="zouguo-stage">
+    <section class="zouguo-map-panel" aria-label="走过地图">
+      <div class="zouguo-map-fallback" aria-hidden="true">
+        <span class="zouguo-map-fallback-land zouguo-map-fallback-land-a"></span>
+        <span class="zouguo-map-fallback-land zouguo-map-fallback-land-b"></span>
+        <span class="zouguo-map-fallback-line"></span>
+      </div>
+      <div id="zouguo-map" class="zouguo-map"></div>
+
+      <div class="zouguo-map-toolbar">
+        <div class="zouguo-map-caption">
+          <button class="zouguo-map-scope-back" id="zouguo-scope-back" type="button" aria-label="当前为全部走过" disabled>
+            <span class="zouguo-map-caption-dot" aria-hidden="true"></span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+          </button>
+          <span id="zouguo-map-caption">全部走过</span>
+        </div>
+        <button class="zouguo-icon-button" id="zouguo-overview" type="button" aria-label="缩放到全部走过" title="缩放到全部走过">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8"/>
+            <path d="M4 12h16M12 4c2.2 2.2 3.2 4.9 3.2 8S14.2 17.8 12 20M12 4c-2.2 2.2-3.2 4.9-3.2 8S9.8 17.8 12 20"/>
+          </svg>
+          <span>全览</span>
+        </button>
+      </div>
+
+    </section>
+
+    <aside class="zouguo-timeline" id="zouguo-timeline-panel" aria-label="走过时间线">
+      <div class="zouguo-timeline-toolbar">
+        <div class="zouguo-year-filters" role="group" aria-label="按年份筛选">
+          <button type="button" class="zouguo-year-filter is-active" data-year="all" aria-pressed="true">全部</button>
+          <button type="button" class="zouguo-year-filter" data-year="2026" aria-pressed="false">2026</button>
+          <button type="button" class="zouguo-year-filter" data-year="2025" aria-pressed="false">2025</button>
+          <button type="button" class="zouguo-year-filter" data-year="2024" aria-pressed="false">2024</button>
+        </div>
+        <button type="button" class="zouguo-random-button" id="zouguo-random">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+          随便走走
+        </button>
+      </div>
+
+      <div class="zouguo-timeline-scroll" id="zouguo-timeline-scroll">
+        {{- range $index, $item := $items -}}
+          {{- $hasImages := gt (len $item.images) 0 -}}
+          <article class="zouguo-entry{{ if not $hasImages }} is-text-only{{ end }}"
+                   data-zouguo-id="{{ $item.id }}"
+                   data-year="{{ $item.year }}"
+                   tabindex="0"
+                   aria-label="查看 {{ $item.place }} 的走过">
+            <header class="zouguo-entry-header">
+              <h3>{{ $item.place }}</h3>
+              <div class="zouguo-entry-meta">
+                <time datetime="{{ $item.date }}"
+                      data-zouguo-date
+                      data-zouguo-year="{{ $item.year }}"
+                      data-date-label="{{ $item.dateLabel }}">{{ if ne $item.year $currentYear }}{{ $item.year }} · {{ end }}{{ $item.dateLabel }}</time>
+                <span class="zouguo-entry-region">{{ if not $hasImages }}文字走过 · {{ end }}{{ $item.region }}</span>
+              </div>
+            </header>
+            {{- if $hasImages -}}
+              <button type="button"
+                      class="zouguo-entry-gallery{{ if eq (len $item.images) 1 }} is-single{{ else if eq (len $item.images) 2 }} is-pair{{ else }} is-multiple{{ end }}"
+                      data-entry-gallery
+                      aria-label="查看 {{ $item.place }} 的 {{ len $item.images }} 张照片">
+                {{- range $imageIndex, $image := $item.images -}}
+                  {{- if lt $imageIndex 3 -}}
+                    <span class="zouguo-entry-photo{{ if eq $imageIndex 0 }} is-primary{{ else if eq $imageIndex 1 }} is-secondary{{ else }} is-tertiary{{ end }}"
+                          data-image-index="{{ $imageIndex }}">
+                      <img src="{{ $image }}" alt="{{ $item.place }}的合成示例插画" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}">
+                    </span>
+                  {{- end -}}
+                {{- end -}}
+                {{- if gt (len $item.images) 3 -}}
+                  <span class="zouguo-photo-count" aria-label="还有 {{ sub (len $item.images) 3 }} 张图片">+{{ sub (len $item.images) 3 }}</span>
+                {{- end -}}
+              </button>
+            {{- end -}}
+            <p class="zouguo-entry-note">{{ $item.text }}</p>
+          </article>
+        {{- end -}}
+      </div>
+    </aside>
+
+    <button class="zouguo-timeline-reveal"
+            id="zouguo-timeline-reveal"
+            type="button"
+            aria-label="展开走过列表"
+            aria-controls="zouguo-timeline-panel"
+            aria-hidden="true"
+            tabindex="-1">
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <rect x="5" y="4.5" width="14" height="15" rx="3"/>
+        <path d="M9 8h6M9 12h6M9 16h4"/>
+      </svg>
+      <svg class="zouguo-timeline-collapse-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="m9 7 5 5-5 5M17 6v12"/>
+      </svg>
+    </button>
+  </div>
+
+  <script id="zouguo-prototype-data" type="application/json">{{ dict "items" $items | jsonify | safeJS }}</script>
+</main>
+
+<script defer src="/js/view-image.min.js"></script>
+<script defer src="{{ $mapboxJsUrl }}"></script>
+{{ partial "jingzhe/script.html" (dict "path" "js/pages/zouguo.js" "defer" true) }}
+{{ end }}

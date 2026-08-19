@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">海岸风</title><desc id="desc">用于走过页面的原创矢量插画</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8fb9c2"/><stop offset="1" stop-color="#e8d9bd"/></linearGradient><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#4f91a0"/><stop offset="1" stop-color="#1e6170"/></linearGradient></defs>
+  <rect width="800" height="520" fill="url(#sky)"/>
+  <circle cx="635" cy="116" r="53" fill="#f3dfb2" opacity=".86"/>
+  <path d="M0 261c115-12 216 4 310 15 177 20 328-33 490-14v258H0Z" fill="url(#sea)"/>
+  <g fill="none" stroke="#d5e4df" stroke-linecap="round" opacity=".68"><path d="M42 335c96-22 194-17 292 8" stroke-width="8"/><path d="M454 311c92-19 187-16 285 8" stroke-width="7"/><path d="M208 402c140-25 293-14 455 15" stroke-width="5"/></g>
+  <path d="M0 448c132-20 260-12 377 25l28 47H0Z" fill="#d5c397"/>
+  <path d="M645 520c-34-87-27-176 21-267" fill="none" stroke="#7b6a4e" stroke-width="10"/>
+  <g fill="#446c5f"><path d="M665 291c-72-25-105-59-101-103 55 17 91 53 101 103Z"/><path d="M667 289c69-43 120-48 153-17-57 8-108 14-153 17Z"/><path d="M667 286c-28-71-23-121 14-151 9 56 4 107-14 151Z"/></g>
+  <g fill="none" stroke="#3b5960" stroke-width="4"><path d="M115 154q24-18 48 0q24-18 48 0"/><path d="M307 111q18-13 36 0q18-13 36 0"/></g>
+</svg>

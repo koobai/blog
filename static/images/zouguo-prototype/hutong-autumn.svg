@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">胡同秋日</title><desc id="desc">用于走过页面的原创矢量插画</desc>
+  <defs><linearGradient id="wall" x2="1" y2="1"><stop stop-color="#b6664d"/><stop offset="1" stop-color="#713d35"/></linearGradient><linearGradient id="ground" x2="0" y2="1"><stop stop-color="#b8a084"/><stop offset="1" stop-color="#786b5f"/></linearGradient></defs>
+  <rect width="800" height="520" fill="#9eacaa"/>
+  <path d="M0 145h800v265H0Z" fill="url(#wall)"/>
+  <path d="M0 411h800v109H0Z" fill="url(#ground)"/>
+  <path d="M0 130h800v37H0Z" fill="#464a43"/><g fill="#2f3732"><path d="m24 130 38-42 38 42ZM151 130l43-47 43 47ZM635 130l44-48 43 48ZM742 130l36-40 36 40Z"/></g>
+  <rect x="501" y="230" width="178" height="181" rx="2" fill="#3e3431"/><circle cx="529" cy="323" r="8" fill="#b88b56"/>
+  <rect x="116" y="223" width="150" height="118" fill="#3e4a47"/><g stroke="#958571" stroke-width="6"><path d="M166 223v118M216 223v118M116 282h150"/></g>
+  <path d="M0 474c210-35 444-28 800 4v42H0Z" fill="#6f6357" opacity=".58"/>
+  <g fill="#d39a45"><circle cx="91" cy="74" r="32"/><circle cx="142" cy="63" r="42"/><circle cx="194" cy="82" r="36"/><circle cx="241" cy="54" r="43"/><circle cx="293" cy="83" r="32"/></g>
+  <path d="M178 0c-6 116-1 211 17 286" stroke="#463c32" stroke-width="16" fill="none"/>
+  <g fill="#d69b44" opacity=".86"><path d="m330 374 18-9-5 19Z"/><path d="m403 431 19-8-7 20Z"/><path d="m281 453 15-11 1 19Z"/></g>
+</svg>

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jingzhe.example/schemas/frontmatter/zouguo-block.schema.json",
+  "title": "Jingzhe shared zouguo front matter block",
+  "description": "Shared event time and public place facts for standalone zouguo, tagged laodao and tagged posts.",
+  "type": "object",
+  "required": ["occurred_at", "place"],
+  "properties": {
+    "occurred_at": {
+      "type": "string",
+      "minLength": 1,
+      "description": "RFC 3339 event time with Z or an explicit UTC offset. This is when the visit happened, not when it was published."
+    },
+    "place": {
+      "$ref": "#/$defs/place"
+    }
+  },
+  "$defs": {
+    "place": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "longitude",
+        "latitude",
+        "precision",
+        "country_code"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,199}$",
+          "description": "Stable blog-owned place identifier; it must not change when a provider label changes."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Public display name, for example city plus place."
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "precision": {
+          "enum": ["exact", "poi", "locality", "region", "approximate"],
+          "description": "Precision of the public coordinates after any privacy reduction."
+        },
+        "country": {"type": "string", "maxLength": 100},
+        "country_code": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country code."
+        },
+        "region": {"type": "string", "maxLength": 100},
+        "region_code": {"type": "string", "maxLength": 100},
+        "locality": {"type": "string", "maxLength": 100},
+        "locality_code": {"type": "string", "maxLength": 100},
+        "provider": {"type": "string", "maxLength": 50},
+        "provider_id": {"type": "string", "maxLength": 300}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">岛屿晨光</title><desc id="desc">用于走过页面的原创矢量插画</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#cfdbd3"/><stop offset="1" stop-color="#f2cab0"/></linearGradient><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#7ca6a4"/><stop offset="1" stop-color="#486f74"/></linearGradient></defs>
+  <rect width="800" height="520" fill="url(#sky)"/>
+  <ellipse cx="144" cy="143" rx="72" ry="72" fill="#fff0c8" opacity=".85"/>
+  <path d="M0 270h800v250H0Z" fill="url(#sea)"/>
+  <path d="M219 298c62-104 140-118 231-40 45-54 101-56 169-5l49 50Z" fill="#365950"/>
+  <path d="M330 248c18-37 45-61 79-72 15 23 17 51 5 83Z" fill="#5e7c69"/>
+  <path d="M450 259c23-46 53-67 90-63 13 28 4 52-23 74Z" fill="#6d8b73"/>
+  <g stroke="#c8ded7" stroke-linecap="round" opacity=".5"><path d="M37 353h238"/><path d="M519 338h225"/><path d="M212 430h407"/></g>
+  <path d="M93 520c34-67 67-107 101-120 31 9 66 50 105 120Z" fill="#d5c9a5"/>
+  <path d="M154 442h61" stroke="#6c6153" stroke-width="5"/><path d="M182 442v-51" stroke="#6c6153" stroke-width="5"/><path d="m185 393 39 26h-39Z" fill="#eee2c3"/>
+</svg>

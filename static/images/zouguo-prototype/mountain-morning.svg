@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">山脚清晨</title><desc id="desc">用于走过页面的原创矢量插画</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#93afbc"/><stop offset="1" stop-color="#e7d6bd"/></linearGradient><linearGradient id="front" x2="0" y2="1"><stop stop-color="#557160"/><stop offset="1" stop-color="#263e34"/></linearGradient></defs>
+  <rect width="800" height="520" fill="url(#sky)"/>
+  <circle cx="653" cy="101" r="44" fill="#f5ddae" opacity=".82"/>
+  <path d="m0 323 139-157 73 67L332 76l84 108 50-48 153 176 72-82 109 105v185H0Z" fill="#607783"/>
+  <path d="m209 233 123-157 84 108 49-48 87 101-61-37-25 19-48-11-58 20-30-63-35 72Z" fill="#edf0e6" opacity=".76"/>
+  <path d="M0 351c107-46 214-45 319 3 93-50 177-52 255-10 84-41 160-40 226-10v186H0Z" fill="url(#front)"/>
+  <g fill="#1f382f"><path d="m80 441 43-113 43 113Z"/><path d="m125 458 58-148 57 148Z"/><path d="m616 441 50-132 50 132Z"/><path d="m682 463 61-158 61 158Z"/></g>
+  <path d="M333 520c10-81 43-132 99-154 45 30 73 81 85 154Z" fill="#b7a37d" opacity=".74"/>
+</svg>

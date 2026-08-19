@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">河畔夜色</title><desc id="desc">用于走过页面的原创矢量插画</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#25354d"/><stop offset="1" stop-color="#756771"/></linearGradient><linearGradient id="river" x2="0" y2="1"><stop stop-color="#354f63"/><stop offset="1" stop-color="#172c3c"/></linearGradient></defs>
+  <rect width="800" height="520" fill="url(#sky)"/>
+  <circle cx="653" cy="92" r="28" fill="#f5dfbd" opacity=".88"/>
+  <g fill="#23313d"><path d="M0 202h122v159H0z"/><path d="M104 145h139v216H104z"/><path d="M229 220h105v141H229z"/><path d="M321 111h147v250H321z"/><path d="M451 178h116v183H451z"/><path d="M551 128h143v233H551z"/><path d="M681 210h119v151H681z"/></g>
+  <g fill="#e1b674" opacity=".72"><path d="M139 182h18v12h-18zM180 182h18v12h-18zM139 222h18v12h-18zM365 152h18v13h-18zM407 152h18v13h-18zM365 196h18v13h-18zM598 171h18v13h-18zM641 171h18v13h-18zM598 219h18v13h-18zM720 247h18v13h-18z"/></g>
+  <path d="M0 347c158-24 294-10 411 19 125 31 255 25 389-15v169H0Z" fill="url(#river)"/>
+  <g stroke="#cc9b61" stroke-linecap="round" opacity=".45"><path d="M148 376v89"/><path d="M375 366v125"/><path d="M610 365v107"/><path d="M730 365v72"/></g>
+  <path d="M0 346c135-50 266-49 396 4 133-57 268-57 404-5" fill="none" stroke="#202a33" stroke-width="14"/>
+  <g fill="#d39b66"><circle cx="96" cy="337" r="5"/><circle cx="234" cy="337" r="5"/><circle cx="506" cy="337" r="5"/><circle cx="677" cy="337" r="5"/></g>
+</svg>

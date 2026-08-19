@@ -11,7 +11,17 @@
     "image": {"type": "string"},
     "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "zouguo": {"$ref": "zouguo-block.schema.json"},
     "draft": {"type": "boolean"}
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"tags": {"contains": {"const": "走过"}}},
+        "required": ["tags"]
+      },
+      "then": {"required": ["zouguo"]}
+    }
+  ],
   "additionalProperties": true
 }

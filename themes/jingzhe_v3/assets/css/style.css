@@ -10,6 +10,7 @@
 {{ end }}
 @import "about.css";
 @import "list.css";
+@import "zouguo.css";
 {{ if partial "jingzhe/feature-enabled.html" "exercise" }}
 @import "exercise.css";
 {{ end }}

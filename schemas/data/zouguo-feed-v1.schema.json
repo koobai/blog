@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jingzhe.example/schemas/data/zouguo-feed-v1.schema.json",
+  "title": "Jingzhe Zouguo generated feed v1",
+  "description": "Generated read model for the zouguo page. Markdown remains the source of truth.",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "items"],
+  "properties": {
+    "schemaVersion": {"type": "integer", "const": 1},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/item"}
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "required": [
+        "id",
+        "source",
+        "title",
+        "summary",
+        "occurredAt",
+        "publishedAt",
+        "place",
+        "images"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(zouguo|laodao|post):[a-z0-9][a-z0-9._:-]{0,199}$"
+        },
+        "source": {"$ref": "#/$defs/source"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 200},
+        "summary": {"type": "string", "maxLength": 2000},
+        "occurredAt": {"type": "string", "format": "date-time"},
+        "publishedAt": {"type": "string", "format": "date-time"},
+        "place": {"$ref": "#/$defs/place"},
+        "images": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {"$ref": "#/$defs/image"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "properties": {"type": {"const": "post"}},
+                "required": ["type"]
+              }
+            },
+            "required": ["source"]
+          },
+          "then": {"properties": {"summary": {"maxLength": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["type", "id", "url"],
+      "properties": {
+        "type": {"enum": ["zouguo", "laodao", "post"]},
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,199}$"
+        },
+        "url": {"type": "string", "minLength": 1, "maxLength": 500}
+      },
+      "additionalProperties": false
+    },
+    "place": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "longitude",
+        "latitude",
+        "precision",
+        "countryCode"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,199}$"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "longitude": {"type": "number", "minimum": -180, "maximum": 180},
+        "latitude": {"type": "number", "minimum": -90, "maximum": 90},
+        "precision": {"enum": ["exact", "poi", "locality", "region", "approximate"]},
+        "country": {"type": "string", "maxLength": 100},
+        "countryCode": {"type": "string", "pattern": "^[A-Z]{2}$"},
+        "region": {"type": "string", "maxLength": 100},
+        "regionCode": {"type": "string", "maxLength": 100},
+        "locality": {"type": "string", "maxLength": 100},
+        "localityCode": {"type": "string", "maxLength": 100}
+      },
+      "additionalProperties": false
+    },
+    "image": {
+      "type": "object",
+      "required": ["url", "alt"],
+      "properties": {
+        "url": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "alt": {"type": "string", "maxLength": 500},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "x-jingzhe-contract": {
+    "source_of_truth": "markdown",
+    "generated_json_role": "derived_read_model",
+    "identity": ["source.type", "source.id"],
+    "tag_trigger": "走过",
+    "source_types": ["zouguo", "laodao", "post"],
+    "post_summary": "empty; the card links with the post title only",
+    "image_order": "first appearance in Markdown; a post cover is prepended only when absent from the body",
+    "deletion": "remove or untag the source Markdown; the next build removes the generated item",
+    "deduplication": "exact source identity only; never fuzzy-match text, time or coordinates"
+  }
+}

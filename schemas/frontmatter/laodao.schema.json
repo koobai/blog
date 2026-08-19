@@ -9,7 +9,17 @@
     "device": {"type": "string"},
     "location": {"type": "string"},
     "latlng": {"type": "string", "pattern": "^-?[0-9]+(?:\\.[0-9]+)?,-?[0-9]+(?:\\.[0-9]+)?$"},
+    "zouguo": {"$ref": "zouguo-block.schema.json"},
     "draft": {"type": "boolean"}
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"laodaotags": {"contains": {"const": "走过"}}},
+        "required": ["laodaotags"]
+      },
+      "then": {"required": ["zouguo"]}
+    }
+  ],
   "additionalProperties": true
 }

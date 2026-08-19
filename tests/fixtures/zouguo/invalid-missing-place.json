@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-19T12:00:00+08:00",
+  "items": [
+    {
+      "id": "zouguo:invalid-record",
+      "source": {
+        "type": "zouguo",
+        "id": "invalid-record",
+        "url": "/zouguo/invalid-record/"
+      },
+      "title": "缺少地点的合成记录",
+      "summary": "这条数据应当被拒绝。",
+      "occurredAt": "2026-08-18T18:20:00+08:00",
+      "publishedAt": "2026-08-18T19:10:00+08:00",
+      "images": []
+    }
+  ]
+}

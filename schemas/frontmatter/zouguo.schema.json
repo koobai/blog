@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jingzhe.example/schemas/frontmatter/zouguo.schema.json",
+  "title": "Jingzhe standalone zouguo front matter",
+  "type": "object",
+  "required": ["date", "type", "zouguo"],
+  "properties": {
+    "title": {"type": "string", "maxLength": 200},
+    "date": {"type": "string", "minLength": 1},
+    "type": {"const": "zouguo"},
+    "zouguo": {"$ref": "zouguo-block.schema.json"},
+    "draft": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}
