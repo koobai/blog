@@ -459,6 +459,9 @@ components:
         lng: { type: number }
         date: { type: string, format: date-time }
         device: { type: string }
+        syncToZouguo: { type: boolean, default: false }
+        occurredAt: { type: string, format: date-time }
+        place: { $ref: '#/components/schemas/ZouguoPlace' }
         path: { type: string }
         sha: { type: string }
     ZouguoPublish:

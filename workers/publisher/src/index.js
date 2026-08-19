@@ -212,6 +212,13 @@ function buildLaodaoMarkdown(body) {
   if (typeof body.content !== 'string' || body.content.length > MAX_CONTENT_LENGTH) throw new Error('content 无效');
   if (!validTimestamp(body.date)) throw new Error('date 必须是带时区的时间');
   const tags = [...new Set(Array.from(body.content.matchAll(/#([^\s<.,!?\'"，。！？]+)/g), match => match[1]))];
+  const syncToZouguo = body.syncToZouguo === true || tags.includes('走过');
+  let place = null;
+  if (syncToZouguo) {
+    if (!validTimestamp(body.occurredAt)) throw new Error('同步到走过必须提供 occurredAt');
+    place = normalizePlace(body.place);
+    if (!tags.includes('走过')) tags.push('走过');
+  }
   let markdown = `---\ndate: ${body.date}\n`;
   if (tags.length) markdown += `laodaotags:\n${tags.map(tag => `  - ${yamlString(tag)}`).join('\n')}\n`;
   if (body.locationName) {
@@ -219,6 +226,23 @@ function buildLaodaoMarkdown(body) {
     markdown += `latlng: ${yamlString(`${Number(body.lat || 0)},${Number(body.lng || 0)}`)}\n`;
   }
   if (body.device) markdown += `device: ${yamlString(body.device)}\n`;
+  if (syncToZouguo) {
+    const line = (key, value) => value === '' ? '' : `    ${key}: ${yamlString(value)}\n`;
+    markdown += `zouguo:\n  occurred_at: ${body.occurredAt}\n  place:\n`;
+    markdown += line('id', place.id);
+    markdown += line('name', place.name);
+    markdown += `    longitude: ${place.longitude}\n    latitude: ${place.latitude}\n`;
+    markdown += line('precision', place.precision);
+    markdown += line('privacy', place.privacy);
+    markdown += line('country', place.country);
+    markdown += line('country_code', place.countryCode);
+    markdown += line('region', place.region);
+    markdown += line('region_code', place.regionCode);
+    markdown += line('locality', place.locality);
+    markdown += line('locality_code', place.localityCode);
+    markdown += line('provider', place.provider);
+    markdown += line('provider_id', place.providerId);
+  }
   markdown += `---\n\n${body.content}\n`;
   return appendImages(markdown, normalizeImages(body.images));
 }
@@ -265,13 +289,34 @@ function parseLegacyLaodao(markdown) {
   const content = markdown.startsWith('---') ? markdown.split('---').slice(2).join('---').trim() : markdown;
   const value = pattern => frontmatter.match(pattern)?.[1]?.trim() || '';
   const coordinates = value(/latlng:\s*"?([^"\n]+)"?/).split(',').map(Number);
+  const syncToZouguo = /(?:^|\n)zouguo:\s*(?:\n|$)/.test(frontmatter);
+  const nested = key => value(new RegExp(`(?:^|\\n)\\s{4}${key}:\\s*"?([^"\\n]+)"?`));
+  const parsedPlace = syncToZouguo ? {
+    id: nested('id'),
+    name: nested('name'),
+    longitude: Number(nested('longitude')),
+    latitude: Number(nested('latitude')),
+    precision: nested('precision'),
+    privacy: nested('privacy'),
+    country: nested('country'),
+    countryCode: nested('country_code'),
+    region: nested('region'),
+    regionCode: nested('region_code'),
+    locality: nested('locality'),
+    localityCode: nested('locality_code'),
+    provider: nested('provider'),
+    providerId: nested('provider_id')
+  } : null;
   return {
     content,
     date: value(/date:\s*"?([^"\n]+)"?/),
     locationName: value(/location:\s*"([^"]+)"/),
     lat: Number.isFinite(coordinates[0]) ? coordinates[0] : 0,
     lng: Number.isFinite(coordinates[1]) ? coordinates[1] : 0,
-    device: value(/device:\s*"([^"]+)"/) || null
+    device: value(/device:\s*"([^"]+)"/) || null,
+    syncToZouguo,
+    occurredAt: syncToZouguo ? value(/occurred_at:\s*"?([^"\n]+)"?/) : null,
+    place: parsedPlace
   };
 }
 

@@ -9,6 +9,8 @@
 - 新建走过必须提供 `requestId` 或 `Idempotency-Key`。路径由发生时间和请求 ID 确定；重复请求先比较目标 Markdown，内容相同直接返回 `changed: false`。
 - 修改和删除会先读取 GitHub 当前 SHA；删除不存在的路径同样返回成功，不制造重复副作用。
 - 所有 App 接口都沿用 `x-admin-token`，路径、字段、坐标、图片数量与来源 URL 均在访问 GitHub 前校验。
+- `/api/app/laodao/publish` 支持 `syncToZouguo`、`occurredAt` 和结构化 `place`。开启同步时 Worker 自动写入“走过”Tag 与 `zouguo` 地点块；缺少合法地点或发生时间会在访问 GitHub 前返回 `400`。
+- 已同步唠叨再次发布且关闭 `syncToZouguo` 时，Worker 会移除“走过”Tag 与 `zouguo` 地点块；普通唠叨的原有发布格式保持兼容。
 
 ## Bindings
 

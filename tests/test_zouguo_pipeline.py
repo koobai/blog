@@ -182,6 +182,22 @@ zouguo:
             self.assertIn('href="/zouguo-pipeline-post/"', rendered)
             self.assertNotIn('这段长文不能复制进走过卡片。', rendered)
 
+            post.write_text(
+                post.read_text(encoding='utf-8').replace(
+                    '一篇走过测试随笔',
+                    '改过标题的走过测试随笔',
+                ),
+                encoding='utf-8',
+            )
+            updated = self.build_with_content(content_dir, destination)
+            updated_posts = [
+                item for item in updated['items']
+                if item['id'] == 'post:zouguo-pipeline-post'
+            ]
+            self.assertEqual(1, len(updated_posts))
+            self.assertEqual('改过标题的走过测试随笔', updated_posts[0]['title'])
+            self.assertEqual(2, len(updated_posts[0]['images']))
+
             laodao.write_text(
                 laodao.read_text(encoding='utf-8').replace('["走过"]', '["日常"]'),
                 encoding='utf-8',
