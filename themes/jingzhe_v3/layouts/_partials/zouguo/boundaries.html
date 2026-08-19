@@ -1,0 +1,16 @@
+{{- $feed := . -}}
+{{- $codes := newScratch -}}
+{{- range $feed.items -}}
+  {{- with .place.countryCode -}}{{- $codes.SetInMap "country" (printf "%v" .) true -}}{{- end -}}
+  {{- with .place.regionCode -}}{{- $codes.SetInMap "province" (printf "%v" .) true -}}{{- end -}}
+  {{- with .place.localityCode -}}{{- $codes.SetInMap "city" (printf "%v" .) true -}}{{- end -}}
+{{- end -}}
+{{- $features := slice -}}
+{{- range hugo.Data.jingzhe.zouguo_boundary_catalog.features -}}
+  {{- $level := printf "%v" .properties.level -}}
+  {{- $code := printf "%v" .properties.groupCode -}}
+  {{- if index ($codes.Get $level | default dict) $code -}}
+    {{- $features = $features | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "type" "FeatureCollection" "features" $features) -}}

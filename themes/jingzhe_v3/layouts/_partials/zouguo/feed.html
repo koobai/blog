@@ -71,12 +71,15 @@
     "longitude" (index $placeParams "longitude")
     "latitude" (index $placeParams "latitude")
     "precision" (index $placeParams "precision")
+    "privacy" (default "public" (index $placeParams "privacy"))
     "country" (default "" (index $placeParams "country"))
     "countryCode" (index $placeParams "country_code")
     "region" (default "" (index $placeParams "region"))
     "regionCode" (default "" (index $placeParams "region_code"))
     "locality" (default "" (index $placeParams "locality"))
     "localityCode" (default "" (index $placeParams "locality_code"))
+    "provider" (default "" (index $placeParams "provider"))
+    "providerId" (default "" (index $placeParams "provider_id"))
   -}}
   {{- $sourceInfo := dict "type" $sourceType "id" $sourceID "url" $page.RelPermalink -}}
   {{- $title := index $placeParams "name" -}}

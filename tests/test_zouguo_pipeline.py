@@ -1,4 +1,5 @@
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -218,6 +219,63 @@ laodaotags: ["走过"]
             output = '{}\n{}'.format(raised.exception.stdout, raised.exception.stderr)
             self.assertIn('20260819-190000.md', output)
             self.assertIn('缺少 zouguo.occurred_at 或 zouguo.place', output)
+
+    def test_new_province_and_overseas_country_boundaries_are_selected_automatically(self):
+        with tempfile.TemporaryDirectory(prefix='jingzhe-zouguo-boundaries-') as temp:
+            temp_root = Path(temp)
+            content_dir = temp_root / 'content'
+            destination = temp_root / 'public'
+            shutil.copytree(ROOT / 'content', content_dir)
+
+            cases = (
+                ('guangdong-auto', '广州 · 江边', '113.2644', '23.1291', 'CN', '440000'),
+                ('japan-auto', '东京 · 河边', '139.6917', '35.6895', 'JP', ''),
+            )
+            for slug, name, longitude, latitude, country_code, region_code in cases:
+                (content_dir / 'zouguo' / '{}.md'.format(slug)).write_text(
+                    '''---
+title: "{name}"
+date: 2026-08-19T20:00:00+08:00
+type: "zouguo"
+draft: false
+zouguo:
+  occurred_at: 2026-08-19T18:00:00+08:00
+  place:
+    id: "test-{slug}"
+    name: "{name}"
+    longitude: {longitude}
+    latitude: {latitude}
+    precision: "locality"
+    privacy: "reduced"
+    country_code: "{country_code}"
+    region_code: "{region_code}"
+---
+
+自动边界验收。
+'''.format(
+                        slug=slug,
+                        name=name,
+                        longitude=longitude,
+                        latitude=latitude,
+                        country_code=country_code,
+                        region_code=region_code,
+                    ),
+                    encoding='utf-8',
+                )
+
+            self.build_with_content(content_dir, destination)
+            html = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
+            match = re.search(r'data-boundary-url="([^"]+)"', html)
+            self.assertIsNotNone(match)
+            boundary_path = destination / match.group(1).lstrip('/')
+            boundaries = json.loads(boundary_path.read_text(encoding='utf-8'))
+            selected = {
+                (feature['properties']['level'], str(feature['properties']['groupCode']))
+                for feature in boundaries['features']
+            }
+            self.assertIn(('province', '440000'), selected)
+            self.assertIn(('country', 'JP'), selected)
+            self.assertFalse((ROOT / 'data/jingzhe/zouguo_boundaries.json').exists())
 
 
 if __name__ == '__main__':

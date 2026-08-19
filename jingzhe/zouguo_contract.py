@@ -31,6 +31,7 @@ PLACE_SCHEMA = SCHEMA['$defs']['place']
 PLACE_FIELDS = frozenset(PLACE_SCHEMA['properties'])
 PLACE_REQUIRED_FIELDS = frozenset(PLACE_SCHEMA['required'])
 PLACE_PRECISIONS = frozenset(PLACE_SCHEMA['properties']['precision']['enum'])
+PLACE_PRIVACY_LEVELS = frozenset(PLACE_SCHEMA['properties']['privacy']['enum'])
 IMAGE_SCHEMA = SCHEMA['$defs']['image']
 IMAGE_FIELDS = frozenset(IMAGE_SCHEMA['properties'])
 IMAGE_REQUIRED_FIELDS = frozenset(IMAGE_SCHEMA['required'])
@@ -186,6 +187,8 @@ def validate_zouguo_feed(payload):
                 errors.append('{} place.latitude 必须介于 -90 与 90'.format(prefix))
             if place.get('precision') not in PLACE_PRECISIONS:
                 errors.append('{} place.precision 无效'.format(prefix))
+            if place.get('privacy') not in PLACE_PRIVACY_LEVELS:
+                errors.append('{} place.privacy 无效'.format(prefix))
             if not isinstance(place.get('countryCode'), str) or not COUNTRY_CODE_PATTERN.fullmatch(
                 place.get('countryCode', '')
             ):

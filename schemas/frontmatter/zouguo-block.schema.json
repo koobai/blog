@@ -52,6 +52,11 @@
           "enum": ["exact", "poi", "locality", "region", "approximate"],
           "description": "Precision of the public coordinates after any privacy reduction."
         },
+        "privacy": {
+          "enum": ["public", "reduced"],
+          "default": "public",
+          "description": "Only publishable coordinates are stored. reduced means the raw device coordinate was discarded after blurring."
+        },
         "country": {"type": "string", "maxLength": 100},
         "country_code": {
           "type": "string",

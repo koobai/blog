@@ -80,6 +80,7 @@
         "longitude",
         "latitude",
         "precision",
+        "privacy",
         "countryCode"
       ],
       "properties": {
@@ -88,12 +89,15 @@
         "longitude": {"type": "number", "minimum": -180, "maximum": 180},
         "latitude": {"type": "number", "minimum": -90, "maximum": 90},
         "precision": {"enum": ["exact", "poi", "locality", "region", "approximate"]},
+        "privacy": {"enum": ["public", "reduced"]},
         "country": {"type": "string", "maxLength": 100},
         "countryCode": {"type": "string", "pattern": "^[A-Z]{2}$"},
         "region": {"type": "string", "maxLength": 100},
         "regionCode": {"type": "string", "maxLength": 100},
         "locality": {"type": "string", "maxLength": 100},
-        "localityCode": {"type": "string", "maxLength": 100}
+        "localityCode": {"type": "string", "maxLength": 100},
+        "provider": {"type": "string", "maxLength": 50},
+        "providerId": {"type": "string", "maxLength": 300}
       },
       "additionalProperties": false
     },

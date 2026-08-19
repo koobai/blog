@@ -11,6 +11,7 @@ zouguo:
     longitude: 0
     latitude: 0
     precision: "poi"
+    privacy: "public"
     country: ""
     country_code: ""
     region: ""

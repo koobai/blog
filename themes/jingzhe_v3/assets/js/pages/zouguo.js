@@ -14,11 +14,6 @@
     return;
   }
 
-  const boundaryCountryCodes = {
-    CN: '100000',
-    AE: 'ARE',
-    KW: 'KWT'
-  };
   const normalizeFeedItem = item => {
     const place = item?.place && typeof item.place === 'object' ? item.place : {};
     const occurredAt = String(item?.occurredAt || item?.date || '');
@@ -37,7 +32,7 @@
       locationId: place.id || item?.locationId || item?.id,
       locationName: place.name || item?.locationName || item?.place || '',
       region: place.region || place.country || item?.region || '',
-      countryCode: boundaryCountryCodes[countryCode] || countryCode,
+      countryCode,
       provinceCode: place.regionCode || item?.provinceCode || '',
       cityCode: place.localityCode || item?.cityCode || '',
       coordinates: [Number(place.longitude), Number(place.latitude)],

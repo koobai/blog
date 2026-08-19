@@ -9,8 +9,9 @@
 {{- $mapboxToken := default "" (index $mapConfig "mapboxtoken") -}}
 {{- $mapboxLightStyle := "mapbox://styles/koobai/cmszypnux006s01py2irsdxj0" -}}
 {{- $mapboxDarkStyle := "mapbox://styles/koobai/cmszwuvo9006i01pyh583gzcv" -}}
-{{- $boundaryResource := resources.FromString "data/zouguo-boundaries.json" (hugo.Data.jingzhe.zouguo_boundaries | jsonify) | fingerprint "sha256" -}}
 {{- $feed := partial "zouguo/feed.html" . -}}
+{{- $boundaries := partial "zouguo/boundaries.html" $feed -}}
+{{- $boundaryResource := resources.FromString "data/zouguo-boundaries.json" ($boundaries | jsonify) | fingerprint "sha256" -}}
 {{- $items := $feed.items -}}
 {{- $currentYear := now.Format "2006" -}}
 {{- $cityScratch := newScratch -}}
