@@ -1306,7 +1306,10 @@
       timelineFocusId = item.id;
       focusLocation(location, { showCard: false, itemId: item.id });
     };
-    card.addEventListener('click', activate);
+    card.addEventListener('click', event => {
+      if (event.target.closest('a')) return;
+      activate();
+    });
     card.addEventListener('keydown', event => {
       if (event.target !== card) return;
       if (event.key === 'Enter' || event.key === ' ') {

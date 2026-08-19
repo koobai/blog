@@ -37,7 +37,16 @@ class ZouguoPipelineTests(unittest.TestCase):
             payload = self.build_with_content(ROOT / 'content', destination)
 
         self.assertEqual([], validate_zouguo_feed(payload))
-        self.assertEqual(15, len(payload['items']))
+        self.assertEqual(16, len(payload['items']))
+        self.assertEqual(
+            {'zouguo': 15, 'laodao': 1},
+            {
+                source_type: sum(
+                    item['source']['type'] == source_type for item in payload['items']
+                )
+                for source_type in ('zouguo', 'laodao')
+            },
+        )
         self.assertFalse((ROOT / 'data/jingzhe/zouguo_prototype.json').exists())
         layout = (ROOT / 'themes/jingzhe_v3/layouts/zouguo.html').read_text(encoding='utf-8')
         self.assertNotIn('zouguo_prototype', layout)
@@ -50,7 +59,7 @@ class ZouguoPipelineTests(unittest.TestCase):
             shutil.copytree(ROOT / 'content', content_dir)
 
             baseline = self.build_with_content(content_dir, destination)
-            self.assertEqual(15, len(baseline['items']))
+            self.assertEqual(16, len(baseline['items']))
 
             synthetic = content_dir / 'zouguo/pipeline-acceptance.md'
             synthetic.write_text(
@@ -81,7 +90,7 @@ zouguo:
                 encoding='utf-8',
             )
             added = self.build_with_content(content_dir, destination)
-            self.assertEqual(16, len(added['items']))
+            self.assertEqual(17, len(added['items']))
             added_item = next(item for item in added['items'] if item['id'] == 'zouguo:pipeline-acceptance')
             self.assertEqual('第一次生成。', added_item['summary'])
 
@@ -95,8 +104,120 @@ zouguo:
 
             synthetic.unlink()
             deleted = self.build_with_content(content_dir, destination)
-            self.assertEqual(15, len(deleted['items']))
+            self.assertEqual(16, len(deleted['items']))
             self.assertNotIn('zouguo:pipeline-acceptance', {item['id'] for item in deleted['items']})
+
+    def test_tagged_laodao_and_post_join_and_leave_the_same_feed(self):
+        with tempfile.TemporaryDirectory(prefix='jingzhe-zouguo-sources-') as temp:
+            temp_root = Path(temp)
+            content_dir = temp_root / 'content'
+            destination = temp_root / 'public'
+            shutil.copytree(ROOT / 'content', content_dir)
+
+            laodao = content_dir / 'laodao/2026/08/20260819-180000.md'
+            laodao.write_text(
+                '''---
+date: 2026-08-19T18:00:00+08:00
+laodaotags: ["走过"]
+zouguo:
+  occurred_at: 2026-08-19T17:30:00+08:00
+  place:
+    id: "cn-test-laodao-place"
+    name: "测试城 · 唠叨地点"
+    longitude: 120.02
+    latitude: 30.02
+    precision: "poi"
+    country: "中国"
+    country_code: "CN"
+---
+
+一条带图片的走过唠叨。
+
+![唠叨图片](/images/zouguo-prototype/lake-dusk.svg)
+''',
+                encoding='utf-8',
+            )
+            post = content_dir / 'posts/zouguo-pipeline-post.md'
+            post.write_text(
+                '''---
+title: "一篇走过测试随笔"
+date: 2026-08-19T19:00:00+08:00
+slug: "zouguo-pipeline-post"
+tags: ["走过"]
+image: /images/zouguo-prototype/mountain-morning.svg
+zouguo:
+  occurred_at: 2026-08-18T09:00:00+08:00
+  place:
+    id: "cn-test-post-place"
+    name: "测试城 · 随笔地点"
+    longitude: 120.03
+    latitude: 30.03
+    precision: "approximate"
+    country: "中国"
+    country_code: "CN"
+---
+
+这段长文不能复制进走过卡片。
+
+![封面重复](/images/zouguo-prototype/mountain-morning.svg)
+![正文图片](/images/zouguo-prototype/coast-wind.svg)
+''',
+                encoding='utf-8',
+            )
+
+            joined = self.build_with_content(content_dir, destination)
+            self.assertEqual(18, len(joined['items']))
+            laodao_item = next(item for item in joined['items'] if item['id'] == 'laodao:20260819-180000')
+            self.assertEqual('一条带图片的走过唠叨。', laodao_item['summary'])
+            self.assertEqual(1, len(laodao_item['images']))
+
+            post_item = next(item for item in joined['items'] if item['id'] == 'post:zouguo-pipeline-post')
+            self.assertEqual('一篇走过测试随笔', post_item['title'])
+            self.assertEqual('', post_item['summary'])
+            self.assertEqual('/zouguo-pipeline-post/', post_item['source']['url'])
+            self.assertEqual(2, len(post_item['images']))
+            rendered = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
+            self.assertIn('data-source-type="post"', rendered)
+            self.assertIn('href="/zouguo-pipeline-post/"', rendered)
+            self.assertNotIn('这段长文不能复制进走过卡片。', rendered)
+
+            laodao.write_text(
+                laodao.read_text(encoding='utf-8').replace('["走过"]', '["日常"]'),
+                encoding='utf-8',
+            )
+            post.write_text(
+                post.read_text(encoding='utf-8').replace('["走过"]', '["生活"]'),
+                encoding='utf-8',
+            )
+            untagged = self.build_with_content(content_dir, destination)
+            ids = {item['id'] for item in untagged['items']}
+            self.assertEqual(16, len(untagged['items']))
+            self.assertNotIn('laodao:20260819-180000', ids)
+            self.assertNotIn('post:zouguo-pipeline-post', ids)
+
+    def test_tagged_content_without_structured_place_fails_the_build(self):
+        with tempfile.TemporaryDirectory(prefix='jingzhe-zouguo-invalid-source-') as temp:
+            temp_root = Path(temp)
+            content_dir = temp_root / 'content'
+            destination = temp_root / 'public'
+            shutil.copytree(ROOT / 'content', content_dir)
+            invalid = content_dir / 'laodao/2026/08/20260819-190000.md'
+            invalid.write_text(
+                '''---
+date: 2026-08-19T19:00:00+08:00
+laodaotags: ["走过"]
+---
+
+缺少地点的走过唠叨。
+''',
+                encoding='utf-8',
+            )
+
+            with self.assertRaises(subprocess.CalledProcessError) as raised:
+                self.build_with_content(content_dir, destination)
+            output = '{}\n{}'.format(raised.exception.stdout, raised.exception.stderr)
+            self.assertIn('20260819-190000.md', output)
+            self.assertIn('缺少 zouguo.occurred_at 或 zouguo.place', output)
 
 
 if __name__ == '__main__':

@@ -101,11 +101,18 @@
           {{- $hasImages := gt (len $item.images) 0 -}}
           <article class="zouguo-entry{{ if not $hasImages }} is-text-only{{ end }}"
                    data-zouguo-id="{{ $item.id }}"
+                   data-source-type="{{ $item.source.type }}"
                    data-year="{{ $year }}"
                    tabindex="0"
                    aria-label="查看 {{ $placeName }} 的走过">
             <header class="zouguo-entry-header">
-              <h3>{{ $placeName }}</h3>
+              <h3>
+                {{- if eq $item.source.type "post" -}}
+                  <a class="zouguo-entry-source-link" data-zouguo-source-link href="{{ $item.source.url }}">{{ $item.title }}</a>
+                {{- else -}}
+                  {{ $placeName }}
+                {{- end -}}
+              </h3>
               <div class="zouguo-entry-meta">
                 <time datetime="{{ $date }}"
                       data-zouguo-date
@@ -132,7 +139,9 @@
                 {{- end -}}
               </button>
             {{- end -}}
-            <p class="zouguo-entry-note">{{ $item.summary }}</p>
+            {{- with $item.summary -}}
+              <p class="zouguo-entry-note">{{ . }}</p>
+            {{- end -}}
           </article>
         {{- end -}}
       </div>

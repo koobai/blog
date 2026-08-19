@@ -1063,6 +1063,16 @@
   white-space: nowrap;
 }
 
+.zouguo-entry-source-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.zouguo-entry-source-link:hover,
+.zouguo-entry-source-link:focus-visible {
+  color: var(--accent-color, #b76551);
+}
+
 .zouguo-entry-meta {
   display: flex;
   align-items: center;
