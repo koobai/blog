@@ -26,6 +26,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
 
   const desktopQuery = window.matchMedia('(min-width: 768px)');
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const shortLandscapeQuery = window.matchMedia('(orientation: landscape) and (max-height: 600px)');
   const {
     clamp,
     lerp,
@@ -130,6 +131,7 @@ window.ViewImage && ViewImage.init('.article-cover-img,.post-figure img,.laodao-
 
   function getProgress() {
     if (!scrollMorphEnabled) return 0;
+    if (document.body.classList.contains('page-zouguo') && shortLandscapeQuery.matches) return 1;
     return getScrollProgress(window.scrollY);
   }
 

@@ -108,6 +108,11 @@
   const randomButton = document.getElementById('zouguo-random');
   const timelinePanel = root.querySelector('.zouguo-timeline');
   const timelineRevealButton = document.getElementById('zouguo-timeline-reveal');
+  const mapPanel = root.querySelector('.zouguo-map-panel');
+  const coarsePointerQuery = window.matchMedia?.('(pointer: coarse)');
+  const stackedLayoutQuery = window.matchMedia?.(
+    '(max-width: 860px), (pointer: coarse) and (orientation: landscape) and (max-height: 600px)'
+  );
 
   let map = null;
   let selectedId = null;
@@ -235,7 +240,23 @@
     }
   };
 
-  const hasOverlayTimeline = () => window.innerWidth > 860;
+  const hasOverlayTimeline = () => !stackedLayoutQuery?.matches;
+  const hasMobileMapLayout = () => Boolean(stackedLayoutQuery?.matches);
+
+  const syncTimelineCardInteractivity = () => {
+    const mapLinked = !hasMobileMapLayout();
+    cards.forEach(card => {
+      if (!card.dataset.mapActionLabel) {
+        card.dataset.mapActionLabel = card.getAttribute('aria-label') || '';
+      }
+      card.tabIndex = mapLinked ? 0 : -1;
+      if (mapLinked && card.dataset.mapActionLabel) {
+        card.setAttribute('aria-label', card.dataset.mapActionLabel);
+      } else {
+        card.removeAttribute('aria-label');
+      }
+    });
+  };
 
   const setTimelineRetracted = active => {
     const retracted = Boolean(active && hasOverlayTimeline());
@@ -651,9 +672,15 @@
     // Keep the 3D reveal, but do not leave the WebGL map rendering a full
     // 90-second revolution after every click. The shorter list motion also
     // avoids continuously repainting beneath the large glass panel.
-    const motion = withCard
-      ? { delay: 650, degrees: 54, duration: 13500 }
-      : { delay: 320, degrees: 18, duration: 4800 };
+    if (hasMobileMapLayout() && withCard) {
+      activeOrbitLocationId = null;
+      return;
+    }
+    const motion = hasMobileMapLayout()
+      ? { delay: 120, degrees: 10, duration: 2100 }
+      : withCard
+        ? { delay: 650, degrees: 54, duration: 13500 }
+        : { delay: 320, degrees: 18, duration: 4800 };
     const run = ++orbitRun;
     await new Promise(resolve => window.setTimeout(resolve, motion.delay));
     if (run !== orbitRun || focusToken !== focusRun || activeOrbitLocationId !== location.id) return;
@@ -1261,7 +1288,9 @@
       pitch: 0,
       bearing: 0,
       attributionControl: false,
-      logoPosition: 'bottom-left'
+      logoPosition: 'bottom-left',
+      cooperativeGestures: Boolean(coarsePointerQuery?.matches),
+      touchPitch: !coarsePointerQuery?.matches
     });
     locations.forEach(location => {
       const element = createMarkerElement(location);
@@ -1279,7 +1308,7 @@
       const padding = window.innerWidth < 760 ? 30 : mapViewportPadding(44);
       const finalCamera = bounds ? map.cameraForBounds(bounds, { padding, maxZoom: 8.2 }) : null;
 
-      if (reducedMotion || !finalCamera) {
+      if (reducedMotion || hasMobileMapLayout() || !finalCamera) {
         hasPlayedInitialOverview = true;
         fitVisibleItems(false);
       } else {
@@ -1302,6 +1331,7 @@
         });
       }
 
+      root.classList.remove('is-map-error');
       root.classList.add('is-map-ready');
       queueBoundaryLayers();
       if (!initialMarkerLayoutLocked) refreshLocationMarkers();
@@ -1355,7 +1385,11 @@
 
     map.on('error', event => {
       if (!event?.error) return;
-      root.classList.add('is-map-error');
+      if (!root.classList.contains('is-map-ready')) {
+        window.setTimeout(() => {
+          if (!root.classList.contains('is-map-ready')) root.classList.add('is-map-error');
+        }, 1200);
+      }
     });
 
     const updateTheme = () => {
@@ -1392,6 +1426,7 @@
 
   cards.forEach(card => {
     const activate = () => {
+      if (hasMobileMapLayout()) return;
       const item = itemsById.get(card.dataset.zouguoId);
       const location = locationsById.get(itemLocationIds.get(card.dataset.zouguoId));
       if (!item || !location) return;
@@ -1408,6 +1443,15 @@
 
       if (!timelineFocusId) rememberMapView();
       timelineFocusId = item.id;
+      if (mapPanel && getComputedStyle(mapPanel).position !== 'sticky') {
+        const panelRect = mapPanel.getBoundingClientRect();
+        if (panelRect.bottom < 72 || panelRect.top > window.innerHeight - 72) {
+          mapPanel.scrollIntoView({
+            behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start'
+          });
+        }
+      }
       focusLocation(location, { showCard: false, itemId: item.id });
     };
     card.addEventListener('click', event => {
@@ -1521,17 +1565,18 @@
   });
 
   if ('IntersectionObserver' in window) {
-    const stage = root.querySelector('.zouguo-stage');
-    const stageObserver = new IntersectionObserver(entries => {
+    const mapObserver = new IntersectionObserver(entries => {
       if (!entries[0]?.isIntersecting) cancelMapOrbit(true);
     }, { threshold: 0.08 });
-    if (stage) stageObserver.observe(stage);
+    if (mapPanel) mapObserver.observe(mapPanel);
   }
 
-  window.matchMedia?.('(min-width: 861px)').addEventListener('change', () => {
+  stackedLayoutQuery?.addEventListener('change', () => {
     setTimelineRetracted(Boolean(coordinatePopup || focusingLocationId));
+    syncTimelineCardInteractivity();
   });
 
+  syncTimelineCardInteractivity();
   updateCaption();
   setupMap();
 })();
