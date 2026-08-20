@@ -789,7 +789,7 @@
   overflow: visible;
   color: color-mix(in srgb, var(--text-content-color) 78%, transparent);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.68;
 }
 
