@@ -38,14 +38,14 @@ class ZouguoPipelineTests(unittest.TestCase):
             payload = self.build_with_content(ROOT / 'content', destination)
 
         self.assertEqual([], validate_zouguo_feed(payload))
-        self.assertEqual(16, len(payload['items']))
+        self.assertEqual(1, len(payload['items']))
         self.assertEqual(
-            {'zouguo': 15, 'laodao': 1},
+            {'zouguo': 0, 'laodao': 1, 'post': 0},
             {
                 source_type: sum(
                     item['source']['type'] == source_type for item in payload['items']
                 )
-                for source_type in ('zouguo', 'laodao')
+                for source_type in ('zouguo', 'laodao', 'post')
             },
         )
         self.assertFalse((ROOT / 'data/jingzhe/zouguo_prototype.json').exists())
@@ -60,7 +60,7 @@ class ZouguoPipelineTests(unittest.TestCase):
             shutil.copytree(ROOT / 'content', content_dir)
 
             baseline = self.build_with_content(content_dir, destination)
-            self.assertEqual(16, len(baseline['items']))
+            self.assertEqual(1, len(baseline['items']))
 
             synthetic = content_dir / 'zouguo/pipeline-acceptance.md'
             synthetic.write_text(
@@ -91,7 +91,7 @@ zouguo:
                 encoding='utf-8',
             )
             added = self.build_with_content(content_dir, destination)
-            self.assertEqual(17, len(added['items']))
+            self.assertEqual(2, len(added['items']))
             added_item = next(item for item in added['items'] if item['id'] == 'zouguo:pipeline-acceptance')
             self.assertEqual('第一次生成。', added_item['summary'])
 
@@ -105,7 +105,7 @@ zouguo:
 
             synthetic.unlink()
             deleted = self.build_with_content(content_dir, destination)
-            self.assertEqual(16, len(deleted['items']))
+            self.assertEqual(1, len(deleted['items']))
             self.assertNotIn('zouguo:pipeline-acceptance', {item['id'] for item in deleted['items']})
 
     def test_tagged_laodao_and_post_join_and_leave_the_same_feed(self):
@@ -134,7 +134,7 @@ zouguo:
 
 一条带图片的走过唠叨。
 
-![唠叨图片](/images/zouguo-prototype/lake-dusk.svg)
+![唠叨图片](https://example.com/lake-dusk.webp)
 ''',
                 encoding='utf-8',
             )
@@ -145,7 +145,7 @@ title: "一篇走过测试随笔"
 date: 2026-08-19T19:00:00+08:00
 slug: "zouguo-pipeline-post"
 tags: ["走过"]
-image: /images/zouguo-prototype/mountain-morning.svg
+image: https://example.com/mountain-morning.webp
 zouguo:
   occurred_at: 2026-08-18T09:00:00+08:00
   place:
@@ -160,14 +160,14 @@ zouguo:
 
 这段长文不能复制进走过卡片。
 
-![封面重复](/images/zouguo-prototype/mountain-morning.svg)
-![正文图片](/images/zouguo-prototype/coast-wind.svg)
+![封面重复](https://example.com/mountain-morning.webp)
+![正文图片](https://example.com/coast-wind.webp)
 ''',
                 encoding='utf-8',
             )
 
             joined = self.build_with_content(content_dir, destination)
-            self.assertEqual(18, len(joined['items']))
+            self.assertEqual(3, len(joined['items']))
             laodao_item = next(item for item in joined['items'] if item['id'] == 'laodao:20260819-180000')
             self.assertEqual('一条带图片的走过唠叨。', laodao_item['summary'])
             self.assertEqual(1, len(laodao_item['images']))
@@ -208,7 +208,7 @@ zouguo:
             )
             untagged = self.build_with_content(content_dir, destination)
             ids = {item['id'] for item in untagged['items']}
-            self.assertEqual(16, len(untagged['items']))
+            self.assertEqual(1, len(untagged['items']))
             self.assertNotIn('laodao:20260819-180000', ids)
             self.assertNotIn('post:zouguo-pipeline-post', ids)
 

@@ -9,7 +9,7 @@
 3. `/zouguo/index.html` 与 `/zouguo/index.json` 共享同一个归一化结果。
 4. 浏览器只消费页面内嵌的 v1 feed，不读取手写原型 JSON。
 
-`data/jingzhe/zouguo_prototype.json` 已退出并删除。当前 15 条合成记录仅作为开发验收 Markdown，正式迁移时由第 10 步清理。
+`data/jingzhe/zouguo_prototype.json`、15 条独立原型 Markdown 和对应原型图片均已退出并删除。正式内容目录只保留真实来源；管线回归测试会在系统临时目录中动态创建合成 Markdown，构建结束后自动清理，不进入正式内容或生产 JSON。
 
 ## 图片与顺序
 
