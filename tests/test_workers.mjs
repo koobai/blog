@@ -312,6 +312,44 @@ async function testPublisherRepositoryBoundary() {
   }
 }
 
+async function testPublisherUploadCorrectsImageContentType() {
+  let storedKey = null;
+  let storedMetadata = null;
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    GH_TOKEN: 'local-github-token',
+    GITHUB_OWNER: 'koobai',
+    GITHUB_REPO: 'blog',
+    IMAGE_BASE_URL: 'https://img.example.org',
+    R2_BUCKET: {
+      async put(key, _body, options) {
+        storedKey = key;
+        storedMetadata = options.httpMetadata;
+      }
+    }
+  };
+  const response = await publisherWorker.fetch(new Request(
+    'https://publisher.example.org/api/app/upload?name=zouguo/test-photo.jpg',
+    {
+      method: 'POST',
+      headers: {
+        Origin: origin,
+        'x-admin-token': 'local-test-token',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new Uint8Array([0xff, 0xd8, 0xff, 0xd9])
+    }
+  ), env);
+  assert.equal(response.status, 200);
+  assert.deepEqual(await responseJson(response), {
+    success: true,
+    url: 'https://img.example.org/zouguo/test-photo.jpg'
+  });
+  assert.equal(storedKey, 'zouguo/test-photo.jpg');
+  assert.deepEqual(storedMetadata, { contentType: 'image/jpeg' });
+}
+
 async function testPublisherZouguoIsIdempotentAndUsesSafePath() {
   const env = {
     ALLOWED_ORIGINS: origin,
@@ -596,6 +634,7 @@ await testUnifiedZouguoDraftPreservesPayload();
 await testLikesReadContract();
 await testLikesSubmitIsAtomicAndDistinguishesDuplicates();
 await testPublisherRepositoryBoundary();
+await testPublisherUploadCorrectsImageContentType();
 await testPublisherZouguoIsIdempotentAndUsesSafePath();
 await testPublisherRejectsUnsafeZouguoPathBeforeGitHub();
 await testLegacyLaodaoCanCreateUpdateReadAndDelete();

@@ -52,6 +52,24 @@ function uploadPathAllowed(filename) {
   return /^(?:memos|article|apps|zouguo)\/[A-Za-z0-9._/-]+$/.test(filename);
 }
 
+function uploadContentType(filename, requestedContentType) {
+  const extension = String(filename).split('.').pop()?.toLowerCase();
+  const knownTypes = {
+    avif: 'image/avif',
+    gif: 'image/gif',
+    heic: 'image/heic',
+    heif: 'image/heif',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    webp: 'image/webp'
+  };
+  if (knownTypes[extension]) return knownTypes[extension];
+  return /^image\/[a-z0-9.+-]+$/i.test(String(requestedContentType || ''))
+    ? requestedContentType
+    : 'application/octet-stream';
+}
+
 function contentPathAllowed(path, kind) {
   if (!path || path.includes('..')) return false;
   return kind === 'laodao' ? LAODAO_PATH_RE.test(path) : ZOUGUO_PATH_RE.test(path);
@@ -355,7 +373,7 @@ async function handleUpload(request, env, url, headers) {
   const contentLength = Number(request.headers.get('Content-Length') || 0);
   if (contentLength > MAX_IMAGE_BYTES) return json({ error: '图片过大' }, 413, headers);
   await env.R2_BUCKET.put(filename, request.body, {
-    httpMetadata: { contentType: request.headers.get('Content-Type') || 'image/webp' }
+    httpMetadata: { contentType: uploadContentType(filename, request.headers.get('Content-Type')) }
   });
   return json({
     success: true,
