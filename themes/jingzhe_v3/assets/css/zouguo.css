@@ -1288,9 +1288,13 @@ html[data-theme="dark"] .zouguo-icon-button {
     z-index: 1;
     inset: auto;
     width: auto;
-    margin-top: 12px;
     overflow: visible;
-    border-radius: 22px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .zouguo-map-toolbar {
@@ -1321,7 +1325,9 @@ html[data-theme="dark"] .zouguo-icon-button {
 
   .zouguo-timeline-scroll {
     overflow: visible;
+    padding-right: 0;
     padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    padding-left: 0;
   }
 
   .zouguo-entry-gallery {
@@ -1486,9 +1492,9 @@ html[data-theme="dark"] .zouguo-icon-button {
   }
 
   .zouguo-timeline-scroll {
-    padding-right: 9px;
+    padding-right: 0;
     padding-bottom: calc(98px + env(safe-area-inset-bottom, 0px));
-    padding-left: 9px;
+    padding-left: 0;
   }
 
   .zouguo-entry {
@@ -1610,12 +1616,19 @@ html[data-theme="dark"] .zouguo-icon-button {
     width: auto;
     margin-top: 12px;
     overflow: visible;
-    border-radius: 20px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .zouguo-timeline-scroll {
     overflow: visible;
+    padding-right: 0;
     padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    padding-left: 0;
   }
 
   .zouguo-coordinate-overlay {
