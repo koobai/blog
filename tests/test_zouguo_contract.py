@@ -62,6 +62,27 @@ class ZouguoContractTests(unittest.TestCase):
             any('随笔来源 summary 必须为空' in error for error in validate_zouguo_feed(invalid))
         )
 
+    def test_image_delivery_variants_are_optional_and_validated(self):
+        payload = copy.deepcopy(self.valid_feed)
+        image = payload['items'][0]['images'][0]
+        image.update({
+            'original': image['url'],
+            'thumb': '/cdn-cgi/image/width=128/example.webp',
+            'small': '/cdn-cgi/image/width=640/example.webp',
+            'large': '/cdn-cgi/image/width=960/example.webp',
+            'thumbWidth': 128,
+            'smallWidth': 640,
+            'largeWidth': 960,
+            'transformed': True,
+        })
+        self.assertEqual([], validate_zouguo_feed(payload))
+
+        image['thumbWidth'] = 0
+        image['transformed'] = 'yes'
+        errors = validate_zouguo_feed(payload)
+        self.assertTrue(any('thumbWidth 必须是正整数' in error for error in errors))
+        self.assertTrue(any('transformed 必须是布尔值' in error for error in errors))
+
     def test_schema_freezes_markdown_ownership_and_source_rules(self):
         metadata = SCHEMA['x-jingzhe-contract']
         self.assertEqual('markdown', metadata['source_of_truth'])

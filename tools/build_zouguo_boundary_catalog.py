@@ -16,6 +16,7 @@ NATURAL_EARTH_ARCHIVE = 'natural-earth-admin0.zip'
 CHINA_COUNTRY = 'china-country.geojson'
 CHINA_PROVINCES = 'china-provinces.geojson'
 CHINA_CITIES = 'china-cities.geojson'
+COORDINATE_DECIMALS = 4
 
 
 def read_dbf(data):
@@ -64,7 +65,7 @@ def read_polygon_shapes(data):
         parts = list(struct.unpack_from('<{}I'.format(part_count), content, 44))
         points_offset = 44 + part_count * 4
         points = [
-            [round(x, 5), round(y, 5)]
+            [round(x, COORDINATE_DECIMALS), round(y, COORDINATE_DECIMALS)]
             for x, y in struct.iter_unpack('<dd', content[points_offset:points_offset + point_count * 16])
         ]
         rings = []
@@ -109,14 +110,32 @@ def natural_earth_features(archive_path):
     return features
 
 
-def rounded_geometry(geometry):
-    def visit(value):
-        if isinstance(value, float):
-            return round(value, 5)
-        if isinstance(value, list):
-            return [visit(item) for item in value]
-        return value
-    return {'type': geometry['type'], 'coordinates': visit(geometry['coordinates'])}
+def compact_ring(ring):
+    """Quantize a ring without independently simplifying shared boundaries."""
+    compacted = []
+    for point in ring:
+        rounded = [
+            round(float(point[0]), COORDINATE_DECIMALS),
+            round(float(point[1]), COORDINATE_DECIMALS),
+        ]
+        if not compacted or rounded != compacted[-1]:
+            compacted.append(rounded)
+    if compacted and compacted[0] != compacted[-1]:
+        compacted.append(compacted[0])
+    return compacted if len(compacted) >= 4 else ring
+
+
+def compact_geometry(geometry):
+    geometry_type = geometry['type']
+    coordinates = geometry['coordinates']
+    if geometry_type == 'Polygon':
+        coordinates = [compact_ring(ring) for ring in coordinates]
+    elif geometry_type == 'MultiPolygon':
+        coordinates = [
+            [compact_ring(ring) for ring in polygon]
+            for polygon in coordinates
+        ]
+    return {'type': geometry_type, 'coordinates': coordinates}
 
 
 def china_features(path, normalized_level):
@@ -125,7 +144,13 @@ def china_features(path, normalized_level):
     for feature in payload['features']:
         properties = feature.get('properties', {})
         code = str(properties.get('adcode') or '')
-        if not code:
+        source_level = properties.get('level') or normalized_level
+        if not (code.isdigit() and len(code) == 6):
+            continue
+        # The upstream city archive also contains district polygons. Zouguo's
+        # third display level is prefecture/city, so district shapes only add
+        # weight and can cause ambiguous locality matches.
+        if normalized_level == 'city' and source_level != 'city':
             continue
         features.append({
             'type': 'Feature',
@@ -135,11 +160,35 @@ def china_features(path, normalized_level):
                 'iso2': 'CN',
                 'name': properties.get('name') or code,
                 'parentCode': str((properties.get('parent') or {}).get('adcode') or ''),
-                'sourceLevel': properties.get('level') or normalized_level,
+                'sourceLevel': source_level,
             },
-            'geometry': rounded_geometry(feature['geometry']),
+            'geometry': compact_geometry(feature['geometry']),
         })
     return features
+
+
+def optimize_catalog(payload):
+    """Apply the current catalog contract to an already generated catalog."""
+    features = []
+    for feature in payload.get('features', []):
+        properties = feature.get('properties', {})
+        level = properties.get('level')
+        code = str(properties.get('groupCode') or '')
+        source_level = properties.get('sourceLevel')
+        if level in {'province', 'city'} and not (code.isdigit() and len(code) == 6):
+            continue
+        if level == 'city' and source_level != 'city':
+            continue
+        features.append({
+            'type': 'Feature',
+            'properties': properties,
+            'geometry': compact_geometry(feature['geometry']),
+        })
+    payload = dict(payload)
+    payload['catalogVersion'] = 2
+    payload['coordinatePrecision'] = COORDINATE_DECIMALS
+    payload['features'] = features
+    return payload
 
 
 def build_catalog(source_dir):
@@ -150,19 +199,14 @@ def build_catalog(source_dir):
     provinces = china_features(source_dir / CHINA_PROVINCES, 'province')
     features += provinces
     features += china_features(source_dir / CHINA_CITIES, 'city')
-    for province in provinces:
-        if province['properties']['groupCode'] in {'110000', '120000', '310000', '500000'}:
-            municipality = json.loads(json.dumps(province))
-            municipality['properties']['level'] = 'city'
-            municipality['properties']['sourceLevel'] = 'municipality'
-            features.append(municipality)
     features.sort(key=lambda feature: (
         {'country': 0, 'province': 1, 'city': 2}[feature['properties']['level']],
         feature['properties']['groupCode'],
     ))
     return {
         'type': 'FeatureCollection',
-        'catalogVersion': 1,
+        'catalogVersion': 2,
+        'coordinatePrecision': COORDINATE_DECIMALS,
         'sources': {
             'countries': 'Natural Earth 1:110m Admin 0 Countries, version 5.1.2',
             'china': 'Supeset/China-GeoData',
@@ -173,14 +217,23 @@ def build_catalog(source_dir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--source-dir', type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--source-dir', type=Path)
+    source.add_argument(
+        '--input-catalog',
+        type=Path,
+        help='Optimize an existing generated catalog without downloading raw sources.',
+    )
     parser.add_argument(
         '--output',
         type=Path,
         default=Path('data/jingzhe/zouguo_boundary_catalog.json'),
     )
     args = parser.parse_args()
-    payload = build_catalog(args.source_dir)
+    if args.input_catalog:
+        payload = optimize_catalog(json.loads(args.input_catalog.read_text(encoding='utf-8')))
+    else:
+        payload = build_catalog(args.source_dir)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n',

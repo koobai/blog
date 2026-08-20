@@ -15,14 +15,7 @@
 {{- $items := $feed.items -}}
 {{- $currentYear := now.Format "2006" -}}
 {{- $cityScratch := newScratch -}}
-{{- $yearScratch := newScratch -}}
-{{- $years := slice -}}
 {{- range $items -}}
-  {{- $year := (time.AsTime .occurredAt).Format "2006" -}}
-  {{- if not ($yearScratch.Get $year) -}}
-    {{- $yearScratch.Set $year true -}}
-    {{- $years = $years | append $year -}}
-  {{- end -}}
   {{- $cityKey := printf "%v:%v" .place.countryCode .place.localityCode -}}
   {{- $cityScratch.SetInMap "cities" $cityKey true -}}
   {{- $cityScratch.SetInMap "countries" (printf "%v" .place.countryCode) true -}}
@@ -40,86 +33,79 @@
       data-map-style-dark="{{ $mapboxDarkStyle }}"
       data-boundary-url="{{ $boundaryResource.RelPermalink }}">
   <header class="zouguo-hero">
-    <p class="zouguo-hero-line">我们经过的地方，留下的片刻。</p>
+    <p class="zouguo-hero-line">自己很少出远门，毕业来到杭州以后，就没在什么城市常驻过，走过的地方寥寥无几。</p>
     <div class="zouguo-hero-meta" aria-label="走过统计">
-      <span><strong>{{ len $items }}</strong> 个片段</span>
+      <span><strong>{{ len $items }}</strong> 次走过</span>
+      <span><strong>{{ $cityScratch.Get "photos" }}</strong> 张碎片</span>
       <span><strong>{{ len ($cityScratch.Get "cities") }}</strong> 座城市</span>
-      <span><strong>{{ len ($cityScratch.Get "countries") }}</strong> 个国家/地区</span>
-      <span><strong>{{ $cityScratch.Get "photos" }}</strong> 张照片</span>
+      <span><strong>{{ len ($cityScratch.Get "countries") }}</strong> 个国家</span>
     </div>
   </header>
 
   <div class="zouguo-stage">
     <section class="zouguo-map-panel" aria-label="走过地图">
-      <div class="zouguo-map-fallback" aria-hidden="true">
-        <span class="zouguo-map-fallback-land zouguo-map-fallback-land-a"></span>
-        <span class="zouguo-map-fallback-land zouguo-map-fallback-land-b"></span>
-        <span class="zouguo-map-fallback-line"></span>
-      </div>
       <div id="zouguo-map" class="zouguo-map"></div>
 
       <div class="zouguo-map-toolbar">
-        <div class="zouguo-map-caption">
-          <button class="zouguo-map-scope-back" id="zouguo-scope-back" type="button" aria-label="当前为全部走过" disabled>
-            <span class="zouguo-map-caption-dot" aria-hidden="true"></span>
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
-          </button>
+        <button class="zouguo-map-caption zouguo-map-scope-back" id="zouguo-scope-back" type="button" aria-label="当前为全部走过" disabled>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
           <span id="zouguo-map-caption">全部走过</span>
-        </div>
-        <button class="zouguo-icon-button" id="zouguo-overview" type="button" aria-label="缩放到全部走过" title="缩放到全部走过">
+        </button>
+        <button class="zouguo-icon-button is-icon-only" id="zouguo-overview" type="button" aria-label="缩放到全部走过" title="缩放到全部走过">
           <svg aria-hidden="true" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="8"/>
-            <path d="M4 12h16M12 4c2.2 2.2 3.2 4.9 3.2 8S14.2 17.8 12 20M12 4c-2.2 2.2-3.2 4.9-3.2 8S9.8 17.8 12 20"/>
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M20.6 15H17a2 2 0 0 0-2 2v3.6M7.2 4.4V6a2 2 0 0 0 2 2h.9a2 2 0 0 1 1.9 2.5 2 2 0 0 0 1.9 2.5h.3a2 2 0 0 0 1.8-2.8l-.4-1A2 2 0 0 1 17.5 6h1M10.8 20.9V18a2 2 0 0 0-2-2H3.8"/>
           </svg>
-          <span>全览</span>
+        </button>
+        <button type="button" class="zouguo-random-button" id="zouguo-random" aria-label="随便走走" title="随便走走">
+          <span>随便走走</span>
         </button>
       </div>
 
     </section>
 
     <aside class="zouguo-timeline" id="zouguo-timeline-panel" aria-label="走过时间线">
-      <div class="zouguo-timeline-toolbar">
-        <div class="zouguo-year-filters" role="group" aria-label="按年份筛选">
-          <button type="button" class="zouguo-year-filter is-active" data-year="all" aria-pressed="true">全部</button>
-          {{- range $years -}}
-            <button type="button" class="zouguo-year-filter" data-year="{{ . }}" aria-pressed="false">{{ . }}</button>
-          {{- end -}}
-        </div>
-        <button type="button" class="zouguo-random-button" id="zouguo-random">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-          随便走走
-        </button>
-      </div>
-
       <div class="zouguo-timeline-scroll" id="zouguo-timeline-scroll">
         {{- range $index, $item := $items -}}
           {{- $occurred := time.AsTime $item.occurredAt -}}
           {{- $year := $occurred.Format "2006" -}}
           {{- $date := $occurred.Format "2006-01-02" -}}
-          {{- $dateLabel := $occurred.Format "01月02日" -}}
+          {{- $dateLabel := $occurred.Format "01-02" -}}
           {{- $placeName := $item.place.name -}}
-          {{- $region := default $item.place.country $item.place.region -}}
+          {{- $region := strings.TrimSpace (default "" $item.place.region) -}}
+          {{- $locality := strings.TrimSpace (default "" $item.place.locality) -}}
+          {{- $areaParts := slice -}}
+          {{- with $region -}}
+            {{- $areaParts = $areaParts | append . -}}
+          {{- end -}}
+          {{- if and $locality (ne $locality $region) -}}
+            {{- $areaParts = $areaParts | append $locality -}}
+          {{- end -}}
+          {{- if eq (len $areaParts) 0 -}}
+            {{- with strings.TrimSpace (default "" $item.place.country) -}}
+              {{- $areaParts = $areaParts | append . -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $areaLabel := delimit $areaParts " · " -}}
           {{- $hasImages := gt (len $item.images) 0 -}}
           <article class="zouguo-entry{{ if not $hasImages }} is-text-only{{ end }}"
                    data-zouguo-id="{{ $item.id }}"
                    data-source-type="{{ $item.source.type }}"
-                   data-year="{{ $year }}"
                    tabindex="0"
                    aria-label="查看 {{ $placeName }} 的走过">
             <header class="zouguo-entry-header">
-              <h3>
+              <h3{{ if eq $item.source.type "post" }} class="is-source-post"{{ end }}>
                 {{- if eq $item.source.type "post" -}}
-                  <a class="zouguo-entry-source-link" data-zouguo-source-link href="{{ $item.source.url }}">{{ $item.title }}</a>
+                  <a class="zouguo-entry-source-link" data-zouguo-source-link href="{{ $item.source.url }}">
+                    <span>{{ $item.title }}</span><span class="zouguo-source-link-mark" aria-hidden="true">→</span>
+                  </a>
                 {{- else -}}
                   {{ $placeName }}
                 {{- end -}}
               </h3>
               <div class="zouguo-entry-meta">
-                <time datetime="{{ $date }}"
-                      data-zouguo-date
-                      data-zouguo-year="{{ $year }}"
-                      data-date-label="{{ $dateLabel }}">{{ if ne $year $currentYear }}{{ $year }} · {{ end }}{{ $dateLabel }}</time>
-                <span class="zouguo-entry-region">{{ if not $hasImages }}文字走过 · {{ end }}{{ $region }}</span>
+                <time datetime="{{ $date }}">{{ if ne $year $currentYear }}{{ $date }}{{ else }}{{ $dateLabel }}{{ end }}</time>
+                <span class="zouguo-entry-region">{{ $areaLabel }}</span>
               </div>
             </header>
             {{- if $hasImages -}}
@@ -131,7 +117,12 @@
                   {{- if lt $imageIndex 3 -}}
                     <span class="zouguo-entry-photo{{ if eq $imageIndex 0 }} is-primary{{ else if eq $imageIndex 1 }} is-secondary{{ else }} is-tertiary{{ end }}"
                           data-image-index="{{ $imageIndex }}">
-                      <img src="{{ $image.url }}" alt="{{ default (printf "%s的图片" $placeName) $image.alt }}" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}">
+                      <img src="{{ $image.original | safeURL }}"
+                           {{ if $image.transformed }}srcset="{{ $image.small | safeURL }} {{ $image.smallWidth }}w, {{ $image.large | safeURL }} {{ $image.largeWidth }}w"
+                           sizes="(min-width: 861px) 390px, calc(100vw - 50px)"{{ end }}
+                           alt="{{ default (printf "%s的图片" $placeName) $image.alt }}"
+                           loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"
+                           decoding="async">
                     </span>
                   {{- end -}}
                 {{- end -}}

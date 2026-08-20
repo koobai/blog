@@ -67,12 +67,13 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
   enabled = true
   sourceOrigin = "https://img.example.com"
   deliveryOrigin = "https://img.example.com"
+  thumbWidth = 128
   smallWidth = 640
   largeWidth = 960
   quality = 75
 ```
 
-主题只为 `sourceOrigin` 下的 JPG、PNG、WebP 和 AVIF 生成固定的 640/960 两档 `srcset`。SVG、其他域名、带查询参数的图片和关闭配置时继续使用原始地址。浏览器按显示宽度请求其中一档，Cloudflare 首次访问时生成并缓存；`src` 始终保留原图，因此旧浏览器、转换错误和图片灯箱都可以回退到原图。本地如需临时验证响应式选择，可以短暂开启 Development，验证后再关闭。
+主题只为 `sourceOrigin` 下的 JPG、PNG、WebP 和 AVIF 生成固定的 640/960 两档 `srcset`；走过地图另外复用一档 128px 缩略图，避免 44px 地图圆点下载原始照片。SVG、其他域名、带查询参数的图片和关闭配置时继续使用原始地址。浏览器按显示宽度请求其中一档，Cloudflare 首次访问时生成并缓存；`src` 始终保留原图，因此旧浏览器、转换错误和图片灯箱都可以回退到原图。本地如需临时验证响应式选择，可以短暂开启 Development，验证后再关闭。
 
 ## 生活数据自动化参数
 

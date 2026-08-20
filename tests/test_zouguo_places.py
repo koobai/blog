@@ -31,8 +31,25 @@ class ZouguoPlaceTests(unittest.TestCase):
         }
         self.assertGreaterEqual(len(countries), 170)
         self.assertTrue({'CN', 'AE', 'KW', 'JP', 'US', 'FR'}.issubset(countries))
-        self.assertEqual(35, len(provinces))
+        self.assertEqual(34, len(provinces))
         self.assertTrue({'110000', '330000', '440000', '650000'}.issubset(provinces))
+
+    def test_catalog_keeps_only_prefecture_city_shapes_at_page_precision(self):
+        self.assertEqual(2, self.catalog['catalogVersion'])
+        self.assertEqual(4, self.catalog['coordinatePrecision'])
+        city_features = [
+            feature for feature in self.catalog['features']
+            if feature['properties']['level'] == 'city'
+        ]
+        self.assertGreaterEqual(len(city_features), 360)
+        self.assertTrue(all(
+            feature['properties'].get('sourceLevel') == 'city'
+            for feature in city_features
+        ))
+        self.assertFalse(any(
+            feature['properties']['groupCode'] in {'110000', '120000', '310000', '500000'}
+            for feature in city_features
+        ))
 
     def test_place_id_is_the_only_merge_key(self):
         same_place = [
@@ -60,6 +77,12 @@ class ZouguoPlaceTests(unittest.TestCase):
         self.assertEqual('CN', resolved['countryCode'])
         self.assertEqual('330000', resolved['regionCode'])
         self.assertEqual('330100', resolved['localityCode'])
+
+    def test_municipality_reuses_province_code_for_city_zoom(self):
+        resolved = resolve_admin_codes(self.catalog, 116.0063, 40.3525)
+        self.assertEqual('CN', resolved['countryCode'])
+        self.assertEqual('110000', resolved['regionCode'])
+        self.assertEqual('110000', resolved['localityCode'])
 
 
 if __name__ == '__main__':

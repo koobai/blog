@@ -2,6 +2,7 @@
 {{- $config := site.Params.services.images | default (dict) -}}
 {{- $sourceOrigin := replaceRE "/+$" "" (default "" $config.sourceOrigin) -}}
 {{- $deliveryOrigin := replaceRE "/+$" "" (default $sourceOrigin $config.deliveryOrigin) -}}
+{{- $thumbWidth := int (default 128 $config.thumbWidth) -}}
 {{- $smallWidth := int (default 640 $config.smallWidth) -}}
 {{- $largeWidth := int (default 960 $config.largeWidth) -}}
 {{- $quality := int (default 75 $config.quality) -}}
@@ -24,17 +25,21 @@
 -}}
 {{- $small := $src -}}
 {{- $large := $src -}}
+{{- $thumb := $src -}}
 {{- if $canTransform -}}
   {{- $sourcePath := strings.TrimPrefix "/" (strings.TrimPrefix $sourceOrigin $src) -}}
   {{- $parameters := "fit=scale-down,format=auto,onerror=redirect" -}}
+  {{- $thumb = printf "%s/cdn-cgi/image/width=%d,quality=%d,%s/%s" $deliveryOrigin $thumbWidth $quality $parameters $sourcePath -}}
   {{- $small = printf "%s/cdn-cgi/image/width=%d,quality=%d,%s/%s" $deliveryOrigin $smallWidth $quality $parameters $sourcePath -}}
   {{- $large = printf "%s/cdn-cgi/image/width=%d,quality=%d,%s/%s" $deliveryOrigin $largeWidth $quality $parameters $sourcePath -}}
 {{- end -}}
 {{- return (dict
   "enabled" $canTransform
   "original" $src
+  "thumb" $thumb
   "small" $small
   "large" $large
+  "thumbWidth" $thumbWidth
   "smallWidth" $smallWidth
   "largeWidth" $largeWidth
 ) -}}

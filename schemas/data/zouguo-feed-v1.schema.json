@@ -106,6 +106,14 @@
       "required": ["url", "alt"],
       "properties": {
         "url": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "original": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "thumb": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "small": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "large": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "thumbWidth": {"type": "integer", "minimum": 1},
+        "smallWidth": {"type": "integer", "minimum": 1},
+        "largeWidth": {"type": "integer", "minimum": 1},
+        "transformed": {"type": "boolean"},
         "alt": {"type": "string", "maxLength": 500},
         "width": {"type": "integer", "minimum": 1},
         "height": {"type": "integer", "minimum": 1}
@@ -122,6 +130,7 @@
     "source_types": ["zouguo", "laodao", "post"],
     "post_summary": "empty; the card links with the post title only",
     "image_order": "first appearance in Markdown; a post cover is prepended only when absent from the body",
+    "image_delivery": "url/original remains the source image; optional thumb/small/large fields are build-time delivery variants",
     "deletion": "remove or untag the source Markdown; the next build removes the generated item",
     "deduplication": "exact source identity only; never fuzzy-match text, time or coordinates"
   }

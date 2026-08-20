@@ -10,6 +10,7 @@ PRECISION_DECIMALS = {
     'region': 1,
     'approximate': 2,
 }
+MUNICIPALITY_CODES = {'110000', '120000', '310000', '500000'}
 
 
 def public_coordinates(longitude, latitude, precision='poi', privacy='public'):
@@ -84,4 +85,8 @@ def resolve_admin_codes(catalog, longitude, latitude):
                     continue
                 locality_priority = priority
             result[field] = str(feature['properties'].get('groupCode') or '')
+    if result['regionCode'] in MUNICIPALITY_CODES and not result['localityCode']:
+        # The catalog stores municipality geometry once at province level. The
+        # page reuses that same shape for its city zoom instead of duplicating it.
+        result['localityCode'] = result['regionCode']
     return result

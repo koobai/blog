@@ -51,6 +51,7 @@ profile = "full"
   enabled = true
   sourceOrigin = "https://img.koobai.com"
   deliveryOrigin = "https://img.koobai.com"
+  thumbWidth = 128
   smallWidth = 640
   largeWidth = 960
   quality = 75

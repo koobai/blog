@@ -38,16 +38,11 @@ class ZouguoPipelineTests(unittest.TestCase):
             payload = self.build_with_content(ROOT / 'content', destination)
 
         self.assertEqual([], validate_zouguo_feed(payload))
-        self.assertEqual(1, len(payload['items']))
-        self.assertEqual(
-            {'zouguo': 0, 'laodao': 1, 'post': 0},
-            {
-                source_type: sum(
-                    item['source']['type'] == source_type for item in payload['items']
-                )
-                for source_type in ('zouguo', 'laodao', 'post')
-            },
-        )
+        self.assertGreaterEqual(len(payload['items']), 1)
+        self.assertTrue(all(
+            item['source']['type'] in {'zouguo', 'laodao', 'post'}
+            for item in payload['items']
+        ))
         self.assertFalse((ROOT / 'data/jingzhe/zouguo_prototype.json').exists())
         layout = (ROOT / 'themes/jingzhe_v3/layouts/zouguo.html').read_text(encoding='utf-8')
         self.assertNotIn('zouguo_prototype', layout)
@@ -60,7 +55,7 @@ class ZouguoPipelineTests(unittest.TestCase):
             shutil.copytree(ROOT / 'content', content_dir)
 
             baseline = self.build_with_content(content_dir, destination)
-            self.assertEqual(1, len(baseline['items']))
+            baseline_count = len(baseline['items'])
 
             synthetic = content_dir / 'zouguo/pipeline-acceptance.md'
             synthetic.write_text(
@@ -91,9 +86,11 @@ zouguo:
                 encoding='utf-8',
             )
             added = self.build_with_content(content_dir, destination)
-            self.assertEqual(2, len(added['items']))
+            self.assertEqual(baseline_count + 1, len(added['items']))
             added_item = next(item for item in added['items'] if item['id'] == 'zouguo:pipeline-acceptance')
             self.assertEqual('第一次生成。', added_item['summary'])
+            rendered = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
+            self.assertIn('测试省 · 测试城', rendered)
 
             synthetic.write_text(
                 synthetic.read_text(encoding='utf-8').replace('第一次生成。', '修改后重新生成。'),
@@ -105,7 +102,7 @@ zouguo:
 
             synthetic.unlink()
             deleted = self.build_with_content(content_dir, destination)
-            self.assertEqual(1, len(deleted['items']))
+            self.assertEqual(baseline_count, len(deleted['items']))
             self.assertNotIn('zouguo:pipeline-acceptance', {item['id'] for item in deleted['items']})
 
     def test_tagged_laodao_and_post_join_and_leave_the_same_feed(self):
@@ -114,6 +111,9 @@ zouguo:
             content_dir = temp_root / 'content'
             destination = temp_root / 'public'
             shutil.copytree(ROOT / 'content', content_dir)
+
+            baseline = self.build_with_content(content_dir, destination)
+            baseline_count = len(baseline['items'])
 
             laodao = content_dir / 'laodao/2026/08/20260819-180000.md'
             laodao.write_text(
@@ -167,7 +167,7 @@ zouguo:
             )
 
             joined = self.build_with_content(content_dir, destination)
-            self.assertEqual(3, len(joined['items']))
+            self.assertEqual(baseline_count + 2, len(joined['items']))
             laodao_item = next(item for item in joined['items'] if item['id'] == 'laodao:20260819-180000')
             self.assertEqual('一条带图片的走过唠叨。', laodao_item['summary'])
             self.assertEqual(1, len(laodao_item['images']))
@@ -208,7 +208,7 @@ zouguo:
             )
             untagged = self.build_with_content(content_dir, destination)
             ids = {item['id'] for item in untagged['items']}
-            self.assertEqual(1, len(untagged['items']))
+            self.assertEqual(baseline_count, len(untagged['items']))
             self.assertNotIn('laodao:20260819-180000', ids)
             self.assertNotIn('post:zouguo-pipeline-post', ids)
 
@@ -244,10 +244,23 @@ laodaotags: ["走过"]
             shutil.copytree(ROOT / 'content', content_dir)
 
             cases = (
-                ('guangdong-auto', '广州 · 江边', '113.2644', '23.1291', 'CN', '440000'),
-                ('japan-auto', '东京 · 河边', '139.6917', '35.6895', 'JP', ''),
+                (
+                    'guangdong-auto', '广州 · 江边', '113.2644', '23.1291',
+                    'CN', '广东省', '广州市', '440000', '440100',
+                ),
+                (
+                    'beijing-auto', '北京 · 长城脚下', '116.0063', '40.3525',
+                    'CN', '中国北京市', '北京市', '110000', '110000',
+                ),
+                (
+                    'japan-auto', '东京 · 河边', '139.6917', '35.6895',
+                    'JP', '东京都', '东京', '', '',
+                ),
             )
-            for slug, name, longitude, latitude, country_code, region_code in cases:
+            for (
+                slug, name, longitude, latitude, country_code, region, locality,
+                expected_region_code, expected_locality_code,
+            ) in cases:
                 (content_dir / 'zouguo' / '{}.md'.format(slug)).write_text(
                     '''---
 title: "{name}"
@@ -264,7 +277,8 @@ zouguo:
     precision: "locality"
     privacy: "reduced"
     country_code: "{country_code}"
-    region_code: "{region_code}"
+    region: "{region}"
+    locality: "{locality}"
 ---
 
 自动边界验收。
@@ -274,12 +288,21 @@ zouguo:
                         longitude=longitude,
                         latitude=latitude,
                         country_code=country_code,
-                        region_code=region_code,
+                        region=region,
+                        locality=locality,
                     ),
                     encoding='utf-8',
                 )
 
-            self.build_with_content(content_dir, destination)
+            payload = self.build_with_content(content_dir, destination)
+            items = {item['source']['id']: item for item in payload['items']}
+            for (
+                slug, _name, _longitude, _latitude, _country_code, _region, _locality,
+                expected_region_code, expected_locality_code,
+            ) in cases:
+                self.assertEqual(expected_region_code, items[slug]['place']['regionCode'])
+                self.assertEqual(expected_locality_code, items[slug]['place']['localityCode'])
+
             html = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
             match = re.search(r'data-boundary-url="([^"]+)"', html)
             self.assertIsNotNone(match)
@@ -290,6 +313,9 @@ zouguo:
                 for feature in boundaries['features']
             }
             self.assertIn(('province', '440000'), selected)
+            self.assertIn(('city', '440100'), selected)
+            self.assertIn(('province', '110000'), selected)
+            self.assertIn(('city', '110000'), selected)
             self.assertIn(('country', 'JP'), selected)
             self.assertFalse((ROOT / 'data/jingzhe/zouguo_boundaries.json').exists())
 

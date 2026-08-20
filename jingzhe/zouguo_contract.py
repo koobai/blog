@@ -220,10 +220,34 @@ def validate_zouguo_feed(payload):
             url = image.get('url')
             if not isinstance(url, str) or not 1 <= len(url) <= 1000:
                 errors.append('{} url 必须是 1-1000 位字符串'.format(image_prefix))
+            for delivery_field, max_length in (
+                ('original', 1000),
+                ('thumb', 2000),
+                ('small', 2000),
+                ('large', 2000),
+            ):
+                value = image.get(delivery_field)
+                if value is not None and (
+                    not isinstance(value, str) or not 1 <= len(value) <= max_length
+                ):
+                    errors.append(
+                        '{} {} 必须是 1-{} 位字符串'.format(
+                            image_prefix, delivery_field, max_length
+                        )
+                    )
+            transformed = image.get('transformed')
+            if transformed is not None and not isinstance(transformed, bool):
+                errors.append('{} transformed 必须是布尔值'.format(image_prefix))
             alt = image.get('alt')
             if not isinstance(alt, str) or len(alt) > 500:
                 errors.append('{} alt 必须是不超过 500 位的字符串'.format(image_prefix))
-            for dimension in ('width', 'height'):
+            for dimension in (
+                'width',
+                'height',
+                'thumbWidth',
+                'smallWidth',
+                'largeWidth',
+            ):
                 value = image.get(dimension)
                 if value is not None and (
                     not isinstance(value, int) or isinstance(value, bool) or value < 1

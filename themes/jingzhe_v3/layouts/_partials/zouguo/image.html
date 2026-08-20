@@ -1,0 +1,15 @@
+{{- $src := strings.TrimSpace (printf "%v" .src) -}}
+{{- $alt := default "" .alt -}}
+{{- $image := partial "jingzhe/responsive-image.html" (dict "src" $src) -}}
+{{- return (dict
+  "url" $image.original
+  "original" $image.original
+  "thumb" $image.thumb
+  "small" $image.small
+  "large" $image.large
+  "thumbWidth" $image.thumbWidth
+  "smallWidth" $image.smallWidth
+  "largeWidth" $image.largeWidth
+  "transformed" $image.enabled
+  "alt" $alt
+) -}}

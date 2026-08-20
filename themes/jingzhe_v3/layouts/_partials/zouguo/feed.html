@@ -54,17 +54,18 @@
   {{- $imageURLs := slice -}}
   {{- if and (eq $sourceType "post") $page.Params.image -}}
     {{- $coverURL := printf "%v" $page.Params.image -}}
-    {{- $images = $images | append (dict "url" $coverURL "alt" $page.Title) -}}
+    {{- $images = $images | append (partial "zouguo/image.html" (dict "src" $coverURL "alt" $page.Title)) -}}
     {{- $imageURLs = $imageURLs | append $coverURL -}}
   {{- end -}}
   {{- range findRESubmatch `!\[([^\]]*)\]\(([^)[:space:]]+)(?:[[:space:]]+"[^"]*")?\)` $page.RawContent -}}
     {{- $imageURL := index . 2 -}}
     {{- if not (in $imageURLs $imageURL) -}}
-      {{- $images = $images | append (dict "url" $imageURL "alt" (index . 1)) -}}
+      {{- $images = $images | append (partial "zouguo/image.html" (dict "src" $imageURL "alt" (index . 1))) -}}
       {{- $imageURLs = $imageURLs | append $imageURL -}}
     {{- end -}}
   {{- end -}}
 
+  {{- $adminCodes := partial "zouguo/admin-codes.html" $placeParams -}}
   {{- $place := dict
     "id" (index $placeParams "id")
     "name" (index $placeParams "name")
@@ -73,11 +74,11 @@
     "precision" (index $placeParams "precision")
     "privacy" (default "public" (index $placeParams "privacy"))
     "country" (default "" (index $placeParams "country"))
-    "countryCode" (index $placeParams "country_code")
+    "countryCode" $adminCodes.countryCode
     "region" (default "" (index $placeParams "region"))
-    "regionCode" (default "" (index $placeParams "region_code"))
+    "regionCode" $adminCodes.regionCode
     "locality" (default "" (index $placeParams "locality"))
-    "localityCode" (default "" (index $placeParams "locality_code"))
+    "localityCode" $adminCodes.localityCode
     "provider" (default "" (index $placeParams "provider"))
     "providerId" (default "" (index $placeParams "provider_id"))
   -}}

@@ -6,11 +6,35 @@
   {{- with .place.localityCode -}}{{- $codes.SetInMap "city" (printf "%v" .) true -}}{{- end -}}
 {{- end -}}
 {{- $features := slice -}}
+{{- $selected := newScratch -}}
+{{- $municipalities := slice "110000" "120000" "310000" "500000" -}}
 {{- range hugo.Data.jingzhe.zouguo_boundary_catalog.features -}}
   {{- $level := printf "%v" .properties.level -}}
   {{- $code := printf "%v" .properties.groupCode -}}
-  {{- if index ($codes.Get $level | default dict) $code -}}
+  {{- $featureKey := printf "%s:%s" $level $code -}}
+  {{- if and (index ($codes.Get $level | default dict) $code) (not ($selected.Get $featureKey)) -}}
     {{- $features = $features | append . -}}
+    {{- $selected.Set $featureKey true -}}
+  {{- end -}}
+  {{- if and
+    (eq $level "province")
+    (in $municipalities $code)
+    (index ($codes.Get "city" | default dict) $code)
+    (not ($selected.Get (printf "city:%s" $code))) -}}
+    {{- $cityProperties := dict
+      "level" "city"
+      "groupCode" $code
+      "iso2" (default "CN" .properties.iso2)
+      "name" .properties.name
+      "parentCode" (default "100000" .properties.parentCode)
+      "sourceLevel" "municipality"
+    -}}
+    {{- $features = $features | append (dict
+      "type" "Feature"
+      "properties" $cityProperties
+      "geometry" .geometry
+    ) -}}
+    {{- $selected.Set (printf "city:%s" $code) true -}}
   {{- end -}}
 {{- end -}}
 {{- return (dict "type" "FeatureCollection" "features" $features) -}}

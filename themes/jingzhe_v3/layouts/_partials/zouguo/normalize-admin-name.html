@@ -1,0 +1,4 @@
+{{- $name := strings.TrimSpace (printf "%v" .) -}}
+{{- $name = replaceRE `^(中华人民共和国|中国)` "" $name -}}
+{{- $name = replaceRE `(特别行政区|壮族自治区|回族自治区|维吾尔自治区|自治区|自治州|地区|盟|省|市|区|县)$` "" $name -}}
+{{- return $name -}}

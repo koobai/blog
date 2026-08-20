@@ -1,0 +1,56 @@
+{{- $place := . -}}
+{{- $countryCode := upper (strings.TrimSpace (printf "%v" (default "" (index $place "country_code")))) -}}
+{{- $regionCode := strings.TrimSpace (printf "%v" (default "" (index $place "region_code"))) -}}
+{{- $localityCode := strings.TrimSpace (printf "%v" (default "" (index $place "locality_code"))) -}}
+
+{{- if eq $countryCode "CN" -}}
+  {{- $regionName := partial "zouguo/normalize-admin-name.html" (default "" (index $place "region")) -}}
+  {{- $localityName := partial "zouguo/normalize-admin-name.html" (default "" (index $place "locality")) -}}
+  {{- $features := hugo.Data.jingzhe.zouguo_boundary_catalog.features -}}
+
+  {{- if and (not $regionCode) $regionName -}}
+    {{- range $features -}}
+      {{- $properties := .properties -}}
+      {{- if eq (printf "%v" $properties.level) "province" -}}
+        {{- $candidateName := partial "zouguo/normalize-admin-name.html" $properties.name -}}
+        {{- if eq $candidateName $regionName -}}
+          {{- $regionCode = printf "%v" $properties.groupCode -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if and (not $localityCode) $localityName -}}
+    {{- range $features -}}
+      {{- $properties := .properties -}}
+      {{- $parentCode := printf "%v" (default "" $properties.parentCode) -}}
+      {{- if and
+        (eq (printf "%v" $properties.level) "city")
+        (eq (printf "%v" (default "" $properties.sourceLevel)) "city")
+        (or (not $regionCode) (eq $parentCode $regionCode)) -}}
+        {{- $candidateName := partial "zouguo/normalize-admin-name.html" $properties.name -}}
+        {{- if eq $candidateName $localityName -}}
+          {{- $localityCode = printf "%v" $properties.groupCode -}}
+          {{- if not $regionCode -}}
+            {{- $regionCode = $parentCode -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $municipalities := slice "110000" "120000" "310000" "500000" -}}
+  {{- if and
+    (not $localityCode)
+    (in $municipalities $regionCode)
+    $localityName
+    (eq $localityName $regionName) -}}
+    {{- $localityCode = $regionCode -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict
+  "countryCode" $countryCode
+  "regionCode" $regionCode
+  "localityCode" $localityCode
+) -}}

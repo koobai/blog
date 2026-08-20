@@ -14,24 +14,62 @@
     return;
   }
 
+  const areaLabelForPlace = place => {
+    const region = String(place?.region || '').trim();
+    const locality = String(place?.locality || '').trim();
+    const country = String(place?.country || '').trim();
+    const parts = [];
+    if (region) parts.push(region);
+    if (locality && locality !== region) parts.push(locality);
+    if (!parts.length && country) parts.push(country);
+    return parts.join(' · ');
+  };
+
+  const currentYear = String(new Date().getFullYear());
+
+  const normalizeImage = image => {
+    if (typeof image === 'string') {
+      return { original: image, thumb: image, small: image, large: image, alt: '' };
+    }
+    const original = String(image?.original || image?.url || '').trim();
+    if (!original) return null;
+    return {
+      original,
+      thumb: String(image?.thumb || original),
+      small: String(image?.small || original),
+      large: String(image?.large || original),
+      alt: String(image?.alt || '')
+    };
+  };
+
+  const imageSource = (image, variant = 'original') => String(
+    image?.[variant] || image?.original || ''
+  );
+
+  const originalImageSources = images => images.map(image => imageSource(image)).filter(Boolean);
+
   const normalizeFeedItem = item => {
     const place = item?.place && typeof item.place === 'object' ? item.place : {};
     const occurredAt = String(item?.occurredAt || item?.date || '');
     const date = occurredAt.slice(0, 10);
     const dateParts = date.split('-');
     const images = Array.isArray(item?.images)
-      ? item.images.map(image => typeof image === 'string' ? image : image?.url).filter(Boolean)
+      ? item.images.map(normalizeImage).filter(Boolean)
       : [];
     const countryCode = String(place.countryCode || item?.countryCode || '');
 
     return Object.assign({}, item, {
       year: dateParts[0] || '',
       date,
-      dateLabel: dateParts.length === 3 ? `${dateParts[1]}月${dateParts[2]}日` : date,
+      dateLabel: dateParts.length === 3
+        ? (dateParts[0] === currentYear ? `${dateParts[1]}-${dateParts[2]}` : date)
+        : date,
       place: place.name || item?.place || '',
       locationId: place.id || item?.locationId || item?.id,
       locationName: place.name || item?.locationName || item?.place || '',
-      region: place.region || place.country || item?.region || '',
+      region: String(place.region || item?.region || '').trim(),
+      locality: String(place.locality || item?.locality || '').trim(),
+      areaLabel: areaLabelForPlace(place) || String(item?.region || '').trim(),
       countryCode,
       provinceCode: place.regionCode || item?.provinceCode || '',
       cityCode: place.localityCode || item?.cityCode || '',
@@ -64,9 +102,6 @@
   const locationsById = new Map(locations.map(location => [location.id, location]));
   const cards = Array.from(root.querySelectorAll('[data-zouguo-id]'));
   const entryGalleries = Array.from(root.querySelectorAll('[data-entry-gallery]'));
-  const timelineDates = Array.from(root.querySelectorAll('[data-zouguo-date]'));
-  const filterButtons = Array.from(root.querySelectorAll('[data-year]'))
-    .filter(button => button.classList.contains('zouguo-year-filter'));
   const caption = document.getElementById('zouguo-map-caption');
   const scopeBackButton = document.getElementById('zouguo-scope-back');
   const overviewButton = document.getElementById('zouguo-overview');
@@ -77,7 +112,6 @@
   let map = null;
   let selectedId = null;
   let randomItemId = null;
-  let activeYear = 'all';
   let markers = new Map();
   let currentMapStyle = '';
   let boundaryCollections = null;
@@ -95,6 +129,10 @@
   let basemapLabelsConfigured = false;
   let basemapPlaceLabelsVisible = null;
   let basemapRoadLabelsVisible = null;
+  let hasPlayedInitialOverview = false;
+  let initialOverviewCancelled = false;
+  let initialOverviewAnimating = false;
+  let initialMarkerLayoutLocked = false;
 
   const boundarySourceIds = {
     country: 'zouguo-visited-country',
@@ -197,8 +235,6 @@
     }
   };
 
-  const visibleItems = () => items.filter(item => activeYear === 'all' || item.year === activeYear);
-
   const hasOverlayTimeline = () => window.innerWidth > 860;
 
   const setTimelineRetracted = active => {
@@ -236,14 +272,6 @@
     };
   };
 
-  const updateTimelineDates = () => {
-    const currentYear = String(new Date().getFullYear());
-    timelineDates.forEach(date => {
-      const showYear = activeYear === 'all' && date.dataset.zouguoYear !== currentYear;
-      date.textContent = `${showYear ? `${date.dataset.zouguoYear} · ` : ''}${date.dataset.dateLabel}`;
-    });
-  };
-
   const emptyFeatureCollection = () => ({ type: 'FeatureCollection', features: [] });
 
   const asFeatureCollection = data => {
@@ -253,13 +281,12 @@
   };
 
   const areaNameForMap = () => {
-    const yearPrefix = activeYear === 'all' ? '' : `${activeYear} · `;
-    if (!map || map.getZoom() < 4.05) return activeYear === 'all' ? '全部走过' : `${activeYear} 年走过`;
+    if (!map || map.getZoom() < 4.05) return '全部走过';
 
     const bounds = map.getBounds();
     const center = map.getCenter();
-    const entries = visibleItems().filter(item => bounds.contains(item.coordinates));
-    if (!entries.length) return `${yearPrefix}地图漫游`;
+    const entries = items.filter(item => bounds.contains(item.coordinates));
+    if (!entries.length) return '地图漫游';
 
     const distanceFromCenter = item => {
       const longitude = Number(item.coordinates?.[0]) || 0;
@@ -270,14 +297,14 @@
 
     if (map.getZoom() < 6.55) {
       const regions = Array.from(new Set(nearestFirst.map(item => item.region).filter(Boolean)));
-      if (regions.length === 1) return `${yearPrefix}${regions[0]}走过`;
-      if (regions.length === 2) return `${yearPrefix}${regions.join(' · ')}`;
-      return `${yearPrefix}多省走过`;
+      if (regions.length === 1) return `${regions[0]}走过`;
+      if (regions.length === 2) return regions.join(' · ');
+      return '多省走过';
     }
 
     const cities = Array.from(new Set(nearestFirst.map(item => String(item.place || '').split('·')[0].trim()).filter(Boolean)));
-    if (cities.length === 1) return `${yearPrefix}${cities[0]}走过`;
-    return `${yearPrefix}${cities[0]}周边`;
+    if (cities.length === 1) return `${cities[0]}走过`;
+    return `${cities[0]}周边`;
   };
 
   const mapScopeIndex = () => {
@@ -309,9 +336,7 @@
     updateScope();
   };
 
-  const visibleEntriesForLocation = location => location.items.filter(
-    item => activeYear === 'all' || item.year === activeYear
-  );
+  const visibleEntriesForLocation = location => location.items;
 
   const closeCoordinateCard = options => {
     const settings = Object.assign({
@@ -385,6 +410,7 @@
   const galleryForItem = item => {
     const images = Array.isArray(item.images) ? item.images.filter(Boolean) : [];
     if (!images.length) return null;
+    const originalImages = originalImageSources(images);
 
     const gallery = document.createElement('button');
     gallery.type = 'button';
@@ -394,12 +420,13 @@
       images.length > 1 ? `查看这枚走过的 ${images.length} 张照片` : '查看这枚走过的照片'
     );
 
-    const photoLayer = (src, className, alt = '') => {
+    const photoLayer = (asset, className, alt = '') => {
       const layer = document.createElement('span');
       layer.className = `zouguo-coordinate-photo ${className}`;
       const image = document.createElement('img');
-      image.src = src;
-      image.alt = alt;
+      image.src = imageSource(asset, 'small');
+      image.alt = asset.alt || alt;
+      image.decoding = 'async';
       layer.appendChild(image);
       return layer;
     };
@@ -419,7 +446,11 @@
       event.stopPropagation();
       cancelMapOrbit(true);
       if (window.ViewImage && typeof window.ViewImage.display === 'function') {
-        window.ViewImage.display(images, images[0]);
+        // Safari keeps a pointer-clicked button focused. Pressing Escape then
+        // switches it into :focus-visible and leaves a blue ring behind.
+        // Pointer users do not need focus restoration; keyboard users keep it.
+        if (event.detail > 0) gallery.blur();
+        window.ViewImage.display(originalImages, originalImages[0]);
       }
     });
 
@@ -443,7 +474,7 @@
     eyebrow.className = 'zouguo-coordinate-eyebrow';
     eyebrow.textContent = entries.length > 1
       ? `${entries.length} 次经过 · ${yearRange}`
-      : `${currentItem.year} · ${currentItem.region}`;
+      : [currentItem.year, currentItem.areaLabel].filter(Boolean).join(' · ');
 
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
@@ -465,7 +496,6 @@
     card.appendChild(topbar);
 
     const title = document.createElement('h3');
-    title.textContent = location.name;
     card.appendChild(title);
 
     let dateRail = null;
@@ -505,6 +535,22 @@
     function renderItem(item) {
       currentItem = item;
       const images = Array.isArray(item.images) ? item.images.filter(Boolean) : [];
+      title.replaceChildren();
+      if (item?.source?.type === 'post' && item?.source?.url) {
+        const link = document.createElement('a');
+        link.className = 'zouguo-coordinate-source-link';
+        link.href = item.source.url;
+        const label = document.createElement('span');
+        label.textContent = item.title || location.name;
+        const mark = document.createElement('span');
+        mark.className = 'zouguo-source-link-mark';
+        mark.setAttribute('aria-hidden', 'true');
+        mark.textContent = '→';
+        link.append(label, mark);
+        title.appendChild(link);
+      } else {
+        title.textContent = location.name;
+      }
       card.classList.toggle('is-text-only', !images.length);
       date.dateTime = item.date;
       date.textContent = `${item.dateLabel} · 经过这里`;
@@ -730,7 +776,7 @@
 
   const selectZouguo = (id, options) => {
     const item = itemsById.get(id);
-    if (!item || (activeYear !== 'all' && item.year !== activeYear)) return;
+    if (!item) return;
 
     const settings = Object.assign({ scroll: false, moveMap: true, smooth: true }, options || {});
     selectedId = id;
@@ -783,10 +829,10 @@
     updateCaption();
   };
 
-  const fitVisibleItems = animate => {
-    if (!map || typeof mapboxgl === 'undefined') return;
-    const currentItems = visibleItems();
-    if (!currentItems.length) return;
+  const visibleItemsBounds = () => {
+    if (typeof mapboxgl === 'undefined') return null;
+    const currentItems = items;
+    if (!currentItems.length) return null;
 
     const longitudes = currentItems.map(item => item.coordinates[0]);
     const latitudes = currentItems.map(item => item.coordinates[1]);
@@ -796,19 +842,43 @@
     const maxLat = Math.max(...latitudes);
     const lngPadding = Math.max((maxLng - minLng) * 0.12, 0.34);
     const latPadding = Math.max((maxLat - minLat) * 0.12, 0.28);
-    const bounds = new mapboxgl.LngLatBounds(
+    return new mapboxgl.LngLatBounds(
       [minLng - lngPadding, minLat - latPadding],
       [maxLng + lngPadding, maxLat + latPadding]
     );
+  };
+
+  const fitVisibleItems = (animate, options = {}) => {
+    if (!map || typeof mapboxgl === 'undefined') return;
+    const bounds = visibleItemsBounds();
+    if (!bounds) return;
+    const reducedMotion = Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+    const requestedDuration = Number(options.duration);
+    const duration = Number.isFinite(requestedDuration) ? requestedDuration : 1100;
     map.fitBounds(bounds, {
       padding: window.innerWidth < 760 ? 30 : mapViewportPadding(44),
       maxZoom: 8.2,
       pitch: 0,
       bearing: 0,
       retainPadding: false,
-      duration: animate ? 1100 : 0,
-      essential: true
+      duration: animate && !reducedMotion ? duration : 0,
+      essential: false
     });
+  };
+
+  const releaseInitialMarkerLayout = () => {
+    if (!initialMarkerLayoutLocked) return;
+    initialMarkerLayoutLocked = false;
+    refreshLocationMarkers();
+  };
+
+  const cancelInitialOverview = () => {
+    if (hasPlayedInitialOverview && !initialOverviewAnimating && !initialMarkerLayoutLocked) return;
+    initialOverviewCancelled = true;
+    hasPlayedInitialOverview = true;
+    if (initialOverviewAnimating) map?.stop();
+    initialOverviewAnimating = false;
+    releaseInitialMarkerLayout();
   };
 
   const featureCollectionForCodes = (collection, property, codes) => {
@@ -820,7 +890,7 @@
   };
 
   const boundaryDataForVisibleItems = () => {
-    const currentItems = visibleItems();
+    const currentItems = items;
     const countryCodes = new Set(currentItems.map(item => item.countryCode).filter(Boolean).map(String));
     const provinceCodes = new Set(currentItems.map(item => item.provinceCode).filter(Boolean).map(String));
     const cityCodes = new Set(currentItems.map(item => item.cityCode).filter(Boolean).map(String));
@@ -846,10 +916,10 @@
       ? {
           fill: '#b76551',
           line: '#c5826f',
-          fillEmissiveStrength: 0.68,
-          lineEmissiveStrength: 0.72,
-          lineOpacity: 0.58,
-          opacities: { country: 0.15, province: 0.2, city: 0.26 }
+          fillEmissiveStrength: 0.28,
+          lineEmissiveStrength: 0.38,
+          lineOpacity: 0.44,
+          opacities: { country: 0.09, province: 0.13, city: 0.18 }
         }
       : {
           fill: '#bd6b55',
@@ -987,8 +1057,10 @@
     disc.classList.toggle('is-text-only', !image);
     if (image) {
       const preview = document.createElement('img');
-      preview.src = image;
+      preview.src = imageSource(image, 'thumb');
       preview.alt = '';
+      preview.decoding = 'async';
+      preview.fetchPriority = 'low';
       disc.appendChild(preview);
     }
   };
@@ -998,11 +1070,15 @@
     button.type = 'button';
     button.className = 'zouguo-map-marker';
 
+    const visual = document.createElement('span');
+    visual.className = 'zouguo-map-marker-visual';
+    visual.setAttribute('aria-hidden', 'true');
+    button.appendChild(visual);
+
     const historyDisc = document.createElement('span');
     historyDisc.className = 'zouguo-map-marker-history';
-    historyDisc.setAttribute('aria-hidden', 'true');
     historyDisc.hidden = true;
-    button.appendChild(historyDisc);
+    visual.appendChild(historyDisc);
 
     const previewItem = location.items.find(item => Array.isArray(item.images) && item.images.length) || location.items[0];
     const hasImages = Array.isArray(previewItem?.images) && previewItem.images.length > 0;
@@ -1010,15 +1086,17 @@
       const frame = document.createElement('span');
       frame.className = 'zouguo-map-marker-frame';
       const image = document.createElement('img');
-      image.src = previewItem.images[0];
+      image.src = imageSource(previewItem.images[0], 'thumb');
       image.alt = '';
+      image.decoding = 'async';
+      image.fetchPriority = 'low';
       frame.appendChild(image);
-      button.appendChild(frame);
+      visual.appendChild(frame);
     } else {
       button.classList.add('is-text-only');
       const dot = document.createElement('span');
       dot.className = 'zouguo-map-marker-dot';
-      button.appendChild(dot);
+      visual.appendChild(dot);
     }
 
     button.addEventListener('click', event => {
@@ -1080,6 +1158,11 @@
     button.className = 'zouguo-map-cluster';
     button.setAttribute('aria-label', `${locationIds.length} 个附近地点，放大查看`);
 
+    const visual = document.createElement('span');
+    visual.className = 'zouguo-map-cluster-visual';
+    visual.setAttribute('aria-hidden', 'true');
+    button.appendChild(visual);
+
     const previewLocations = locationIds
       .map(id => locationsById.get(id))
       .filter(Boolean)
@@ -1089,8 +1172,7 @@
     if (!previewLocations.length) {
       const disc = document.createElement('span');
       disc.className = 'zouguo-map-cluster-disc is-single is-text-only';
-      disc.setAttribute('aria-hidden', 'true');
-      button.appendChild(disc);
+      visual.appendChild(disc);
     }
 
     previewLocations.forEach((location, index) => {
@@ -1098,9 +1180,8 @@
       disc.className = previewLocations.length === 1
         ? 'zouguo-map-cluster-disc is-single'
         : `zouguo-map-cluster-disc is-${index === 0 ? 'back' : 'front'}`;
-      disc.setAttribute('aria-hidden', 'true');
       renderPreviewDisc(disc, previewItemForLocation(location));
-      button.appendChild(disc);
+      visual.appendChild(disc);
     });
     button.addEventListener('click', event => {
       event.stopPropagation();
@@ -1191,13 +1272,56 @@
     });
 
     map.on('load', () => {
-      root.classList.add('is-map-ready');
       applyBasemapPresentation();
       map.resize();
-      fitVisibleItems(false);
+      const reducedMotion = Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+      const bounds = visibleItemsBounds();
+      const padding = window.innerWidth < 760 ? 30 : mapViewportPadding(44);
+      const finalCamera = bounds ? map.cameraForBounds(bounds, { padding, maxZoom: 8.2 }) : null;
+
+      if (reducedMotion || !finalCamera) {
+        hasPlayedInitialOverview = true;
+        fitVisibleItems(false);
+      } else {
+        // Build the marker/cluster layout at the destination before the map is
+        // revealed. Keeping that layout locked during the camera move prevents
+        // individual markers from popping in when the animation finishes.
+        initialMarkerLayoutLocked = true;
+        map.jumpTo({
+          center: finalCamera.center,
+          zoom: finalCamera.zoom,
+          pitch: 0,
+          bearing: 0
+        });
+        refreshLocationMarkers();
+        map.jumpTo({
+          center: finalCamera.center,
+          zoom: Math.max(finalCamera.zoom - (window.innerWidth < 760 ? 0.55 : 0.78), 1.5),
+          pitch: 0,
+          bearing: 0
+        });
+      }
+
+      root.classList.add('is-map-ready');
       queueBoundaryLayers();
-      refreshLocationMarkers();
+      if (!initialMarkerLayoutLocked) refreshLocationMarkers();
       updateScope();
+
+      if (!hasPlayedInitialOverview) {
+        map.once('idle', () => {
+          if (hasPlayedInitialOverview || initialOverviewCancelled) {
+            releaseInitialMarkerLayout();
+            return;
+          }
+          hasPlayedInitialOverview = true;
+          initialOverviewAnimating = true;
+          map.once('moveend', () => {
+            initialOverviewAnimating = false;
+            releaseInitialMarkerLayout();
+          });
+          fitVisibleItems(true, { duration: window.innerWidth < 760 ? 1300 : 1800 });
+        });
+      }
     });
 
     map.on('style.load', () => {
@@ -1211,12 +1335,23 @@
       updateScope();
       syncBasemapLabels();
     });
-    map.on('moveend', refreshLocationMarkers);
+    map.on('moveend', () => {
+      if (!initialMarkerLayoutLocked) refreshLocationMarkers();
+    });
     map.on('moveend', updateScopeAfterMove);
     map.on('dragstart', () => closeCoordinateCard({ stopMap: false }));
-    map.on('mousedown', () => cancelMapOrbit(true));
-    map.on('touchstart', () => cancelMapOrbit(true));
-    map.on('wheel', () => cancelMapOrbit(true));
+    map.on('mousedown', () => {
+      cancelInitialOverview();
+      cancelMapOrbit(true);
+    });
+    map.on('touchstart', () => {
+      cancelInitialOverview();
+      cancelMapOrbit(true);
+    });
+    map.on('wheel', () => {
+      cancelInitialOverview();
+      cancelMapOrbit(true);
+    });
 
     map.on('error', event => {
       if (!event?.error) return;
@@ -1253,32 +1388,6 @@
     }
 
     loadBoundaries();
-  };
-
-  const filterByYear = year => {
-    closeCoordinateCard();
-    timelineFocusId = null;
-    returnMapView = null;
-    mapViewHistory = [];
-    activeYear = year;
-    updateTimelineDates();
-    filterButtons.forEach(button => {
-      const active = button.dataset.year === year;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
-
-    cards.forEach(card => {
-      card.hidden = year !== 'all' && card.dataset.year !== year;
-    });
-
-    clearZouguoSelection();
-    refreshLocationMarkers();
-
-    updateBoundarySources();
-
-    updateCaption();
-    window.setTimeout(() => fitVisibleItems(true), 50);
   };
 
   cards.forEach(card => {
@@ -1321,18 +1430,15 @@
       const item = itemsById.get(card?.dataset.zouguoId);
       const images = Array.isArray(item?.images) ? item.images.filter(Boolean) : [];
       if (!images.length) return;
+      const originalImages = originalImageSources(images);
 
       const photo = event.target.closest('[data-image-index]');
       const imageIndex = Math.max(0, Math.min(images.length - 1, Number(photo?.dataset.imageIndex) || 0));
       cancelMapOrbit(true);
       if (window.ViewImage && typeof window.ViewImage.display === 'function') {
-        window.ViewImage.display(images, images[imageIndex]);
+        window.ViewImage.display(originalImages, originalImages[imageIndex]);
       }
     });
-  });
-
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => filterByYear(button.dataset.year || 'all'));
   });
 
   overviewButton?.addEventListener('click', () => {
@@ -1387,10 +1493,10 @@
   });
 
   randomButton?.addEventListener('click', () => {
-    const candidates = visibleItems().filter(item => (
+    const candidates = items.filter(item => (
       item.id !== randomItemId && item.id !== selectedId
     ));
-    const pool = candidates.length ? candidates : visibleItems();
+    const pool = candidates.length ? candidates : items;
     const item = pool[Math.floor(Math.random() * pool.length)];
     const location = item && locationsById.get(itemLocationIds.get(item.id));
     if (item && location) {
@@ -1426,7 +1532,6 @@
     setTimelineRetracted(Boolean(coordinatePopup || focusingLocationId));
   });
 
-  updateTimelineDates();
   updateCaption();
   setupMap();
 })();

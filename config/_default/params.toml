@@ -56,6 +56,7 @@ RSSNoContent = false
   enabled = false
   sourceOrigin = ""
   deliveryOrigin = ""
+  thumbWidth = 128
   smallWidth = 640
   largeWidth = 960
   quality = 75
