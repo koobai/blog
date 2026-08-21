@@ -419,6 +419,22 @@ async function testPublisherZouguoIsIdempotentAndUsesSafePath() {
     assert.equal(repeated.status, 200);
     assert.equal((await responseJson(repeated)).changed, false);
     assert.equal(putCalls, 1, 'repeated request must not create or update another file');
+
+    const path = 'content/zouguo/20260818-102000-ios-request-123.md';
+    const detail = await publisherWorker.fetch(new Request(
+      `https://publisher.example.org/api/app/zouguo/detail?path=${encodeURIComponent(path)}`,
+      { headers: { Origin: origin, 'x-admin-token': 'local-test-token' } }
+    ), env);
+    assert.equal(detail.status, 200);
+    const detailBody = await responseJson(detail);
+    assert.equal(detailBody.title, '东京 · 河边');
+    assert.equal(detailBody.content, '傍晚走到河边。');
+    assert.deepEqual(detailBody.images, body.images);
+    assert.equal(detailBody.occurredAt, body.occurredAt);
+    assert.equal(detailBody.place.id, body.place.id);
+    assert.equal(detailBody.place.countryCode, 'JP');
+    assert.equal(detailBody.path, path);
+    assert.equal(detailBody.sha, 'sha-zouguo-1');
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -627,6 +643,101 @@ async function testLaodaoZouguoLinkRequiresPlaceAndCanBeRemoved() {
   }
 }
 
+async function testAggregatedSourcesCanUpdateMetadataAndDetachSafely() {
+  const env = {
+    ALLOWED_ORIGINS: origin,
+    ADMIN_TOKEN: 'local-test-token',
+    GH_TOKEN: 'local-github-token',
+    GITHUB_OWNER: 'koobai',
+    GITHUB_REPO: 'blog'
+  };
+  const postPath = 'content/posts/一篇旅行.md';
+  const laodaoPath = 'content/laodao/2026/08/20260818-120000.md';
+  const files = new Map([
+    [postPath, `---\ntitle: '一篇旅行'\ntags: ['生活','走过']\nzouguo:\n  occurred_at: 2024-05-02T11:00:00+08:00\n  place:\n    id: "cn-old"\n    name: "旧地点"\n    longitude: 120\n    latitude: 30\n    precision: "poi"\n    privacy: "public"\n    country: "中国"\n    country_code: "CN"\n---\n正文不能被改掉。\n`],
+    [laodaoPath, `---\ndate: 2026-08-18T12:00:00+08:00\nlaodaotags:\n  - "生活"\n  - "走过"\nzouguo:\n  occurred_at: 2026-08-18T12:00:00+08:00\n  place:\n    id: "cn-old"\n    name: "旧地点"\n    longitude: 120\n    latitude: 30\n    precision: "poi"\n    privacy: "public"\n    country: "中国"\n    country_code: "CN"\n---\n唠叨正文。\n`]
+  ]);
+  const originalFetch = globalThis.fetch;
+  let githubCalls = 0;
+  globalThis.fetch = async (target, options = {}) => {
+    githubCalls += 1;
+    const marker = '/contents/';
+    const encodedPath = String(target).split(marker)[1].split('?')[0];
+    const path = encodedPath.split('/').map(decodeURIComponent).join('/');
+    if (!options.method || options.method === 'GET') {
+      if (!files.has(path)) return new Response(JSON.stringify({ message: 'Not Found' }), { status: 404 });
+      return new Response(JSON.stringify({ sha: `sha-${path}`, content: Buffer.from(files.get(path)).toString('base64') }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    assert.equal(options.method, 'PUT');
+    files.set(path, Buffer.from(JSON.parse(options.body).content, 'base64').toString('utf8'));
+    return new Response(JSON.stringify({ content: { sha: `updated-${path}` } }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  };
+  const headers = {
+    Origin: origin,
+    'x-admin-token': 'local-test-token',
+    'Content-Type': 'application/json'
+  };
+  const place = {
+    id: 'cn-zhejiang-hangzhou-park',
+    name: '杭州 · 临平山公园',
+    longitude: 120.2786,
+    latitude: 30.4218,
+    precision: 'poi',
+    privacy: 'public',
+    country: '中国',
+    countryCode: 'CN',
+    region: '浙江省',
+    locality: '杭州市',
+    provider: 'manual',
+    providerId: 'manual:120.278600,30.421800'
+  };
+
+  try {
+    const updated = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/metadata', {
+      method: 'POST', headers, body: JSON.stringify({ type: 'post', path: postPath, occurredAt: '2024-05-03T10:00:00+08:00', place })
+    }), env);
+    assert.equal(updated.status, 200);
+    assert.equal((await responseJson(updated)).changed, true);
+    assert.match(files.get(postPath), /title: '一篇旅行'/);
+    assert.match(files.get(postPath), /occurred_at: 2024-05-03T10:00:00\+08:00/);
+    assert.match(files.get(postPath), /name: "杭州 · 临平山公园"/);
+    assert.match(files.get(postPath), /正文不能被改掉。/);
+
+    const detachedPost = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/detach', {
+      method: 'POST', headers, body: JSON.stringify({ type: 'post', path: postPath })
+    }), env);
+    assert.equal(detachedPost.status, 200);
+    assert.doesNotMatch(files.get(postPath), /zouguo:/);
+    assert.doesNotMatch(files.get(postPath), /走过/);
+    assert.match(files.get(postPath), /tags: \['生活'\]/);
+    assert.match(files.get(postPath), /正文不能被改掉。/);
+
+    const detachedLaodao = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/detach', {
+      method: 'POST', headers, body: JSON.stringify({ type: 'laodao', path: laodaoPath })
+    }), env);
+    assert.equal(detachedLaodao.status, 200);
+    assert.doesNotMatch(files.get(laodaoPath), /zouguo:/);
+    assert.doesNotMatch(files.get(laodaoPath), /走过/);
+    assert.match(files.get(laodaoPath), /- "生活"/);
+    assert.match(files.get(laodaoPath), /唠叨正文。/);
+
+    const callsBeforeUnsafe = githubCalls;
+    const unsafe = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/detach', {
+      method: 'POST', headers, body: JSON.stringify({ type: 'post', path: 'content/posts/../../config.toml' })
+    }), env);
+    assert.equal(unsafe.status, 400);
+    assert.equal(githubCalls, callsBeforeUnsafe);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
 await testCommentsHideEmail();
 await testCommentsRejectForeignOrigin();
 await testDraftAuthenticationAndShape();
@@ -639,4 +750,5 @@ await testPublisherZouguoIsIdempotentAndUsesSafePath();
 await testPublisherRejectsUnsafeZouguoPathBeforeGitHub();
 await testLegacyLaodaoCanCreateUpdateReadAndDelete();
 await testLaodaoZouguoLinkRequiresPlaceAndCanBeRemoved();
+await testAggregatedSourcesCanUpdateMetadataAndDetachSafely();
 console.log('worker contract tests: ok');

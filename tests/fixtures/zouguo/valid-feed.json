@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedAt": "2026-08-19T12:00:00+08:00",
   "items": [
     {
@@ -7,7 +7,8 @@
       "source": {
         "type": "zouguo",
         "id": "example-lakeside",
-        "url": "/zouguo/example-lakeside/"
+        "url": "/zouguo/example-lakeside/",
+        "path": "content/zouguo/example-lakeside.md"
       },
       "title": "示例城 · 湖边",
       "summary": "雨停了，湖面慢慢亮起来。",
@@ -32,14 +33,21 @@
           "url": "/images/synthetic/lakeside.webp",
           "alt": "合成的湖边测试图"
         }
-      ]
+      ],
+      "capabilities": {
+        "canEdit": true,
+        "canDelete": true,
+        "canDetach": false,
+        "canOpenSource": false
+      }
     },
     {
       "id": "laodao:example-short-note",
       "source": {
         "type": "laodao",
         "id": "example-short-note",
-        "url": "/laodao/example-short-note/"
+        "url": "/laodao/example-short-note/",
+        "path": "content/laodao/2026/07/example-short-note.md"
       },
       "title": "示例城 · 老街",
       "summary": "路过时顺手写下一句话。",
@@ -57,14 +65,21 @@
         "region": "示例省",
         "locality": "示例城"
       },
-      "images": []
+      "images": [],
+      "capabilities": {
+        "canEdit": true,
+        "canDelete": false,
+        "canDetach": true,
+        "canOpenSource": true
+      }
     },
     {
       "id": "post:example-long-note",
       "source": {
         "type": "post",
         "id": "example-long-note",
-        "url": "/posts/example-long-note/"
+        "url": "/posts/example-long-note/",
+        "path": "content/posts/example-long-note.md"
       },
       "title": "一篇合成的旅行随笔",
       "summary": "",
@@ -93,7 +108,13 @@
           "url": "/images/synthetic/trail.webp",
           "alt": "合成的小路测试图"
         }
-      ]
+      ],
+      "capabilities": {
+        "canEdit": true,
+        "canDelete": false,
+        "canDetach": true,
+        "canOpenSource": true
+      }
     }
   ]
 }

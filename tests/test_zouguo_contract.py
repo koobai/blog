@@ -37,6 +37,15 @@ class ZouguoContractTests(unittest.TestCase):
             any('id 重复' in error for error in validate_zouguo_feed(duplicate))
         )
 
+    def test_management_path_and_capabilities_match_source_type(self):
+        invalid = copy.deepcopy(self.valid_feed)
+        laodao = next(item for item in invalid['items'] if item['source']['type'] == 'laodao')
+        laodao['source']['path'] = 'content/posts/not-the-laodao.md'
+        laodao['capabilities']['canDelete'] = True
+        errors = validate_zouguo_feed(invalid)
+        self.assertTrue(any('source.path 与来源类型不匹配' in error for error in errors))
+        self.assertTrue(any('capabilities 与来源类型不匹配' in error for error in errors))
+
     def test_missing_place_and_invalid_coordinates_are_rejected(self):
         invalid = json.loads(
             (FIXTURES / 'invalid-missing-place.json').read_text(encoding='utf-8')

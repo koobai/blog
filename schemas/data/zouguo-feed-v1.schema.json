@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://jingzhe.example/schemas/data/zouguo-feed-v1.schema.json",
-  "title": "Jingzhe Zouguo generated feed v1",
+  "title": "Jingzhe Zouguo generated feed v2",
   "description": "Generated read model for the zouguo page. Markdown remains the source of truth.",
   "type": "object",
   "required": ["schemaVersion", "generatedAt", "items"],
   "properties": {
-    "schemaVersion": {"type": "integer", "const": 1},
+    "schemaVersion": {"type": "integer", "const": 2},
     "generatedAt": {"type": "string", "format": "date-time"},
     "items": {
       "type": "array",
@@ -24,7 +24,8 @@
         "occurredAt",
         "publishedAt",
         "place",
-        "images"
+        "images",
+        "capabilities"
       ],
       "properties": {
         "id": {
@@ -41,7 +42,8 @@
           "type": "array",
           "maxItems": 20,
           "items": {"$ref": "#/$defs/image"}
-        }
+        },
+        "capabilities": {"$ref": "#/$defs/capabilities"}
       },
       "allOf": [
         {
@@ -61,14 +63,31 @@
     },
     "source": {
       "type": "object",
-      "required": ["type", "id", "url"],
+      "required": ["type", "id", "url", "path"],
       "properties": {
         "type": {"enum": ["zouguo", "laodao", "post"]},
         "id": {
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9._:-]{0,199}$"
         },
-        "url": {"type": "string", "minLength": 1, "maxLength": 500}
+        "url": {"type": "string", "minLength": 1, "maxLength": 500},
+        "path": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 520,
+          "pattern": "^content/(zouguo|laodao|posts)/[^\\r\\n]+\\.md$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["canEdit", "canDelete", "canDetach", "canOpenSource"],
+      "properties": {
+        "canEdit": {"type": "boolean"},
+        "canDelete": {"type": "boolean"},
+        "canDetach": {"type": "boolean"},
+        "canOpenSource": {"type": "boolean"}
       },
       "additionalProperties": false
     },
@@ -128,6 +147,8 @@
     "identity": ["source.type", "source.id"],
     "tag_trigger": "走过",
     "source_types": ["zouguo", "laodao", "post"],
+    "management_path": "source.path is generated from Page.File.Path; workers must still enforce an allowlist",
+    "management_capabilities": "zouguo can be deleted; laodao and post can only be detached from the feed",
     "post_summary": "empty; the card links with the post title only",
     "image_order": "first appearance in Markdown; a post cover is prepended only when absent from the body",
     "image_delivery": "url/original remains the source image; optional thumb/small/large fields are build-time delivery variants",

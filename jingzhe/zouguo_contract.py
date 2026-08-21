@@ -1,4 +1,4 @@
-"""Validation helpers for the generated Zouguo feed v1 read model."""
+"""Validation helpers for the generated Zouguo feed v2 read model."""
 
 import json
 import math
@@ -36,6 +36,14 @@ IMAGE_SCHEMA = SCHEMA['$defs']['image']
 IMAGE_FIELDS = frozenset(IMAGE_SCHEMA['properties'])
 IMAGE_REQUIRED_FIELDS = frozenset(IMAGE_SCHEMA['required'])
 MAX_IMAGES = ITEM_SCHEMA['properties']['images']['maxItems']
+CAPABILITIES_SCHEMA = SCHEMA['$defs']['capabilities']
+CAPABILITIES_FIELDS = frozenset(CAPABILITIES_SCHEMA['properties'])
+CAPABILITIES_REQUIRED_FIELDS = frozenset(CAPABILITIES_SCHEMA['required'])
+SOURCE_PATH_PREFIXES = {
+    'zouguo': 'content/zouguo/',
+    'laodao': 'content/laodao/',
+    'post': 'content/posts/',
+}
 
 
 def _is_number(value):
@@ -72,7 +80,7 @@ def _missing_fields(value, required):
 
 
 def validate_zouguo_feed(payload):
-    """Return deterministic v1 contract errors without changing the payload."""
+    """Return deterministic v2 contract errors without changing the payload."""
     if not isinstance(payload, dict):
         return ['走过数据根节点必须是对象']
 
@@ -83,8 +91,8 @@ def validate_zouguo_feed(payload):
     missing_root_fields = _missing_fields(payload, ROOT_REQUIRED_FIELDS)
     if missing_root_fields:
         errors.append('根节点缺少：{}'.format(', '.join(missing_root_fields)))
-    if payload.get('schemaVersion') != 1:
-        errors.append('schemaVersion 必须为 1')
+    if payload.get('schemaVersion') != 2:
+        errors.append('schemaVersion 必须为 2')
     if not _valid_timestamp(payload.get('generatedAt')):
         errors.append('generatedAt 必须是带时区的 RFC 3339 时间')
 
@@ -134,6 +142,19 @@ def validate_zouguo_feed(payload):
             source_url = source.get('url')
             if not isinstance(source_url, str) or not 1 <= len(source_url) <= 500:
                 errors.append('{} source.url 必须是 1-500 位字符串'.format(prefix))
+            source_path = source.get('path')
+            expected_prefix = SOURCE_PATH_PREFIXES.get(source_type)
+            if (
+                not isinstance(source_path, str)
+                or not source_path.endswith('.md')
+                or '..' in source_path
+                or '\\' in source_path
+                or '\n' in source_path
+                or '\r' in source_path
+                or expected_prefix is None
+                or not source_path.startswith(expected_prefix)
+            ):
+                errors.append('{} source.path 与来源类型不匹配'.format(prefix))
 
         item_id = item.get('id')
         if source_type in SOURCE_TYPES and isinstance(source_id, str):
@@ -156,6 +177,37 @@ def validate_zouguo_feed(payload):
         for field in ('occurredAt', 'publishedAt'):
             if not _valid_timestamp(item.get(field)):
                 errors.append('{} {} 必须是带时区的 RFC 3339 时间'.format(prefix, field))
+
+        capabilities = item.get('capabilities')
+        if not isinstance(capabilities, dict):
+            errors.append('{} capabilities 必须是对象'.format(prefix))
+        else:
+            unknown_capability_fields = _unknown_fields(capabilities, CAPABILITIES_FIELDS)
+            if unknown_capability_fields:
+                errors.append(
+                    '{} capabilities 包含未知字段：{}'.format(
+                        prefix, ', '.join(unknown_capability_fields)
+                    )
+                )
+            missing_capability_fields = _missing_fields(
+                capabilities, CAPABILITIES_REQUIRED_FIELDS
+            )
+            if missing_capability_fields:
+                errors.append(
+                    '{} capabilities 缺少：{}'.format(
+                        prefix, ', '.join(missing_capability_fields)
+                    )
+                )
+            if any(not isinstance(capabilities.get(field), bool) for field in CAPABILITIES_FIELDS):
+                errors.append('{} capabilities 必须全部是布尔值'.format(prefix))
+            expected_capabilities = {
+                'canEdit': True,
+                'canDelete': source_type == 'zouguo',
+                'canDetach': source_type in {'laodao', 'post'},
+                'canOpenSource': source_type in {'laodao', 'post'},
+            }
+            if source_type in SOURCE_TYPES and capabilities != expected_capabilities:
+                errors.append('{} capabilities 与来源类型不匹配'.format(prefix))
 
         place = item.get('place')
         if not isinstance(place, dict):

@@ -3,6 +3,7 @@ const MAX_CONTENT_LENGTH = 200000;
 const IDENTIFIER_RE = /^[a-z0-9][a-z0-9._:-]{0,199}$/;
 const LAODAO_PATH_RE = /^content\/laodao\/\d{4}\/\d{2}\/[A-Za-z0-9._-]+\.md$/;
 const ZOUGUO_PATH_RE = /^content\/zouguo\/[a-z0-9][a-z0-9._-]{0,199}\.md$/;
+const POST_PATH_RE = /^content\/posts\/[^/\\]{1,240}\.md$/u;
 
 function allowedOrigins(env) {
   return String(env.ALLOWED_ORIGINS || '')
@@ -73,6 +74,12 @@ function uploadContentType(filename, requestedContentType) {
 function contentPathAllowed(path, kind) {
   if (!path || path.includes('..')) return false;
   return kind === 'laodao' ? LAODAO_PATH_RE.test(path) : ZOUGUO_PATH_RE.test(path);
+}
+
+function sourceContentPathAllowed(path, type) {
+  if (!path || path.includes('..') || path.includes('\\')) return false;
+  if (type === 'laodao') return LAODAO_PATH_RE.test(path);
+  return type === 'post' && POST_PATH_RE.test(path);
 }
 
 function yamlString(value) {
@@ -338,6 +345,160 @@ function parseLegacyLaodao(markdown) {
   };
 }
 
+function parseYamlScalar(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('"')) {
+    try { return JSON.parse(raw); } catch (_error) { return raw.replace(/^"|"$/g, ''); }
+  }
+  return raw.replace(/^'|'$/g, '');
+}
+
+function parseZouguoMarkdown(markdown) {
+  const matched = String(markdown || '').match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)?/);
+  const frontmatter = matched?.[1] || '';
+  let content = matched ? markdown.slice(matched[0].length).trim() : markdown.trim();
+  const value = pattern => parseYamlScalar(frontmatter.match(pattern)?.[1]);
+  const nested = key => value(new RegExp(`(?:^|\\n)\\s{4}${key}:\\s*([^\\n]+)`));
+  const images = [];
+  content = content.replace(/!\[[^\]]*\]\((https?:\/\/[^)]+)\)/g, (_match, url) => {
+    images.push(url);
+    return '';
+  }).replace(/\n{3,}/g, '\n\n').trim();
+  return {
+    title: value(/(?:^|\n)title:\s*([^\n]+)/),
+    content,
+    images,
+    publishedAt: value(/(?:^|\n)date:\s*([^\n]+)/),
+    occurredAt: value(/(?:^|\n)\s{2}occurred_at:\s*([^\n]+)/),
+    place: {
+      id: nested('id'),
+      name: nested('name'),
+      longitude: Number(nested('longitude')),
+      latitude: Number(nested('latitude')),
+      precision: nested('precision'),
+      privacy: nested('privacy'),
+      country: nested('country'),
+      countryCode: nested('country_code'),
+      region: nested('region'),
+      regionCode: nested('region_code'),
+      locality: nested('locality'),
+      localityCode: nested('locality_code'),
+      provider: nested('provider'),
+      providerId: nested('provider_id')
+    }
+  };
+}
+
+function splitMarkdownDocument(markdown) {
+  const matched = String(markdown || '').match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)?/);
+  if (!matched) throw new Error('源内容缺少合法 Front Matter');
+  return { frontmatter: matched[1], body: markdown.slice(matched[0].length) };
+}
+
+function stripRootBlock(frontmatter, key) {
+  const lines = frontmatter.split(/\r?\n/);
+  const output = [];
+  for (let index = 0; index < lines.length;) {
+    if (lines[index].match(new RegExp(`^${key}:\\s*(?:#.*)?$`))) {
+      index += 1;
+      while (index < lines.length && (/^[ \t]/.test(lines[index]) || lines[index].trim() === '')) index += 1;
+      continue;
+    }
+    output.push(lines[index]);
+    index += 1;
+  }
+  return output.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function removeTag(frontmatter, key, targetTag) {
+  const lines = frontmatter.split(/\r?\n/);
+  const output = [];
+  for (let index = 0; index < lines.length;) {
+    const match = lines[index].match(new RegExp(`^${key}:\\s*(.*)$`));
+    if (!match) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+    const inline = match[1].trim();
+    if (inline.startsWith('[') && inline.endsWith(']')) {
+      const values = inline.slice(1, -1).split(',')
+        .map(value => value.trim())
+        .filter(value => parseYamlScalar(value) !== targetTag);
+      if (values.length) output.push(`${key}: [${values.join(',')}]`);
+      index += 1;
+      continue;
+    }
+    output.push(lines[index]);
+    index += 1;
+    let kept = 0;
+    while (index < lines.length && /^[ \t]+-/.test(lines[index])) {
+      const scalar = lines[index].replace(/^[ \t]+-\s*/, '');
+      if (parseYamlScalar(scalar) !== targetTag) {
+        output.push(lines[index]);
+        kept += 1;
+      }
+      index += 1;
+    }
+    if (!kept) output.pop();
+  }
+  return output.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function ensureTag(frontmatter, key, targetTag) {
+  const inlinePattern = new RegExp(`^${key}:\\s*\\[([^\\]]*)\\]$`, 'm');
+  const inline = frontmatter.match(inlinePattern);
+  if (inline) {
+    const values = inline[1].split(',').map(value => value.trim()).filter(Boolean);
+    if (!values.some(value => parseYamlScalar(value) === targetTag)) values.push(yamlString(targetTag));
+    return frontmatter.replace(inlinePattern, `${key}: [${values.join(',')}]`);
+  }
+  const blockPattern = new RegExp(`^${key}:\\s*\\n((?:[ \\t]+-[^\\n]*(?:\\n|$))*)`, 'm');
+  const block = frontmatter.match(blockPattern);
+  if (block) {
+    if (block[1].split(/\r?\n/).some(line => parseYamlScalar(line.replace(/^[ \t]+-\s*/, '')) === targetTag)) return frontmatter;
+    return frontmatter.replace(blockPattern, `${key}:\n${block[1].replace(/\n?$/, '\n')}  - ${yamlString(targetTag)}\n`);
+  }
+  return `${frontmatter.trim()}\n${key}:\n  - ${yamlString(targetTag)}`;
+}
+
+function sourceZouguoBlock(occurredAt, place) {
+  const line = (key, value) => value === '' ? '' : `    ${key}: ${yamlString(value)}\n`;
+  let block = `zouguo:\n  occurred_at: ${occurredAt}\n  place:\n`;
+  block += line('id', place.id);
+  block += line('name', place.name);
+  block += `    longitude: ${place.longitude}\n    latitude: ${place.latitude}\n`;
+  block += line('precision', place.precision);
+  block += line('privacy', place.privacy);
+  block += line('country', place.country);
+  block += line('country_code', place.countryCode);
+  block += line('region', place.region);
+  block += line('region_code', place.regionCode);
+  block += line('locality', place.locality);
+  block += line('locality_code', place.localityCode);
+  block += line('provider', place.provider);
+  block += line('provider_id', place.providerId);
+  return block.trimEnd();
+}
+
+function detachSourceMarkdown(markdown, type) {
+  const { frontmatter, body } = splitMarkdownDocument(markdown);
+  const withoutMetadata = stripRootBlock(frontmatter, 'zouguo');
+  const withoutTag = removeTag(withoutMetadata, type === 'laodao' ? 'laodaotags' : 'tags', '走过');
+  return `---\n${withoutTag}\n---\n${body}`;
+}
+
+function updateSourceMetadata(markdown, type, occurredAt, placeValue) {
+  if (!validTimestamp(occurredAt)) throw new Error('occurredAt 必须是带时区的时间');
+  const place = normalizePlace(placeValue);
+  const { frontmatter, body } = splitMarkdownDocument(markdown);
+  let updated = stripRootBlock(frontmatter, 'zouguo');
+  updated = ensureTag(updated, type === 'laodao' ? 'laodaotags' : 'tags', '走过');
+  updated = `${updated.trim()}\n${sourceZouguoBlock(occurredAt, place)}`;
+  return `---\n${updated}\n---\n${body}`;
+}
+
 async function handleDetail(env, kind, url) {
   const path = url.searchParams.get('path');
   if (!contentPathAllowed(path, kind)) throw new Error('缺少或非法文件路径');
@@ -345,7 +506,7 @@ async function handleDetail(env, kind, url) {
   if (!file) return { error: '找不到该文件', status: 404 };
   const markdown = base64ToUtf8(file.content);
   if (kind === 'laodao') return { ...parseLegacyLaodao(markdown), sha: file.sha, path, markdown };
-  return { sha: file.sha, path, markdown };
+  return { ...parseZouguoMarkdown(markdown), sha: file.sha, path, markdown };
 }
 
 async function handlePublish(request, env, kind) {
@@ -364,6 +525,21 @@ async function handleDelete(request, env, kind) {
   const path = String(body.path || '');
   if (!contentPathAllowed(path, kind)) throw new Error('缺少或非法文件路径');
   return deleteGitHubContent(env, path);
+}
+
+async function handleSourceMutation(request, env, action) {
+  const body = await request.json();
+  const type = String(body.type || '');
+  const path = String(body.path || '');
+  if (!sourceContentPathAllowed(path, type)) throw new Error('缺少或非法来源文件路径');
+  const existing = await readGitHubContent(env, path);
+  if (!existing) return { error: '找不到来源文件', status: 404 };
+  const markdown = base64ToUtf8(existing.content);
+  const updated = action === 'detach'
+    ? detachSourceMarkdown(markdown, type)
+    : updateSourceMetadata(markdown, type, body.occurredAt, body.place);
+  const verb = action === 'detach' ? '移出走过' : '修改走过地点';
+  return putGitHubContent(env, path, updated, `${verb} (${type}, iOS API)`);
 }
 
 async function handleUpload(request, env, url, headers) {
@@ -441,6 +617,22 @@ export default {
         const message = String(error?.message || error || '请求失败');
         const clientError = /无效|必须|缺少|非法/.test(message);
         if (!clientError) console.error(`${kind} ${action} failed:`, error);
+        return json({ error: message }, clientError ? 400 : 500, headers);
+      }
+    }
+
+    const sourceMatch = url.pathname.match(/^\/api\/app\/zouguo\/source\/(detach|metadata)$/);
+    if (sourceMatch) {
+      if (request.method !== 'POST') return json({ error: 'Method Not Allowed' }, 405, headers);
+      const action = sourceMatch[1];
+      try {
+        const result = await handleSourceMutation(request, env, action);
+        if (result.status) return json({ error: result.error }, result.status, headers);
+        return json(result, 200, headers);
+      } catch (error) {
+        const message = String(error?.message || error || '请求失败');
+        const clientError = /无效|必须|缺少|非法/.test(message);
+        if (!clientError) console.error(`zouguo source ${action} failed:`, error);
         return json({ error: message }, clientError ? 400 : 500, headers);
       }
     }

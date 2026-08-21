@@ -82,7 +82,19 @@
     "provider" (default "" (index $placeParams "provider"))
     "providerId" (default "" (index $placeParams "provider_id"))
   -}}
-  {{- $sourceInfo := dict "type" $sourceType "id" $sourceID "url" $page.RelPermalink -}}
+  {{- $sourcePath := printf "content/%s" $page.File.Path -}}
+  {{- $sourceInfo := dict
+    "type" $sourceType
+    "id" $sourceID
+    "url" $page.RelPermalink
+    "path" $sourcePath
+  -}}
+  {{- $capabilities := dict
+    "canEdit" true
+    "canDelete" (eq $sourceType "zouguo")
+    "canDetach" (ne $sourceType "zouguo")
+    "canOpenSource" (ne $sourceType "zouguo")
+  -}}
   {{- $title := index $placeParams "name" -}}
   {{- if eq $sourceType "post" -}}
     {{- $title = $page.Title -}}
@@ -98,11 +110,12 @@
     "publishedAt" $publishedAt
     "place" $place
     "images" $images
+    "capabilities" $capabilities
   ) -}}
 {{- end -}}
 {{- $items = sort $items "occurredAt" "desc" -}}
 {{- return (dict
-  "schemaVersion" 1
+  "schemaVersion" 2
   "generatedAt" (now.Format "2006-01-02T15:04:05Z07:00")
   "items" $items
 ) -}}

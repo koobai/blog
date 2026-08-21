@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedAt": "2026-08-19T12:00:00+08:00",
   "items": [
     {
@@ -7,13 +7,20 @@
       "source": {
         "type": "zouguo",
         "id": "invalid-record",
-        "url": "/zouguo/invalid-record/"
+        "url": "/zouguo/invalid-record/",
+        "path": "content/zouguo/invalid-record.md"
       },
       "title": "缺少地点的合成记录",
       "summary": "这条数据应当被拒绝。",
       "occurredAt": "2026-08-18T18:20:00+08:00",
       "publishedAt": "2026-08-18T19:10:00+08:00",
-      "images": []
+      "images": [],
+      "capabilities": {
+        "canEdit": true,
+        "canDelete": true,
+        "canDetach": false,
+        "canOpenSource": false
+      }
     }
   ]
 }

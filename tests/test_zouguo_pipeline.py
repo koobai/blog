@@ -43,6 +43,8 @@ class ZouguoPipelineTests(unittest.TestCase):
             item['source']['type'] in {'zouguo', 'laodao', 'post'}
             for item in payload['items']
         ))
+        self.assertTrue(all(item['source']['path'].startswith('content/') for item in payload['items']))
+        self.assertTrue(all('capabilities' in item for item in payload['items']))
         self.assertFalse((ROOT / 'data/jingzhe/zouguo_prototype.json').exists())
         layout = (ROOT / 'themes/jingzhe_v3/layouts/zouguo.html').read_text(encoding='utf-8')
         self.assertNotIn('zouguo_prototype', layout)
@@ -89,6 +91,8 @@ zouguo:
             self.assertEqual(baseline_count + 1, len(added['items']))
             added_item = next(item for item in added['items'] if item['id'] == 'zouguo:pipeline-acceptance')
             self.assertEqual('第一次生成。', added_item['summary'])
+            self.assertEqual('content/zouguo/pipeline-acceptance.md', added_item['source']['path'])
+            self.assertTrue(added_item['capabilities']['canDelete'])
             rendered = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
             self.assertIn('测试省 · 测试城', rendered)
 
@@ -171,11 +175,14 @@ zouguo:
             laodao_item = next(item for item in joined['items'] if item['id'] == 'laodao:20260819-180000')
             self.assertEqual('一条带图片的走过唠叨。', laodao_item['summary'])
             self.assertEqual(1, len(laodao_item['images']))
+            self.assertEqual('content/laodao/2026/08/20260819-180000.md', laodao_item['source']['path'])
+            self.assertTrue(laodao_item['capabilities']['canDetach'])
 
             post_item = next(item for item in joined['items'] if item['id'] == 'post:zouguo-pipeline-post')
             self.assertEqual('一篇走过测试随笔', post_item['title'])
             self.assertEqual('', post_item['summary'])
             self.assertEqual('/zouguo-pipeline-post/', post_item['source']['url'])
+            self.assertEqual('content/posts/zouguo-pipeline-post.md', post_item['source']['path'])
             self.assertEqual(2, len(post_item['images']))
             rendered = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
             self.assertIn('data-source-type="post"', rendered)
