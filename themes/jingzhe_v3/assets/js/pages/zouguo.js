@@ -27,6 +27,13 @@
 
   const currentYear = String(new Date().getFullYear());
 
+  const sourceLabelForItem = item => {
+    const sourceType = String(item?.source?.type || '').trim();
+    if (sourceType === 'laodao') return '来自唠叨';
+    if (sourceType === 'post') return '来自随笔';
+    return '';
+  };
+
   const normalizeImage = image => {
     if (typeof image === 'string') {
       return { original: image, thumb: image, small: image, large: image, alt: '' };
@@ -480,9 +487,6 @@
 
   const coordinateCardForLocation = (location, entries, preferredItemId, syncSelection = true) => {
     let currentItem = entries.find(item => item.id === preferredItemId) || entries[0];
-    const years = entries.map(item => Number(item.year)).filter(Number.isFinite);
-    const yearRange = years.length ? `${Math.min(...years)}—${Math.max(...years)}` : '';
-
     const card = document.createElement('article');
     card.className = 'zouguo-coordinate-card';
     card.setAttribute('aria-label', `${location.name}的地点册`);
@@ -494,8 +498,8 @@
     const eyebrow = document.createElement('span');
     eyebrow.className = 'zouguo-coordinate-eyebrow';
     eyebrow.textContent = entries.length > 1
-      ? `${entries.length} 次经过 · ${yearRange}`
-      : [currentItem.year, currentItem.areaLabel].filter(Boolean).join(' · ');
+      ? [`${entries.length} 次经过`, currentItem.areaLabel].filter(Boolean).join(' · ')
+      : currentItem.areaLabel;
 
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
@@ -574,7 +578,7 @@
       }
       card.classList.toggle('is-text-only', !images.length);
       date.dateTime = item.date;
-      date.textContent = `${item.dateLabel} · 经过这里`;
+      date.textContent = [item.dateLabel, sourceLabelForItem(item)].filter(Boolean).join(' · ');
       media.replaceChildren();
       const gallery = galleryForItem(item);
       if (gallery) media.appendChild(gallery);
