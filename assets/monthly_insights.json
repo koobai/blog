@@ -611,23 +611,23 @@
   "2026-08": {
     "month_str": "2026-08",
     "stats": {
-      "total_count": 18,
-      "total_distance": 246.61,
-      "total_duration_minutes": 908,
-      "total_calories": 5706,
-      "total_elevation_gain": 533,
+      "total_count": 19,
+      "total_distance": 252.29,
+      "total_duration_minutes": 968,
+      "total_calories": 6038,
+      "total_elevation_gain": 572,
       "sports_count": {
+        "步行": 7,
         "骑行": 11,
-        "步行": 6,
         "跑步": 1
       },
       "sports_distance": {
+        "步行": 27.55,
         "骑行": 223.62,
-        "步行": 21.87,
         "跑步": 1.12
       },
       "longest_ride_km": 31.64,
-      "longest_run_km": 5.46,
+      "longest_run_km": 5.68,
       "longest_activity_km": 31.64,
       "longest_activity_type": "骑行",
       "highest_average_hr_session": {
@@ -642,13 +642,26 @@
         "hr": 122,
         "zone": "仅按平均心率排序"
       },
-      "average_distance_per_activity": 13.7,
-      "average_duration_minutes": 50,
+      "average_distance_per_activity": 13.28,
+      "average_duration_minutes": 51,
       "primary_sport": "骑行",
       "primary_sport_type": "Ride",
-      "primary_sport_share": 0.611,
+      "primary_sport_share": 0.579,
       "sport_variety": 3,
       "sport_metrics": {
+        "步行": {
+          "type": "Walk",
+          "count": 7,
+          "average_distance": 3.9,
+          "median_distance": 4.7,
+          "average_duration_minutes": 46,
+          "median_duration_minutes": 59,
+          "average_heartrate": 103,
+          "median_heartrate": 103,
+          "pace_seconds_per_km": 723,
+          "median_pace_seconds_per_km": 683,
+          "heart_rate_samples": 7
+        },
         "骑行": {
           "type": "Ride",
           "count": 11,
@@ -661,19 +674,6 @@
           "pace_seconds_per_km": 176,
           "median_pace_seconds_per_km": 172,
           "heart_rate_samples": 11
-        },
-        "步行": {
-          "type": "Walk",
-          "count": 6,
-          "average_distance": 3.6,
-          "median_distance": 4.7,
-          "average_duration_minutes": 44,
-          "median_duration_minutes": 56,
-          "average_heartrate": 101,
-          "median_heartrate": 103,
-          "pace_seconds_per_km": 737,
-          "median_pace_seconds_per_km": 720,
-          "heart_rate_samples": 6
         },
         "跑步": {
           "type": "Run",
@@ -692,9 +692,9 @@
       "favorite_time": "晚上",
       "max_streak_days": 5,
       "longest_gap_days": 1,
-      "active_days_count": 16,
+      "active_days_count": 17,
       "indoor_count": 0,
-      "outdoor_count": 18
+      "outdoor_count": 19
     },
     "report_phase": "midmonth",
     "report_as_of": "2026-08-15",
@@ -712,10 +712,10 @@
     },
     "report_version": 6,
     "report_data_hash": "98fbd87ca305387b8731f73f3a060554656211af5986c7a721fa569deb599009",
-    "source_data_hash": "2cf845cf488bd01afade784a95100dc291fb100f4f47443f18a046091faccde2",
+    "source_data_hash": "11b67cd944a1693d52d1643679a209b0f88f2c52f37180c18bb707abc39cb087",
     "midmonth_source_hash": "6960be2e2f76a9dcbd4444a8b81d5f1860c7558dfd1ea19cba145a6e06ef819c",
     "model": "deepseek-v4-flash",
     "comparison_basis": "上月同期",
-    "last_update": "2026-08-19T23:40:59"
+    "last_update": "2026-08-21T20:35:47"
   }
 }
