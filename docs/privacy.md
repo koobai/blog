@@ -12,6 +12,7 @@
 |---|---|---|---|
 | 文章与唠叨 | `content/` | 公开 | 个人内容与代码分层授权 |
 | 图片链接 | Markdown、模板和 JSON | 公开 | Starter 使用合成或可再分发资源 |
+| 走过地点 | 三类 Markdown 的 `zouguo.place` | 公开 | 发布前确认精度与 `privacy`；生成 feed 不提高精度 |
 | 观影记录 | `assets/movie.json` | 公开 | Schema 校验、使用者自己的数据与可选同步 |
 | 运动统计 | `assets/activities.json` | 公开 | Schema、字段最小化与隐私测试 |
 | 原始运动事实 | `data/exercise/activities.json` | 仓库内数据源 | App 端隐私判断、Gateway 校验、不得直接注入浏览器 |
@@ -30,6 +31,14 @@
 - 发给 AI 的证据不能包含精确坐标、Polyline、路线 ID、`source_id` 或活动身份字段。
 - 原始 `external_id` 和处理后的 `source_id` 只用于仓库内幂等与缓存；Hugo 注入给浏览器的轻量数据和 AI payload 均不包含它们。
 - 修改上述逻辑时必须增加测试。
+
+## 走过地点隐私契约
+
+- Markdown 只保存准备公开的坐标，不保存设备原始 GPS 副本；`privacy: reduced` 必须在进入仓库前降低精度并丢弃原始值。
+- 地图、生成 JSON、行政区回查和图片卡片不得把坐标精度提升到 Markdown 声明以上。
+- 住宅、学校、公司、酒店房间等敏感地点应使用模糊坐标、公共地标或只保留城市级名称；公开照片的 EXIF 也应在上传前按客户端策略处理。
+- Starter、文档样例和测试只能使用合成地点，不得复制 Koobai 的真实历史位置、家庭照片或第三方个人行程。
+- `longitude` 与 `latitude` 分开保存；GeoJSON/前端使用 `[longitude, latitude]`。顺序错误既是数据质量问题，也可能错误暴露另一个地点。
 
 ## AI 数据边界
 

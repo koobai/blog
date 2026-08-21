@@ -11,6 +11,13 @@
 3. `docs/features.md`。
 4. 与本次任务对应的功能文档。
 
+任务包含“走过”或 `zouguo` 时，还必须读取：
+
+- [`zouguo.md`](zouguo.md)：功能边界、通用部署和验证入口。
+- [`zouguo-data-contract.md`](zouguo-data-contract.md)：Markdown、时间、坐标和来源身份。
+- 修改聚合、行政区覆盖、边界目录或图片交付时继续读取 [`zouguo.md`](zouguo.md) 中的对应章节。
+- 修改 App 发布、草稿或 Worker 时读取对应的 `workers/*/README.md`；博客仓库不包含 iOS App 源码。
+
 不得通过全仓库替换 `koobai`、域名或服务地址来完成通用安装。
 
 ## 目标安装流程
@@ -105,6 +112,16 @@ AI 接到修改任务时：
 5. 运行模块检查和完整生产构建。
 6. 汇报是否改变用户现有流程。
 
+### 维护“走过”时的不可变规则
+
+- Markdown 是正式内容唯一来源；`/zouguo/index.json`、页面 feed 和边界子集均由 Hugo 生成，禁止手工编辑。
+- 中文功能名和保留 Tag 是“走过”，内部类型、目录和路由使用 `zouguo`；页面路径固定为 `/zouguo/`。
+- 三种来源固定为 `zouguo`、`laodao`、`post`。删除独立走过可以删除源 Markdown；唠叨和随笔只能编辑原来源或移除聚合关系，不能误删原内容。
+- 坐标在 GeoJSON/浏览器中按 `[longitude, latitude]`；不得互换经纬度，也不得复制 Koobai 的真实坐标作为示例。
+- 当前页面按地点浏览，没有年份筛选；当前年日期显示 `MM-DD`，旧年份显示 `YYYY-MM-DD`。AI 不得根据过期路线图恢复年份导航。
+- iOS App 源码不在本博客仓库。博客只维护 Markdown/Hugo 管线及 Publisher/Drafts 的服务契约；修改 App 必须在其独立仓库执行。
+- 当前 Core 初始化器不会自动安装“走过”。AI 不得虚构开关；应按专题文档复制 MIT 程序模块、配置自己的地图资源，并使用自己的内容。
+
 ## 错误输出
 
 工具支持人类文本和 JSON 两种输出。稳定顶层字段如下：
@@ -126,6 +143,7 @@ AI 不应依赖不稳定的日志文本推断失败原因。
 
 - Core 初始化 CLI 只写入不存在的新目录；Full Profile 不自动复制为新站点。
 - Core 初始化结果不包含运动页面和处理自动化；仅设置 `params.features.exercise = true` 不等于完成安装。AI 必须按部署清单补齐程序模块、用户自己的数据、Actions 和可选 Gateway。
+- Core 初始化结果也不包含“走过”页面、边界目录和地图配置；应按 [`zouguo.md`](zouguo.md) 单独安装和验收。
 - Worker 源码和部署契约位于 `workers/`，但工具不会创建 Cloudflare 账户资源、写入 Secret 或部署服务。
 - 生产公开服务地址集中在 `config/production/` 与 `config/development/`；现有 Koobai URL 不会被示例配置自动替换。
 - 当前仓库包含真实个人内容和数据，Starter 不复制这些文件。

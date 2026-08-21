@@ -21,16 +21,19 @@
 - `config/development/`：保持 `hugo server` 与生产参考站一致的本地覆盖。
 - `data/jingzhe/features.json`：机器可读功能注册表。
 - `data/jingzhe/exercise.json`：运动名称、颜色、分组和食物换算的跨语言单一来源。
+- `data/jingzhe/zouguo_boundary_catalog.json`：走过构建期完整行政区边界目录；浏览器只接收当前内容引用的裁剪子集，并须保留上游许可证。
 - `data/exercise/activities.json`：来源无关的原始运动事实；只由同步网关写入，只由处理器读取。
 - `jingzhe/exercise_contract.py`：Python 运动契约加载器，不得复制一套常量。
 - `schemas/`：Front Matter、站点参数与公开 JSON Schema。
 - `archetypes/`：新文章和新唠叨模板。
 - `content/posts/`：长篇随笔。
 - `content/laodao/YYYY/MM/`：短动态。
+- `content/zouguo/`：独立走过 Markdown；带“走过”Tag 的唠叨和随笔仍以各自原文件为来源。
 - `content/pages/`：独立页面和管理入口。
 - `themes/jingzhe_v3/layouts/`：Hugo 模板。
 - `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
 - `themes/jingzhe_v3/assets/js/pages/`：普通页面交互脚本，经 Hugo Pipes 指纹化输出。
+- `themes/jingzhe_v3/assets/js/pages/zouguo.js`、`layouts/zouguo.html` 与 `_partials/zouguo/`：走过地图、列表、统一 feed 和构建期边界裁剪。
 - `themes/jingzhe_v3/assets/js/exercise/`：运动数据模型、日历 UI、隐私路线、Mapbox、海报与兼容控制器；构建时合并为一个脚本。
 - `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
@@ -65,11 +68,13 @@
 
 - 保留 `content/posts/`。
 - 保留 `content/laodao/YYYY/MM/`。
+- 保留 `content/zouguo/`、`/zouguo/`、中文保留 Tag“走过”和内部类型 `zouguo`。
 - 保留现有 Slug 和永久链接行为。
 - 保留 `/newlaodao`、`/newsuibi`、`/movies`、`/exercise` 等入口。
 - 不得批量重写历史内容 Front Matter。
 - 不得为了修复已经停用的旧链接而批量修改历史文章或唠叨；优先在兼容层处理。
 - 不得导致评论和点赞所使用的页面 URL 改变。
+- 不得手工维护 `/zouguo/index.json` 或页面边界子集；它们必须由 Hugo 从三类 Markdown 来源生成。
 
 ### 网页写作
 
@@ -104,6 +109,16 @@
 - 手机等设备本地视图首次接入必须使用 `delta`；只有权威全集连接器才能使用 `snapshot`。不得把单台设备暂时缺少的记录解释为删除。
 - 月报必须基于程序生成的聚合证据，不得把模型当作医疗诊断工具。
 - 修改隐私逻辑时必须增加或更新相应测试。
+
+### 走过地点与来源
+
+- Markdown 是走过正式内容唯一来源，来源类型固定为 `zouguo`、`laodao`、`post`。
+- 走过时间使用 `zouguo.occurred_at`，不得用构建时间或最终发布时间替代。
+- GeoJSON 和前端坐标顺序固定为 `[longitude, latitude]`；Front Matter 分别保存 `longitude`、`latitude`。
+- 只能公开已经按 `privacy` 和 `precision` 确认可发布的地点；示例、测试和 Starter 不得复制真实家庭位置或 Koobai 的历史坐标。
+- 删除独立走过可删除其 Markdown；唠叨和随笔应编辑原来源或移除“走过”Tag/地点块，不得误删原内容。
+- 当前页面以地点为主，没有年份筛选。当前年日期显示 `MM-DD`，历史年份显示 `YYYY-MM-DD`。
+- iOS App 不在本仓库；本仓库维护博客管线和 Worker 契约，不得在这里虚构或复制 App 源码。
 
 ## Secrets 规则
 
@@ -163,6 +178,7 @@ node --check themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js
 node --check themes/jingzhe_v3/assets/js/exercise/controller.js
 node --check themes/jingzhe_v3/assets/js/pages/laodao.js
 node --check themes/jingzhe_v3/assets/js/pages/movies.js
+node --check themes/jingzhe_v3/assets/js/pages/zouguo.js
 node --check themes/jingzhe_v3/assets/js/theme.js
 node tests/test_editor_core.js
 node tests/test_editor_pages.js
@@ -187,6 +203,7 @@ node tests/test_activity_sync_worker.mjs
 - 修改动态服务调用：在测试服务验证，不直接以生产接口试错。
 - 修改 Worker：运行 `node tests/test_workers.mjs`、适用的独立 Worker 测试、对应语法检查和统一 `check`，并复核 Secret/Binding 文档。
 - 修改隐私逻辑：增加隐私契约测试并检查对外 JSON 与模型 payload。
+- 修改走过内容、模板、地图或 Worker 契约：运行 `tests.test_zouguo_contract`、`tests.test_zouguo_pipeline`、`tests.test_zouguo_places`、对应 JavaScript/Worker 检查和 Hugo 严格构建；确认三类来源、经纬度、移出关系和生成 feed 均正确。
 
 常规修改后应优先运行 `python3 tools/jingzhe.py check`；需要机器可读结果时追加 `--json`。Schema 只用于描述、新内容和明确的数据契约，不得据此批量重写历史内容。命令契约见 `docs/tooling.md`。
 
@@ -199,6 +216,8 @@ node tests/test_activity_sync_worker.mjs
 - 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。
 - 评论点赞、运动同步 Worker 与高权限发布 Worker 保持安全边界。
+- 走过遵循“Markdown 事实来源 → Hugo 统一 feed → 构建期边界裁剪 → 浏览器地图/列表”的单向管线；完整边界目录不是浏览器资产。
+- `tools/jingzhe.py init` 当前只生成 Core，不会自动安装走过。AI 必须读取 `docs/zouguo.md`，不得虚构功能开关或复制真实个人地点。
 
 这些边界已经建立，不代表可以跳过兼容测试直接重写。
 

@@ -1,6 +1,6 @@
 # 走过数据契约
 
-本文档固定第 1 步的业务语义。实际机器约束位于 `schemas/frontmatter/` 和 `schemas/data/zouguo-feed-v1.schema.json`。
+本文档记录已经落地的业务语义。实际机器约束位于 `schemas/frontmatter/` 和 `schemas/data/zouguo-feed-v1.schema.json`；后者因兼容原因保留历史文件名，但当前契约版本为 v2。
 
 ## 一句话原则
 
@@ -58,7 +58,7 @@ zouguo:
 - `name` 是卡片上的公开显示名。
 - `longitude` 与 `latitude` 是对外公开的坐标，不是必然保留设备原始 GPS。
 - `precision` 可为 `exact`、`poi`、`locality`、`region` 或 `approximate`，表示公开坐标精度。
-- `country_code` 使用 ISO 3166-1 alpha-2；其他行政区代码在第 4 步完成规范化。
+- `country_code` 使用 ISO 3166-1 alpha-2；中国省、市代码由客户端确认并由构建期边界目录校验或回填。海外没有可靠行政区代码时只保留国家覆盖，不猜测省/州、市代码。
 - `provider` 和 `provider_id` 只用于追溯地理编码候选项，不参与记录身份。
 
 ## Markdown 格式
@@ -134,7 +134,7 @@ zouguo:
 - Markdown 正文是图片顺序的唯一事实来源，不再并行维护一个 Front Matter 图片数组。
 - 独立走过和唠叨按正文首次出现顺序提取。
 - 随笔先放已有封面图；若正文已包含同一 URL，不重复。
-- 生成 JSON 将每张图归一化为 `url`、`alt` 及可选 `width`/`height`。
+- 生成 JSON 将每张图归一化为 `url`/`original`、`alt` 及可选 `width`/`height`；Production 可额外生成 `thumb`、`small`、`large` 和对应宽度，灯箱仍回到原图。
 - 纯文字记录的 `images` 是空数组，不使用占位图。
 
 ## 身份、去重与删除
@@ -150,7 +150,7 @@ zouguo:
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedAt": "2026-08-20T12:00:00+08:00",
   "items": []
 }
@@ -162,6 +162,7 @@ zouguo:
 - `title`、`summary`、`occurredAt` 与 `publishedAt`。
 - 已归一化的 `place`。
 - 始终存在的 `images` 数组。
+- `capabilities`：明确该来源能否编辑、删除、移出聚合或打开原文。
 
 完整字段、枚举、坐标范围、来源规则和随笔约束以 `schemas/data/zouguo-feed-v1.schema.json` 为准。
 
@@ -175,6 +176,6 @@ zouguo:
 - 生成身份重复或 `id` 与来源身份不一致。
 - 随笔来源尝试将长正文复制到 `summary`。
 
-## 本步不包含的工作
+## 当前实现
 
-第 1 步只固定契约与自动化验证。Hugo 真实聚合、原型 JSON 替换、App 发布、地理编码和 Worker 写入分别属于后续步骤，不在本步提前实现。
+Hugo 聚合、原型数据退出、App/Publisher 写入、地点解析、构建期边界裁剪和统一草稿均已接入当前实现。本文只定义数据与来源边界；页面体验、边界生成、App 交互和 Worker 部署以 [`zouguo.md`](zouguo.md) 及各项目源码为准，不能据此手工修改生成 JSON。

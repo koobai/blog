@@ -52,6 +52,29 @@ class DocumentationTests(unittest.TestCase):
         self.assertIn("不要复制根仓库的 content/、assets/", guide)
         self.assertIn("单独征得我的同意", guide)
 
+    def test_zouguo_docs_match_the_current_contract(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        guide = (ROOT / "docs/zouguo.md").read_text(encoding="utf-8")
+        ai_protocol = (ROOT / "docs/ai-protocol.md").read_text(encoding="utf-8")
+        contract = (ROOT / "docs/zouguo-data-contract.md").read_text(encoding="utf-8")
+
+        self.assertIn("docs/zouguo.md", readme)
+        self.assertIn("Markdown 是唯一正式事实来源", guide)
+        self.assertIn("不会自动安装走过页面", guide)
+        self.assertIn("走过地图 / Feed / 边界子集", readme)
+        self.assertIn("data/jingzhe/zouguo_boundary_catalog.json", guide)
+        self.assertIn("页面只下载当前记录实际引用的边界子集", guide)
+        self.assertIn("不得虚构", ai_protocol)
+        self.assertIn('"schemaVersion": 2', contract)
+        for stale_name in (
+            "zouguo-content-pipeline.md",
+            "zouguo-source-aggregation.md",
+            "zouguo-place-boundaries.md",
+            "zouguo-worker-drafts.md",
+            "zouguo-roadmap.md",
+        ):
+            self.assertFalse((ROOT / "docs" / stale_name).exists(), stale_name)
+
     def test_workflows_use_consistent_action_versions_and_latest_hugo(self):
         workflows = sorted((ROOT / ".github/workflows").glob("*.yml"))
         combined = "\n".join(path.read_text(encoding="utf-8") for path in workflows)

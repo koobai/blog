@@ -73,8 +73,10 @@
 - Mapbox 轨迹和主题联动。
 - 公开轨迹与隐私替代路线。
 - 运动成就和 WebP 海报。
+- “走过”地图日志：聚合独立走过、带“走过”Tag 的唠叨和随笔。
+- 构建期生成统一 feed，并只向浏览器输出已走过国家、省、市的边界子集。
 
-依赖：Python、Mapbox、观影或运动数据来源。如需从 App 或外部平台自动写入运动事实，另部署不依赖 D1/R2 的运动同步网关（Activity Sync Worker）；手工维护数据时不强制使用。
+依赖按子模块选择：观影需要自己的观影数据；运动需要 Python、自己的运动数据和可选 Mapbox；走过需要 Hugo、自己的地点 Markdown 和 Mapbox。若从 App 或外部平台自动写入运动事实，另部署不依赖 D1/R2 的 Activity Sync Worker；手工维护数据时不强制使用。
 
 未启用时：对应菜单和页面隐藏；Core 不受影响。
 
@@ -102,6 +104,7 @@
 | Social | 已实现，生产仍使用 Koobai Worker | Comments/Likes 源码与隐私修复已完成；前端兼容新旧响应 |
 | Movies | 已实现 | 使用功能开关、Schema 与自己的观影数据 |
 | Exercise | 已实现 | 使用功能开关、Schema、自己的运动数据和 Mapbox 公开参数；自动同步可自建运动同步网关 |
+| Zouguo / 走过 | Full 参考站已实现 | 复用程序模块和自己的 Markdown、Mapbox 样式与公开地点；当前 Core 初始化器不会自动安装，见 [`zouguo.md`](zouguo.md) |
 | AI Coach | 已实现 DeepSeek | Provider 可注入；证据、隐私过滤和状态机不依赖具体模型客户端 |
 
 ## 机器可读功能注册表
@@ -119,3 +122,5 @@
 - 隐私影响。
 
 AI 初始化工具读取该注册表，而不是通过搜索源码推断依赖。
+
+“走过”当前是 Full 参考站模块，尚未注册为可由 `tools/jingzhe.py init` 单独启用的功能 ID。AI 不得虚构 `zouguo` 开关或宣称 Core 初始化已经安装该模块；通用部署必须遵循 [“走过”地图日志](zouguo.md) 的程序、内容、地图和隐私边界。

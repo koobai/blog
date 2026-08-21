@@ -15,6 +15,7 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 | 网页编辑器 | 写随笔、写唠叨、图片上传、草稿和 GitHub 写回 | 写作模板与 `assets/js/pages/editor-*.js` |
 | 观影同步 | 从豆瓣合并新增/更新记录并原子写入 `movie.json` | `sync_movies.py`、`douban.yml` |
 | 运动管线 | 数据清洗、隐私路线、趣味标题和月报触发 | `process_activities.py` → `jingzhe/activity_processing.py`、`public_routes.py` |
+| 走过管线 | 聚合三类 Markdown、生成地图 feed、解析地点并裁剪行政区边界 | `content/`、`_partials/zouguo/`、`data/jingzhe/zouguo_boundary_catalog.json` |
 | AI 月报 | 聚合证据、模型调用、校验和状态冻结 | `monthly_coach.py` → `jingzhe/monthly_stats.py`、`monthly_reports.py` |
 | 动态服务 | 评论、点赞、发布、图片、云草稿和运动事实同步 | `workers/` 中五个独立 Cloudflare Worker |
 | GitHub Actions | 同步、测试、处理、构建和部署 | `.github/workflows/` |
@@ -25,7 +26,9 @@ Hugo 是发布核心，但完整系统还包括内容采集、数据加工、动
 flowchart TD
     P["长篇随笔"] --> R["GitHub 仓库"]
     L["唠叨短动态"] --> R
+    Z["独立走过 / 带走过 Tag 的内容"] --> R
     E["网页编辑器"] --> PW["Publisher Worker"]
+    ZAPP["走过 App"] --> PW
     PW --> R
     DB["豆瓣"] --> DA["Douban Action"]
     DA --> R
@@ -36,7 +39,9 @@ flowchart TD
     AP --> R
     MC --> R
     R --> H["Hugo Build"]
+    H --> ZF["走过 Feed / 已走过边界子集"]
     H --> OUT["HTML / RSS / JSON / Sitemap"]
+    ZF --> OUT
     OUT --> CF["Cloudflare Pages"]
     VISITOR["访问者"] <--> CW["Comments Worker"]
     VISITOR <--> LW["Likes Worker"]
@@ -73,6 +78,7 @@ flowchart TD
 - RSS、JSON 和 Sitemap。
 - Full Profile 中的观影 JSON 静态展示。
 - Full Profile 中的已处理运动 JSON 静态展示。
+- Full Profile 中的走过地图、列表和构建生成的地点边界子集。
 
 最小 Core Starter 只包含文章、唠叨、主题、标签和标准静态输出，不复制 Koobai 的观影或运动数据。
 
@@ -94,6 +100,7 @@ flowchart TD
 - 文章与唠叨以 Markdown 为事实来源。
 - 观影以 `assets/movie.json` 为事实来源。
 - 运动输入以 `data/exercise/activities.json` 为唯一事实来源；页面只读取处理后的 `assets/activities.json`。
+- 走过以独立走过 Markdown、带“走过”Tag 的唠叨和随笔为事实来源；`/zouguo/index.json` 与边界子集只是 Hugo 生成的读模型。
 - AI 月报以 `assets/monthly_insights.json` 为事实来源。
 - `public/` 和 `resources/` 是生成结果，不是事实来源。
 
@@ -112,8 +119,8 @@ flowchart TD
 
 动态服务按实际数据与权限拆为五个独立部署单元：
 
-1. Publisher：管理员认证、GitHub 写回和 R2 图片上传。
-2. Drafts：管理员云草稿与独立 D1。
+1. Publisher：管理员认证、GitHub 写回、R2 图片上传，以及独立走过和唠叨同步/移出走过接口。
+2. Drafts：管理员云草稿与独立 D1，使用 `kind` 区分唠叨和走过。
 3. Comments：公开评论、回复通知、管理删除与独立 D1。
 4. Likes：公开点赞、访客去重与独立 D1。
 5. Activity Sync：验证统一运动协议，仅合并并写入仓库中的原始运动事实。

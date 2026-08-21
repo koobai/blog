@@ -2,9 +2,9 @@
 
 [简体中文](README.md) | [English](README_EN.md)
 
-> **长文写随笔，短话发唠叨；记折腾、看影视、动起来——唠叨日常，也记录每一次改变。**
+> **长文写随笔，短话发唠叨；记折腾、看影视、动起来，也把真正走过的地方留在地图上。**
 
-惊蛰是一套用来记录工作、生活与各种折腾的开源个人博客系统。你可以随手发几句日常唠叨，认真写一篇随笔，留下技术折腾与备忘；也可以整理看过的电影和剧集，记录减肥路上的每一次运动与变化，再让 AI 帮你完成月度复盘。
+惊蛰是一套用来记录工作、生活与各种折腾的开源个人博客系统。你可以随手发几句日常唠叨，认真写一篇随笔，留下技术折腾与备忘；也可以整理看过的电影和剧集、记录运动与变化，把去过的地方聚合成“走过”地图，再让 AI 帮你完成月度复盘。
 
 它基于 Hugo、GitHub Actions 与可选 Serverless 服务构建，文章和生活数据统一保存在自己的 Git 仓库中。你可以从一个干净的静态博客开始，也可以按需增加网页写作、评论点赞、影视同步、运动可视化和 AI 总结。
 
@@ -19,6 +19,7 @@
 - **评论与互动**：支持评论、多层回复、点赞、表情和管理，并通过 Cloudflare Turnstile 降低滥用。
 - **观影记录**：增量同步豆瓣数据，以电影票形式展示评分、短评和观看时间。
 - **运动与隐私**：提供运动统计、月历、心率、Mapbox 轨迹、成就和海报，并用公共地标路线保护隐私运动。
+- **走过地图日志**：把独立记录、唠叨和随笔中的地点聚合成地图与移动端列表；Markdown 是正式内容来源，边界和页面 JSON 在 Hugo 构建期自动生成。
 - **AI 运动复盘**：生成月中与月末总结，只向模型发送经过过滤的聚合数据。
 - **按需组合功能**：Core 静态博客无需 Worker，写作、互动、生活数据和 AI 能力均可独立启用。
 - **AI 与自动化友好**：支持直接交给 AI 初始化和部署，并通过 GitHub Actions 完成测试、同步、处理、构建与发布。
@@ -38,7 +39,7 @@
 | Core | 文章、唠叨、主题、标签、RSS、JSON | Hugo Extended |
 | Publisher | 网页写作、图片上传、GitHub 写回、草稿 | 管理端 Worker、GitHub 凭据、图片存储 |
 | Social | 评论、回复、点赞、Turnstile | Comments/Likes Worker 与 D1 |
-| Life Data | 豆瓣同步、运动统计、地图与隐私路线 | Python、Mapbox、数据来源；自动运动同步可选运动同步网关（Activity Sync Worker） |
+| Life Data | 豆瓣同步、运动统计、走过地图与隐私路线 | 按子模块选择 Python、Mapbox 和自己的数据；自动运动同步可选运动同步网关（Activity Sync Worker） |
 | AI Coach | 月中/月末 AI 运动复盘 | 模型 API 与隐私配置 |
 
 当前生产站点使用 Full Profile，并由 [koobai.com](https://koobai.com) 作为唯一在线演示。Core Profile 不依赖 Worker，由初始化工具在新目录按需生成，不维护第二套演示站。
@@ -49,6 +50,7 @@
 flowchart LR
     A["Markdown / JSON"] --> R["GitHub 仓库"]
     B["网页写作"] --> W["发布 Worker"]
+    Z["原生 App：唠叨 / 走过"] --> W
     W --> R
     C["豆瓣同步"] --> R
     D["原生 App / 数据源连接器"] --> ASW["运动同步网关"]
@@ -56,8 +58,10 @@ flowchart LR
     R --> P["运动处理与 AI 月报"]
     P --> R
     R --> H["Hugo + 惊蛰 v3"]
-    H --> CF["Cloudflare Pages"]
     H --> O["HTML / RSS / JSON / Sitemap"]
+    H --> ZO["走过地图 / Feed / 边界子集"]
+    O --> CF["Cloudflare Pages"]
+    ZO --> CF
     E["评论 / 点赞 Worker"] <--> V["访问者"]
     CF --> V
 ```
@@ -144,6 +148,7 @@ python3 tools/jingzhe.py check
 content/
 ├── posts/                 # 长篇随笔
 ├── laodao/YYYY/MM/        # 短动态
+├── zouguo/                # 独立走过；也可聚合带“走过”Tag 的唠叨和随笔
 └── pages/                 # 关于、观影、运动和管理页面
 
 assets/
@@ -170,7 +175,8 @@ jingzhe/                   # 运动处理、月报与共享契约模块
 开源整理不会要求 Koobai 改变现有发布习惯。下列行为属于兼容基线：
 
 - `/newlaodao` 和 `/newsuibi` 的使用方式保持不变。
-- `content/posts/`、`content/laodao/YYYY/MM/` 等内容路径保持不变。
+- `content/posts/`、`content/laodao/YYYY/MM/`、`content/zouguo/` 等内容路径保持不变。
+- `/zouguo/`、三类来源身份和自动生成的走过 feed/边界子集保持兼容；不要手工维护生成 JSON。
 - 已有 Front Matter、永久链接、评论 URL 与点赞 URL 保持兼容。
 - 浏览器草稿、登录、主题和点赞所使用的 LocalStorage Key 保持兼容。
 - Worker 路由、Header 和请求字段在完成兼容测试前不改变。
@@ -203,6 +209,7 @@ AI 编程助手在修改仓库前必须先阅读 [AGENTS.md](AGENTS.md)。该文
 - [AI 工具链](docs/tooling.md)
 - [配置、Profile 与 Core 初始化](docs/configuration.md)
 - [部署说明](docs/deployment.md)
+- [“走过”地图日志](docs/zouguo.md)
 - [Worker 部署与安全边界](workers/README.md)
 
 ## 授权

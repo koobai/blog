@@ -37,6 +37,8 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 
 完整依赖、降级方式和隐私影响以 `data/jingzhe/features.json` 为事实来源。
 
+“走过”当前属于 Full 参考站模块，不是 `params.features` 中可由 Core 初始化器单独启用的开关。`tools/jingzhe.py init` 不会复制走过页面、边界目录或 Mapbox 配置；通用站点应按 [`zouguo.md`](zouguo.md) 显式安装，不能只增加一个配置键。
+
 ## 公开配置与 Secret
 
 可以进入 Hugo 配置并发送给浏览器的值：
@@ -57,6 +59,10 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 - 数据库、对象存储和模型 API Secret。
 
 私密值只能放在 GitHub Secrets、Worker Secrets 或本地环境变量中。
+
+### 走过地图配置
+
+Full 参考实现当前复用 `params.services.exercise.mapboxToken` 作为浏览器 Public Token，并在 `themes/jingzhe_v3/layouts/zouguo.html` 中指定走过专用的浅色/深色 Style URL。开源部署者必须使用自己的 Public Token 和样式 ID，并在 Mapbox 限制允许的站点 URL；不要复制 Koobai Production 的样式 ID。Public Token 可以进入浏览器，账户 Secret Token 不可以。
 
 ## 响应式图片转换
 
@@ -93,10 +99,11 @@ Production/Development 使用 Full。Core 站点由初始化工具在新目录�
 ## Schema 与 Archetype
 
 - `schemas/frontmatter/`：文章与唠叨 Front Matter。
-- `schemas/data/`：观影、运动、地标路线与月报 JSON。
+- `schemas/data/`：观影、运动、地标路线、月报与走过生成 feed JSON。
 - `schemas/site-params.schema.json`：站点参数。
 - `archetypes/posts.md`：新文章模板。
 - `archetypes/laodao.md`：新唠叨模板。
+- `archetypes/zouguo.md`：新独立走过模板。
 
 Schema 用于新内容提示和验证，不用于批量改写历史文件。
 

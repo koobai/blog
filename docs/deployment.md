@@ -34,7 +34,20 @@ hugo --minify --panicOnWarning
 - Publisher、Drafts、Comments、Likes 和 Activity Sync：先按 [`workers/README.md`](../workers/README.md) 在测试域名部署，再回填公开 URL 或 App 私有配置。
 - Movies/Exercise：提供符合 `schemas/data/` 的自己的数据；不要复制 Koobai 的生产 `assets/`。
 - Exercise：Mapbox Token 是浏览器公开参数，但应限制允许的 URL；原始隐私轨迹不得进入公开数据。
+- Zouguo / 走过：使用自己的 Markdown、公开地点、Mapbox Token/样式和边界许可证；静态展示不要求 Worker，App 发布才按需部署 Publisher/Drafts。
 - AI Coach：模型 API Key 只能存放在部署平台 Secret 中，模型只能接收聚合证据。
+
+## 部署“走过”页面
+
+当前 `init` 只生成 Core，不会自动安装“走过”。完整清单见 [`zouguo.md`](zouguo.md)，部署时至少需要：
+
+1. 只复制 MIT 授权的布局、局部模板、CSS、JavaScript、Archetype、Schema、地点解析代码和边界构建程序，不复制 Koobai 的 Markdown、坐标、照片或地图样式 ID。
+2. 使用自己的 Mapbox Public Token 与浅色/深色样式；完整行政区目录只用于 Hugo 构建，浏览器只下载当前记录引用的裁剪子集。
+3. 创建自己的 `/zouguo/` 页面与内容，严格遵守 [`zouguo-data-contract.md`](zouguo-data-contract.md)。生成 feed 和边界子集不得手工编辑。
+4. 只做静态展示时不需要 Worker；需要 iOS App 发布、编辑、删除或云草稿时，再分别部署 Publisher 与 Drafts，并使用最小权限的 GitHub、R2、D1 配置。
+5. 发布前运行专题契约测试、走过 JavaScript 语法检查和 Hugo 严格构建。
+
+博客仓库不包含 iOS App 源码，只定义 App 写入的 Markdown/Worker 契约。部署 App 是其独立项目的任务，不能通过复制本仓库内容完成。
 
 ## 部署“动起来”页面
 

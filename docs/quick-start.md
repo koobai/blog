@@ -24,7 +24,7 @@
 2. 先询问我：站点名称、作者、简介、域名、部署平台、需要的功能 Profile，以及是否迁移已有 Hugo 内容。没有明确选择时使用 Core。
 3. 先运行 python3 tools/jingzhe.py doctor --json；然后使用 init 在仓库外一个不存在的新目录生成站点。不要复制根仓库的 content/、assets/、Koobai 品牌或生产服务配置。
 4. 修改新站点的通用配置并运行 Hugo 严格构建。交付前运行适用的 validate/check、站内链接和隐私检查。
-5. 如果我选择 Publisher、Social、Life Data 或 AI Coach，再读取对应文档，只询问该功能真正需要的公开配置和 Secret。选择“动起来”时，必须按 docs/deployment.md 的端到端清单执行，并继续读取 docs/privacy.md、workers/activity-sync/README.md 和运动同步 Schema；不要把“打开 exercise 功能开关”等同于已经安装完整模块。五个 Worker 必须保持独立权限。
+5. 如果我选择 Publisher、Social、Life Data 或 AI Coach，再读取对应文档，只询问该功能真正需要的公开配置和 Secret。选择“动起来”时，必须按 docs/deployment.md 的端到端清单执行；选择“走过”时，必须读取 docs/zouguo.md、数据契约、地点边界和隐私文档。不要把增加一个功能开关等同于已经安装完整模块。五个 Worker 必须保持独立权限。
 6. 在登录账户、创建云资源、写入 GitHub、部署 Worker、修改 DNS 或改变生产状态前，先说明影响并单独征得我的同意。
 7. 最后告诉我：创建或修改了哪些文件、哪些功能已启用、哪些 Secret 仍需配置、运行了哪些测试，以及访问地址。
 ```
@@ -62,6 +62,7 @@ hugo server
 | 浏览器写文章、传图片、云草稿 | `workers/README.md`、`workers/publisher/README.md`、`workers/drafts/README.md` |
 | 评论与点赞 | `workers/README.md`、`workers/comments/README.md`、`workers/likes/README.md` |
 | 部署完整“动起来”页面 | `docs/deployment.md` 的“部署动起来页面”、`docs/privacy.md`、`docs/configuration.md` |
+| 部署“走过”地图日志 | `docs/zouguo.md`、`docs/zouguo-data-contract.md`、`docs/privacy.md` |
 | 从 App 或其他来源同步运动 | `workers/README.md`、`workers/activity-sync/README.md`、`schemas/data/exercise-sync-v1.schema.json` |
 | 观影与地图 | `docs/features.md`、`docs/privacy.md`、`docs/configuration.md` |
 | AI 运动月报 | `docs/features.md`、`docs/privacy.md`、`docs/architecture.md` |
@@ -69,4 +70,4 @@ hugo server
 
 完整功能不是“一键无确认部署”：GitHub Token、Cloudflare D1/R2、Turnstile、Mapbox 和模型 API 都属于用户自己的外部资源。AI 可以协助创建和配置，但必须在外部写入前获得授权。
 
-`init` 当前只生成 Core，不包含“动起来”页面和运动处理自动化。AI 若要为新站点启用运动功能，必须明确区分“复制 MIT 程序模块”和“导入用户自己的运动数据”，不得复制 Koobai 的文章、真实运动记录、轨迹、品牌配置或生产服务地址。
+`init` 当前只生成 Core，不包含“动起来”页面、运动处理自动化或“走过”页面。AI 若要启用这些模块，必须明确区分“复制 MIT 程序模块”和“导入用户自己的数据”，不得复制 Koobai 的文章、真实运动记录、位置、轨迹、品牌配置或生产服务地址，也不得虚构不存在的开关。

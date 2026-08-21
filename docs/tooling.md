@@ -43,6 +43,7 @@ python3 tools/jingzhe.py validate --json
 - 已启用功能的公开参数完整。
 - 五个 Worker 的源码、示例配置、OpenAPI 与 D1 迁移文件完整。
 - 观影、运动和月报数据满足当前结构约束。
+- 走过 JSON Schema 可以解析；真实 Markdown、三类来源和地点边界由专题单元测试及 Hugo 严格构建验证。
 
 校验只读取历史内容和数据，不会批量格式化或回写文件。
 
@@ -64,6 +65,17 @@ python3 tools/jingzhe.py check
 
 `tests/` 是上述兼容与隐私契约的测试源码，不是 Hugo 生成目录。`check` 会自动发现全部 `test_*.py`、`test_*.js` 和 `test_*.mjs`；增加或删除测试文件时无需手工维护一份重复清单。测试不会复制进 Core Starter，也不会进入生成的网站。
 
+走过相关改动可先运行聚焦门禁：
+
+```bash
+node --check themes/jingzhe_v3/assets/js/pages/zouguo.js
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest \
+  tests.test_zouguo_contract \
+  tests.test_zouguo_pipeline \
+  tests.test_zouguo_places
+hugo --environment production --minify --panicOnWarning
+```
+
 生产站已经停用但仍存在于历史内容中的路径记录在 `data/jingzhe/linkcheck_allowlist.json`。这不是重新启用旧链接，也不会修改旧文章。
 
 ## init
@@ -80,6 +92,8 @@ python3 tools/jingzhe.py init \
 ```
 
 当前安全初始化只开放 `core` Profile。工具会生成通用配置、Core 主题子集、Archetype、Schema 和两条明确标注的合成内容，然后自动执行严格构建与隐私扫描。失败时会清理本次创建的半成品目录。
+
+Core 输出不包含走过页面、边界目录或 Mapbox 配置。安装走过必须按 [`zouguo.md`](zouguo.md) 单独完成；不得给 `init` 传入未实现的 Profile 或虚构功能参数。
 
 工具拒绝写入 `/`、用户主目录、当前生产仓库或任何已经存在的路径。需要重试时应选择新的输出目录，不应让 AI 删除未知目录。
 

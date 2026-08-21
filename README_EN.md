@@ -2,9 +2,9 @@
 
 [简体中文](README.md) | English
 
-> **Write long-form essays and post short thoughts; document experiments, track what you watch, and keep moving—capture the everyday and every change along the way.**
+> **Write essays and short thoughts; document experiments, films, movement, and the places you have actually passed through.**
 
-Jingzhe is an open-source personal blogging system for documenting work, everyday life, and everything you enjoy tinkering with. Use it for quick updates, thoughtful essays, technical notes, and lessons learned; keep track of films and series, follow every step of your fitness journey, and let AI help turn each month of activity into a meaningful review.
+Jingzhe is an open-source personal blogging system for documenting work, everyday life, and everything you enjoy tinkering with. Use it for quick updates, thoughtful essays, technical notes, films, fitness, and a map journal called **Zouguo** that remembers the places you have visited.
 
 It is built with Hugo, GitHub Actions, and optional serverless services, keeping both writing and public life data in your own Git repository. Start with a clean static blog, then add browser-based publishing, comments and likes, movie synchronization, exercise visualizations, and AI summaries only when you need them.
 
@@ -19,6 +19,7 @@ This repository is both the production source of [Koobai](https://koobai.com), t
 - **Social interactions:** add comments, nested replies, likes, emoji, moderation, and Cloudflare Turnstile protection.
 - **Movie log:** synchronize new and updated Douban records and present ratings, notes, and viewing dates as ticket-style cards.
 - **Exercise with privacy:** combine statistics, calendars, heart rate, Mapbox tracks, achievements, and posters with landmark-based substitutes for private routes.
+- **Zouguo map journal:** aggregate standalone notes, tagged short updates, and tagged essays into one map and mobile list. Markdown remains authoritative; Hugo generates the feed and visited-region boundary subset.
 - **AI exercise reviews:** generate mid-month and end-of-month summaries from filtered aggregate evidence only.
 - **Modular by design:** Core needs no Worker; publishing, social, life data, and AI capabilities can be enabled independently.
 - **AI and automation friendly:** let an AI agent initialize and deploy the project, while GitHub Actions handles testing, synchronization, processing, builds, and deployment.
@@ -40,7 +41,7 @@ Optional modules enhance the site progressively. A missing optional service neve
 | Core | Posts, short updates, theme, tags, RSS, and JSON | Hugo Extended |
 | Publisher | Browser writing, image upload, GitHub publishing, and drafts | Publisher/Drafts Workers, GitHub credentials, and image storage |
 | Social | Comments, replies, likes, and Turnstile | Comments/Likes Workers and D1 |
-| Life Data | Movie sync, exercise statistics, maps, and privacy routes | Python, Mapbox, and personal data sources; optional exercise sync gateway (Activity Sync Worker) for automatic ingestion |
+| Life Data | Movie sync, exercise statistics, Zouguo maps, and privacy routes | Python, Mapbox, and personal data as required by each module; optional Activity Sync Worker for exercise ingestion |
 | AI Coach | Mid-month and end-of-month exercise reviews | Model API and privacy configuration |
 
 The production site uses the Full Profile, with [koobai.com](https://koobai.com) as the only live demo. Core does not require any Worker and is generated into a new directory; the repository does not maintain a second demo site.
@@ -51,6 +52,7 @@ The production site uses the Full Profile, with [koobai.com](https://koobai.com)
 flowchart LR
     A["Markdown / JSON"] --> R["GitHub repository"]
     B["Browser editor"] --> W["Publisher Worker"]
+    Z["Native app: Laodao / Zouguo"] --> W
     W --> R
     C["Movie sync"] --> R
     D["Native apps / source connectors"] --> ASW["Exercise sync gateway"]
@@ -58,8 +60,10 @@ flowchart LR
     R --> P["Exercise processing / AI reports"]
     P --> R
     R --> H["Hugo + Jingzhe v3"]
-    H --> CF["Cloudflare Pages"]
     H --> O["HTML / RSS / JSON / Sitemap"]
+    H --> ZO["Zouguo map / feed / boundary subset"]
+    O --> CF["Cloudflare Pages"]
+    ZO --> CF
     E["Comments / Likes Workers"] <--> V["Visitors"]
     CF --> V
 ```
@@ -114,7 +118,7 @@ See [AI tooling](docs/tooling.md) for JSON output, initialization, and Starter p
 ## Repository Map
 
 ```text
-content/                    Long-form posts, short updates, and pages
+content/                    Long-form posts, short updates, standalone Zouguo records, and pages
 assets/                     Production movie data and generated exercise, route, and report data
 data/exercise/              Source-neutral raw exercise facts
 themes/jingzhe_v3/          Production theme and fingerprinted first-party scripts
@@ -141,6 +145,7 @@ Read [Production compatibility](docs/compatibility.md) before modifying an exist
 - [Features and installation profiles](docs/features.md)
 - [Configuration and Core initialization](docs/configuration.md)
 - [Deployment](docs/deployment.md)
+- [Zouguo map journal](docs/zouguo.md)
 - [Architecture and module contracts](docs/architecture.md)
 - [Production compatibility](docs/compatibility.md)
 - [Privacy and external-data boundaries](docs/privacy.md)
