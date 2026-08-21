@@ -187,6 +187,8 @@ zouguo:
             rendered = (destination / 'zouguo/index.html').read_text(encoding='utf-8')
             self.assertIn('data-source-type="post"', rendered)
             self.assertIn('href="/zouguo-pipeline-post/"', rendered)
+            self.assertIn('class="zouguo-entry-source">来自唠叨</span>', rendered)
+            self.assertIn('class="zouguo-entry-source">来自随笔</span>', rendered)
             self.assertNotIn('这段长文不能复制进走过卡片。', rendered)
 
             post.write_text(

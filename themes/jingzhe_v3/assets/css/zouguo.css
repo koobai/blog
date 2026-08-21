@@ -1083,6 +1083,18 @@
   line-height: 1.4;
 }
 
+.zouguo-entry-time-source {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.zouguo-entry-source {
+  color: var(--zouguo-muted);
+}
+
 .zouguo-entry-region {
   overflow: hidden;
   color: var(--zouguo-entry-accent);

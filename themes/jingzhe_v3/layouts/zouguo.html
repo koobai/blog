@@ -91,6 +91,12 @@
           {{- end -}}
           {{- $areaLabel := delimit $areaParts " · " -}}
           {{- $hasImages := gt (len $item.images) 0 -}}
+          {{- $sourceLabel := "" -}}
+          {{- if eq $item.source.type "laodao" -}}
+            {{- $sourceLabel = "来自唠叨" -}}
+          {{- else if eq $item.source.type "post" -}}
+            {{- $sourceLabel = "来自随笔" -}}
+          {{- end -}}
           <article class="zouguo-entry{{ if not $hasImages }} is-text-only{{ end }}"
                    data-zouguo-id="{{ $item.id }}"
                    data-source-type="{{ $item.source.type }}"
@@ -107,7 +113,10 @@
                 {{- end -}}
               </h3>
               <div class="zouguo-entry-meta">
-                <time datetime="{{ $date }}">{{ if ne $year $currentYear }}{{ $date }}{{ else }}{{ $dateLabel }}{{ end }}</time>
+                <span class="zouguo-entry-time-source">
+                  <time datetime="{{ $date }}">{{ if ne $year $currentYear }}{{ $date }}{{ else }}{{ $dateLabel }}{{ end }}</time>
+                  {{- with $sourceLabel }}<span class="zouguo-entry-source">{{ . }}</span>{{ end -}}
+                </span>
                 <span class="zouguo-entry-region">{{ $areaLabel }}</span>
               </div>
             </header>
