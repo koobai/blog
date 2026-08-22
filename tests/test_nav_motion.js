@@ -68,4 +68,20 @@ assert.match(scripts, /function onScroll\(\) \{\s+if \(!desktopQuery\.matches\) 
 assert.match(scripts, /function syncToScroll\(\) \{\s+if \(!mobileQuery\.matches\) return;/);
 assert.doesNotMatch(scripts, /copyMenuIcons|desktopItems/);
 
+const mobileScript = fs.readFileSync(
+  path.join(root, 'themes/jingzhe_v3/assets/js/navigation/mobile.js'),
+  'utf8'
+);
+const mobileStyles = fs.readFileSync(
+  path.join(root, 'themes/jingzhe_v3/assets/css/mobile.css'),
+  'utf8'
+);
+assert.match(mobileScript, /const PANEL_HORIZONTAL_PADDING = 16;/);
+assert.match(
+  mobileScript,
+  /lerp\(EXPANDED_HEIGHT \/ 2, COMPACT_SIZE \/ 2, heightProgress\)/
+);
+assert.match(mobileStyles, /--mobile-dock-radius: 38px;/);
+assert.match(mobileStyles, /padding: 5px 16px;/);
+
 console.log('nav motion contract tests passed');

@@ -26,6 +26,7 @@
   const COMPACT_SIZE = 58;
   const EXPANDED_HEIGHT = 76;
   const MAX_EXPANDED_WIDTH = 400;
+  const PANEL_HORIZONTAL_PADDING = 16;
   const expandedLabel = trigger.getAttribute('aria-label') || '主导航';
   const compactLabel = expandedLabel.replace(/^主导航/, '展开主导航');
   let displayProgress = 0;
@@ -135,7 +136,7 @@
     const expandedWidth = cachedExpandedWidth;
     const width = lerp(expandedWidth, COMPACT_SIZE, widthProgress);
     const height = lerp(EXPANDED_HEIGHT, COMPACT_SIZE, heightProgress);
-    const contentWidth = Math.max(0, expandedWidth - 12);
+    const contentWidth = Math.max(0, expandedWidth - PANEL_HORIZONTAL_PADDING * 2);
     const slotOffset = hasMenuCurrent && dockItems.length
       ? ((activeMenuIndex + 0.5) / dockItems.length - 0.5) * contentWidth
       : 0;
@@ -148,7 +149,7 @@
     setStyleProperty(dock, '--mobile-expanded-width', `${expandedWidth.toFixed(3)}px`);
     setStyleProperty(dock, '--mobile-dock-width', `${width.toFixed(3)}px`);
     setStyleProperty(dock, '--mobile-dock-height', `${height.toFixed(3)}px`);
-    setStyleProperty(dock, '--mobile-dock-radius', `${lerp(25, 29, heightProgress).toFixed(3)}px`);
+    setStyleProperty(dock, '--mobile-dock-radius', `${lerp(EXPANDED_HEIGHT / 2, COMPACT_SIZE / 2, heightProgress).toFixed(3)}px`);
     setStyleProperty(dock, '--mobile-current-offset', `${currentOffset.toFixed(3)}px`);
     setStyleProperty(dock, '--mobile-current-y-offset', `${currentYOffset.toFixed(3)}px`);
     setStyleProperty(dock, '--mobile-trigger-opacity', triggerOpacity.toFixed(4));
