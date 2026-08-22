@@ -25,6 +25,7 @@
   const PINNED_SCROLL_RELEASE_DISTANCE = 18;
   const COMPACT_SIZE = 58;
   const EXPANDED_HEIGHT = 76;
+  const MAX_EXPANDED_WIDTH = 420;
   const expandedLabel = trigger.getAttribute('aria-label') || '主导航';
   const compactLabel = expandedLabel.replace(/^主导航/, '展开主导航');
   let displayProgress = 0;
@@ -59,7 +60,7 @@
 
   function getExpandedWidth() {
     const sideSpace = window.innerWidth <= 340 ? 12 : 16;
-    return Math.max(260, Math.min(window.innerWidth - sideSpace, 320));
+    return Math.max(260, Math.min(window.innerWidth - sideSpace, MAX_EXPANDED_WIDTH));
   }
 
   function getMaxScroll() {
