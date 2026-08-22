@@ -166,6 +166,14 @@
     'poi-label'
   ];
 
+  const studioManagedPlaceLabelLayerIds = [
+    'custom-place-labels',
+    'place-label',
+    'natural-label'
+  ];
+
+  const studioManagedRoadLabelLayerIds = ['custom-road-labels'];
+
   const classicRoadLabelLayerIds = ['road-label-simple'];
   const isDarkTheme = () => {
     const explicitTheme = document.documentElement.getAttribute('data-theme');
@@ -209,16 +217,23 @@
     const showPlaces = map.getZoom() < 10.8;
     const showRoads = shouldShowRoadLabels();
     const hasStandardBasemap = (map.getStyle()?.imports || []).some(item => item.id === 'basemap');
+    const hasStudioManagedPlaceLabels = studioManagedPlaceLabelLayerIds.some(layerId => map.getLayer(layerId));
+    const hasStudioManagedRoadLabels = studioManagedRoadLabelLayerIds.some(layerId => map.getLayer(layerId));
 
     if (hasStandardBasemap && typeof map.setConfigProperty === 'function') {
       basemapLabelsConfigured = true;
-      if (basemapPlaceLabelsVisible !== showPlaces) {
-        map.setConfigProperty('basemap', 'showPlaceLabels', showPlaces);
-        basemapPlaceLabelsVisible = showPlaces;
+      const showStandardPlaceLabels = hasStudioManagedPlaceLabels ? false : showPlaces;
+      const showStandardRoadLabels = hasStudioManagedRoadLabels ? false : showRoads;
+      if (basemapPlaceLabelsVisible !== showStandardPlaceLabels) {
+        map.setConfigProperty('basemap', 'showPlaceLabels', showStandardPlaceLabels);
+        basemapPlaceLabelsVisible = showStandardPlaceLabels;
       }
-      if (basemapRoadLabelsVisible !== showRoads) {
-        map.setConfigProperty('basemap', 'showRoadLabels', showRoads);
-        basemapRoadLabelsVisible = showRoads;
+      if (basemapRoadLabelsVisible !== showStandardRoadLabels) {
+        map.setConfigProperty('basemap', 'showRoadLabels', showStandardRoadLabels);
+        basemapRoadLabelsVisible = showStandardRoadLabels;
+      }
+      if (hasStudioManagedRoadLabels) {
+        setClassicLayerVisibility(studioManagedRoadLabelLayerIds, showRoads);
       }
       return;
     }
@@ -945,12 +960,12 @@
     const dark = isDarkTheme();
     return dark
       ? {
-          fill: '#b76551',
-          line: '#c5826f',
-          fillEmissiveStrength: 0.28,
-          lineEmissiveStrength: 0.38,
-          lineOpacity: 0.44,
-          opacities: { country: 0.09, province: 0.13, city: 0.18 }
+          fill: '#c97a63',
+          line: '#d6917b',
+          fillEmissiveStrength: 0.42,
+          lineEmissiveStrength: 0.52,
+          lineOpacity: 0.66,
+          opacities: { country: 0.24, province: 0.3, city: 0.36 }
         }
       : {
           fill: '#bd6b55',

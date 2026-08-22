@@ -8,7 +8,7 @@
 {{- $mapboxJsUrl := "https://api.mapbox.com/mapbox-gl-js/v3.26.0/mapbox-gl.js" -}}
 {{- $mapboxToken := default "" (index $mapConfig "mapboxtoken") -}}
 {{- $mapboxLightStyle := "mapbox://styles/koobai/cmszypnux006s01py2irsdxj0" -}}
-{{- $mapboxDarkStyle := "mapbox://styles/koobai/cmszwuvo9006i01pyh583gzcv" -}}
+{{- $mapboxDarkStyle := "mapbox://styles/koobai/cmt3x4dq9004m01sy0vu4cbax" -}}
 {{- $feed := partial "zouguo/feed.html" . -}}
 {{- $boundaries := partial "zouguo/boundaries.html" $feed -}}
 {{- $boundaryResource := resources.FromString "data/zouguo-boundaries.json" ($boundaries | jsonify) | fingerprint "sha256" -}}
