@@ -965,15 +965,15 @@
           fillEmissiveStrength: 0.42,
           lineEmissiveStrength: 0.52,
           lineOpacity: 0.66,
-          opacities: { country: 0.24, province: 0.3, city: 0.36 }
+          opacities: { country: 0.24, province: 0.24, city: 0.24 }
         }
       : {
           fill: '#bd6b55',
-          line: '#9d4f3d',
+          line: '#aa6251',
           fillEmissiveStrength: 0.12,
           lineEmissiveStrength: 0.16,
           lineOpacity: 0.68,
-          opacities: { country: 0.12, province: 0.17, city: 0.23 }
+          opacities: { country: 0.11, province: 0.11, city: 0.11 }
         };
   };
 
