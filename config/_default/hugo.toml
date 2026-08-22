@@ -5,6 +5,7 @@ theme = "jingzhe_v3"
 
 enableRobotsTXT = true
 hasCJKLanguage = true
+cleanDestinationDir = true
 
 [module]
   [module.hugoVersion]
