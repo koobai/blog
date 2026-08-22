@@ -169,6 +169,18 @@ class JingzheCliTests(unittest.TestCase):
         self.assertEqual(result["warnings"], ["warn"])
         json.dumps(result)
 
+    def test_validation_covers_repository_and_data_boundaries(self):
+        checks = {item["id"]: item for item in jingzhe.validation_checks()}
+
+        for check_id in (
+            "data.catalog",
+            "repository.generated-files",
+            "repository.compatibility-entries",
+            "data.raw-boundary",
+        ):
+            self.assertIn(check_id, checks)
+            self.assertTrue(checks[check_id]["ok"], checks[check_id]["message"])
+
 
 if __name__ == "__main__":
     unittest.main()

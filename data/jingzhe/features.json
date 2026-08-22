@@ -8,6 +8,70 @@
     "ai-coach": ["core", "exercise", "aiCoach"],
     "full": ["core", "publisher", "social", "movies", "exercise", "aiCoach", "externalShop"]
   },
+  "dataCatalog": {
+    "assets/movie.json": {
+      "role": "public-source",
+      "writer": "sync_movies.py",
+      "readers": ["Hugo movies page"],
+      "public": true,
+      "generated": false,
+      "schema": "schemas/data/movie.schema.json"
+    },
+    "assets/activities.json": {
+      "role": "public-read-model",
+      "writer": "process_activities.py",
+      "readers": ["Hugo exercise page", "monthly_coach.py"],
+      "public": true,
+      "generated": true,
+      "schema": "schemas/data/activities.schema.json"
+    },
+    "assets/monthly_insights.json": {
+      "role": "public-read-model",
+      "writer": "monthly_coach.py",
+      "readers": ["Hugo exercise page"],
+      "public": true,
+      "generated": true,
+      "schema": "schemas/data/monthly-insights.schema.json"
+    },
+    "assets/landmark_route_library.json": {
+      "role": "public-contract",
+      "writer": "site owner",
+      "readers": ["activity processing", "Hugo exercise page"],
+      "public": true,
+      "generated": false,
+      "schema": "schemas/data/landmark-route-library.schema.json"
+    },
+    "data/exercise/activities.json": {
+      "role": "private-source",
+      "writer": "Activity Sync Gateway",
+      "readers": ["activity processing"],
+      "public": false,
+      "generated": false,
+      "schema": "schemas/data/exercise-sync-store-v1.schema.json"
+    },
+    "data/jingzhe/exercise.json": {
+      "role": "shared-contract",
+      "writer": "site maintainer",
+      "readers": ["Python", "Hugo", "browser exercise modules"],
+      "public": true,
+      "generated": false,
+      "schema": "schemas/data/exercise-contract.schema.json"
+    },
+    "data/jingzhe/linkcheck_allowlist.json": {
+      "role": "maintenance-contract",
+      "writer": "site maintainer",
+      "readers": ["tools/jingzhe.py"],
+      "public": false,
+      "generated": false
+    },
+    "data/jingzhe/zouguo_boundary_catalog.json": {
+      "role": "build-contract",
+      "writer": "tools/build_zouguo_boundary_catalog.py",
+      "readers": ["Hugo zouguo build"],
+      "public": false,
+      "generated": true
+    }
+  },
   "features": [
     {
       "id": "core",

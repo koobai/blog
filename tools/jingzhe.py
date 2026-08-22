@@ -417,6 +417,80 @@ def validation_checks() -> List[dict]:
     registry_ok = len(ids) == len(set(ids)) and set(ids) == expected
     add_check(checks, "features.registry", registry_ok, "功能注册表包含 7 个唯一功能" if registry_ok else "功能注册表 ID 不完整或重复")
 
+    catalog = registry.get("dataCatalog", {}) if isinstance(registry, dict) else {}
+    catalog_errors: List[str] = []
+    allowed_roles = {
+        "private-source", "public-source", "public-read-model",
+        "public-contract", "shared-contract", "maintenance-contract",
+        "build-contract",
+    }
+    if not isinstance(catalog, dict) or not catalog:
+        catalog_errors.append("缺少 dataCatalog")
+    else:
+        for relative, metadata in sorted(catalog.items()):
+            path = ROOT / relative
+            if not path.is_file():
+                catalog_errors.append("数据文件不存在：{}".format(relative))
+            if not isinstance(metadata, dict):
+                catalog_errors.append("数据目录项不是对象：{}".format(relative))
+                continue
+            if metadata.get("role") not in allowed_roles:
+                catalog_errors.append("数据角色无效：{}".format(relative))
+            if not isinstance(metadata.get("writer"), str) or not metadata.get("writer"):
+                catalog_errors.append("缺少写入者：{}".format(relative))
+            if not isinstance(metadata.get("readers"), list) or not metadata.get("readers"):
+                catalog_errors.append("缺少读取者：{}".format(relative))
+            if not isinstance(metadata.get("public"), bool):
+                catalog_errors.append("public 必须是布尔值：{}".format(relative))
+            if not isinstance(metadata.get("generated"), bool):
+                catalog_errors.append("generated 必须是布尔值：{}".format(relative))
+            schema = metadata.get("schema")
+            if metadata.get("public") and (not schema or not (ROOT / schema).is_file()):
+                catalog_errors.append("公开数据缺少有效 Schema：{}".format(relative))
+    add_check(
+        checks,
+        "data.catalog",
+        not catalog_errors,
+        "数据目录包含 {} 个职责明确的文件".format(len(catalog)) if not catalog_errors else "; ".join(catalog_errors[:8]),
+    )
+
+    generated_targets = ("public", "resources", ".hugo_build.lock", ".hugo_build_lock")
+    tracked_generated = run_command(["git", "ls-files", "--", *generated_targets]).stdout.splitlines()
+    add_check(
+        checks,
+        "repository.generated-files",
+        not tracked_generated,
+        "Hugo 生成物均未被 Git 跟踪" if not tracked_generated else "Git 跟踪了生成物：{}".format(", ".join(tracked_generated)),
+    )
+
+    stable_entries = ("process_activities.py", "monthly_coach.py", "sync_movies.py")
+    missing_entries = [name for name in stable_entries if not (ROOT / name).is_file()]
+    add_check(
+        checks,
+        "repository.compatibility-entries",
+        not missing_entries,
+        "三个稳定自动化入口完整" if not missing_entries else "缺少稳定入口：{}".format(", ".join(missing_entries)),
+    )
+
+    raw_path = "data/exercise/activities.json"
+    template_raw_consumers: List[str] = []
+    for base in (ROOT / "themes", ROOT / "content"):
+        for path in iter_source_files(base):
+            if raw_path in path.read_text(encoding="utf-8", errors="ignore"):
+                template_raw_consumers.append(str(path.relative_to(ROOT)))
+    gateway_source = (ROOT / "workers/activity-sync/src/index.js").read_text(encoding="utf-8")
+    raw_boundary_ok = (
+        not template_raw_consumers
+        and raw_path in gateway_source
+        and "assets/activities.json" not in gateway_source
+    )
+    add_check(
+        checks,
+        "data.raw-boundary",
+        raw_boundary_ok,
+        "原始运动事实只进入处理管线，不被 Hugo 或浏览器读取" if raw_boundary_ok else "原始运动事实边界异常：{}".format(", ".join(template_raw_consumers) or "Gateway 路径"),
+    )
+
     exercise_errors = validate_exercise_contract(load_json(ROOT / "data/jingzhe/exercise.json"))
     add_check(
         checks,
