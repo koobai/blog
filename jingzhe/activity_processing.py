@@ -50,11 +50,11 @@ if not DEEPSEEK_API_KEY:
 # 2. 📁 路径绑定
 # ==========================================
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets')
+TARGET_DIR = os.path.join(PROJECT_ROOT, 'assets', 'data', 'exercise')
 FILE_NAME = os.path.join(TARGET_DIR, 'activities.json')
 RAW_FILE_NAME = str(RAW_ACTIVITY_FILE)
-MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly_insights.json')
-LANDMARK_ROUTE_FILE = os.path.join(TARGET_DIR, 'landmark_route_library.json')
+MONTHLY_FILE = os.path.join(TARGET_DIR, 'monthly-insights.json')
+LANDMARK_ROUTE_FILE = os.path.join(TARGET_DIR, 'landmark-routes.json')
 PUBLISH_START_DATE = datetime(2026, 1, 1)
 
 # 趣味能量换算、运动中文名和距离分组统一来自 data/jingzhe/exercise.json。

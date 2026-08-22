@@ -96,7 +96,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add assets/activities.json assets/monthly_insights.json
+          git add assets/data/exercise/activities.json assets/data/exercise/monthly-insights.json
           if git diff --staged --quiet; then
             echo "ACTIVITY_HAS_CHANGES=false" >> "$GITHUB_ENV"
             echo "ACTIVITY_CHANGED_FILES=none" >> "$GITHUB_ENV"

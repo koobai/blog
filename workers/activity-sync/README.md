@@ -21,7 +21,7 @@ Activity Sync 不是博客页面的必需后端，而是可选的写入边界。
 2. 手机等只拥有设备本地视图的客户端，首次接入和日常更新都使用 `delta`；只有能够证明自己掌握某个 `source` 完整全集的连接器才能使用 `snapshot`。
 3. Gateway 校验和合并原始事实；数据不变时返回 `changed=false`，不写 GitHub。
 4. 真实变化只写 `data/exercise/activities.json`，触发运动处理 Actions。
-5. Actions 生成 `assets/activities.json` 和 `assets/monthly_insights.json`，不回写原始事实。
+5. Actions 生成 `assets/data/exercise/activities.json` 和 `assets/data/exercise/monthly-insights.json`，不回写原始事实。
 6. 生成产物提交再触发 Hugo 构建和 Cloudflare Pages 发布。
 
 三个运动文件的职责不同：
@@ -29,8 +29,8 @@ Activity Sync 不是博客页面的必需后端，而是可选的写入边界。
 | 文件 | 性质 | 写入者 | 用途 |
 |---|---|---|---|
 | `data/exercise/activities.json` | 原始事实 | Activity Sync Gateway 或手工导入 | 来源无关的唯一输入 |
-| `assets/activities.json` | 生成产物 | 运动处理 Actions | Hugo 展示、地图、成就与标题 |
-| `assets/monthly_insights.json` | 生成产物 | 月报状态机 | 统计、月中与月末报告 |
+| `assets/data/exercise/activities.json` | 生成产物 | 运动处理 Actions | Hugo 展示、地图、成就与标题 |
+| `assets/data/exercise/monthly-insights.json` | 生成产物 | 月报状态机 | 统计、月中与月末报告 |
 
 ## 接口
 

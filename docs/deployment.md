@@ -74,16 +74,16 @@ AI 必须先说明采用哪条路径、将复制哪些程序文件以及哪些�
 | 文件 | 写入者 | 说明 |
 |---|---|---|
 | `data/exercise/activities.json` | Gateway 或手工导入 | 来源无关的原始事实；文件结构遵循 `exercise-sync-store-v1`，每条记录字段遵循 `exercise-sync-v1` |
-| `assets/activities.json` | `process_activities.py` | 页面读取的生成产物，不应由 App 直接写入 |
-| `assets/monthly_insights.json` | 月报状态机 | 确定性统计与可选 AI 月中/月末报告 |
+| `assets/data/exercise/activities.json` | `process_activities.py` | 页面读取的生成产物，不应由 App 直接写入 |
+| `assets/data/exercise/monthly-insights.json` | 月报状态机 | 确定性统计与可选 AI 月中/月末报告 |
 
-此外，`assets/landmark_route_library.json` 必须换成部署者自己选择的公共地标路线；它只用于给 `privacy_hidden` 记录显示替代路线，不得包含用户真实私密轨迹。运动类型、颜色和换算继续以 `data/jingzhe/exercise.json` 为唯一契约。
+此外，`assets/data/exercise/landmark-routes.json` 必须换成部署者自己选择的公共地标路线；它只用于给 `privacy_hidden` 记录显示替代路线，不得包含用户真实私密轨迹。运动类型、颜色和换算继续以 `data/jingzhe/exercise.json` 为唯一契约。
 
 首次构建运动页面前，先导入至少一条自己的来源事实并运行 `python process_activities.py`，再提交生成产物。不得把 Koobai 的真实 JSON 当作示例数据发布。
 
 ### 4. 配置 GitHub Actions
 
-1. 使用 `process-activities.yml` 监听 `data/exercise/activities.json`，只提交 `assets/activities.json` 与 `assets/monthly_insights.json`。
+1. 使用 `process-activities.yml` 监听 `data/exercise/activities.json`，只提交 `assets/data/exercise/activities.json` 与 `assets/data/exercise/monthly-insights.json`。
 2. 配置一个仅限目标仓库 Contents 读写的 Actions Secret `PAT`。处理产物的推送需要继续触发站点部署，因此不能改用不会触发后续工作流的默认写入方式。
 3. 把 `NOMINATIM_USER_AGENT` 与 `NOMINATIM_REFERER` 换成自己的应用名和公开联系页面。
 4. AI 月报是可选能力：配置 `DEEPSEEK_API_KEY` 才生成新的月报文本；没有该 Secret 时，运动清洗、统计、构建和发布仍正常进行。

@@ -48,7 +48,7 @@ flowchart TD
     CF --> VISITOR
 ```
 
-运动自动化使用文件路径作为稳定边界：Activity Sync 只提交 `data/exercise/activities.json`；运动处理工作流只监听该文件，并且只提交 `assets/activities.json` 与 `assets/monthly_insights.json`；站点部署工作流忽略仅有原始事实的提交，等待处理产物提交后再构建。`Auto-sync activity facts` 和 `Auto-generate monthly coaching report` 保留为可读的历史标记，不承担唯一的流程判断职责。
+运动自动化使用文件路径作为稳定边界：Activity Sync 只提交 `data/exercise/activities.json`；运动处理工作流只监听该文件，并且只提交 `assets/data/exercise/activities.json` 与 `assets/data/exercise/monthly-insights.json`；站点部署工作流忽略仅有原始事实的提交，等待处理产物提交后再构建。`Auto-sync activity facts` 和 `Auto-generate monthly coaching report` 保留为可读的历史标记，不承担唯一的流程判断职责。
 
 处理工作流继续使用现有 `PAT` 推送生成产物，因为该推送需要触发后续部署。若处理期间只有普通内容推进了 `main`，生成提交会安全 rebase 后重试；若原始事实本身已更新，旧运行不发布过期产物，由新运行接管。缺少可选 `DEEPSEEK_API_KEY` 时，只跳过新的 AI 文本生成，确定性运动处理、统计和发布链不停止。
 
@@ -58,13 +58,13 @@ flowchart TD
 2. 活动身份固定为 `source + external_id`，更换发送 App 不会改变身份。手机等设备本地视图首次接入和日常更新都使用 `delta`；只有掌握某个来源权威全集的连接器才允许用 `snapshot` 替换来源。
 3. App 或连接器只向自己部署的 Activity Sync Gateway 发送 v1 请求和 `SYNC_TOKEN`，不持有 GitHub Token，也不知道博客资产路径。
 4. Gateway 完成认证、严格字段/单位/隐私校验和 GitHub SHA 冲突重试，然后只合并 `data/exercise/activities.json`。相同请求返回 `changed=false`，不创建提交。
-5. 原始事实真实变化时，该单一文件提交只触发运动处理工作流。处理器生成 `assets/activities.json` 中的展示名、配速、趣味标题、成就和隐私替代路线，并更新 `assets/monthly_insights.json`。
+5. 原始事实真实变化时，该单一文件提交只触发运动处理工作流。处理器生成 `assets/data/exercise/activities.json` 中的展示名、配速、趣味标题、成就和隐私替代路线，并更新 `assets/data/exercise/monthly-insights.json`。
 6. AI 月报不会因每条新运动反复重写：1～15 日只累计统计；16 日达到样本门槛后生成一次月中报告；16 日后的新运动只更新统计。若迟到数据改变了 1～15 日的事实，月中报告修正一次。下月 1 日生成上月终稿；关闭月份真有迟到或修正数据时，只重写受影响月份一次。相同数据重复同步不调用 AI。
 7. 处理产物提交才触发 Hugo 严格构建和 Cloudflare Pages 发布。因此原始事实不会作为半成品直接上线，处理失败也不影响上一版站点。
 
 多设备使用同一来源时，每台设备只 upsert 当前看得到的记录，并且只转发来源明确报告的删除 ID；某台设备暂时没看到一条记录不能解释为删除。Android/Health Connect、Apple Health 和 Keep 等不同平台使用各自稳定的 `source`，Gateway 不做时间或距离模糊去重。
 
-`data/exercise/activities.json` 是不面向浏览器的原始事实；`assets/activities.json` 是 Hugo 和月报处理使用的生成产物。后者保留原路径以维持页面与历史处理契约，但已不是 App 同步接口。
+`data/exercise/activities.json` 是不面向浏览器的原始事实；`assets/data/exercise/activities.json` 是 Hugo 和月报处理使用的生成产物。二者按“私有原始事实 / 公开派生数据”分层，后者不是 App 同步接口。
 
 ## Worker-independent 能力与动态增强
 
@@ -98,13 +98,13 @@ flowchart TD
 ## 内容事实来源
 
 - 文章与唠叨以 Markdown 为事实来源。
-- 观影以 `assets/movie.json` 为事实来源。
-- 运动输入以 `data/exercise/activities.json` 为唯一事实来源；页面只读取处理后的 `assets/activities.json`。
+- 观影以 `assets/data/movies.json` 为事实来源。
+- 运动输入以 `data/exercise/activities.json` 为唯一事实来源；页面只读取处理后的 `assets/data/exercise/activities.json`。
 - 走过以独立走过 Markdown、带“走过”Tag 的唠叨和随笔为事实来源；`/zouguo/index.json` 与边界子集只是 Hugo 生成的读模型。
-- AI 月报以 `assets/monthly_insights.json` 为事实来源。
+- AI 月报以 `assets/data/exercise/monthly-insights.json` 为事实来源。
 - `public/` 和 `resources/` 是生成结果，不是事实来源。
 
-观影同步会读取完整远端分页，以豆瓣 ID 更新评分、短评等已有记录，同时保留远端暂时未返回的本地历史项。只有最终数组实际变化时才原子替换 `assets/movie.json`；网络、HTTP、JSON 或响应结构失败会退出非零且不覆盖现有数据。
+观影同步会读取完整远端分页，以豆瓣 ID 更新评分、短评等已有记录，同时保留远端暂时未返回的本地历史项。只有最终数组实际变化时才原子替换 `assets/data/movies.json`；网络、HTTP、JSON 或响应结构失败会退出非零且不覆盖现有数据。
 
 ## 生产环境与通用发行版
 
@@ -188,11 +188,11 @@ Publisher 和 Activity Sync 使用各自独立、范围不同的 GitHub 凭据�
 
 `schemas/data/exercise-contract.schema.json` 描述公开结构，`jingzhe.py validate` 额外检查颜色、分组引用和食物 Key 唯一性。
 
-`assets/landmark_route_library.json` 是公共地标的唯一数据源，同时包含路线几何、距离/爬升参照和选择范围。Python 处理器与浏览器地图从同一份 JSON 读取，不再分别维护地标列表。
+`assets/data/exercise/landmark-routes.json` 是公共地标的唯一数据源，同时包含路线几何、距离/爬升参照和选择范围。Python 处理器与浏览器地图从同一份 JSON 读取，不再分别维护地标列表。
 
 根目录的 `process_activities.py` 与 `monthly_coach.py` 继续作为 Actions、命令行和既有 Python 调用方的稳定入口。确定性运动处理、公共地标请求、月度统计证据和报告状态机分别位于 `jingzhe/` 中；拆分没有改变工作流命令、环境变量、JSON 格式或外部服务。
 
-App、来源适配器与同步网关使用 `schemas/data/exercise-sync-v1.schema.json`。`tests/fixtures/exercise_sync_v1.json` 和 `tests/test_exercise_sync_contract.py` 使用合成数据验证来源身份、字段单位、隐私状态和来源切换；处理后的 `assets/activities.json` 不再是 App 接口。
+App、来源适配器与同步网关使用 `schemas/data/exercise-sync-v1.schema.json`。`tests/fixtures/exercise_sync_v1.json` 和 `tests/test_exercise_sync_contract.py` 使用合成数据验证来源身份、字段单位、隐私状态和来源切换；处理后的 `assets/data/exercise/activities.json` 不再是 App 接口。
 
 ### AI Provider 边界
 

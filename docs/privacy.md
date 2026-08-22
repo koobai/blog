@@ -13,12 +13,12 @@
 | 文章与唠叨 | `content/` | 公开 | 个人内容与代码分层授权 |
 | 图片链接 | Markdown、模板和 JSON | 公开 | Starter 使用合成或可再分发资源 |
 | 走过地点 | 三类 Markdown 的 `zouguo.place` | 公开 | 发布前确认精度与 `privacy`；生成 feed 不提高精度 |
-| 观影记录 | `assets/movie.json` | 公开 | Schema 校验、使用者自己的数据与可选同步 |
-| 运动统计 | `assets/activities.json` | 公开 | Schema、字段最小化与隐私测试 |
+| 观影记录 | `assets/data/movies.json` | 公开 | Schema 校验、使用者自己的数据与可选同步 |
+| 运动统计 | `assets/data/exercise/activities.json` | 公开 | Schema、字段最小化与隐私测试 |
 | 原始运动事实 | `data/exercise/activities.json` | 仓库内数据源 | App 端隐私判断、Gateway 校验、不得直接注入浏览器 |
 | 公开运动轨迹 | `summary_polyline` | 公开 | 必须由用户明确选择公开 |
 | 隐私运动 | 地标替代路线 | 公开替代结果 | 原始轨迹不得参与公开绘制 |
-| AI 月报 | `assets/monthly_insights.json` | 公开 | 模型只接收聚合证据 |
+| AI 月报 | `assets/data/exercise/monthly-insights.json` | 公开 | 模型只接收聚合证据 |
 | 评论资料 | Worker 数据库 | 部分公开 | 邮箱不得返回浏览器 |
 | 管理员凭据 | Secrets / 浏览器状态 | 私密 | 不进入 Git、日志和示例包 |
 

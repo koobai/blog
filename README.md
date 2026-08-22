@@ -152,10 +152,12 @@ content/
 └── pages/                 # 关于、观影、运动和管理页面
 
 assets/
-├── movie.json             # 观影数据
-├── activities.json        # 处理后的运动展示数据
-├── landmark_route_library.json
-└── monthly_insights.json  # 月度统计与 AI 报告
+└── data/                  # Hugo 公开读取的数据资产
+    ├── movies.json        # 观影数据
+    └── exercise/
+        ├── activities.json       # 处理后的运动展示数据
+        ├── landmark-routes.json  # 公共地标路线契约
+        └── monthly-insights.json # 月度统计与 AI 报告
 
 data/exercise/
 └── activities.json        # 来源无关的原始运动事实

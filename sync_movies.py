@@ -12,7 +12,7 @@ from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 
 DEFAULT_DOUBAN_ID = "jnnsu"
-LOCAL_FILE = Path("assets/movie.json")
+LOCAL_FILE = Path("assets/data/movies.json")
 PAGE_SIZE = 50
 MAX_PAGES = 100
 REQUEST_RETRIES = 3

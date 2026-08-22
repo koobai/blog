@@ -9,7 +9,7 @@
     "full": ["core", "publisher", "social", "movies", "exercise", "aiCoach", "externalShop"]
   },
   "dataCatalog": {
-    "assets/movie.json": {
+    "assets/data/movies.json": {
       "role": "public-source",
       "writer": "sync_movies.py",
       "readers": ["Hugo movies page"],
@@ -17,7 +17,7 @@
       "generated": false,
       "schema": "schemas/data/movie.schema.json"
     },
-    "assets/activities.json": {
+    "assets/data/exercise/activities.json": {
       "role": "public-read-model",
       "writer": "process_activities.py",
       "readers": ["Hugo exercise page", "monthly_coach.py"],
@@ -25,7 +25,7 @@
       "generated": true,
       "schema": "schemas/data/activities.schema.json"
     },
-    "assets/monthly_insights.json": {
+    "assets/data/exercise/monthly-insights.json": {
       "role": "public-read-model",
       "writer": "monthly_coach.py",
       "readers": ["Hugo exercise page"],
@@ -33,7 +33,7 @@
       "generated": true,
       "schema": "schemas/data/monthly-insights.schema.json"
     },
-    "assets/landmark_route_library.json": {
+    "assets/data/exercise/landmark-routes.json": {
       "role": "public-contract",
       "writer": "site owner",
       "readers": ["activity processing", "Hugo exercise page"],
@@ -116,7 +116,7 @@
       "configPath": "params.features.movies",
       "publicConfig": [],
       "requiredSecrets": ["可选的豆瓣同步凭据"],
-      "requiredData": ["assets/movie.json"],
+      "requiredData": ["assets/data/movies.json"],
       "schema": "schemas/data/movie.schema.json",
       "degradation": "关闭后不创建观影入口；Core 构建不读取观影数据。",
       "checks": ["观影 JSON Schema", "Hugo 页面构建"],
@@ -129,7 +129,7 @@
       "configPath": "params.features.exercise",
       "publicConfig": ["params.services.exercise.mapboxToken"],
       "requiredSecrets": [],
-      "requiredData": ["assets/activities.json", "assets/landmark_route_library.json", "assets/monthly_insights.json", "data/jingzhe/exercise.json"],
+      "requiredData": ["assets/data/exercise/activities.json", "assets/data/exercise/landmark-routes.json", "assets/data/exercise/monthly-insights.json", "data/jingzhe/exercise.json"],
       "schema": "schemas/data/activities.schema.json",
       "degradation": "关闭后不创建运动入口，也不加载 Mapbox 和运动脚本。",
       "checks": ["运动数据 Schema", "隐私契约测试", "Hugo 页面构建"],
@@ -142,7 +142,7 @@
       "configPath": "params.features.aiCoach",
       "publicConfig": [],
       "requiredSecrets": ["模型 API Key"],
-      "requiredData": ["assets/activities.json", "assets/monthly_insights.json"],
+      "requiredData": ["assets/data/exercise/activities.json", "assets/data/exercise/monthly-insights.json"],
       "schema": "schemas/data/monthly-insights.schema.json",
       "degradation": "关闭后保留确定性运动统计，不调用模型。",
       "checks": ["月报状态机测试", "模型 payload 隐私测试"],

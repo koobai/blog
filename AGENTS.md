@@ -213,7 +213,7 @@ node tests/test_activity_sync_worker.mjs
 - 可选功能通过配置开关控制。
 - 主题样式使用原生 CSS 与 Hugo `css.Build`；`assets/css/style.css` 负责按功能组合本地分片，不依赖 LibSass、Dart Sass、Node 或 npm。
 - 在线编辑器公共原语位于 `editor-core.js`；页面专属行为进入 `editor-laodao.js` 与 `editor-post.js`，模板只保留 HTML 和公开配置注入。
-- 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/landmark_route_library.json` 作为单一来源。
+- 运动类型、颜色和换算数据使用 `data/jingzhe/exercise.json` 作为单一来源；地标路线与匹配规则使用 `assets/data/exercise/landmark-routes.json` 作为单一来源。
 - AI Provider 已可注入，运动证据与状态机不依赖具体模型客户端。
 - 评论点赞、运动同步 Worker 与高权限发布 Worker 保持安全边界。
 - 走过遵循“Markdown 事实来源 → Hugo 统一 feed → 构建期边界裁剪 → 浏览器地图/列表”的单向管线；完整边界目录不是浏览器资产。

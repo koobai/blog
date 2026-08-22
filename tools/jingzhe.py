@@ -473,16 +473,22 @@ def validation_checks() -> List[dict]:
     )
 
     raw_path = "data/exercise/activities.json"
+    public_asset_reference = 'resources.Get "data/exercise/activities.json"'
     template_raw_consumers: List[str] = []
     for base in (ROOT / "themes", ROOT / "content"):
         for path in iter_source_files(base):
-            if raw_path in path.read_text(encoding="utf-8", errors="ignore"):
+            source = path.read_text(encoding="utf-8", errors="ignore")
+            raw_references = [
+                line for line in source.splitlines()
+                if raw_path in line and public_asset_reference not in line
+            ]
+            if raw_references:
                 template_raw_consumers.append(str(path.relative_to(ROOT)))
     gateway_source = (ROOT / "workers/activity-sync/src/index.js").read_text(encoding="utf-8")
     raw_boundary_ok = (
         not template_raw_consumers
         and raw_path in gateway_source
-        and "assets/activities.json" not in gateway_source
+        and "assets/data/exercise/activities.json" not in gateway_source
     )
     add_check(
         checks,
@@ -560,9 +566,9 @@ def validation_checks() -> List[dict]:
     )
 
     data_checks = [
-        ("production.activities", ROOT / "assets/activities.json", validate_activity_items),
-        ("production.movies", ROOT / "assets/movie.json", validate_movie_items),
-        ("production.monthly", ROOT / "assets/monthly_insights.json", validate_monthly_items),
+        ("production.activities", ROOT / "assets/data/exercise/activities.json", validate_activity_items),
+        ("production.movies", ROOT / "assets/data/movies.json", validate_movie_items),
+        ("production.monthly", ROOT / "assets/data/exercise/monthly-insights.json", validate_monthly_items),
     ]
     for check_id, path, validator in data_checks:
         errors = validator(load_json(path))

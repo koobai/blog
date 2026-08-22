@@ -132,7 +132,7 @@ class DocumentationTests(unittest.TestCase):
         self.assertIn("paths-ignore:\n      - 'data/exercise/activities.json'", deploy)
         self.assertNotIn("contains(github.event.head_commit.message", deploy)
         self.assertIn(
-            "git add assets/activities.json assets/monthly_insights.json",
+            "git add assets/data/exercise/activities.json assets/data/exercise/monthly-insights.json",
             process,
         )
         self.assertNotIn("git add assets/\n", process)

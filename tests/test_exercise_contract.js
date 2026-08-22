@@ -2,8 +2,8 @@
 
 const assert = require('node:assert/strict');
 const contract = require('../data/jingzhe/exercise.json');
-const activities = require('../assets/activities.json');
-const landmarkRoutes = require('../assets/landmark_route_library.json');
+const activities = require('../assets/data/exercise/activities.json');
+const landmarkRoutes = require('../assets/data/exercise/landmark-routes.json');
 
 const colors = Object.fromEntries(
   Object.entries(contract.sports).map(([type, values]) => [type, values.color])

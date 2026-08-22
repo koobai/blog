@@ -40,7 +40,7 @@ jobs:
       uses: EndBug/add-and-commit@v9
       with:
         message: 'chore: sync new movies data'
-        add: './assets/movie.json'
+        add: './assets/data/movies.json'
 
     - name: Write Job Summary
       if: always()

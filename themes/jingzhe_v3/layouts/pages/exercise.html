@@ -21,15 +21,15 @@
 ============================================================ */ -}}
 
 {{- /* 1. 读取并清洗 JSON 数据 */ -}}
-{{ $rawActivities := resources.Get "activities.json" | unmarshal }}
+{{ $rawActivities := resources.Get "data/exercise/activities.json" | unmarshal }}
 
-{{ $monthlyInsightsRaw := resources.Get "monthly_insights.json" }}
+{{ $monthlyInsightsRaw := resources.Get "data/exercise/monthly-insights.json" }}
 {{ $monthlyInsights := dict }}
 {{ if $monthlyInsightsRaw }}
   {{ $monthlyInsights = $monthlyInsightsRaw | unmarshal }}
 {{ end }}
 
-{{ $landmarkRouteLibraryRaw := resources.Get "landmark_route_library.json" }}
+{{ $landmarkRouteLibraryRaw := resources.Get "data/exercise/landmark-routes.json" }}
 {{ $landmarkRouteLibrary := slice }}
 {{ if $landmarkRouteLibraryRaw }}
   {{ $landmarkRouteLibrary = $landmarkRouteLibraryRaw | unmarshal }}

@@ -56,10 +56,10 @@ class SyncMoviesTests(unittest.TestCase):
 
     def test_atomic_write_replaces_valid_json_without_temp_residue(self):
         with tempfile.TemporaryDirectory() as temp:
-            target = Path(temp) / "assets" / "movie.json"
+            target = Path(temp) / "assets" / "data" / "movies.json"
             sync_movies.atomic_write_json(target, [{"id": "1", "title": "电影"}])
             self.assertEqual(json.loads(target.read_text(encoding="utf-8"))[0]["id"], "1")
-            self.assertEqual(list(target.parent.glob(".movie.json.*.tmp")), [])
+            self.assertEqual(list(target.parent.glob(".movies.json.*.tmp")), [])
 
     def test_invalid_local_json_is_a_failure_not_an_empty_database(self):
         with tempfile.TemporaryDirectory() as temp:

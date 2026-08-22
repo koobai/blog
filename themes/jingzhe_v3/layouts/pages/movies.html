@@ -5,7 +5,7 @@
   自己很喜欢观影，在能力范围内会把显示、音响、播放等设备添置得最好，然后静静的欣赏一部电影一季剧集一个故事一段人生～～，沉浸其中体验不同的酸甜苦辣。
 </div>
 
-{{ $movies := resources.Get "movie.json" | transform.Unmarshal }}
+{{ $movies := resources.Get "data/movies.json" | transform.Unmarshal }}
 {{ $movieCertifications := dict
   "1" "劝退"
   "2" "平平"

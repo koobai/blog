@@ -16,7 +16,7 @@ from jingzhe.exercise_sync_contract import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_ACTIVITY_FILE = PROJECT_ROOT / 'data/exercise/activities.json'
-PROCESSED_ACTIVITY_FILE = PROJECT_ROOT / 'assets/activities.json'
+PROCESSED_ACTIVITY_FILE = PROJECT_ROOT / 'assets/data/exercise/activities.json'
 RAW_STORE_FIELDS = frozenset({'schema_version', 'sources'})
 
 # These values belong to the blog processor. They are reused from the existing
