@@ -189,7 +189,7 @@ assert.match(calendar.innerHTML, /2026-07/);
 
 const exerciseTemplateSource = fs.readFileSync(path.join(
   ROOT,
-  'themes/jingzhe_v3/layouts/exercise.html'
+  'themes/jingzhe_v3/layouts/pages/exercise.html'
 ), 'utf8');
 const exerciseUiSource = fs.readFileSync(exerciseAsset('ui.js'), 'utf8');
 assert.doesNotMatch(exerciseTemplateSource, /onclick=/);

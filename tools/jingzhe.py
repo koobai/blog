@@ -36,11 +36,11 @@ TEXT_SUFFIXES = {
 }
 SKIP_PARTS = {".git", "public", "resources", "__pycache__"}
 CORE_EXCLUDED_LAYOUTS = {
-    "layouts/about.html",
-    "layouts/exercise.html",
-    "layouts/movies.html",
-    "layouts/newlaodao.html",
-    "layouts/newsuibi.html",
+    "layouts/pages/about.html",
+    "layouts/pages/exercise.html",
+    "layouts/pages/movies.html",
+    "layouts/pages/newlaodao.html",
+    "layouts/pages/newsuibi.html",
     "layouts/_partials/comments.html",
     "layouts/_partials/exercise-food-icons.html",
 }

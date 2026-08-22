@@ -172,7 +172,7 @@ class DocumentationTests(unittest.TestCase):
             ("newsuibi.html", "editor-post.js"),
         ):
             template = (
-                ROOT / "themes/jingzhe_v3/layouts" / template_name
+                ROOT / "themes/jingzhe_v3/layouts/pages" / template_name
             ).read_text(encoding="utf-8")
             self.assertIn("window.JINGZHE_EDITOR_CONFIG", template)
             self.assertIn(module_name, template)

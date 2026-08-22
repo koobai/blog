@@ -18,10 +18,10 @@ class EditorCompatibilityTests(unittest.TestCase):
             ROOT / 'themes/jingzhe_v3/assets/js/pages/editor-post.js'
         ).read_text(encoding='utf-8')
         cls.laodao = (
-            ROOT / 'themes/jingzhe_v3/layouts/newlaodao.html'
+            ROOT / 'themes/jingzhe_v3/layouts/pages/newlaodao.html'
         ).read_text(encoding='utf-8')
         cls.post = (
-            ROOT / 'themes/jingzhe_v3/layouts/newsuibi.html'
+            ROOT / 'themes/jingzhe_v3/layouts/pages/newsuibi.html'
         ).read_text(encoding='utf-8')
 
     def test_local_storage_keys_are_unchanged(self):
@@ -253,7 +253,7 @@ class DatePresentationTests(unittest.TestCase):
             'posts/list.html': 2,
             'posts/single.html': 1,
             '_partials/laodao-card.html': 1,
-            'movies.html': 1,
+            'pages/movies.html': 1,
         }
         for relative_path, expected_count in expected_uses.items():
             source = (layouts / relative_path).read_text(encoding='utf-8')
@@ -264,7 +264,7 @@ class MoviesLayoutTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.template = (
-            ROOT / 'themes/jingzhe_v3/layouts/movies.html'
+            ROOT / 'themes/jingzhe_v3/layouts/pages/movies.html'
         ).read_text(encoding='utf-8')
         cls.styles = (
             ROOT / 'themes/jingzhe_v3/assets/css/movies.css'
@@ -349,8 +349,8 @@ class MoviesLayoutTests(unittest.TestCase):
 
 class ProductionSeparationTests(unittest.TestCase):
     def test_personal_page_copy_lives_in_content_not_theme(self):
-        about = (ROOT / 'themes/jingzhe_v3/layouts/about.html').read_text(encoding='utf-8')
-        exercise = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
+        about = (ROOT / 'themes/jingzhe_v3/layouts/pages/about.html').read_text(encoding='utf-8')
+        exercise = (ROOT / 'themes/jingzhe_v3/layouts/pages/exercise.html').read_text(encoding='utf-8')
 
         self.assertIn('.Params.intro', about)
         self.assertIn('.Content', about)
@@ -360,7 +360,7 @@ class ProductionSeparationTests(unittest.TestCase):
 
     def test_production_service_identity_is_injected_from_config(self):
         rss = (ROOT / 'themes/jingzhe_v3/layouts/home.rss.xml').read_text(encoding='utf-8')
-        exercise = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
+        exercise = (ROOT / 'themes/jingzhe_v3/layouts/pages/exercise.html').read_text(encoding='utf-8')
         exercise_map = (
             ROOT / 'themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js'
         ).read_text(encoding='utf-8')
@@ -381,7 +381,7 @@ class ProductionSeparationTests(unittest.TestCase):
 
 class ExerciseDisplayPipelineTests(unittest.TestCase):
     def test_template_consumes_processed_display_fields(self):
-        template = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
+        template = (ROOT / 'themes/jingzhe_v3/layouts/pages/exercise.html').read_text(encoding='utf-8')
         exercise_ui = (
             ROOT / 'themes/jingzhe_v3/assets/js/exercise/ui.js'
         ).read_text(encoding='utf-8')
@@ -394,7 +394,7 @@ class ExerciseDisplayPipelineTests(unittest.TestCase):
         self.assertNotIn('calRideYDate', exercise_ui)
 
     def test_browser_payload_does_not_include_sync_identity(self):
-        template = (ROOT / 'themes/jingzhe_v3/layouts/exercise.html').read_text(encoding='utf-8')
+        template = (ROOT / 'themes/jingzhe_v3/layouts/pages/exercise.html').read_text(encoding='utf-8')
         self.assertNotIn('source_id', template)
 
     def test_private_routes_never_read_their_original_polyline(self):
