@@ -119,11 +119,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 JavaScript 语法检查：
 
 ```bash
-node --check themes/jingzhe_v3/assets/js/pages/comments.js
-node --check themes/jingzhe_v3/assets/js/exercise/*.js
-node --check themes/jingzhe_v3/assets/js/pages/laodao.js
-node --check themes/jingzhe_v3/assets/js/pages/movies.js
+find themes/jingzhe_v3/assets/js -name '*.js' -print0 | xargs -0 -n 1 node --check
+node tests/test_nav_motion.js
 node tests/test_exercise_modules.js
+node tests/test_zouguo_model.js
 ```
 
 Worker 行为测试：
@@ -162,7 +161,16 @@ assets/
 data/exercise/
 └── activities.json        # 来源无关的原始运动事实
 
-themes/jingzhe_v3/         # 当前生产主题及可指纹化的项目自有脚本
+themes/jingzhe_v3/
+├── layouts/pages/         # content/pages 的专用布局
+├── layouts/zouguo.html    # 走过内容类型入口
+└── assets/
+    ├── css/               # style.css 总入口；运动/走过按职责分片
+    └── js/
+        ├── navigation/    # 桌面、移动与滚动导航
+        ├── exercise/      # 运动模型、地图、UI、海报与控制器
+        ├── zouguo/        # 走过数据模型与地图控制器
+        └── pages/         # 普通页面专属脚本
 static/js/                 # 按许可证原样保留的第三方浏览器脚本
 workers/                   # 五个独立 Worker、Wrangler 示例、D1 迁移与 OpenAPI
 config/                    # 通用、生产与开发配置
@@ -171,6 +179,20 @@ data/jingzhe/features.json # 机器可读功能注册表
 jingzhe/                   # 运动处理、月报与共享契约模块
 .github/workflows/         # 测试、同步、处理、构建和部署工作流
 ```
+
+维护时按“事实来源”定位，不按文件名猜测：
+
+| 要修改什么 | 首选位置 | 同步检查 |
+| --- | --- | --- |
+| 文章、唠叨、走过记录 | `content/` | Front Matter、永久链接、走过聚合 |
+| 关于/观影/运动页面结构 | `layouts/pages/` | 对应 `content/pages/` 的 `layout` |
+| 全站/功能样式 | `assets/css/style.css` 与功能目录 | 导入顺序、深浅模式、响应式页面 |
+| 浏览器交互 | `assets/js/navigation/`、`exercise/`、`zouguo/`、`pages/` | Hugo bundle 顺序与 Node 契约测试 |
+| 浏览器会读取的生活数据 | `assets/data/` | `features.json` 数据目录、Schema、生成脚本和 Actions |
+| 不应直接发布的运动原始事实 | `data/exercise/activities.json` | 只能由同步网关写入、处理器读取 |
+| 自动化和外部服务 | `.github/workflows/`、`workers/` | Secret、最小权限、提交路径与部署触发链 |
+
+`public/`、`resources/` 和 Hugo 锁文件均为可再生输出，不是维护入口，也不得提交。Hugo 已启用目标目录自动清洁；每次改动以 `python3 tools/jingzhe.py check` 作为统一门禁。
 
 ## 生产兼容原则
 

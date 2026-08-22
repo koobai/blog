@@ -39,6 +39,9 @@ python3 tools/jingzhe.py validate --json
 校验以下机器契约：
 
 - JSON Schema 和功能注册表可解析。
+- 数据职责目录中的文件、写入者、读取者、公开属性和 Schema 完整。
+- Hugo 生成物未被 Git 跟踪，三个自动化兼容入口仍存在。
+- 原始运动事实不被 Hugo 或浏览器直接读取。
 - Production 与 Development 配置可解析且公开实例配置没有漂移。
 - 已启用功能的公开参数完整。
 - 五个 Worker 的源码、示例配置、OpenAPI 与 D1 迁移文件完整。

@@ -19,7 +19,7 @@
 - `config/_default/`：所有环境共享的 Hugo 结构和 Core 默认参数。
 - `config/production/`：Koobai 生产身份、菜单、功能开关和公开服务配置。
 - `config/development/`：保持 `hugo server` 与生产参考站一致的本地覆盖。
-- `data/jingzhe/features.json`：机器可读功能注册表。
+- `data/jingzhe/features.json`：机器可读功能注册表与数据职责目录；每份公开/私有 JSON 都声明写入者、读取者、生成属性和 Schema。
 - `data/jingzhe/exercise.json`：运动名称、颜色、分组和食物换算的跨语言单一来源。
 - `data/jingzhe/zouguo_boundary_catalog.json`：走过构建期完整行政区边界目录；浏览器只接收当前内容引用的裁剪子集，并须保留上游许可证。
 - `data/exercise/activities.json`：来源无关的原始运动事实；只由同步网关写入，只由处理器读取。
@@ -30,15 +30,18 @@
 - `content/laodao/YYYY/MM/`：短动态。
 - `content/zouguo/`：独立走过 Markdown；带“走过”Tag 的唠叨和随笔仍以各自原文件为来源。
 - `content/pages/`：独立页面和管理入口。
-- `themes/jingzhe_v3/layouts/`：Hugo 模板。
+- `themes/jingzhe_v3/layouts/`：Hugo 全局与内容类型模板；`layouts/pages/` 只放 `content/pages/` 的专用页面布局。
 - `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
+- `themes/jingzhe_v3/assets/css/style.css`：唯一全站样式入口；运动和走过分别通过各自目录中的 `index.css` 组合职责分片。
+- `themes/jingzhe_v3/assets/js/navigation/`：灯箱、桌面导航、移动导航和共享滚动计算；构建时仍合并为 `js/site.js`。
 - `themes/jingzhe_v3/assets/js/pages/`：普通页面交互脚本，经 Hugo Pipes 指纹化输出。
 - `themes/jingzhe_v3/assets/js/zouguo/`、`layouts/zouguo.html` 与 `_partials/zouguo/`：走过地图、列表、统一 feed 和构建期边界裁剪。
 - `themes/jingzhe_v3/assets/js/exercise/`：运动数据模型、日历 UI、隐私路线、Mapbox、海报与兼容控制器；构建时合并为一个脚本。
 - `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
 - `static/js/`：按上游许可证原样保留的第三方浏览器脚本。
-- `assets/*.json`：观影、处理后运动、地标路线和月报数据；App 与同步网关不得读写处理后的 `activities.json`。
+- `assets/data/movies.json`：公开观影数据；由 `sync_movies.py` 原子更新。
+- `assets/data/exercise/`：处理后运动、公共地标路线和月报等公开数据；App 与同步网关不得直接读写处理后的 `activities.json`。
 - `process_activities.py`、`monthly_coach.py`：Actions 和旧调用方保持不变的兼容入口。
 - `jingzhe/activity_processing.py`、`public_routes.py`：运动数据加工、展示字段和隐私公共路线。
 - `jingzhe/monthly_stats.py`、`monthly_reports.py`：月报统计证据、模型调用、校验与冻结状态机。
