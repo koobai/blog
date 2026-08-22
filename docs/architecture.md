@@ -166,7 +166,7 @@ Publisher 和 Activity Sync 使用各自独立、范围不同的 GitHub 凭据�
 
 ### 项目 JavaScript 管线
 
-普通页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，由 `jingzhe/script.html` 统一加载。运动页面按数据模型、日历 UI、隐私路线、Mapbox、海报和控制器拆分在 `assets/js/exercise/`，再由 `jingzhe/bundle-script.html` 合并为一个脚本。开发服务器提供可读源码，Production 通过 Hugo Pipes 自动压缩并生成内容指纹；职责拆分不会增加浏览器请求，也不需要手写 `?v=` 缓存版本号。
+普通页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，导航、运动与走过分别位于 `assets/js/navigation/`、`assets/js/exercise/` 与 `assets/js/zouguo/`。页面脚本由 `jingzhe/script.html` 加载，功能模块由 `jingzhe/bundle-script.html` 合并。开发服务器提供可读源码，Production 通过 Hugo Pipes 自动压缩并生成内容指纹；职责拆分不会增加浏览器请求，也不需要手写 `?v=` 缓存版本号。
 
 按上游许可证原样保留的 `marked`、`ViewImage` 和 `html-to-image` 位于 `static/js/`。这些第三方文件不与项目源码混合改写，引用与许可证由契约测试和 `THIRD_PARTY_NOTICES.md` 共同约束。
 

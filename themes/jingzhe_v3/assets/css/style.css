@@ -10,9 +10,9 @@
 {{ end }}
 @import "about.css";
 @import "list.css";
-@import "zouguo.css";
+@import "zouguo/index.css";
 {{ if partial "jingzhe/feature-enabled.html" "exercise" }}
-@import "exercise.css";
+@import "exercise/index.css";
 {{ end }}
 @import "laodao.css";
 {{ if partial "jingzhe/feature-enabled.html" "publisher" }}

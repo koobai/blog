@@ -63,7 +63,7 @@ AI 必须先说明采用哪条路径、将复制哪些程序文件以及哪些�
 ### 2. 启用页面与公开配置
 
 1. 在目标环境的 `params.features` 中启用 `exercise`；只有需要 AI 月报时才同时启用 `aiCoach`。
-2. 保留主题中的 `layouts/pages/exercise.html`、`layouts/_partials/exercise-food-icons.html`、`assets/css/exercise.css` 与 `assets/js/exercise/` 模块。
+2. 保留主题中的 `layouts/pages/exercise.html`、`layouts/_partials/exercise-food-icons.html`、`assets/css/exercise/` 与 `assets/js/exercise/` 模块。
 3. 创建自己的 `layout: exercise` 页面和 `/exercise` 地址，只写自己的标题、简介和图片，不复制 Koobai 的页面内容。
 4. 在 `params.services.exercise` 配置自己的 Mapbox Public Token、样式、中心点和海报前缀。Public Token 可以进入浏览器，但应在 Mapbox 限制允许的站点 URL。
 

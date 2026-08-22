@@ -118,7 +118,9 @@ class ThemePipelineTests(unittest.TestCase):
         cls.header = (ROOT / 'themes/jingzhe_v3/layouts/_partials/header.html').read_text(encoding='utf-8')
         cls.laodao_card = (ROOT / 'themes/jingzhe_v3/layouts/_partials/laodao-card.html').read_text(encoding='utf-8')
         cls.post_single = (ROOT / 'themes/jingzhe_v3/layouts/posts/single.html').read_text(encoding='utf-8')
-        cls.site_script = (ROOT / 'themes/jingzhe_v3/assets/js/scripts.js').read_text(encoding='utf-8')
+        cls.site_script = (
+            ROOT / 'themes/jingzhe_v3/assets/js/navigation/site-shell.js'
+        ).read_text(encoding='utf-8')
         cls.theme_script = (ROOT / 'themes/jingzhe_v3/assets/js/theme.js').read_text(encoding='utf-8')
         cls.comments_frontend = (
             ROOT / 'themes/jingzhe_v3/assets/js/pages/comments.js'
@@ -149,7 +151,7 @@ class ThemePipelineTests(unittest.TestCase):
     def test_optional_styles_are_guarded_by_feature_flags(self):
         expected = {
             'movies': '@import "movies.css";',
-            'exercise': '@import "exercise.css";',
+            'exercise': '@import "exercise/index.css";',
             'publisher': '@import "newlaodao.css";',
             'social': '@import "comments.css";',
         }
@@ -208,22 +210,17 @@ class ThemePipelineTests(unittest.TestCase):
             path.read_text(encoding='utf-8') for path in layouts.rglob('*.html')
         )
         vendor_names = {path.name for path in (ROOT / 'static/js').glob('*.js')}
-        page_names = {
-            path.name for path in (ROOT / 'themes/jingzhe_v3/assets/js/pages').glob('*.js')
-        }
-        exercise_names = {
-            path.name for path in (ROOT / 'themes/jingzhe_v3/assets/js/exercise').glob('*.js')
+        theme_js_root = ROOT / 'themes/jingzhe_v3/assets'
+        theme_paths = {
+            path.relative_to(theme_js_root).as_posix()
+            for path in (theme_js_root / 'js').rglob('*.js')
         }
         self.assertEqual(
             sorted(name for name in vendor_names if name not in combined),
             [],
         )
         self.assertEqual(
-            sorted(name for name in page_names if name not in combined),
-            [],
-        )
-        self.assertEqual(
-            sorted(name for name in exercise_names if name not in combined),
+            sorted(path for path in theme_paths if path not in combined),
             [],
         )
         self.assertNotIn('?v=', combined)

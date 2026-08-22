@@ -33,7 +33,7 @@
 - `themes/jingzhe_v3/layouts/`：Hugo 模板。
 - `themes/jingzhe_v3/assets/`：主题原生 CSS、JavaScript 与 Hugo Pipes 资源。
 - `themes/jingzhe_v3/assets/js/pages/`：普通页面交互脚本，经 Hugo Pipes 指纹化输出。
-- `themes/jingzhe_v3/assets/js/pages/zouguo.js`、`layouts/zouguo.html` 与 `_partials/zouguo/`：走过地图、列表、统一 feed 和构建期边界裁剪。
+- `themes/jingzhe_v3/assets/js/zouguo/`、`layouts/zouguo.html` 与 `_partials/zouguo/`：走过地图、列表、统一 feed 和构建期边界裁剪。
 - `themes/jingzhe_v3/assets/js/exercise/`：运动数据模型、日历 UI、隐私路线、Mapbox、海报与兼容控制器；构建时合并为一个脚本。
 - `themes/jingzhe_v3/assets/js/pages/editor-core.js`：两个在线编辑器共享的鉴权、草稿、标签、上传、预览与 GitHub 原语。
 - `themes/jingzhe_v3/assets/js/pages/editor-laodao.js`、`editor-post.js`：两个写作页面各自的 UI 与发布行为。
@@ -178,7 +178,7 @@ node --check themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js
 node --check themes/jingzhe_v3/assets/js/exercise/controller.js
 node --check themes/jingzhe_v3/assets/js/pages/laodao.js
 node --check themes/jingzhe_v3/assets/js/pages/movies.js
-node --check themes/jingzhe_v3/assets/js/pages/zouguo.js
+node --check themes/jingzhe_v3/assets/js/zouguo/index.js
 node --check themes/jingzhe_v3/assets/js/theme.js
 node tests/test_editor_core.js
 node tests/test_editor_pages.js

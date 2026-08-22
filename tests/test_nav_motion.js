@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const motion = require(path.join(
   root,
-  'themes/jingzhe_v3/assets/js/nav-motion.js'
+  'themes/jingzhe_v3/assets/js/navigation/motion.js'
 ));
 
 assert.equal(motion.SCROLL_START, 40);
@@ -59,7 +59,7 @@ assert.deepEqual(removals, ['--width']);
 assert.equal(motion.setStyleProperty(element, '--width', '60px'), true);
 
 const scripts = fs.readFileSync(
-  path.join(root, 'themes/jingzhe_v3/assets/js/scripts.js'),
+  path.join(root, 'themes/jingzhe_v3/assets/js/navigation/site-shell.js'),
   'utf8'
 );
 assert.match(scripts, /function onScroll\(\) \{\s+if \(!desktopQuery\.matches\) return;/);

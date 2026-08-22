@@ -95,7 +95,7 @@ hugo new content zouguo/20260821-example.md
 ## 验证
 
 ```bash
-node --check themes/jingzhe_v3/assets/js/pages/zouguo.js
+node --check themes/jingzhe_v3/assets/js/zouguo/index.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest \
   tests.test_zouguo_contract \
   tests.test_zouguo_pipeline \
