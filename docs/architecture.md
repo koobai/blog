@@ -168,6 +168,8 @@ Publisher 和 Activity Sync 使用各自独立、范围不同的 GitHub 凭据�
 
 普通页面脚本位于 `themes/jingzhe_v3/assets/js/pages/`，导航、运动与走过分别位于 `assets/js/navigation/`、`assets/js/exercise/` 与 `assets/js/zouguo/`。页面脚本由 `jingzhe/script.html` 加载，功能模块由 `jingzhe/bundle-script.html` 合并。开发服务器提供可读源码，Production 通过 Hugo Pipes 自动压缩并生成内容指纹；职责拆分不会增加浏览器请求，也不需要手写 `?v=` 缓存版本号。
 
+导航按灯箱、桌面和移动交互拆分；运动与走过样式通过各自的 `index.css` 保持一个入口，再按视觉职责导入子文件。走过的纯数据归一化和地点聚合位于 `assets/js/zouguo/model.js`，Mapbox 实例、相机历史、弹层和选中状态继续集中在 `controller.js`；这些强共享状态不跨文件复制，避免为了缩短行数制造隐式时序依赖。两者在构建时仍合并为原来的 `js/pages/zouguo.js` 公共 bundle。
+
 按上游许可证原样保留的 `marked`、`ViewImage` 和 `html-to-image` 位于 `static/js/`。这些第三方文件不与项目源码混合改写，引用与许可证由契约测试和 `THIRD_PARTY_NOTICES.md` 共同约束。
 
 ### 运动单一数据源

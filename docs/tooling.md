@@ -68,7 +68,8 @@ python3 tools/jingzhe.py check
 走过相关改动可先运行聚焦门禁：
 
 ```bash
-node --check themes/jingzhe_v3/assets/js/zouguo/index.js
+node --check themes/jingzhe_v3/assets/js/zouguo/model.js
+node --check themes/jingzhe_v3/assets/js/zouguo/controller.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest \
   tests.test_zouguo_contract \
   tests.test_zouguo_pipeline \

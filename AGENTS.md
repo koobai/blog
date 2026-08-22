@@ -178,7 +178,8 @@ node --check themes/jingzhe_v3/assets/js/exercise/mapbox-adapter.js
 node --check themes/jingzhe_v3/assets/js/exercise/controller.js
 node --check themes/jingzhe_v3/assets/js/pages/laodao.js
 node --check themes/jingzhe_v3/assets/js/pages/movies.js
-node --check themes/jingzhe_v3/assets/js/zouguo/index.js
+node --check themes/jingzhe_v3/assets/js/zouguo/model.js
+node --check themes/jingzhe_v3/assets/js/zouguo/controller.js
 node --check themes/jingzhe_v3/assets/js/theme.js
 node tests/test_editor_core.js
 node tests/test_editor_pages.js

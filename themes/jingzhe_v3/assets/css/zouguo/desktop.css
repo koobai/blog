@@ -1,0 +1,365 @@
+
+@media (min-width: 861px) {
+  .zouguo-stage {
+    overflow: hidden;
+    border-radius: 26px;
+  }
+
+  .is-timeline-retracted .zouguo-timeline {
+    opacity: 0.18;
+    pointer-events: none;
+    transform: translate3d(calc(100% + var(--zouguo-panel-inset) + 10px), 0, 0);
+    transition-duration: 720ms, 440ms;
+  }
+
+  .zouguo-timeline-reveal {
+    position: absolute;
+    z-index: 21;
+    top: 50%;
+    right: calc(var(--zouguo-panel-width) + var(--zouguo-panel-inset));
+    display: grid;
+    width: 36px;
+    height: 68px;
+    padding: 0;
+    border: 1px solid var(--theme-glass-border);
+    border-right: 0;
+    border-radius: 17px 0 0 17px;
+    background: var(--theme-glass-background);
+    box-shadow: -8px 12px 30px rgba(48, 43, 37, 0.11);
+    color: color-mix(in srgb, var(--text-content-color) 62%, transparent);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    place-items: center;
+    transform: translate3d(calc(100% + 3px), -50%, 0);
+    transition:
+      color 160ms ease,
+      opacity 180ms ease,
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      right 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    backdrop-filter: var(--theme-glass-filter);
+    -webkit-backdrop-filter: var(--theme-glass-filter);
+  }
+
+  .zouguo-timeline-reveal svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .zouguo-timeline-collapse-icon {
+    display: none;
+  }
+
+  .is-coordinate-card-open .zouguo-timeline-reveal {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  .is-coordinate-card-open:not(.is-timeline-retracted) .zouguo-timeline-reveal svg:first-child {
+    display: none;
+  }
+
+  .is-coordinate-card-open:not(.is-timeline-retracted) .zouguo-timeline-collapse-icon {
+    display: block;
+  }
+
+  .is-timeline-retracted .zouguo-timeline-reveal {
+    right: -1px;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, -50%, 0);
+    transition-delay: 240ms, 240ms, 240ms, 0ms;
+  }
+
+  .zouguo-timeline-reveal:hover,
+  .zouguo-timeline-reveal:focus-visible {
+    color: var(--zouguo-accent);
+  }
+}
+
+.zouguo-random-button {
+  display: inline-flex;
+  box-sizing: border-box;
+  width: auto;
+  height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: #252321;
+  cursor: pointer;
+  font-family: inherit;
+  pointer-events: auto;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.zouguo-random-button span {
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.zouguo-random-button:hover {
+  background: rgba(255, 253, 250, 0.96);
+  color: var(--zouguo-accent);
+}
+
+.zouguo-timeline-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 16px 14px 16px;
+  scroll-behavior: smooth;
+  scrollbar-color: color-mix(in srgb, var(--text-content-color) 18%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+.zouguo-entry {
+  position: relative;
+  margin: 0 0 12px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--zouguo-border) 58%, transparent);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--zouguo-surface-solid) 45%, transparent);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 220ms ease, background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.zouguo-entry[hidden] {
+  display: none;
+}
+
+.zouguo-entry:hover,
+.zouguo-entry:focus-visible {
+  border-color: color-mix(in srgb, var(--zouguo-accent) 20%, var(--theme-glass-border));
+  background: color-mix(in srgb, var(--zouguo-surface-solid) 58%, transparent);
+  box-shadow: 0 10px 28px rgba(50, 42, 34, 0.07);
+  transform: translateY(-1px);
+}
+
+.zouguo-entry.is-active {
+  border-color: color-mix(in srgb, var(--zouguo-accent) 46%, transparent);
+  background: color-mix(in srgb, var(--theme-glass-background) 84%, var(--zouguo-accent-soft) 16%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--zouguo-accent) 8%, transparent),
+    0 14px 34px rgba(50, 42, 34, 0.09);
+}
+
+.zouguo-entry-header {
+  position: relative;
+  z-index: 1;
+  margin: 1px 2px 12px;
+}
+
+.zouguo-entry-header h3 {
+  margin: 0 0 4px;
+  overflow: hidden;
+  color: var(--text-content-color);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zouguo-entry-header h3.is-source-post {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.zouguo-entry-source-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.zouguo-entry-source-link:hover,
+.zouguo-entry-source-link:focus-visible {
+  color: var(--accent-color, #b76551);
+}
+
+.zouguo-source-link-mark {
+  display: inline-block;
+  margin-left: 5px;
+  color: var(--zouguo-accent);
+  font-weight: 400;
+  transition: transform 160ms ease;
+}
+
+.zouguo-entry-source-link:hover .zouguo-source-link-mark,
+.zouguo-entry-source-link:focus-visible .zouguo-source-link-mark,
+.zouguo-coordinate-source-link:hover .zouguo-source-link-mark,
+.zouguo-coordinate-source-link:focus-visible .zouguo-source-link-mark {
+  transform: translateX(2px);
+}
+
+.zouguo-entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--zouguo-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.zouguo-entry-time-source {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.zouguo-entry-source {
+  color: var(--zouguo-muted);
+}
+
+.zouguo-entry-region {
+  overflow: hidden;
+  color: var(--zouguo-entry-accent);
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zouguo-entry-gallery {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: clamp(132px, 17vh, 152px);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--text-content-color) 6%, transparent);
+  color: inherit;
+  cursor: zoom-in;
+  font: inherit;
+  gap: 4px;
+  outline: none;
+}
+
+.zouguo-entry-gallery.is-single {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.zouguo-entry-gallery.is-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.zouguo-entry-gallery.is-multiple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.zouguo-entry-gallery:focus-visible {
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--zouguo-accent) 70%, white);
+}
+
+.zouguo-entry-photo {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.zouguo-entry-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zouguo-entry:hover .zouguo-entry-photo img {
+  transform: scale(1.025);
+}
+
+.zouguo-photo-count {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  min-width: 27px;
+  height: 27px;
+  padding: 0 7px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(20, 22, 20, 0.56);
+  color: #fff;
+  font-size: 10px;
+  backdrop-filter: blur(8px);
+  place-items: center;
+}
+
+.zouguo-entry-note {
+  display: block;
+  margin: 12px 2px 2px;
+  overflow: visible;
+  color: var(--text-content-color);
+  font-size: 0.9rem;
+  line-height: 1.72;
+}
+
+.zouguo-entry.is-text-only {
+  min-height: 158px;
+  padding: 14px;
+}
+
+.zouguo-entry.is-text-only::after {
+  position: absolute;
+  top: -20px;
+  right: 12px;
+  color: color-mix(in srgb, var(--zouguo-accent) 12%, transparent);
+  content: "“";
+  font-family: Georgia, serif;
+  font-size: 92px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.zouguo-entry.is-text-only .zouguo-entry-header {
+  margin-bottom: 17px;
+}
+
+.zouguo-entry.is-text-only .zouguo-entry-note {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0 2px 2px;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1.82;
+}
+
+html[data-theme="dark"] .page-zouguo {
+  --zouguo-accent: #d28c78;
+  --zouguo-accent-soft: #4a302b;
+  --zouguo-entry-accent: var(--text-highlight-color);
+  --zouguo-map-loading: #101817;
+  --zouguo-marker-ring: rgba(214, 211, 204, 0.7);
+  --zouguo-marker-surface: #3a3b38;
+}
+
+html[data-theme="dark"] .zouguo-map-caption,
+html[data-theme="dark"] .zouguo-random-button,
+html[data-theme="dark"] .zouguo-icon-button {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(27, 28, 27, 0.78);
+  color: var(--text-content-color);
+}

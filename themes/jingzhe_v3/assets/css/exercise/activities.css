@@ -1,0 +1,235 @@
+
+/* =========================================
+   8. 数据列表与过滤器 (Data List & Filter)
+========================================= */
+.cardList {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* 📱 手机端默认：单列布局 */
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    /* 💻 PC端：恢复双列布局 */
+  }
+}
+
+.foodIconSprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.runCard {
+  background: var(--background-card-color);
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid var(--background-card-border-color);
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.runCard:hover {
+  /* 食物提示框需要越过吸顶地图（z-index: 99）。 */
+  z-index: 101;
+  background: #fff;
+  border-color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .runCard:hover {
+    background: #232326;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+html[data-theme="dark"] .runCard:hover {
+  background: #232326;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.runCard:focus-within {
+  z-index: 101;
+}
+
+.runCardAction {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.runCardAction:focus-visible {
+  outline: 2px solid var(--text-info-color);
+  outline-offset: 2px;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.leftInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rightInfo {
+  flex: 0 0 auto;
+}
+
+.runName {
+  min-width: 0;
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.foodIconTrigger {
+  appearance: none;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text-info-color), transparent 88%);
+  color: var(--text-info-color);
+  cursor: default;
+  pointer-events: auto;
+}
+
+.foodIconTrigger::after {
+  content: attr(data-energy-title);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  padding: 6px 9px;
+  border: 1px solid #eeebe6;
+  border-radius: 8px;
+  background: var(--background-card-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  color: var(--text-content-color);
+  font-size: 0.85rem;
+  font-weight: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+}
+
+.foodIconTrigger:hover::after, .foodIconTrigger:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.foodIconTrigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .foodIconTrigger {
+    background: color-mix(in srgb, var(--text-info-dark-color), transparent 72%);
+    color: var(--text-info-dark-color);
+  }
+  html:not([data-theme="light"]) .foodIconTrigger::after {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: var(--background-card-dark-color);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+    color: var(--text-content-dark-color);
+  }
+}
+
+html[data-theme="dark"] .foodIconTrigger {
+  background: color-mix(in srgb, var(--text-info-dark-color), transparent 72%);
+  color: var(--text-info-dark-color);
+}
+
+html[data-theme="dark"] .foodIconTrigger::after {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--background-card-dark-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+  color: var(--text-content-dark-color);
+}
+
+.foodIcon {
+  width: 27px;
+  height: 27px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.foodIcon .foodIconFill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.foodIcon .foodIconSoft {
+  fill: currentColor;
+  fill-opacity: 0.11;
+  stroke: currentColor;
+}
+
+.foodIcon .foodIconWash {
+  fill: currentColor;
+  fill-opacity: 0.12;
+  stroke: none;
+}
+
+.runDistance {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.runDistance .distUnit {
+  font-size: 0.75rem;
+  margin-left: 3px;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--text-info-color);
+}
+
+.runDate {
+  color: var(--text-info-color);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}

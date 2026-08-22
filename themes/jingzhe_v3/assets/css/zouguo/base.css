@@ -1,0 +1,869 @@
+.page-zouguo {
+  --zouguo-surface: color-mix(in srgb, var(--background-card-color) 88%, transparent);
+  --zouguo-surface-solid: var(--background-card-color);
+  --zouguo-border: color-mix(in srgb, var(--text-content-color) 9%, transparent);
+  --zouguo-muted: color-mix(in srgb, var(--text-content-color) 52%, transparent);
+  --zouguo-accent: #b7634d;
+  --zouguo-accent-soft: #e9c5b5;
+  --zouguo-entry-accent: color-mix(in srgb, var(--zouguo-accent) 88%, var(--text-content-color));
+  --zouguo-map-loading: #dce4df;
+  --zouguo-marker-ring: rgba(255, 253, 250, 0.9);
+  --zouguo-marker-surface: #fffdfa;
+}
+
+.page-zouguo .wrapper {
+  max-width: 1380px;
+}
+
+.page-zouguo footer {
+  margin-top: 48px;
+}
+
+.zouguo-page {
+  width: 100%;
+  margin: 22px auto 0;
+}
+
+.zouguo-hero {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 4px 6px 24px;
+  text-align: center;
+}
+
+.zouguo-hero-line {
+  max-width: 640px;
+  margin: 0;
+  color: var(--theme-page-intro-color);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.zouguo-hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.zouguo-hero-meta span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 9px 13px;
+  border: 1px solid var(--zouguo-border);
+  border-radius: 999px;
+  color: var(--zouguo-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.zouguo-hero-meta strong {
+  color: var(--text-content-color);
+  font-size: 14px;
+}
+
+.zouguo-stage {
+  --zouguo-panel-inset: 16px;
+  --zouguo-panel-width: clamp(360px, 31vw, 430px);
+  position: relative;
+  display: block;
+  min-height: 0;
+  height: clamp(580px, calc(100svh - 210px), 730px);
+}
+
+.zouguo-map-panel,
+.zouguo-timeline {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--zouguo-border);
+  border-radius: 26px;
+  background: var(--zouguo-surface-solid);
+  box-shadow: 0 22px 70px rgba(55, 49, 40, 0.08);
+}
+
+.zouguo-map-panel {
+  position: absolute;
+  inset: 0;
+  background: var(--zouguo-map-loading);
+  isolation: isolate;
+}
+
+.zouguo-map {
+  position: absolute;
+  inset: 0;
+}
+
+.zouguo-map-panel .zouguo-map {
+  z-index: 2;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.is-map-ready .zouguo-map {
+  opacity: 1;
+}
+
+.zouguo-map-error-message {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: none;
+  max-width: 320px;
+  margin: auto;
+  padding: 32px;
+  align-items: center;
+  color: var(--zouguo-muted);
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: center;
+}
+
+.is-map-error .zouguo-map-error-message {
+  display: flex;
+}
+
+.zouguo-map-toolbar {
+  position: absolute;
+  z-index: 5;
+  top: 18px;
+  right: calc(var(--zouguo-panel-width) + (var(--zouguo-panel-inset) * 2));
+  left: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.zouguo-map-caption,
+.zouguo-random-button,
+.zouguo-icon-button {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background: rgba(255, 253, 250, 0.78);
+  color: #252321;
+  box-shadow: 0 8px 30px rgba(41, 39, 35, 0.1);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.zouguo-map-caption {
+  display: flex;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 40px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  pointer-events: auto;
+}
+
+#zouguo-map-caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zouguo-map-scope-back {
+  cursor: default;
+}
+
+.zouguo-map-scope-back:disabled {
+  opacity: 1;
+}
+
+.zouguo-map-scope-back svg {
+  display: none;
+  width: 16px;
+  height: 16px;
+  color: var(--zouguo-accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 160ms ease;
+}
+
+.zouguo-map-scope-back.is-back {
+  cursor: pointer;
+}
+
+.zouguo-map-scope-back.is-back svg {
+  display: block;
+}
+
+.zouguo-map-scope-back.is-back:hover svg {
+  transform: translateX(-2px);
+}
+
+.zouguo-icon-button {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: 40px;
+  gap: 4px;
+  padding: 0 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: inherit;
+  font-size: 11px;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.zouguo-icon-button:hover {
+  background: rgba(255, 253, 250, 0.96);
+  transform: translateY(-2px);
+}
+
+.zouguo-icon-button.is-icon-only {
+  width: 40px;
+  flex: 0 0 40px;
+  justify-content: center;
+  padding: 0;
+}
+
+.zouguo-icon-button.is-icon-only svg {
+  width: 18px;
+  height: 18px;
+}
+
+.zouguo-icon-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.zouguo-map-marker {
+  position: relative;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 9px rgba(28, 35, 32, 0.22));
+  place-items: start center;
+  transition: opacity 180ms ease;
+}
+
+.zouguo-map-marker-visual {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: start center;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.zouguo-map-marker.is-hidden {
+  display: none;
+}
+
+.zouguo-map-marker.is-clustered {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.zouguo-map-marker.is-text-only {
+  width: 32px;
+  height: 38px;
+  filter: drop-shadow(0 7px 9px rgba(28, 35, 32, 0.2));
+  place-items: center;
+}
+
+.zouguo-map-marker.is-text-only .zouguo-map-marker-visual {
+  place-items: center;
+}
+
+.zouguo-map-marker-dot {
+  display: block;
+  box-sizing: border-box;
+  width: 21px;
+  height: 21px;
+  border: 3px solid var(--zouguo-marker-ring);
+  border-radius: 50%;
+  background: var(--zouguo-accent);
+  box-shadow: 0 0 0 1px rgba(104, 71, 59, 0.18);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.zouguo-map-marker-frame {
+  position: relative;
+  z-index: 2;
+  display: block;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border: 2.5px solid var(--zouguo-marker-ring);
+  border-radius: 50%;
+  background: var(--zouguo-marker-surface);
+  transform: rotate(-2deg);
+  transition: border-radius 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.zouguo-map-marker:nth-child(even) .zouguo-map-marker-frame {
+  transform: rotate(2deg);
+}
+
+.zouguo-map-marker img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: none;
+}
+
+.zouguo-map-marker:hover,
+.zouguo-map-marker:focus-visible {
+  z-index: 10;
+}
+
+.zouguo-map-marker:hover .zouguo-map-marker-visual,
+.zouguo-map-marker:focus-visible .zouguo-map-marker-visual {
+  transform: scale(1.091);
+}
+
+.zouguo-map-marker.is-active {
+  z-index: 10;
+}
+
+.zouguo-map-marker.is-active .zouguo-map-marker-frame {
+  border-radius: 50%;
+  transform: rotate(0deg);
+}
+
+.zouguo-map-marker.is-text-only.is-active .zouguo-map-marker-dot {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--zouguo-accent) 20%, transparent);
+  transform: scale(1.09);
+}
+
+.zouguo-map-marker.is-card-open::before {
+  position: absolute;
+  z-index: -1;
+  top: 23px;
+  left: 50%;
+  width: 58px;
+  height: 58px;
+  border: 1px solid color-mix(in srgb, var(--zouguo-accent) 62%, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.45);
+  animation: zouguo-coordinate-pulse 2.2s ease-out infinite;
+  content: "";
+}
+
+.zouguo-map-marker.is-text-only.is-card-open::before {
+  top: 50%;
+}
+
+.zouguo-map-marker-history {
+  position: absolute;
+  z-index: 1;
+  top: -2px;
+  right: -6px;
+  box-sizing: border-box;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border: 2.5px solid var(--zouguo-marker-ring);
+  border-radius: 50%;
+  background: var(--zouguo-marker-surface);
+  box-shadow: 0 8px 17px rgba(56, 38, 31, 0.2);
+  transform: rotate(11deg);
+  transform-origin: 48% 92%;
+  transition: transform 180ms ease;
+}
+
+.zouguo-map-marker-history[hidden] {
+  display: none;
+}
+
+.zouguo-map-marker.has-history .zouguo-map-marker-frame {
+  border-radius: 50%;
+  transform: translateX(-4px) rotate(-7deg);
+  transform-origin: 52% 92%;
+}
+
+.zouguo-map-marker.has-history.is-active .zouguo-map-marker-frame {
+  transform: translateX(-5px) rotate(-10deg);
+}
+
+.zouguo-map-marker.has-history.is-active .zouguo-map-marker-history {
+  transform: translateX(4px) rotate(13deg);
+}
+
+.zouguo-map-marker-history img,
+.zouguo-map-cluster-disc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zouguo-map-marker-history.is-text-only,
+.zouguo-map-cluster-disc.is-text-only {
+  background:
+    radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.44) 0 2px, transparent 3px),
+    linear-gradient(145deg, #c9826a, #a85443);
+}
+
+.zouguo-map-marker-history[hidden] {
+  display: none;
+}
+
+.zouguo-map-marker.is-focusing .zouguo-map-marker-frame,
+.zouguo-map-marker.is-focusing .zouguo-map-marker-dot {
+  animation: zouguo-marker-breathe 900ms ease-in-out infinite alternate;
+}
+
+.zouguo-map-cluster {
+  position: relative;
+  width: 58px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(0 11px 13px rgba(56, 38, 31, 0.24));
+  cursor: pointer;
+  transition: filter 180ms ease;
+}
+
+.zouguo-map-cluster-visual {
+  position: absolute;
+  inset: 0;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.zouguo-map-cluster-disc {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border: 2.5px solid var(--zouguo-marker-ring);
+  border-radius: 50%;
+  background: var(--zouguo-marker-surface);
+  box-shadow: 0 8px 18px rgba(56, 38, 31, 0.2);
+  transform-origin: 50% 94%;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.zouguo-map-cluster-disc.is-back {
+  z-index: 1;
+  transform: translateX(-65%) rotate(-7deg);
+}
+
+.zouguo-map-cluster-disc.is-front {
+  z-index: 2;
+  transform: translateX(-35%) rotate(7deg);
+}
+
+.zouguo-map-cluster-disc.is-single {
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.zouguo-map-cluster.is-active {
+  z-index: 9;
+  filter: drop-shadow(0 12px 15px rgba(56, 38, 31, 0.29));
+}
+
+.zouguo-map-cluster:hover,
+.zouguo-map-cluster:focus-visible {
+  z-index: 10;
+}
+
+.zouguo-map-cluster:hover .zouguo-map-cluster-disc.is-back,
+.zouguo-map-cluster:focus-visible .zouguo-map-cluster-disc.is-back {
+  transform: translateX(-72%) rotate(-10deg);
+}
+
+.zouguo-map-cluster:hover .zouguo-map-cluster-disc.is-front,
+.zouguo-map-cluster:focus-visible .zouguo-map-cluster-disc.is-front {
+  transform: translateX(-28%) rotate(10deg);
+}
+
+.zouguo-map-cluster:hover .zouguo-map-cluster-disc.is-single,
+.zouguo-map-cluster:focus-visible .zouguo-map-cluster-disc.is-single {
+  transform: translateX(-50%) scale(1.091);
+}
+
+.zouguo-coordinate-overlay {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  left: max(24px, calc((100% - var(--zouguo-panel-width) - 416px) / 2));
+  pointer-events: none;
+  transform: translateY(-50%);
+  --zouguo-coordinate-paper: rgba(252, 249, 243, 0.96);
+}
+
+.zouguo-coordinate-card {
+  position: relative;
+  width: min(320px, calc(100vw - 72px));
+  overflow: visible;
+  padding: 17px 18px 14px;
+  border: 1px solid var(--theme-glass-border);
+  border-radius: 23px;
+  background: var(--theme-glass-background);
+  color: var(--text-content-color);
+  box-shadow: var(--theme-glass-box-shadow-wide);
+  font-family: var(--body-font, inherit);
+  pointer-events: auto;
+  transform-origin: 0 50%;
+  animation: zouguo-coordinate-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  backdrop-filter: var(--theme-glass-filter);
+  -webkit-backdrop-filter: var(--theme-glass-filter);
+}
+
+.zouguo-coordinate-card.is-text-only::after {
+  position: absolute;
+  z-index: 0;
+  top: 48px;
+  right: 17px;
+  color: rgba(183, 99, 77, 0.09);
+  font-family: Georgia, serif;
+  font-size: 112px;
+  line-height: 1;
+  content: "“";
+}
+
+.zouguo-coordinate-topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.zouguo-coordinate-eyebrow,
+.zouguo-coordinate-date {
+  color: color-mix(in srgb, var(--text-content-color) 50%, transparent);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.zouguo-coordinate-close {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: grid;
+  width: 28px;
+  height: 26px;
+  margin: -4px -5px -4px auto;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--text-content-color) 5%, transparent);
+  color: color-mix(in srgb, var(--text-content-color) 48%, transparent);
+  cursor: pointer;
+  place-items: center;
+  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.zouguo-coordinate-close svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.zouguo-coordinate-close:hover {
+  background: color-mix(in srgb, var(--zouguo-accent-soft) 58%, transparent);
+  color: var(--text-content-color);
+  transform: translateY(1px);
+}
+
+.zouguo-coordinate-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 7px 0 3px;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+}
+
+.zouguo-coordinate-source-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.zouguo-coordinate-source-link:hover,
+.zouguo-coordinate-source-link:focus-visible {
+  color: var(--zouguo-accent);
+}
+
+.zouguo-coordinate-date {
+  position: relative;
+  z-index: 1;
+  display: block;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.zouguo-coordinate-date-rail {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 5px;
+  margin: 9px -2px 6px;
+  padding: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.zouguo-coordinate-date-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.zouguo-coordinate-date-rail button {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid rgba(43, 40, 37, 0.09);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  color: rgba(43, 40, 37, 0.48);
+  font-family: inherit;
+  font-size: 8px;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.zouguo-coordinate-date-rail button:hover,
+.zouguo-coordinate-date-rail button.is-active {
+  border-color: color-mix(in srgb, var(--zouguo-accent) 32%, transparent);
+  background: color-mix(in srgb, var(--zouguo-accent-soft) 52%, #fff 48%);
+  color: var(--zouguo-accent);
+}
+
+.zouguo-coordinate-record {
+  position: relative;
+  z-index: 1;
+}
+
+.zouguo-coordinate-media:empty {
+  display: none;
+}
+
+.zouguo-coordinate-gallery {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 174px;
+  margin: 14px 0 13px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.zouguo-coordinate-gallery.is-single {
+  height: 220px;
+}
+
+.zouguo-coordinate-gallery.is-multiple {
+  height: 162px;
+}
+
+.zouguo-coordinate-photo {
+  position: absolute;
+  top: 2px;
+  display: block;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 5px solid #fffdf9;
+  border-radius: 13px;
+  background: #ebe5dc;
+  box-shadow: 0 10px 24px rgba(43, 36, 31, 0.16);
+  transition: opacity 160ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zouguo-coordinate-photo.is-front {
+  z-index: 2;
+  left: 0;
+  width: 78%;
+  transform: rotate(-1.2deg);
+}
+
+.zouguo-coordinate-photo.is-back {
+  z-index: 1;
+  right: 0;
+  width: 78%;
+  transform: rotate(2.4deg);
+}
+
+.zouguo-coordinate-photo.is-tail {
+  z-index: 0;
+  right: 0;
+  width: 72%;
+  transform: rotate(4.4deg);
+}
+
+.zouguo-coordinate-gallery.is-single .zouguo-coordinate-photo.is-front {
+  right: 0;
+  width: 100%;
+  transform: rotate(-0.35deg);
+}
+
+.zouguo-coordinate-gallery.is-multiple .zouguo-coordinate-photo.is-front {
+  width: 72%;
+}
+
+.zouguo-coordinate-gallery.is-multiple .zouguo-coordinate-photo.is-back {
+  right: 7%;
+  width: 72%;
+  transform: rotate(1.8deg);
+}
+
+.zouguo-coordinate-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zouguo-coordinate-gallery:hover .is-front {
+  transform: translateX(-3px) rotate(-2deg);
+}
+
+.zouguo-coordinate-gallery:hover .is-back {
+  transform: translateX(3px) rotate(3.4deg);
+}
+
+.zouguo-coordinate-gallery:hover .is-tail {
+  transform: translateX(4px) rotate(5.4deg);
+}
+
+.zouguo-coordinate-gallery.is-single:hover .is-front {
+  transform: translateY(-2px) rotate(-0.6deg);
+}
+
+.zouguo-coordinate-count {
+  position: absolute;
+  z-index: 3;
+  right: 8px;
+  bottom: 7px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  background: rgba(34, 32, 29, 0.56);
+  color: #fff;
+  font-size: 9px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.zouguo-coordinate-text {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  overflow: visible;
+  color: color-mix(in srgb, var(--text-content-color) 78%, transparent);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.zouguo-coordinate-card.is-text-only .zouguo-coordinate-text {
+  min-height: 82px;
+  margin-top: 20px;
+  padding-right: 20px;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+@keyframes zouguo-coordinate-enter {
+  from { opacity: 0; transform: translateY(14px) scale(0.94) rotate(-1deg); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+@keyframes zouguo-coordinate-pulse {
+  0% { opacity: 0.66; transform: translate(-50%, -50%) scale(0.45); }
+  72%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.28); }
+}
+
+@keyframes zouguo-marker-breathe {
+  from { filter: saturate(0.9); transform: scale(0.96); }
+  to { filter: saturate(1.16); transform: scale(1.08); }
+}
+
+.zouguo-map-panel .mapboxgl-ctrl-bottom-left {
+  left: 12px;
+  bottom: 12px;
+}
+
+.zouguo-map-panel .mapboxgl-ctrl-bottom-right {
+  right: calc(var(--zouguo-panel-width) + var(--zouguo-panel-inset) + 12px);
+  bottom: 12px;
+}
+
+.zouguo-map-panel .mapboxgl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 13px;
+  box-shadow: 0 7px 24px rgba(35, 39, 36, 0.12);
+}
+
+.zouguo-map-panel .mapboxgl-ctrl-group button {
+  width: 34px;
+  height: 34px;
+}
+
+.zouguo-map-panel .mapboxgl-ctrl-attrib {
+  border-radius: 8px;
+  font-size: 9px;
+}
+
+.zouguo-timeline {
+  position: absolute;
+  z-index: 20;
+  top: var(--zouguo-panel-inset);
+  right: var(--zouguo-panel-inset);
+  bottom: var(--zouguo-panel-inset);
+  display: flex;
+  flex-direction: column;
+  width: var(--zouguo-panel-width);
+  border-color: var(--theme-glass-border);
+  border-radius: 24px;
+  background: var(--theme-glass-background);
+  box-shadow: var(--theme-glass-box-shadow-wide);
+  backdrop-filter: var(--theme-glass-filter);
+  -webkit-backdrop-filter: var(--theme-glass-filter);
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease;
+}
+
+.zouguo-timeline-reveal {
+  display: none;
+}

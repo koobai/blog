@@ -58,10 +58,12 @@ motion.removeStyleProperty(element, '--width');
 assert.deepEqual(removals, ['--width']);
 assert.equal(motion.setStyleProperty(element, '--width', '60px'), true);
 
-const scripts = fs.readFileSync(
-  path.join(root, 'themes/jingzhe_v3/assets/js/navigation/site-shell.js'),
-  'utf8'
-);
+const scripts = ['desktop.js', 'mobile.js']
+  .map(file => fs.readFileSync(
+    path.join(root, 'themes/jingzhe_v3/assets/js/navigation', file),
+    'utf8'
+  ))
+  .join('\n');
 assert.match(scripts, /function onScroll\(\) \{\s+if \(!desktopQuery\.matches\) return;/);
 assert.match(scripts, /function syncToScroll\(\) \{\s+if \(!mobileQuery\.matches\) return;/);
 assert.doesNotMatch(scripts, /copyMenuIcons|desktopItems/);

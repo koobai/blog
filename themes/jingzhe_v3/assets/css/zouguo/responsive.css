@@ -1,0 +1,446 @@
+
+@media (max-width: 860px) {
+  .page-zouguo .wrapper {
+    max-width: 720px;
+  }
+
+  .zouguo-page {
+    margin-top: 10px;
+  }
+
+  .zouguo-hero {
+    align-items: center;
+    padding: 4px 4px 18px;
+  }
+
+  .zouguo-hero-meta {
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .zouguo-hero-meta span {
+    padding: 7px 10px;
+  }
+
+  .zouguo-stage {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
+
+  .zouguo-map-panel {
+    position: relative;
+    z-index: 1;
+    inset: auto;
+    top: auto;
+    height: 42svh;
+    min-height: 310px;
+    max-height: 430px;
+    border-radius: 22px;
+  }
+
+  .zouguo-timeline {
+    position: relative;
+    z-index: 1;
+    inset: auto;
+    width: auto;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .zouguo-map-toolbar {
+    right: 18px;
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 0s linear;
+  }
+
+  .is-coordinate-card-open .zouguo-map-toolbar {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 0s linear 180ms;
+  }
+
+  .zouguo-map-panel .mapboxgl-ctrl-bottom-right {
+    right: 12px;
+  }
+
+  .zouguo-coordinate-overlay {
+    left: clamp(24px, 36%, 280px);
+  }
+
+  .zouguo-timeline-scroll {
+    overflow: visible;
+    padding-right: 0;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    padding-left: 0;
+  }
+
+  .zouguo-entry-gallery {
+    height: clamp(148px, 28vw, 188px);
+  }
+
+  .zouguo-entry {
+    cursor: default;
+  }
+
+  .zouguo-entry:hover,
+  .zouguo-entry:focus-visible {
+    border-color: color-mix(in srgb, var(--zouguo-border) 58%, transparent);
+    background: color-mix(in srgb, var(--zouguo-surface-solid) 45%, transparent);
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-zouguo .wrapper {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .zouguo-hero-line {
+    font-size: 0.94rem;
+  }
+
+  .zouguo-map-panel {
+    height: 42svh;
+    min-height: 320px;
+    max-height: 370px;
+  }
+
+  .zouguo-coordinate-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .zouguo-coordinate-card {
+    width: min(278px, calc(100vw - 58px));
+    max-height: calc(42svh - 24px);
+    padding: 13px 14px 11px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 19px;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .zouguo-coordinate-card::-webkit-scrollbar {
+    display: none;
+  }
+
+  .zouguo-coordinate-close {
+    width: 44px;
+    height: 44px;
+    margin: -13px -13px -13px auto;
+    background: transparent;
+  }
+
+  .zouguo-coordinate-close::before {
+    position: absolute;
+    z-index: -1;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--text-content-color) 5%, transparent);
+    content: "";
+  }
+
+  .zouguo-coordinate-close:hover,
+  .zouguo-coordinate-close:active {
+    background: transparent;
+  }
+
+  .zouguo-coordinate-close:hover::before,
+  .zouguo-coordinate-close:active::before {
+    background: color-mix(in srgb, var(--zouguo-accent-soft) 58%, transparent);
+  }
+
+  .zouguo-coordinate-card h3 {
+    margin-top: 5px;
+    font-size: 19px;
+  }
+
+  .zouguo-coordinate-date-rail {
+    margin-top: 8px;
+  }
+
+  .zouguo-coordinate-gallery {
+    height: 154px;
+    margin: 9px 0;
+  }
+
+  .zouguo-coordinate-gallery.is-single {
+    height: 172px;
+  }
+
+  .zouguo-coordinate-gallery.is-multiple {
+    height: 143px;
+  }
+
+  .zouguo-coordinate-photo {
+    height: auto;
+    border-width: 4px;
+  }
+
+  .zouguo-coordinate-gallery.is-single .zouguo-coordinate-photo.is-front {
+    right: auto;
+    left: 6%;
+    width: 88%;
+  }
+
+  .zouguo-coordinate-text {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .zouguo-coordinate-card.is-text-only .zouguo-coordinate-text {
+    min-height: 60px;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .zouguo-map-toolbar {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .zouguo-map-caption,
+  .zouguo-random-button,
+  .zouguo-icon-button {
+    min-height: 44px;
+  }
+
+  .zouguo-map-caption,
+  .zouguo-random-button {
+    height: 44px;
+  }
+
+  .zouguo-icon-button.is-icon-only {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .zouguo-map-caption {
+    max-width: clamp(128px, 40vw, 160px);
+    flex: 0 1 auto;
+  }
+
+  .zouguo-random-button {
+    margin-left: 0;
+  }
+
+  .zouguo-timeline-scroll {
+    padding-right: 0;
+    padding-bottom: calc(98px + env(safe-area-inset-bottom, 0px));
+    padding-left: 0;
+  }
+
+  .zouguo-entry {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .zouguo-entry-header {
+    margin: 2px 3px 13px;
+  }
+
+  .zouguo-entry-gallery {
+    height: clamp(138px, 42vw, 176px);
+  }
+}
+
+@media (max-width: 340px) {
+  .zouguo-hero-meta {
+    display: grid;
+    width: min(100%, 280px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zouguo-hero-meta span {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 860px),
+       (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
+  .zouguo-entry-header h3 {
+    margin-bottom: 4px;
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .zouguo-entry-meta {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .zouguo-entry-note,
+  .zouguo-entry.is-text-only .zouguo-entry-note {
+    margin: 14px 3px 3px;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    text-align: justify;
+    text-align-last: left;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (pointer: coarse) {
+  .page-zouguo .view-image-btn {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+@media (max-width: 860px) and (max-height: 680px) {
+  .zouguo-map-panel {
+    position: relative;
+    top: auto;
+    height: min(50svh, 285px);
+    min-height: 250px;
+    max-height: 285px;
+  }
+
+  .zouguo-coordinate-card {
+    max-height: calc(min(50svh, 285px) - 22px);
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
+  .page-zouguo .wrapper {
+    max-width: none;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .zouguo-page {
+    margin-top: 6px;
+  }
+
+  .zouguo-hero {
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .zouguo-stage {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
+
+  .zouguo-map-panel {
+    position: relative;
+    z-index: 1;
+    inset: auto;
+    top: auto;
+    height: min(68svh, 280px);
+    min-height: 230px;
+    max-height: 280px;
+    border-radius: 20px;
+  }
+
+  .zouguo-map-toolbar {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    gap: 6px;
+  }
+
+  .zouguo-timeline {
+    position: relative;
+    z-index: 1;
+    inset: auto;
+    width: auto;
+    margin-top: 12px;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .zouguo-timeline-scroll {
+    overflow: visible;
+    padding-right: 0;
+    padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    padding-left: 0;
+  }
+
+  .zouguo-coordinate-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .zouguo-coordinate-card {
+    max-height: calc(min(68svh, 280px) - 20px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.is-map-error .zouguo-map-toolbar {
+  visibility: hidden;
+}
+
+@media (max-width: 860px) {
+  .is-map-error .zouguo-map-panel {
+    position: relative;
+    top: auto;
+    height: 210px;
+    min-height: 210px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zouguo-map,
+  .zouguo-map-toolbar,
+  .zouguo-map-marker,
+  .zouguo-map-marker-visual,
+  .zouguo-map-cluster-visual,
+  .zouguo-entry,
+  .zouguo-entry-photo img {
+    transition: none;
+  }
+
+  .zouguo-coordinate-card,
+  .zouguo-timeline,
+  .zouguo-timeline-reveal,
+  .zouguo-map-marker.is-card-open::before,
+  .zouguo-map-marker.is-focusing .zouguo-map-marker-frame,
+  .zouguo-map-marker.is-focusing .zouguo-map-marker-dot {
+    animation: none;
+  }
+
+  .zouguo-timeline,
+  .zouguo-timeline-reveal {
+    transition: none;
+  }
+
+  .zouguo-timeline-scroll {
+    scroll-behavior: auto;
+  }
+}

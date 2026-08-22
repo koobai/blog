@@ -1,0 +1,20 @@
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .page-zouguo {
+    --zouguo-accent: #d28c78;
+    --zouguo-accent-soft: #4a302b;
+    --zouguo-entry-accent: var(--text-highlight-color);
+    --zouguo-map-loading: #101817;
+    --zouguo-marker-ring: rgba(214, 211, 204, 0.7);
+    --zouguo-marker-surface: #3a3b38;
+  }
+
+  html:not([data-theme="light"]) .zouguo-map-caption,
+  html:not([data-theme="light"]) .zouguo-random-button,
+  html:not([data-theme="light"]) .zouguo-icon-button {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(27, 28, 27, 0.78);
+    color: var(--text-content-color);
+  }
+
+}

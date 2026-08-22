@@ -59,7 +59,12 @@
   {{ partialCached "footer.html" . .Kind .Type .Layout }}
   
   {{ partial "jingzhe/bundle-script.html" (dict
-    "paths" (slice "js/navigation/motion.js" "js/navigation/site-shell.js")
+    "paths" (slice
+      "js/navigation/motion.js"
+      "js/navigation/lightbox.js"
+      "js/navigation/desktop.js"
+      "js/navigation/mobile.js"
+    )
     "targetPath" "js/site.js"
     "defer" true
   ) }}

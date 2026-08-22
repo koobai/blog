@@ -1,7 +1,4 @@
 {{- $resource := resources.Get .path -}}
-{{- with .targetPath -}}
-  {{- $resource = resources.Copy . $resource -}}
-{{- end -}}
 {{- if not hugo.IsServer -}}
   {{- $resource = $resource | minify | fingerprint -}}
 {{- end -}}

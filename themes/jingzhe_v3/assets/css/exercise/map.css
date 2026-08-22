@@ -1,0 +1,384 @@
+@charset "UTF-8";
+/* =========================================
+   3. Bento 核心布局与地图 (Bento & Map)
+========================================= */
+.exercise-privacy-note {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  font-weight: 400;
+  opacity: 0.58;
+}
+
+.bento-hero {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  /* 📱 手机端：默认竖排 */
+}
+
+@media (min-width: 768px) {
+  .bento-hero {
+    flex-direction: row;
+    /* 💻 PC端：恢复横排 */
+    align-items: stretch;
+    height: 550px;
+  }
+}
+
+#mapbox-container {
+  height: 260px;
+  background-color: var(--background-card-color);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  #mapbox-container {
+    height: 100% !important;
+  }
+}
+
+/* 匿名路线旧画布仅作无脚本兜底；正常状态由标题地点代表路线图层负责。 */
+.anonymousRouteOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  background: rgba(255, 253, 250, 0.24);
+}
+
+.anonymousRouteOverlay[hidden] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .anonymousRouteOverlay {
+    background: rgba(28, 28, 30, 0.35);
+  }
+}
+
+html[data-theme="dark"] .anonymousRouteOverlay {
+  background: rgba(28, 28, 30, 0.35);
+}
+
+.anonymousRouteCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+}
+
+.anonymousRouteCanvas path {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.annualRouteCanvas path {
+  stroke-width: 1.35;
+  opacity: 0.44;
+}
+
+.singleRouteCanvas path {
+  stroke-width: 4;
+  opacity: 0.52;
+}
+
+#map-wrapper.show-anonymous-map #mapbox-container {
+  opacity: 1;
+  filter: none;
+}
+
+.bento-map-placeholder {
+  flex: none;
+  width: 100%;
+  height: 260px;
+  position: relative;
+  order: 2;
+}
+
+@media (min-width: 768px) {
+  .bento-map-placeholder {
+    flex: 1;
+    height: 100%;
+    order: 0;
+  }
+}
+
+.bento-card-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--background-card-border-color);
+  background: var(--background-card-color);
+}
+
+/* 无公开轨迹时，用运动消耗内容替代空白地图。 */
+.routeStampOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  padding-bottom: 48px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--background-card-color), transparent 50%);
+  backdrop-filter: saturate(0.55) blur(1px);
+  -webkit-backdrop-filter: saturate(0.55) blur(1px);
+}
+
+.routeStampOverlay[hidden] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .routeStampOverlay {
+    background: color-mix(in srgb, var(--background-card-dark-color), transparent 60%);
+  }
+}
+
+html[data-theme="dark"] .routeStampOverlay {
+  background: color-mix(in srgb, var(--background-card-dark-color), transparent 60%);
+}
+
+@media (min-width: 768px) {
+  .routeStampOverlay {
+    padding-bottom: 48px;
+  }
+}
+
+.routeStamp {
+  width: calc(100% - 64px);
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: var(--text-info-color);
+  text-align: center;
+  animation: routeStampArrive 0.5s ease-out both;
+}
+
+.routeStampNote {
+  align-self: center;
+  color: var(--text-content-color);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+@keyframes routeStampArrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routeStamp {
+    animation: none;
+  }
+}
+
+/* 吸顶地图 */
+#map-wrapper.sticky-map {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 20px) !important;
+  max-width: 800px !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  z-index: 99;
+  border-radius: 16px;
+  border-top: none;
+  animation: mapSlideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+#map-wrapper.sticky-map #mapbox-container {
+  height: 260px !important;
+  min-height: 260px !important;
+}
+
+#map-wrapper.sticky-map .panl-share-down,
+#map-wrapper.sticky-map .poster-download {
+  display: none !important;
+}
+
+#map-wrapper.sticky-map .runDetailCard {
+  bottom: 20px !important;
+}
+
+/* 动起来页面的浮动导航始终高于普通地图和悬停卡片。 */
+.page-exercise .floating-header {
+  z-index: 102;
+}
+
+@keyframes mapSlideDown {
+  0% {
+    transform: translate(-50%, -120%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* 地图内嵌详情面板 */
+.runDetailCard {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  background: var(--background-card-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  animation: slideUpFade 0.4s forwards;
+  /* 荣誉标签的专属样式 */
+  /* 面板内嵌的分享按钮 */
+  /* 面板内嵌的分享按钮样式 */
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .runDetailCard {
+    background: #242427;
+  }
+}
+
+html[data-theme="dark"] .runDetailCard {
+  background: #242427;
+}
+
+.runDetailCard .detailName {
+  font-size: 0.75rem;
+  color: var(--text-info-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.runDetailCard .detailName .nameLeft {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  gap: 4px;
+}
+
+.runDetailCard .detailDate {
+  color: var(--text-info-color);
+  line-height: 1;
+}
+
+.runDetailCard .map-achievement-tag {
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--exercise-text-highlight-color);
+}
+
+.runDetailCard .panel-share {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.runDetailCard .panl-share-down,
+.runDetailCard .poster-download {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .runDetailCard .panl-share-down,
+.runDetailCard .poster-download {
+    display: flex !important;
+  }
+}
+
+.runDetailCard .panel-share-btn {
+  display: flex;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--text-info-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.runDetailCard .panel-share-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.runDetailCard .panel-share-btn:hover {
+  color: var(--text-content-color);
+}
+
+.detailStatsRow {
+  display: flex;
+  gap: 30px;
+}
+
+.detailStatBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detailStatBlock .statLabel {
+  color: var(--text-info-color);
+  font-size: 0.65rem;
+}
+
+.detailStatBlock .statVal {
+  font-size: 0.85rem;
+  color: var(--text-content-color);
+}
+
+.detailStatBlock small {
+  font-size: 0.65rem;
+  color: var(--text-info-color);
+  margin-left: 2px;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.normal-view {
+  display: grid;
+  gap: 12px;
+}

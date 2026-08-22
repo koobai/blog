@@ -1,0 +1,245 @@
+
+/* =========================================
+   9. 勋章与浮层组件
+========================================= */
+.multiDot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 4px;
+  height: 4px;
+  background: var(--text-info-color);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+/* 金银牌背景 */
+.is-gold-text {
+  color: #f5a623 !important;
+}
+
+.is-silver-text {
+  color: var(--text-content-color) !important;
+  opacity: 0.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .is-silver-text {
+    color: var(--text-content-dark-color) !important;
+    opacity: 0.9;
+  }
+}
+
+html[data-theme="dark"] .is-silver-text {
+  color: var(--text-content-dark-color) !important;
+  opacity: 0.9;
+}
+
+/* 破纪录的小圆点 */
+.multiDot.is-gold-dot {
+  background-color: #f5a623 !important;
+  opacity: 1;
+}
+
+/* 气泡系统 */
+.runTooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #eeebe6;
+  border-radius: 12px;
+  padding: 12px 16px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  cursor: default;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .runTooltip {
+    background: rgba(28, 28, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+html[data-theme="dark"] .runTooltip {
+  background: rgba(28, 28, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dayCell .runTooltip,
+.zoneCol .runTooltip {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dayCell .runTooltip {
+  pointer-events: none;
+}
+
+/* 边缘防溢出 */
+.grid > div:nth-child(7n + 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-10%) !important;
+}
+
+.grid > div:nth-child(7n + 2) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-30%) !important;
+}
+
+.grid > div:nth-child(7n - 1) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-70%) !important;
+}
+
+.grid > div:nth-child(7n) .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-90%) !important;
+}
+
+.barWrapper:first-child .runTooltip,
+.zoneCol:first-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-15%) !important;
+}
+
+.barWrapper:last-child .runTooltip,
+.zoneCol:last-child .runTooltip {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-85%) !important;
+}
+
+/* 气泡内部排版 */
+.ttItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+}
+
+.punchCard .runTooltip .ttItem,
+.zoneChart .runTooltip .ttItem {
+  justify-content: center;
+  gap: 12px;
+}
+
+.punchCard .runTooltip .ttName,
+.zoneChart .runTooltip .ttName {
+  color: var(--text-info-color) !important;
+  font-size: 0.75rem;
+}
+
+.punchCard .runTooltip .ttNum,
+.zoneChart .runTooltip .ttNum {
+  text-align: left;
+}
+
+.ttItem .ttNum .ttUnit {
+  color: var(--text-info-color);
+}
+
+.ttName {
+  color: var(--text-info-color);
+  font-size: 0.8rem;
+}
+
+.ttNum {
+  color: var(--text-content-color);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.ttDayRunList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ttAchievement {
+  padding-top: 10px;
+  border-top: 1px solid #f6f3ed;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .ttAchievement {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+html[data-theme="dark"] .ttAchievement {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ttAchieveRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-content-color);
+}
+
+.titleTag {
+  padding: 2px 6px;
+  background: #f0eee9;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  color: var(--text-info-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .titleTag {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-info-dark-color);
+  }
+}
+
+html[data-theme="dark"] .titleTag {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-info-dark-color);
+}
+
+/* Mapbox 控件覆写 */
+.mapboxgl-ctrl-logo {
+  opacity: 0.4 !important;
+  transform: scale(0.75) !important;
+  transform-origin: bottom left !important;
+}
+
+.mapboxgl-ctrl-logo:hover {
+  opacity: 0.8 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .mapboxgl-ctrl-logo {
+    opacity: 0.2 !important;
+  }
+  html:not([data-theme="light"]) .mapboxgl-ctrl-logo:hover {
+    opacity: 0.4 !important;
+  }
+}
+
+html[data-theme="dark"] .mapboxgl-ctrl-logo {
+  opacity: 0.2 !important;
+}
+
+html[data-theme="dark"] .mapboxgl-ctrl-logo:hover {
+  opacity: 0.4 !important;
+}
+
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  margin: 0 0 15px 15px !important;
+}

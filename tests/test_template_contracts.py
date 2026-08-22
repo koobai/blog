@@ -118,9 +118,11 @@ class ThemePipelineTests(unittest.TestCase):
         cls.header = (ROOT / 'themes/jingzhe_v3/layouts/_partials/header.html').read_text(encoding='utf-8')
         cls.laodao_card = (ROOT / 'themes/jingzhe_v3/layouts/_partials/laodao-card.html').read_text(encoding='utf-8')
         cls.post_single = (ROOT / 'themes/jingzhe_v3/layouts/posts/single.html').read_text(encoding='utf-8')
-        cls.site_script = (
-            ROOT / 'themes/jingzhe_v3/assets/js/navigation/site-shell.js'
-        ).read_text(encoding='utf-8')
+        navigation = ROOT / 'themes/jingzhe_v3/assets/js/navigation'
+        cls.site_script = '\n'.join(
+            (navigation / filename).read_text(encoding='utf-8')
+            for filename in ('lightbox.js', 'desktop.js', 'mobile.js')
+        )
         cls.theme_script = (ROOT / 'themes/jingzhe_v3/assets/js/theme.js').read_text(encoding='utf-8')
         cls.comments_frontend = (
             ROOT / 'themes/jingzhe_v3/assets/js/pages/comments.js'

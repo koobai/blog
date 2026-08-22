@@ -173,5 +173,9 @@
 
 <script defer src="/js/view-image.min.js"></script>
 <script defer src="{{ $mapboxJsUrl }}"></script>
-{{ partial "jingzhe/script.html" (dict "path" "js/zouguo/index.js" "targetPath" "js/pages/zouguo.js" "defer" true) }}
+{{ partial "jingzhe/bundle-script.html" (dict
+  "paths" (slice "js/zouguo/model.js" "js/zouguo/controller.js")
+  "targetPath" "js/pages/zouguo.js"
+  "defer" true
+) }}
 {{ end }}
