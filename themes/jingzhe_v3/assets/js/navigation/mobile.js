@@ -25,7 +25,7 @@
   const PINNED_SCROLL_RELEASE_DISTANCE = 18;
   const COMPACT_SIZE = 58;
   const EXPANDED_HEIGHT = 76;
-  const MAX_EXPANDED_WIDTH = 420;
+  const MAX_EXPANDED_WIDTH = 400;
   const expandedLabel = trigger.getAttribute('aria-label') || '主导航';
   const compactLabel = expandedLabel.replace(/^主导航/, '展开主导航');
   let displayProgress = 0;

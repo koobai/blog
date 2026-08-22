@@ -18,11 +18,21 @@
 
         // 初始化状态：默认选中最新年份
         this.currentYear = this.availableYears.length > 0 ? this.availableYears[0] : new Date().getFullYear().toString();
+        this.latestMonthByYear = this.allRuns.reduce((latestByYear, run) => {
+          const monthKey = run.start_date_local?.slice(0, 7) || '';
+          if (!/^\d{4}-\d{2}$/.test(monthKey)) return latestByYear;
+          const year = monthKey.slice(0, 4);
+          if (!latestByYear.has(year) || monthKey > latestByYear.get(year)) {
+            latestByYear.set(year, monthKey);
+          }
+          return latestByYear;
+        }, new Map());
 
         this.showAiInsight = false;
 
         // 缓存底部 DOM 卡片
         this.cachedRunCards = document.querySelectorAll('.runCard');
+        this.runListEmpty = document.getElementById('run-list-empty');
         this.interactionRoot = document.querySelector('.exercise-container');
         this.bindInteractions();
         this.setSmartMonth();
@@ -86,20 +96,43 @@
 
       // 根据年份自动定位到有数据的月份
       setSmartMonth() {
-        const runsInYear = this.allRuns.filter(r => r.start_date_local?.startsWith(this.currentYear));
-        if (runsInYear.length > 0) {
-          this.calMonthIndex = Math.max(...runsInYear.map(r => parseInt(r.start_date_local.substring(5, 7), 10) - 1));
+        const latestMonthKey = this.latestMonthByYear.get(this.currentYear);
+        if (latestMonthKey) {
+          this.calMonthIndex = Number.parseInt(latestMonthKey.slice(5, 7), 10) - 1;
         } else {
           this.calMonthIndex = new Date().getMonth();
         }
       }
 
-      // 触发底部卡片列表的显示/隐藏过滤 (仅按年份过滤)
+      getCurrentRouteScope() {
+        const month = String(this.calMonthIndex + 1).padStart(2, '0');
+        const selectedMonthKey = `${this.currentYear}-${month}`;
+        return {
+          year: this.currentYear,
+          month,
+          mode: selectedMonthKey === this.latestMonthByYear.get(this.currentYear) ? 'year' : 'month'
+        };
+      }
+
+      dispatchRouteScope(eventName) {
+        document.dispatchEvent(new CustomEvent(eventName, { detail: this.getCurrentRouteScope() }));
+      }
+
+      // 每年最新数据月份保留该年完整列表；浏览其他月份时只显示该月记录。
       triggerListFilter() {
+        const scope = this.getCurrentRouteScope();
+        const showAnnualOverview = scope.mode === 'year';
+        let visibleCount = 0;
+
         this.cachedRunCards.forEach(card => {
           const isYearMatch = card.classList.contains(`item-year-${this.currentYear}`);
-          card.style.display = isYearMatch ? 'flex' : 'none';
+          const isMonthMatch = card.classList.contains(`item-month-${scope.month}`);
+          const isVisible = isYearMatch && (showAnnualOverview || isMonthMatch);
+          card.style.display = isVisible ? 'flex' : 'none';
+          if (isVisible) visibleCount += 1;
         });
+
+        if (this.runListEmpty) this.runListEmpty.hidden = visibleCount > 0;
       }
 
       // 切换年份事件（核心逻辑更新）
@@ -109,8 +142,8 @@
         this.setSmartMonth();
         this.renderAll();
 
-        // 🚀 新增：派发自定义全局事件，通知地图层更新数据
-        document.dispatchEvent(new CustomEvent('koobaiYearChanged', { detail: { year: year } }));
+        // 保留既有年份事件名称，同时携带地图所需的统一范围。
+        this.dispatchRouteScope('koobaiYearChanged');
       }
 
       // 新增：通过左右箭头切换年份
@@ -134,7 +167,8 @@
       setCalMonth(dir) {
         this.calMonthIndex = Math.max(0, Math.min(11, this.calMonthIndex + dir));
         this.showAiInsight = false;
-        this.renderCalendar(this.computeEngineData());
+        this.renderAll();
+        this.dispatchRouteScope('koobaiMonthChanged');
       }
 
       // 地图交互联动：高亮列表卡片和日历格子

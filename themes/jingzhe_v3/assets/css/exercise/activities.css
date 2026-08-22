@@ -9,6 +9,13 @@
   gap: 10px;
 }
 
+.runListEmpty {
+  grid-column: 1 / -1;
+  padding: 32px 16px;
+  color: var(--text-info-color);
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .cardList {
     grid-template-columns: repeat(2, 1fr);

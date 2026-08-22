@@ -10,8 +10,8 @@
   }
 
   .mobile-dock {
-    --mobile-expanded-width: min(calc(100vw - 20px), 420px);
-    --mobile-dock-width: min(calc(100vw - 20px), 420px);
+    --mobile-expanded-width: min(calc(100vw - 20px), 400px);
+    --mobile-dock-width: min(calc(100vw - 20px), 400px);
     --mobile-dock-height: 76px;
     --mobile-dock-radius: 25px;
     --mobile-current-offset: 0px;

@@ -142,9 +142,12 @@
       };
     };
 
-    const buildAnnualOverview = (targetYear) => {
+    const buildRouteOverview = (targetYear, targetMonth = null) => {
+      const periodPrefix = targetMonth
+        ? `${targetYear}-${String(targetMonth).padStart(2, '0')}`
+        : String(targetYear);
       const runs = (runtime.data || []).filter(run => (
-        run.start_date_local?.startsWith(targetYear) && run.is_indoor !== true
+        run.start_date_local?.startsWith(periodPrefix) && run.is_indoor !== true
       ));
       const landmarkGroups = new Map();
       runs.forEach(run => {
@@ -171,7 +174,7 @@
               landmark: key,
               type: run.type,
               visits: groupRuns.length,
-              mode: 'annual'
+              mode: targetMonth ? 'month' : 'annual'
             },
             geometry: { type: 'LineString', coordinates }
           };
@@ -198,8 +201,12 @@
       return { landmarkFeatures, publicFeatures };
     };
 
+    const buildAnnualOverview = targetYear => buildRouteOverview(targetYear);
+    const buildMonthlyOverview = (targetYear, targetMonth) => buildRouteOverview(targetYear, targetMonth);
+
     return {
       buildAnnualOverview,
+      buildMonthlyOverview,
       coordinatesForRunRoute,
       getLandmarkRouteForRun,
       getRouteStampCopy,

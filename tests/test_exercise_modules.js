@@ -32,10 +32,45 @@ require(exerciseAsset('model.js'));
 require(exerciseAsset('routes.js'));
 require(exerciseAsset('poster.js'));
 require(exerciseAsset('ui.js'));
+require(exerciseAsset('mapbox-adapter.js'));
 
 const modules = window.JingzheExerciseModules;
 const contract = require('../data/jingzhe/exercise.json');
 const model = modules.createModel(contract);
+
+assert.equal(modules.mapMotion.getScopeTransitionDuration(
+  { year: '2026', mode: 'year' },
+  { year: '2026', mode: 'month' }
+), 500);
+assert.equal(modules.mapMotion.getScopeTransitionDuration(
+  { year: '2026', mode: 'month' },
+  { year: '2026', mode: 'year' }
+), 700);
+assert.equal(modules.mapMotion.getScopeTransitionDuration(
+  { year: '2026', mode: 'year' },
+  { year: '2025', mode: 'year' }
+), 800);
+assert.equal(modules.mapMotion.getScopeTransitionDuration(
+  { year: '2026', mode: 'year' },
+  { year: '2025', mode: 'year' },
+  true
+), 0);
+assert.equal(modules.mapMotion.durations.runFlight, 2000);
+assert.equal(modules.mapMotion.durations.runOrbit, 36000);
+assert.deepEqual(
+  modules.mapMotion.getOrbitCameraState(20, 14, 0),
+  { bearing: 20, pitch: 65, zoom: 14 }
+);
+const quarterOrbit = modules.mapMotion.getOrbitCameraState(20, 14, 0.25);
+assert.equal(quarterOrbit.bearing, 110);
+assert.equal(quarterOrbit.pitch, 67);
+assert.equal(quarterOrbit.zoom, 14.2);
+const oneSecondOrbit = modules.mapMotion.getOrbitCameraState(20, 14, 1000 / 36000);
+assert.equal(oneSecondOrbit.bearing, 30);
+const completedOrbit = modules.mapMotion.getOrbitCameraState(20, 14, 1);
+assert.equal(completedOrbit.bearing, 380);
+assert.ok(Math.abs(completedOrbit.pitch - 65) < 1e-10);
+assert.ok(Math.abs(completedOrbit.zoom - 14) < 1e-10);
 
 assert.equal(model.colorFromType('Run'), '#F58200');
 assert.equal(model.normalizeId('1,234'), '1234');
@@ -118,6 +153,43 @@ assert.equal(publicSelection.hasRealTrack, true);
 assert.equal(publicSelection.landmarkRoute, null);
 assert.ok(publicSelection.displayCoordinates.length >= 2);
 
+const overviewRoutes = modules.createRoutes({
+  data: [
+    { ...publicRun, run_id: 304, start_date_local: '2026-08-05T07:30:00' },
+    { ...publicRun, run_id: 305, start_date_local: '2026-07-05T07:30:00' },
+    {
+      run_id: 306,
+      route_status: 'privacy_hidden',
+      distance_title_key: 'synthetic-route',
+      distance: 1,
+      type: 'Run',
+      start_date_local: '2026-08-06T07:30:00'
+    },
+    {
+      run_id: 307,
+      route_status: 'privacy_hidden',
+      distance_title_key: 'synthetic-route',
+      distance: 1,
+      type: 'Run',
+      start_date_local: '2026-07-06T07:30:00'
+    }
+  ],
+  landmarkRoutes: [{
+    key: 'synthetic-route',
+    geometry: encodedLandmark,
+    reference_km: 1
+  }]
+}, [-120.95, 40.7]);
+const annualOverview = overviewRoutes.buildAnnualOverview('2026');
+const augustOverview = overviewRoutes.buildMonthlyOverview('2026', '08');
+assert.equal(annualOverview.publicFeatures.length, 2);
+assert.equal(annualOverview.landmarkFeatures.length, 1);
+assert.equal(annualOverview.landmarkFeatures[0].properties.visits, 2);
+assert.equal(augustOverview.publicFeatures.length, 1);
+assert.equal(augustOverview.landmarkFeatures.length, 1);
+assert.equal(augustOverview.landmarkFeatures[0].properties.visits, 1);
+assert.equal(augustOverview.landmarkFeatures[0].properties.mode, 'month');
+
 const poster = modules.poster.buildPanelHtml({
   ...sampleRuns[0],
   pace_num: '6:00',
@@ -133,6 +205,18 @@ assert.match(poster.html, /<span class="statLabel">千卡<\/span><span class="st
 assert.equal(modules.poster.cleanPosterPrefix('../Koobai 运动'), 'Koobai');
 
 const calendar = { innerHTML: '' };
+const runListEmpty = { hidden: true };
+const createRunCard = (...classes) => ({
+  classList: { contains: className => classes.includes(className) },
+  style: {},
+  getAttribute: () => null
+});
+const augustCard = createRunCard('item-year-2026', 'item-month-08');
+const julyCard = createRunCard('item-year-2026', 'item-month-07');
+const olderYearCard = createRunCard('item-year-2025', 'item-month-12');
+const olderYearNovemberCard = createRunCard('item-year-2025', 'item-month-11');
+const runCards = [augustCard, julyCard, olderYearCard, olderYearNovemberCard];
+const dispatchedEvents = [];
 let delegatedClick = null;
 const interactionRoot = {
   addEventListener(type, handler) {
@@ -140,13 +224,25 @@ const interactionRoot = {
   },
   contains: () => true
 };
-document.getElementById = id => id === 'calendar-board-container' ? calendar : null;
+document.getElementById = id => {
+  if (id === 'calendar-board-container') return calendar;
+  if (id === 'run-list-empty') return runListEmpty;
+  return null;
+};
 document.querySelector = selector => selector === '.exercise-container' ? interactionRoot : null;
+document.querySelectorAll = selector => selector === '.runCard' ? runCards : [];
+document.dispatchEvent = event => dispatchedEvents.push(event);
 let selectedRunId = null;
+const uiRuns = [
+  ...sampleRuns,
+  { ...sampleRuns[0], run_id: 102, start_date_local: '2026-07-10T07:30:00' },
+  { ...sampleRuns[0], run_id: 103, start_date_local: '2025-12-10T07:30:00' },
+  { ...sampleRuns[0], run_id: 104, start_date_local: '2025-11-10T07:30:00' }
+];
 window.KoobaiRun = {
-  availableYears: [2026],
+  availableYears: [2026, 2025],
   monthlyInsights: {},
-  data: sampleRuns,
+  data: uiRuns,
   contract,
   map: {
     flyTo(runId) {
@@ -167,6 +263,12 @@ assert.match(calendar.innerHTML, /aria-pressed="false"/);
 assert.match(calendar.innerHTML, /class="dayCellAction"/);
 assert.doesNotMatch(calendar.innerHTML, /onclick=/);
 assert.equal(typeof delegatedClick, 'function');
+assert.equal(augustCard.style.display, 'flex');
+assert.equal(julyCard.style.display, 'flex');
+assert.equal(olderYearCard.style.display, 'none');
+assert.equal(olderYearNovemberCard.style.display, 'none');
+assert.equal(runListEmpty.hidden, true);
+assert.deepEqual(ui.getCurrentRouteScope(), { year: '2026', month: '08', mode: 'year' });
 
 delegatedClick({
   target: {
@@ -186,6 +288,55 @@ delegatedClick({
 });
 assert.equal(ui.calMonthIndex, 6);
 assert.match(calendar.innerHTML, /2026-07/);
+assert.equal(augustCard.style.display, 'none');
+assert.equal(julyCard.style.display, 'flex');
+assert.equal(olderYearCard.style.display, 'none');
+assert.equal(runListEmpty.hidden, true);
+assert.deepEqual(dispatchedEvents.at(-1).detail, { year: '2026', month: '07', mode: 'month' });
+
+delegatedClick({
+  target: {
+    closest: () => ({
+      dataset: { exerciseAction: 'change-month', direction: '1' }
+    })
+  }
+});
+assert.equal(ui.calMonthIndex, 7);
+assert.equal(augustCard.style.display, 'flex');
+assert.equal(julyCard.style.display, 'flex');
+assert.equal(olderYearCard.style.display, 'none');
+assert.equal(runListEmpty.hidden, true);
+assert.deepEqual(dispatchedEvents.at(-1).detail, { year: '2026', month: '08', mode: 'year' });
+
+delegatedClick({
+  target: {
+    closest: () => ({
+      dataset: { exerciseAction: 'change-month', direction: '1' }
+    })
+  }
+});
+assert.equal(ui.calMonthIndex, 8);
+assert.equal(augustCard.style.display, 'none');
+assert.equal(julyCard.style.display, 'none');
+assert.equal(olderYearCard.style.display, 'none');
+assert.equal(runListEmpty.hidden, false);
+assert.deepEqual(dispatchedEvents.at(-1).detail, { year: '2026', month: '09', mode: 'month' });
+
+ui.setYear('2025');
+assert.equal(ui.calMonthIndex, 11);
+assert.equal(augustCard.style.display, 'none');
+assert.equal(julyCard.style.display, 'none');
+assert.equal(olderYearCard.style.display, 'flex');
+assert.equal(olderYearNovemberCard.style.display, 'flex');
+assert.equal(runListEmpty.hidden, true);
+assert.deepEqual(dispatchedEvents.at(-1).detail, { year: '2025', month: '12', mode: 'year' });
+
+ui.setCalMonth(-1);
+assert.equal(ui.calMonthIndex, 10);
+assert.equal(olderYearCard.style.display, 'none');
+assert.equal(olderYearNovemberCard.style.display, 'flex');
+assert.equal(runListEmpty.hidden, true);
+assert.deepEqual(dispatchedEvents.at(-1).detail, { year: '2025', month: '11', mode: 'month' });
 
 const exerciseTemplateSource = fs.readFileSync(path.join(
   ROOT,

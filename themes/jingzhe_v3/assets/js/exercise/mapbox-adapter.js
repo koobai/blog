@@ -2,6 +2,42 @@
   'use strict';
 
   const modules = window.JingzheExerciseModules = window.JingzheExerciseModules || {};
+  const MAP_SCOPE_DURATIONS = Object.freeze({
+    month: 500,
+    annual: 700,
+    year: 800,
+    initial: 1400,
+    detailReturn: 650,
+    runFlight: 2000,
+    runOrbit: 36000
+  });
+
+  const getScopeTransitionDuration = (currentScope, nextScope, reducedMotion = false) => {
+    if (reducedMotion) return 0;
+    if (String(currentScope?.year || '') !== String(nextScope?.year || '')) {
+      return MAP_SCOPE_DURATIONS.year;
+    }
+    if (currentScope?.mode === 'month' && nextScope?.mode === 'year') {
+      return MAP_SCOPE_DURATIONS.annual;
+    }
+    return MAP_SCOPE_DURATIONS.month;
+  };
+
+  const getOrbitCameraState = (initialBearing, targetZoom, progress) => {
+    const boundedProgress = Math.max(0, Math.min(1, progress));
+    const breathPhase = boundedProgress * Math.PI * 2;
+    return {
+      bearing: initialBearing + 360 * boundedProgress,
+      pitch: 65 + Math.sin(breathPhase) * 2,
+      zoom: targetZoom + Math.sin(breathPhase) * 0.2
+    };
+  };
+
+  modules.mapMotion = {
+    durations: MAP_SCOPE_DURATIONS,
+    getOrbitCameraState,
+    getScopeTransitionDuration
+  };
 
   modules.createMapAdapter = (runtime, model) => {
 
@@ -15,6 +51,8 @@
     ======================================================================== */
 
     const mapConfig = runtime.config || {};
+    const reducedMotionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const motionDuration = duration => reducedMotionQuery?.matches ? 0 : duration;
     mapboxgl.accessToken = mapConfig.MAPBOX_TOKEN;
     const configuredMapCenter = Array.isArray(mapConfig.MAP_CENTER) && mapConfig.MAP_CENTER.length === 2
       ? mapConfig.MAP_CENTER.map(Number)
@@ -91,6 +129,7 @@
     const routeModel = modules.createRoutes(runtime, configuredMapCenter);
     const {
       buildAnnualOverview,
+      buildMonthlyOverview,
       getRouteStampCopy,
       selectDisplayRoute,
       singleRouteLineWidth
@@ -110,15 +149,40 @@
     let animationRef = null;
     let flyToTimeout = null;
     let hasPlayedInitialOverview = false;
-    let isUserInteracting = false;
-    ['mousedown', 'touchstart', 'dragstart'].forEach(e => map.on(e, () => isUserInteracting = true));
-    ['mouseup', 'touchend', 'dragend'].forEach(e => map.on(e, () => isUserInteracting = false));
+
+    const stopOrbitAnimation = () => {
+      if (animationRef) cancelAnimationFrame(animationRef);
+      if (flyToTimeout) clearTimeout(flyToTimeout);
+      animationRef = null;
+      flyToTimeout = null;
+    };
+
+    // 用户开始接管地图时，立即终止自动镜头和待启动的环绕动画。
+    ['mousedown', 'touchstart', 'dragstart'].forEach(eventName => {
+      map.on(eventName, () => {
+        stopOrbitAnimation();
+      });
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopOrbitAnimation();
+    });
+    reducedMotionQuery?.addEventListener('change', event => {
+      if (event.matches) {
+        stopOrbitAnimation();
+        map.stop?.();
+      }
+    });
 
     // 初始年份读取 (从全局数据中动态提取最新年份)
     let currentYear = new Date().getFullYear().toString();
     if (runtime.availableYears && runtime.availableYears.length > 0) {
       currentYear = runtime.availableYears[0].toString();
     }
+    let currentRouteScope = runtime.ui?.getCurrentRouteScope?.() || {
+      year: currentYear,
+      month: null,
+      mode: 'year'
+    };
 
     let anonymousOverlay = document.getElementById('anonymous-route-overlay');
     if (!anonymousOverlay && mapWrapper) {
@@ -145,16 +209,23 @@
       });
     };
 
-    const focusAnonymousBackdrop = () => {
-      map.jumpTo({
+    const focusAnonymousBackdrop = (duration = 0) => {
+      const options = {
         center: LANDMARK_MAP_CENTER,
         zoom: 11,
         pitch: 0,
-        bearing: 0
-      });
+        bearing: 0,
+        duration,
+        essential: false
+      };
+      if (duration > 0 && typeof map.easeTo === 'function') {
+        map.easeTo(options);
+      } else {
+        map.jumpTo(options);
+      }
     };
 
-    const showAnonymousFeatures = (features, padding = 42, publicFeatures = [], animate = false) => {
+    const showAnonymousFeatures = (features, padding = 42, publicFeatures = [], duration = 0) => {
       if (!map.getSource('landmark-routes') || !mapWrapper) return;
 
       map.getSource('landmark-routes').setData({ type: 'FeatureCollection', features });
@@ -180,11 +251,11 @@
           padding,
           pitch: 0,
           bearing: 0,
-          duration: animate ? 2000 : 0,
-          essential: true
+          duration,
+          essential: false
         });
       } else {
-        focusAnonymousBackdrop();
+        focusAnonymousBackdrop(duration);
       }
 
       if (anonymousOverlay) {
@@ -194,16 +265,19 @@
       mapWrapper.classList.add('show-anonymous-map');
     };
 
-    const showAnnualRouteOverview = (targetYear, animate = false) => {
+    const showRouteOverview = (scope, duration = 0) => {
       if (!mapWrapper) return;
-      const { landmarkFeatures, publicFeatures } = buildAnnualOverview(targetYear);
+      const overview = scope.mode === 'month'
+        ? buildMonthlyOverview(scope.year, scope.month)
+        : buildAnnualOverview(scope.year);
+      const { landmarkFeatures, publicFeatures } = overview;
       if (map.getSource('all-runs')) {
         map.getSource('all-runs').setData({ type: 'FeatureCollection', features: publicFeatures });
       }
       if (map.getLayer('runs-core')) {
         map.setPaintProperty('runs-core', 'line-opacity', publicFeatures.length > 0 ? 0.8 : 0);
       }
-      showAnonymousFeatures(landmarkFeatures, 34, publicFeatures, animate);
+      showAnonymousFeatures(landmarkFeatures, 34, publicFeatures, duration);
     };
 
     const showEmptyAnonymousMap = () => {
@@ -253,8 +327,8 @@
 
     // 清理上一轮的动画和标记
     const resetState = () => {
-      if (animationRef) cancelAnimationFrame(animationRef);
-      if (flyToTimeout) clearTimeout(flyToTimeout);
+      stopOrbitAnimation();
+      map.stop?.();
     };
 
     // 注入本人公开轨迹与标题地点代表路线图层。
@@ -330,17 +404,25 @@
       }
     };
 
-    // 根据选中的年份，提取数据并重绘底图所有轨迹
-    const renderDataByYear = (targetYear, animate = false) => {
+    // 根据当前年度/月度范围重绘轨迹；关闭详情与主题重载后仍恢复同一范围。
+    const renderDataByScope = (scope, duration = 0) => {
+      const year = String(scope?.year || currentYear);
+      const mode = scope?.mode === 'month' ? 'month' : 'year';
+      const month = mode === 'month' ? String(scope.month).padStart(2, '0') : null;
       hideRouteStamp();
       activeRunId = null;
-      currentYear = targetYear;
+      currentYear = year;
+      currentRouteScope = { year, month, mode };
       resetState();
-      showAnnualRouteOverview(targetYear, animate);
+      showRouteOverview(currentRouteScope, duration);
 
       if (!map.getSource('all-runs')) return;
 
       map.getSource('highlight-run-source').setData({ type: 'FeatureCollection', features: [] });
+    };
+
+    const renderCurrentRouteScope = (duration = 0) => {
+      renderDataByScope(currentRouteScope, duration);
     };
 
     // 地图加载完毕后初始化
@@ -366,24 +448,34 @@
         map.once('idle', () => {
           if (hasPlayedInitialOverview) return;
           hasPlayedInitialOverview = true;
-          renderDataByYear(currentYear, true);
+          renderCurrentRouteScope(motionDuration(MAP_SCOPE_DURATIONS.initial));
         });
         return;
       }
 
-      renderDataByYear(currentYear);
+      renderCurrentRouteScope();
     });
 
-    // 🚀 监听 UI 层派发的年份切换全局事件
-    document.addEventListener('koobaiYearChanged', (e) => {
-      if (e.detail && e.detail.year) {
-        renderDataByYear(e.detail.year);
+    const applyRouteScope = event => {
+      if (event.detail && event.detail.year) {
+        const duration = getScopeTransitionDuration(
+          currentRouteScope,
+          event.detail,
+          Boolean(reducedMotionQuery?.matches)
+        );
+        modules.poster.reset(mapWrapper);
+        renderDataByScope(event.detail, duration);
+        runtime.ui?.highlightRunInUI(null);
         const statsPanel = document.getElementById('map-stats-panel');
         if (statsPanel) {
           statsPanel.style.display = 'none';
         }
       }
-    });
+    };
+
+    // 保留年份事件，并增加月份事件；二者共用同一范围状态。
+    document.addEventListener('koobaiYearChanged', applyRouteScope);
+    document.addEventListener('koobaiMonthChanged', applyRouteScope);
 
 
     /* ========================================================================
@@ -404,7 +496,7 @@
 
         // 再次点击同一条路线，相当于“取消选中”，恢复全览状态
         if (normalizeId(activeRunId) === runId) {
-          renderDataByYear(currentYear, true);
+          renderCurrentRouteScope(motionDuration(MAP_SCOPE_DURATIONS.detailReturn));
           if (runtime.ui) runtime.ui.highlightRunInUI(null);
           if (statsPanel) statsPanel.style.display = 'none';
 
@@ -446,7 +538,7 @@
             map,
             model,
             onClose: () => {
-              renderDataByYear(currentYear);
+              renderCurrentRouteScope(motionDuration(MAP_SCOPE_DURATIONS.detailReturn));
               if (runtime.ui) runtime.ui.highlightRunInUI(null);
               statsPanel.style.display = 'none';
             },
@@ -482,61 +574,57 @@
         const targetZoom = cam ? cam.zoom + 0.6 : 15;
 
         // 7. 无人机起飞：平滑飞向轨迹中心点上方
-        let initialBearing = map.getBearing();
+        const initialBearing = map.getBearing();
+        const flightDuration = motionDuration(MAP_SCOPE_DURATIONS.runFlight);
         map.flyTo({
           center: center,
           zoom: targetZoom,
           pitch: 65,
           bearing: initialBearing,
-          duration: 2000,
-          essential: true
+          duration: flightDuration,
+          essential: false
         });
 
-        // 8. 启动环绕盘旋动画
+        // 减少动态效果模式只定位到轨迹，不启动环绕动画。
+        if (flightDuration === 0) return;
+
+        // 8. 启动单圈环绕动画；完成后恢复稳定镜头并停止渲染。
         let lastTimestamp = null;
-        let startTimestamp = null;
+        let orbitElapsed = 0;
 
         const rotateCamera = (timestamp) => {
-          // 如果用户点击了其他路线或取消选中，立即终止
-          if (String(activeRunId) !== runId) return;
-
-          // 记录时间锁
-          if (!lastTimestamp) lastTimestamp = timestamp;
-          if (!startTimestamp) startTimestamp = timestamp;
-
-          const deltaTime = timestamp - lastTimestamp;
-          const elapsed = timestamp - startTimestamp;
-          lastTimestamp = timestamp;
-
-          // 获取当前是否处于“海报生成模式”
           const wrapper = document.getElementById('map-wrapper');
           const isPosterMode = wrapper && wrapper.classList.contains('show-poster-mode');
 
-          // 如果没有打开海报 且 用户没有在触碰地图，才自动旋转 + 呼吸
-          if (!isPosterMode && !isUserInteracting) {
-            const currentBearing = map.getBearing();
+          // 切换范围、打开海报或页面进入后台时，不再继续占用渲染资源。
+          if (String(activeRunId) !== runId || isPosterMode || document.hidden) {
+            stopOrbitAnimation();
+            return;
+          }
 
-            // 自转运算：这里的 40 控制旋转速度（保留原样）
-            const newBearing = (currentBearing + deltaTime / 100) % 360;
+          if (lastTimestamp === null) lastTimestamp = timestamp;
+          const deltaTime = Math.min(Math.max(timestamp - lastTimestamp, 0), 50);
+          lastTimestamp = timestamp;
+          orbitElapsed = Math.min(orbitElapsed + deltaTime, MAP_SCOPE_DURATIONS.runOrbit);
+          const progress = orbitElapsed / MAP_SCOPE_DURATIONS.runOrbit;
+          const camera = getOrbitCameraState(initialBearing, targetZoom, progress);
 
-            const newPitch = 65 + Math.sin(elapsed / 1200) * 2;
-            const newZoom = targetZoom + Math.sin(elapsed / 1800) * 0.2;
+          map.jumpTo(camera);
 
-            // 使用 jumpTo 确保 GPU 底层直接且丝滑地渲染这三个维度的微小变化
-            map.jumpTo({
-              bearing: newBearing,
-              pitch: newPitch,
-              zoom: newZoom
-            });
+          if (progress >= 1) {
+            map.jumpTo({ bearing: initialBearing, pitch: 65, zoom: targetZoom });
+            animationRef = null;
+            return;
           }
 
           animationRef = requestAnimationFrame(rotateCamera);
         };
 
-        // 等待无人机(镜头)飞行就位后，开始缓缓自转
+        // 等待镜头飞行就位后开始单圈环绕。
         flyToTimeout = setTimeout(() => {
+          flyToTimeout = null;
           animationRef = requestAnimationFrame(rotateCamera);
-        }, 2000);
+        }, flightDuration);
 
       }
     };
