@@ -59,8 +59,7 @@
   }
 
   function getExpandedWidth() {
-    const sideSpace = window.innerWidth <= 340 ? 12 : 16;
-    return Math.max(260, Math.min(window.innerWidth - sideSpace, MAX_EXPANDED_WIDTH));
+    return Math.max(260, Math.min(window.innerWidth - 20, MAX_EXPANDED_WIDTH));
   }
 
   function getMaxScroll() {
