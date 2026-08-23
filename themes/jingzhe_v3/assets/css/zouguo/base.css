@@ -147,12 +147,12 @@
 .zouguo-map-caption,
 .zouguo-random-button,
 .zouguo-icon-button {
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  background: rgba(255, 253, 250, 0.78);
-  color: #252321;
-  box-shadow: 0 8px 30px rgba(41, 39, 35, 0.1);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--theme-glass-border);
+  background: var(--theme-glass-background);
+  color: var(--text-content-color);
+  box-shadow: var(--theme-glass-box-shadow-wide);
+  backdrop-filter: var(--theme-glass-filter);
+  -webkit-backdrop-filter: var(--theme-glass-filter);
 }
 
 .zouguo-map-caption {
@@ -224,7 +224,7 @@
 }
 
 .zouguo-icon-button:hover {
-  background: rgba(255, 253, 250, 0.96);
+  background: color-mix(in srgb, var(--theme-glass-background) 82%, var(--background-card-color) 18%);
   transform: translateY(-2px);
 }
 

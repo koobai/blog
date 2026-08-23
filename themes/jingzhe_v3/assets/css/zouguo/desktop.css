@@ -106,7 +106,7 @@
 }
 
 .zouguo-random-button:hover {
-  background: rgba(255, 253, 250, 0.96);
+  background: color-mix(in srgb, var(--theme-glass-background) 82%, var(--background-card-color) 18%);
   color: var(--zouguo-accent);
 }
 
@@ -351,7 +351,7 @@ html[data-theme="dark"] .page-zouguo {
   --zouguo-accent: #d28c78;
   --zouguo-accent-soft: #4a302b;
   --zouguo-entry-accent: var(--text-highlight-color);
-  --zouguo-map-loading: #101817;
+  --zouguo-map-loading: #17191c;
   --zouguo-marker-ring: rgba(214, 211, 204, 0.7);
   --zouguo-marker-surface: #3a3b38;
 }
@@ -359,7 +359,7 @@ html[data-theme="dark"] .page-zouguo {
 html[data-theme="dark"] .zouguo-map-caption,
 html[data-theme="dark"] .zouguo-random-button,
 html[data-theme="dark"] .zouguo-icon-button {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(27, 28, 27, 0.78);
+  border-color: var(--theme-glass-border);
+  background: var(--theme-glass-background);
   color: var(--text-content-color);
 }
