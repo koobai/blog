@@ -654,7 +654,7 @@ async function testAggregatedSourcesCanUpdateMetadataAndDetachSafely() {
   const postPath = 'content/posts/一篇旅行.md';
   const laodaoPath = 'content/laodao/2026/08/20260818-120000.md';
   const files = new Map([
-    [postPath, `---\ntitle: '一篇旅行'\ntags: ['生活','走过']\nzouguo:\n  occurred_at: 2024-05-02T11:00:00+08:00\n  place:\n    id: "cn-old"\n    name: "旧地点"\n    longitude: 120\n    latitude: 30\n    precision: "poi"\n    privacy: "public"\n    country: "中国"\n    country_code: "CN"\n---\n正文不能被改掉。\n`],
+    [postPath, `---\ntitle: '一篇旅行'\ntags: ['生活']\n---\n正文不能被改掉。\n`],
     [laodaoPath, `---\ndate: 2026-08-18T12:00:00+08:00\nlaodaotags:\n  - "生活"\n  - "走过"\nzouguo:\n  occurred_at: 2026-08-18T12:00:00+08:00\n  place:\n    id: "cn-old"\n    name: "旧地点"\n    longitude: 120\n    latitude: 30\n    precision: "poi"\n    privacy: "public"\n    country: "中国"\n    country_code: "CN"\n---\n唠叨正文。\n`]
   ]);
   const originalFetch = globalThis.fetch;
@@ -705,9 +705,18 @@ async function testAggregatedSourcesCanUpdateMetadataAndDetachSafely() {
     assert.equal(updated.status, 200);
     assert.equal((await responseJson(updated)).changed, true);
     assert.match(files.get(postPath), /title: '一篇旅行'/);
+    assert.match(files.get(postPath), /tags: \['生活',"走过"\]/);
     assert.match(files.get(postPath), /occurred_at: 2024-05-03T10:00:00\+08:00/);
     assert.match(files.get(postPath), /name: "杭州 · 临平山公园"/);
     assert.match(files.get(postPath), /正文不能被改掉。/);
+
+    const updatedAgain = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/metadata', {
+      method: 'POST', headers, body: JSON.stringify({ type: 'post', path: postPath, occurredAt: '2024-05-04T09:30:00+08:00', place })
+    }), env);
+    assert.equal(updatedAgain.status, 200);
+    assert.equal((files.get(postPath).match(/zouguo:/g) || []).length, 1);
+    assert.equal((files.get(postPath).match(/走过/g) || []).length, 1);
+    assert.match(files.get(postPath), /occurred_at: 2024-05-04T09:30:00\+08:00/);
 
     const detachedPost = await publisherWorker.fetch(new Request('https://publisher.example.org/api/app/zouguo/source/detach', {
       method: 'POST', headers, body: JSON.stringify({ type: 'post', path: postPath })
