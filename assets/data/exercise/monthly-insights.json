@@ -611,18 +611,18 @@
   "2026-08": {
     "month_str": "2026-08",
     "stats": {
-      "total_count": 21,
-      "total_distance": 260.82,
-      "total_duration_minutes": 1062,
-      "total_calories": 6537,
-      "total_elevation_gain": 605,
+      "total_count": 22,
+      "total_distance": 265.3,
+      "total_duration_minutes": 1111,
+      "total_calories": 6812,
+      "total_elevation_gain": 636,
       "sports_count": {
-        "步行": 9,
+        "步行": 10,
         "骑行": 11,
         "跑步": 1
       },
       "sports_distance": {
-        "步行": 36.08,
+        "步行": 40.56,
         "骑行": 223.62,
         "跑步": 1.12
       },
@@ -642,25 +642,25 @@
         "hr": 122,
         "zone": "仅按平均心率排序"
       },
-      "average_distance_per_activity": 12.42,
+      "average_distance_per_activity": 12.06,
       "average_duration_minutes": 51,
       "primary_sport": "骑行",
       "primary_sport_type": "Ride",
-      "primary_sport_share": 0.524,
+      "primary_sport_share": 0.5,
       "sport_variety": 3,
       "sport_metrics": {
         "步行": {
           "type": "Walk",
-          "count": 9,
-          "average_distance": 4.0,
+          "count": 10,
+          "average_distance": 4.1,
           "median_distance": 4.7,
           "average_duration_minutes": 46,
           "median_duration_minutes": 53,
-          "average_heartrate": 103,
-          "median_heartrate": 103,
-          "pace_seconds_per_km": 708,
-          "median_pace_seconds_per_km": 674,
-          "heart_rate_samples": 9
+          "average_heartrate": 104,
+          "median_heartrate": 104,
+          "pace_seconds_per_km": 703,
+          "median_pace_seconds_per_km": 673,
+          "heart_rate_samples": 10
         },
         "骑行": {
           "type": "Ride",
@@ -694,7 +694,7 @@
       "longest_gap_days": 1,
       "active_days_count": 19,
       "indoor_count": 0,
-      "outdoor_count": 21
+      "outdoor_count": 22
     },
     "report_phase": "midmonth",
     "report_as_of": "2026-08-15",
@@ -712,10 +712,10 @@
     },
     "report_version": 6,
     "report_data_hash": "98fbd87ca305387b8731f73f3a060554656211af5986c7a721fa569deb599009",
-    "source_data_hash": "eb9810ca951780c13545c76af0cc55f88439b7e8bd9dab989878249a57f150f1",
+    "source_data_hash": "3b0c51955465200685a85751d9ee15acb2fdf557a3b018b343202bd04ea38626",
     "midmonth_source_hash": "6960be2e2f76a9dcbd4444a8b81d5f1860c7558dfd1ea19cba145a6e06ef819c",
     "model": "deepseek-v4-flash",
     "comparison_basis": "上月同期",
-    "last_update": "2026-08-23T20:10:40"
+    "last_update": "2026-08-23T22:56:57"
   }
 }
