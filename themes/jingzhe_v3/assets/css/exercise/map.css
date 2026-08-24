@@ -247,9 +247,11 @@ html[data-theme="dark"] .routeStampOverlay {
   margin: 0 auto;
   width: max-content;
   max-width: calc(100% - 20px);
-  background: var(--background-card-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--theme-glass-border);
+  background: var(--theme-glass-background);
+  box-shadow: var(--theme-glass-box-shadow-wide);
+  backdrop-filter: var(--theme-glass-filter);
+  -webkit-backdrop-filter: var(--theme-glass-filter);
   border-radius: 12px;
   padding: 15px;
   display: flex;
@@ -260,16 +262,6 @@ html[data-theme="dark"] .routeStampOverlay {
   /* 荣誉标签的专属样式 */
   /* 面板内嵌的分享按钮 */
   /* 面板内嵌的分享按钮样式 */
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .runDetailCard {
-    background: #242427;
-  }
-}
-
-html[data-theme="dark"] .runDetailCard {
-  background: #242427;
 }
 
 .runDetailCard .detailName {
