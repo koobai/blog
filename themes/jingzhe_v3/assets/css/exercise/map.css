@@ -249,7 +249,6 @@ html[data-theme="dark"] .routeStampOverlay {
   max-width: calc(100% - 20px);
   border: 1px solid var(--theme-glass-border);
   background: var(--theme-glass-background);
-  box-shadow: var(--theme-glass-box-shadow-wide);
   backdrop-filter: var(--theme-glass-filter);
   -webkit-backdrop-filter: var(--theme-glass-filter);
   border-radius: 12px;
