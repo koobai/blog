@@ -3,6 +3,19 @@
   "sources": {
     "apple_health": [
       {
+        "external_id": "eea385be-cbb6-4117-a0fa-547f711acbdc",
+        "name": "傍晚骑行",
+        "type": "Ride",
+        "started_at": "2026-08-29T19:02:25+08:00",
+        "duration_seconds": 2817,
+        "distance_km": 16.78,
+        "is_indoor": false,
+        "route_status": "privacy_hidden",
+        "average_heartrate_bpm": 117.5,
+        "elevation_gain_m": 25.8,
+        "calories_kcal": 377.7
+      },
+      {
         "external_id": "95edac86-f74a-4820-8e96-99f54004a4f6",
         "name": "晚间行走",
         "type": "Walk",
