@@ -1,5 +1,43 @@
 [
   {
+    "run_id" : 20260901080904,
+    "name" : "晨间骑行",
+    "type" : "Ride",
+    "distance" : 15.92,
+    "moving_time" : "42:02",
+    "start_date_local" : "2026-09-01T08:09:04",
+    "average_heartrate" : 118.9,
+    "pace_num" : "22.72",
+    "pace_unit" : "km/h",
+    "total_elevation_gain" : 21.1,
+    "calories" : 342.8,
+    "source_id" : "jingzhe-sync-34f6fb97625bf6670f33436a16787466c21f367b6ed7f733a8bbd4799d469491",
+    "start_date_utc" : "2026-09-01T00:09:04Z",
+    "route_status" : "privacy_hidden",
+    "is_indoor" : false,
+    "energy_title" : "燃掉两碗米饭",
+    "food_key" : "rice",
+    "food_title_version" : 6,
+    "distance_title" : "骑了五趟半苏堤",
+    "distance_title_key" : "su_causeway",
+    "distance_title_version" : 6,
+    "display_name" : "骑了五趟半苏堤",
+    "sport_display_name" : "骑行",
+    "card_achievement" : {
+      "group" : "ride",
+      "level" : "month",
+      "label" : "月度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "ride",
+        "group_label" : "骑行",
+        "level" : "month",
+        "label" : "月度最远"
+      }
+    ]
+  },
+  {
     "run_id" : 20260829190225,
     "name" : "傍晚骑行",
     "type" : "Ride",
