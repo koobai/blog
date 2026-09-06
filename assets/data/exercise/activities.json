@@ -1,5 +1,108 @@
 [
   {
+    "run_id" : 20260906185736,
+    "name" : "傍晚骑行",
+    "type" : "Ride",
+    "distance" : 23.88,
+    "moving_time" : "01:05:00",
+    "start_date_local" : "2026-09-06T18:57:36",
+    "average_heartrate" : 113.5,
+    "pace_num" : "22.04",
+    "pace_unit" : "km/h",
+    "total_elevation_gain" : 41.9,
+    "calories" : 480.7,
+    "source_id" : "jingzhe-sync-9a54140e7aa04213d8357e35a5958de0e36749a3b2751a0f5b12989d10c480ae",
+    "start_date_utc" : "2026-09-06T10:57:36Z",
+    "route_status" : "privacy_hidden",
+    "is_indoor" : false,
+    "energy_title" : "燃掉五根香蕉",
+    "food_key" : "banana",
+    "food_title_version" : 6,
+    "distance_title" : "骑了两圈半西湖",
+    "distance_title_key" : "west_lake",
+    "distance_title_version" : 6,
+    "display_name" : "骑了两圈半西湖",
+    "sport_display_name" : "骑行",
+    "card_achievement" : {
+      "group" : "ride",
+      "level" : "month",
+      "label" : "月度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "ride",
+        "group_label" : "骑行",
+        "level" : "month",
+        "label" : "月度最远"
+      }
+    ]
+  },
+  {
+    "run_id" : 20260904201710,
+    "name" : "晚间行走",
+    "type" : "Walk",
+    "distance" : 5.1,
+    "moving_time" : "01:10:13",
+    "start_date_local" : "2026-09-04T20:17:10",
+    "average_heartrate" : 92.8,
+    "pace_num" : "13'46''",
+    "pace_unit" : "",
+    "total_elevation_gain" : 21.1,
+    "calories" : 253.1,
+    "source_id" : "jingzhe-sync-892a086625079900618ebc71ea4136a211cd2763a563653beea694d42090384e",
+    "start_date_utc" : "2026-09-04T12:17:10Z",
+    "route_status" : "privacy_hidden",
+    "is_indoor" : false,
+    "energy_title" : "燃掉两罐可乐",
+    "food_key" : "cola",
+    "food_title_version" : 6,
+    "distance_title" : "走了一趟半杨公堤",
+    "distance_title_key" : "yang_causeway",
+    "distance_title_version" : 6,
+    "display_name" : "走了一趟半杨公堤",
+    "sport_display_name" : "步行",
+    "card_achievement" : {
+      "group" : "run_walk",
+      "level" : "month",
+      "label" : "月度单次最远"
+    },
+    "calendar_achievements" : [
+      {
+        "group" : "run_walk",
+        "group_label" : "跑走",
+        "level" : "month",
+        "label" : "月度最远"
+      }
+    ]
+  },
+  {
+    "run_id" : 20260902200358,
+    "name" : "晚间行走",
+    "type" : "Walk",
+    "distance" : 2.51,
+    "moving_time" : "34:30",
+    "start_date_local" : "2026-09-02T20:03:58",
+    "average_heartrate" : 95.7,
+    "pace_num" : "13'44''",
+    "pace_unit" : "",
+    "total_elevation_gain" : 21.8,
+    "calories" : 144.5,
+    "source_id" : "jingzhe-sync-665b3cb21a1eda1ae051479f3b94a923914426e8712ac9d73aeba14eb3f269a7",
+    "start_date_utc" : "2026-09-02T12:03:58Z",
+    "route_status" : "privacy_hidden",
+    "is_indoor" : false,
+    "energy_title" : "燃掉三块曲奇",
+    "food_key" : "cookie",
+    "food_title_version" : 6,
+    "distance_title" : "走了两趟半白堤",
+    "distance_title_key" : "bai_causeway",
+    "distance_title_version" : 6,
+    "display_name" : "走了两趟半白堤",
+    "sport_display_name" : "步行",
+    "card_achievement" : null,
+    "calendar_achievements" : []
+  },
+  {
     "run_id" : 20260901080904,
     "name" : "晨间骑行",
     "type" : "Ride",
@@ -23,19 +126,8 @@
     "distance_title_version" : 6,
     "display_name" : "骑了五趟半苏堤",
     "sport_display_name" : "骑行",
-    "card_achievement" : {
-      "group" : "ride",
-      "level" : "month",
-      "label" : "月度单次最远"
-    },
-    "calendar_achievements" : [
-      {
-        "group" : "ride",
-        "group_label" : "骑行",
-        "level" : "month",
-        "label" : "月度最远"
-      }
-    ]
+    "card_achievement" : null,
+    "calendar_achievements" : []
   },
   {
     "run_id" : 20260829190225,
