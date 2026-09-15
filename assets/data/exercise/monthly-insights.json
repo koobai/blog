@@ -791,9 +791,9 @@
       "outdoor_count": 4
     },
     "report_phase": "accumulating",
-    "status_text": "还在热身，继续动起来，月报稍后见。",
+    "status_text": "热身继续，再动几次，就有话说了。",
     "comparison_basis": "等待月中样本",
     "source_data_hash": "1b641036f1a868c017a6e7293119e9ea2b59a860e554a79bec69a1301a13230e",
-    "last_update": "2026-09-06T20:31:37"
+    "last_update": "2026-09-16T06:34:31"
   }
 }
