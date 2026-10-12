@@ -3,6 +3,56 @@
   "sources": {
     "apple_health": [
       {
+        "external_id": "4b1e4946-1c99-42f3-99f4-b83a5cb287b8",
+        "name": "傍晚骑行",
+        "type": "Ride",
+        "started_at": "2026-09-13T19:48:32+08:00",
+        "duration_seconds": 3122,
+        "distance_km": 15.58,
+        "is_indoor": false,
+        "route_status": "privacy_hidden",
+        "average_heartrate_bpm": 106.1,
+        "elevation_gain_m": 21.1,
+        "calories_kcal": 256.2
+      },
+      {
+        "external_id": "7498e728-60e4-4034-a7a6-c9ba59695f30",
+        "name": "晚间骑行",
+        "type": "Ride",
+        "started_at": "2026-09-10T20:13:38+08:00",
+        "duration_seconds": 577,
+        "distance_km": 2.07,
+        "is_indoor": false,
+        "route_status": "privacy_hidden",
+        "average_heartrate_bpm": 83.9,
+        "calories_kcal": 29.9
+      },
+      {
+        "external_id": "2196c4ae-bf49-4ae4-b358-dc8bba954d40",
+        "name": "傍晚骑行",
+        "type": "Ride",
+        "started_at": "2026-09-08T19:34:59+08:00",
+        "duration_seconds": 3649,
+        "distance_km": 23.68,
+        "is_indoor": false,
+        "route_status": "privacy_hidden",
+        "average_heartrate_bpm": 121.6,
+        "elevation_gain_m": 44,
+        "calories_kcal": 549.9
+      },
+      {
+        "external_id": "c7fcd7f9-bb8f-4305-9eb6-0de26f99d11b",
+        "name": "傍晚骑行",
+        "type": "Ride",
+        "started_at": "2026-09-07T18:45:05+08:00",
+        "duration_seconds": 1209,
+        "distance_km": 4.64,
+        "is_indoor": false,
+        "route_status": "privacy_hidden",
+        "average_heartrate_bpm": 90.6,
+        "calories_kcal": 68.1
+      },
+      {
         "external_id": "4b2990cf-c2d7-41de-a207-9ed8ac430b5d",
         "name": "傍晚骑行",
         "type": "Ride",
