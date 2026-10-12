@@ -720,17 +720,17 @@
   "2026-09": {
     "month_str": "2026-09",
     "stats": {
-      "total_count": 4,
-      "total_distance": 47.41,
-      "total_duration_minutes": 212,
-      "total_calories": 1221,
-      "total_elevation_gain": 106,
+      "total_count": 8,
+      "total_distance": 93.38,
+      "total_duration_minutes": 354,
+      "total_calories": 2125,
+      "total_elevation_gain": 171,
       "sports_count": {
-        "骑行": 2,
+        "骑行": 6,
         "步行": 2
       },
       "sports_distance": {
-        "骑行": 39.8,
+        "骑行": 85.77,
         "步行": 7.61
       },
       "longest_ride_km": 23.88,
@@ -738,36 +738,36 @@
       "longest_activity_km": 23.88,
       "longest_activity_type": "骑行",
       "highest_average_hr_session": {
-        "date": "1号",
+        "date": "8号",
         "type": "骑行",
-        "hr": 119,
+        "hr": 122,
         "label": "仅按平均心率排序"
       },
       "hardest_session": {
-        "date": "1号",
+        "date": "8号",
         "type": "骑行",
-        "hr": 119,
+        "hr": 122,
         "zone": "仅按平均心率排序"
       },
-      "average_distance_per_activity": 11.85,
-      "average_duration_minutes": 53,
+      "average_distance_per_activity": 11.67,
+      "average_duration_minutes": 44,
       "primary_sport": "骑行",
       "primary_sport_type": "Ride",
-      "primary_sport_share": 0.5,
+      "primary_sport_share": 0.75,
       "sport_variety": 2,
       "sport_metrics": {
         "骑行": {
           "type": "Ride",
-          "count": 2,
-          "average_distance": 19.9,
-          "median_distance": 19.9,
-          "average_duration_minutes": 54,
-          "median_duration_minutes": 54,
-          "average_heartrate": 116,
-          "median_heartrate": 116,
-          "pace_seconds_per_km": 161,
-          "median_pace_seconds_per_km": 161,
-          "heart_rate_samples": 2
+          "count": 6,
+          "average_distance": 14.3,
+          "median_distance": 15.8,
+          "average_duration_minutes": 42,
+          "median_duration_minutes": 47,
+          "average_heartrate": 106,
+          "median_heartrate": 110,
+          "pace_seconds_per_km": 203,
+          "median_pace_seconds_per_km": 182,
+          "heart_rate_samples": 6
         },
         "步行": {
           "type": "Walk",
@@ -784,31 +784,31 @@
         }
       },
       "favorite_time": "晚上",
-      "max_streak_days": 2,
-      "longest_gap_days": 1,
-      "active_days_count": 4,
+      "max_streak_days": 3,
+      "longest_gap_days": 2,
+      "active_days_count": 8,
       "indoor_count": 0,
-      "outdoor_count": 4
+      "outdoor_count": 8
     },
     "report_phase": "final",
-    "report_as_of": "2026-09-06",
+    "report_as_of": "2026-09-13",
     "coach_report": {
-      "verdict": "本阶段截至第6天：4个活跃日、最长间隔1天，骑行2次节奏升至22.4公里/小时、心率116基本持平，总量缩小主要来自统计区间比上一个自然月短。",
-      "analysis": "出勤并未中断：4次运动落在4个活跃日，最长间隔只有1天，累计47.4公里、212分钟，与上月27次、24个活跃日相比更像区间长度差异，而不是习惯松动。骑行单次19.9公里与上月19.8公里几乎一致，时长54分钟略短，说明单次耐力的框架仍在延续；结构上骑行与步行各2次，呈现室内为零的轻量组合。2次骑行的节奏由21.2升至22.4公里/小时，平均心率中位数仅从115到116，方向是变快而心率未同步上扬，但样本只有2次，只能记为待复现的观察，不足以支撑能力判断。",
-      "next_plan": "下一阶段维持每两天至少一次出勤，安排2至3次15至25公里骑行，节奏控制在21至23公里/小时、平均心率中位数不高于120；其余日用步行30至60分钟补齐。半月后用记录核对：活跃日不少于7天、最长间隔不超过2天、可比骑行至少3次，且这3次节奏与心率不出现同时上升。",
+      "verdict": "本阶段骑行占75%，累计93.4公里、354分钟，活跃日8天，较上月27次、24个活跃日明显收缩，但可比骑行节奏与心率基本持平。",
+      "analysis": "把运动总量、出勤规律、单次耐力与节奏质量交叉看，主线矛盾在安排收缩：累计距离与时长分别减少约73%和74%，活跃日由24降至8，骑行单次均距也降到14.3公里，单次刺激随之变小。与此同时，两次可比骑行的节奏约20.1公里/小时、平均心率中位数112，与上月20.6公里/小时、114基本持平，说明当前变化更多来自出勤和单次长度，而不是可比骑行的节奏失控。骑行仍占75%，下一阶段应先把这条主线恢复到可重复的频率与距离。",
+      "next_plan": "未来半月以恢复出勤和稳定骑行为主线：每周骑行2至3次，单次12至20公里，节奏维持20至21公里/小时附近，另用步行短程补充。用记录核对：14天内活跃日不少于7天，骑行至少5次、总距离不低于60公里，至少完成2次可比骑行，且平均心率中位数保持在112至115附近。",
       "evidence_ids": [
-        "consistency",
         "volume",
+        "consistency",
         "endurance",
         "quality",
-        "structure"
+        "event_primary_concentration"
       ]
     },
     "report_version": 6,
-    "report_data_hash": "93f90d00351b863d1d8cd01ce164f6173276527693d2d10bb901f14c4e3b1f78",
-    "source_data_hash": "1b641036f1a868c017a6e7293119e9ea2b59a860e554a79bec69a1301a13230e",
+    "report_data_hash": "b5f7ac6061276f2ed7e7544ce11aff7f1acc833eabc77e60d4367278cc57a430",
+    "source_data_hash": "875c0aef044adad45c50ad3912d5e99786efde46db04c6a80c961cfbfc8c8a6a",
     "model": "deepseek-v4-flash",
     "comparison_basis": "上一个自然月",
-    "last_update": "2026-10-01T07:23:40"
+    "last_update": "2026-10-13T06:21:09"
   }
 }
